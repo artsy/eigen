@@ -23,9 +23,9 @@ export const useCityGuideCities = (): CityData[] => {
     { fetchPolicy: "store-or-network" }
   )
 
-  return data.cityGuideCities.map((city) => ({
-    slug: city.slug,
-    name: city.name,
-    coordinates: { lat: city.coordinates?.lat ?? 0, lng: city.coordinates?.lng ?? 0 },
-  }))
+  return data.cityGuideCities.flatMap(({ slug, name, coordinates }) =>
+    coordinates?.lat != null && coordinates.lng != null
+      ? [{ slug, name, coordinates: { lat: coordinates.lat, lng: coordinates.lng } }]
+      : []
+  )
 }

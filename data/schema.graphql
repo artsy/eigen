@@ -45,11 +45,7 @@ enum AIAgentActivity {
   THINKING
 }
 
-union AIAgentEvent =
-    AIAgentTextDelta
-  | AIAgentToolCall
-  | AIAgentToolResult
-  | AIAgentTurnComplete
+union AIAgentEvent = AIAgentTextDelta | AIAgentToolCall | AIAgentToolResult | AIAgentTurnComplete
 
 input AIAgentMessageInput {
   artworkIDs: [String!]
@@ -643,12 +639,7 @@ type Alert {
   artistSeriesIDs: [String]
   artistSeriesNames: [String]
   artists: [Artist!]!
-  artistsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtistConnection!
+  artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection!
 
   """
   Artworks Elastic Search results
@@ -906,12 +897,7 @@ type AlertEdge {
 
 type AlertNotificationItem {
   alert: Alert
-  artworksConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkConnection
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
 }
 
 type AlertSettings {
@@ -963,13 +949,11 @@ enum AlertsConnectionSortEnum {
 type Algolia {
   apiKey: String! @deprecated(reason: "Algolia search is no longer supported")
   appID: String! @deprecated(reason: "Algolia search is no longer supported")
-  indices: [AlgoliaIndex!]!
-    @deprecated(reason: "Algolia search is no longer supported")
+  indices: [AlgoliaIndex!]! @deprecated(reason: "Algolia search is no longer supported")
 }
 
 type AlgoliaIndex {
-  displayName: String!
-    @deprecated(reason: "Algolia search is no longer supported")
+  displayName: String! @deprecated(reason: "Algolia search is no longer supported")
   key: String! @deprecated(reason: "Algolia search is no longer supported")
   name: String! @deprecated(reason: "Algolia search is no longer supported")
 }
@@ -1472,9 +1456,7 @@ type AnalyticsPartnerInquiryStats {
   """
   Partner inquiry count time series
   """
-  timeSeries(
-    cumulative: Boolean = false
-  ): [AnalyticsPartnerInquiryCountTimeSeriesStats!]
+  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerInquiryCountTimeSeriesStats!]
 }
 
 """
@@ -1498,9 +1480,7 @@ type AnalyticsPartnerSalesStats {
   """
   Partner sales time series
   """
-  timeSeries(
-    cumulative: Boolean = false
-  ): [AnalyticsPartnerSalesTimeSeriesStats!]
+  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerSalesTimeSeriesStats!]
   total(
     decimal: String = "."
     format: String = "%s%v"
@@ -1535,19 +1515,13 @@ type AnalyticsPartnerStats {
   """
   Time series data on number of artworks published
   """
-  artworkPublished(
-    period: AnalyticsQueryPeriodEnum!
-  ): AnalyticsPartnerStatsArtworksPublished
+  artworkPublished(period: AnalyticsQueryPeriodEnum!): AnalyticsPartnerStatsArtworksPublished
 
   """
   Time series data on number of artworks published
   """
-  artworksPublished(
-    period: AnalyticsQueryPeriodEnum!
-  ): AnalyticsArtworksPublishedStats
-    @deprecated(
-      reason: "Use artworkPublished for refactored time series bucket code"
-    )
+  artworksPublished(period: AnalyticsQueryPeriodEnum!): AnalyticsArtworksPublishedStats
+    @deprecated(reason: "Use artworkPublished for refactored time series bucket code")
 
   """
   Audience stats
@@ -1654,8 +1628,7 @@ type AnalyticsPartnerStats {
     Returns the last _n_ elements from the list.
     """
     last: Int
-  ): AnalyticsRankedStatsConnection
-    @deprecated(reason: "Use rankedStats(objectType: ) instead")
+  ): AnalyticsRankedStatsConnection @deprecated(reason: "Use rankedStats(objectType: ) instead")
 
   """
   Number of unique visitors
@@ -1675,9 +1648,7 @@ type AnalyticsPartnerStatsArtworksPublished {
   """
   Partner artworks published count time series
   """
-  timeSeries(
-    cumulative: Boolean = false
-  ): [AnalyticsPartnerStatsArtworksPublishedTimeSeries!]!
+  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerStatsArtworksPublishedTimeSeries!]!
   totalCount: Int!
 }
 
@@ -1704,9 +1675,7 @@ type AnalyticsPartnerStatsPageviews {
   """
   Pageviews time series
   """
-  timeSeries(
-    cumulative: Boolean = false
-  ): [AnalyticsPartnerStatsPageviewsTimeSeries!]
+  timeSeries(cumulative: Boolean = false): [AnalyticsPartnerStatsPageviewsTimeSeries!]
   totalCount: Int!
   uniqueVisitors: Int!
 }
@@ -2058,8 +2027,7 @@ type Article implements Node {
     size: Int = 12
   ): [Article!]!
   channelID: String @deprecated(reason: "Use `channel` instead")
-  contributingAuthors: [Author]
-    @deprecated(reason: "Use `byline` or `authors` instead")
+  contributingAuthors: [Author] @deprecated(reason: "Use `byline` or `authors` instead")
   description: String
   hero: ArticleHero
   href: String
@@ -2194,12 +2162,7 @@ enum ArticleFeatureSectionType {
 
 type ArticleFeaturedArtistNotificationItem {
   article: Article
-  artistsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtistConnection
+  artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
 }
 
 union ArticleHero = ArticleFeatureSection | ArticleImageSection
@@ -2921,9 +2884,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     slugs: [String!]
   ): [MarketingCollection!]!
   meta(page: ArtistPage = ABOUT): ArtistMeta!
-    @deprecated(
-      reason: "Use `name` and `biographyBlurb` fields to build meta tags client-side"
-    )
+    @deprecated(reason: "Use `name` and `biographyBlurb` fields to build meta tags client-side")
   middle: String
   name: String
   nationality: String
@@ -3022,12 +2983,7 @@ enum ArtistAlertsSort {
 }
 
 type ArtistArtworkGrid implements ArtworkContextGrid {
-  artworksConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkConnection
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
   ctaHref: String
   ctaTitle: String
   title: String
@@ -3046,9 +3002,7 @@ type ArtistBlurb {
   The partner id of the partner who submitted the featured bio.
   """
   partnerID: String
-    @deprecated(
-      reason: "No longer used as the partner field contains the partner.id"
-    )
+    @deprecated(reason: "No longer used as the partner field contains the partner.id")
   text: String
 }
 
@@ -3495,12 +3449,7 @@ type ArtistPartnerEdge {
   """
   A list of shows for this artist
   """
-  showsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ShowConnection
+  showsConnection(after: String, before: String, first: Int, last: Int): ShowConnection
   sortableID: String
 }
 
@@ -4080,9 +4029,7 @@ type ArtsyShippingOptInResponse {
 type Artwork implements Node & Searchable & Sellable {
   additionalInformation(format: Format): String
   artaShippingEnabled: Boolean
-    @deprecated(
-      reason: "Prefer to use `processWithArtsyShippingDomestic`. [Will be removed in v2]"
-    )
+    @deprecated(reason: "Prefer to use `processWithArtsyShippingDomestic`. [Will be removed in v2]")
   articles(size: Int): [Article]
   artist(
     """
@@ -4116,8 +4063,7 @@ type Artwork implements Node & Searchable & Sellable {
   """
   Represents the location of the artwork for "My Collection" artworks
   """
-  artworkLocation: String
-    @deprecated(reason: "Please use `collectorLocation` instead")
+  artworkLocation: String @deprecated(reason: "Please use `collectorLocation` instead")
 
   """
   Represents the "**classification**" of an artwork, such as _limited edition_
@@ -4309,8 +4255,7 @@ type Artwork implements Node & Searchable & Sellable {
   Formatted artwork metadata, including artist, title, date and partner; e.g., 'Andy Warhol, Truck, 1980, Westward Gallery'.
   """
   formattedMetadata: String
-  framed: ArtworkInfoRow
-    @deprecated(reason: "Consider using isFramed field (boolean) instead")
+  framed: ArtworkInfoRow @deprecated(reason: "Consider using isFramed field (boolean) instead")
   framedDepth: String
   framedDiameter: String
   framedDimensions: dimensions
@@ -4734,9 +4679,7 @@ type Artwork implements Node & Searchable & Sellable {
   Is this work available for shipping only within the Continental US?
   """
   shipsToContinentalUSOnly: Boolean
-    @deprecated(
-      reason: "Prefer to use `onlyShipsDomestically`. [Will be removed in v2]"
-    )
+    @deprecated(reason: "Prefer to use `onlyShipsDomestically`. [Will be removed in v2]")
   show(active: Boolean, atAFair: Boolean, sort: ShowSorts): Show
   shows(active: Boolean, atAFair: Boolean, size: Int, sort: ShowSorts): [Show]
   signature(format: Format): String
@@ -4978,12 +4921,7 @@ union ArtworkContext = Fair | Sale | Show
 A specific grid.
 """
 interface ArtworkContextGrid {
-  artworksConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkConnection
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
   ctaHref: String
   ctaTitle: String
   title: String
@@ -5452,12 +5390,7 @@ type ArtworkImport implements Node {
   originalSaleSlug: String
   partnerListID: String
   rawDataMapping: JSON!
-  rowsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkImportRowConnection
+  rowsConnection(after: String, before: String, first: Int, last: Int): ArtworkImportRowConnection
 
   """
   Source of the import: 'bulk_import', 'multi_add', or 'partner_conversion'
@@ -5880,12 +5813,7 @@ type ArtworkLayer {
   """
   A connection of artworks from a Layer.
   """
-  artworksConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkConnection
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
   cached: Int
   description: String
   href: String
@@ -5943,9 +5871,7 @@ type ArtworkMutationFailure {
   mutationError: GravityMutationError
 }
 
-union ArtworkMutationType =
-    ArtworkMutationDeleteSuccess
-  | ArtworkMutationFailure
+union ArtworkMutationType = ArtworkMutationDeleteSuccess | ArtworkMutationFailure
 
 union ArtworkOrEditionSetType = Artwork | EditionSet
 
@@ -5998,12 +5924,7 @@ type ArtworkPriceInsights {
 
 type ArtworkPublishedNotificationItem {
   artists: [Artist!]!
-  artworksConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkConnection
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
 }
 
 union ArtworkResult = Artwork | ArtworkError
@@ -6484,12 +6405,7 @@ type AttributionClass {
 }
 
 type AuctionArtworkGrid implements ArtworkContextGrid {
-  artworksConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkConnection
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
   ctaHref: String
   ctaTitle: String
   title: String
@@ -7677,9 +7593,7 @@ type BankAccountMutationSuccess {
   bankAccountEdge: BankAccountEdge
 }
 
-union BankAccountMutationType =
-    BankAccountMutationFailure
-  | BankAccountMutationSuccess
+union BankAccountMutationType = BankAccountMutationFailure | BankAccountMutationSuccess
 
 enum BankAccountTypes {
   SEPA_DEBIT
@@ -8822,9 +8736,7 @@ type CityArticleMutationFailure {
   mutationError: GravityMutationError
 }
 
-union CityArticleMutationResponseOrError =
-    CityArticleMutationFailure
-  | CityArticleMutationSuccess
+union CityArticleMutationResponseOrError = CityArticleMutationFailure | CityArticleMutationSuccess
 
 type CityArticleMutationSuccess {
   """
@@ -8880,9 +8792,7 @@ type CityVideoMutationFailure {
   mutationError: GravityMutationError
 }
 
-union CityVideoMutationResponseOrError =
-    CityVideoMutationFailure
-  | CityVideoMutationSuccess
+union CityVideoMutationResponseOrError = CityVideoMutationFailure | CityVideoMutationSuccess
 
 type CityVideoMutationSuccess {
   citySlug: String!
@@ -9147,9 +9057,7 @@ type CollectorProfileType implements Node {
   ): String
   email: String
   emailConfirmed: Boolean
-    @deprecated(
-      reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead"
-    )
+    @deprecated(reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead")
   firstNameLastInitial: String
   followedArtistsCount: Int!
   icon: Image
@@ -9159,9 +9067,7 @@ type CollectorProfileType implements Node {
   """
   id: ID!
   identityVerified: Boolean
-    @deprecated(
-      reason: "identityVerified is going to be removed, use isIdentityVerified instead"
-    )
+    @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
   initials(length: Int = 3): String
   inquiryRequestsCount: Int!
 
@@ -9171,12 +9077,7 @@ type CollectorProfileType implements Node {
   instagram: String
   institutionalAffiliations: String
   intents: [String]
-  interestsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): UserInterestConnection
+  interestsConnection(after: String, before: String, first: Int, last: Int): UserInterestConnection
 
   """
   A type-specific ID likely used as a database ID.
@@ -9315,12 +9216,7 @@ type CollectorResume {
   """
   Notes this partner has made about this collector.
   """
-  notesConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): PartnerUserNoteConnection
+  notesConnection(after: String, before: String, first: Int, last: Int): PartnerUserNoteConnection
 
   """
   ID of the partner responding to the conversation
@@ -9362,32 +9258,27 @@ type CollectorSignals {
   """
   Live bidding has started on this lot's auction
   """
-  liveBiddingStarted: Boolean
-    @deprecated(reason: "Use nested field in `auction` instead")
+  liveBiddingStarted: Boolean @deprecated(reason: "Use nested field in `auction` instead")
 
   """
   Auction live bidding start time
   """
-  liveStartAt: String
-    @deprecated(reason: "Use nested field in `auction` instead")
+  liveStartAt: String @deprecated(reason: "Use nested field in `auction` instead")
 
   """
   Pending auction lot end time for bidding
   """
-  lotClosesAt: String
-    @deprecated(reason: "Use nested field in `auction` instead")
+  lotClosesAt: String @deprecated(reason: "Use nested field in `auction` instead")
 
   """
   Lot watcher count on lots open for bidding
   """
-  lotWatcherCount: Int
-    @deprecated(reason: "Use nested field in `auction` instead")
+  lotWatcherCount: Int @deprecated(reason: "Use nested field in `auction` instead")
 
   """
   Auction lot bidding period extended due to last-minute bids
   """
-  onlineBiddingExtended: Boolean
-    @deprecated(reason: "Use nested field in `auction` instead")
+  onlineBiddingExtended: Boolean @deprecated(reason: "Use nested field in `auction` instead")
 
   """
   Partner offer available to collector
@@ -9407,8 +9298,7 @@ type CollectorSignals {
   """
   Pending auction registration end time
   """
-  registrationEndsAt: String
-    @deprecated(reason: "Use nested field in `auction` instead")
+  registrationEndsAt: String @deprecated(reason: "Use nested field in `auction` instead")
 
   """
   Most recent running Show or Fair booth the artwork is currently in, sorted by relevance
@@ -9436,9 +9326,7 @@ type CollectorSummaryAttribute {
 """
 Represents either an action or a potential failure
 """
-union CommerceActionOrFailureUnion =
-    CommerceOrderRequiresAction
-  | CommerceOrderWithMutationFailure
+union CommerceActionOrFailureUnion = CommerceOrderRequiresAction | CommerceOrderWithMutationFailure
 
 """
 Autogenerated input type of AddInitialOfferToOrder
@@ -11083,9 +10971,7 @@ type CommerceOptInReportMutationPayload {
   commerceOptInReportMutationOrError: CommerceOptInReportMutationType
 }
 
-union CommerceOptInReportMutationType =
-    CommerceOptInReportFailure
-  | CommerceOptInReportSuccess
+union CommerceOptInReportMutationType = CommerceOptInReportFailure | CommerceOptInReportSuccess
 
 type CommerceOptInReportResponse {
   message: String
@@ -11453,9 +11339,7 @@ type CommerceOrderError {
 """
 Represents either a state change or new offer
 """
-union CommerceOrderEventUnion =
-    CommerceOfferSubmittedEvent
-  | CommerceOrderStateChangedEvent
+union CommerceOrderEventUnion = CommerceOfferSubmittedEvent | CommerceOrderStateChangedEvent
 
 enum CommerceOrderFulfillmentTypeEnum {
   """
@@ -11521,10 +11405,7 @@ type CommerceOrderRequiresAction {
   actionData: CommerceOrderActionData!
 }
 
-union CommerceOrderResult =
-    CommerceBuyOrder
-  | CommerceOfferOrder
-  | CommerceOrderError
+union CommerceOrderResult = CommerceBuyOrder | CommerceOfferOrder | CommerceOrderError
 
 enum CommerceOrderSourceEnum {
   """
@@ -11715,10 +11596,7 @@ type CommercePickup {
 """
 Represents either a shipping information or pickup
 """
-union CommerceRequestedFulfillmentUnion =
-    CommercePickup
-  | CommerceShip
-  | CommerceShipArta
+union CommerceRequestedFulfillmentUnion = CommercePickup | CommerceShip | CommerceShipArta
 
 """
 Autogenerated input type of SelectShippingOption
@@ -14264,16 +14142,13 @@ type Conversation implements Node {
   """
   The collector profile of the user who initiated the conversation
   """
-  fromProfile: CollectorProfileType
-    @deprecated(reason: "Use `collectorResume` instead")
+  fromProfile: CollectorProfileType @deprecated(reason: "Use `collectorResume` instead")
 
   """
   The user who initiated the conversation
   """
   fromUser: User
-    @deprecated(
-      reason: "Will be inaccessible to partners in future versions. Prefer fromProfile."
-    )
+    @deprecated(reason: "Will be inaccessible to partners in future versions. Prefer fromProfile.")
 
   """
   A globally unique ID.
@@ -14333,13 +14208,8 @@ type Conversation implements Node {
   """
   A connection for all messages in a single conversation
   """
-  messages(
-    after: String
-    before: String
-    first: Int
-    last: Int
-    sort: sort
-  ): MessageConnection @deprecated(reason: "Prefer messagesConnection")
+  messages(after: String, before: String, first: Int, last: Int, sort: sort): MessageConnection
+    @deprecated(reason: "Prefer messagesConnection")
 
   """
   A connection for all messages and events in a single conversation
@@ -14805,9 +14675,7 @@ type CreateArtnetImportMutationPayload {
   clientMutationId: String
 }
 
-union CreateArtnetImportResponseOrError =
-    CreateArtnetImportFailure
-  | CreateArtnetImportSuccess
+union CreateArtnetImportResponseOrError = CreateArtnetImportFailure | CreateArtnetImportSuccess
 
 type CreateArtnetImportSuccess {
   artnetImportID: String
@@ -15022,9 +14890,7 @@ type CreateArtworkImportPayload {
   clientMutationId: String
 }
 
-union CreateArtworkImportResponseOrError =
-    CreateArtworkImportFailure
-  | CreateArtworkImportSuccess
+union CreateArtworkImportResponseOrError = CreateArtworkImportFailure | CreateArtworkImportSuccess
 
 type CreateArtworkImportSuccess {
   artworkImport: ArtworkImport
@@ -15187,9 +15053,7 @@ type CreateBrandKitPayload {
   clientMutationId: String
 }
 
-union CreateBrandKitResponseOrError =
-    CreateBrandKitFailure
-  | CreateBrandKitSuccess
+union CreateBrandKitResponseOrError = CreateBrandKitFailure | CreateBrandKitSuccess
 
 type CreateBrandKitSuccess {
   brandKit: BrandKit
@@ -15318,9 +15182,7 @@ type CreateCollectionFailure {
   mutationError: GravityMutationError
 }
 
-union CreateCollectionResponseOrError =
-    CreateCollectionFailure
-  | CreateCollectionSuccess
+union CreateCollectionResponseOrError = CreateCollectionFailure | CreateCollectionSuccess
 
 type CreateCollectionSuccess {
   collection: Collection
@@ -15443,9 +15305,7 @@ type CreateFeaturedLinkMutationPayload {
   featuredLinkOrError: CreateFeaturedLinkResponseOrError
 }
 
-union CreateFeaturedLinkResponseOrError =
-    CreateFeaturedLinkFailure
-  | CreateFeaturedLinkSuccess
+union CreateFeaturedLinkResponseOrError = CreateFeaturedLinkFailure | CreateFeaturedLinkSuccess
 
 type CreateFeaturedLinkSuccess {
   featuredLink: FeaturedLink
@@ -15594,9 +15454,7 @@ type CreateInstagramPostPayload {
   instagramPostOrError: CreateInstagramPostResponseOrError
 }
 
-union CreateInstagramPostResponseOrError =
-    CreateInstagramPostFailure
-  | CreateInstagramPostSuccess
+union CreateInstagramPostResponseOrError = CreateInstagramPostFailure | CreateInstagramPostSuccess
 
 type CreateInstagramPostSuccess {
   instagramPost: InstagramPost
@@ -16054,9 +15912,7 @@ input CreatePartnerContactInput {
   position: String
 }
 
-union CreatePartnerContactOrError =
-    CreatePartnerContactFailure
-  | CreatePartnerContactSuccess
+union CreatePartnerContactOrError = CreatePartnerContactFailure | CreatePartnerContactSuccess
 
 type CreatePartnerContactPayload {
   clientMutationId: String
@@ -16114,9 +15970,7 @@ type CreatePartnerListMutationPayload {
   partnerListOrError: CreatePartnerListResponseOrError
 }
 
-union CreatePartnerListResponseOrError =
-    CreatePartnerListFailure
-  | CreatePartnerListSuccess
+union CreatePartnerListResponseOrError = CreatePartnerListFailure | CreatePartnerListSuccess
 
 type CreatePartnerListSuccess {
   partnerList: PartnerList
@@ -16194,9 +16048,7 @@ input CreatePartnerLocationInput {
   state: String
 }
 
-union CreatePartnerLocationOrError =
-    CreatePartnerLocationFailure
-  | CreatePartnerLocationSuccess
+union CreatePartnerLocationOrError = CreatePartnerLocationFailure | CreatePartnerLocationSuccess
 
 type CreatePartnerLocationPayload {
   clientMutationId: String
@@ -16414,9 +16266,7 @@ type CreatePartnerShowMutationPayload {
   showOrError: CreatePartnerShowResponseOrError
 }
 
-union CreatePartnerShowResponseOrError =
-    CreatePartnerShowFailure
-  | CreatePartnerShowSuccess
+union CreatePartnerShowResponseOrError = CreatePartnerShowFailure | CreatePartnerShowSuccess
 
 type CreatePartnerShowSuccess {
   show: Show
@@ -16444,9 +16294,7 @@ input CreatePartnerUserNoteInput {
   userId: String!
 }
 
-union CreatePartnerUserNoteOrError =
-    CreatePartnerUserNoteFailure
-  | CreatePartnerUserNoteSuccess
+union CreatePartnerUserNoteOrError = CreatePartnerUserNoteFailure | CreatePartnerUserNoteSuccess
 
 type CreatePartnerUserNotePayload {
   clientMutationId: String
@@ -16461,9 +16309,7 @@ type CreatePurchaseFailure {
   mutationError: GravityMutationError
 }
 
-union CreatePurchaseResponseOrError =
-    CreatePurchaseFailure
-  | CreatePurchaseSuccess
+union CreatePurchaseResponseOrError = CreatePurchaseFailure | CreatePurchaseSuccess
 
 type CreatePurchaseSuccess {
   purchase: Purchase
@@ -16488,9 +16334,7 @@ type CreateSaleAgreementMutationPayload {
   saleAgreementOrError: CreateSaleAgreementResponseOrError
 }
 
-union CreateSaleAgreementResponseOrError =
-    CreateSaleAgreementFailure
-  | CreateSaleAgreementSuccess
+union CreateSaleAgreementResponseOrError = CreateSaleAgreementFailure | CreateSaleAgreementSuccess
 
 type CreateSaleAgreementSuccess {
   saleAgreement: SaleAgreement
@@ -17023,9 +16867,7 @@ type CreditCardMutationSuccess {
   creditCardEdge: CreditCardEdge
 }
 
-union CreditCardMutationType =
-    CreditCardMutationFailure
-  | CreditCardMutationSuccess
+union CreditCardMutationType = CreditCardMutationFailure | CreditCardMutationSuccess
 
 type CreditCardPayload {
   clientMutationId: String
@@ -17204,9 +17046,7 @@ type DeleteArtworkImportPayload {
   clientMutationId: String
 }
 
-union DeleteArtworkImportResponseOrError =
-    DeleteArtworkImportFailure
-  | DeleteArtworkImportSuccess
+union DeleteArtworkImportResponseOrError = DeleteArtworkImportFailure | DeleteArtworkImportSuccess
 
 type DeleteArtworkImportSuccess {
   """
@@ -17316,9 +17156,7 @@ type DeleteBrandKitLogoPayload {
   clientMutationId: String
 }
 
-union DeleteBrandKitLogoResponseOrError =
-    DeleteBrandKitLogoFailure
-  | DeleteBrandKitLogoSuccess
+union DeleteBrandKitLogoResponseOrError = DeleteBrandKitLogoFailure | DeleteBrandKitLogoSuccess
 
 type DeleteBrandKitLogoSuccess {
   brandKit: BrandKit
@@ -17332,9 +17170,7 @@ type DeleteBrandKitPayload {
   clientMutationId: String
 }
 
-union DeleteBrandKitResponseOrError =
-    DeleteBrandKitFailure
-  | DeleteBrandKitSuccess
+union DeleteBrandKitResponseOrError = DeleteBrandKitFailure | DeleteBrandKitSuccess
 
 type DeleteBrandKitSuccess {
   success: Boolean
@@ -17403,9 +17239,7 @@ type DeleteCollectionFailure {
   mutationError: GravityMutationError
 }
 
-union DeleteCollectionResponseOrError =
-    DeleteCollectionFailure
-  | DeleteCollectionSuccess
+union DeleteCollectionResponseOrError = DeleteCollectionFailure | DeleteCollectionSuccess
 
 type DeleteCollectionSuccess {
   collection: Collection
@@ -17460,9 +17294,7 @@ type DeleteConversationMutationPayload {
   conversationOrError: DeleteConversationResponseOrError
 }
 
-union DeleteConversationResponseOrError =
-    DeleteConversationFailure
-  | DeleteConversationSuccess
+union DeleteConversationResponseOrError = DeleteConversationFailure | DeleteConversationSuccess
 
 type DeleteConversationSuccess {
   conversation: Conversation
@@ -17513,9 +17345,7 @@ type DeleteFeaturedLinkMutationPayload {
   featuredLinkOrError: DeleteFeaturedLinkResponseOrError
 }
 
-union DeleteFeaturedLinkResponseOrError =
-    DeleteFeaturedLinkFailure
-  | DeleteFeaturedLinkSuccess
+union DeleteFeaturedLinkResponseOrError = DeleteFeaturedLinkFailure | DeleteFeaturedLinkSuccess
 
 type DeleteFeaturedLinkSuccess {
   featuredLink: FeaturedLink
@@ -17693,9 +17523,7 @@ type DeletePartnerArtistMutationPayload {
   partnerArtistOrError: DeletePartnerArtistResponseOrError
 }
 
-union DeletePartnerArtistResponseOrError =
-    DeletePartnerArtistFailure
-  | DeletePartnerArtistSuccess
+union DeletePartnerArtistResponseOrError = DeletePartnerArtistFailure | DeletePartnerArtistSuccess
 
 type DeletePartnerArtistSuccess {
   partner: Partner
@@ -17724,9 +17552,7 @@ type DeletePartnerContactMutationPayload {
   partnerContactOrError: DeletePartnerContactOrError
 }
 
-union DeletePartnerContactOrError =
-    DeletePartnerContactFailure
-  | DeletePartnerContactSuccess
+union DeletePartnerContactOrError = DeletePartnerContactFailure | DeletePartnerContactSuccess
 
 type DeletePartnerContactSuccess {
   partnerContact: Contact
@@ -17754,9 +17580,7 @@ type DeletePartnerListMutationPayload {
   partnerListOrError: DeletePartnerListResponseOrError
 }
 
-union DeletePartnerListResponseOrError =
-    DeletePartnerListFailure
-  | DeletePartnerListSuccess
+union DeletePartnerListResponseOrError = DeletePartnerListFailure | DeletePartnerListSuccess
 
 type DeletePartnerListSuccess {
   partnerList: PartnerList
@@ -17785,9 +17609,7 @@ type DeletePartnerLocationMutationPayload {
   partnerLocationOrError: DeletePartnerLocationOrError
 }
 
-union DeletePartnerLocationOrError =
-    DeletePartnerLocationFailure
-  | DeletePartnerLocationSuccess
+union DeletePartnerLocationOrError = DeletePartnerLocationFailure | DeletePartnerLocationSuccess
 
 type DeletePartnerLocationSuccess {
   location: Location
@@ -17902,9 +17724,7 @@ type DeletePartnerShowMutationPayload {
   showOrError: DeletePartnerShowResponseOrError
 }
 
-union DeletePartnerShowResponseOrError =
-    DeletePartnerShowFailure
-  | DeletePartnerShowSuccess
+union DeletePartnerShowResponseOrError = DeletePartnerShowFailure | DeletePartnerShowSuccess
 
 type DeletePartnerShowSuccess {
   show: Show
@@ -17923,9 +17743,7 @@ input DeletePartnerUserNoteInput {
   id: String!
 }
 
-union DeletePartnerUserNoteOrError =
-    DeletePartnerUserNoteFailure
-  | DeletePartnerUserNoteSuccess
+union DeletePartnerUserNoteOrError = DeletePartnerUserNoteFailure | DeletePartnerUserNoteSuccess
 
 type DeletePartnerUserNotePayload {
   clientMutationId: String
@@ -17940,9 +17758,7 @@ type DeletePurchaseFailure {
   mutationError: GravityMutationError
 }
 
-union DeletePurchaseResponseOrError =
-    DeletePurchaseFailure
-  | DeletePurchaseSuccess
+union DeletePurchaseResponseOrError = DeletePurchaseFailure | DeletePurchaseSuccess
 
 type DeletePurchaseSuccess {
   purchase: Purchase
@@ -18484,9 +18300,7 @@ type DiscoveryCategory implements Node {
 """
 A union of different discovery category types
 """
-union DiscoveryCategoryUnion =
-    DiscoveryArtworksWithFiltersCollection
-  | DiscoveryMarketingCollection
+union DiscoveryCategoryUnion = DiscoveryArtworksWithFiltersCollection | DiscoveryMarketingCollection
 
 """
 A discovery category that contains marketing collections
@@ -19998,12 +19812,7 @@ type FeatureFlagConstraint {
   """
   The Partners referenced by this constraint's values, resolved when contextName is `partnerId`
   """
-  partnerConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): PartnerConnection
+  partnerConnection(after: String, before: String, first: Int, last: Int): PartnerConnection
   value: String
   values: [String]
 }
@@ -20216,8 +20025,7 @@ type FilterArtworksConnection implements ArtworkConnectionInterface & Node {
   """
   Artwork results.
   """
-  hits: [Artwork]
-    @deprecated(reason: "Prefer to use `edges`. [Will be removed in v2]")
+  hits: [Artwork] @deprecated(reason: "Prefer to use `edges`. [Will be removed in v2]")
 
   """
   The ID of the object.
@@ -20653,12 +20461,7 @@ type FollowShowPayload {
 
 type FollowedArtistsArtworksGroup implements Node {
   artists: String
-  artworksConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkConnection
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
   href: String
 
   """
@@ -20887,12 +20690,7 @@ type FollowsAndSaves {
   """
   A list of the current user’s currently followed fair profiles
   """
-  fairsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): FollowedFairConnection
+  fairsConnection(after: String, before: String, first: Int, last: Int): FollowedFairConnection
 
   """
   A list of the current user’s currently followed gallery profiles
@@ -21066,12 +20864,7 @@ type GeminiEntry {
 }
 
 type Gene implements Node & Searchable {
-  artistsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtistConnection
+  artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
   cached: Int
   description(format: Format): String
   displayLabel: String
@@ -22024,9 +21817,7 @@ type HomeViewComponent {
   """
   A background image for this section
   """
-  backgroundImageURL(
-    version: HomeViewComponentBackgroundImageURLVersion
-  ): String
+  backgroundImageURL(version: HomeViewComponentBackgroundImageURLVersion): String
 
   """
   Behaviors for this component
@@ -22129,12 +21920,7 @@ type HomeViewSectionActivity implements HomeViewSectionGeneric & Node {
 An articles section in the home view
 """
 type HomeViewSectionArticles implements HomeViewSectionGeneric & Node {
-  articlesConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArticleConnection
+  articlesConnection(after: String, before: String, first: Int, last: Int): ArticleConnection
 
   """
   Component prescription for this section, for overriding or customizing presentation and behavior
@@ -22166,12 +21952,7 @@ type HomeViewSectionArticles implements HomeViewSectionGeneric & Node {
 An artists section in the home view
 """
 type HomeViewSectionArtists implements HomeViewSectionGeneric & Node {
-  artistsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtistConnection
+  artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
 
   """
   Component prescription for this section, for overriding or customizing presentation and behavior
@@ -22203,12 +21984,7 @@ type HomeViewSectionArtists implements HomeViewSectionGeneric & Node {
 An artworks section in the home view
 """
 type HomeViewSectionArtworks implements HomeViewSectionGeneric & Node {
-  artworksConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkConnection
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
 
   """
   Component prescription for this section, for overriding or customizing presentation and behavior
@@ -22311,12 +22087,7 @@ type HomeViewSectionCard implements HomeViewSectionGeneric & Node {
 A section containing a list of navigation cards
 """
 type HomeViewSectionCards implements HomeViewSectionGeneric & Node {
-  cardsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): HomeViewCardConnection
+  cardsConnection(after: String, before: String, first: Int, last: Int): HomeViewCardConnection
 
   """
   Component prescription for this section, for overriding or customizing presentation and behavior
@@ -22358,12 +22129,7 @@ type HomeViewSectionFairs implements HomeViewSectionGeneric & Node {
   [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
   """
   contextModule: String
-  fairsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): FairConnection
+  fairsConnection(after: String, before: String, first: Int, last: Int): FairConnection
 
   """
   A globally unique ID.
@@ -22456,12 +22222,7 @@ type HomeViewSectionHeroUnits implements HomeViewSectionGeneric & Node {
   [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
   """
   contextModule: String
-  heroUnitsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): HeroUnitConnection
+  heroUnitsConnection(after: String, before: String, first: Int, last: Int): HeroUnitConnection
 
   """
   A globally unique ID.
@@ -22574,12 +22335,7 @@ type HomeViewSectionSales implements HomeViewSectionGeneric & Node {
   [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
   """
   ownerType: String
-  salesConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): SaleConnection
+  salesConnection(after: String, before: String, first: Int, last: Int): SaleConnection
 }
 
 """
@@ -22651,12 +22407,7 @@ type HomeViewSectionTasks implements HomeViewSectionGeneric & Node {
   [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
   """
   ownerType: String
-  tasksConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): TaskConnection
+  tasksConnection(after: String, before: String, first: Int, last: Int): TaskConnection
 }
 
 """
@@ -23147,9 +22898,7 @@ type InquirerCollectorProfile {
   ): String
   email: String
   emailConfirmed: Boolean
-    @deprecated(
-      reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead"
-    )
+    @deprecated(reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead")
   firstNameLastInitial: String
   followedArtistsCount: Int!
 
@@ -23164,9 +22913,7 @@ type InquirerCollectorProfile {
   """
   id: ID!
   identityVerified: Boolean
-    @deprecated(
-      reason: "identityVerified is going to be removed, use isIdentityVerified instead"
-    )
+    @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
   initials(length: Int = 3): String
   inquiryRequestsCount: Int!
 
@@ -23176,12 +22923,7 @@ type InquirerCollectorProfile {
   instagram: String
   institutionalAffiliations: String
   intents: [String]
-  interestsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): UserInterestConnection
+  interestsConnection(after: String, before: String, first: Int, last: Int): UserInterestConnection
 
   """
   A type-specific ID likely used as a database ID.
@@ -23749,9 +23491,7 @@ type ItineraryMutationFailure {
   mutationError: GravityMutationError
 }
 
-union ItineraryMutationResponseOrError =
-    ItineraryMutationFailure
-  | ItineraryMutationSuccess
+union ItineraryMutationResponseOrError = ItineraryMutationFailure | ItineraryMutationSuccess
 
 type ItineraryMutationSuccess {
   itinerary: Itinerary
@@ -24816,10 +24556,8 @@ type MarketingCollection implements Node {
     timezone: String
   ): String
   credit: String
-  description: String
-    @deprecated(reason: "Use `markdownDescription` field instead")
-  descriptionMarkdown: String
-    @deprecated(reason: "Use `markdownDescription` field instead")
+  description: String @deprecated(reason: "Use `markdownDescription` field instead")
+  descriptionMarkdown: String @deprecated(reason: "Use `markdownDescription` field instead")
   featuredArtistExclusionIds: [String!]!
   geneIds: [String]
   headerImage: String
@@ -24985,12 +24723,7 @@ type MatchEdge {
 }
 
 type Me implements Node {
-  addressConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): UserAddressConnection
+  addressConnection(after: String, before: String, first: Int, last: Int): UserAddressConnection
   alert(id: String!): Alert
   alertsConnection(
     after: String
@@ -25119,12 +24852,7 @@ type Me implements Node {
   """
   A connection of artwork recommendations, based on user saves
   """
-  basedOnUserSaves(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkConnection
+  basedOnUserSaves(after: String, before: String, first: Int, last: Int): ArtworkConnection
 
   """
   Returns a single bidder position
@@ -25253,12 +24981,7 @@ type Me implements Node {
   """
   A list of the current user’s credit cards
   """
-  creditCards(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): CreditCardConnection
+  creditCards(after: String, before: String, first: Int, last: Int): CreditCardConnection
 
   """
   Currency preference of the user
@@ -25270,9 +24993,7 @@ type Me implements Node {
   User has confirmed their email address
   """
   emailConfirmed: Boolean!
-    @deprecated(
-      reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead"
-    )
+    @deprecated(reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead")
   followsAndSaves: FollowsAndSaves
 
   """
@@ -25306,9 +25027,7 @@ type Me implements Node {
     id: String!
   ): IdentityVerification
   identityVerified: Boolean
-    @deprecated(
-      reason: "identityVerified is going to be removed, use isIdentityVerified instead"
-    )
+    @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
   initials(length: Int = 3): String
   inquiryIntroduction: String
 
@@ -25365,11 +25084,7 @@ type Me implements Node {
   """
   The current user's status relating to bids on artworks
   """
-  lotStanding(
-    artworkID: String
-    saleArtworkID: String
-    saleID: String
-  ): LotStanding
+  lotStanding(artworkID: String, saleArtworkID: String, saleID: String): LotStanding
 
   """
   A list of the current user's auction standings for given lots
@@ -25600,8 +25315,7 @@ type Me implements Node {
   """
   Collector's position with relevant institutions
   """
-  otherRelevantPosition: String
-    @deprecated(reason: "Use `otherRelevantPositions` instead")
+  otherRelevantPosition: String @deprecated(reason: "Use `otherRelevantPositions` instead")
 
   """
   Collector's position with relevant institutions
@@ -25728,9 +25442,7 @@ type Me implements Node {
     last: Int
     page: Int
   ): ArtworkConnection
-    @deprecated(
-      reason: "These genomic recs are deprecated. Use artworkRecommendations instead."
-    )
+    @deprecated(reason: "These genomic recs are deprecated. Use artworkRecommendations instead.")
   saleRegistrationsConnection(
     after: String
     auctionState: AuctionState
@@ -25891,12 +25603,7 @@ type Me implements Node {
   """
   A list of lots a user is watching.
   """
-  watchedLotConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): LotConnection
+  watchedLotConnection(after: String, before: String, first: Int, last: Int): LotConnection
 }
 
 type MeCounts {
@@ -26389,9 +26096,7 @@ type Mutation {
   """
   Accept a partner agreement
   """
-  acceptPartnerAgreement(
-    input: AcceptPartnerAgreementInput!
-  ): AcceptPartnerAgreementPayload
+  acceptPartnerAgreement(input: AcceptPartnerAgreementInput!): AcceptPartnerAgreementPayload
 
   """
   Accept a seller's offer on an order
@@ -26444,9 +26149,7 @@ type Mutation {
   """
   adds an item to an ordered set.
   """
-  addOrderedSetItem(
-    input: addOrderedSetItemMutationInput!
-  ): addOrderedSetItemMutationPayload
+  addOrderedSetItem(input: addOrderedSetItemMutationInput!): addOrderedSetItemMutationPayload
 
   """
   Add a role associated with a user
@@ -26462,37 +26165,27 @@ type Mutation {
   """
   Creates a new feature flag
   """
-  adminCreateFeatureFlag(
-    input: AdminCreateFeatureFlagInput!
-  ): AdminCreateFeatureFlagPayload
+  adminCreateFeatureFlag(input: AdminCreateFeatureFlagInput!): AdminCreateFeatureFlagPayload
 
   """
   Deletes a feature flag
   """
-  adminDeleteFeatureFlag(
-    input: AdminDeleteFeatureFlagInput!
-  ): AdminDeleteFeatureFlagPayload
+  adminDeleteFeatureFlag(input: AdminDeleteFeatureFlagInput!): AdminDeleteFeatureFlagPayload
 
   """
   Toggles a feature flag on or off for a given environment
   """
-  adminToggleFeatureFlag(
-    input: AdminToggleFeatureFlagInput!
-  ): AdminToggleFeatureFlagPayload
+  adminToggleFeatureFlag(input: AdminToggleFeatureFlagInput!): AdminToggleFeatureFlagPayload
 
   """
   Updates a feature flag
   """
-  adminUpdateFeatureFlag(
-    input: AdminUpdateFeatureFlagInput!
-  ): AdminUpdateFeatureFlagPayload
+  adminUpdateFeatureFlag(input: AdminUpdateFeatureFlagInput!): AdminUpdateFeatureFlagPayload
 
   """
   Update all artworks that belong to the partner
   """
-  artsyShippingOptIn(
-    input: ArtsyShippingOptInMutationInput!
-  ): ArtsyShippingOptInMutationPayload
+  artsyShippingOptIn(input: ArtsyShippingOptInMutationInput!): ArtsyShippingOptInMutationPayload
 
   """
   Add / remove artworks to / from collections
@@ -26528,9 +26221,7 @@ type Mutation {
   authorizeMailchimpAccount(
     input: AuthorizeMailchimpAccountInput!
   ): AuthorizeMailchimpAccountPayload
-  batchArtworkImportImages(
-    input: BatchArtworkImportImagesInput!
-  ): BatchArtworkImportImagesPayload
+  batchArtworkImportImages(input: BatchArtworkImportImagesInput!): BatchArtworkImportImagesPayload
 
   """
   Bulk adds artworks to a partner list.
@@ -26549,9 +26240,7 @@ type Mutation {
   """
   Delete all artworks that belong to the partner
   """
-  bulkDeleteArtworks(
-    input: BulkDeleteArtworksMutationInput!
-  ): BulkDeleteArtworksMutationPayload
+  bulkDeleteArtworks(input: BulkDeleteArtworksMutationInput!): BulkDeleteArtworksMutationPayload
 
   """
   Bulk removes artworks from a partner list.
@@ -26724,16 +26413,12 @@ type Mutation {
   """
   Opt all eligible artworks into BNMO
   """
-  commerceOptIn(
-    input: CommerceOptInMutationInput!
-  ): CommerceOptInMutationPayload
+  commerceOptIn(input: CommerceOptInMutationInput!): CommerceOptInMutationPayload
 
   """
   Generate CommerceOptIn report about artworks eligibility for a given partner
   """
-  commerceOptInReport(
-    input: CommerceOptInReportMutationInput!
-  ): CommerceOptInReportMutationPayload
+  commerceOptInReport(input: CommerceOptInReportMutationInput!): CommerceOptInReportMutationPayload
 
   """
   Selects an ARTA shipping option for an order, updating the LineItem#selected_shipping_quote_id.
@@ -26861,16 +26546,12 @@ type Mutation {
   """
   Complete the Instagram OAuth flow by exchanging the authorization code for an account
   """
-  completeInstagramOAuth(
-    input: CompleteInstagramOAuthInput!
-  ): CompleteInstagramOAuthPayload
+  completeInstagramOAuth(input: CompleteInstagramOAuthInput!): CompleteInstagramOAuthPayload
 
   """
   Complete the Mailchimp OAuth flow by exchanging the authorization code for an account
   """
-  completeMailchimpOAuth(
-    input: CompleteMailchimpOAuthInput!
-  ): CompleteMailchimpOAuthPayload
+  completeMailchimpOAuth(input: CompleteMailchimpOAuthInput!): CompleteMailchimpOAuthPayload
 
   """
   Confirms the user's password
@@ -26902,9 +26583,7 @@ type Mutation {
   createAndSendBackupSecondFactor(
     input: CreateAndSendBackupSecondFactorInput!
   ): CreateAndSendBackupSecondFactorPayload
-  createAppSecondFactor(
-    input: CreateAppSecondFactorInput!
-  ): CreateAppSecondFactorPayload
+  createAppSecondFactor(input: CreateAppSecondFactorInput!): CreateAppSecondFactorPayload
 
   """
   Create an artist, used for MyCollection. use CreateCanonicalArtistMutation for all other cases
@@ -26914,9 +26593,7 @@ type Mutation {
   """
   Kicks off a background job to pull a gallery's Artnet inventory and create corresponding Artsy artwork records.
   """
-  createArtnetImport(
-    input: CreateArtnetImportMutationInput!
-  ): CreateArtnetImportMutationPayload
+  createArtnetImport(input: CreateArtnetImportMutationInput!): CreateArtnetImportMutationPayload
   createArtnetImportArtistAssignment(
     input: CreateArtnetImportArtistAssignmentInput!
   ): CreateArtnetImportArtistAssignmentPayload
@@ -26924,9 +26601,7 @@ type Mutation {
   """
   Creates a new artwork, optionally with associated images.
   """
-  createArtwork(
-    input: CreateArtworkMutationInput!
-  ): CreateArtworkMutationPayload
+  createArtwork(input: CreateArtworkMutationInput!): CreateArtworkMutationPayload
 
   """
   Create an artwork from an artwork template, optionally with images.
@@ -26934,9 +26609,7 @@ type Mutation {
   createArtworkFromTemplate(
     input: CreateArtworkFromTemplateInput!
   ): CreateArtworkFromTemplatePayload
-  createArtworkImport(
-    input: CreateArtworkImportInput!
-  ): CreateArtworkImportPayload
+  createArtworkImport(input: CreateArtworkImportInput!): CreateArtworkImportPayload
   createArtworkImportArtistAssignment(
     input: CreateArtworkImportArtistAssignmentInput!
   ): CreateArtworkImportArtistAssignmentPayload
@@ -26949,9 +26622,7 @@ type Mutation {
   createArtworkImportCellFlag(
     input: CreateArtworkImportCellFlagInput!
   ): CreateArtworkImportCellFlagPayload
-  createArtworkTemplate(
-    input: CreateArtworkTemplateInput!
-  ): CreateArtworkTemplatePayload
+  createArtworkTemplate(input: CreateArtworkTemplateInput!): CreateArtworkTemplatePayload
   createBackupSecondFactors(
     input: CreateBackupSecondFactorsInput!
   ): CreateBackupSecondFactorsPayload
@@ -26986,9 +26657,7 @@ type Mutation {
   """
   Creates Artist Career Highlight.
   """
-  createCareerHighlight(
-    input: CreateCareerHighlightInput!
-  ): CreateCareerHighlightPayload
+  createCareerHighlight(input: CreateCareerHighlightInput!): CreateCareerHighlightPayload
 
   """
   Attaches a document to a catalog artwork.
@@ -27052,16 +26721,12 @@ type Mutation {
   """
   Creates a feature.
   """
-  createFeature(
-    input: CreateFeatureMutationInput!
-  ): CreateFeatureMutationPayload
+  createFeature(input: CreateFeatureMutationInput!): CreateFeatureMutationPayload
 
   """
   Creates a featured link.
   """
-  createFeaturedLink(
-    input: CreateFeaturedLinkMutationInput!
-  ): CreateFeaturedLinkMutationPayload
+  createFeaturedLink(input: CreateFeaturedLinkMutationInput!): CreateFeaturedLinkMutationPayload
 
   """
   Attach an gemini asset to a consignment submission
@@ -27073,9 +26738,7 @@ type Mutation {
   """
   Creates a hero unit.
   """
-  createHeroUnit(
-    input: CreateHeroUnitMutationInput!
-  ): CreateHeroUnitMutationPayload
+  createHeroUnit(input: CreateHeroUnitMutationInput!): CreateHeroUnitMutationPayload
 
   """
   Create an identity verification override
@@ -27098,12 +26761,8 @@ type Mutation {
   """
   Create and publish an Instagram post from one or more artworks or images.
   """
-  createInstagramPost(
-    input: CreateInstagramPostInput!
-  ): CreateInstagramPostPayload
-  createInvoicePayment(
-    input: CreateInvoicePaymentInput!
-  ): CreateInvoicePaymentPayload
+  createInstagramPost(input: CreateInstagramPostInput!): CreateInstagramPostPayload
+  createInvoicePayment(input: CreateInvoicePaymentInput!): CreateInvoicePaymentPayload
 
   """
   Create an itinerary.
@@ -27113,36 +26772,24 @@ type Mutation {
   """
   Create a section in an itinerary.
   """
-  createItinerarySection(
-    input: createItinerarySectionInput!
-  ): createItinerarySectionPayload
+  createItinerarySection(input: createItinerarySectionInput!): createItinerarySectionPayload
 
   """
   Add a stop to a section. A stop points at a show, a location or a fair, or is a custom place with its own title and coordinates.
   """
-  createItineraryStop(
-    input: createItineraryStopInput!
-  ): createItineraryStopPayload
+  createItineraryStop(input: createItineraryStopInput!): createItineraryStopPayload
 
   """
   Create a Mailchimp campaign draft for a partner from pre-rendered HTML
   """
-  createMailchimpCampaign(
-    input: CreateMailchimpCampaignInput!
-  ): CreateMailchimpCampaignPayload
-  createNavigationDraft(
-    input: CreateNavigationDraftInput!
-  ): CreateNavigationDraftPayload
-  createNavigationItem(
-    input: CreateNavigationItemInput!
-  ): CreateNavigationItemPayload
+  createMailchimpCampaign(input: CreateMailchimpCampaignInput!): CreateMailchimpCampaignPayload
+  createNavigationDraft(input: CreateNavigationDraftInput!): CreateNavigationDraftPayload
+  createNavigationItem(input: CreateNavigationItemInput!): CreateNavigationItemPayload
 
   """
   Creates an ordered set.
   """
-  createOrderedSet(
-    input: CreateOrderedSetMutationInput!
-  ): CreateOrderedSetMutationPayload
+  createOrderedSet(input: CreateOrderedSetMutationInput!): CreateOrderedSetMutationPayload
 
   """
   Creates a static Markdown-backed page.
@@ -27173,23 +26820,17 @@ type Mutation {
   """
   Creates a new contact for a partner
   """
-  createPartnerContact(
-    input: CreatePartnerContactInput!
-  ): CreatePartnerContactPayload
+  createPartnerContact(input: CreatePartnerContactInput!): CreatePartnerContactPayload
 
   """
   Creates a new partner list.
   """
-  createPartnerList(
-    input: CreatePartnerListMutationInput!
-  ): CreatePartnerListMutationPayload
+  createPartnerList(input: CreatePartnerListMutationInput!): CreatePartnerListMutationPayload
 
   """
   Creates a new location for a partner
   """
-  createPartnerLocation(
-    input: CreatePartnerLocationInput!
-  ): CreatePartnerLocationPayload
+  createPartnerLocation(input: CreatePartnerLocationInput!): CreatePartnerLocationPayload
 
   """
   Creates a new weekly schedule for a partner location
@@ -27201,16 +26842,12 @@ type Mutation {
   """
   Create a partner offer for the users
   """
-  createPartnerOffer(
-    input: createPartnerOfferMutationInput!
-  ): createPartnerOfferMutationPayload
+  createPartnerOffer(input: createPartnerOfferMutationInput!): createPartnerOfferMutationPayload
 
   """
   Creates a partner show.
   """
-  createPartnerShow(
-    input: CreatePartnerShowMutationInput!
-  ): CreatePartnerShowMutationPayload
+  createPartnerShow(input: CreatePartnerShowMutationInput!): CreatePartnerShowMutationPayload
 
   """
   Creates a partner show document.
@@ -27229,9 +26866,7 @@ type Mutation {
   """
   Creates a partner's note about a collector.
   """
-  createPartnerUserNote(
-    input: CreatePartnerUserNoteInput!
-  ): CreatePartnerUserNotePayload
+  createPartnerUserNote(input: CreatePartnerUserNoteInput!): CreatePartnerUserNotePayload
 
   """
   Create a purchase
@@ -27241,9 +26876,7 @@ type Mutation {
   """
   Creates a static Markdown-backed sale agreement.
   """
-  createSaleAgreement(
-    input: CreateSaleAgreementMutationInput!
-  ): CreateSaleAgreementMutationPayload
+  createSaleAgreement(input: CreateSaleAgreementMutationInput!): CreateSaleAgreementMutationPayload
 
   """
   Creates a shipping preset for a partner.
@@ -27251,24 +26884,18 @@ type Mutation {
   createShippingPreset(
     input: CreateShippingPresetMutationInput!
   ): CreateShippingPresetMutationPayload
-  createSmsSecondFactor(
-    input: CreateSmsSecondFactorInput!
-  ): CreateSmsSecondFactorPayload
+  createSmsSecondFactor(input: CreateSmsSecondFactorInput!): CreateSmsSecondFactorPayload
   createUserAddress(input: CreateUserAddressInput!): CreateUserAddressPayload
 
   """
   Create a admin note for the user
   """
-  createUserAdminNote(
-    input: createUserAdminNoteMutationInput!
-  ): createUserAdminNoteMutationPayload
+  createUserAdminNote(input: createUserAdminNoteMutationInput!): createUserAdminNoteMutationPayload
 
   """
   Creates a UserInterest on the logged in User's CollectorProfile.
   """
-  createUserInterest(
-    input: CreateUserInterestMutationInput!
-  ): CreateUserInterestMutationPayload
+  createUserInterest(input: CreateUserInterestMutationInput!): CreateUserInterestMutationPayload
 
   """
   Creates a UserInterest for a user.
@@ -27280,9 +26907,7 @@ type Mutation {
   """
   Collect Multiple Artists
   """
-  createUserInterests(
-    input: CreateUserInterestsMutationInput!
-  ): CreateUserInterestsMutationPayload
+  createUserInterests(input: CreateUserInterestsMutationInput!): CreateUserInterestsMutationPayload
 
   """
   Create a sale profile for a user
@@ -27294,9 +26919,7 @@ type Mutation {
   """
   Marks an artwork as seen when a user swipes through Infinite Discovery.
   """
-  createUserSeenArtwork(
-    input: CreateUserSeenArtworkInput!
-  ): CreateUserSeenArtworkPayload
+  createUserSeenArtwork(input: CreateUserSeenArtworkInput!): CreateUserSeenArtworkPayload
 
   """
   Creates Verified Representative.
@@ -27324,9 +26947,7 @@ type Mutation {
   """
   Deletes an artwork.
   """
-  deleteArtwork(
-    input: DeleteArtworkMutationInput!
-  ): DeleteArtworkMutationPayload
+  deleteArtwork(input: DeleteArtworkMutationInput!): DeleteArtworkMutationPayload
 
   """
   Deletes an image from an artwork in my collection
@@ -27336,16 +26957,12 @@ type Mutation {
   """
   Queues an asynchronous job to delete an artwork import and associated unpublished artworks. Published artworks are preserved. Deletion happens in the background and results are sent via WebSocket.
   """
-  deleteArtworkImport(
-    input: DeleteArtworkImportInput!
-  ): DeleteArtworkImportPayload
+  deleteArtworkImport(input: DeleteArtworkImportInput!): DeleteArtworkImportPayload
 
   """
   Delete an artwork template.
   """
-  deleteArtworkTemplate(
-    input: DeleteArtworkTemplateInput!
-  ): DeleteArtworkTemplatePayload
+  deleteArtworkTemplate(input: DeleteArtworkTemplateInput!): DeleteArtworkTemplatePayload
 
   """
   Remove a bank account
@@ -27365,9 +26982,7 @@ type Mutation {
   """
   Delete an artist career highlight
   """
-  deleteCareerHighlight(
-    input: DeleteCareerHighlightInput!
-  ): DeleteCareerHighlightPayload
+  deleteCareerHighlight(input: DeleteCareerHighlightInput!): DeleteCareerHighlightPayload
 
   """
   Deletes a catalog artwork document.
@@ -27394,9 +27009,7 @@ type Mutation {
   """
   Soft-delete a conversation.
   """
-  deleteConversation(
-    input: DeleteConversationMutationInput!
-  ): DeleteConversationMutationPayload
+  deleteConversation(input: DeleteConversationMutationInput!): DeleteConversationMutationPayload
 
   """
   Deletes a conversation message template
@@ -27413,30 +27026,22 @@ type Mutation {
   """
   deletes a feature.
   """
-  deleteFeature(
-    input: DeleteFeatureMutationInput!
-  ): DeleteFeatureMutationPayload
+  deleteFeature(input: DeleteFeatureMutationInput!): DeleteFeatureMutationPayload
 
   """
   deletes a featured link.
   """
-  deleteFeaturedLink(
-    input: DeleteFeaturedLinkMutationInput!
-  ): DeleteFeaturedLinkMutationPayload
+  deleteFeaturedLink(input: DeleteFeaturedLinkMutationInput!): DeleteFeaturedLinkMutationPayload
 
   """
   deletes a hero unit.
   """
-  deleteHeroUnit(
-    input: deleteHeroUnitMutationInput!
-  ): deleteHeroUnitMutationPayload
+  deleteHeroUnit(input: deleteHeroUnitMutationInput!): deleteHeroUnitMutationPayload
 
   """
   Disconnect an Instagram account from a partner
   """
-  deleteInstagramAccount(
-    input: DeleteInstagramAccountInput!
-  ): DeleteInstagramAccountPayload
+  deleteInstagramAccount(input: DeleteInstagramAccountInput!): DeleteInstagramAccountPayload
 
   """
   Delete an itinerary.
@@ -27446,23 +27051,17 @@ type Mutation {
   """
   Delete a section and its stops.
   """
-  deleteItinerarySection(
-    input: deleteItinerarySectionInput!
-  ): deleteItinerarySectionPayload
+  deleteItinerarySection(input: deleteItinerarySectionInput!): deleteItinerarySectionPayload
 
   """
   Delete a stop by its id.
   """
-  deleteItineraryStop(
-    input: deleteItineraryStopInput!
-  ): deleteItineraryStopPayload
+  deleteItineraryStop(input: deleteItineraryStopInput!): deleteItineraryStopPayload
 
   """
   Disconnect a Mailchimp account from a partner
   """
-  deleteMailchimpAccount(
-    input: DeleteMailchimpAccountInput!
-  ): DeleteMailchimpAccountPayload
+  deleteMailchimpAccount(input: DeleteMailchimpAccountInput!): DeleteMailchimpAccountPayload
 
   """
   Delete User Artsy Account
@@ -27473,16 +27072,12 @@ type Mutation {
   Remove the user icon
   """
   deleteMyUserProfileIcon(input: DeleteUserIconInput!): DeleteUserIconPayload
-  deleteNavigationItem(
-    input: DeleteNavigationItemInput!
-  ): DeleteNavigationItemPayload
+  deleteNavigationItem(input: DeleteNavigationItemInput!): DeleteNavigationItemPayload
 
   """
   deletes an ordered set.
   """
-  deleteOrderedSet(
-    input: deleteOrderedSetMutationInput!
-  ): deleteOrderedSetMutationPayload
+  deleteOrderedSet(input: deleteOrderedSetMutationInput!): deleteOrderedSetMutationPayload
 
   """
   deletes an item to an ordered set.
@@ -27499,9 +27094,7 @@ type Mutation {
   """
   Deletes a partner artist.
   """
-  deletePartnerArtist(
-    input: DeletePartnerArtistMutationInput!
-  ): DeletePartnerArtistMutationPayload
+  deletePartnerArtist(input: DeletePartnerArtistMutationInput!): DeletePartnerArtistMutationPayload
 
   """
   Deletes a partner artist document.
@@ -27520,9 +27113,7 @@ type Mutation {
   """
   Deletes a partner list.
   """
-  deletePartnerList(
-    input: DeletePartnerListMutationInput!
-  ): DeletePartnerListMutationPayload
+  deletePartnerList(input: DeletePartnerListMutationInput!): DeletePartnerListMutationPayload
 
   """
   Deletes a location for a partner
@@ -27534,9 +27125,7 @@ type Mutation {
   """
   Deletes a partner show.
   """
-  deletePartnerShow(
-    input: DeletePartnerShowMutationInput!
-  ): DeletePartnerShowMutationPayload
+  deletePartnerShow(input: DeletePartnerShowMutationInput!): DeletePartnerShowMutationPayload
 
   """
   Deletes a partner show document.
@@ -27555,9 +27144,7 @@ type Mutation {
   """
   Deletes a partner's note about a collector.
   """
-  deletePartnerUserNote(
-    input: DeletePartnerUserNoteInput!
-  ): DeletePartnerUserNotePayload
+  deletePartnerUserNote(input: DeletePartnerUserNoteInput!): DeletePartnerUserNotePayload
 
   """
   Deletes a purchase
@@ -27580,16 +27167,12 @@ type Mutation {
   """
   delete an admin note for the user
   """
-  deleteUserAdminNote(
-    input: deleteUserAdminNoteMutationInput!
-  ): deleteUserAdminNoteMutationPayload
+  deleteUserAdminNote(input: deleteUserAdminNoteMutationInput!): deleteUserAdminNoteMutationPayload
 
   """
   Deletes a UserInterest on the logged in User's CollectorProfile.
   """
-  deleteUserInterest(
-    input: DeleteUserInterestMutationInput!
-  ): DeleteUserInterestMutationPayload
+  deleteUserInterest(input: DeleteUserInterestMutationInput!): DeleteUserInterestMutationPayload
 
   """
   Delete a UserInterest.
@@ -27601,16 +27184,12 @@ type Mutation {
   """
   Deletes multiple UserInterests on the logged in User's CollectorProfile.
   """
-  deleteUserInterests(
-    input: DeleteUserInterestsMutationInput!
-  ): DeleteUserInterestsMutationPayload
+  deleteUserInterests(input: DeleteUserInterestsMutationInput!): DeleteUserInterestsMutationPayload
 
   """
   Delete a role associated with a user
   """
-  deleteUserRole(
-    input: deleteUserRoleMutationInput!
-  ): deleteUserRoleMutationPayload
+  deleteUserRole(input: deleteUserRoleMutationInput!): deleteUserRoleMutationPayload
 
   """
   Deletes a Verified Representative.
@@ -27624,9 +27203,7 @@ type Mutation {
   """
   deleteVideo(input: DeleteVideoMutationInput!): DeleteVideoMutationPayload
   deleteViewingRoom(input: DeleteViewingRoomInput!): DeleteViewingRoomPayload
-  deliverSecondFactor(
-    input: DeliverSecondFactorInput!
-  ): DeliverSecondFactorPayload
+  deliverSecondFactor(input: DeliverSecondFactorInput!): DeliverSecondFactorPayload
 
   """
   Trigger duplicate detection for a partner's artworks
@@ -27634,16 +27211,12 @@ type Mutation {
   detectArtworkDuplicates(
     input: DetectArtworkDuplicatesMutationInput!
   ): DetectArtworkDuplicatesMutationPayload
-  disableSecondFactor(
-    input: DisableSecondFactorInput!
-  ): DisableSecondFactorPayload
+  disableSecondFactor(input: DisableSecondFactorInput!): DisableSecondFactorPayload
 
   """
   Discard a draft navigation version. Versions that have been published cannot be discarded.
   """
-  discardNavigationDraft(
-    input: DiscardNavigationDraftInput!
-  ): DiscardNavigationDraftPayload
+  discardNavigationDraft(input: DiscardNavigationDraftInput!): DiscardNavigationDraftPayload
 
   """
   Add (or remove) an artwork to (from) a users dislikes.
@@ -27719,9 +27292,7 @@ type Mutation {
   """
   Links a 3rd party account
   """
-  linkAuthentication(
-    input: LinkAuthenticationMutationInput!
-  ): LinkAuthenticationMutationPayload
+  linkAuthentication(input: LinkAuthenticationMutationInput!): LinkAuthenticationMutationPayload
 
   """
   Mark all unread notifications as read
@@ -27733,16 +27304,12 @@ type Mutation {
   """
   Mark an unread notifications as read
   """
-  markNotificationAsRead(
-    input: MarkNotificationAsReadInput!
-  ): MarkNotificationAsReadPayload
+  markNotificationAsRead(input: MarkNotificationAsReadInput!): MarkNotificationAsReadPayload
 
   """
   Mark notifications as seen
   """
-  markNotificationsAsSeen(
-    input: MarkNotificationsAsSeenInput!
-  ): MarkNotificationsAsSeenPayload
+  markNotificationsAsSeen(input: MarkNotificationsAsSeenInput!): MarkNotificationsAsSeenPayload
 
   """
   Merge multiple artist records in order to deduplicate artists
@@ -27792,9 +27359,7 @@ type Mutation {
   """
   Publish a draft navigation version. Accepts either a groupID (for backward compatibility) or versionID (preferred for admin workflows).
   """
-  publishNavigationDraft(
-    input: PublishNavigationDraftInput!
-  ): PublishNavigationDraftPayload
+  publishNavigationDraft(input: PublishNavigationDraftInput!): PublishNavigationDraftPayload
 
   """
   Publishes (or updates and republishes) a private viewing room for a partner list.
@@ -27812,16 +27377,12 @@ type Mutation {
   """
   Record a guided tour event for the logged-in user and return the refreshed state.
   """
-  recordGuidedTourEvent(
-    input: RecordGuidedTourEventInput!
-  ): RecordGuidedTourEventPayload
+  recordGuidedTourEvent(input: RecordGuidedTourEventInput!): RecordGuidedTourEventPayload
 
   """
   Refresh the access token for a connected Instagram account
   """
-  refreshInstagramAccount(
-    input: RefreshInstagramAccountInput!
-  ): RefreshInstagramAccountPayload
+  refreshInstagramAccount(input: RefreshInstagramAccountInput!): RefreshInstagramAccountPayload
 
   """
   Decline a seller's offer on an order
@@ -27841,9 +27402,7 @@ type Mutation {
   removeArtworkFromPartnerShow(
     input: RemoveArtworkFromPartnerShowMutationInput!
   ): RemoveArtworkFromPartnerShowMutationPayload
-  removeArtworkImportImage(
-    input: RemoveArtworkImportImageInput!
-  ): RemoveArtworkImportImagePayload
+  removeArtworkImportImage(input: RemoveArtworkImportImageInput!): RemoveArtworkImportImagePayload
     @deprecated(
       reason: "This mutation is deprecated. Use RemoveArtworkImportImageMatchesV2 instead."
     )
@@ -27920,12 +27479,8 @@ type Mutation {
   """
   Requests Gravity to reprocess the original asset for an artwork image.
   """
-  reprocessArtworkImage(
-    input: ReprocessArtworkImageInput!
-  ): ReprocessArtworkImagePayload
-  requestConditionReport(
-    input: RequestConditionReportInput!
-  ): RequestConditionReportPayload
+  reprocessArtworkImage(input: ReprocessArtworkImageInput!): ReprocessArtworkImagePayload
+  requestConditionReport(input: RequestConditionReportInput!): RequestConditionReportPayload
 
   """
   Attach an gemini asset to a consignment submission
@@ -27937,9 +27492,7 @@ type Mutation {
   """
   Request price estimate of an artwork
   """
-  requestPriceEstimate(
-    input: RequestPriceEstimateInput!
-  ): RequestPriceEstimatePayload
+  requestPriceEstimate(input: RequestPriceEstimateInput!): RequestPriceEstimatePayload
 
   """
   Save (or remove) an artwork to (from) a users default collection.
@@ -28021,9 +27574,7 @@ type Mutation {
   """
   Transfers My Collection artworks from one user to another.
   """
-  transferMyCollection(
-    input: TransferMyCollectionInput!
-  ): TransferMyCollectionPayload
+  transferMyCollection(input: TransferMyCollectionInput!): TransferMyCollectionPayload
 
   """
   Triggers a campaign send.
@@ -28048,9 +27599,7 @@ type Mutation {
   unpublishPartnerListPublication(
     input: UnpublishPartnerListPublicationMutationInput!
   ): UnpublishPartnerListPublicationMutationPayload
-  unpublishViewingRoom(
-    input: UnpublishViewingRoomInput!
-  ): UnpublishViewingRoomPayload
+  unpublishViewingRoom(input: UnpublishViewingRoomInput!): UnpublishViewingRoomPayload
 
   """
   Unset fulfillment option on an order
@@ -28062,17 +27611,13 @@ type Mutation {
   """
   Unset payment method and credit card wallet type on an order
   """
-  unsetOrderPaymentMethod(
-    input: unsetOrderPaymentMethodInput!
-  ): unsetOrderPaymentMethodPayload
+  unsetOrderPaymentMethod(input: unsetOrderPaymentMethodInput!): unsetOrderPaymentMethodPayload
 
   """
   Create an alert
   """
   updateAlert(input: updateAlertInput!): updateAlertPayload
-  updateAppSecondFactor(
-    input: UpdateAppSecondFactorInput!
-  ): UpdateAppSecondFactorPayload
+  updateAppSecondFactor(input: UpdateAppSecondFactorInput!): UpdateAppSecondFactorPayload
 
   """
   Update the artist
@@ -28082,22 +27627,14 @@ type Mutation {
   """
   Update an artist's social handles.
   """
-  updateArtistSocials(
-    input: UpdateArtistSocialsMutationInput!
-  ): UpdateArtistSocialsMutationPayload
+  updateArtistSocials(input: UpdateArtistSocialsMutationInput!): UpdateArtistSocialsMutationPayload
 
   """
   Updates an artwork.
   """
-  updateArtwork(
-    input: UpdateArtworkMutationInput!
-  ): UpdateArtworkMutationPayload
-  updateArtworkImport(
-    input: UpdateArtworkImportInput!
-  ): UpdateArtworkImportPayload
-  updateArtworkImportRow(
-    input: UpdateArtworkImportRowInput!
-  ): UpdateArtworkImportRowPayload
+  updateArtwork(input: UpdateArtworkMutationInput!): UpdateArtworkMutationPayload
+  updateArtworkImport(input: UpdateArtworkImportInput!): UpdateArtworkImportPayload
+  updateArtworkImportRow(input: UpdateArtworkImportRowInput!): UpdateArtworkImportRowPayload
   updateArtworkImportRowImages(
     input: UpdateArtworkImportRowImagesInput!
   ): UpdateArtworkImportRowImagesPayload
@@ -28127,23 +27664,17 @@ type Mutation {
   """
   Updates Artist Career Highlight.
   """
-  updateCareerHighlight(
-    input: UpdateCareerHighlightInput!
-  ): UpdateCareerHighlightPayload
+  updateCareerHighlight(input: UpdateCareerHighlightInput!): UpdateCareerHighlightPayload
 
   """
   Creates or updates a catalog artwork for a given artwork. Requires partner or partner support permissions.
   """
-  updateCatalogArtwork(
-    input: UpdateCatalogArtworkInput!
-  ): UpdateCatalogArtworkPayload
+  updateCatalogArtwork(input: UpdateCatalogArtworkInput!): UpdateCatalogArtworkPayload
 
   """
   Updates a catalog edition set. Requires partner or partner support permissions.
   """
-  updateCatalogEditionSet(
-    input: UpdateCatalogEditionSetInput!
-  ): UpdateCatalogEditionSetPayload
+  updateCatalogEditionSet(input: UpdateCatalogEditionSetInput!): UpdateCatalogEditionSetPayload
 
   """
   Move an article within its city's list. Needs the editorial or content_manager role.
@@ -28163,9 +27694,7 @@ type Mutation {
   """
   Update a collector profile.
   """
-  updateCollectorProfile(
-    input: UpdateCollectorProfileInput!
-  ): UpdateCollectorProfilePayload
+  updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
 
   """
   Updating a collector profile (loyalty applicant status).
@@ -28183,9 +27712,7 @@ type Mutation {
   """
   Update a conversation.
   """
-  updateConversation(
-    input: UpdateConversationMutationInput!
-  ): UpdateConversationMutationPayload
+  updateConversation(input: UpdateConversationMutationInput!): UpdateConversationMutationPayload
 
   """
   Updates an existing conversation message template
@@ -28197,23 +27724,17 @@ type Mutation {
   """
   updates a feature.
   """
-  updateFeature(
-    input: UpdateFeatureMutationInput!
-  ): UpdateFeatureMutationPayload
+  updateFeature(input: UpdateFeatureMutationInput!): UpdateFeatureMutationPayload
 
   """
   updates a featured link.
   """
-  updateFeaturedLink(
-    input: UpdateFeaturedLinkMutationInput!
-  ): UpdateFeaturedLinkMutationPayload
+  updateFeaturedLink(input: UpdateFeaturedLinkMutationInput!): UpdateFeaturedLinkMutationPayload
 
   """
   updates a hero unit.
   """
-  updateHeroUnit(
-    input: UpdateHeroUnitMutationInput!
-  ): UpdateHeroUnitMutationPayload
+  updateHeroUnit(input: UpdateHeroUnitMutationInput!): UpdateHeroUnitMutationPayload
 
   """
   Updates an installation shot for a partner show.
@@ -28230,16 +27751,12 @@ type Mutation {
   """
   Update a section. `position` moves it among its itinerary's sections.
   """
-  updateItinerarySection(
-    input: updateItinerarySectionInput!
-  ): updateItinerarySectionPayload
+  updateItinerarySection(input: updateItinerarySectionInput!): updateItinerarySectionPayload
 
   """
   Update a stop. `position` moves it among its section's stops. `isFreeAdmission: null` clears the override.
   """
-  updateItineraryStop(
-    input: updateItineraryStopInput!
-  ): updateItineraryStopPayload
+  updateItineraryStop(input: updateItineraryStopInput!): updateItineraryStopPayload
 
   """
   Updates the user's collections in batch.
@@ -28251,24 +27768,18 @@ type Mutation {
   """
   Update a message.
   """
-  updateMessage(
-    input: UpdateMessageMutationInput!
-  ): UpdateMessageMutationPayload
+  updateMessage(input: UpdateMessageMutationInput!): UpdateMessageMutationPayload
 
   """
   Updates the logged in user's password
   """
-  updateMyPassword(
-    input: UpdateMyPasswordMutationInput!
-  ): UpdateMyPasswordMutationPayload
+  updateMyPassword(input: UpdateMyPasswordMutationInput!): UpdateMyPasswordMutationPayload
 
   """
   Update the current logged in user.
   """
   updateMyUserProfile(input: UpdateMyProfileInput!): UpdateMyProfilePayload
-  updateNavigationItem(
-    input: UpdateNavigationItemInput!
-  ): UpdateNavigationItemPayload
+  updateNavigationItem(input: UpdateNavigationItemInput!): UpdateNavigationItemPayload
 
   """
   Update notification preferences.
@@ -28292,9 +27803,7 @@ type Mutation {
   """
   updates an ordered set.
   """
-  updateOrderedSet(
-    input: UpdateOrderedSetMutationInput!
-  ): UpdateOrderedSetMutationPayload
+  updateOrderedSet(input: UpdateOrderedSetMutationInput!): UpdateOrderedSetMutationPayload
 
   """
   Updates a page.
@@ -28304,16 +27813,12 @@ type Mutation {
   """
   Updates general information on a partner.
   """
-  updatePartner(
-    input: UpdatePartnerMutationInput!
-  ): UpdatePartnerMutationPayload
+  updatePartner(input: UpdatePartnerMutationInput!): UpdatePartnerMutationPayload
 
   """
   Updates a partner artist.
   """
-  updatePartnerArtist(
-    input: UpdatePartnerArtistMutationInput!
-  ): UpdatePartnerArtistMutationPayload
+  updatePartnerArtist(input: UpdatePartnerArtistMutationInput!): UpdatePartnerArtistMutationPayload
 
   """
   Updates a partner artist document.
@@ -28325,23 +27830,17 @@ type Mutation {
   """
   Updates an existing contact for a partner
   """
-  updatePartnerContact(
-    input: UpdatePartnerContactInput!
-  ): UpdatePartnerContactPayload
+  updatePartnerContact(input: UpdatePartnerContactInput!): UpdatePartnerContactPayload
 
   """
   Updates multiple flags on a partner simultaneously.
   """
-  updatePartnerFlags(
-    input: UpdatePartnerFlagsMutationInput!
-  ): UpdatePartnerFlagsMutationPayload
+  updatePartnerFlags(input: UpdatePartnerFlagsMutationInput!): UpdatePartnerFlagsMutationPayload
 
   """
   Updates an existing partner list.
   """
-  updatePartnerList(
-    input: UpdatePartnerListMutationInput!
-  ): UpdatePartnerListMutationPayload
+  updatePartnerList(input: UpdatePartnerListMutationInput!): UpdatePartnerListMutationPayload
 
   """
   Updates the position of an artwork in a partner list.
@@ -28353,9 +27852,7 @@ type Mutation {
   """
   Updates a new location for a partner
   """
-  updatePartnerLocation(
-    input: UpdatePartnerLocationInput!
-  ): UpdatePartnerLocationPayload
+  updatePartnerLocation(input: UpdatePartnerLocationInput!): UpdatePartnerLocationPayload
 
   """
   Updates the icon or cover image for a partner's profile page
@@ -28367,9 +27864,7 @@ type Mutation {
   """
   Updates a partner show.
   """
-  updatePartnerShow(
-    input: UpdatePartnerShowMutationInput!
-  ): UpdatePartnerShowMutationPayload
+  updatePartnerShow(input: UpdatePartnerShowMutationInput!): UpdatePartnerShowMutationPayload
 
   """
   Updates a partner show document.
@@ -28388,16 +27883,12 @@ type Mutation {
   """
   Updates a partner's note about a collector.
   """
-  updatePartnerUserNote(
-    input: UpdatePartnerUserNoteInput!
-  ): UpdatePartnerUserNotePayload
+  updatePartnerUserNote(input: UpdatePartnerUserNoteInput!): UpdatePartnerUserNotePayload
 
   """
   Updates a profile.
   """
-  updateProfile(
-    input: UpdateProfileMutationInput!
-  ): UpdateProfileMutationPayload
+  updateProfile(input: UpdateProfileMutationInput!): UpdateProfileMutationPayload
 
   """
   Update a purchase
@@ -28412,9 +27903,7 @@ type Mutation {
   """
   Updates a saleAgreement.
   """
-  updateSaleAgreement(
-    input: UpdateSaleAgreementMutationInput!
-  ): UpdateSaleAgreementMutationPayload
+  updateSaleAgreement(input: UpdateSaleAgreementMutationInput!): UpdateSaleAgreementMutationPayload
 
   """
   Updates a shipping preset for a partner.
@@ -28422,32 +27911,24 @@ type Mutation {
   updateShippingPreset(
     input: UpdateShippingPresetMutationInput!
   ): UpdateShippingPresetMutationPayload
-  updateSmsSecondFactor(
-    input: UpdateSmsSecondFactorInput!
-  ): UpdateSmsSecondFactorPayload
+  updateSmsSecondFactor(input: UpdateSmsSecondFactorInput!): UpdateSmsSecondFactorPayload
 
   """
   Update the user
   """
   updateUser(input: UpdateUserMutationInput!): UpdateUserMutationPayload
   updateUserAddress(input: UpdateUserAddressInput!): UpdateUserAddressPayload
-  updateUserDefaultAddress(
-    input: UpdateUserDefaultAddressInput!
-  ): UpdateUserDefaultAddressPayload
+  updateUserDefaultAddress(input: UpdateUserDefaultAddressInput!): UpdateUserDefaultAddressPayload
 
   """
   Updates a UserInterest on the logged in User's CollectorProfile.
   """
-  updateUserInterest(
-    input: UpdateUserInterestMutationInput!
-  ): UpdateUserInterestMutationPayload
+  updateUserInterest(input: UpdateUserInterestMutationInput!): UpdateUserInterestMutationPayload
 
   """
   Update user interests for multiple artists
   """
-  updateUserInterests(
-    input: UpdateUserInterestsMutationInput!
-  ): UpdateUserInterestsMutationPayload
+  updateUserInterests(input: UpdateUserInterestsMutationInput!): UpdateUserInterestsMutationPayload
 
   """
   Update the user sale profile
@@ -28544,8 +28025,7 @@ type MyCollectionConnection {
     page: Int
     size: Int
     sort: ArtistSorts
-  ): ArtistConnection
-    @deprecated(reason: "Please use `me.userInterestsConnection` instead")
+  ): ArtistConnection @deprecated(reason: "Please use `me.userInterestsConnection` instead")
   default: Boolean!
   description: String!
 
@@ -28676,8 +28156,7 @@ type MyCollectionInfo {
     page: Int
     size: Int
     sort: ArtistSorts
-  ): ArtistConnection
-    @deprecated(reason: "Please use `me.userInterestsConnection` instead")
+  ): ArtistConnection @deprecated(reason: "Please use `me.userInterestsConnection` instead")
   default: Boolean!
   description: String!
   includesPurchasedArtworks: Boolean!
@@ -28918,12 +28397,7 @@ interface Node {
 }
 
 type Notification implements Node {
-  artworksConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkConnection
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
   createdAt(
     format: String
 
@@ -29231,8 +28705,7 @@ type Order {
   """
   Phone number of the buyer
   """
-  buyerPhoneNumber: String
-    @deprecated(reason: "Use `order.fulfillmentDetails.phoneNumber`")
+  buyerPhoneNumber: String @deprecated(reason: "Use `order.fulfillmentDetails.phoneNumber`")
 
   """
   Calculated state of the order that defines buyer facing state/actions
@@ -29657,12 +29130,7 @@ type OrderedSet {
   """
   Returns a connection of the items. Only Artwork supported right now.
   """
-  itemsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkConnection
+  itemsConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
     @deprecated(reason: "Utilize `orderedItemsConnection` for union type")
   key: String
   layout: OrderedSetLayouts!
@@ -29709,15 +29177,7 @@ type OrderedSetEdge {
   node: OrderedSet
 }
 
-union OrderedSetItem =
-    Artist
-  | Artwork
-  | FeaturedLink
-  | Gene
-  | Profile
-  | Sale
-  | Show
-  | Video
+union OrderedSetItem = Artist | Artwork | FeaturedLink | Gene | Profile | Sale | Show | Video
 
 """
 A connection to a list of items.
@@ -30394,8 +29854,7 @@ type Partner implements Node {
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection
-  fullProfileEligible: Boolean
-    @deprecated(reason: "Prefer displayFullPartnerPage")
+  fullProfileEligible: Boolean @deprecated(reason: "Prefer displayFullPartnerPage")
   hasFairPartnership: Boolean
 
   """
@@ -30481,9 +29940,7 @@ type Partner implements Node {
   This field is deprecated and is being used in Eigen release predating the 6.0 release
   """
   locations(size: Int = 25): [Location]
-    @deprecated(
-      reason: "Prefer to use `locationsConnection`. [Will be removed in v2]"
-    )
+    @deprecated(reason: "Prefer to use `locationsConnection`. [Will be removed in v2]")
 
   """
   A connection of locations from a Partner.
@@ -31035,12 +30492,7 @@ type PartnerArtist {
   """
   A list of shows for this artist
   """
-  showsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ShowConnection
+  showsConnection(after: String, before: String, first: Int, last: Int): ShowConnection
   sortableID: String
 }
 
@@ -31349,22 +30801,12 @@ type PartnerArtistEdge {
   """
   A list of shows for this artist
   """
-  showsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ShowConnection
+  showsConnection(after: String, before: String, first: Int, last: Int): ShowConnection
   sortableID: String
 }
 
 type PartnerArtworkGrid implements ArtworkContextGrid {
-  artworksConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkConnection
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
   ctaHref: String
   ctaTitle: String
   title: String
@@ -32089,9 +31531,7 @@ type PartnerOffer implements Node {
     @deprecated(reason: "This field is deprecated. Use 'priceListed' instead.")
   priceWithDiscount: Money
   priceWithDiscountMessage: String
-    @deprecated(
-      reason: "This field is deprecated. Use 'priceWithDiscount' instead."
-    )
+    @deprecated(reason: "This field is deprecated. Use 'priceWithDiscount' instead.")
   source: PartnerOfferSourceEnum
   userIds: [String]
 }
@@ -32114,12 +31554,7 @@ type PartnerOfferConnection {
 }
 
 type PartnerOfferCreatedNotificationItem {
-  artworksConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkConnection
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
 
   """
   Deprecated. Use `partnerOffer.isAvailable` instead.
@@ -32948,11 +32383,7 @@ type PriceRange {
 """
 Pricing breakdown line
 """
-union PricingBreakdownLineUnion =
-    ShippingLine
-  | SubtotalLine
-  | TaxLine
-  | TotalLine
+union PricingBreakdownLineUnion = ShippingLine | SubtotalLine | TaxLine | TotalLine
 
 type PrivateViewingRoom {
   applyBrand: Boolean
@@ -33033,8 +32464,7 @@ type Profile {
   bio: String
   cached: Int
   counts: ProfileCounts
-  displayArtistsSection: Boolean
-    @deprecated(reason: "Prefer displayArtistsSection in Partner type")
+  displayArtistsSection: Boolean @deprecated(reason: "Prefer displayArtistsSection in Partner type")
   fullBio: String
   href: String
   icon: Image
@@ -33056,8 +32486,7 @@ type Profile {
   location: String
   name: String
   owner: ProfileOwnerType!
-  profileArtistsLayout: String
-    @deprecated(reason: "Prefer profileArtistsLayout in Partner type")
+  profileArtistsLayout: String @deprecated(reason: "Prefer profileArtistsLayout in Partner type")
 
   """
   A slug ID.
@@ -33211,9 +32640,7 @@ input PublishViewingRoomInput {
 type PublishViewingRoomPayload {
   clientMutationId: String
   viewingRoom: ViewingRoom
-    @deprecated(
-      reason: "Use viewingRoomOrError instead for proper error handling"
-    )
+    @deprecated(reason: "Use viewingRoomOrError instead for proper error handling")
 
   """
   On success: the published viewing room. On error: the error that occurred.
@@ -33221,9 +32648,7 @@ type PublishViewingRoomPayload {
   viewingRoomOrError: PublishViewingRoomResponseOrError
 }
 
-union PublishViewingRoomResponseOrError =
-    PublishViewingRoomFailure
-  | PublishViewingRoomSuccess
+union PublishViewingRoomResponseOrError = PublishViewingRoomFailure | PublishViewingRoomSuccess
 
 type PublishViewingRoomSuccess {
   viewingRoom: ViewingRoom!
@@ -34016,18 +33441,12 @@ type Query {
   """
   Find balance of an account associated with a setup intent
   """
-  commerceBankAccountBalance(
-    bankAccountId: ID
-    setupIntentId: ID
-  ): CommerceBankAccountBalance
+  commerceBankAccountBalance(bankAccountId: ID, setupIntentId: ID): CommerceBankAccountBalance
 
   """
   Buyer Activity Data for Collector Resume
   """
-  commerceBuyerActivity(
-    buyerId: String!
-    sellerId: String
-  ): CommerceBuyerActivity
+  commerceBuyerActivity(buyerId: String!, sellerId: String): CommerceBuyerActivity
 
   """
   Find list of competing orders
@@ -34668,12 +34087,7 @@ type Query {
   """
   A list of Gene Families
   """
-  geneFamiliesConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): GeneFamilyConnection
+  geneFamiliesConnection(after: String, before: String, first: Int, last: Int): GeneFamilyConnection
 
   """
   A list of Genes
@@ -35034,9 +34448,7 @@ type Query {
   """
   User's notification preferences
   """
-  notificationPreferences(
-    authenticationToken: String
-  ): [NotificationPreference!]!
+  notificationPreferences(authenticationToken: String): [NotificationPreference!]!
 
   """
   A feed of notifications
@@ -35182,8 +34594,7 @@ type Query {
     """
     partnerID: String!
     size: Int
-  ): PartnerArtistDocumentConnection
-    @deprecated(reason: "Prefer `partner.documentsConnection`")
+  ): PartnerArtistDocumentConnection @deprecated(reason: "Prefer `partner.documentsConnection`")
 
   """
   A list of Artworks for a partner
@@ -35249,8 +34660,7 @@ type Query {
     """
     showID: String!
     size: Int
-  ): PartnerShowDocumentConnection
-    @deprecated(reason: "Prefer `partner.documentsConnection`")
+  ): PartnerShowDocumentConnection @deprecated(reason: "Prefer `partner.documentsConnection`")
 
   """
   A partner's note about a collector.
@@ -36044,12 +35454,7 @@ enum RelatedArtistsKind {
 }
 
 type RelatedArtworkGrid implements ArtworkContextGrid {
-  artworksConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkConnection
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
   ctaHref: String
   ctaTitle: String
   title: String
@@ -37887,9 +37292,7 @@ type SendFeedbackMutationSuccess {
   feedback: Feedback
 }
 
-union SendFeedbackMutationType =
-    SendFeedbackMutationFailure
-  | SendFeedbackMutationSuccess
+union SendFeedbackMutationType = SendFeedbackMutationFailure | SendFeedbackMutationSuccess
 
 input SendIdentityVerificationEmailMutationInput {
   clientMutationId: String
@@ -38076,12 +37479,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   """
   Connection of Artists included in the show
   """
-  artistsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtistConnection
+  artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
 
   """
   Artists in the show grouped by last name
@@ -38175,12 +37573,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   """
   Connection of events attached to the show
   """
-  eventsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ShowEventConnection
+  eventsConnection(after: String, before: String, first: Int, last: Int): ShowEventConnection
 
   """
   A formatted description of the start to end dates
@@ -38577,12 +37970,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
 }
 
 type ShowArtworkGrid implements ArtworkContextGrid {
-  artworksConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkConnection
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
   ctaHref: String
   ctaTitle: String
   title: String
@@ -38759,12 +38147,7 @@ type ShowFollowArtistEdge {
 
 type ShowOpenedNotificationItem {
   partner: Partner
-  showsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ShowConnection
+  showsConnection(after: String, before: String, first: Int, last: Int): ShowConnection
 }
 
 enum ShowSorts {
@@ -39049,7 +38432,6 @@ type System {
   """
   causalityJWT(
     """
-
     """
     role: LiveAuctionRole
 
@@ -39466,9 +38848,7 @@ type TransferMyCollectionSuccess {
   count: Int!
 }
 
-union TransferMyCollectionSuccessOrErrorsUnion =
-    Errors
-  | TransferMyCollectionSuccess
+union TransferMyCollectionSuccessOrErrorsUnion = Errors | TransferMyCollectionSuccess
 
 type TrendingArtists {
   artists: [Artist]
@@ -39611,9 +38991,7 @@ input UnpublishViewingRoomInput {
 type UnpublishViewingRoomPayload {
   clientMutationId: String
   viewingRoom: ViewingRoom
-    @deprecated(
-      reason: "Use viewingRoomOrError instead for proper error handling"
-    )
+    @deprecated(reason: "Use viewingRoomOrError instead for proper error handling")
 
   """
   On success: the unpublished viewing room. On error: the error that occurred.
@@ -39721,9 +39099,7 @@ type UpdateArtistSocialsMutationPayload {
   clientMutationId: String
 }
 
-union UpdateArtistSocialsResponseOrError =
-    UpdateArtistSocialsFailure
-  | UpdateArtistSocialsSuccess
+union UpdateArtistSocialsResponseOrError = UpdateArtistSocialsFailure | UpdateArtistSocialsSuccess
 
 type UpdateArtistSocialsSuccess {
   artist: Artist
@@ -39892,9 +39268,7 @@ type UpdateArtworkImportPayload {
   updateArtworkImportOrError: UpdateArtworkImportResponseOrError
 }
 
-union UpdateArtworkImportResponseOrError =
-    UpdateArtworkImportFailure
-  | UpdateArtworkImportSuccess
+union UpdateArtworkImportResponseOrError = UpdateArtworkImportFailure | UpdateArtworkImportSuccess
 
 type UpdateArtworkImportRowFailure {
   mutationError: GravityMutationError
@@ -40218,9 +39592,7 @@ type UpdateBrandKitLogoPayload {
   clientMutationId: String
 }
 
-union UpdateBrandKitLogoResponseOrError =
-    UpdateBrandKitLogoFailure
-  | UpdateBrandKitLogoSuccess
+union UpdateBrandKitLogoResponseOrError = UpdateBrandKitLogoFailure | UpdateBrandKitLogoSuccess
 
 type UpdateBrandKitLogoSuccess {
   brandKit: BrandKit
@@ -40234,9 +39606,7 @@ type UpdateBrandKitPayload {
   clientMutationId: String
 }
 
-union UpdateBrandKitResponseOrError =
-    UpdateBrandKitFailure
-  | UpdateBrandKitSuccess
+union UpdateBrandKitResponseOrError = UpdateBrandKitFailure | UpdateBrandKitSuccess
 
 type UpdateBrandKitSuccess {
   brandKit: BrandKit
@@ -40394,9 +39764,7 @@ type UpdateCollectionFailure {
   mutationError: GravityMutationError
 }
 
-union UpdateCollectionResponseOrError =
-    UpdateCollectionFailure
-  | UpdateCollectionSuccess
+union UpdateCollectionResponseOrError = UpdateCollectionFailure | UpdateCollectionSuccess
 
 type UpdateCollectionSuccess {
   collection: Collection
@@ -40667,9 +40035,7 @@ type UpdateFeaturedLinkMutationPayload {
   featuredLinkOrError: UpdateFeaturedLinkResponseOrError
 }
 
-union UpdateFeaturedLinkResponseOrError =
-    UpdateFeaturedLinkFailure
-  | UpdateFeaturedLinkSuccess
+union UpdateFeaturedLinkResponseOrError = UpdateFeaturedLinkFailure | UpdateFeaturedLinkSuccess
 
 type UpdateFeaturedLinkSuccess {
   featuredLink: FeaturedLink
@@ -40751,9 +40117,7 @@ type UpdateMeCollectionsFailure {
   mutationError: GravityMutationError
 }
 
-union UpdateMeCollectionsResponseOrError =
-    UpdateMeCollectionsFailure
-  | UpdateMeCollectionsSuccess
+union UpdateMeCollectionsResponseOrError = UpdateMeCollectionsFailure | UpdateMeCollectionsSuccess
 
 type UpdateMeCollectionsSuccess {
   collection: Collection
@@ -40994,9 +40358,7 @@ input UpdateMyProfileInput {
   shareFollows: Boolean
 }
 
-union UpdateMyProfileMutation =
-    UpdateMyProfileMutationFailure
-  | UpdateMyProfileMutationSuccess
+union UpdateMyProfileMutation = UpdateMyProfileMutationFailure | UpdateMyProfileMutationSuccess
 
 type UpdateMyProfileMutationFailure {
   mutationError: GravityMutationError
@@ -41093,9 +40455,7 @@ type UpdateOrderedSetMutationPayload {
   orderedSetOrError: UpdateOrderedSetResponseOrError
 }
 
-union UpdateOrderedSetResponseOrError =
-    UpdateOrderedSetFailure
-  | UpdateOrderedSetSuccess
+union UpdateOrderedSetResponseOrError = UpdateOrderedSetFailure | UpdateOrderedSetSuccess
 
 type UpdateOrderedSetSuccess {
   feature: Feature
@@ -41230,9 +40590,7 @@ type UpdatePartnerArtistMutationPayload {
   partnerArtistOrError: UpdatePartnerArtistResponseOrError
 }
 
-union UpdatePartnerArtistResponseOrError =
-    UpdatePartnerArtistFailure
-  | UpdatePartnerArtistSuccess
+union UpdatePartnerArtistResponseOrError = UpdatePartnerArtistFailure | UpdatePartnerArtistSuccess
 
 type UpdatePartnerArtistSuccess {
   partner: Partner
@@ -41286,9 +40644,7 @@ input UpdatePartnerContactInput {
   position: String
 }
 
-union UpdatePartnerContactOrError =
-    UpdatePartnerContactFailure
-  | UpdatePartnerContactSuccess
+union UpdatePartnerContactOrError = UpdatePartnerContactFailure | UpdatePartnerContactSuccess
 
 type UpdatePartnerContactPayload {
   clientMutationId: String
@@ -41359,9 +40715,7 @@ type UpdatePartnerFlagsMutationPayload {
   partnerOrError: UpdatePartnerFlagsResponseOrError
 }
 
-union UpdatePartnerFlagsResponseOrError =
-    UpdatePartnerFlagsFailure
-  | UpdatePartnerFlagsSuccess
+union UpdatePartnerFlagsResponseOrError = UpdatePartnerFlagsFailure | UpdatePartnerFlagsSuccess
 
 type UpdatePartnerFlagsSuccess {
   partner: Partner
@@ -41453,9 +40807,7 @@ type UpdatePartnerListMutationPayload {
   partnerListOrError: UpdatePartnerListResponseOrError
 }
 
-union UpdatePartnerListResponseOrError =
-    UpdatePartnerListFailure
-  | UpdatePartnerListSuccess
+union UpdatePartnerListResponseOrError = UpdatePartnerListFailure | UpdatePartnerListSuccess
 
 type UpdatePartnerListSuccess {
   partnerList: PartnerList
@@ -41501,9 +40853,7 @@ input UpdatePartnerLocationInput {
   state: String
 }
 
-union UpdatePartnerLocationOrError =
-    UpdatePartnerLocationFailure
-  | UpdatePartnerLocationSuccess
+union UpdatePartnerLocationOrError = UpdatePartnerLocationFailure | UpdatePartnerLocationSuccess
 
 type UpdatePartnerLocationPayload {
   clientMutationId: String
@@ -42025,9 +41375,7 @@ type UpdatePartnerShowMutationPayload {
   showOrError: UpdatePartnerShowResponseOrError
 }
 
-union UpdatePartnerShowResponseOrError =
-    UpdatePartnerShowFailure
-  | UpdatePartnerShowSuccess
+union UpdatePartnerShowResponseOrError = UpdatePartnerShowFailure | UpdatePartnerShowSuccess
 
 type UpdatePartnerShowSuccess {
   show: Show
@@ -42054,9 +41402,7 @@ input UpdatePartnerUserNoteInput {
   id: String!
 }
 
-union UpdatePartnerUserNoteOrError =
-    UpdatePartnerUserNoteFailure
-  | UpdatePartnerUserNoteSuccess
+union UpdatePartnerUserNoteOrError = UpdatePartnerUserNoteFailure | UpdatePartnerUserNoteSuccess
 
 type UpdatePartnerUserNotePayload {
   clientMutationId: String
@@ -42128,9 +41474,7 @@ type UpdatePurchaseFailure {
   mutationError: GravityMutationError
 }
 
-union UpdatePurchaseResponseOrError =
-    UpdatePurchaseFailure
-  | UpdatePurchaseSuccess
+union UpdatePurchaseResponseOrError = UpdatePurchaseFailure | UpdatePurchaseSuccess
 
 type UpdatePurchaseSuccess {
   purchase: Purchase
@@ -42160,9 +41504,7 @@ type UpdateSaleAgreementMutationPayload {
   saleAgreementOrError: UpdateSaleAgreementResponseOrError
 }
 
-union UpdateSaleAgreementResponseOrError =
-    UpdateSaleAgreementFailure
-  | UpdateSaleAgreementSuccess
+union UpdateSaleAgreementResponseOrError = UpdateSaleAgreementFailure | UpdateSaleAgreementSuccess
 
 type UpdateSaleAgreementSuccess {
   saleAgreement: SaleAgreement
@@ -42357,9 +41699,7 @@ type UpdateUserInterestMutationPayload {
 
 union UpdateUserInterestOrError = UpdateUserInterestsFailure | UserInterest
 
-union UpdateUserInterestResponseOrError =
-    UpdateUserInterestFailure
-  | UpdateUserInterestSuccess
+union UpdateUserInterestResponseOrError = UpdateUserInterestFailure | UpdateUserInterestSuccess
 
 type UpdateUserInterestSuccess {
   userInterest: UserInterest
@@ -42564,12 +41904,7 @@ type User implements Node {
     first: Int
     last: Int
   ): UserInquiredArtworksConnection
-  interestsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): UserInterestConnection
+  interestsConnection(after: String, before: String, first: Int, last: Int): UserInterestConnection
 
   """
   A type-specific ID likely used as a database ID.
@@ -42710,12 +42045,7 @@ type User implements Node {
   The sale profile of the user.
   """
   saleProfile: UserSaleProfile
-  savedArtworksConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkConnection
+  savedArtworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
 
   """
   If the user has enabled two-factor authentication on their account
@@ -43009,18 +42339,8 @@ type UserEdge {
 }
 
 type UserFollows {
-  artistsConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtistConnection
-  genesConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): GeneConnection
+  artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
+  genesConnection(after: String, before: String, first: Int, last: Int): GeneConnection
 }
 
 type UserIconDeleteFailureType {
@@ -43032,9 +42352,7 @@ type UserIconDeleteSuccessType {
   success: Boolean
 }
 
-union UserIconDeletionMutationType =
-    UserIconDeleteFailureType
-  | UserIconDeleteSuccessType
+union UserIconDeletionMutationType = UserIconDeleteFailureType | UserIconDeleteSuccessType
 
 """
 A connection to a list of items.
@@ -44578,12 +43896,7 @@ type Viewer {
   """
   A list of Gene Families
   """
-  geneFamiliesConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): GeneFamilyConnection
+  geneFamiliesConnection(after: String, before: String, first: Int, last: Int): GeneFamilyConnection
 
   """
   A list of Genes
@@ -44939,9 +44252,7 @@ type Viewer {
   """
   User's notification preferences
   """
-  notificationPreferences(
-    authenticationToken: String
-  ): [NotificationPreference!]!
+  notificationPreferences(authenticationToken: String): [NotificationPreference!]!
 
   """
   A feed of notifications
@@ -45036,8 +44347,7 @@ type Viewer {
     """
     partnerID: String!
     size: Int
-  ): PartnerArtistDocumentConnection
-    @deprecated(reason: "Prefer `partner.documentsConnection`")
+  ): PartnerArtistDocumentConnection @deprecated(reason: "Prefer `partner.documentsConnection`")
 
   """
   A list of Artworks for a partner
@@ -45103,8 +44413,7 @@ type Viewer {
     """
     showID: String!
     size: Int
-  ): PartnerShowDocumentConnection
-    @deprecated(reason: "Prefer `partner.documentsConnection`")
+  ): PartnerShowDocumentConnection @deprecated(reason: "Prefer `partner.documentsConnection`")
 
   """
   A partner's note about a collector.
@@ -45617,12 +44926,7 @@ type Viewer {
 
 type ViewingRoom {
   artworkIDs: [String!]!
-  artworksConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkConnection
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
 
   """
   Body copy
@@ -45655,12 +44959,7 @@ type ViewingRoom {
   """
   introStatement: String
   partner: Partner
-  partnerArtworksConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ArtworkConnection
+  partnerArtworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
 
   """
   ID of the partner associated with this viewing room
@@ -45917,9 +45216,7 @@ type addOrderedSetItemMutationPayload {
   clientMutationId: String
 }
 
-union addOrderedSetItemResponseOrError =
-    addOrderedSetItemFailure
-  | addOrderedSetItemSuccess
+union addOrderedSetItemResponseOrError = addOrderedSetItemFailure | addOrderedSetItemSuccess
 
 type addOrderedSetItemSuccess {
   set: OrderedSet
@@ -46087,9 +45384,7 @@ type createHeroUnitFailure {
   mutationError: GravityMutationError
 }
 
-union createHeroUnitResponseOrError =
-    createHeroUnitFailure
-  | createHeroUnitSuccess
+union createHeroUnitResponseOrError = createHeroUnitFailure | createHeroUnitSuccess
 
 type createHeroUnitSuccess {
   heroUnit: HeroUnit
@@ -46189,9 +45484,7 @@ type createOrderedSetFailure {
   mutationError: GravityMutationError
 }
 
-union createOrderedSetResponseOrError =
-    createOrderedSetFailure
-  | createOrderedSetSuccess
+union createOrderedSetResponseOrError = createOrderedSetFailure | createOrderedSetSuccess
 
 type createOrderedSetSuccess {
   set: OrderedSet
@@ -46219,9 +45512,7 @@ type createPartnerOfferMutationPayload {
   partnerOfferOrError: createPartnerOfferResponseOrError
 }
 
-union createPartnerOfferResponseOrError =
-    createPartnerOfferFailure
-  | createPartnerOfferSuccess
+union createPartnerOfferResponseOrError = createPartnerOfferFailure | createPartnerOfferSuccess
 
 type createPartnerOfferSuccess {
   partner: Partner
@@ -46273,9 +45564,7 @@ type createUserAdminNoteMutationPayload {
   clientMutationId: String
 }
 
-union createUserAdminNoteResponseOrError =
-    createUserAdminNoteFailure
-  | createUserAdminNoteSuccess
+union createUserAdminNoteResponseOrError = createUserAdminNoteFailure | createUserAdminNoteSuccess
 
 type createUserAdminNoteSuccess {
   adminNote: UserAdminNotes
@@ -46364,9 +45653,7 @@ type deleteHeroUnitMutationPayload {
   heroUnitOrError: deleteHeroUnitResponseOrError
 }
 
-union deleteHeroUnitResponseOrError =
-    deleteHeroUnitFailure
-  | deleteHeroUnitSuccess
+union deleteHeroUnitResponseOrError = deleteHeroUnitFailure | deleteHeroUnitSuccess
 
 type deleteHeroUnitSuccess {
   heroUnit: HeroUnit
@@ -46448,9 +45735,7 @@ type deleteOrderedSetMutationPayload {
   orderedSetOrError: deleteOrderedSetResponseOrError
 }
 
-union deleteOrderedSetResponseOrError =
-    deleteOrderedSetFailure
-  | deleteOrderedSetSuccess
+union deleteOrderedSetResponseOrError = deleteOrderedSetFailure | deleteOrderedSetSuccess
 
 type deleteOrderedSetSuccess {
   set: OrderedSet
@@ -46484,9 +45769,7 @@ type deleteUserAdminNoteMutationPayload {
   clientMutationId: String
 }
 
-union deleteUserAdminNoteResponseOrError =
-    deleteUserAdminNoteFailure
-  | deleteUserAdminNoteSuccess
+union deleteUserAdminNoteResponseOrError = deleteUserAdminNoteFailure | deleteUserAdminNoteSuccess
 
 type deleteUserAdminNoteSuccess {
   adminNote: UserAdminNotes
@@ -46524,9 +45807,7 @@ type deleteUserRoleMutationPayload {
   userOrError: deleteUserRoleResponseOrError
 }
 
-union deleteUserRoleResponseOrError =
-    deleteUserRoleFailure
-  | deleteUserRoleSuccess
+union deleteUserRoleResponseOrError = deleteUserRoleFailure | deleteUserRoleSuccess
 
 type deleteUserRoleSuccess {
   user: User
@@ -46877,9 +46158,7 @@ type updateHeroUnitFailure {
   mutationError: GravityMutationError
 }
 
-union updateHeroUnitResponseOrError =
-    updateHeroUnitFailure
-  | updateHeroUnitSuccess
+union updateHeroUnitResponseOrError = updateHeroUnitFailure | updateHeroUnitSuccess
 
 type updateHeroUnitSuccess {
   heroUnit: HeroUnit
@@ -47008,9 +46287,7 @@ type updateNotificationPreferencesMutationPayload {
   """
   User's notification preferences
   """
-  notificationPreferences(
-    authenticationToken: String
-  ): [NotificationPreference!]!
+  notificationPreferences(authenticationToken: String): [NotificationPreference!]!
 }
 
 input updateOrderInput {
@@ -47020,9 +46297,7 @@ input updateOrderInput {
   Credit card wallet type
   """
   creditCardWalletType: OrderCreditCardWalletTypeEnum
-    @deprecated(
-      reason: "Use setOrderPayment mutation instead for setting payment methods."
-    )
+    @deprecated(reason: "Use setOrderPayment mutation instead for setting payment methods.")
 
   """
   Order id.
@@ -47033,17 +46308,13 @@ input updateOrderInput {
   Payment method.
   """
   paymentMethod: OrderPaymentMethodEnum
-    @deprecated(
-      reason: "Use setOrderPayment mutation instead for setting payment methods."
-    )
+    @deprecated(reason: "Use setOrderPayment mutation instead for setting payment methods.")
 
   """
   Stripe confirmation token
   """
   stripeConfirmationToken: String
-    @deprecated(
-      reason: "Use setOrderPayment mutation instead for setting payment methods."
-    )
+    @deprecated(reason: "Use setOrderPayment mutation instead for setting payment methods.")
 }
 
 type updateOrderPayload {
