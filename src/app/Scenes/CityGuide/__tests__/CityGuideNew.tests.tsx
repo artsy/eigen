@@ -120,6 +120,18 @@ describe("CityGuideNew", () => {
     expect(await screen.findByText("Unable to load")).toBeOnTheScreen()
   })
 
+  it("refetches the city list on retry after an empty response", async () => {
+    renderWithWrappers(<CityGuideNew />)
+    await resolveCityGuideCities([])
+
+    fireEvent.press(await screen.findByLabelText("Retry"))
+    await resolveCityGuideCities()
+
+    expect(
+      within(screen.getByTestId("city-guide-city-switcher")).getByText("New York")
+    ).toBeOnTheScreen()
+  })
+
   // No test for the write itself: the picker's rows live inside a Modal and are not
   // reachably distinct from the switcher, so driving a selection is unreliable. The two
   // cases above cover what a user sees.

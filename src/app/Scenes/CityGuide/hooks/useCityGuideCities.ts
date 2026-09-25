@@ -2,7 +2,7 @@ import { useCityGuideCitiesQuery } from "__generated__/useCityGuideCitiesQuery.g
 import { CityData } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
-const query = graphql`
+export const cityGuideCitiesQuery = graphql`
   query useCityGuideCitiesQuery {
     cityGuideCities {
       slug
@@ -18,7 +18,7 @@ const query = graphql`
 /** The cities with a City Guide, in display order. Fetched once per session: later screens hit the store. */
 export const useCityGuideCities = (): CityData[] => {
   const data = useLazyLoadQuery<useCityGuideCitiesQuery>(
-    query,
+    cityGuideCitiesQuery,
     {},
     { fetchPolicy: "store-or-network" }
   )

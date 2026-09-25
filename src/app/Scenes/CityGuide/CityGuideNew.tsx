@@ -1,8 +1,8 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Join, Screen, Spacer, Theme } from "@artsy/palette-mobile"
 import { CityGuideNewQuery } from "__generated__/CityGuideNewQuery.graphql"
-import { LoadFailureView } from "app/Components/LoadFailureView"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
+import { CityGuideCitiesLoadFailure } from "app/Scenes/CityGuide/Components/CityGuideCitiesLoadFailure"
 import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 import { CityGuideCitySwitcherButton } from "app/Scenes/CityGuide/Components/CityGuideCitySwitcherButton"
 import { CityGuideEventArticles } from "app/Scenes/CityGuide/Components/CityGuideEventArticles"
@@ -173,7 +173,7 @@ const CityGuideNewWithCities: React.FC<CityGuideNewProps> = ({ citySlug: presele
   )
 }
 
-// The route hides the navigation header, so the loading and error states bring their own back button.
+// The route hides the navigation header, so the loading state brings its own back button.
 const CityGuideNewLoading: React.FC = () => (
   <Screen>
     <Screen.Header onBack={goBack} />
@@ -186,13 +186,7 @@ const CityGuideNewLoading: React.FC = () => (
 export const CityGuideNew = withSuspense<CityGuideNewProps>({
   Component: CityGuideNewWithCities,
   LoadingFallback: CityGuideNewLoading,
-  ErrorFallback: (fallbackProps) => (
-    <LoadFailureView
-      error={fallbackProps.error}
-      onRetry={fallbackProps.resetErrorBoundary}
-      showBackButton
-    />
-  ),
+  ErrorFallback: (fallbackProps) => <CityGuideCitiesLoadFailure {...fallbackProps} />,
 })
 
 const Query = graphql`
