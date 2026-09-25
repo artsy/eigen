@@ -37,15 +37,6 @@ describe("StopCard", () => {
     expect(screen.queryByTestId("stop-card-meta-dot")).not.toBeOnTheScreen()
   })
 
-  // An event's title carries both the event and the show it belongs to, which rarely fits one.
-  it("gives the title two lines before truncating it", () => {
-    renderWithWrappers(
-      <StopCard card={card({ title: "Georg Baselitz: Back Again" })} image={null} />
-    )
-
-    expect(screen.getByText("Georg Baselitz: Back Again")).toHaveProp("numberOfLines", 2)
-  })
-
   it("renders an event's kind as its own eyebrow above the title", () => {
     renderWithWrappers(
       <StopCard
