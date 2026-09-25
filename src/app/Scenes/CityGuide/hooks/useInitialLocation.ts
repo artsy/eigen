@@ -1,14 +1,9 @@
+import { CityData } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 import { cityNearLocation } from "app/Scenes/CityGuide/utils/cityNearLocation"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useLocation } from "app/utils/hooks/useLocation"
-import expandedCities from "../../../../../data/cityDataSortedByDisplayPreference-expanded.json"
-import originalCities from "../../../../../data/cityDataSortedByDisplayPreference.json"
 
-export const useInitialLocation = (preselectedCitySlug?: string) => {
-  const enabledExpandedList = useFeatureFlag("AREnableExpandedCityGuide")
-  const cities = enabledExpandedList ? expandedCities : originalCities
-
+export const useInitialLocation = (cities: CityData[], preselectedCitySlug?: string) => {
   const previouslySelectedCitySlug = GlobalStore.useAppState(
     (state) => state.userPrefs.previouslySelectedCitySlug
   )
@@ -28,7 +23,10 @@ export const useInitialLocation = (preselectedCitySlug?: string) => {
     }
   }
 
-  if (previouslySelectedCitySlug) {
+  if (
+    previouslySelectedCitySlug &&
+    cities.some((city) => city.slug === previouslySelectedCitySlug)
+  ) {
     initialCitySlug = previouslySelectedCitySlug
   }
 

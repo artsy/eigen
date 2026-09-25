@@ -143,11 +143,6 @@ export const features = {
     description: "Enable feature videos phase 2, falls back to webview if disabled",
     echoFlagKey: "AREnableFeatureVideoPhase2Type",
   },
-  AREnableExpandedCityGuide: {
-    readyForRelease: true,
-    description: "Enable expanded city list in City Guide",
-    echoFlagKey: "AREnableExpandedCityGuide",
-  },
   AREnableConversationPartnerOffers: {
     readyForRelease: true,
     description: "Show partner offers in convos",

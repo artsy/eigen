@@ -43,6 +43,7 @@ configureMapbox()
 interface Props {
   /** city slug */
   citySlug: string
+  cities: CityData[]
   // TODO: Rethink this
   /** Error from Relay (CityGuideMapQueryRenderer.tsx). Needed here to send over the EventEmitter. */
   // relayErrorState?: RelayErrorState
@@ -353,6 +354,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
         />
       )}
       <CityGuideCityPicker
+        cities={props.cities}
         showCityPicker={showCityPicker}
         setShowCityPicker={setShowCityPicker}
         selectedCity={city?.name ?? ""}

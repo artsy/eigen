@@ -2,6 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { Join, Screen, Spacer, Theme } from "@artsy/palette-mobile"
 import { CityGuideNewQuery } from "__generated__/CityGuideNewQuery.graphql"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
+import { CityGuideCitiesLoadFailure } from "app/Scenes/CityGuide/Components/CityGuideCitiesLoadFailure"
 import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 import { CityGuideCitySwitcherButton } from "app/Scenes/CityGuide/Components/CityGuideCitySwitcherButton"
 import { CityGuideEventArticles } from "app/Scenes/CityGuide/Components/CityGuideEventArticles"
@@ -11,6 +12,7 @@ import { CityGuideEvents } from "app/Scenes/CityGuide/Components/CityGuideEvents
 import { CityGuideFloatingMapButton } from "app/Scenes/CityGuide/Components/CityGuideFloatingMapButton"
 import { CityGuideItinerariesRail } from "app/Scenes/CityGuide/Components/CityGuideItinerariesRail"
 import { CityGuideNewPlaceholder } from "app/Scenes/CityGuide/Components/CityGuideNewPlaceholder"
+import { useCityGuideCities } from "app/Scenes/CityGuide/hooks/useCityGuideCities"
 import { useInitialLocation } from "app/Scenes/CityGuide/hooks/useInitialLocation"
 import { useShowsForYou } from "app/Scenes/CityGuide/hooks/useShowsForYou"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -22,10 +24,6 @@ import { screen } from "app/utils/track/helpers"
 import { useCallback, useState } from "react"
 import { RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
-import expandedCities from "../../../../data/cityDataSortedByDisplayPreference-expanded.json"
-
-const cities = expandedCities as CityData[]
-const fallbackCity = cities.find((city) => city.slug === "new-york-ny-usa") as CityData
 
 /** Well above the number of rows any one of the three sections shows on the home screen. */
 const PAGE_SIZE = 10
@@ -82,12 +80,15 @@ interface CityGuideNewProps {
   citySlug?: string
 }
 
-export const CityGuideNew: React.FC<CityGuideNewProps> = ({ citySlug: preselectedCitySlug }) => {
+const CityGuideNewWithCities: React.FC<CityGuideNewProps> = ({ citySlug: preselectedCitySlug }) => {
+  const cities = useCityGuideCities()
+  const fallbackCity = cities.find((city) => city.slug === "new-york-ny-usa") ?? cities[0]
+
   const [showCityPicker, setShowCityPicker] = useState(false)
 
   // Same order the map's City Guide uses: preselected via URL, else where you were last, else
   // nearest, else New York.
-  const initialCitySlug = useInitialLocation(preselectedCitySlug)
+  const initialCitySlug = useInitialLocation(cities, preselectedCitySlug)
   const [city, setCity] = useState<CityData>(
     () => cities.find((option) => option.slug === initialCitySlug) ?? fallbackCity
   )
@@ -154,6 +155,7 @@ export const CityGuideNew: React.FC<CityGuideNewProps> = ({ citySlug: preselecte
               refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
             >
               <CityGuideCityPicker
+                cities={cities}
                 showCityPicker={showCityPicker}
                 setShowCityPicker={setShowCityPicker}
                 selectedCity={city?.name ?? ""}
@@ -170,6 +172,22 @@ export const CityGuideNew: React.FC<CityGuideNewProps> = ({ citySlug: preselecte
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
+
+// The route hides the navigation header, so the loading state brings its own back button.
+const CityGuideNewLoading: React.FC = () => (
+  <Screen>
+    <Screen.Header onBack={goBack} />
+    <Screen.Body fullwidth>
+      <CityGuideNewPlaceholder />
+    </Screen.Body>
+  </Screen>
+)
+
+export const CityGuideNew = withSuspense<CityGuideNewProps>({
+  Component: CityGuideNewWithCities,
+  LoadingFallback: CityGuideNewLoading,
+  ErrorFallback: (fallbackProps) => <CityGuideCitiesLoadFailure {...fallbackProps} />,
+})
 
 const Query = graphql`
   query CityGuideNewQuery(

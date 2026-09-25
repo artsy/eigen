@@ -11,13 +11,10 @@ import {
 } from "@artsy/palette-mobile"
 import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
 import { useScreenDimensions } from "app/utils/hooks"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect, useState } from "react"
 import { Modal, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import expandedCities from "../../../../../data/cityDataSortedByDisplayPreference-expanded.json"
-import originalCities from "../../../../../data/cityDataSortedByDisplayPreference.json"
 
 export type CityData = {
   slug: string
@@ -26,18 +23,9 @@ export type CityData = {
     lat: number
     lng: number
   }
-  maxBounds: {
-    sw: {
-      lat: number
-      lng: number
-    }
-    ne: {
-      lat: number
-      lng: number
-    }
-  }
 }
 interface Props {
+  cities: CityData[]
   showCityPicker: boolean
   setShowCityPicker: (show: boolean) => void
   selectedCity: string
@@ -52,9 +40,7 @@ export const CityGuideCityPicker: React.FC<Props> = (props) => {
   const color = useColor()
   const space = useSpace()
   const insets = useSafeAreaInsets()
-  const enabledExpandedList = useFeatureFlag("AREnableExpandedCityGuide")
-
-  const cities = enabledExpandedList ? expandedCities : originalCities
+  const { cities } = props
 
   const selectCity = (city: CityData) => {
     setSelectedCity(city.name)
