@@ -1,7 +1,8 @@
-import { Flex, Pill, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Flex, Pill } from "@artsy/palette-mobile"
 import MapboxGL, { ShapeSource } from "@rnmapbox/maps"
 import { MapPins } from "app/Scenes/CityGuide/Components/Map/MapPins"
 import { MapPreviewCard } from "app/Scenes/CityGuide/Components/Map/MapPreviewCard"
+import { MapPreviewCardRail } from "app/Scenes/CityGuide/Components/Map/MapPreviewCardRail"
 import {
   flattenMapSections,
   MapPlace,
@@ -70,8 +71,6 @@ export const MapView: React.FC<Props> = ({
   // resolves after the user moved on doesn't overwrite newer state.
   const clusterRequestIdRef = useRef(0)
   const { top } = useSafeAreaInsets()
-  const { width: screenWidth } = useScreenDimensions()
-  const space = useSpace()
   const flattened = useMemo(() => flattenMapSections(sections), [sections])
 
   const visible = useMemo(
@@ -269,27 +268,11 @@ export const MapView: React.FC<Props> = ({
       */}
       {!!clusterSelection && (
         <Flex position="absolute" bottom={PREVIEW_BOTTOM_OFFSET} left={0}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <Flex flexDirection="row">
-              {clusterSelection.places.map((place, index) => {
-                const clusterLength = clusterSelection.places.length
-
-                const width = screenWidth - 2 * space(2)
-                return (
-                  // Fixed width: the single-card usage above relies on the absolute-positioned
-                  // parent to size it, which a horizontal ScrollView doesn't provide.
-                  <Flex key={place.id} width={width}>
-                    <MapPreviewCard
-                      isLast={index === clusterLength - 1}
-                      place={place}
-                      citySlug={citySlug}
-                      onPress={() => handleSelectPlace(place.id)}
-                    />
-                  </Flex>
-                )
-              })}
-            </Flex>
-          </ScrollView>
+          <MapPreviewCardRail
+            places={clusterSelection.places}
+            citySlug={citySlug}
+            onPressPlace={handleSelectPlace}
+          />
         </Flex>
       )}
     </Flex>
