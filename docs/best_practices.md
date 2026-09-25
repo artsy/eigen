@@ -19,6 +19,7 @@ _Please note: Links should point to specific commits, and not a branch (in case 
       - [AVOID index.ts(x) files](#avoid-indextsx-files)
       - [Do not import components/hooks/functions... directly from a different scene](#do-not-import-componentshooksfunctions-directly-from-a-different-scene)
     - [When committing code](#when-committing-code)
+    - [Adding a new dependency](#adding-a-new-dependency)
   - [Frontend](#frontend)
     - [Styling](#styling)
     - [Component conventions](#component-conventions)
@@ -144,6 +145,10 @@ The same thing applies for hooks, utils etc...
 
 - At Artsy, we follow [semantic commit messages](https://sparkbox.com/foundry/semantic_commit_messages) for PR names and commits. More details available in [Best Practices for Naming and Merging PRs RFC](https://github.com/artsy/README/issues/327)
 - When merging a PR, choose "Squash and merge" (unless you have good reason not to)
+
+### Adding a new dependency
+
+Before you add a new dependency, open an RFC with the [New dependency template](https://github.com/artsy/eigen/issues/new?template=rfc-new-dependency.md). Explain the problem, why this library, and what else you considered. Link a spike PR if you have one. Wait for the team to accept the RFC before merging the PR that adds it.
 
 ## Frontend
 
