@@ -55,6 +55,7 @@ const Partner: React.FC<PartnerProps> = (props) => {
       >
         <Tabs.TabsWithHeader
           title={partner.name ?? ""}
+          showLargeHeaderText={false}
           initialTabName={initialTab}
           BelowTitleHeaderComponent={() => <PartnerHeader partner={partner} />}
           headerProps={{ onBack: goBack, hideTitle: true }}
@@ -80,6 +81,7 @@ const Partner: React.FC<PartnerProps> = (props) => {
     >
       <Tabs.TabsWithHeader
         title={partner.name ?? ""}
+        showLargeHeaderText={false}
         initialTabName={initialTab}
         BelowTitleHeaderComponent={() => <PartnerHeader partner={partner} showOnlyFollowButton />}
         headerProps={{ onBack: goBack, hideTitle: true }}

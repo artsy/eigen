@@ -106,6 +106,19 @@ describe("itineraryStopsToMapSections", () => {
     })
   })
 
+  // Same destination `ItineraryStopRow` builds for a custom stop's own screen — a custom stop
+  // has no `card.href` (only ever an outbound `sourceURL`), so the map pin must not fall back
+  // to that and end up with nowhere to navigate.
+  it("points a custom stop's href at its own screen, not its (usually absent) card href", () => {
+    const withoutTarget = makeStop({ internalID: "without-target", item: null })
+
+    const sections = toMapSections(makeItinerary([withoutTarget]))
+
+    expect(sections[0].places[0].href).toEqual(
+      "/city-guide/london-united-kingdom/itinerary/itinerary-1/stop/without-target"
+    )
+  })
+
   // Same plus the list shows for a custom stop (ItineraryStopRow) — the map preview must not
   // silently drop it just because there's no Artsy entity behind the stop.
   it("injects the custom stop save control for a stop with no entity", () => {
