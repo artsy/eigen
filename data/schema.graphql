@@ -8662,7 +8662,7 @@ type City {
   neighborhoods: [CityNeighborhood!]!
 
   """
-  Recent editorial articles about artists showing in this city now, ranked by the signed-in user's taste. With `includeFeatured`, the city's curated articles come first; without it, they are left out. Signed out, only the curated articles are returned.
+  Recent editorial articles about the shows and fairs running in this city now. Show articles come first, ranked by the signed-in user's taste for the shows' artists, then fair articles. With `includeFeatured`, the city's curated articles come first; without it, they are left out. Signed out, only the curated articles are returned.
   """
   recommendedArticlesConnection(
     after: String
