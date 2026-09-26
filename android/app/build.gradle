@@ -111,12 +111,11 @@ android {
         versionCode 7
         versionName "1.0.0"
 
-        buildConfigField "String", "REACT_NATIVE_RELEASE_LEVEL", "\"${findProperty('reactNativeReleaseLevel') ?: 'stable'}\""
-
         vectorDrawables.useSupportLibrary = true
 
         multiDexEnabled true
 
+        buildConfigField "String", "REACT_NATIVE_RELEASE_LEVEL", "\"${findProperty('reactNativeReleaseLevel') ?: 'stable'}\""
         buildConfigField "String", "GITCommitShortHash", '"c77772ee1"'
         buildConfigField "String", "GITCommitHash", '"c77772ee1f32093109049504f7865f9737ad8474"'
         buildConfigField "String", "GITCommitDate", '"2021-01-21T15:08:22+04:00"'
@@ -216,6 +215,10 @@ dependencies {
     implementation 'com.facebook.fresco:animated-base-support:1.3.0'  // We need this to support android versions below API level 14
     implementation 'com.facebook.fresco:animated-webp:3.6.0'
     implementation 'com.facebook.fresco:webpsupport:3.6.0'
+
+    // for Android In App Update
+    implementation 'com.google.android.play:app-update:2.1.0'
+    implementation 'com.google.android.play:app-update-ktx:2.1.0'
 
     // Test dependencies
     testImplementation 'junit:junit:4.13.2'

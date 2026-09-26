@@ -564,6 +564,9 @@ function getNativeModules(): OurNativeModules {
       getRecentPushPayloads: jest.fn(),
       clearUserData: jest.fn(),
       moveTaskToBack: jest.fn(),
+      checkForAppUpdate: jest.fn(),
+      completeAppUpdate: jest.fn(),
+      updateDownloaded: false,
     },
   }
 }
