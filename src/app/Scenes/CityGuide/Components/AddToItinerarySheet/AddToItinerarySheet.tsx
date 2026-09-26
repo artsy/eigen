@@ -287,6 +287,7 @@ const Sheet: React.FC<Props> = ({
           {itineraries.map((itinerary) => (
             <AddToItineraryRow
               key={`${itinerary.internalID}`}
+              itineraryID={itinerary.internalID}
               title={itinerary.title}
               stopsCount={itineraryStopsCount(itinerary)}
               imageUrl={itinerary.heroImage?.url}

@@ -1,5 +1,9 @@
 import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { ItineraryHeader_itinerary$key } from "__generated__/ItineraryHeader_itinerary.graphql"
+import {
+  isLocalImagePath,
+  useItineraryLocalCover,
+} from "app/Scenes/CityGuide/hooks/useItineraryLocalCover"
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment } from "react-relay"
 
@@ -18,17 +22,20 @@ interface Props {
 export const ItineraryHeader: React.FC<Props> = ({ itinerary: itineraryRef, topInset }) => {
   const itinerary = useFragment(fragment, itineraryRef)
   const heroImage = itinerary.heroImage
+  const localCover = useItineraryLocalCover(itinerary.internalID, heroImage?.url)
+  const heroUrl = localCover?.path || heroImage?.url
 
   return (
     <Flex>
-      {heroImage?.url ? (
+      {heroUrl ? (
         <Flex height={HERO_HEIGHT} justifyContent="flex-end">
           <Flex style={{ position: "absolute", width: "100%", height: HERO_HEIGHT }}>
             <Image
               testID="itinerary-hero-image"
-              src={heroImage.url}
-              blurhash={heroImage.blurhash}
-              aspectRatio={heroImage.aspectRatio}
+              src={heroUrl}
+              performResize={!isLocalImagePath(heroUrl)}
+              blurhash={localCover ? null : heroImage?.blurhash}
+              aspectRatio={localCover?.aspectRatio ?? heroImage?.aspectRatio}
               resizeMode="cover"
               style={{ width: "100%", height: HERO_HEIGHT }}
             />
@@ -88,6 +95,7 @@ export const ItineraryHeader: React.FC<Props> = ({ itinerary: itineraryRef, topI
 
 const fragment = graphql`
   fragment ItineraryHeader_itinerary on Itinerary {
+    internalID
     isCurated
     title
     subtitle

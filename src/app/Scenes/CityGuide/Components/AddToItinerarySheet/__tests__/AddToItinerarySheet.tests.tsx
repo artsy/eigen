@@ -5,6 +5,7 @@ import {
   AddToItinerarySheet,
   CreateSheetBackdrop,
 } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItinerarySheet"
+import { storeLocalImage } from "app/utils/LocalImageStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { MockPayloadGenerator } from "relay-test-utils"
@@ -228,6 +229,24 @@ describe("AddToItinerarySheet", () => {
     const operation = view.env.mock.getMostRecentOperation()
     expect(operation.request.node.params.name).toBe("useApplyItinerarySelectionRemoveMutation")
     expect(operation.request.variables.input).toEqual({ id: "copied-stop-1" })
+  })
+
+  // Gravity still returns the old cover while it processes a new one.
+  it("shows an itinerary's newly saved local cover over the server's", async () => {
+    await storeLocalImage("itinerary-cover-a", { path: "file:///new-cover.jpg" })
+
+    renderWithRelay(
+      withItineraries([
+        { ...itinerary("a", "My trip"), heroImage: { url: "https://example.com/old-cover.jpg" } },
+      ]),
+      props
+    )
+
+    await waitFor(() =>
+      expect(screen.getByTestId("add-to-itinerary-row-image")).toHaveProp("source", {
+        uri: "file:///new-cover.jpg",
+      })
+    )
   })
 
   // Selection is local until Done, as the artwork-lists sheet does it.

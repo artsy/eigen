@@ -1,23 +1,33 @@
-import { Button, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { Button, Flex, Image, Text, Touchable } from "@artsy/palette-mobile"
+import { useActionSheet } from "@expo/react-native-action-sheet"
 import { ItineraryEditSheetDeleteMutation } from "__generated__/ItineraryEditSheetDeleteMutation.graphql"
-import { ItineraryEditSheetUpdateMutation } from "__generated__/ItineraryEditSheetUpdateMutation.graphql"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { useToast } from "app/Components/Toast/toastHook"
+import {
+  isLocalImagePath,
+  useItineraryLocalCover,
+} from "app/Scenes/CityGuide/hooks/useItineraryLocalCover"
+import { LocalCover, saveItinerary } from "app/Scenes/CityGuide/utils/saveItinerary"
 import BottomSheetKeyboardAwareScrollView from "app/utils/keyboard/BottomSheetKeyboardAwareScrollView"
+import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useState } from "react"
-import { ConnectionHandler, graphql, useMutation } from "react-relay"
+import { ConnectionHandler, graphql, useMutation, useRelayEnvironment } from "react-relay"
 
 const NOTES_LIMIT = 200
+const COVER_SIZE = 80
 
 interface Props {
   visible: boolean
   onClose: () => void
   itinerary: {
+    /** The Relay record id, so a save can update the store before the server answers. */
+    id: string
     internalID: string
     name: string
     /** The designs label this "Notes"; it is the itinerary's `description`. */
     description?: string | null
+    heroImage?: { url?: string | null } | null
   }
   /**
    * Identifies the `CityItineraries_itinerariesConnection` to evict a deleted itinerary from,
@@ -30,9 +40,8 @@ interface Props {
 }
 
 /**
- * The "Edit Itinerary" sheet: rename it, edit its notes, or delete it. Its cover image is not
- * among them — changing one means `updateItinerary`'s `arImageID`, which needs an image picked
- * and uploaded as an ArImage, a flow that does not exist yet.
+ * The "Edit Itinerary" sheet: rename it, edit its notes, change or remove its cover image, or
+ * delete it.
  *
  * Reachable from the itineraries list, which queries through `me` and so always owns what it
  * is editing, and from the itinerary's own detail page, gated there by `Query.itinerary`'s
@@ -46,25 +55,51 @@ export const ItineraryEditSheet: React.FC<Props> = ({
   onDeleted,
 }) => {
   const toast = useToast()
+  const environment = useRelayEnvironment()
+  const { showActionSheetWithOptions } = useActionSheet()
   const [name, setName] = useState(itinerary.name)
   const [notes, setNotes] = useState(itinerary.description ?? "")
+  // A newly picked, not-yet-uploaded local image, shown as an optimistic preview.
+  const [localCover, setLocalCover] = useState<LocalCover>()
+  // True once the user has explicitly removed the cover, so save sends `imageURL: null`.
+  const [coverRemoved, setCoverRemoved] = useState(false)
 
-  const [commitUpdate, isUpdating] = useMutation<ItineraryEditSheetUpdateMutation>(updateMutation)
   const [commitDelete, isDeleting] = useMutation<ItineraryEditSheetDeleteMutation>(deleteMutation)
 
-  const save = () => {
-    commitUpdate({
-      variables: { input: { id: itinerary.internalID, title: name, description: notes } },
-      onCompleted: (_response, errors) => {
-        if (errors?.length) {
-          toast.show("Could not save your changes", "bottom")
-          return
-        }
+  const currentCoverUrl = itinerary.heroImage?.url ?? null
+  const savedLocalCover = useItineraryLocalCover(itinerary.internalID, currentCoverUrl)
+  const coverImageUrl =
+    localCover?.path || (coverRemoved ? null : savedLocalCover?.path || currentCoverUrl)
+  const hasCover = !!coverImageUrl
 
-        onClose()
-      },
-      onError: () => toast.show("Could not save your changes", "bottom"),
-    })
+  const chooseCoverImage = () => {
+    showPhotoActionSheet(showActionSheetWithOptions, true, false)
+      .then((images) => {
+        if (images?.length >= 1) {
+          const { path, width, height } = images[0]
+          setLocalCover({ path, width, height })
+          setCoverRemoved(false)
+        }
+      })
+      .catch((error) =>
+        console.error("Error when picking an itinerary cover image", JSON.stringify(error))
+      )
+  }
+
+  const removeCoverImage = () => {
+    setLocalCover(undefined)
+    setCoverRemoved(true)
+  }
+
+  // The sheet closes straight away; the upload and the mutation carry on without it.
+  const save = () => {
+    saveItinerary(
+      environment,
+      itinerary,
+      { title: name, description: notes, cover: localCover ?? (coverRemoved ? null : undefined) },
+      () => toast.show("Could not save your changes", "bottom")
+    )
+    onClose()
   }
 
   const destroy = () => {
@@ -115,6 +150,66 @@ export const ItineraryEditSheet: React.FC<Props> = ({
             <Text variant="md">Edit Itinerary</Text>
           </Flex>
 
+          <Flex px={2} pb={2} flexDirection="row" alignItems="center" gap={2}>
+            <Touchable
+              testID="itinerary-edit-cover"
+              onPress={chooseCoverImage}
+              // The "Change/Add cover photo" link next to it does the same, so screen readers
+              // skip this swatch rather than read a second, identical button.
+              accessible={false}
+            >
+              <Flex
+                width={COVER_SIZE}
+                height={COVER_SIZE}
+                borderRadius={8}
+                backgroundColor="mono10"
+                justifyContent="center"
+                alignItems="center"
+                overflow="hidden"
+              >
+                {coverImageUrl ? (
+                  <Image
+                    testID="itinerary-edit-cover-image"
+                    src={coverImageUrl}
+                    performResize={!isLocalImagePath(coverImageUrl)}
+                    width={COVER_SIZE}
+                    height={COVER_SIZE}
+                    resizeMode="cover"
+                  />
+                ) : (
+                  <Text variant="xs" color="mono60" textAlign="center">
+                    No cover
+                  </Text>
+                )}
+              </Flex>
+            </Touchable>
+
+            <Flex gap={0.5}>
+              <Touchable
+                testID="itinerary-edit-cover-change"
+                accessibilityRole="button"
+                accessibilityLabel={hasCover ? "Change cover photo" : "Add cover photo"}
+                onPress={chooseCoverImage}
+              >
+                <Text variant="sm" underline>
+                  {hasCover ? "Change cover photo" : "Add cover photo"}
+                </Text>
+              </Touchable>
+
+              {!!hasCover && (
+                <Touchable
+                  testID="itinerary-edit-cover-remove"
+                  accessibilityRole="button"
+                  onPress={removeCoverImage}
+                >
+                  <Text variant="sm" color="red100" underline>
+                    Remove cover photo
+                  </Text>
+                </Touchable>
+              )}
+            </Flex>
+          </Flex>
+
           <Flex px={2} gap={2}>
             <BottomSheetInput
               title="Name"
@@ -140,13 +235,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({
           </Flex>
 
           <Flex px={2} pt={2} gap={2}>
-            <Button
-              block
-              testID="itinerary-edit-save"
-              loading={isUpdating}
-              disabled={!name.trim()}
-              onPress={save}
-            >
+            <Button block testID="itinerary-edit-save" disabled={!name.trim()} onPress={save}>
               Save Changes
             </Button>
 
@@ -168,28 +257,6 @@ export const ItineraryEditSheet: React.FC<Props> = ({
     </AutomountedBottomSheetModal>
   )
 }
-
-const updateMutation = graphql`
-  mutation ItineraryEditSheetUpdateMutation($input: updateItineraryInput!) {
-    updateItinerary(input: $input) {
-      responseOrError {
-        __typename
-        ... on ItineraryMutationSuccess {
-          itinerary {
-            internalID
-            title
-            description
-          }
-        }
-        ... on ItineraryMutationFailure {
-          mutationError {
-            message
-          }
-        }
-      }
-    }
-  }
-`
 
 const deleteMutation = graphql`
   mutation ItineraryEditSheetDeleteMutation($input: deleteItineraryInput!) {

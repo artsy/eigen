@@ -32,6 +32,9 @@ export const getLocalImage = async (key: string): Promise<LocalImage | null> => 
   return JSON.parse(imageJSONString as string)
 }
 
+export const removeLocalImage = (key: string) =>
+  AsyncStorage.removeItem(`${IMAGE_KEY_PREFIX}_${key}`)
+
 // Clean all images that have been expired
 export const cleanLocalImages = async () => {
   const keys = await AsyncStorage.getAllKeys()

@@ -1,5 +1,6 @@
 import { CheckmarkFillIcon, EmptyCheckCircleIcon, NoArtIcon } from "@artsy/icons/native"
 import { Flex, Text } from "@artsy/palette-mobile"
+import { useItineraryLocalCover } from "app/Scenes/CityGuide/hooks/useItineraryLocalCover"
 import { pluralize } from "app/utils/pluralize"
 // TODO: Replace with Image from @artsy/palette-mobile once the itinerary hero is a real image.
 import { Image as RNImage, TouchableOpacity } from "react-native"
@@ -11,6 +12,7 @@ const NO_ICON_SIZE = 20
 const ROW_RADIUS = 10
 
 interface Props {
+  itineraryID: string
   title: string
   /** Omitted when nothing knows the count — see `itineraryStopsCount`. */
   stopsCount?: number
@@ -21,12 +23,16 @@ interface Props {
 
 /** One itinerary in the Add to Itinerary sheet, ticked when it holds this stop. */
 export const AddToItineraryRow: React.FC<Props> = ({
+  itineraryID,
   title,
   stopsCount,
-  imageUrl,
+  imageUrl: serverImageUrl,
   selected,
   onPress,
 }) => {
+  const localCover = useItineraryLocalCover(itineraryID, serverImageUrl)
+  const imageUrl = localCover?.path || serverImageUrl
+
   return (
     <TouchableOpacity
       testID="add-to-itinerary-row"

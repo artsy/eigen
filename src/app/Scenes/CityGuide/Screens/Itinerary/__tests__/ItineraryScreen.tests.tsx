@@ -195,7 +195,17 @@ describe("ItineraryScreen", () => {
       view.mockResolveLastOperation({
         Me: () => ({
           itinerariesConnection: {
-            edges: [{ node: { internalID: "chill-vibes-only", slug: null, title: "Mine" } }],
+            // The same record as the screen's itinerary, so a mocked `isCurated` would hide the picker.
+            edges: [
+              {
+                node: {
+                  internalID: "chill-vibes-only",
+                  slug: null,
+                  title: "Mine",
+                  isCurated: false,
+                },
+              },
+            ],
           },
         }),
       })
