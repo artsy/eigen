@@ -45,7 +45,6 @@ export const SizesOptions: React.FC<OptionsScreenProps> = ({ navigation }) => {
       />
 
       <ArtworkFilterApplyButton
-        disabled={false}
         onPress={navigation.goBack}
         buttonText="Apply"
         pb={2}
