@@ -65,25 +65,23 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Setup SSH agent
-        uses: ./.github/actions/setup-ssh
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
       - name: Setup JavaScript environment
         uses: ./.github/actions/setup-javascript-environment
 
       - name: Setup Ruby
         uses: ./.github/actions/setup-ruby
 
-      - name: Setup iOS environment
-        uses: ./.github/actions/setup-ios-environment
-
-      - name: Update echo
-        uses: ./.github/actions/setup-update-echo
+      - name: Download fonts from s3
+        run: ./scripts/setup/download-fonts
 
       - name: Install bin modules
         uses: ./.github/actions/setup-bin-modules
+
+      - name: Cache Metro bundler cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/metro
+          key: metro-v1-${{ runner.os }}-${{ hashFiles('yarn.lock', 'babel.config.js', 'alias.js', 'metro.config.js') }}
 
       - name: Deploy to Expo Updates
         id: deploy
