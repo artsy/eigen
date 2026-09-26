@@ -1,4 +1,4 @@
-import { Input, Touchable } from "@artsy/palette-mobile"
+import { Touchable } from "@artsy/palette-mobile"
 import { fireEvent, screen, within } from "@testing-library/react-native"
 import { Select } from "app/Components/Select/Select"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -81,9 +81,7 @@ it("filters on search", async () => {
 
   fireEvent.press(screen.UNSAFE_getAllByType(Touchable)[0])
 
-  await flushPromiseQueue()
-
-  const input = screen.UNSAFE_getAllByType(Input)[0]
+  const input = await screen.findByPlaceholderText("Type to search...")
 
   fireEvent.changeText(input, "Option 2")
 

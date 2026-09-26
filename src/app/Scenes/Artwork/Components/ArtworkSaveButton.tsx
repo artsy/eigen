@@ -103,7 +103,7 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({
               {openOrUpcomingSale ? "Watch lot" : "Saved"}
             </Text>
           )}
-          <Box {...StyleSheet.absoluteFillObject}>
+          <Box {...StyleSheet.absoluteFill}>
             <Text variant="sm" selectable={false}>
               {buttonCopy}
             </Text>

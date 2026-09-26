@@ -70,3 +70,212 @@ index 6e403223a08c3ff5149fe38ca143e1b3e056582c..da7f0f81683b2f969741be39885a1e07
  
    defaultConfig {
      minSdkVersion getExtOrIntegerDefault("minSdkVersion")
+diff --git a/android/src/main/java/com/reactnativekeysjsi/KeysModule.java b/android/src/main/java/com/reactnativekeysjsi/KeysModule.java
+index 68cca5011f61e8efab72c10ec4ebe21bd7efe904..b8a10caee1c2f91ea5deed876b65fb5961245082 100644
+--- a/android/src/main/java/com/reactnativekeysjsi/KeysModule.java
++++ b/android/src/main/java/com/reactnativekeysjsi/KeysModule.java
+@@ -36,7 +36,14 @@ public class KeysModule extends KeysSpec {
+   @ReactMethod(isBlockingSynchronousMethod = true)
+   public boolean install() {
+     try {
++      // In bridgeless (New Architecture) mode getJavaScriptContextHolder() is still
++      // exposed via the @UnstableReactNativeAPI on BridgelessReactContext and returns
++      // the JSI runtime pointer of the active ReactInstance. We use it to install the
++      // JSI host functions (`secureFor`, `publicKeys`) into the runtime.
+       JavaScriptContextHolder jsContext = this.reactContext.getJavaScriptContextHolder();
++      if (jsContext == null || jsContext.get() == 0) {
++        return false;
++      }
+       this.nativeInstall(jsContext.get());
+       return true;
+     } catch (Exception exception) {
+diff --git a/ios/Keys.mm b/ios/Keys.mm
+index b135cda89ae695d143c99cca04719f370b580c55..9c58b2e3d4afd0fcffbfdc78935dd0edda4b17db 100644
+--- a/ios/Keys.mm
++++ b/ios/Keys.mm
+@@ -4,7 +4,10 @@
+ #import <jsi/jsi.h>
+ #import <sys/utsname.h>
+ #import "YeetJSIUtils.h"
+-#import <React/RCTBridge+Private.h>
++
++#ifdef RCT_NEW_ARCH_ENABLED
++#import <ReactCommon/RCTTurboModuleWithJSIBindings.h>
++#endif
+ 
+ #import "crypto.h"
+ #import "GeneratedDotEnv.m"
+@@ -13,6 +16,41 @@
+ using namespace facebook::jsi;
+ using namespace std;
+ 
++// Helper to install JSI bindings into a given runtime
++static void installKeysBindings(jsi::Runtime &runtime) {
++    auto secureFor = Function::createFromHostFunction(runtime,
++                                                     PropNameID::forAscii(runtime, "secureFor"),
++                                                     1,
++                                                     [](Runtime &runtime,
++                                                        const Value &thisValue,
++                                                        const Value *arguments,
++                                                        size_t count) -> Value {
++        NSString *key = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
++        NSString *value = [Keys secureFor:key];
++        return Value(runtime, convertNSStringToJSIString(runtime, value));
++    });
++    runtime.global().setProperty(runtime, "secureFor", std::move(secureFor));
++
++    auto publicKeys = Function::createFromHostFunction(runtime,
++                                                      PropNameID::forAscii(runtime, "publicKeys"),
++                                                      0,
++                                                      [](Runtime &runtime,
++                                                         const Value &thisValue,
++                                                         const Value *arguments,
++                                                         size_t count) -> Value {
++        NSDictionary *s = [Keys public_keys];
++        return Value(runtime, convertNSDictionaryToJSIObject(runtime, s));
++    });
++    runtime.global().setProperty(runtime, "publicKeys", std::move(publicKeys));
++}
++
++#ifdef RCT_NEW_ARCH_ENABLED
++// Adopt RCTTurboModuleWithJSIBindings so RN calls installJSIBindingsWithRuntime:
++// and passes the runtime directly — no bridge or CallInvoker hacks needed.
++@interface Keys () <RCTTurboModuleWithJSIBindings>
++@end
++#endif
++
+ @implementation Keys
+ 
+ @synthesize bridge = _bridge;
+@@ -24,10 +62,30 @@ RCT_EXPORT_MODULE()
+     return YES;
+ }
+ 
+-// Installing JSI Bindings
++#ifdef RCT_NEW_ARCH_ENABLED
++// Called by the TurboModule infrastructure with the actual JS runtime.
++- (void)installJSIBindingsWithRuntime:(jsi::Runtime &)runtime
++                          callInvoker:(const std::shared_ptr<facebook::react::CallInvoker> &)callInvoker {
++    installKeysBindings(runtime);
++}
++#endif
++
++// Installing JSI Bindings (JS-callable method).
++// In New Architecture (bridgeless) mode the bindings are installed above via
++// installJSIBindingsWithRuntime:callInvoker: before this method is ever called,
++// so we can return true immediately.
++// In Old Architecture mode we fall back to the legacy RCTCxxBridge path.
+ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install)
+ {
+-    RCTBridge* bridge = [RCTBridge currentBridge];
++#ifdef RCT_NEW_ARCH_ENABLED
++    // Bridgeless: bindings already installed by installJSIBindingsWithRuntime:.
++    if (self.bridge == nil) {
++        return @true;
++    }
++#endif
++
++    // Legacy Bridge path (Old Architecture or bridge-mode New Arch).
++    RCTBridge* bridge = self.bridge ?: [RCTBridge currentBridge];
+     RCTCxxBridge* cxxBridge = (RCTCxxBridge*)bridge;
+     if (cxxBridge == nil) {
+         return @false;
+@@ -37,76 +95,40 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install)
+     if (jsiRuntime == nil) {
+         return @false;
+     }
+-    
+-    auto& runtime = *jsiRuntime;
+ 
+-    auto secureFor = Function::createFromHostFunction(runtime,
+-                                                    PropNameID::forAscii(runtime,
+-                                                                         "secureFor"),
+-                                                    1,
+-                                                      [](Runtime &runtime,
+-                                                             const Value &thisValue,
+-                                                             const Value *arguments,
+-                                                             size_t count) -> Value {
+-        NSString *key = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
+-        NSString *value = [Keys secureFor:key];
+-        return Value(runtime, convertNSStringToJSIString(runtime, value));
+-    });
+-    
+-    runtime.global().setProperty(runtime, "secureFor", std::move(secureFor));
+-    
+-    
+-    auto publicKeys = Function::createFromHostFunction(runtime,
+-                                                    PropNameID::forAscii(runtime,
+-                                                                         "publicKeys"),
+-                                                    0,
+-                                                      [](Runtime &runtime,
+-                                                             const Value &thisValue,
+-                                                             const Value *arguments,
+-                                                             size_t count) -> Value {
+-        NSDictionary *s = [Keys public_keys];
+-        return Value(runtime, convertNSDictionaryToJSIObject(runtime, s));
+-        
+-    });
+-    
+-    runtime.global().setProperty(runtime, "publicKeys", std::move(publicKeys));
+-    
+-    
+-  
+-   
++    installKeysBindings(*jsiRuntime);
+     return @true;
+ }
+ 
+ 
+ + (NSString *)secureFor: (NSString *)key {
+-      @try {
+-          NSDictionary *privatesKeyEnv = PRIVATE_KEY;
+-          NSString *privateKey = [privatesKeyEnv objectForKey:@"privateKey"];
+-           NSString* stringfyData = [NSString stringWithCString:Crypto().getJniJsonStringifyData([privateKey cStringUsingEncoding:NSUTF8StringEncoding]).c_str() encoding:[NSString defaultCStringEncoding]];
+-           NSData *data = [stringfyData dataUsingEncoding:NSUTF8StringEncoding];
+-           NSMutableDictionary *s = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+-           NSString *value =[s objectForKey:key];
+-          return value;
+-      }
+-      @catch (NSException *exception) {
+-          return @"";
+-      }
+-  }
+-
+-  + (NSDictionary *)public_keys {
++    @try {
++        NSDictionary *privatesKeyEnv = PRIVATE_KEY;
++        NSString *privateKey = [privatesKeyEnv objectForKey:@"privateKey"];
++        NSString* stringfyData = [NSString stringWithCString:Crypto().getJniJsonStringifyData([privateKey cStringUsingEncoding:NSUTF8StringEncoding]).c_str() encoding:[NSString defaultCStringEncoding]];
++        NSData *data = [stringfyData dataUsingEncoding:NSUTF8StringEncoding];
++        NSMutableDictionary *s = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
++        NSString *value = [s objectForKey:key];
++        return value;
++    }
++    @catch (NSException *exception) {
++        return @"";
++    }
++}
++
+++ (NSDictionary *)public_keys {
+     return (NSDictionary *)DOT_ENV;
+-  }
++}
+ 
+-  + (NSString *)publicFor: (NSString *)key {
+-      NSString *value = (NSString *)[self.public_keys objectForKey:key];
+-      return value;
+-  }
+++ (NSString *)publicFor: (NSString *)key {
++    NSString *value = (NSString *)[self.public_keys objectForKey:key];
++    return value;
++}
+ 
+-// Don't compile this code when we build for the old architecture.
+ #ifdef RCT_NEW_ARCH_ENABLED
+ - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+     (const facebook::react::ObjCTurboModule::InitParams &)params {
+-  return std::make_shared<facebook::react::NativeKeysSpecJSI>(params);
++    return std::make_shared<facebook::react::NativeKeysSpecJSI>(params);
+ }
+ #endif
+ @end
