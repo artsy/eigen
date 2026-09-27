@@ -23865,6 +23865,11 @@ type Location {
   city: String
 
   """
+  The City Guide city nearest to this location, if one is within range. Without coordinates, the City Guide city whose name exactly matches the location's city.
+  """
+  cityGuideCity: City
+
+  """
   The City Guide neighborhood this location's postcode falls in. The city comes from the location's coordinates, or its city name without them. Null outside a City Guide city or when no neighborhood matches.
   """
   cityGuideNeighborhood: CityNeighborhood
@@ -23892,6 +23897,16 @@ type Location {
   A type-specific ID.
   """
   internalID: ID!
+
+  """
+  Whether this item occurs in any of the current user's personal itineraries. False when signed out.
+  """
+  isOnMyItineraries: Boolean
+
+  """
+  Personal itineraries containing this item, with every matching stop ID. Details are fetched only when selected. Empty when signed out.
+  """
+  myItineraryStopMemberships: [ItineraryStopMembership!]
   name: String
 
   """
@@ -34247,6 +34262,16 @@ type Query {
   jobs: [Job!]!
 
   """
+  A partner's location
+  """
+  location(
+    """
+    The ID of the location
+    """
+    id: String!
+  ): Location
+
+  """
   A Mailchimp campaign by ID
   """
   mailchimpCampaign(
@@ -44054,6 +44079,16 @@ type Viewer {
   ): ItineraryStop
   job(id: ID!): Job!
   jobs: [Job!]!
+
+  """
+  A partner's location
+  """
+  location(
+    """
+    The ID of the location
+    """
+    id: String!
+  ): Location
 
   """
   A Mailchimp campaign by ID
