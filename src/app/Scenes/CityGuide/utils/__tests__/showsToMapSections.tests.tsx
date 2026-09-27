@@ -118,6 +118,16 @@ describe("showsToMapSections", () => {
     expect((saveControl as React.ReactElement).type).toBe(CityEventSaveControl)
   })
 
+  it("passes the show's itinerary membership to the save control", () => {
+    const sections = showsToMapSections(
+      makeSection([makeShow({ isOnMyItineraries: true })]),
+      TEST_CONTEXT
+    )
+    const saveControl = sections[0].places[0].saveControl as React.ReactElement
+
+    expect(saveControl.props).toMatchObject({ isOnMyItineraries: true })
+  })
+
   it("threads the calling screen's context onto the save control", () => {
     const sections = showsToMapSections(makeSection([makeShow()]), TEST_CONTEXT)
     const saveControl = sections[0].places[0].saveControl as React.ReactElement

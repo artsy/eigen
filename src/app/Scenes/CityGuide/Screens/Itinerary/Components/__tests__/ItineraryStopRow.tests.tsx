@@ -62,11 +62,13 @@ const renderRow = (props: RowProps) =>
   )
 
 describe("ItineraryStopRow", () => {
-  it("shows a check when the stop is already on one of my itineraries", () => {
+  // Read from the show, not the stop: saving the show elsewhere only updates the show.
+  it("shows a check when the stop's show is already on one of my itineraries", () => {
     renderRow({
       stop: makeItineraryStop({
         ...savedStop,
-        isOnMyItineraries: true,
+        isOnMyItineraries: false,
+        item: { ...savedStop.item, isOnMyItineraries: true } as ItineraryStop["item"],
         myItineraries: [{ internalID: "mine-1" }],
       }),
       citySlug: "london-united-kingdom",
@@ -138,6 +140,7 @@ describe("ItineraryStopRow", () => {
           stop={withItem({
             __typename: "Show",
             internalID: "a-show-id",
+            isOnMyItineraries: null,
             name: "A show",
             href: "/show/a-show",
             slug: "a-show",
@@ -164,6 +167,7 @@ describe("ItineraryStopRow", () => {
           stop={withItem({
             __typename: "Show",
             internalID: "white-cube-georg-baselitz-back-again-id",
+            isOnMyItineraries: null,
             name: "Georg Baselitz: Back Again",
             href: "/show/white-cube-georg-baselitz-back-again",
             slug: "white-cube-georg-baselitz-back-again",
@@ -191,6 +195,7 @@ describe("ItineraryStopRow", () => {
           stop={withItem({
             __typename: "Location",
             internalID: "bermondsey-id",
+            isOnMyItineraries: null,
             name: "Bermondsey",
             city: null,
             address: null,
@@ -210,7 +215,7 @@ describe("ItineraryStopRow", () => {
 
       fireEvent.press(screen.getByTestId("stop-card-link"))
 
-      expect(navigate).toHaveBeenCalledWith("/partner/white-cube")
+      expect(navigate).toHaveBeenCalledWith("/partner/white-cube?locationID=bermondsey-id")
     })
 
     // A custom stop has no entity page, so it gets its own screen, addressed by the itinerary

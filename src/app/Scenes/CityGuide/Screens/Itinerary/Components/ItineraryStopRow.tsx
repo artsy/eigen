@@ -7,6 +7,7 @@ import {
   itineraryStopCategory,
   itineraryStopCoordinates,
   itineraryStopImage,
+  itineraryStopIsOnMyItineraries,
   itineraryStopSaveTarget,
   itineraryStopTitle,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
@@ -94,7 +95,7 @@ export const ItineraryStopRow: React.FC<Props> = ({
                 itemID={saveTarget.itemID}
                 itemSlug={saveTarget.itemSlug}
                 name={title}
-                isOnMyItineraries={stop.isOnMyItineraries}
+                isOnMyItineraries={itineraryStopIsOnMyItineraries(stop)}
                 myItineraries={stop.myItineraries}
                 sourceStopID={stop.internalID}
                 sourceShareToken={shareToken}

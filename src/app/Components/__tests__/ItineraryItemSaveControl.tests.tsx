@@ -123,7 +123,9 @@ describe("ItineraryItemSaveControl", () => {
     it("offers Create New Itinerary for that city, tracked against the show page", async () => {
       await openSheet([])
 
-      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
+      // The create row shows while the list loads, but only works once it has.
+      await screen.findByText("0 selected")
+      fireEvent.press(screen.getByTestId("add-to-itinerary-create"))
 
       expect(screen.getByTestId("create-itinerary-name").props.value).toMatch(/^Paris \w+ \d{4}$/)
       expect(mockTrackEvent).toHaveBeenCalledWith({

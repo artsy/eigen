@@ -27,6 +27,7 @@ export const renderShowRow = (show: Show, context: CityEventRowContext) => (
         itemID={show.internalID}
         itemSlug={show.slug ?? undefined}
         name={show.name ?? ""}
+        isOnMyItineraries={show.isOnMyItineraries}
         contextScreenOwnerType={context.contextScreenOwnerType}
         contextScreenOwnerSlug={context.contextScreenOwnerSlug}
       />
@@ -50,6 +51,7 @@ export const renderFairRow = (fair: Fair, context: CityEventRowContext) => (
           itemID={fair.internalID}
           itemSlug={fair.slug ?? undefined}
           name={fair.name ?? ""}
+          isOnMyItineraries={fair.isOnMyItineraries}
           contextScreenOwnerType={context.contextScreenOwnerType}
           contextScreenOwnerSlug={context.contextScreenOwnerSlug}
         />

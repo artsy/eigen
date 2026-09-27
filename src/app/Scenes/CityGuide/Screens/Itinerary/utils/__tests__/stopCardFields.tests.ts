@@ -196,6 +196,19 @@ describe("stopCardFields", () => {
 
       expect(fields.subtitle).toEqual("London")
     })
+
+    // A gallery can have several locations; the partner page's plus needs to know this one.
+    it("links a location stop to its partner, naming the location", () => {
+      const fields = stopCardFields(stop({ title: "" }), {
+        __typename: "Location",
+        internalID: "bermondsey-id",
+        name: "Bermondsey",
+        partner: { name: "White Cube", href: "/partner/white-cube" },
+      })
+
+      expect(fields.kind).toEqual("partner")
+      expect(fields.href).toEqual("/partner/white-cube?locationID=bermondsey-id")
+    })
   })
 
   describe("a custom stop", () => {

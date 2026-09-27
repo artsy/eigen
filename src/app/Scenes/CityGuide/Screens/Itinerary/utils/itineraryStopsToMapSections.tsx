@@ -7,6 +7,7 @@ import {
   itinerarySectionTitle,
   itineraryStopCoordinates,
   itineraryStopImage,
+  itineraryStopIsOnMyItineraries,
   itineraryStopSaveTarget,
   itineraryStopTitle,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
@@ -25,6 +26,8 @@ const customStopInput = (
 ) => ({
   sourceStopID: stop.internalID,
   sourceShareToken: shareToken ?? undefined,
+  isOnMyItineraries: stop.isOnMyItineraries,
+  myItineraries: stop.myItineraries,
   title: itineraryStopTitle(stop),
   address: stop.address ?? undefined,
   note: stop.note ?? undefined,
@@ -95,6 +98,8 @@ export const itineraryStopsToMapSections = (
                 itemID={saveTarget.itemID}
                 itemSlug={saveTarget.itemSlug}
                 name={title}
+                isOnMyItineraries={itineraryStopIsOnMyItineraries(stop)}
+                myItineraries={stop.myItineraries}
                 sourceStopID={stop.internalID}
                 sourceShareToken={itinerary.shareToken}
                 contextScreenOwnerType={OwnerType.cityGuideGuide}
