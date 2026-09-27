@@ -11,6 +11,7 @@ export const cityGuideShowFragment = graphql`
     slug
     internalID
     isStubShow
+    isOnMyItineraries
     name
     status
     href

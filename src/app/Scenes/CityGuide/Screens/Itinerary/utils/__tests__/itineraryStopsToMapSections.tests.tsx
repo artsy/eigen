@@ -135,4 +135,34 @@ describe("itineraryStopsToMapSections", () => {
       isCuratedGuide: true,
     })
   })
+
+  // Same membership `ItineraryStopRow` passes, so the pin and the row agree on the tick.
+  it("passes the stop's itinerary membership to both kinds of save control", () => {
+    const membership = { isOnMyItineraries: true, myItineraries: [{ internalID: "mine" }] }
+    const custom = makeStop({ internalID: "custom", item: null, ...membership })
+    const entity = makeStop({
+      internalID: "entity",
+      ...membership,
+      item: {
+        __typename: "Show",
+        internalID: "some-show-id",
+        isOnMyItineraries: true,
+        slug: "some-show",
+        name: "Some Show",
+        href: "/show/some-show",
+        isFreeAdmission: null,
+        exhibitionPeriod: null,
+        coverImage: null,
+        partner: null,
+        location: null,
+      },
+    })
+
+    const [customPlace, entityPlace] = toMapSections(makeItinerary([custom, entity]))[0].places
+
+    expect(
+      (customPlace.saveControl as React.ReactElement<{ stop: unknown }>).props.stop
+    ).toMatchObject(membership)
+    expect((entityPlace.saveControl as React.ReactElement).props).toMatchObject(membership)
+  })
 })

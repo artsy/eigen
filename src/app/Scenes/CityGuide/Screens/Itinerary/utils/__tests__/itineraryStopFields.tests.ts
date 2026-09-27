@@ -2,6 +2,7 @@ import { makeItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/
 import {
   itineraryStopCoordinates,
   itineraryStopDisplayTime,
+  itineraryStopIsOnMyItineraries,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 
@@ -93,5 +94,24 @@ describe("itineraryStopCoordinates", () => {
 
   it("leaves a stop with no item unmapped", () => {
     expect(itineraryStopCoordinates(stop({}))).toBeUndefined()
+  })
+})
+
+describe("itineraryStopIsOnMyItineraries", () => {
+  // A curated guide's stop keeps its own flag, which saving the gallery on its own page never
+  // updates; the Location record is what that save rewrites.
+  it("reads an entity stop's membership from its item", () => {
+    expect(
+      itineraryStopIsOnMyItineraries(
+        stop({
+          isOnMyItineraries: false,
+          item: { __typename: "Location", internalID: "location-id", isOnMyItineraries: true },
+        })
+      )
+    ).toBe(true)
+  })
+
+  it("reads a custom stop's membership from the stop", () => {
+    expect(itineraryStopIsOnMyItineraries(stop({ isOnMyItineraries: true, item: null }))).toBe(true)
   })
 })

@@ -9,6 +9,7 @@ import {
   Spacer,
   Text,
   Touchable,
+  useColor,
 } from "@artsy/palette-mobile"
 import { ItineraryScreenQuery } from "__generated__/ItineraryScreenQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
@@ -104,6 +105,8 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   const [isMapView, setIsMapView] = useState(false)
   const [selectedStopId, setSelectedStopId] = useState<string | null>(null)
   const [isEditing, setIsEditing] = useState(false)
+
+  const color = useColor()
 
   const environment = useRelayEnvironment()
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -368,7 +371,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                   }}
                   // Tied to the map button's `bottom: -50` / `translateY: -60` below:
                   // changing those offsets changes this gap too.
-                  contentContainerStyle={{ paddingBottom: 60 }}
+                  contentContainerStyle={{ paddingBottom: 60, backgroundColor: color("mono0") }}
                   refreshControl={
                     <RefreshControl
                       refreshing={isRefreshing}
@@ -534,6 +537,7 @@ export const itineraryQuery = graphql`
             __typename
             ... on Show {
               internalID
+              isOnMyItineraries
               slug
               name
               href
@@ -562,6 +566,7 @@ export const itineraryQuery = graphql`
             }
             ... on Fair {
               internalID
+              isOnMyItineraries
               slug
               name
               href
@@ -581,6 +586,7 @@ export const itineraryQuery = graphql`
             }
             ... on Location {
               internalID
+              isOnMyItineraries
               name
               city
               address

@@ -54,6 +54,21 @@ export const itineraryStopSaveTarget = (stop: ItineraryStop): ItinerarySaveTarge
 }
 
 /**
+ * A stop pointing at an entity reads the entity's membership, not its own: saving the entity
+ * on its own page or in another list updates the entity's record and never this stop's.
+ */
+export const itineraryStopIsOnMyItineraries = (stop: ItineraryStop) => {
+  switch (stop.item?.__typename) {
+    case "Show":
+    case "Fair":
+    case "Location":
+      return stop.item.isOnMyItineraries
+    default:
+      return stop.isOnMyItineraries
+  }
+}
+
+/**
  * The generated enum carries `"%future added value"` for a category added server-side. Such a
  * stop shows no badge rather than a raw string the UI has no styling for.
  */

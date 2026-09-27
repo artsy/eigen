@@ -6,6 +6,7 @@ import {
   CreateSheetBackdrop,
 } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItinerarySheet"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { MockPayloadGenerator } from "relay-test-utils"
 
@@ -71,6 +72,17 @@ describe("AddToItinerarySheet", () => {
       MockPayloadGenerator.generate(operation, resolvers)
     )
   }
+
+  // The sheet is already open while this loads, so its chrome stays and only the list waits.
+  it("keeps the title and create row up over a skeleton while the itineraries load", () => {
+    renderWithWrappers(<AddToItinerarySheet {...props} />)
+
+    expect(screen.getByText("Add to Itinerary")).toBeOnTheScreen()
+    expect(screen.getByText("Create New Itinerary")).toBeOnTheScreen()
+    expect(screen.getByTestId("add-to-itinerary-skeleton")).toBeOnTheScreen()
+    expect(screen.getByTestId("add-to-itinerary-done")).toBeDisabled()
+    expect(screen.queryByText(/selected$/)).toBeNull()
+  })
 
   it.each(["SHOW", "FAIR"] as const)(
     "deletes a %s by entity membership even when the listing has no stops",
@@ -496,7 +508,7 @@ describe("AddToItinerarySheet", () => {
         target: { ...props.target, itemSlug: "frida-kahlo" },
       })
 
-      await screen.findByTestId("add-to-itinerary-done")
+      await screen.findByText("0 selected")
       fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
 
       await waitFor(() =>
@@ -625,7 +637,8 @@ describe("AddToItinerarySheet", () => {
     it("tracks tappedCreateItinerary against the sheet's own city", async () => {
       renderWithRelay(withItineraries([]), props)
 
-      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
+      await screen.findByText("0 selected")
+      fireEvent.press(screen.getByTestId("add-to-itinerary-create"))
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: ActionType.tappedCreateItinerary,
@@ -645,7 +658,8 @@ describe("AddToItinerarySheet", () => {
         },
       })
 
-      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
+      await screen.findByText("0 selected")
+      fireEvent.press(screen.getByTestId("add-to-itinerary-create"))
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: ActionType.tappedCreateItinerary,
@@ -660,7 +674,8 @@ describe("AddToItinerarySheet", () => {
     it("keeps the outer sheet up and gives the form a transparent, tap-to-close backdrop", async () => {
       renderWithRelay(withItineraries([]), props)
 
-      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
+      await screen.findByText("0 selected")
+      fireEvent.press(screen.getByTestId("add-to-itinerary-create"))
 
       const [createSheet] = screen.UNSAFE_getAllByProps({ name: "CreateItinerary" })
       expect(createSheet.props.stackBehavior).toBe("push")
@@ -684,7 +699,8 @@ describe("AddToItinerarySheet", () => {
     it("names it after the city, month and year, and counts the characters", async () => {
       renderWithRelay(withItineraries([]), props)
 
-      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
+      await screen.findByText("0 selected")
+      fireEvent.press(screen.getByTestId("add-to-itinerary-create"))
 
       const input = screen.getByTestId("create-itinerary-name")
 
@@ -695,7 +711,8 @@ describe("AddToItinerarySheet", () => {
     it("cannot be submitted empty", async () => {
       renderWithRelay(withItineraries([]), props)
 
-      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
+      await screen.findByText("0 selected")
+      fireEvent.press(screen.getByTestId("add-to-itinerary-create"))
       fireEvent.changeText(screen.getByTestId("create-itinerary-name"), "   ")
 
       expect(screen.getByTestId("create-itinerary-submit")).toBeDisabled()
@@ -705,7 +722,8 @@ describe("AddToItinerarySheet", () => {
     it("goes back to the list without creating anything", async () => {
       const view = renderWithRelay(withItineraries([itinerary("a", "First")]), props)
 
-      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
+      await screen.findByText("0 selected")
+      fireEvent.press(screen.getByTestId("add-to-itinerary-create"))
       expect(screen.getByTestId("create-itinerary-name")).toBeOnTheScreen()
 
       fireEvent.press(screen.getByTestId("create-itinerary-back"))
@@ -718,7 +736,8 @@ describe("AddToItinerarySheet", () => {
     it("creates it with the city and the name", async () => {
       const view = renderWithRelay(withItineraries([]), props)
 
-      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
+      await screen.findByText("0 selected")
+      fireEvent.press(screen.getByTestId("add-to-itinerary-create"))
       fireEvent.changeText(screen.getByTestId("create-itinerary-name"), "Frieze week")
       fireEvent.press(screen.getByTestId("create-itinerary-submit"))
 
@@ -741,7 +760,8 @@ describe("AddToItinerarySheet", () => {
 
       await screen.findByText("First")
 
-      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
+      await screen.findByText("0 selected")
+      fireEvent.press(screen.getByTestId("add-to-itinerary-create"))
       fireEvent.changeText(screen.getByTestId("create-itinerary-name"), "Frieze week")
       fireEvent.press(screen.getByTestId("create-itinerary-submit"))
 

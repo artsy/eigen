@@ -104,6 +104,16 @@ describe("fairsToMapSections", () => {
     })
   })
 
+  it("passes the fair's itinerary membership to the save control", () => {
+    const sections = fairsToMapSections(
+      makeSection([makeFair({ isOnMyItineraries: true })]),
+      TEST_CONTEXT
+    )
+    const saveControl = sections[0].places[0].saveControl as React.ReactElement
+
+    expect(saveControl.props).toMatchObject({ isOnMyItineraries: true })
+  })
+
   it("still offers the control for a fair with no profile", () => {
     const sections = fairsToMapSections(makeSection([makeFair({ profile: null })]), TEST_CONTEXT)
 

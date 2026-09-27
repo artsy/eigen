@@ -1,6 +1,14 @@
 import { ActionType, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { AddIcon } from "@artsy/icons/native"
-import { Button, Flex, Text, useSpace } from "@artsy/palette-mobile"
+import {
+  Button,
+  Flex,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Text,
+  useSpace,
+} from "@artsy/palette-mobile"
 import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
@@ -30,6 +38,7 @@ import { refetchCityGuideItinerariesRail } from "app/Scenes/CityGuide/utils/City
 import { itineraryStopsCount } from "app/Scenes/CityGuide/utils/itineraryStopsCount"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { times } from "lodash"
 import { useState } from "react"
 import { graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -46,6 +55,10 @@ const SNAP_POINTS = ["50%", "95%"]
  * footer, so it renders in the right place while still being driven by `Sheet`'s own state.
  */
 const FOOTER_PORTAL_HOST = "add-to-itinerary-footer"
+/** Shared by the loading and loaded footers, so the host updates one node instead of swapping
+ *  two, which would remount the button. */
+const FOOTER_PORTAL_NAME = "add-to-itinerary-done"
+const SKELETON_ROWS = 3
 
 /** An Artsy entity or a custom stop — whatever the sheet was opened for. */
 export type AddToItineraryTarget = StopTarget & {
@@ -100,6 +113,7 @@ const Sheet: React.FC<Props> = ({
       itemID: target.itemType ? target.itemID : "",
       hasShow: !target.sourceStopID && target.itemType === "SHOW",
       hasFair: !target.sourceStopID && target.itemType === "FAIR",
+      hasLocation: !target.sourceStopID && target.itemType === "LOCATION",
     },
     { fetchPolicy: "network-only" }
   )
@@ -108,6 +122,7 @@ const Sheet: React.FC<Props> = ({
     data.sourceStop?.myItineraryStopMemberships ??
     data.sourceShow?.myItineraryStopMemberships ??
     data.sourceFair?.myItineraryStopMemberships ??
+    data.sourceLocation?.myItineraryStopMemberships ??
     null
   const fetchedItineraries = extractNodes(data.me?.itinerariesConnection).filter(
     (itinerary) => !itinerary.isCurated
@@ -236,42 +251,19 @@ const Sheet: React.FC<Props> = ({
   return (
     <>
       <BottomSheetView style={{ flex: 1 }}>
-        <Flex px={2} pb={2}>
-          <Text variant="md">Add to Itinerary</Text>
-        </Flex>
-
-        <Flex px={2} flexDirection="row" alignItems="center" justifyContent="space-between">
-          {canCreate ? (
-            <Flex flexDirection="row" alignItems="center" gap={0.5}>
-              <AddIcon width={ADD_ICON_SIZE} height={ADD_ICON_SIZE} />
-
-              <Text
-                testID="add-to-itinerary-create"
-                variant="xs"
-                onPress={() => {
-                  trackCohesionEvent({
-                    action: ActionType.tappedCreateItinerary,
-                    context_screen_owner_type: contextScreenOwnerType ?? OwnerType.cityGuide,
-                    context_screen_owner_id: contextScreenOwnerId,
-                    context_screen_owner_slug: contextScreenOwnerType
-                      ? contextScreenOwnerSlug
-                      : citySlug,
-                  })
-                  setIsNaming(true)
-                }}
-                accessibilityRole="button"
-              >
-                Create New Itinerary
-              </Text>
-            </Flex>
-          ) : (
-            <Flex />
-          )}
-
-          <Text variant="xs" color="mono60">
-            {`${selected.length} selected`}
-          </Text>
-        </Flex>
+        <SheetHeader
+          canCreate={canCreate}
+          selectedCount={selected.length}
+          onCreate={() => {
+            trackCohesionEvent({
+              action: ActionType.tappedCreateItinerary,
+              context_screen_owner_type: contextScreenOwnerType ?? OwnerType.cityGuide,
+              context_screen_owner_id: contextScreenOwnerId,
+              context_screen_owner_slug: contextScreenOwnerType ? contextScreenOwnerSlug : citySlug,
+            })
+            setIsNaming(true)
+          }}
+        />
 
         <BottomSheetScrollView
           style={{ flex: 1 }}
@@ -296,7 +288,7 @@ const Sheet: React.FC<Props> = ({
           ))}
         </BottomSheetScrollView>
 
-        <Portal hostName={FOOTER_PORTAL_HOST}>
+        <Portal name={FOOTER_PORTAL_NAME} hostName={FOOTER_PORTAL_HOST}>
           <Flex p={2} backgroundColor="mono0">
             <Button
               testID="add-to-itinerary-done"
@@ -346,11 +338,79 @@ export const CreateSheetBackdrop: React.FC<BottomSheetBackdropProps> = (props) =
   />
 )
 
+/** The part of the sheet that never waits on the network: the title and the create row. */
+const SheetHeader: React.FC<{
+  canCreate: boolean
+  /** Absent while loading, when there is nothing to have selected yet. */
+  selectedCount?: number
+  onCreate?: () => void
+}> = ({ canCreate, selectedCount, onCreate }) => (
+  <>
+    <Flex px={2} pb={2}>
+      <Text variant="md">Add to Itinerary</Text>
+    </Flex>
+
+    <Flex px={2} flexDirection="row" alignItems="center" justifyContent="space-between">
+      {canCreate ? (
+        <Flex flexDirection="row" alignItems="center" gap={0.5}>
+          <AddIcon width={ADD_ICON_SIZE} height={ADD_ICON_SIZE} />
+
+          <Text
+            testID="add-to-itinerary-create"
+            variant="xs"
+            onPress={onCreate}
+            accessibilityRole="button"
+          >
+            Create New Itinerary
+          </Text>
+        </Flex>
+      ) : (
+        <Flex />
+      )}
+
+      {selectedCount !== undefined && (
+        <Text variant="xs" color="mono60">
+          {`${selectedCount} selected`}
+        </Text>
+      )}
+    </Flex>
+  </>
+)
+
+/** The sheet is already open by the time the itineraries load, so the chrome it always has
+ *  stays put and only the list is a placeholder; the rows then land without the sheet jumping. */
+const LoadingSheet: React.FC<AddToItineraryTarget> = ({ citySlug }) => (
+  <BottomSheetView style={{ flex: 1 }}>
+    <SheetHeader canCreate={!!citySlug} />
+
+    <Skeleton>
+      <Flex testID="add-to-itinerary-skeleton" px={2} py={2}>
+        {times(SKELETON_ROWS).map((index) => (
+          <Flex key={index} flexDirection="row" alignItems="center" gap={1} p={1}>
+            <SkeletonBox width={40} height={40} />
+
+            <Flex flex={1} gap={0.5}>
+              <SkeletonText variant="xs">London September 2026</SkeletonText>
+              <SkeletonText variant="xs">3 stops</SkeletonText>
+            </Flex>
+          </Flex>
+        ))}
+      </Flex>
+    </Skeleton>
+
+    <Portal name={FOOTER_PORTAL_NAME} hostName={FOOTER_PORTAL_HOST}>
+      <Flex p={2} backgroundColor="mono0">
+        <Button testID="add-to-itinerary-done" block disabled>
+          Done
+        </Button>
+      </Flex>
+    </Portal>
+  </BottomSheetView>
+)
+
 const SheetWithSuspense = withSuspense({
   Component: Sheet,
-  // The sheet is already open by the time this loads; a spinner inside it would be more
-  // movement than the list appearing.
-  LoadingFallback: () => null,
+  LoadingFallback: LoadingSheet,
   ErrorFallback: NoFallback,
 })
 
@@ -412,6 +472,7 @@ const Query = graphql`
     $itemID: String!
     $hasShow: Boolean!
     $hasFair: Boolean!
+    $hasLocation: Boolean!
   ) {
     sourceShow: show(id: $itemID) @include(if: $hasShow) {
       myItineraryStopMemberships {
@@ -420,6 +481,12 @@ const Query = graphql`
       }
     }
     sourceFair: fair(id: $itemID) @include(if: $hasFair) {
+      myItineraryStopMemberships {
+        itineraryID
+        stopIDs
+      }
+    }
+    sourceLocation: location(id: $itemID) @include(if: $hasLocation) {
       myItineraryStopMemberships {
         itineraryID
         stopIDs

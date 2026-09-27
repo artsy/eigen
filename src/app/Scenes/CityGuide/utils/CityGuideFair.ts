@@ -8,6 +8,7 @@ export const cityGuideFairFragment = graphql`
   fragment CityGuideFair_fair on Fair @relay(plural: true) {
     id
     internalID
+    isOnMyItineraries
     slug
     name
     exhibition_period: exhibitionPeriod(format: SHORT)
