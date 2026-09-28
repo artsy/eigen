@@ -83,3 +83,8 @@ context: |
   - If your explanation contradicts your conclusion, put it under "Questions for Author".
 
   See AGENTS.md, CLAUDE.md, and docs/best_practices.md for additional coding conventions.
+
+# Repos the experimental AI review can read for context (artsy/duchamp#128).
+related_repos:
+  - artsy/metaphysics
+  - artsy/force

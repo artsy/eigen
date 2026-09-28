@@ -9,3 +9,4 @@ jobs:
     uses: artsy/duchamp/.github/workflows/claude-review.yml@main
     secrets:
       anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+      review-app-private-key: ${{ secrets.REVIEW_APP_PRIVATE_KEY }}
