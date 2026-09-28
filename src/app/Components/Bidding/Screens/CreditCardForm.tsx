@@ -72,7 +72,6 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
     errors,
     touched,
     isSubmitting,
-    isValid,
     dirty,
     handleSubmit,
     handleBlur,
@@ -83,7 +82,15 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
     initialValues,
     validationSchema: creditCardFormValidationSchema,
     onSubmit: handleFormSubmit,
+    // Formik's blur validation reads values from the last render, so a blur that lands before
+    // the re-render (e.g. autofill or leaving the phone-pad field) can overwrite `errors` with a
+    // stale result. Change validation already covers the whole form.
+    validateOnBlur: false,
   })
+
+  // Derive validity from the current values instead of Formik's async `errors`, which can be
+  // out of date when several validations race.
+  const isFormValid = creditCardFormValidationSchema.isValidSync(values)
 
   const handleOnCardChange = (cardDetails: Details) => {
     setFieldValue("creditCard", {
@@ -270,7 +277,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
         <Box p={2} backgroundColor="mono0">
           <Button
             testID="credit-card-form-button"
-            disabled={!isValid || !dirty}
+            disabled={!isFormValid || !dirty}
             loading={isSubmitting}
             block
             width={100}
