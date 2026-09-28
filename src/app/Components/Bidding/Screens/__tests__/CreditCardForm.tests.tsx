@@ -72,6 +72,21 @@ describe("CreditCardForm", () => {
     )
   })
 
+  it("shows a field's error when it is blurred without a value", async () => {
+    renderWithWrappers(
+      <CreditCardForm navigation={null!} route={{ params: { onSubmit: onSubmitMock } } as any} />
+    )
+
+    expect(screen.queryByText("Name is required")).not.toBeOnTheScreen()
+
+    fireEvent(screen.getByTestId("input-full-name"), "focus")
+    fireEvent(screen.getByTestId("input-full-name"), "blur", { persist: jest.fn(), target: {} })
+
+    await screen.findByText("Name is required")
+    // Only the touched field shows its error
+    expect(screen.queryByText("Address is required")).not.toBeOnTheScreen()
+  })
+
   it("calls the onSubmit() callback with valid credit card when ADD CREDIT CARD is tapped", async () => {
     ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
 

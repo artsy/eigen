@@ -17,7 +17,7 @@ import { SelectRef } from "app/Components/Select"
 import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useFormik } from "formik"
-import { memo, useCallback, useRef, useState } from "react"
+import { memo, useCallback, useEffect, useRef, useState } from "react"
 import { LayoutChangeEvent } from "react-native"
 import { KeyboardStickyView } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -78,6 +78,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
     handleChange,
     setFieldValue,
     setErrors,
+    validateForm,
   } = useFormik({
     initialValues,
     validationSchema: creditCardFormValidationSchema,
@@ -87,6 +88,12 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
     // stale result. Change validation already covers the whole form.
     validateOnBlur: false,
   })
+
+  // With blur validation off, validate once `touched` has been committed so that leaving an empty
+  // field still shows its error. This runs after the render, so it sees the current values.
+  useEffect(() => {
+    validateForm()
+  }, [touched, validateForm])
 
   // Derive validity from the current values instead of Formik's async `errors`, which can be
   // out of date when several validations race.
