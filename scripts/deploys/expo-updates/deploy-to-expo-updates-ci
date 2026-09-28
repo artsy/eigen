@@ -93,6 +93,11 @@ if ! git diff-index --quiet HEAD --; then
   echo "⚠️  Your working tree is dirty. The published bundle will still come from commit" >&2
   echo "   ${sha:0:8} on GitHub, not your working tree — but the fingerprint pre-flight below runs" >&2
   echo "   against your working tree, so its result may not reflect what actually gets published." >&2
+  read -r -p "Are you sure you want to continue? (y/N): " confirm
+  if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
+    echo "Deployment aborted."
+    exit 1
+  fi
 fi
 
 echo "Fetching latest '$branch' from origin to confirm ${sha:0:8} is pushed..."
