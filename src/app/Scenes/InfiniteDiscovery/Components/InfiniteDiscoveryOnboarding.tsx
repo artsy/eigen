@@ -48,25 +48,40 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
   const [isVisible, setIsVisible] = useState(isNewUserOnboardingSession)
   const [enableTapToDismiss, setEnableTapToDismiss] = useState(false)
 
+  // Timeouts scheduled by showOnboardingAnimation, cleared when the animation loop stops
+  const animationTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([])
+
   useEffect(() => {
-    if (isVisible) {
-      setTimeout(() => {
-        setShowSwiper(true)
-      }, 1000)
+    if (!isVisible) {
+      return
     }
+
+    const timeout = setTimeout(() => {
+      setShowSwiper(true)
+    }, 1000)
+
+    return () => clearTimeout(timeout)
   }, [isVisible])
+
   useEffect(() => {
     const delay = isNewUserOnboardingSession ? 0 : 1000
-    setTimeout(() => {
+    let tapToDismissTimeout: ReturnType<typeof setTimeout> | undefined
+
+    const visibilityTimeout = setTimeout(() => {
       if (isNewUserOnboardingSession || !hasInteractedWithOnboarding) {
         setIsVisible(true)
         // Make sure the user can tap to dismiss the onboarding only after a delay
         // This is required to make sure they can see the onboarding content
-        setTimeout(() => {
+        tapToDismissTimeout = setTimeout(() => {
           setEnableTapToDismiss(true)
         }, 1500)
       }
     }, delay)
+
+    return () => {
+      clearTimeout(visibilityTimeout)
+      clearTimeout(tapToDismissTimeout)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -80,11 +95,11 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
   const showOnboardingAnimation = () => {
     setShowSavedHint(true)
 
-    setTimeout(() => {
+    const swipeTimeout = setTimeout(() => {
       swiperRef.current?.swipeLeftThenRight(ONBOARDING_SWIPE_ANIMATION_DURATION)
     }, ONBOARDING_ANIMATION_DELAY + ONBOARDING_SAVED_HINT_DURATION)
 
-    setTimeout(
+    const hideSavedHintTimeout = setTimeout(
       () => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
         setShowSavedHint(false)
@@ -93,6 +108,9 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
         ONBOARDING_SAVED_HINT_DURATION +
         ONBOARDING_ANIMATION_DELAY
     )
+
+    // Only the latest cycle can still be pending since cycles are 7s apart and each lasts 5s
+    animationTimeoutsRef.current = [swipeTimeout, hideSavedHintTimeout]
   }
 
   useEffect(() => {
@@ -100,14 +118,23 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
       return
     }
 
+    let interval: ReturnType<typeof setInterval> | undefined
+
     // Wait for a second before showing the animation
-    setTimeout(() => {
+    const startTimeout = setTimeout(() => {
       showOnboardingAnimation()
-      // Show the animation every 5 seconds afterwards
-      setInterval(() => {
+      // Show the animation every 7 seconds afterwards
+      interval = setInterval(() => {
         showOnboardingAnimation()
       }, 7000)
     }, 1000)
+
+    return () => {
+      clearTimeout(startTimeout)
+      clearInterval(interval)
+      animationTimeoutsRef.current.forEach(clearTimeout)
+      animationTimeoutsRef.current = []
+    }
   }, [setShowSavedHint, isVisible, showSwiper])
 
   const gradientColors =

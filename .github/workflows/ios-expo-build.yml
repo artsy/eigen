@@ -58,11 +58,16 @@ jobs:
       - name: Set up env for ci
         run: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci
 
-      - name: Create and boot iPhone 17 Pro iOS 26.2 simulator
+      - name: Create and boot simulator
         run: |
-          echo "📱 Creating iPhone 17 Pro simulator with iOS 26.2..."
+          # Read the simulator config from ios-config.json (single source of truth)
+          IPHONE_MODEL=$(jq -r '.iphone_model' ios-config.json)
+          IOS_VERSION=$(jq -r '.ios_version' ios-config.json)
+          DEVICE_TYPE=$(jq -r '.simulator_device_type' ios-config.json)
+          RUNTIME=$(jq -r '.simulator_runtime' ios-config.json)
+          echo "📱 Creating $IPHONE_MODEL simulator with iOS $IOS_VERSION..."
           # Create the simulator
-          SIMULATOR_UDID=$(xcrun simctl create "iPhone 17 Pro Test" com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro com.apple.CoreSimulator.SimRuntime.iOS-26-2)
+          SIMULATOR_UDID=$(xcrun simctl create "$IPHONE_MODEL Test" "$DEVICE_TYPE" "$RUNTIME")
           echo "Created simulator with UDID: $SIMULATOR_UDID"
           echo "SIMULATOR_UDID=$SIMULATOR_UDID" >> $GITHUB_ENV
 

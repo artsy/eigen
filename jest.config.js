@@ -4,7 +4,7 @@ module.exports = {
   cacheDirectory: ".cache/jest",
   moduleFileExtensions: ["ts", "tsx", "js"],
   moduleNameMapper: moduleNameMap,
-  preset: "react-native",
+  preset: "@react-native/jest-preset",
   rootDir: "./",
   setupFilesAfterEnv: [
     "jest-extended/all",
@@ -18,7 +18,7 @@ module.exports = {
   },
   transform: {
     "^[./a-zA-Z0-9$_-]+\\.(bmp|gif|jpg|jpeg|mp4|png|psd|svg|webp)$":
-      "<rootDir>/node_modules/react-native/jest/assetFileTransformer.js",
+      "<rootDir>/node_modules/@react-native/jest-preset/jest/assetFileTransformer.js",
     "\\.graphql$": "jest-raw-loader",
   },
   transformIgnorePatterns: [

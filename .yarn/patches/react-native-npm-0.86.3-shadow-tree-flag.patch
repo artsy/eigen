@@ -1,0 +1,13 @@
+diff --git a/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h b/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
+index ecc79d832fe48f03ca95fffeb00158993bee4557..7ecb74059451fc4ca2cc36874945aed5fddae4d6 100644
+--- a/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
++++ b/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
+@@ -300,7 +300,7 @@ class ReactNativeFeatureFlagsDefaults : public ReactNativeFeatureFlagsProvider {
+   }
+ 
+   bool preventShadowTreeCommitExhaustion() override {
+-    return false;
++    return true;
+   }
+ 
+   bool redBoxV2Android() override {

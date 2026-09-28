@@ -1,11 +1,6 @@
 import { Button, Checkbox } from "@artsy/palette-mobile"
 import Sentry from "@sentry/react-native"
-import {
-  fireEvent,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
 import { ConfirmBid_saleArtwork$data } from "__generated__/ConfirmBid_saleArtwork.graphql"
 import { useCreateBidderPositionMutation } from "__generated__/useCreateBidderPositionMutation.graphql"
@@ -217,21 +212,33 @@ describe("ConfirmBid", () => {
   })
 
   it("can load and display price summary", async () => {
-    const { mockResolveLastOperation } = renderWithRelay({ SaleArtwork: () => saleArtwork })
+    const { env } = renderWithRelay({ SaleArtwork: () => saleArtwork })
 
     expect(screen.getByTestId("default-loading-feedback")).toBeOnTheScreen()
 
-    mockResolveLastOperation({
-      SaleArtwork: () => ({
-        calculatedCost: {
-          buyersPremium: { display: "$9,000.00" },
-          subtotal: { display: "$54,000.00" },
+    await waitFor(() =>
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "PriceSummaryQuery"
+      )
+    )
+
+    await act(async () => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          node: {
+            __typename: "SaleArtwork",
+            id: saleArtwork.id,
+            calculatedCost: {
+              buyersPremium: { display: "$9,000.00" },
+              subtotal: { display: "$54,000.00" },
+            },
+          },
         },
-      }),
+      })
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("default-loading-feedback"))
-
+    expect(screen.queryByTestId("default-loading-feedback")).not.toBeOnTheScreen()
     expect(screen.getByText("Your max bid")).toBeOnTheScreen()
     expect(screen.getByText("$45,000.00")).toBeOnTheScreen()
 

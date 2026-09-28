@@ -40,7 +40,7 @@ asdf plugin add java
 
 ### Set up iOS
 
-Download Xcode version 26.2 (the version CI builds against — see `ios-config.json`). You can find all available versions of Xcode at [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
+Download Xcode version 26.4.1 (the version CI builds against — see `ios-config.json`). You can find all available versions of Xcode at [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
 
 Ask your mentor to add you on the [firebase.console](https://console.firebase.google.com/project/eigen-a7d3b/settings/iam) to be able to release.
 
@@ -191,7 +191,7 @@ In order to have internet access on android emulator you need to add Google's DN
 
 ## Run native tests
 
-We can only run tests in one specific environment, today that is the iPhone 17 Pro with the iOS 26.2 Simulator (see `ios-config.json` for the source of truth). This is because we use visual snapshots for UI regressions.
+We can only run tests in one specific environment, today that is the iPhone 17 Pro with the iOS 26.4 Simulator (see `ios-config.json` for the source of truth). This is because we use visual snapshots for UI regressions.
 
 ### Run tests in Xcode
 
