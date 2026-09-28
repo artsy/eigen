@@ -1,6 +1,5 @@
 import { CameraFillIcon } from "@artsy/icons/native"
 import { Button, ButtonProps } from "@artsy/palette-mobile"
-import { PixelRatio } from "react-native"
 
 interface SearchByPhotoButtonProps {
   onPress: () => void
@@ -14,14 +13,7 @@ const DEFAULT_LABEL = "Search by Photo"
 
 const ICON_SIZE = 20
 
-/**
- * Room a pinned pill needs, so scroll containers underneath can pad their last item clear of it.
- * Tracks `Button`'s own `size="large"` height, which scales with the system font, plus the 10pt of
- * `pb={1}` its callers pin it with.
- */
-export const SEARCH_BY_PHOTO_BUTTON_SPACE = 50 * PixelRatio.getFontScale() + 10
-
-/** A `Button` with this feature's copy and icon, so its three call sites don't repeat them. */
+/** A `Button` with this feature's copy and icon for the Lens screens. */
 export const SearchByPhotoButton: React.FC<SearchByPhotoButtonProps> = ({
   onPress,
   testID = "search-by-photo-button",
