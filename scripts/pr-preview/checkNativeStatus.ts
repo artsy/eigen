@@ -21,16 +21,19 @@ const computeLocalFingerprint = () => {
     throw new Error("node_modules is missing; run the full setup before computing the fingerprint")
   }
 
-  const output = execSync("npx @expo/fingerprint fingerprint:generate | jq -r '.hash'", {
-    cwd: REPO_ROOT,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "inherit"],
-  })
+  const output = execSync(
+    "set -o pipefail && npx @expo/fingerprint fingerprint:generate | jq -r '.hash'",
+    {
+      cwd: REPO_ROOT,
+      encoding: "utf8",
+      shell: "/bin/bash",
+      stdio: ["ignore", "pipe", "inherit"],
+    }
+  )
 
   return parseFingerprint({ value: output, label: "Local fingerprint" })
 }
 
-/** The fingerprint main's latest build was made from, as written by expo-fingerprint-check.yml */
 const readMainFingerprint = () => {
   const output = execFileSync("aws", ["s3", "cp", LATEST_FINGERPRINT_URL, "-"], {
     encoding: "utf8",
@@ -49,7 +52,13 @@ const isCommand = (value: string | undefined): value is Command =>
 /** Reads `--name <value>` from the args. Undefined when the flag isn't passed at all. */
 const readFlag = ({ args, name }: { args: readonly string[]; name: string }) => {
   const index = args.indexOf(`--${name}`)
-  return index === -1 ? undefined : args[index + 1]
+  if (index === -1) return undefined
+
+  const value = args[index + 1]
+  if (value === undefined || value.startsWith("--")) {
+    throw new Error(`--${name} needs a value`)
+  }
+  return value
 }
 
 const writeGithubOutputs = (record: Readonly<Record<string, string>>) => {
