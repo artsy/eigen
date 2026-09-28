@@ -22,7 +22,7 @@ export const AuthBackground: React.FC = () => {
         <ArtsyLogoIcon height={25} width={75} mt={safeArea.top} fill={ALWAYS_WHITE} />
       </Flex>
 
-      <Flex flex={1} px={2} justifyContent="center" position="relative" top={-safeArea.top * 2.5}>
+      <Flex flex={1} px={2} justifyContent="center" position="relative" top={-safeArea.top * 2}>
         <MotiView
           from={{
             opacity: isModalExpanded ? 1 : 0,
