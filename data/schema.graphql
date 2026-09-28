@@ -15927,6 +15927,46 @@ type CreatePartnerListFailure {
   mutationError: GravityMutationError
 }
 
+type CreatePartnerListFromShowFailure {
+  mutationError: GravityMutationError
+}
+
+input CreatePartnerListFromShowMutationInput {
+  clientMutationId: String
+
+  """
+  The ID of the partner.
+  """
+  partnerID: String!
+
+  """
+  The internal ID of the show to create the list from.
+  """
+  showID: String!
+}
+
+type CreatePartnerListFromShowMutationPayload {
+  clientMutationId: String
+
+  """
+  On success: the created partner list. On error: the error that occurred.
+  """
+  partnerListOrError: CreatePartnerListFromShowResponseOrError!
+}
+
+union CreatePartnerListFromShowResponseOrError =
+    CreatePartnerListFromShowFailure
+  | CreatePartnerListFromShowSuccess
+
+type CreatePartnerListFromShowSuccess {
+  partnerList: PartnerList!
+
+  """
+  The source show, so clients can refresh fields like `partnerList`.
+  """
+  show: Show
+}
+
 input CreatePartnerListMutationInput {
   clientMutationId: String
 
@@ -26841,6 +26881,13 @@ type Mutation {
   Creates a new partner list.
   """
   createPartnerList(input: CreatePartnerListMutationInput!): CreatePartnerListMutationPayload
+
+  """
+  Creates a partner list from an existing show (adds the show to inventory).
+  """
+  createPartnerListFromShow(
+    input: CreatePartnerListFromShowMutationInput!
+  ): CreatePartnerListFromShowMutationPayload
 
   """
   Creates a new location for a partner
@@ -37937,6 +37984,11 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   The partner that represents this show, could be a non-Artsy partner
   """
   partner: PartnerTypes
+
+  """
+  The ArtOS collection linked to this show, if one exists. Null if there's no linked collection or the current user can't manage the show's partner.
+  """
+  partnerList: PartnerList
 
   """
   The press release for this show
