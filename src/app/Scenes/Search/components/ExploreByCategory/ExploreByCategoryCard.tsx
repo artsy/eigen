@@ -1,8 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Image, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { ExploreByCategoryCard_category$key } from "__generated__/ExploreByCategoryCard_category.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -16,8 +15,6 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
   category: categoryProp,
   index,
 }) => {
-  const { width } = useScreenDimensions()
-  const space = useSpace()
   const tracking = useTracking()
 
   const card = useFragment(fragment, categoryProp)
@@ -29,10 +26,6 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
   const navigationProps = {
     title: card.title,
   }
-
-  const columns = NUM_COLUMNS_MASONRY
-  const imageColumnGaps = columns === 2 ? space(0.5) : 0
-  const imageWidth = width / columns - space(2) - imageColumnGaps
 
   const handleCardPress = () => {
     if (card.href) {
@@ -53,9 +46,9 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
       prefetchVariables={{ categorySlug: card.slug }}
     >
       <Flex borderRadius={5} overflow="hidden">
-        <Image src={card.imageUrl} width={imageWidth} aspectRatio={IMAGE_RATIO} />
+        <Image src={card.imageUrl} width={CATEGORY_CARD_WIDTH} aspectRatio={IMAGE_RATIO} />
 
-        <Flex position="absolute" top={space(1)} left={space(1)} backgroundColor="mono0" px={0.5}>
+        <Flex position="absolute" top={0} left={0} backgroundColor="mono0" p={0.5}>
           <Text variant="md">{card.title}</Text>
         </Flex>
       </Flex>
@@ -73,7 +66,8 @@ const fragment = graphql`
   }
 `
 
-export const IMAGE_RATIO = 0.85
+export const CATEGORY_CARD_WIDTH = 120
+export const IMAGE_RATIO = 1.5
 
 const tracks = {
   tappedCardGroup: (category: string, href: string, index: number) => ({

@@ -1,12 +1,13 @@
-import { Flex, Skeleton, SkeletonBox, Spacer, useSpace } from "@artsy/palette-mobile"
+import { Flex, Skeleton, SkeletonBox, useSpace } from "@artsy/palette-mobile"
 import { SectionTitle } from "app/Components/SectionTitle"
+import {
+  DISCOVER_CARD_HEIGHT,
+  DISCOVER_CARD_MIN_WIDTH,
+} from "app/Scenes/Search/components/DiscoverSomethingNew/DiscoverSomethingNewChips"
 import { FlatList } from "react-native"
 
 export const DiscoverSomethingNewChipsPlaceholder: React.FC = () => {
   const space = useSpace()
-
-  const listSize = 9
-  const numColumns = Math.ceil(listSize / 3)
 
   return (
     <Skeleton>
@@ -14,17 +15,13 @@ export const DiscoverSomethingNewChipsPlaceholder: React.FC = () => {
         <SectionTitle title="Discover Something New" mx={2} />
 
         <FlatList
+          horizontal
           scrollEnabled={false}
-          columnWrapperStyle={{ paddingHorizontal: space(2) }}
-          ItemSeparatorComponent={() => <Spacer y={1} />}
-          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: space(2), gap: space(1) }}
           showsHorizontalScrollIndicator={false}
-          numColumns={numColumns}
-          data={Array.from({ length: listSize })}
+          data={Array.from({ length: 3 })}
           renderItem={() => (
-            <Flex width={250} mr={1}>
-              <SkeletonBox height={60} borderRadius="5px" />
-            </Flex>
+            <SkeletonBox width={DISCOVER_CARD_MIN_WIDTH} height={DISCOVER_CARD_HEIGHT} />
           )}
         />
       </Flex>
