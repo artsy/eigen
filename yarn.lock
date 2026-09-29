@@ -4827,7 +4827,7 @@ __metadata:
 
 "@gorhom/bottom-sheet@patch:@gorhom/bottom-sheet@npm%3A5.2.14#~/.yarn/patches/@gorhom-bottom-sheet-npm-5.2.14-369bca24fd.patch":
   version: 5.2.14
-  resolution: "@gorhom/bottom-sheet@patch:@gorhom/bottom-sheet@npm%3A5.2.14#~/.yarn/patches/@gorhom-bottom-sheet-npm-5.2.14-369bca24fd.patch::version=5.2.14&hash=0aef57"
+  resolution: "@gorhom/bottom-sheet@patch:@gorhom/bottom-sheet@npm%3A5.2.14#~/.yarn/patches/@gorhom-bottom-sheet-npm-5.2.14-369bca24fd.patch::version=5.2.14&hash=6fffbd"
   dependencies:
     "@gorhom/portal": "npm:1.0.14"
     invariant: "npm:^2.2.4"
@@ -4843,7 +4843,7 @@ __metadata:
       optional: true
     "@types/react-native":
       optional: true
-  checksum: 10c0/59a596392d74bdd9572f32ee449b6f67dd3f2f8adf8987da06bae0b28a548606cac4bd91a936203f1039f17033bceaeded7614abe296295cc4e75a61db2289cf
+  checksum: 10c0/7b45afdf92bb94059408400d7c80b50041614482f2226a2717ffd8d016ca2778241142af90257399d193edab10ee0a629d768eec250d8ea92cb56c64cd2bb0f1
   languageName: node
   linkType: hard
 
