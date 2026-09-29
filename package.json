@@ -124,7 +124,7 @@
     "@artsy/icons": "3.81.0",
     "@artsy/palette-mobile": "24.13.0",
     "@artsy/to-title-case": "1.2.0",
-    "@braze/react-native-sdk": "16.1.0",
+    "@braze/react-native-sdk": "23.1.0",
     "@d11/react-native-fast-image": "patch:@d11/react-native-fast-image@npm%3A8.13.0#~/.yarn/patches/@d11-react-native-fast-image-npm-8.13.0-1ba5757ff5.patch",
     "@expo/react-native-action-sheet": "4.1.1",
     "@gorhom/bottom-sheet": "patch:@gorhom/bottom-sheet@npm%3A5.2.14#~/.yarn/patches/@gorhom-bottom-sheet-npm-5.2.14-369bca24fd.patch",
