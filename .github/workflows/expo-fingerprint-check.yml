@@ -68,6 +68,17 @@ jobs:
           echo "Current fingerprint: $FINGERPRINT"
           echo "fingerprint=$FINGERPRINT" >> $GITHUB_OUTPUT
 
+      - name: Stage fingerprint for PR previews
+        run: |
+          mkdir -p .native-fingerprint
+          echo "${{ steps.generate-fingerprint.outputs.fingerprint }}" > .native-fingerprint/fingerprint.txt
+
+      - name: Cache fingerprint by commit SHA
+        uses: actions/cache/save@v4
+        with:
+          path: .native-fingerprint
+          key: native-fingerprint-${{ github.sha }}
+
       - name: Generate debug fingerprint and upload to S3
         # Only run this step if the EXPO_FINGERPRINT_DEBUG secret is set to 'true'
         # you can find and change this in Eigen's GH repo under variables
