@@ -1,3 +1,22 @@
+diff --git a/src/components/bottomSheetModal/BottomSheetModal.tsx b/src/components/bottomSheetModal/BottomSheetModal.tsx
+index 2954b3f4282e28c1973ab88f479eb2d7889913c5..4160aca0289fbdc501e8bf6292de1f9a155f31b1 100644
+--- a/src/components/bottomSheetModal/BottomSheetModal.tsx
++++ b/src/components/bottomSheetModal/BottomSheetModal.tsx
+@@ -272,6 +272,14 @@ function BottomSheetModalComponent<T = never>(
+         });
+       }
+ 
++      /**
++       * never presented, so there is nothing to dismiss. Falling through would leave the
++       * status stuck at DISMISSING, and `handlePortalRender` would then skip every present.
++       */
++      if (statusRef.current === MODAL_STATUS.INITIAL) {
++        return;
++      }
++
+       /**
+        * if the modal position is already in a closed position,
+        * then we unmount the node and early exit.
 diff --git a/src/hooks/useScrollEventsHandlersDefault.ts b/src/hooks/useScrollEventsHandlersDefault.ts
 index 7b84480e8b002f843d349d4f47d4b4f9f66c17bb..62cfd61a9b29cad509bb4689f339d7e4f14a5b71 100644
 --- a/src/hooks/useScrollEventsHandlersDefault.ts
