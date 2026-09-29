@@ -68,6 +68,7 @@ export const CityGuideItinerariesRail: React.FC<Props> = ({ citySlug, me: meRef 
             title={item.title}
             stopsCount={itineraryStopsCount(item)}
             imageUrl={item.heroImage?.url}
+            itineraryID={item.internalID}
             // Addressed by slug when it has one, else its id — Query.itinerary takes either.
             href={`/city-guide/${citySlug}/itinerary/${item.slug ?? item.internalID}`}
             onPress={() =>
