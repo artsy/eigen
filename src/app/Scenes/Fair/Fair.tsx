@@ -117,7 +117,6 @@ export const Fair: React.FC<FairProps> = ({ fair, initialTab = "Overview" }) => 
           showLargeHeaderText={false}
           BelowTitleHeaderComponent={renderBelowHeaderComponent}
           onTabChange={({ tabName }) => handleTabChange(tabName)}
-          allowHeaderOverscroll
           headerProps={{
             onBack: goBack,
             hideTitle: true,
