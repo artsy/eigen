@@ -260,7 +260,10 @@ describe("ItineraryScreen", () => {
       fireEvent.press(await screen.findByLabelText("Edit Chill Vibes Only"))
 
       expect(await screen.findByText("Edit Itinerary")).toBeOnTheScreen()
-      expect(screen.getByTestId("itinerary-edit-name")).toHaveProp("value", "Chill Vibes Only")
+      expect(screen.getByTestId("itinerary-edit-name")).toHaveProp(
+        "defaultValue",
+        "Chill Vibes Only"
+      )
     })
 
     it("lets its stops be reordered", async () => {
