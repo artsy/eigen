@@ -8,6 +8,7 @@ import {
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { KeyboardController } from "react-native-keyboard-controller"
 import { MockPayloadGenerator } from "relay-test-utils"
 
 // The bottom-sheet mock does not mount its footer host. Render portal children
@@ -750,6 +751,44 @@ describe("AddToItinerarySheet", () => {
         citySlug: "london-united-kingdom",
         title: "Frieze week",
       })
+    })
+
+    // Closing the form with the keyboard still up animated both at once and stuttered.
+    it("hides the keyboard before going back to the list", async () => {
+      let hideKeyboard = () => {}
+      jest
+        .mocked(KeyboardController.dismiss)
+        .mockReturnValueOnce(new Promise<void>((resolve) => (hideKeyboard = resolve)))
+
+      const view = renderWithRelay(withItineraries([itinerary("a", "First")]), props)
+
+      await screen.findByText("0 selected")
+      fireEvent.press(screen.getByTestId("add-to-itinerary-create"))
+      fireEvent.changeText(screen.getByTestId("create-itinerary-name"), "Frieze week")
+      fireEvent.press(screen.getByTestId("create-itinerary-submit"))
+
+      expect(KeyboardController.dismiss).toHaveBeenCalledTimes(1)
+
+      await resolveNext(view, "AddToItinerarySheetCreateMutation", {
+        Mutation: () => ({
+          createItinerary: {
+            responseOrError: {
+              __typename: "ItineraryMutationSuccess",
+              itinerary: { internalID: "new-itinerary" },
+            },
+          },
+        }),
+      })
+
+      // Created and ticked, but still on the form until the keyboard is down.
+      expect(await screen.findByText("1 selected")).toBeOnTheScreen()
+      expect(screen.getByTestId("create-itinerary-name")).toBeOnTheScreen()
+
+      hideKeyboard()
+
+      await waitFor(() =>
+        expect(screen.queryByTestId("create-itinerary-name")).not.toBeOnTheScreen()
+      )
     })
 
     // A regression: `create` used to only tick the new itinerary locally, without adding it

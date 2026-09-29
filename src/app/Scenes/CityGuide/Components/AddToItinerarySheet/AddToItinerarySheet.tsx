@@ -40,6 +40,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { times } from "lodash"
 import { useState } from "react"
+import { KeyboardController } from "react-native-keyboard-controller"
 import { graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -165,6 +166,9 @@ const Sheet: React.FC<Props> = ({
 
   const create = async (title: string) => {
     setIsCreating(true)
+    // Closing the form while the keyboard is still up makes both animate at once and stutter,
+    // so the keyboard goes down while the mutation runs and the switch waits for it.
+    const keyboardHidden = KeyboardController.dismiss()
 
     try {
       const created = await mutate<AddToItinerarySheetCreateMutation>(
@@ -189,6 +193,7 @@ const Sheet: React.FC<Props> = ({
       ])
       // Ticked straight away, so Done adds the stop to what you just made.
       setSelected((current) => [...current, internalID])
+      await keyboardHidden
       setIsNaming(false)
     } catch {
       toast.show("Could not create that itinerary. Please try again.", "bottom")
