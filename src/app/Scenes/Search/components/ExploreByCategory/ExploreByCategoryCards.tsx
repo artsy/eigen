@@ -1,8 +1,9 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text, useSpace } from "@artsy/palette-mobile"
 import { ExploreByCategoryCards_category$key } from "__generated__/ExploreByCategoryCards_category.graphql"
 import { ExploreByCategoryCard } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategoryCard"
 import { extractNodes } from "app/utils/extractNodes"
 import React from "react"
+import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface ExploreByCategoryCardsProps {
@@ -12,6 +13,7 @@ interface ExploreByCategoryCardsProps {
 export const ExploreByCategoryCards: React.FC<ExploreByCategoryCardsProps> = ({
   categories: categoriesProp,
 }) => {
+  const space = useSpace()
   const connection = useFragment(fragment, categoriesProp)
   const categories = extractNodes(connection)
 
@@ -20,15 +22,17 @@ export const ExploreByCategoryCards: React.FC<ExploreByCategoryCardsProps> = ({
   }
 
   return (
-    <Flex p={2} gap={2}>
-      <Text>Explore by Category</Text>
-      <Flex flexDirection="row" flexWrap="wrap" gap={1}>
-        {categories.map((category, index) => {
-          return (
-            <ExploreByCategoryCard category={category} index={index} key={`exploreBy-${index}`} />
-          )
-        })}
-      </Flex>
+    <Flex py={2} gap={2}>
+      <Text px={2}>Explore by Category</Text>
+      <FlatList
+        testID="ExploreByCategoryCards"
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingLeft: space(2), gap: space(1) }}
+        data={categories}
+        keyExtractor={(_, index) => `category-${index}`}
+        renderItem={({ item, index }) => <ExploreByCategoryCard category={item} index={index} />}
+      />
     </Flex>
   )
 }

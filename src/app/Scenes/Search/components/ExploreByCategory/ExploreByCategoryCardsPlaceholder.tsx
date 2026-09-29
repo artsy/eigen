@@ -6,31 +6,43 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
-import { IMAGE_RATIO } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategoryCard"
-import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
+import {
+  IMAGE_RATIO,
+  MAX_TABLET_CATEGORY_CARD_WIDTH,
+} from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategoryCard"
+import { getSearchRailCardWidth } from "app/Scenes/Search/components/searchRailCardWidth"
 import React from "react"
+import { FlatList } from "react-native"
 
 export const ExploreByCategoryCardsPlaceholder: React.FC = () => {
-  const { width } = useScreenDimensions()
   const space = useSpace()
-
-  const columns = NUM_COLUMNS_MASONRY
-  const imageColumnGaps = columns === 2 ? space(0.5) : 0
-  const imageWidth = width / columns - space(2) - imageColumnGaps
+  const { width: screenWidth } = useScreenDimensions()
+  const cardWidth = getSearchRailCardWidth(
+    screenWidth,
+    space(2),
+    0,
+    space(1),
+    MAX_TABLET_CATEGORY_CARD_WIDTH
+  )
 
   return (
     <Skeleton>
-      <Flex p={2} gap={2}>
-        <SkeletonText>Explore by Category</SkeletonText>
-        <Flex flexDirection="row" flexWrap="wrap" gap={1}>
-          <>
-            {Array.from({ length: 6 }).map((_, index) => (
-              <Flex key={index} borderRadius={5}>
-                <SkeletonBox width={imageWidth} height={imageWidth / IMAGE_RATIO} />
-              </Flex>
-            ))}
-          </>
+      <Flex py={2} gap={2}>
+        <Flex px={2}>
+          <SkeletonText>Explore by Category</SkeletonText>
         </Flex>
+        <FlatList
+          horizontal
+          scrollEnabled={false}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingLeft: space(2), gap: space(1) }}
+          data={Array.from({ length: 6 })}
+          renderItem={() => (
+            <Flex borderRadius={5}>
+              <SkeletonBox width={cardWidth} height={cardWidth / IMAGE_RATIO} />
+            </Flex>
+          )}
+        />
       </Flex>
     </Skeleton>
   )
