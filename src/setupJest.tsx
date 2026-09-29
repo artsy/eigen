@@ -127,6 +127,8 @@ jest.mock("expo-updates", () => {
     fetchUpdateAsync: jest.fn(),
     checkForUpdateAsync: jest.fn(),
     reloadAsync: jest.fn(),
+    setUpdateRequestHeadersOverride: jest.fn(),
+    useUpdates: jest.fn(() => ({ isDownloading: false, downloadProgress: 0 })),
     isEnabled: true,
     isEmbeddedLaunch: false,
     channel: "channel",

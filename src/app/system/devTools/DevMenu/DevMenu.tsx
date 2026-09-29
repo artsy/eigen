@@ -13,6 +13,7 @@ import { ExpoUpdatesOptions } from "app/system/devTools/DevMenu/Components/ExpoU
 import { FeatureFlags } from "app/system/devTools/DevMenu/Components/FeatureFlags"
 import { NavButtons } from "app/system/devTools/DevMenu/Components/NavButtons"
 import { NavigateTo } from "app/system/devTools/DevMenu/Components/NavigateTo"
+import { PreviewPROptions } from "app/system/devTools/DevMenu/Components/PreviewPROptions"
 import { PushNotificationOptions } from "app/system/devTools/DevMenu/Components/PushNotificationOptions"
 import { goBack } from "app/system/navigation/navigate"
 import { getAppVersion, getBuildNumber } from "app/utils/appVersion"
@@ -104,6 +105,7 @@ export const DevMenu: React.FC<{}> = () => {
         <NavigateTo />
         <EnvironmentOptions onClose={goBack} />
         <ExpoUpdatesOptions />
+        <PreviewPROptions />
         <PushNotificationOptions />
         <FeatureFlags />
         <Experiments />
