@@ -9,13 +9,7 @@ import {
   Text,
   useSpace,
 } from "@artsy/palette-mobile"
-import {
-  BottomSheetBackdrop,
-  BottomSheetBackdropProps,
-  BottomSheetFooter,
-  BottomSheetScrollView,
-  BottomSheetView,
-} from "@gorhom/bottom-sheet"
+import { BottomSheetFooter, BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet"
 import { Portal, PortalHost } from "@gorhom/portal"
 import { AddToItinerarySheetCreateMutation } from "__generated__/AddToItinerarySheetCreateMutation.graphql"
 import { AddToItinerarySheetQuery } from "__generated__/AddToItinerarySheetQuery.graphql"
@@ -312,10 +306,6 @@ const Sheet: React.FC<Props> = ({
         visible={isNaming}
         name="CreateItinerary"
         onDismiss={() => setIsNaming(false)}
-        // gorhom's default "switch" minimises the outer sheet, and its backdrop with it. "push"
-        // keeps it (and its dimming) up, so this sheet's own backdrop only has to catch taps.
-        stackBehavior="push"
-        backdropComponent={CreateSheetBackdrop}
       >
         <Flex mt={2}>
           <CreateItineraryForm
@@ -329,19 +319,6 @@ const Sheet: React.FC<Props> = ({
     </>
   )
 }
-
-/** Invisible, but closes only the create form on a tap outside it. Transparent rather than
- *  `opacity={0}`: iOS skips views under 0.01 alpha when hit-testing, so those miss the tap. */
-export const CreateSheetBackdrop: React.FC<BottomSheetBackdropProps> = (props) => (
-  <BottomSheetBackdrop
-    {...props}
-    opacity={1}
-    appearsOnIndex={0}
-    disappearsOnIndex={-1}
-    pressBehavior="close"
-    style={[props.style, { backgroundColor: "transparent" }]}
-  />
-)
 
 /** The part of the sheet that never waits on the network: the title and the create row. */
 const SheetHeader: React.FC<{

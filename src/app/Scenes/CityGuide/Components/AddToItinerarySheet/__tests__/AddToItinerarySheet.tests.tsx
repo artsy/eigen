@@ -1,10 +1,6 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { BottomSheetBackdrop, BottomSheetBackdropProps } from "@gorhom/bottom-sheet"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
-import {
-  AddToItinerarySheet,
-  CreateSheetBackdrop,
-} from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItinerarySheet"
+import { AddToItinerarySheet } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItinerarySheet"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -670,31 +666,16 @@ describe("AddToItinerarySheet", () => {
       })
     })
 
-    // Both sheets stay up at once: the outer one keeps its dimming, and a tap outside the form
-    // lands on this backdrop, closing only the form.
-    it("keeps the outer sheet up and gives the form a transparent, tap-to-close backdrop", async () => {
+    // gorhom's default "switch": the list sheet steps aside while the form is up, so only one
+    // sheet shows at a time, the same as the artwork lists' create flow.
+    it("switches to the form rather than stacking it on the list", async () => {
       renderWithRelay(withItineraries([]), props)
 
       await screen.findByText("0 selected")
       fireEvent.press(screen.getByTestId("add-to-itinerary-create"))
 
       const [createSheet] = screen.UNSAFE_getAllByProps({ name: "CreateItinerary" })
-      expect(createSheet.props.stackBehavior).toBe("push")
-      expect(createSheet.props.backdropComponent).toBe(CreateSheetBackdrop)
-
-      const backdrop = CreateSheetBackdrop({
-        animatedIndex: { value: 0 },
-        animatedPosition: { value: 0 },
-        style: { flex: 1 },
-      } as unknown as BottomSheetBackdropProps) as React.ReactElement<any>
-      expect(backdrop.type).toBe(BottomSheetBackdrop)
-      expect(backdrop.props).toMatchObject({
-        opacity: 1,
-        appearsOnIndex: 0,
-        disappearsOnIndex: -1,
-        pressBehavior: "close",
-        style: [{ flex: 1 }, { backgroundColor: "transparent" }],
-      })
+      expect(createSheet.props.stackBehavior).toBeUndefined()
     })
 
     it("names it after the city, month and year, and counts the characters", async () => {
