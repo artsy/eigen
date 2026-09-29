@@ -1,5 +1,5 @@
 import { ChevronDownIcon } from "@artsy/icons/native"
-import { Button, Theme } from "@artsy/palette-mobile"
+import { Button, Flex, Theme } from "@artsy/palette-mobile"
 import Spinner from "app/Components/Spinner"
 import { GlobalStore } from "app/store/GlobalStore"
 
@@ -14,9 +14,30 @@ const ICON_SIZE = 18
 export const CityGuideCitySwitcherButton: React.FC<Props> = ({ cityName, onPress, isListView }) => {
   const colorScheme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
   const theme = isListView ? (colorScheme !== "dark" ? "v3dark" : "v3light") : "v3dark"
+
   return (
     // Always use dark mode for the city switcher button
     <Theme theme={theme}>
+      <Flex position="absolute" opacity={0.7}>
+        <Button
+          testID="city-guide-city-switcher"
+          variant="fillDark"
+          onPress={onPress}
+          size="small"
+          iconPosition="right"
+          icon={<ChevronDownIcon color="mono100" width={ICON_SIZE} height={ICON_SIZE} />}
+        >
+          {cityName ? (
+            cityName
+          ) : (
+            <Spinner
+              spinnerColor="mono60"
+              style={{ backgroundColor: "transparent" }}
+              size="medium"
+            />
+          )}
+        </Button>
+      </Flex>
       <Button
         testID="city-guide-city-switcher"
         variant="outlineLight"
