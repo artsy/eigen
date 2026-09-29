@@ -1,8 +1,16 @@
-import { screen } from "@testing-library/react-native"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { screen, waitFor } from "@testing-library/react-native"
 import { ItineraryHeaderTestsQuery } from "__generated__/ItineraryHeaderTestsQuery.graphql"
 import { ItineraryHeader } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryHeader"
+import { storeLocalImage } from "app/utils/LocalImageStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
+
+// The real Image passes `src` to FastImage as `source.uri`, so swap in RN's Image to assert on it.
+jest.mock("@artsy/palette-mobile", () => ({
+  ...jest.requireActual("@artsy/palette-mobile"),
+  Image: require("react-native").Image,
+}))
 
 describe("ItineraryHeader", () => {
   const { renderWithRelay } = setupTestWrapper<ItineraryHeaderTestsQuery>({
@@ -53,5 +61,27 @@ describe("ItineraryHeader", () => {
     })
 
     expect(screen.getByTestId("itinerary-header-no-image")).toHaveStyle({ paddingTop: 90 })
+  })
+
+  it("shows a cover just saved on this device over the server's old one", async () => {
+    await storeLocalImage("itinerary-cover-itinerary-1", {
+      path: "file:///photo.jpg",
+      width: 1200,
+      height: 800,
+    })
+
+    renderWithRelay({
+      Itinerary: () => ({
+        internalID: "itinerary-1",
+        isCurated: false,
+        heroImage: { url: "https://example.com/old.jpg" },
+      }),
+    })
+
+    await waitFor(() =>
+      expect(screen.getByTestId("itinerary-hero-image")).toHaveProp("src", "file:///photo.jpg")
+    )
+
+    await AsyncStorage.clear()
   })
 })

@@ -106,6 +106,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   const [isMapView, setIsMapView] = useState(false)
   const [selectedStopId, setSelectedStopId] = useState<string | null>(null)
   const [isEditing, setIsEditing] = useState(false)
+  const [coverSavedAt, setCoverSavedAt] = useState(0)
 
   const color = useColor()
 
@@ -383,7 +384,11 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                     />
                   }
                 >
-                  <ItineraryHeader itinerary={itinerary} topInset={top + NAVBAR_HEIGHT} />
+                  <ItineraryHeader
+                    itinerary={itinerary}
+                    topInset={top + NAVBAR_HEIGHT}
+                    localCoverRefreshKey={coverSavedAt}
+                  />
 
                   <Flex px={2} pt={2}>
                     {!sections.length && (
@@ -474,12 +479,14 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
               internalID: itinerary.internalID,
               name: itinerary.title,
               description: itinerary.description,
+              coverImageUrl: itinerary.heroImage?.url,
             }}
             citySlug={itinerary.citySlug}
             // The guide is gone once deleted — leave, rather than refetch it. The itineraries
             // list is evicted and reloaded separately, by the sheet's own delete, since this
             // screen doesn't own that list's Relay connection.
             onDeleted={goBack}
+            onCoverSaved={() => setCoverSavedAt(Date.now())}
           />
         )}
       </AddToItineraryProvider>
@@ -502,6 +509,9 @@ export const itineraryQuery = graphql`
       description
       slug
       shareToken
+      heroImage {
+        url(version: "large")
+      }
       ...ItineraryHeader_itinerary
       ...ItineraryShareButton_itinerary
 
