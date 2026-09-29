@@ -23473,6 +23473,30 @@ type Itinerary {
   description: String
 
   """
+  End of the window the guide is listed in, exclusive. Null means unbounded.
+  """
+  displayEndAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
+  Start of the window the guide is listed in, inclusive. Null means unbounded.
+  """
+  displayStartAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
   Whether the guide is editorially featured, to be surfaced ahead of its peers.
   """
   featured: Boolean!
@@ -34268,6 +34292,11 @@ type Query {
     first: Int
 
     """
+    Include guides outside their display window. Only editors can use this.
+    """
+    ignoreDisplayWindow: Boolean
+
+    """
     Only curated (editorial) or only personal itineraries
     """
     isCurated: Boolean
@@ -44092,6 +44121,11 @@ type Viewer {
     first: Int
 
     """
+    Include guides outside their display window. Only editors can use this.
+    """
+    ignoreDisplayWindow: Boolean
+
+    """
     Only curated (editorial) or only personal itineraries
     """
     isCurated: Boolean
@@ -45484,6 +45518,16 @@ input createItineraryInput {
   description: String
 
   """
+  ISO 8601 UTC end of the window the guide is listed in, exclusive.
+  """
+  displayEndAt: String
+
+  """
+  ISO 8601 UTC start of the window the guide is listed in, inclusive.
+  """
+  displayStartAt: String
+
+  """
   Mark the guide as editorially featured. Needs the content_manager role.
   """
   featured: Boolean
@@ -46256,6 +46300,16 @@ input updateItineraryInput {
   citySlug: String
   clientMutationId: String
   description: String
+
+  """
+  ISO 8601 UTC end of the window the guide is listed in, exclusive. Pass `null` to make it unbounded.
+  """
+  displayEndAt: String
+
+  """
+  ISO 8601 UTC start of the window the guide is listed in, inclusive. Pass `null` to make it unbounded.
+  """
+  displayStartAt: String
 
   """
   Mark the guide as editorially featured. Needs the content_manager role.
