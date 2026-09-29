@@ -20,10 +20,10 @@ PODS:
     - GoogleUtilities/Environment (~> 8.0)
     - GoogleUtilities/UserDefaults (~> 8.0)
     - PromisesObjC (~> 2.4)
-  - braze-react-native-sdk (16.1.0):
-    - BrazeKit (~> 13.2.0)
-    - BrazeLocation (~> 13.2.0)
-    - BrazeUI (~> 13.2.0)
+  - braze-react-native-sdk (23.1.0):
+    - BrazeKit (~> 18.2.1)
+    - BrazeLocation (~> 18.2.1)
+    - BrazeUI (~> 18.2.1)
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -45,11 +45,11 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - BrazeKit (13.2.1)
-  - BrazeLocation (13.2.1):
-    - BrazeKit (= 13.2.1)
-  - BrazeUI (13.2.1):
-    - BrazeKit (= 13.2.1)
+  - BrazeKit (18.2.1)
+  - BrazeLocation (18.2.1):
+    - BrazeKit (= 18.2.1)
+  - BrazeUI (18.2.1):
+    - BrazeKit (= 18.2.1)
   - BVLinearGradient (2.8.3):
     - React-Core
   - ComputableLayout (0.7.0):
@@ -3523,9 +3523,9 @@ DEPENDENCIES:
   - AFNetworking/NSURLConnection (= 2.7.0)
   - AFNetworking/NSURLSession (= 2.7.0)
   - "braze-react-native-sdk (from `../node_modules/@braze/react-native-sdk`)"
-  - BrazeKit (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeKit.podspec`)
-  - BrazeLocation (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeLocation.podspec`)
-  - BrazeUI (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeUI.podspec`)
+  - BrazeKit (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/18.2.1/BrazeKit.podspec`)
+  - BrazeLocation (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/18.2.1/BrazeLocation.podspec`)
+  - BrazeUI (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/18.2.1/BrazeUI.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - "CookieManager (from `../node_modules/@preeternal/react-native-cookie-manager`)"
   - EASClient (from `../node_modules/expo-eas-client/ios`)
@@ -3794,11 +3794,11 @@ EXTERNAL SOURCES:
   braze-react-native-sdk:
     :path: "../node_modules/@braze/react-native-sdk"
   BrazeKit:
-    :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeKit.podspec
+    :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/18.2.1/BrazeKit.podspec
   BrazeLocation:
-    :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeLocation.podspec
+    :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/18.2.1/BrazeLocation.podspec
   BrazeUI:
-    :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeUI.podspec
+    :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/18.2.1/BrazeUI.podspec
   BVLinearGradient:
     :path: "../node_modules/react-native-linear-gradient"
   CookieManager:
@@ -4113,10 +4113,10 @@ SPEC CHECKSUMS:
   AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
   AppAuth: 1c1a8afa7e12f2ec3a294d9882dfa5ab7d3cb063
   AppCheckCore: cc8fd0a3a230ddd401f326489c99990b013f0c4f
-  braze-react-native-sdk: 6a3c4f3192c13b0d2179e30dc7c4456d214f8559
-  BrazeKit: 4dff9532234bb6faa1721a87f7927cc4c2880f28
-  BrazeLocation: 7c828b42008203ae512e0ed846c4e0e294c27052
-  BrazeUI: df3abdd46d2fe158cac147e9a8651d56be67a337
+  braze-react-native-sdk: 17be74c0b2086e7c0db21aa02f4598fe1aff3e55
+  BrazeKit: 2834efe30d0939776d1ada0f05a7430c6d1b4731
+  BrazeLocation: 1f34ba27571bd7a6730af0b0c0f91dedfcf93337
+  BrazeUI: c45bd09f349e5af3cf0fba3a2519f27a42480a5c
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   ComputableLayout: c50faffac4ed9f8f05b0ce5e6f3a60df1f6042c8
   ContextMenuAuxiliaryPreview: 20be0be795b783b68f8792732eed4bed9f202c1c
@@ -4345,6 +4345,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 18b74b3ade30bebc1904004dfaceae1dd02a330a
 
-PODFILE CHECKSUM: 3478e2f0b1c05d1cb6e6e775f29ef089e198b469
+PODFILE CHECKSUM: 3637779f30c3422766e1d6f937cc4296e5e89e06
 
 COCOAPODS: 1.16.2
