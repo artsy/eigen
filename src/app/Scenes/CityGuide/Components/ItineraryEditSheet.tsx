@@ -1,12 +1,21 @@
 import { Button, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { CityItinerariesQuery } from "__generated__/CityItinerariesQuery.graphql"
 import { ItineraryEditSheetDeleteMutation } from "__generated__/ItineraryEditSheetDeleteMutation.graphql"
 import { ItineraryEditSheetUpdateMutation } from "__generated__/ItineraryEditSheetUpdateMutation.graphql"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { useToast } from "app/Components/Toast/toastHook"
+import { CityItinerariesScreenQuery } from "app/Scenes/CityGuide/Screens/CityItineraries"
+import { refetchCityGuideItinerariesRail } from "app/Scenes/CityGuide/utils/CityGuideItinerariesRailQuery"
 import BottomSheetKeyboardAwareScrollView from "app/utils/keyboard/BottomSheetKeyboardAwareScrollView"
 import { useState } from "react"
-import { ConnectionHandler, graphql, useMutation } from "react-relay"
+import {
+  ConnectionHandler,
+  fetchQuery,
+  graphql,
+  useMutation,
+  useRelayEnvironment,
+} from "react-relay"
 
 const NOTES_LIMIT = 200
 
@@ -20,9 +29,9 @@ interface Props {
     description?: string | null
   }
   /**
-   * Identifies the `CityItineraries_itinerariesConnection` to evict a deleted itinerary from,
-   * so the itineraries list isn't left showing it stale. Safe to pass even when that list was
-   * never loaded — the eviction is a no-op if the connection isn't in the Relay store.
+   * Identifies the `CityItineraries_itinerariesConnection` to evict a deleted itinerary from and
+   * reload, so the itineraries list isn't left stale. Safe to pass even when that list was never
+   * loaded — both are skipped if the connection isn't in the Relay store.
    */
   citySlug: string
   /** Called after a successful delete, so the caller can leave the screen or refresh. */
@@ -46,6 +55,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({
   onDeleted,
 }) => {
   const toast = useToast()
+  const environment = useRelayEnvironment()
   const [name, setName] = useState(itinerary.name)
   const [notes, setNotes] = useState(itinerary.description ?? "")
 
@@ -68,6 +78,8 @@ export const ItineraryEditSheet: React.FC<Props> = ({
   }
 
   const destroy = () => {
+    let isListLoaded = false
+
     commitDelete({
       variables: { input: { id: itinerary.internalID } },
       updater: (store, data) => {
@@ -85,6 +97,8 @@ export const ItineraryEditSheet: React.FC<Props> = ({
             citySlug,
           })
 
+        isListLoaded = !!connection
+
         if (connection && deletedItineraryId) {
           ConnectionHandler.deleteNode(connection, deletedItineraryId)
         }
@@ -93,6 +107,21 @@ export const ItineraryEditSheet: React.FC<Props> = ({
         if (errors?.length) {
           toast.show("Could not delete this itinerary", "bottom")
           return
+        }
+
+        // The rail reads `me.itinerariesConnection` without a connection key, so the eviction
+        // above never reaches it.
+        refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
+
+        // The list pages by offset, so one fewer row shifts every later page back by one and
+        // its next `loadNext` would skip an itinerary. Reloading the first page resets the cursor.
+        if (isListLoaded) {
+          fetchQuery<CityItinerariesQuery>(
+            environment,
+            CityItinerariesScreenQuery,
+            { citySlug },
+            { fetchPolicy: "network-only" }
+          ).subscribe({})
         }
 
         onClose()
@@ -118,7 +147,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({
           <Flex px={2} gap={2}>
             <BottomSheetInput
               title="Name"
-              value={name}
+              defaultValue={name}
               onChangeText={setName}
               testID="itinerary-edit-name"
             />
@@ -126,7 +155,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({
             <Flex>
               <BottomSheetInput
                 title="Notes"
-                value={notes}
+                defaultValue={notes}
                 onChangeText={setNotes}
                 multiline
                 maxLength={NOTES_LIMIT}

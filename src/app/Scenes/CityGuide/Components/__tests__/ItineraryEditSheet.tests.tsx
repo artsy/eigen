@@ -66,9 +66,9 @@ describe("ItineraryEditSheet", () => {
   it("prefills the name and notes", () => {
     renderWithRelay({})
 
-    expect(screen.getByTestId("itinerary-edit-name")).toHaveProp("value", "London Oct 2026")
+    expect(screen.getByTestId("itinerary-edit-name")).toHaveProp("defaultValue", "London Oct 2026")
     expect(screen.getByTestId("itinerary-edit-notes")).toHaveProp(
-      "value",
+      "defaultValue",
       "If time, check out Borough Market"
     )
   })
@@ -154,6 +154,54 @@ describe("ItineraryEditSheet", () => {
 
     expect(screen.getByTestId("remaining-itineraries")).toHaveTextContent("itinerary-2")
     expect(onDeleted).toHaveBeenCalled()
+  })
+
+  // The list pages by offset: without a reload, its next page would start one itinerary late.
+  it("reloads the itineraries list's first page after a delete", () => {
+    const { env, mockResolveLastOperation } = renderWithRelay({
+      Me: () => ({
+        itinerariesConnection: {
+          edges: [{ node: { id: "itinerary-id-1", internalID: "itinerary-1" } }],
+        },
+      }),
+    })
+
+    fireEvent.press(screen.getByTestId("itinerary-edit-delete"))
+
+    mockResolveLastOperation({
+      deleteItineraryPayload: () => ({
+        responseOrError: {
+          __typename: "ItineraryMutationSuccess",
+          itinerary: { id: "itinerary-id-1" },
+        },
+      }),
+    })
+
+    const listQuery = env.mock
+      .getAllOperations()
+      .find((operation) => operation.request.node.params.name === "CityItinerariesQuery")
+    expect(listQuery?.request.variables).toEqual({ citySlug: "london" })
+  })
+
+  // Deleting the only itinerary used to leave the city guide's "Your Itineraries" rail showing it.
+  it("refetches the itineraries rail after a delete", () => {
+    const { env, mockResolveLastOperation } = renderWithRelay({})
+
+    fireEvent.press(screen.getByTestId("itinerary-edit-delete"))
+
+    mockResolveLastOperation({
+      deleteItineraryPayload: () => ({
+        responseOrError: {
+          __typename: "ItineraryMutationSuccess",
+          itinerary: { id: "itinerary-id-1" },
+        },
+      }),
+    })
+
+    const railQuery = env.mock
+      .getAllOperations()
+      .find((operation) => operation.request.node.params.name === "CityGuideItinerariesRailQuery")
+    expect(railQuery?.request.variables).toEqual({ citySlug: "london", first: 10 })
   })
 
   // Changing one needs an ArImage upload flow that does not exist yet, so the sheet says
