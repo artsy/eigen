@@ -118,7 +118,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({
           <Flex px={2} gap={2}>
             <BottomSheetInput
               title="Name"
-              value={name}
+              defaultValue={name}
               onChangeText={setName}
               testID="itinerary-edit-name"
             />
@@ -126,7 +126,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({
             <Flex>
               <BottomSheetInput
                 title="Notes"
-                value={notes}
+                defaultValue={notes}
                 onChangeText={setNotes}
                 multiline
                 maxLength={NOTES_LIMIT}
