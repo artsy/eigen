@@ -6,7 +6,10 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
-import { IMAGE_RATIO } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategoryCard"
+import {
+  IMAGE_RATIO,
+  MAX_TABLET_CATEGORY_CARD_WIDTH,
+} from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategoryCard"
 import { getSearchRailCardWidth } from "app/Scenes/Search/components/searchRailCardWidth"
 import React from "react"
 import { FlatList } from "react-native"
@@ -14,7 +17,13 @@ import { FlatList } from "react-native"
 export const ExploreByCategoryCardsPlaceholder: React.FC = () => {
   const space = useSpace()
   const { width: screenWidth } = useScreenDimensions()
-  const cardWidth = getSearchRailCardWidth(screenWidth, space(2), 0, space(1))
+  const cardWidth = getSearchRailCardWidth(
+    screenWidth,
+    space(2),
+    0,
+    space(1),
+    MAX_TABLET_CATEGORY_CARD_WIDTH
+  )
 
   return (
     <Skeleton>
@@ -27,7 +36,7 @@ export const ExploreByCategoryCardsPlaceholder: React.FC = () => {
           scrollEnabled={false}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingLeft: space(2), gap: space(1) }}
-          data={Array.from({ length: 3 })}
+          data={Array.from({ length: 6 })}
           renderItem={() => (
             <Flex borderRadius={5}>
               <SkeletonBox width={cardWidth} height={cardWidth / IMAGE_RATIO} />

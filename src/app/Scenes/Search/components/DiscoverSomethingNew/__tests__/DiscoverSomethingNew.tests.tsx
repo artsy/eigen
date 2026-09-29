@@ -45,7 +45,6 @@ describe("DiscoverSomethingNew", () => {
         slug: "test-collection",
         title: "Test Collection",
         category: "Test Category",
-        thumbnail: "https://example.com/image.jpg",
       }),
     })
 
@@ -63,7 +62,6 @@ describe("DiscoverSomethingNew", () => {
         slug: "test-collection",
         title: "Test Collection",
         category: "Test Category",
-        thumbnail: "https://example.com/image.jpg",
       }),
     })
 

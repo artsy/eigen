@@ -1,19 +1,20 @@
 import { isTablet } from "react-native-device-info"
 
 const PHONE_FULL_CARDS = 2
-const MAX_TABLET_CARD_WIDTH = 150
+const DEFAULT_MAX_TABLET_CARD_WIDTH = 150
 
 export const getSearchRailCardWidth = (
   screenWidth: number,
   leadingPadding: number,
   trailingPadding: number,
-  gap: number
+  gap: number,
+  maxTabletCardWidth = DEFAULT_MAX_TABLET_CARD_WIDTH
 ) => {
   const contentWidth = screenWidth - leadingPadding - trailingPadding
   const fullCards = isTablet()
     ? Math.max(
         PHONE_FULL_CARDS,
-        Math.ceil((contentWidth - MAX_TABLET_CARD_WIDTH / 2) / (MAX_TABLET_CARD_WIDTH + gap))
+        Math.ceil((contentWidth - maxTabletCardWidth / 2) / (maxTabletCardWidth + gap))
       )
     : PHONE_FULL_CARDS
 

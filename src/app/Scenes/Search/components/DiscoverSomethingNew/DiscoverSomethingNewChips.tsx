@@ -84,7 +84,6 @@ const fragment = graphql`
     slug
     title
     category
-    thumbnail
   }
 `
 

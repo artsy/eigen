@@ -29,7 +29,13 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
   const navigationProps = {
     title: card.title,
   }
-  const cardWidth = getSearchRailCardWidth(screenWidth, space(2), 0, space(1))
+  const cardWidth = getSearchRailCardWidth(
+    screenWidth,
+    space(2),
+    0,
+    space(1),
+    MAX_TABLET_CATEGORY_CARD_WIDTH
+  )
 
   const handleCardPress = () => {
     if (card.href) {
@@ -71,6 +77,7 @@ const fragment = graphql`
 `
 
 export const IMAGE_RATIO = 1.5
+export const MAX_TABLET_CATEGORY_CARD_WIDTH = 240
 
 const tracks = {
   tappedCardGroup: (category: string, href: string, index: number) => ({
