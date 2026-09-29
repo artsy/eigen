@@ -60,6 +60,8 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
           <MasonryInfiniteScrollArtworkGrid
             artworks={artworks as unknown as MasonryArtworkItem[]}
             contextModule={contextModule}
+            contextScreenOwnerId={contextScreenOwnerId}
+            contextScreenOwnerSlug={contextScreenOwnerSlug}
             contextScreenOwnerType={contextScreenOwnerType}
             scrollEnabled={false}
             hidePartner={hidePartner}
