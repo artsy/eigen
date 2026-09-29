@@ -33,7 +33,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState, useTransition } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useFragment, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -57,6 +57,8 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   const safeAreaInsets = useSafeAreaInsets()
 
   const [viewer, refetch] = useRefetchableFragment(cityGuideMapFragment, props.viewer)
+  const [isLoadingCity, startLoadingCity] = useTransition()
+  const [loadingCityName, setLoadingCityName] = useState<string>()
   const { trackEvent } = useTracking()
 
   const showRefs: CityGuideShow_show$key = extractNodes(viewer.city?.shows)
@@ -324,9 +326,21 @@ export const CityGuideMap: React.FC<Props> = (props) => {
 
   const onSelectCity = (newCity: CityData) => {
     setShowCityPicker(false)
-    console.warn("setPreviouslySelectedCitySlug", newCity.slug)
     setPreviouslySelectedCitySlug(newCity.slug)
-    refetch({ citySlug: newCity.slug, maxInt: MAX_GRAPHQL_INT })
+    setLoadingCityName(newCity.name)
+
+    cameraRef.current?.setCamera({
+      centerCoordinate: [newCity.coordinates.lng, newCity.coordinates.lat],
+      zoomLevel: DefaultZoomLevel,
+      animationMode: "flyTo",
+      animationDuration: 2000,
+    })
+
+    // A transition keeps the current map on screen while the new city loads, rather than
+    // suspending into the full-screen spinner.
+    startLoadingCity(() => {
+      refetch({ citySlug: newCity.slug, maxInt: MAX_GRAPHQL_INT })
+    })
   }
 
   return (
@@ -340,7 +354,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
     >
       <CityGuideMapHeader
         safeAreaInsetTop={safeAreaInsets.top}
-        cityName={viewer.city?.name}
+        cityName={isLoadingCity ? loadingCityName : viewer.city?.name}
         userLocation={userLocation}
         currentLocation={currentLocation}
         onPressCitySwitcherButton={onPressCitySwitcherButton}
@@ -382,11 +396,14 @@ export const CityGuideMap: React.FC<Props> = (props) => {
         >
           <MapboxGL.Camera
             ref={cameraRef}
-            animationMode="moveTo"
-            zoomLevel={DefaultZoomLevel}
+            // Only the initial position: city switches move the camera imperatively, so a new
+            // city's data arriving mid-flight doesn't snap the map to its destination.
+            defaultSettings={{
+              centerCoordinate: [centerLng, centerLat],
+              zoomLevel: DefaultZoomLevel,
+            }}
             minZoomLevel={MinZoomLevel}
             maxZoomLevel={MaxZoomLevel}
-            centerCoordinate={[centerLng, centerLat]}
           />
           <MapboxGL.UserLocation onUpdate={onUserLocationUpdate} />
           {!!city && (
