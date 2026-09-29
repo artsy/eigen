@@ -260,7 +260,10 @@ describe("ItineraryScreen", () => {
       fireEvent.press(await screen.findByLabelText("Edit Chill Vibes Only"))
 
       expect(await screen.findByText("Edit Itinerary")).toBeOnTheScreen()
-      expect(screen.getByTestId("itinerary-edit-name")).toHaveProp("value", "Chill Vibes Only")
+      expect(screen.getByTestId("itinerary-edit-name")).toHaveProp(
+        "defaultValue",
+        "Chill Vibes Only"
+      )
     })
 
     it("lets its stops be reordered", async () => {
@@ -626,6 +629,60 @@ describe("ItineraryScreen", () => {
 
       await waitFor(() => expect(screen.queryByText("Stop 1")).not.toBeOnTheScreen())
       expect(screen.getByText("Chill Vibes Only")).toBeOnTheScreen()
+    })
+  })
+
+  describe("with no stops", () => {
+    it("tells the owner how to add stops", async () => {
+      renderWithRelay(
+        { Itinerary: () => ({ ...ITINERARY, isCurated: false, isMine: true, sections: [] }) },
+        props
+      )
+
+      expect(await screen.findByText("No stops yet")).toBeOnTheScreen()
+      expect(
+        screen.getByText(
+          "Tap + on any show, fair or gallery in City Guide, or on its own page, to add it to this itinerary."
+        )
+      ).toBeOnTheScreen()
+    })
+
+    // Someone viewing a shared or curated itinerary can't add to it, so no instructions.
+    it("shows a plain message to anyone else", async () => {
+      renderWithRelay({ Itinerary: () => ({ ...ITINERARY, sections: [] }) }, props)
+
+      expect(await screen.findByText("No stops yet")).toBeOnTheScreen()
+      expect(screen.getByText("Stops added to this itinerary will show up here.")).toBeOnTheScreen()
+    })
+
+    // Emptying a section by removing its last stop leaves the section behind.
+    it("counts sections with no stops as empty", async () => {
+      renderWithRelay(
+        {
+          Itinerary: () => ({
+            ...ITINERARY,
+            sections: [{ internalID: "day-1", title: "Day 1", stops: [] }],
+          }),
+        },
+        props
+      )
+
+      expect(await screen.findByText("No stops yet")).toBeOnTheScreen()
+    })
+
+    it("hides the map toggle, with nothing to put on a map", async () => {
+      renderWithRelay({ Itinerary: () => ({ ...ITINERARY, sections: [] }) }, props)
+
+      expect(await screen.findByText("No stops yet")).toBeOnTheScreen()
+      expect(screen.queryByTestId("itinerary-view-toggle")).not.toBeOnTheScreen()
+    })
+
+    it("doesn't show when there are stops", async () => {
+      renderWithRelay({ Itinerary: () => ITINERARY }, props)
+
+      expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
+      expect(screen.queryByText("No stops yet")).not.toBeOnTheScreen()
+      expect(screen.getByTestId("itinerary-view-toggle")).toBeOnTheScreen()
     })
   })
 
