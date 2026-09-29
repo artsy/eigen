@@ -20,7 +20,6 @@ export const CityGuideCitySwitcherButton: React.FC<Props> = ({ cityName, onPress
     <Theme theme={theme}>
       <Flex position="absolute" opacity={0.7}>
         <Button
-          testID="city-guide-city-switcher"
           variant="fillDark"
           onPress={onPress}
           size="small"
