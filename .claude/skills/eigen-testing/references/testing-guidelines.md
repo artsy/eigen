@@ -172,21 +172,21 @@ it("tracks analytics event when button is tapped", () => {
 
   expect(mockTrackEvent).toHaveBeenCalledTimes(1)
   expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-    Array [
-      Object {
-        "action": "tappedInfoBubble",
-        "context_module": "myCollectionArtwork",
-        "context_screen_owner_id": "artwork-id",
-        "context_screen_owner_slug": "artwork-slug",
-        "context_screen_owner_type": "myCollectionArtwork",
-        "subject": "demandIndex",
-      },
-    ]
-  `)
+[
+  {
+    "action": "tappedInfoBubble",
+    "context_module": "myCollectionArtwork",
+    "context_screen_owner_id": "artwork-id",
+    "context_screen_owner_slug": "artwork-slug",
+    "context_screen_owner_type": "myCollectionArtwork",
+    "subject": "demandIndex",
+  },
+]
+`)
 })
 ```
 
-You can start with an empty snapshot like `expect(trackEvent.mock.calls[0]).toMatchInlineSnapshot()` and when you run the tests, jest will fill it in. Then check if it is correct, and you are ready to commit.
+You can start with an empty snapshot like `expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot()` and when you run the tests, jest will fill it in. Then check if it is correct, and you are ready to commit.
 
 If at some point the track properties change, then the snapshot will need to be updated. If there is a breakage and for some reason a property is not sent, then this snapshot will alert us correctly.
 
