@@ -724,7 +724,9 @@ lane :build_maestro_android do |options|
   # Build Android AAB in beta mode for Maestro testing
   # IMPORTANT: Here we use PreactNativeArchitectures=x86_64 to build only for the emulator
   # that we are using on the build-maestro-android gh action.
-  sh("yarn react-native build-android --mode=beta --extra-params='--no-daemon --max-workers 2 -PreactNativeArchitectures=x86_64'")
+  # R8 minification/resource shrinking is turned off here: Maestro builds are never shipped, and
+  # skipping R8 keeps them fast and free of a mapping.txt nobody needs.
+  sh("yarn react-native build-android --mode=beta --extra-params='--no-daemon --max-workers 2 -PreactNativeArchitectures=x86_64 -Pandroid.enableMinifyInReleaseBuilds=false -Pandroid.enableShrinkResourcesInReleaseBuilds=false'")
 
 
   # Convert AAB to APK using existing bundletool logic
