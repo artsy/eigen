@@ -33,7 +33,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState, useTransition } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useFragment, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -57,6 +57,8 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   const safeAreaInsets = useSafeAreaInsets()
 
   const [viewer, refetch] = useRefetchableFragment(cityGuideMapFragment, props.viewer)
+  const [isLoadingCity, startLoadingCity] = useTransition()
+  const [loadingCityName, setLoadingCityName] = useState<string>()
   const { trackEvent } = useTracking()
 
   const showRefs: CityGuideShow_show$key = extractNodes(viewer.city?.shows)
@@ -69,6 +71,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   const mapRef = useRef<MapboxGL.MapView>(null)
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const shapeSourceRef = useRef<MapboxGL.ShapeSource>(null)
+  const cameraCitySlugRef = useRef(props.citySlug)
   const currentZoomRef = useRef(DefaultZoomLevel)
   const showsRef = useRef<{ [key: string]: Show }>({})
   const fairsRef = useRef<{ [key: string]: Fair }>({})
@@ -100,6 +103,18 @@ export const CityGuideMap: React.FC<Props> = (props) => {
       EventEmitter.unsubscribe("filters:change", handleFilterChange)
     }
   }, [])
+
+  // The parent can switch city too (e.g. a late location fix), and the camera only reads its
+  // `defaultSettings` on mount.
+  useEffect(() => {
+    if (props.citySlug === cameraCitySlugRef.current) {
+      return
+    }
+    const coordinates = props.cities.find((city) => city.slug === props.citySlug)?.coordinates
+    if (coordinates) {
+      flyToCity(props.citySlug, coordinates)
+    }
+  }, [props.citySlug, props.cities])
 
   useEffect(() => {
     updateShowIdMap()
@@ -322,11 +337,37 @@ export const CityGuideMap: React.FC<Props> = (props) => {
     setDrawerPosition(position)
   }
 
+  const flyToCity = (citySlug: string, coordinates: CityData["coordinates"]) => {
+    cameraCitySlugRef.current = citySlug
+    cameraRef.current?.setCamera({
+      centerCoordinate: [coordinates.lng, coordinates.lat],
+      zoomLevel: DefaultZoomLevel,
+      animationMode: "flyTo",
+      animationDuration: 2000,
+    })
+  }
+
   const onSelectCity = (newCity: CityData) => {
     setShowCityPicker(false)
-    console.warn("setPreviouslySelectedCitySlug", newCity.slug)
-    setPreviouslySelectedCitySlug(newCity.slug)
-    refetch({ citySlug: newCity.slug, maxInt: MAX_GRAPHQL_INT })
+    setLoadingCityName(newCity.name)
+    flyToCity(newCity.slug, newCity.coordinates)
+
+    // A transition keeps the current map on screen while the new city loads, rather than
+    // suspending into the full-screen spinner.
+    startLoadingCity(() => {
+      refetch(
+        { citySlug: newCity.slug, maxInt: MAX_GRAPHQL_INT },
+        {
+          // Saved only once the data is in the store: the parent derives its query from this
+          // slug, and would otherwise suspend and fetch the city a second time.
+          onComplete: (error) => {
+            if (!error) {
+              setPreviouslySelectedCitySlug(newCity.slug)
+            }
+          },
+        }
+      )
+    })
   }
 
   return (
@@ -340,7 +381,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
     >
       <CityGuideMapHeader
         safeAreaInsetTop={safeAreaInsets.top}
-        cityName={viewer.city?.name}
+        cityName={isLoadingCity ? loadingCityName : viewer.city?.name}
         userLocation={userLocation}
         currentLocation={currentLocation}
         onPressCitySwitcherButton={onPressCitySwitcherButton}
@@ -382,11 +423,14 @@ export const CityGuideMap: React.FC<Props> = (props) => {
         >
           <MapboxGL.Camera
             ref={cameraRef}
-            animationMode="moveTo"
-            zoomLevel={DefaultZoomLevel}
+            // Only the initial position: city switches move the camera imperatively, so a new
+            // city's data arriving mid-flight doesn't snap the map to its destination.
+            defaultSettings={{
+              centerCoordinate: [centerLng, centerLat],
+              zoomLevel: DefaultZoomLevel,
+            }}
             minZoomLevel={MinZoomLevel}
             maxZoomLevel={MaxZoomLevel}
-            centerCoordinate={[centerLng, centerLat]}
           />
           <MapboxGL.UserLocation onUpdate={onUserLocationUpdate} />
           {!!city && (
