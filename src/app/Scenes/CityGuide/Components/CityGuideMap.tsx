@@ -71,6 +71,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   const mapRef = useRef<MapboxGL.MapView>(null)
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const shapeSourceRef = useRef<MapboxGL.ShapeSource>(null)
+  const cameraCitySlugRef = useRef(props.citySlug)
   const currentZoomRef = useRef(DefaultZoomLevel)
   const showsRef = useRef<{ [key: string]: Show }>({})
   const fairsRef = useRef<{ [key: string]: Fair }>({})
@@ -102,6 +103,18 @@ export const CityGuideMap: React.FC<Props> = (props) => {
       EventEmitter.unsubscribe("filters:change", handleFilterChange)
     }
   }, [])
+
+  // The parent can switch city too (e.g. a late location fix), and the camera only reads its
+  // `defaultSettings` on mount.
+  useEffect(() => {
+    if (props.citySlug === cameraCitySlugRef.current) {
+      return
+    }
+    const coordinates = props.cities.find((city) => city.slug === props.citySlug)?.coordinates
+    if (coordinates) {
+      flyToCity(props.citySlug, coordinates)
+    }
+  }, [props.citySlug, props.cities])
 
   useEffect(() => {
     updateShowIdMap()
@@ -324,22 +337,36 @@ export const CityGuideMap: React.FC<Props> = (props) => {
     setDrawerPosition(position)
   }
 
-  const onSelectCity = (newCity: CityData) => {
-    setShowCityPicker(false)
-    setPreviouslySelectedCitySlug(newCity.slug)
-    setLoadingCityName(newCity.name)
-
+  const flyToCity = (citySlug: string, coordinates: CityData["coordinates"]) => {
+    cameraCitySlugRef.current = citySlug
     cameraRef.current?.setCamera({
-      centerCoordinate: [newCity.coordinates.lng, newCity.coordinates.lat],
+      centerCoordinate: [coordinates.lng, coordinates.lat],
       zoomLevel: DefaultZoomLevel,
       animationMode: "flyTo",
       animationDuration: 2000,
     })
+  }
+
+  const onSelectCity = (newCity: CityData) => {
+    setShowCityPicker(false)
+    setLoadingCityName(newCity.name)
+    flyToCity(newCity.slug, newCity.coordinates)
 
     // A transition keeps the current map on screen while the new city loads, rather than
     // suspending into the full-screen spinner.
     startLoadingCity(() => {
-      refetch({ citySlug: newCity.slug, maxInt: MAX_GRAPHQL_INT })
+      refetch(
+        { citySlug: newCity.slug, maxInt: MAX_GRAPHQL_INT },
+        {
+          // Saved only once the data is in the store: the parent derives its query from this
+          // slug, and would otherwise suspend and fetch the city a second time.
+          onComplete: (error) => {
+            if (!error) {
+              setPreviouslySelectedCitySlug(newCity.slug)
+            }
+          },
+        }
+      )
     })
   }
 

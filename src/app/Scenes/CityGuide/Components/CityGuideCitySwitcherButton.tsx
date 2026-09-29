@@ -18,9 +18,23 @@ export const CityGuideCitySwitcherButton: React.FC<Props> = ({ cityName, onPress
   return (
     // Always use dark mode for the city switcher button
     <Theme theme={theme}>
-      <Flex position="absolute" opacity={0.7}>
+      <Flex>
+        <Flex
+          position="absolute"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          bg="mono100"
+          opacity={0.7}
+          borderRadius={50}
+          pointerEvents="none"
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+        />
         <Button
-          variant="fillDark"
+          testID="city-guide-city-switcher"
+          variant="outlineLight"
           onPress={onPress}
           size="small"
           iconPosition="right"
@@ -37,20 +51,6 @@ export const CityGuideCitySwitcherButton: React.FC<Props> = ({ cityName, onPress
           )}
         </Button>
       </Flex>
-      <Button
-        testID="city-guide-city-switcher"
-        variant="outlineLight"
-        onPress={onPress}
-        size="small"
-        iconPosition="right"
-        icon={<ChevronDownIcon color="mono100" width={ICON_SIZE} height={ICON_SIZE} />}
-      >
-        {cityName ? (
-          cityName
-        ) : (
-          <Spinner spinnerColor="mono60" style={{ backgroundColor: "transparent" }} size="medium" />
-        )}
-      </Button>
     </Theme>
   )
 }
