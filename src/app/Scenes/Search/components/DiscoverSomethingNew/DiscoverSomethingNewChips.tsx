@@ -1,7 +1,8 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Text, useSpace } from "@artsy/palette-mobile"
+import { Flex, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { DiscoverSomethingNewChips_collection$key } from "__generated__/DiscoverSomethingNewChips_collection.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { getSearchRailCardWidth } from "app/Scenes/Search/components/searchRailCardWidth"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -11,15 +12,16 @@ interface DiscoverSomethingNewChipsProps {
   collections: DiscoverSomethingNewChips_collection$key
 }
 
-export const DISCOVER_CARD_MIN_WIDTH = 125
 export const DISCOVER_CARD_HEIGHT = 60
 
 export const DiscoverSomethingNewChips: React.FC<DiscoverSomethingNewChipsProps> = ({
   collections: collectionsProp,
 }) => {
   const space = useSpace()
+  const { width: screenWidth } = useScreenDimensions()
   const tracking = useTracking()
   const collections = useFragment(fragment, collectionsProp)
+  const cardMinWidth = getSearchRailCardWidth(screenWidth, space(2), space(2), space(1))
 
   if (!collections || collections.length === 0) return null
 
@@ -53,7 +55,7 @@ export const DiscoverSomethingNewChips: React.FC<DiscoverSomethingNewChipsProps>
               onPress={() => handleOnChipPress(item, index)}
             >
               <Flex
-                minWidth={DISCOVER_CARD_MIN_WIDTH}
+                minWidth={cardMinWidth}
                 height={DISCOVER_CARD_HEIGHT}
                 px={1}
                 justifyContent="center"

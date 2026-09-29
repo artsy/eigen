@@ -22,13 +22,13 @@ export const ExploreByCategoryCards: React.FC<ExploreByCategoryCardsProps> = ({
   }
 
   return (
-    <Flex p={2} gap={2}>
-      <Text>Explore by Category</Text>
+    <Flex py={2} gap={2}>
+      <Text px={2}>Explore by Category</Text>
       <FlatList
         testID="ExploreByCategoryCards"
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ gap: space(1) }}
+        contentContainerStyle={{ paddingLeft: space(2), gap: space(1) }}
         data={categories}
         keyExtractor={(_, index) => `category-${index}`}
         renderItem={({ item, index }) => <ExploreByCategoryCard category={item} index={index} />}

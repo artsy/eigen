@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Image, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ExploreByCategoryCard_category$key } from "__generated__/ExploreByCategoryCard_category.graphql"
+import { getSearchRailCardWidth } from "app/Scenes/Search/components/searchRailCardWidth"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
@@ -15,6 +16,8 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
   category: categoryProp,
   index,
 }) => {
+  const space = useSpace()
+  const { width: screenWidth } = useScreenDimensions()
   const tracking = useTracking()
 
   const card = useFragment(fragment, categoryProp)
@@ -26,6 +29,7 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
   const navigationProps = {
     title: card.title,
   }
+  const cardWidth = getSearchRailCardWidth(screenWidth, space(2), 0, space(1))
 
   const handleCardPress = () => {
     if (card.href) {
@@ -46,7 +50,7 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
       prefetchVariables={{ categorySlug: card.slug }}
     >
       <Flex borderRadius={5} overflow="hidden">
-        <Image src={card.imageUrl} width={CATEGORY_CARD_WIDTH} aspectRatio={IMAGE_RATIO} />
+        <Image src={card.imageUrl} width={cardWidth} aspectRatio={IMAGE_RATIO} />
 
         <Flex position="absolute" top={0} left={0} backgroundColor="mono0" p={0.5}>
           <Text variant="md">{card.title}</Text>
@@ -66,7 +70,6 @@ const fragment = graphql`
   }
 `
 
-export const CATEGORY_CARD_WIDTH = 120
 export const IMAGE_RATIO = 1.5
 
 const tracks = {
