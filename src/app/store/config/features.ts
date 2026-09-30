@@ -143,11 +143,6 @@ export const features = {
     description: "Enable feature videos phase 2, falls back to webview if disabled",
     echoFlagKey: "AREnableFeatureVideoPhase2Type",
   },
-  AREnableExpandedCityGuide: {
-    readyForRelease: true,
-    description: "Enable expanded city list in City Guide",
-    echoFlagKey: "AREnableExpandedCityGuide",
-  },
   AREnableConversationPartnerOffers: {
     readyForRelease: true,
     description: "Show partner offers in convos",
@@ -186,25 +181,25 @@ export const features = {
   },
   AREnableCityGuideItineraries: {
     description: "Enable City Guide Itineraries",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableCityGuideItineraries",
   },
   AREnableCityGuideEditorialContent: {
     description: "Enable City Guide event videos and Artsy Editorial articles",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableCityGuideEditorialContent",
   },
   AREnableCityGuideShowsForYou: {
     description: "Rank City Guide's current shows by the signed-in user's taste",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableCityGuideShowsForYou",
   },
   AREnableCityGuideArticlesForYou: {
     description: "Enable the recommended articles rows in the City Guide's Artsy Editorial section",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableCityGuideArticlesForYou",
   },

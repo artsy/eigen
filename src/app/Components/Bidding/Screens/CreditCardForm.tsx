@@ -17,7 +17,7 @@ import { SelectRef } from "app/Components/Select"
 import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useFormik } from "formik"
-import { memo, useCallback, useRef, useState } from "react"
+import { memo, useCallback, useEffect, useRef, useState } from "react"
 import { LayoutChangeEvent } from "react-native"
 import { KeyboardStickyView } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -72,18 +72,32 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
     errors,
     touched,
     isSubmitting,
-    isValid,
     dirty,
     handleSubmit,
     handleBlur,
     handleChange,
     setFieldValue,
     setErrors,
+    validateForm,
   } = useFormik({
     initialValues,
     validationSchema: creditCardFormValidationSchema,
     onSubmit: handleFormSubmit,
+    // Formik's blur validation reads values from the last render, so a blur that lands before
+    // the re-render (e.g. autofill or leaving the phone-pad field) can overwrite `errors` with a
+    // stale result. Change validation already covers the whole form.
+    validateOnBlur: false,
   })
+
+  // With blur validation off, validate once `touched` has been committed so that leaving an empty
+  // field still shows its error. This runs after the render, so it sees the current values.
+  useEffect(() => {
+    validateForm()
+  }, [touched, validateForm])
+
+  // Derive validity from the current values instead of Formik's async `errors`, which can be
+  // out of date when several validations race.
+  const isFormValid = creditCardFormValidationSchema.isValidSync(values)
 
   const handleOnCardChange = (cardDetails: Details) => {
     setFieldValue("creditCard", {
@@ -270,7 +284,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
         <Box p={2} backgroundColor="mono0">
           <Button
             testID="credit-card-form-button"
-            disabled={!isValid || !dirty}
+            disabled={!isFormValid || !dirty}
             loading={isSubmitting}
             block
             width={100}

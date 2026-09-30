@@ -2,11 +2,9 @@ import MapboxGL, { ShapeSource } from "@rnmapbox/maps"
 import { MapFeatureCollection } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 import {
   CLUSTER_RADIUS,
+  CLUSTER_COUNT_STYLE,
   getClusterCircleStyle,
-  getClusterCountStyle,
-  getStopCircleStyle,
   getStopSymbolStyle,
-  numberStyle,
 } from "app/Scenes/CityGuide/utils/constants"
 import { RefObject } from "react"
 
@@ -25,11 +23,6 @@ interface Props {
    * source (via `shapeSourceRef`) which points it contains.
    */
   onSelectCluster: (feature: any) => void
-  /**
-   * Off by default; only the itinerary map turns it on. When on, pins are numbered and
-   * clusters read "2+" — when off, the number symbol layer is skipped, not just left empty.
-   */
-  numbered?: boolean
   /** Lets the map ask Mapbox which points a tapped cluster contains, mirroring
    * `CityGuideMapPins`'s `shapeSourceRef` (copied, since that map is frozen). */
   shapeSourceRef?: RefObject<ShapeSource | null>
@@ -49,16 +42,13 @@ export const MapPins: React.FC<Props> = ({
   selectedPlaceId,
   onSelectPlace,
   onSelectCluster,
-  numbered = false,
   shapeSourceRef,
   activeClusterId,
 }) => {
   const clusterCircleStyle = getClusterCircleStyle(activeClusterId)
-  const stopCircleStyle = getStopCircleStyle(selectedPlaceId)
-  // Event maps: the app's teardrop pin sprites instead of a plain circle, per icon on
-  // each place (CityGuideMapPins.tsx's pattern, copied since that map is frozen).
+  // The app's teardrop pin sprites, per icon on each place (CityGuideMapPins.tsx's
+  // pattern, copied since that map is frozen).
   const stopSymbolStyle = getStopSymbolStyle(selectedPlaceId)
-  const clusterCountStyle = getClusterCountStyle(numbered)
 
   /*
     A flat array, not conditional JSX: ShapeSource clones children to inject `sourceID`, but a
@@ -66,42 +56,24 @@ export const MapPins: React.FC<Props> = ({
   */
   // Order matters — each layer's `aboveLayerID` names the one before it.
   const layers = [
-    ...(numbered
-      ? [
-          <MapboxGL.CircleLayer
-            key="stopCircles"
-            id="stopCircles"
-            style={stopCircleStyle}
-            filter={IS_STOP}
-          />,
-          <MapboxGL.SymbolLayer
-            key="stopNumbers"
-            id="stopNumbers"
-            aboveLayerID="stopCircles"
-            style={numberStyle}
-            filter={IS_STOP}
-          />,
-        ]
-      : [
-          <MapboxGL.SymbolLayer
-            key="stopIcons"
-            id="stopIcons"
-            style={stopSymbolStyle}
-            filter={IS_STOP}
-          />,
-        ]),
+    <MapboxGL.SymbolLayer
+      key="stopIcons"
+      id="stopIcons"
+      style={stopSymbolStyle}
+      filter={IS_STOP}
+    />,
     <MapboxGL.CircleLayer
       key="stopClusters"
       id="stopClusters"
       style={clusterCircleStyle}
       filter={IS_CLUSTER}
-      aboveLayerID={numbered ? "stopNumbers" : "stopIcons"}
+      aboveLayerID="stopIcons"
     />,
     <MapboxGL.SymbolLayer
       key="stopClusterCounts"
       id="stopClusterCounts"
       aboveLayerID="stopClusters"
-      style={clusterCountStyle}
+      style={CLUSTER_COUNT_STYLE}
       filter={IS_CLUSTER}
     />,
   ]

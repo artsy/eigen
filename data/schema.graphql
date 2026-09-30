@@ -8657,7 +8657,12 @@ type City {
   name: String!
 
   """
-  Recent editorial articles about artists showing in this city now, ranked by the signed-in user's taste. With `includeFeatured`, the city's curated articles come first; without it, they are left out. Signed out, only the curated articles are returned.
+  The City Guide neighborhoods for this city, in display order. Empty when the city has none.
+  """
+  neighborhoods: [CityNeighborhood!]!
+
+  """
+  Recent editorial articles about this city. Articles whose title names the city come first, newest first. Then, for a signed-in user, articles about the galleries showing in the city now, ranked by the user's taste for the galleries' shows, at most two per gallery and leaving out fair recaps. With `includeFeatured`, the city's curated articles come first; without it, they are left out.
   """
   recommendedArticlesConnection(
     after: String
@@ -8739,6 +8744,18 @@ type CityArticleMutationSuccess {
   """
   articles: [CityArticle!]!
   citySlug: String!
+}
+
+"""
+An editorial City Guide neighborhood, matched from postcode prefixes
+"""
+type CityNeighborhood {
+  name: String!
+
+  """
+  Unique within its city only
+  """
+  slug: String!
 }
 
 type CitySponsoredContent {
@@ -15908,6 +15925,46 @@ type CreatePartnerContactSuccess {
 
 type CreatePartnerListFailure {
   mutationError: GravityMutationError
+}
+
+type CreatePartnerListFromShowFailure {
+  mutationError: GravityMutationError
+}
+
+input CreatePartnerListFromShowMutationInput {
+  clientMutationId: String
+
+  """
+  The ID of the partner.
+  """
+  partnerID: String!
+
+  """
+  The internal ID of the show to create the list from.
+  """
+  showID: String!
+}
+
+type CreatePartnerListFromShowMutationPayload {
+  clientMutationId: String
+
+  """
+  On success: the created partner list. On error: the error that occurred.
+  """
+  partnerListOrError: CreatePartnerListFromShowResponseOrError!
+}
+
+union CreatePartnerListFromShowResponseOrError =
+    CreatePartnerListFromShowFailure
+  | CreatePartnerListFromShowSuccess
+
+type CreatePartnerListFromShowSuccess {
+  partnerList: PartnerList!
+
+  """
+  The source show, so clients can refresh fields like `partnerList`.
+  """
+  show: Show
 }
 
 input CreatePartnerListMutationInput {
@@ -23416,6 +23473,30 @@ type Itinerary {
   description: String
 
   """
+  End of the window the guide is listed in, exclusive. Null means unbounded.
+  """
+  displayEndAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
+  Start of the window the guide is listed in, inclusive. Null means unbounded.
+  """
+  displayStartAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
   Whether the guide is editorially featured, to be surfaced ahead of its peers.
   """
   featured: Boolean!
@@ -23846,6 +23927,16 @@ type Location {
   booth: String
   cached: Int
   city: String
+
+  """
+  The City Guide city nearest to this location, if one is within range. Without coordinates, the City Guide city whose name exactly matches the location's city.
+  """
+  cityGuideCity: City
+
+  """
+  The City Guide neighborhood this location's postcode falls in. The city comes from the location's coordinates, or its city name without them. Null outside a City Guide city or when no neighborhood matches.
+  """
+  cityGuideNeighborhood: CityNeighborhood
   coordinates: LatLng
   country: String
 
@@ -23870,6 +23961,16 @@ type Location {
   A type-specific ID.
   """
   internalID: ID!
+
+  """
+  Whether this item occurs in any of the current user's personal itineraries. False when signed out.
+  """
+  isOnMyItineraries: Boolean
+
+  """
+  Personal itineraries containing this item, with every matching stop ID. Details are fetched only when selected. Empty when signed out.
+  """
+  myItineraryStopMemberships: [ItineraryStopMembership!]
   name: String
 
   """
@@ -26804,6 +26905,13 @@ type Mutation {
   Creates a new partner list.
   """
   createPartnerList(input: CreatePartnerListMutationInput!): CreatePartnerListMutationPayload
+
+  """
+  Creates a partner list from an existing show (adds the show to inventory).
+  """
+  createPartnerListFromShow(
+    input: CreatePartnerListFromShowMutationInput!
+  ): CreatePartnerListFromShowMutationPayload
 
   """
   Creates a new location for a partner
@@ -31699,6 +31807,8 @@ type PartnerOrdersEdge {
 }
 
 enum PartnerOrdersSortEnum {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
   STATE_EXPIRES_AT_ASC
   STATE_EXPIRES_AT_DESC
   STATE_UPDATED_AT_ASC
@@ -33347,6 +33457,11 @@ type Query {
     """
     slug: String
   ): City
+
+  """
+  The cities that have a City Guide, in display order.
+  """
+  cityGuideCities: [City!]!
   collection(
     """
     The ID or slug of the Collection
@@ -34177,6 +34292,11 @@ type Query {
     first: Int
 
     """
+    Include guides outside their display window. Only editors can use this.
+    """
+    ignoreDisplayWindow: Boolean
+
+    """
     Only curated (editorial) or only personal itineraries
     """
     isCurated: Boolean
@@ -34216,6 +34336,16 @@ type Query {
   ): ItineraryStop
   job(id: ID!): Job!
   jobs: [Job!]!
+
+  """
+  A partner's location
+  """
+  location(
+    """
+    The ID of the location
+    """
+    id: String!
+  ): Location
 
   """
   A Mailchimp campaign by ID
@@ -37883,6 +38013,11 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   The partner that represents this show, could be a non-Artsy partner
   """
   partner: PartnerTypes
+
+  """
+  The ArtOS collection linked to this show, if one exists. Null if there's no linked collection or the current user can't manage the show's partner.
+  """
+  partnerList: PartnerList
 
   """
   The press release for this show
@@ -43334,6 +43469,11 @@ type Viewer {
     """
     slug: String
   ): City
+
+  """
+  The cities that have a City Guide, in display order.
+  """
+  cityGuideCities: [City!]!
   collection(
     """
     The ID or slug of the Collection
@@ -43981,6 +44121,11 @@ type Viewer {
     first: Int
 
     """
+    Include guides outside their display window. Only editors can use this.
+    """
+    ignoreDisplayWindow: Boolean
+
+    """
     Only curated (editorial) or only personal itineraries
     """
     isCurated: Boolean
@@ -44020,6 +44165,16 @@ type Viewer {
   ): ItineraryStop
   job(id: ID!): Job!
   jobs: [Job!]!
+
+  """
+  A partner's location
+  """
+  location(
+    """
+    The ID of the location
+    """
+    id: String!
+  ): Location
 
   """
   A Mailchimp campaign by ID
@@ -45363,6 +45518,16 @@ input createItineraryInput {
   description: String
 
   """
+  ISO 8601 UTC end of the window the guide is listed in, exclusive.
+  """
+  displayEndAt: String
+
+  """
+  ISO 8601 UTC start of the window the guide is listed in, inclusive.
+  """
+  displayStartAt: String
+
+  """
   Mark the guide as editorially featured. Needs the content_manager role.
   """
   featured: Boolean
@@ -46135,6 +46300,16 @@ input updateItineraryInput {
   citySlug: String
   clientMutationId: String
   description: String
+
+  """
+  ISO 8601 UTC end of the window the guide is listed in, exclusive. Pass `null` to make it unbounded.
+  """
+  displayEndAt: String
+
+  """
+  ISO 8601 UTC start of the window the guide is listed in, inclusive. Pass `null` to make it unbounded.
+  """
+  displayStartAt: String
 
   """
   Mark the guide as editorially featured. Needs the content_manager role.

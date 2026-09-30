@@ -59,7 +59,9 @@ export const CityArticleListItem: React.FC<{
         )}
 
         <Flex flex={1}>
-          <Text variant="sm-display">{title}</Text>
+          <Text variant="sm-display" fontWeight="500" numberOfLines={3}>
+            {title}
+          </Text>
 
           {!!article.byline && (
             <Text variant="xs" color="mono60">

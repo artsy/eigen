@@ -1,0 +1,35 @@
+diff --git a/ios/Sources/Extensions+Helpers/RCTView+Helpers.swift b/ios/Sources/Extensions+Helpers/RCTView+Helpers.swift
+index 09be306d5aa39337c5114c2ad6ba7513218e0751..4258ba40401a993a3b3839f3fef77b244f5e90b2 100644
+--- a/ios/Sources/Extensions+Helpers/RCTView+Helpers.swift
++++ b/ios/Sources/Extensions+Helpers/RCTView+Helpers.swift
+@@ -25,17 +25,6 @@ public extension RCTView {
+     return rootView.recursivelyFindSubview(whereType: targetType);
+   };
+   
+-  var closestParentReactContentView: RCTRootContentView? {
+-    let targetType = RCTRootContentView.self;
+-  
+-    if let match = self.recursivelyFindParentView(whereType: targetType) {
+-      return match;
+-    };
+-    
+-    guard let rootView = self.rootViewForCurrentWindow else { return nil };
+-    return rootView.recursivelyFindSubview(whereType: targetType);
+-  };
+-  
+   var reactTouchHandlers: [RCTTouchHandler]? {
+     self.gestureRecognizers?.compactMap {
+       $0 as? RCTTouchHandler
+@@ -58,6 +47,11 @@ public extension RCTView {
+       currentView = superview;
+     };
+     
+-    return closestParentReactContentView?.reactTouchHandlers?.first;
++    // PATCHED: `RCTRootContentView` is a legacy (Paper) class. React Native 0.85 ships a
++    // prebuilt React-Core built with RCT_REMOVE_LEGACY_ARCH=1, so the symbol no longer exists
++    // and referencing it fails to link. This fallback only ever matched on the legacy
++    // architecture; on Fabric there is no RCTRootContentView in the hierarchy, so it was
++    // already dead code for New Architecture apps.
++    return nil;
+   };
+ };

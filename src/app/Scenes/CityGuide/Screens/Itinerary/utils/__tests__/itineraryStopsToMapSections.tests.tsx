@@ -106,6 +106,19 @@ describe("itineraryStopsToMapSections", () => {
     })
   })
 
+  // Same destination `ItineraryStopRow` builds for a custom stop's own screen — a custom stop
+  // has no `card.href` (only ever an outbound `sourceURL`), so the map pin must not fall back
+  // to that and end up with nowhere to navigate.
+  it("points a custom stop's href at its own screen, not its (usually absent) card href", () => {
+    const withoutTarget = makeStop({ internalID: "without-target", item: null })
+
+    const sections = toMapSections(makeItinerary([withoutTarget]))
+
+    expect(sections[0].places[0].href).toEqual(
+      "/city-guide/london-united-kingdom/itinerary/itinerary-1/stop/without-target"
+    )
+  })
+
   // Same plus the list shows for a custom stop (ItineraryStopRow) — the map preview must not
   // silently drop it just because there's no Artsy entity behind the stop.
   it("injects the custom stop save control for a stop with no entity", () => {
@@ -121,5 +134,35 @@ describe("itineraryStopsToMapSections", () => {
       contextScreenOwnerId: "itinerary-1",
       isCuratedGuide: true,
     })
+  })
+
+  // Same membership `ItineraryStopRow` passes, so the pin and the row agree on the tick.
+  it("passes the stop's itinerary membership to both kinds of save control", () => {
+    const membership = { isOnMyItineraries: true, myItineraries: [{ internalID: "mine" }] }
+    const custom = makeStop({ internalID: "custom", item: null, ...membership })
+    const entity = makeStop({
+      internalID: "entity",
+      ...membership,
+      item: {
+        __typename: "Show",
+        internalID: "some-show-id",
+        isOnMyItineraries: true,
+        slug: "some-show",
+        name: "Some Show",
+        href: "/show/some-show",
+        isFreeAdmission: null,
+        exhibitionPeriod: null,
+        coverImage: null,
+        partner: null,
+        location: null,
+      },
+    })
+
+    const [customPlace, entityPlace] = toMapSections(makeItinerary([custom, entity]))[0].places
+
+    expect(
+      (customPlace.saveControl as React.ReactElement<{ stop: unknown }>).props.stop
+    ).toMatchObject(membership)
+    expect((entityPlace.saveControl as React.ReactElement).props).toMatchObject(membership)
   })
 })

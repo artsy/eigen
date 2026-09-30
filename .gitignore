@@ -127,6 +127,9 @@ local.properties
 android-secret.json
 .kotlin/
 
+# android generated inline modules (Expo SDK 57+)
+android/app/src/main/java/inline/
+
 # Fonts
 android/app/src/main/assets/fonts/*
 ios/Artsy/fonts/*

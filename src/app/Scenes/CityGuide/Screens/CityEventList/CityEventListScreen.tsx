@@ -27,7 +27,6 @@ import {
   CityEventSection,
   groupByNeighborhood,
   groupByOpeningWeek,
-  groupFlat,
 } from "app/Scenes/CityGuide/utils/cityEventSections"
 import { fairsToMapSections } from "app/Scenes/CityGuide/utils/fairsToMapSections"
 import { showsToMapSections } from "app/Scenes/CityGuide/utils/showsToMapSections"
@@ -110,27 +109,26 @@ const CityEventList: React.FC<Props> = ({ citySlug, section: rawSection }) => {
       ? data.city?.fairsConnection?.totalCount
       : data.city?.showsConnection?.totalCount) ?? 0
 
+  const neighborhoods = data.city?.neighborhoods
+
   const sections: CityEventSection<Event>[] = useMemo(() => {
     if (section === "fairs") {
-      return groupByNeighborhood<Fair>(fairs, citySlug, cityName)
+      return groupByNeighborhood<Fair>(fairs, neighborhoods ?? [], cityName)
     }
 
     if (section === "opening") {
       return groupByOpeningWeek<Show>(shows, DateTime.now())
     }
 
-    if (forYou) {
-      return groupFlat<Show>(shows)
-    }
+    // Grouping keeps each neighbourhood's shows in the order they came back, so when the list is
+    // ranked "for you" the best matches lead every neighbourhood.
+    return groupByNeighborhood<Show>(shows, neighborhoods ?? [], cityName)
+  }, [section, fairs, shows, neighborhoods, cityName])
 
-    return groupByNeighborhood<Show>(shows, citySlug, cityName)
-  }, [section, forYou, fairs, shows, citySlug, cityName])
-
-  const items = useMemo(() => {
-    const listItems = toCityEventListItems(sections, collapsedSectionIds)
-    // Ranked "for you" is one flat section, so a header over it would only repeat the screen.
-    return forYou ? listItems.filter((item) => item.kind !== "header") : listItems
-  }, [sections, collapsedSectionIds, forYou])
+  const items = useMemo(
+    () => toCityEventListItems(sections, collapsedSectionIds),
+    [sections, collapsedSectionIds]
+  )
 
   // Every save control on this screen — rows and map pins alike — is rendered from the
   // event list, never the home screen's rails.
@@ -145,19 +143,13 @@ const CityEventList: React.FC<Props> = ({ citySlug, section: rawSection }) => {
   // Cast the same way `renderItem` already does below: `sections` is generic over
   // `Show | Fair`, but each branch of the `section` switch above only ever populated it
   // with one of the two.
-  // The map keeps the neighbourhood sections even when the list is ranked "for you": pin order
-  // means nothing on a map, and the neighbourhood pills are its filter.
-  const mapSections = useMemo(() => {
-    if (section === "fairs") {
-      return fairsToMapSections(sections as CityEventSection<Fair>[], rowContext)
-    }
-
-    const mapShowSections = forYou
-      ? groupByNeighborhood<Show>(shows, citySlug, cityName)
-      : (sections as CityEventSection<Show>[])
-
-    return showsToMapSections(mapShowSections, rowContext)
-  }, [section, sections, forYou, shows, citySlug, cityName, rowContext])
+  const mapSections = useMemo(
+    () =>
+      section === "fairs"
+        ? fairsToMapSections(sections as CityEventSection<Fair>[], rowContext)
+        : showsToMapSections(sections as CityEventSection<Show>[], rowContext),
+    [section, sections, rowContext]
+  )
 
   const hasMappablePlaces = useMemo(
     () => mapSections.some((mapSection) => mapSection.places.length > 0),
@@ -343,6 +335,10 @@ const Query = graphql`
   ) {
     city(slug: $citySlug) {
       name
+      neighborhoods {
+        slug
+        name
+      }
 
       fairsConnection(first: 100, status: RUNNING, sort: START_AT_ASC) @include(if: $includeFairs) {
         totalCount

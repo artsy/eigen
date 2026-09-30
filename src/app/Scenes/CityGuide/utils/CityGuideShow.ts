@@ -11,6 +11,7 @@ export const cityGuideShowFragment = graphql`
     slug
     internalID
     isStubShow
+    isOnMyItineraries
     name
     status
     href
@@ -22,7 +23,9 @@ export const cityGuideShowFragment = graphql`
       url
     }
     location {
-      postalCode
+      cityGuideNeighborhood {
+        slug
+      }
       coordinates {
         lat
         lng

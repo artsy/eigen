@@ -4,6 +4,7 @@ const config = {
     "ExpoConfigRuntimeVersionIfString",
     "ExpoConfigVersions",
     "PackageJsonAndroidAndIosScriptsIfNotContainRun",
+    "PackageJsonScriptsAll",
   ],
   ignorePaths: [
     // Android build artifacts (everywhere including inside node_modules)

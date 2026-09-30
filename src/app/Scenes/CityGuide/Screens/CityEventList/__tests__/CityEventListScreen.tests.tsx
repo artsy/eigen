@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor, within } from "@testing-library/react-native"
 import { CityEventListScreen } from "app/Scenes/CityGuide/Screens/CityEventList/CityEventListScreen"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -31,16 +31,20 @@ describe("CityEventListScreen", () => {
     expect(await screen.findAllByText("Opening Soon")).not.toHaveLength(0)
   })
 
+  const FARRINGDON = { slug: "farringdon", name: "Farringdon" }
+  const CENTRAL_LONDON = { slug: "central-london", name: "Central London" }
+
   it("renders a row for every show the query returns", async () => {
     const shows = [
-      { name: "Frida Kahlo", location: { postalCode: "EC1M 5RR" } },
-      { name: "Tracey Emin", location: { postalCode: "EC1M 5RR" } },
+      { name: "Frida Kahlo", location: { cityGuideNeighborhood: FARRINGDON } },
+      { name: "Tracey Emin", location: { cityGuideNeighborhood: FARRINGDON } },
     ]
 
     renderWithRelay(
       {
         City: () => ({
           name: "London",
+          neighborhoods: [FARRINGDON],
           showsConnection: { totalCount: shows.length, edges: shows.map((node) => ({ node })) },
         }),
       },
@@ -52,12 +56,13 @@ describe("CityEventListScreen", () => {
   })
 
   it("collapses a section when its header is pressed", async () => {
-    const shows = [{ name: "Frida Kahlo", location: { postalCode: "EC1M 5RR" } }]
+    const shows = [{ name: "Frida Kahlo", location: { cityGuideNeighborhood: FARRINGDON } }]
 
     renderWithRelay(
       {
         City: () => ({
           name: "London",
+          neighborhoods: [FARRINGDON],
           showsConnection: { totalCount: shows.length, edges: shows.map((node) => ({ node })) },
         }),
       },
@@ -84,16 +89,17 @@ describe("CityEventListScreen", () => {
     await screen.findAllByText("Current Shows")
   })
 
-  it("groups fairs by postcode, not only shows", async () => {
+  it("groups fairs by neighbourhood, not only shows", async () => {
     const fairs = [
-      { name: "Frieze London", location: { postalCode: "EC1M 5RR" } },
-      { name: "1-54", location: { postalCode: "W1S 4BS" } },
+      { name: "Frieze London", location: { cityGuideNeighborhood: FARRINGDON } },
+      { name: "1-54", location: { cityGuideNeighborhood: CENTRAL_LONDON } },
     ]
 
     renderWithRelay(
       {
         City: () => ({
           name: "London",
+          neighborhoods: [FARRINGDON, CENTRAL_LONDON],
           fairsConnection: {
             totalCount: fairs.length,
             edges: fairs.map((node) => ({ node })),
@@ -103,7 +109,7 @@ describe("CityEventListScreen", () => {
       { citySlug: "london-united-kingdom", section: "fairs" }
     )
 
-    // Two different outward codes, so two named sections rather than one fallback.
+    // Two different neighbourhoods, so two named sections rather than one fallback.
     await waitFor(() =>
       expect(screen.getAllByTestId("city-event-section-header")).toHaveLength(fairs.length)
     )
@@ -111,12 +117,13 @@ describe("CityEventListScreen", () => {
   })
 
   it("keeps the footer count on the fetched total when a section is collapsed", async () => {
-    const shows = [{ name: "Frida Kahlo", location: { postalCode: "EC1M 5RR" } }]
+    const shows = [{ name: "Frida Kahlo", location: { cityGuideNeighborhood: FARRINGDON } }]
 
     renderWithRelay(
       {
         City: () => ({
           name: "London",
+          neighborhoods: [FARRINGDON],
           showsConnection: { totalCount: 143, edges: shows.map((node) => ({ node })) },
         }),
       },
@@ -132,12 +139,13 @@ describe("CityEventListScreen", () => {
   })
 
   it("says so when there are more events than one page", async () => {
-    const shows = [{ name: "Frida Kahlo", location: { postalCode: "EC1M 5RR" } }]
+    const shows = [{ name: "Frida Kahlo", location: { cityGuideNeighborhood: FARRINGDON } }]
 
     renderWithRelay(
       {
         City: () => ({
           name: "London",
+          neighborhoods: [FARRINGDON],
           showsConnection: { totalCount: 143, edges: shows.map((node) => ({ node })) },
         }),
       },
@@ -173,7 +181,7 @@ describe("CityEventListScreen", () => {
     const shows = [
       {
         name: "Frida Kahlo",
-        location: { postalCode: "EC1M 5RR", coordinates: { lat: 51.5, lng: -0.1 } },
+        location: { cityGuideNeighborhood: FARRINGDON, coordinates: { lat: 51.5, lng: -0.1 } },
       },
     ]
 
@@ -181,6 +189,7 @@ describe("CityEventListScreen", () => {
       {
         City: () => ({
           name: "London",
+          neighborhoods: [FARRINGDON],
           showsConnection: { totalCount: shows.length, edges: shows.map((node) => ({ node })) },
         }),
       },
@@ -277,32 +286,37 @@ describe("CityEventListScreen", () => {
       expect(requestedVariables(view.env).forYou).toBe(false)
     })
 
-    it("renders one flat list with no section header, in the returned order, when forYou is true", async () => {
+    it("groups ranked shows by neighbourhood, keeping the ranked order within each, when forYou is true", async () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
       __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
 
+      // The server's ranked order: two shows share a neighbourhood, and the one ranked first
+      // doesn't come first alphabetically, so a re-sort would show up.
       const shows = [
-        { name: "Frida Kahlo", location: { postalCode: "EC1M 5RR" } },
-        { name: "Tracey Emin", location: { postalCode: "W1S 4BS" } },
+        { name: "Tracey Emin", location: { cityGuideNeighborhood: FARRINGDON } },
+        { name: "Anish Kapoor", location: { cityGuideNeighborhood: CENTRAL_LONDON } },
+        { name: "Frida Kahlo", location: { cityGuideNeighborhood: FARRINGDON } },
       ]
 
       renderWithRelay(
         {
           City: () => ({
             name: "London",
+            neighborhoods: [FARRINGDON, CENTRAL_LONDON],
             showsConnection: { totalCount: shows.length, edges: shows.map((node) => ({ node })) },
           }),
         },
         { citySlug: "london-united-kingdom", section: "shows" }
       )
 
-      // No header at all, not one per neighbourhood, even with two postcodes.
-      const rows = await screen.findAllByTestId("city-event-row")
-      expect(rows).toHaveLength(shows.length)
-      expect(screen.queryByTestId("city-event-section-header")).toBeNull()
-      expect(screen.queryByText("For You")).toBeNull()
-      expect(rows[0]).toHaveTextContent(/Frida Kahlo/)
-      expect(rows[1]).toHaveTextContent(/Tracey Emin/)
+      expect(await screen.findAllByTestId("city-event-section-header")).toHaveLength(2)
+
+      const rows = screen.getAllByTestId("city-event-row")
+      const rowIndexOf = (name: string) =>
+        rows.findIndex((row) => within(row).queryByText(name) !== null)
+
+      expect(rowIndexOf("Tracey Emin")).toBeGreaterThanOrEqual(0)
+      expect(rowIndexOf("Tracey Emin")).toBeLessThan(rowIndexOf("Frida Kahlo"))
     })
 
     it("keeps the map's neighbourhood filter pills when forYou is true", async () => {
@@ -312,11 +326,14 @@ describe("CityEventListScreen", () => {
       const shows = [
         {
           name: "Frida Kahlo",
-          location: { postalCode: "EC1M 5RR", coordinates: { lat: 51.52, lng: -0.1 } },
+          location: { cityGuideNeighborhood: FARRINGDON, coordinates: { lat: 51.52, lng: -0.1 } },
         },
         {
           name: "Tracey Emin",
-          location: { postalCode: "W1S 4BS", coordinates: { lat: 51.51, lng: -0.14 } },
+          location: {
+            cityGuideNeighborhood: CENTRAL_LONDON,
+            coordinates: { lat: 51.51, lng: -0.14 },
+          },
         },
       ]
 
@@ -324,6 +341,7 @@ describe("CityEventListScreen", () => {
         {
           City: () => ({
             name: "London",
+            neighborhoods: [FARRINGDON, CENTRAL_LONDON],
             showsConnection: { totalCount: shows.length, edges: shows.map((node) => ({ node })) },
           }),
         },
@@ -341,33 +359,35 @@ describe("CityEventListScreen", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: false })
 
       const shows = [
-        { name: "Frida Kahlo", location: { postalCode: "EC1M 5RR" } },
-        { name: "Tracey Emin", location: { postalCode: "W1S 4BS" } },
+        { name: "Frida Kahlo", location: { cityGuideNeighborhood: FARRINGDON } },
+        { name: "Tracey Emin", location: { cityGuideNeighborhood: CENTRAL_LONDON } },
       ]
 
       renderWithRelay(
         {
           City: () => ({
             name: "London",
+            neighborhoods: [FARRINGDON, CENTRAL_LONDON],
             showsConnection: { totalCount: shows.length, edges: shows.map((node) => ({ node })) },
           }),
         },
         { citySlug: "london-united-kingdom", section: "shows" }
       )
 
-      // Two different outward codes, so two named sections rather than one flat one.
+      // Two different neighbourhoods, so two named sections rather than one flat one.
       expect(await screen.findAllByTestId("city-event-section-header")).toHaveLength(2)
       expect(screen.queryByText("For You")).toBeNull()
     })
   })
 
   it("hides the map toggle when nothing has valid coordinates", async () => {
-    const shows = [{ name: "Frida Kahlo", location: { postalCode: "EC1M 5RR" } }]
+    const shows = [{ name: "Frida Kahlo", location: { cityGuideNeighborhood: FARRINGDON } }]
 
     renderWithRelay(
       {
         City: () => ({
           name: "London",
+          neighborhoods: [FARRINGDON],
           showsConnection: { totalCount: shows.length, edges: shows.map((node) => ({ node })) },
         }),
       },

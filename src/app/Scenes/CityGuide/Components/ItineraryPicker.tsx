@@ -1,5 +1,5 @@
 import { ChevronDownIcon } from "@artsy/icons/native"
-import { Flex, Pill, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Pill, Text, Theme, Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ItineraryPickerQuery } from "__generated__/ItineraryPickerQuery.graphql"
 import { ItineraryScreenQuery } from "__generated__/ItineraryScreenQuery.graphql"
@@ -68,15 +68,17 @@ const Picker: React.FC<Props> = ({ citySlug, currentItineraryId, currentItinerar
 
   return (
     <>
-      <Pill
-        testID="itinerary-picker"
-        variant="default"
-        Icon={ChevronDownIcon}
-        disabled={!canSwitch}
-        onPress={() => setIsOpen(true)}
-      >
-        {currentItineraryName}
-      </Pill>
+      <Theme theme="v3light">
+        <Pill
+          testID="itinerary-picker"
+          variant="default"
+          Icon={ChevronDownIcon}
+          disabled={!canSwitch}
+          onPress={() => setIsOpen(true)}
+        >
+          {currentItineraryName}
+        </Pill>
+      </Theme>
 
       <AutoHeightBottomSheet visible={isOpen} onDismiss={() => setIsOpen(false)}>
         <Flex py={2}>

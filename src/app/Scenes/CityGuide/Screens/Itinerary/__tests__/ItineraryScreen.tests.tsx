@@ -126,15 +126,6 @@ describe("ItineraryScreen", () => {
     )
   })
 
-  it("numbers stops continuously across sections", async () => {
-    renderWithRelay({ Itinerary: () => ITINERARY }, props)
-
-    // Numbering runs 1..N across the whole itinerary rather than restarting per section,
-    // so the last number only exists if every earlier section was counted.
-    expect(await screen.findByText("4")).toBeTruthy()
-    expect(screen.queryByText("5")).toBeNull()
-  })
-
   it("falls back to a positional section title when the server sends none", async () => {
     renderWithRelay(
       {
@@ -212,14 +203,6 @@ describe("ItineraryScreen", () => {
       expect(await screen.findByTestId("itinerary-picker")).toBeOnTheScreen()
     })
 
-    it("shows no stop numbers, since it has no running order", async () => {
-      renderWithRelay({ Itinerary: () => own }, props)
-
-      await screen.findByText("Stop 1")
-
-      expect(screen.queryAllByTestId("itinerary-stop-number")).toHaveLength(0)
-    })
-
     // One section is the whole list, so its name would be a redundant subheading.
     it("hides the heading while it has a single section", async () => {
       renderWithRelay(
@@ -269,8 +252,6 @@ describe("ItineraryScreen", () => {
       expect(await screen.findByText("Day 1 — Easing in")).toBeOnTheScreen()
       expect(screen.getByText("Day 2 — London Frieze")).toBeOnTheScreen()
       expect(screen.queryAllByTestId("itinerary-section-header")).toHaveLength(2)
-      // Still no numbering: the headings say where you are, not in what order.
-      expect(screen.queryAllByTestId("itinerary-stop-number")).toHaveLength(0)
     })
 
     it("offers to edit it", async () => {
@@ -279,7 +260,10 @@ describe("ItineraryScreen", () => {
       fireEvent.press(await screen.findByLabelText("Edit Chill Vibes Only"))
 
       expect(await screen.findByText("Edit Itinerary")).toBeOnTheScreen()
-      expect(screen.getByTestId("itinerary-edit-name")).toHaveProp("value", "Chill Vibes Only")
+      expect(screen.getByTestId("itinerary-edit-name")).toHaveProp(
+        "defaultValue",
+        "Chill Vibes Only"
+      )
     })
 
     it("lets its stops be reordered", async () => {
@@ -310,12 +294,11 @@ describe("ItineraryScreen", () => {
   })
 
   describe("a curated guide", () => {
-    it("keeps its numbering, section headings and byline", async () => {
+    it("keeps its section headings and byline", async () => {
       renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
       expect(await screen.findByText("Day 1 — Easing in")).toBeOnTheScreen()
       expect(screen.getByText("By Casey Lesser")).toBeOnTheScreen()
-      expect(screen.queryAllByTestId("itinerary-stop-number")).not.toHaveLength(0)
       expect(screen.queryByText("Your Itinerary")).not.toBeOnTheScreen()
     })
 
@@ -646,6 +629,60 @@ describe("ItineraryScreen", () => {
 
       await waitFor(() => expect(screen.queryByText("Stop 1")).not.toBeOnTheScreen())
       expect(screen.getByText("Chill Vibes Only")).toBeOnTheScreen()
+    })
+  })
+
+  describe("with no stops", () => {
+    it("tells the owner how to add stops", async () => {
+      renderWithRelay(
+        { Itinerary: () => ({ ...ITINERARY, isCurated: false, isMine: true, sections: [] }) },
+        props
+      )
+
+      expect(await screen.findByText("No stops yet")).toBeOnTheScreen()
+      expect(
+        screen.getByText(
+          "Tap + on any show, fair or gallery in City Guide, or on its own page, to add it to this itinerary."
+        )
+      ).toBeOnTheScreen()
+    })
+
+    // Someone viewing a shared or curated itinerary can't add to it, so no instructions.
+    it("shows a plain message to anyone else", async () => {
+      renderWithRelay({ Itinerary: () => ({ ...ITINERARY, sections: [] }) }, props)
+
+      expect(await screen.findByText("No stops yet")).toBeOnTheScreen()
+      expect(screen.getByText("Stops added to this itinerary will show up here.")).toBeOnTheScreen()
+    })
+
+    // Emptying a section by removing its last stop leaves the section behind.
+    it("counts sections with no stops as empty", async () => {
+      renderWithRelay(
+        {
+          Itinerary: () => ({
+            ...ITINERARY,
+            sections: [{ internalID: "day-1", title: "Day 1", stops: [] }],
+          }),
+        },
+        props
+      )
+
+      expect(await screen.findByText("No stops yet")).toBeOnTheScreen()
+    })
+
+    it("hides the map toggle, with nothing to put on a map", async () => {
+      renderWithRelay({ Itinerary: () => ({ ...ITINERARY, sections: [] }) }, props)
+
+      expect(await screen.findByText("No stops yet")).toBeOnTheScreen()
+      expect(screen.queryByTestId("itinerary-view-toggle")).not.toBeOnTheScreen()
+    })
+
+    it("doesn't show when there are stops", async () => {
+      renderWithRelay({ Itinerary: () => ITINERARY }, props)
+
+      expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
+      expect(screen.queryByText("No stops yet")).not.toBeOnTheScreen()
+      expect(screen.getByTestId("itinerary-view-toggle")).toBeOnTheScreen()
     })
   })
 

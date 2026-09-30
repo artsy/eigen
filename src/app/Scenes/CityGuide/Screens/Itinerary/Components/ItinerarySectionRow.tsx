@@ -18,11 +18,6 @@ interface Props {
   /** Position among sections — used only for the nullable-title fallback label. */
   sectionIndex: number
   /**
-   * Flattened index of this section's first stop, so numbering runs across sections. Absent
-   * on your own itinerary, which shows no order.
-   */
-  startNumber?: number
-  /**
    * The collapsible section heading. Hidden on your own itinerary while it has a single
    * section, whose name would be a redundant subheading over the whole list.
    */
@@ -54,7 +49,6 @@ interface Props {
 export const ItinerarySectionRow: React.FC<Props> = ({
   section,
   sectionIndex,
-  startNumber,
   showHeader = true,
   citySlug,
   itineraryId,
@@ -146,6 +140,7 @@ export const ItinerarySectionRow: React.FC<Props> = ({
           all here, so there is nothing further to gate. */}
       {!!isExpanded && (
         <SortableContainer sortable={sortable} scrollRef={scrollRef}>
+          <Spacer y={1} />
           <Join separator={<Spacer y={1} />}>
             {/*
               Rendered from drax's own copy of the ids rather than `section.stops`: after a drop
@@ -161,9 +156,6 @@ export const ItinerarySectionRow: React.FC<Props> = ({
                 <SortableItem key={stopID} sortable={sortable} index={index} draggable={canReorder}>
                   <ItineraryStopRow
                     stop={stop}
-                    // Only a curated guide numbers its stops, and a curated guide is never
-                    // reorderable, so this index is always the displayed position.
-                    number={startNumber === undefined ? undefined : startNumber + index}
                     citySlug={citySlug}
                     itineraryId={itineraryId}
                     itinerarySlug={itinerarySlug}

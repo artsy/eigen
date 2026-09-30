@@ -13,14 +13,12 @@ import { ArtAssistantSearchButton } from "app/Components/GlobalSearchInput/ArtAs
 import { GlobalSearchInputOverlayEmptyState } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlayEmptyState"
 import { tappedArtAssistant } from "app/Components/GlobalSearchInput/artAssistantTracks"
 import { useSearch } from "app/Components/GlobalSearchInput/useSearch"
-import { SearchByPhotoButton } from "app/Components/SearchByPhotoButton/SearchByPhotoButton"
 import {
   SEARCH_BY_PHOTO_ICON_CONTAINER_WIDTH,
   SearchByPhotoIconButton,
 } from "app/Components/SearchByPhotoButton/SearchByPhotoIconButton"
 import { tappedSearchByImage } from "app/Components/SearchByPhotoButton/tracks"
 import { DEFAULT_SCREEN_ANIMATION_DURATION } from "app/Components/constants"
-import { BOTTOM_TABS_HEIGHT } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { RecentSearches } from "app/Scenes/Search/RecentSearches"
 import { SEARCH_INPUT_PLACEHOLDER, shouldStartSearching } from "app/Scenes/Search/Search"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
@@ -37,7 +35,7 @@ import { useEnableArtsyLens } from "app/utils/hooks/useEnableArtsyLens"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Suspense, useEffect, useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
-import { KeyboardController, KeyboardStickyView } from "react-native-keyboard-controller"
+import { KeyboardController } from "react-native-keyboard-controller"
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -254,29 +252,6 @@ export const GlobalSearchInputOverlay: React.FC<{
             <GlobalSearchInputOverlayContent query={query} />
           </Suspense>
         </Flex>
-
-        {!!enableArtsyLens && (
-          <KeyboardStickyView
-            style={{ position: "absolute", left: 0, right: 0, bottom: insets.bottom }}
-            offset={{ closed: -BOTTOM_TABS_HEIGHT, opened: insets.bottom }}
-          >
-            <Flex px={2} pb={1}>
-              <SearchByPhotoButton
-                onPress={() => {
-                  tracking.trackEvent(
-                    tappedSearchByImage({
-                      contextModule: ContextModule.searchOverlay,
-                      contextScreenOwnerType: ownerType,
-                      type: "search_overlay_button",
-                    })
-                  )
-                  hideModal()
-                  navigate("/lens")
-                }}
-              />
-            </Flex>
-          </KeyboardStickyView>
-        )}
       </Animated.View>
     </Portal>
   )

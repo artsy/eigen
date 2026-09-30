@@ -126,7 +126,7 @@ export const StopCard: React.FC<Props> = ({
           >
             {!!card.eventKind && <TypeEyebrow>{card.eventKind}</TypeEyebrow>}
 
-            <Text variant="sm-display" numberOfLines={2} ellipsizeMode="tail">
+            <Text variant="sm-display" numberOfLines={1} ellipsizeMode="tail" fontWeight="500">
               {card.title}
             </Text>
 

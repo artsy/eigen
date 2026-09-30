@@ -11,10 +11,18 @@ else
 fi
 CAPITALIZED_BUILD_TYPE="$(echo "$BUILD_TYPE" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')"
 
+# These are verification builds, not deploys. The R8 mapping upload is opt-in via
+# SENTRY_UPLOAD_PROGUARD_MAPPING, which only the fastlane deploy lanes set, so there is
+# nothing to disable here.
+#
+# R8 minification/resource shrinking is also turned off: the beta APK built here is uploaded
+# as the Maestro e2e app (see upload-emu-app), and those builds are never shipped.
+
 pushd android
 
 echo "Running Gradle task: assemble${CAPITALIZED_BUILD_TYPE}"
-./gradlew assemble${CAPITALIZED_BUILD_TYPE} --no-daemon --max-workers=2 -PreactNativeArchitectures=arm64-v8a
+./gradlew assemble${CAPITALIZED_BUILD_TYPE} --no-daemon --max-workers=2 -PreactNativeArchitectures=arm64-v8a \
+	-Pandroid.enableMinifyInReleaseBuilds=false -Pandroid.enableShrinkResourcesInReleaseBuilds=false
 
 popd
 

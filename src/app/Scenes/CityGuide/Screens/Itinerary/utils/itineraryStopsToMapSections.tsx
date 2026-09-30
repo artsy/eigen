@@ -7,6 +7,7 @@ import {
   itinerarySectionTitle,
   itineraryStopCoordinates,
   itineraryStopImage,
+  itineraryStopIsOnMyItineraries,
   itineraryStopSaveTarget,
   itineraryStopTitle,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
@@ -25,6 +26,8 @@ const customStopInput = (
 ) => ({
   sourceStopID: stop.internalID,
   sourceShareToken: shareToken ?? undefined,
+  isOnMyItineraries: stop.isOnMyItineraries,
+  myItineraries: stop.myItineraries,
   title: itineraryStopTitle(stop),
   address: stop.address ?? undefined,
   note: stop.note ?? undefined,
@@ -64,13 +67,18 @@ export const itineraryStopsToMapSections = (
         // test `ItineraryStopRow` uses for its own plus.
         const isCustom = !stop.item && !saveTarget
         const card = stopCardFields(stop, stop.item)
+        // A custom stop's own screen, exactly as `ItineraryStopRow` builds it — `card.href` is
+        // only ever the curator's outbound source link (or nothing), so falling back to it here
+        // left a tapped custom-stop pin with no destination at all.
+        const href = isCustom
+          ? `/city-guide/${citySlug}/itinerary/${itinerary.internalID}/stop/${stop.internalID}`
+          : card.href ?? null
 
         return {
           id: stop.internalID,
           title,
           coordinates,
-          // Same destination the list row uses, rather than a second mapping of type to path.
-          href: card.href ?? null,
+          href,
           card,
           image: itineraryStopImage(stop),
           saveControl: isCustom ? (
@@ -90,6 +98,8 @@ export const itineraryStopsToMapSections = (
                 itemID={saveTarget.itemID}
                 itemSlug={saveTarget.itemSlug}
                 name={title}
+                isOnMyItineraries={itineraryStopIsOnMyItineraries(stop)}
+                myItineraries={stop.myItineraries}
                 sourceStopID={stop.internalID}
                 sourceShareToken={itinerary.shareToken}
                 contextScreenOwnerType={OwnerType.cityGuideGuide}

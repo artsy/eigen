@@ -3,7 +3,7 @@
 
 def remove_mapbox_creds
   $netrc_path = File.expand_path('~/.netrc')
-  if File.exists?(".i-had-a-netrc-file")
+  if File.exist?(".i-had-a-netrc-file")
     contents = File.read($netrc_path)
     cleaned = contents.gsub(/machine api\.mapbox\.com\nlogin mapbox\npassword .*$/, "")
     File.open($netrc_path, 'w') { |f|

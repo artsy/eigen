@@ -3,6 +3,7 @@ apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.google.gms.google-services"
 apply plugin: "com.facebook.react"
 apply plugin: "org.jetbrains.kotlin.android"
+apply plugin: "io.sentry.android.gradle"
 
 project.ext.keyFiles = [
   debug: "keys.shared.json",
@@ -83,6 +84,11 @@ react {
  */
 def enableMinifyInReleaseBuilds = (findProperty('android.enableMinifyInReleaseBuilds') ?: false).toBoolean()
 
+/**
+ * Set this to true in release builds to strip unused resources. Requires [enableMinifyInReleaseBuilds].
+ */
+def enableShrinkResourcesInReleaseBuilds = (findProperty('android.enableShrinkResourcesInReleaseBuilds') ?: false).toBoolean()
+
 
 /**
  * The preferred build flavor of JavaScriptCore (JSC)
@@ -162,6 +168,7 @@ android {
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.release
             minifyEnabled enableMinifyInReleaseBuilds
+            shrinkResources enableShrinkResourcesInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             resValue "string", "expo_runtime_version", "\"${getRuntimeVersion()}\""
             buildConfigField "boolean", "IS_BETA", "false"
@@ -193,6 +200,49 @@ android {
             ]
         }
     }
+}
+
+/**
+ * R8 obfuscates native (Java/Kotlin) frames, so Sentry needs the R8 `mapping.txt` to
+ * symbolicate them. The plugin injects a random `io.sentry.proguard-uuid` into the merged
+ * manifest and uploads the mapping tagged with that UUID — matching is by UUID, not by
+ * release name, so this is independent of our `android-<version>-<code>` release scheme.
+ *
+ * JS frames are unaffected by R8 and keep going up via fastlane (`upload_sentry_sourcemaps`).
+ *
+ * Uploading is opt-in: the deploy lanes set `SENTRY_UPLOAD_PROGUARD_MAPPING=true` explicitly.
+ * Do NOT arm this on `SENTRY_AUTH_TOKEN` presence alone — plenty of us have a token exported
+ * locally for other tooling, and a stale/unauthorized one makes
+ * `:app:uploadSentryProguardMappingsRelease` hard-fail the build with `401 Invalid token`.
+ * `includeProguardMapping` stays on regardless, so the UUID is always in the manifest and the
+ * mapping can be uploaded after the fact if a build ever ships without it.
+ */
+def sentryAuthToken = System.getenv('SENTRY_AUTH_TOKEN')
+def sentryShouldAutoUpload = System.getenv('SENTRY_UPLOAD_PROGUARD_MAPPING') == 'true' &&
+    sentryAuthToken != null && !sentryAuthToken.trim().isEmpty()
+println "✅ [Gradle] Sentry mapping auto-upload: ${sentryShouldAutoUpload}"
+
+sentry {
+    org = "artsynet"
+    projectName = "eigen"
+
+    includeProguardMapping = true
+    autoUploadProguardMapping = sentryShouldAutoUpload
+
+    // Both of these must stay disabled. `autoInstallation` would add its own sentry-android
+    // artifacts on top of the ones @sentry/react-native already vendors, and
+    // `tracingInstrumentation` rewrites bytecode in ways that conflict with the RN SDK.
+    autoInstallation {
+        enabled = false
+    }
+    tracingInstrumentation {
+        enabled = false
+    }
+
+    // NDK/.so debug symbols are a separate concern from R8 and cost significant build time
+    // across our ABIs. Left off for now;
+    uploadNativeSymbols = false
+    includeSourceContext = false
 }
 
 dependencies {

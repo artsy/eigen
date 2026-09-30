@@ -104,6 +104,7 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
               title={item.title}
               stopsCount={itineraryStopsCount(item)}
               imageUrl={item.heroImage?.url}
+              itineraryID={item.internalID}
               href={`/city-guide/${citySlug}/itinerary/${item.slug ?? item.internalID}`}
               rightSlot={<ItineraryShareTouchable item={item} citySlug={citySlug} />}
             />

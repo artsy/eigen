@@ -414,6 +414,7 @@ const addStopMutation = graphql`
         ... on ItineraryStopMutationSuccess {
           itineraryStop {
             internalID
+            ...ItineraryStopItemMembership_stop
           }
         }
         ... on ItineraryStopMutationFailure {
@@ -434,6 +435,7 @@ const removeStopMutation = graphql`
         ... on ItineraryStopMutationSuccess {
           itineraryStop {
             internalID
+            ...ItineraryStopItemMembership_stop
           }
         }
         ... on ItineraryStopMutationFailure {

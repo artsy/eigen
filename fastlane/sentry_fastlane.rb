@@ -99,28 +99,46 @@ lane :upload_dsyms_to_sentry do |options|
 
   puts "Uploaded dsyms for #{project_slug}"
 
-  upload_hermes_debug_files_to_sentry(org_slug: org_slug, project_slug: project_slug)
+  upload_prebuilt_framework_debug_files_to_sentry(org_slug: org_slug, project_slug: project_slug)
 end
 
-# Uploads debug information for the prebuilt Hermes VM framework.
+# Uploads debug information for React Native's prebuilt xcframeworks.
 #
-# Since RN 0.83 / Expo 55, Hermes ships as a prebuilt `hermesvm.xcframework`. Xcode copies
-# the vendored binary into the app as-is and never generates a dSYM for it, the pod ships
-# none, and no `hermesvm` dSYM ends up in the archive's dSYMs folder — so the default dSYM
-# upload above misses it and native Hermes VM frames show up unsymbolicated in Sentry
-# (Image `hermesvm` → Missing). The prebuilt binary is not stripped, so sentry-cli can read
-# `symtab`/`unwind` straight from the Mach-O; we point it at the device slice explicitly.
-def upload_hermes_debug_files_to_sentry(options = {})
+# Three of these ship as vendored binaries rather than being compiled from source:
+#   - `hermesvm.xcframework` - prebuilt Hermes VM, since RN 0.83 / Expo 55
+#   - `React.xcframework` and `ReactNativeDependencies.xcframework` - since RN 0.84, which
+#     made precompiled React Native core the default on iOS (`RCT_USE_PREBUILT_RNCORE=1`)
+#
+# Xcode copies these vendored binaries into the app as-is and never generates dSYMs for them,
+# the pods ship none, and none end up in the archive's dSYMs folder — so the default dSYM
+# upload above misses them entirely and native frames from these images show up in Sentry as
+# `Image React` / `ReactNativeDependencies` / `hermesvm` -> Missing.
+#
+# The prebuilt binaries are not stripped (`sentry-cli debug-files check` reports
+# `symtab, unwind` and `Usable: yes`), so sentry-cli can read the symbols straight from the
+# Mach-O. We point it at the device (`ios-arm64`) slice explicitly.
+#
+# Rebuild/re-check this list whenever React Native changes how it vendors prebuilt binaries.
+def upload_prebuilt_framework_debug_files_to_sentry(options = {})
   org_slug = options[:org_slug]
   project_slug = options[:project_slug]
 
-  hermes_framework = File.expand_path(
-    '../ios/Pods/hermes-engine/destroot/Library/Frameworks/universal/hermesvm.xcframework/ios-arm64/hermesvm.framework',
-    __dir__
-  )
+  pods_root = File.expand_path('../ios/Pods', __dir__)
 
-  unless File.exist?(hermes_framework)
-    UI.important("Hermes framework not found at #{hermes_framework} — skipping Hermes debug files upload")
+  expected_frameworks = [
+    "#{pods_root}/React-Core-prebuilt/React.xcframework/ios-arm64/React.framework",
+    "#{pods_root}/ReactNativeDependencies/framework/packages/react-native/ReactNativeDependencies.xcframework/ios-arm64/ReactNativeDependencies.framework",
+    "#{pods_root}/hermes-engine/destroot/Library/Frameworks/universal/hermesvm.xcframework/ios-arm64/hermesvm.framework"
+  ]
+
+  paths = expected_frameworks.select { |path| File.exist?(path) }
+
+  (expected_frameworks - paths).each do |missing|
+    UI.important("Prebuilt framework not found at #{missing} - skipping it; native frames from that image will be unsymbolicated in Sentry")
+  end
+
+  if paths.empty?
+    UI.important('No prebuilt React Native frameworks found - skipping prebuilt debug files upload')
     return
   end
 
@@ -129,11 +147,11 @@ def upload_hermes_debug_files_to_sentry(options = {})
       auth_token: ENV['SENTRY_AUTH_TOKEN'],
       org_slug: org_slug,
       project_slug: project_slug,
-      path: [hermes_framework]
+      path: paths
     )
-    puts "Uploaded Hermes VM debug files for #{project_slug}"
+    puts "Uploaded prebuilt framework debug files (#{paths.map { |path| File.basename(path) }.join(', ')}) for #{project_slug}"
   rescue StandardError => e
-    handle_error(e, 'Uploading Hermes VM debug files to Sentry failed.')
+    handle_error(e, 'Uploading prebuilt React Native framework debug files to Sentry failed.')
   end
 end
 

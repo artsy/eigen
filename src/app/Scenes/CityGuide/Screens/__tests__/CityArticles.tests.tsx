@@ -42,6 +42,8 @@ describe("CityArticlesScreen", () => {
   })
 
   it("renders a row for every curated article when the flag is off", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideArticlesForYou: false })
+
     const attachments = [0, 1, 2, 3, 4, 5].map((position) =>
       article(`Article ${position}`, position)
     )
@@ -52,6 +54,8 @@ describe("CityArticlesScreen", () => {
   })
 
   it("orders rows by the attachment's position", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideArticlesForYou: false })
+
     renderWithRelay({
       City: () => ({
         cityArticles: [article("Second", 1), article("First", 0)],

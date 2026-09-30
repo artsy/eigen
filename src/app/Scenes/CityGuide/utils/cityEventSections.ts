@@ -1,4 +1,3 @@
-import { MOCK_NEIGHBORHOODS } from "app/Scenes/CityGuide/utils/mockCityNeighborhoods"
 import { DateTime } from "luxon"
 
 /**
@@ -56,57 +55,46 @@ export const groupByOpeningWeek = <T extends HasStartAt>(
   ].filter((section) => section.items.length > 0)
 }
 
-/** One section holding every item in the order the server returned it, header included. */
-export const groupFlat = <T>(items: readonly T[]): CityEventSection<T>[] =>
-  items.length ? [{ id: "for-you", title: "For You", items: [...items] }] : []
+interface HasCityGuideNeighborhood {
+  location?: { cityGuideNeighborhood?: { slug: string } | null } | null
+}
 
-interface HasPostalCode {
-  location?: { postalCode?: string | null } | null
+export interface CityNeighborhoodDef {
+  slug: string
+  name: string
 }
 
 /** The section unmatched events fall into. Always sorted last. */
 const FALLBACK_SECTION_ID = "more"
 
-/** Uppercases and strips whitespace. Returns "" for missing, null or blank input. */
-export const normalizePostalCode = (postalCode?: string | null): string =>
-  (postalCode ?? "").toUpperCase().replace(/\s+/g, "")
-
 /**
- * Groups events by neighbourhood using the postcode table in `mockCityNeighborhoods.ts`.
- * A blank code falls through to the fallback; the longest matching prefix wins otherwise.
+ * Groups events by the neighbourhood Metaphysics matched on their location, in the order
+ * `neighborhoods` (the city's own display order) lists them. Events with no match fall
+ * through to a "More in <cityName>" section, last.
  */
-export const groupByNeighborhood = <T extends HasPostalCode>(
+export const groupByNeighborhood = <T extends HasCityGuideNeighborhood>(
   items: readonly T[],
-  citySlug: string,
+  neighborhoods: readonly CityNeighborhoodDef[],
   cityName: string
 ): CityEventSection<T>[] => {
-  const defs = MOCK_NEIGHBORHOODS[citySlug] ?? []
   const grouped = new Map<string, T[]>()
+  // Metaphysics picks a location's city from its own coordinates, so a show near a boundary can
+  // carry another city's slug. Anything this city doesn't list falls back instead of vanishing.
+  const known = new Set(neighborhoods.map((neighborhood) => neighborhood.slug))
 
   items.forEach((item) => {
-    const code = normalizePostalCode(item.location?.postalCode)
-
-    const match = !code
-      ? undefined
-      : defs.reduce<{ id: string; length: number } | undefined>((best, def) => {
-          const longest = def.postalPrefixes
-            .filter((prefix) => code.startsWith(prefix))
-            .reduce((max, prefix) => Math.max(max, prefix.length), 0)
-
-          if (longest === 0 || (best && best.length >= longest)) {
-            return best
-          }
-
-          return { id: def.id, length: longest }
-        }, undefined)
-
-    const sectionId = match?.id ?? FALLBACK_SECTION_ID
+    const slug = item.location?.cityGuideNeighborhood?.slug
+    const sectionId = slug && known.has(slug) ? slug : FALLBACK_SECTION_ID
     grouped.set(sectionId, [...(grouped.get(sectionId) ?? []), item])
   })
 
-  const sections = defs
-    .filter((def) => grouped.has(def.id))
-    .map((def) => ({ id: def.id, title: def.title, items: grouped.get(def.id) as T[] }))
+  const sections = neighborhoods
+    .filter((neighborhood) => grouped.has(neighborhood.slug))
+    .map((neighborhood) => ({
+      id: neighborhood.slug,
+      title: neighborhood.name,
+      items: grouped.get(neighborhood.slug) as T[],
+    }))
 
   const fallback = grouped.get(FALLBACK_SECTION_ID)
 

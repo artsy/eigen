@@ -95,17 +95,17 @@ Either when:
 - The upstream `JensRavens/Interstellar` publishes a new CocoaPods release that includes `unsubscribe()` on `ObserverToken` (added in master after 2.2.0, the last published version), **or**
 - We rewrite Live Auctions in React Native, at which point we can drop Interstellar entirely — it is only used by the native Live Auctions view controllers.
 
-#### Explanation/Context
+#### Explanation/Context:
 
 The Artsy fork (`artsy/Interstellar`, branch `observable-unsubscribe`) exists solely to add `unsubscribe()` to `ObserverToken`, which is called throughout the native Live Auctions view controllers (`LiveAuctionViewController`, `LiveAuctionLotListViewController`, etc.). The upstream repo added this same feature to master after the 2.2.0 CocoaPods release, but has never cut a new release. The Artsy fork's branch is 18 commits behind upstream master and only 3 ahead — all three of those commits exist in some form upstream — so if needed, we could switch to `JensRavens/Interstellar` master directly (same pattern, true upstream).
 
 ## Modular headers for firebase deps in Podfile
 
-#### When we can remove this
+#### When can we remove this:
 
 When we switch to `use_frameworks! :linkage => :static` globally (the recommended setup for Expo + Firebase). This requires removing the per-pod `:modular_headers => true` entries and adding `$RNFirebaseAsStaticFramework = true`. See https://rnfirebase.io/#altering-cocoapods-to-use-frameworks
 
-#### Explanation/Context
+#### Explanation/Context:
 
 Flipper is gone, but we still can't use `use_frameworks! :linkage => :static` globally — which is what rnfirebase actually recommends. PR #11550 implemented this correctly, but it was reverted in PR #11898 because enabling static linkage for all pods significantly blew up iOS build times. The `:modular_headers => true` entries are the workaround that lets Firebase compile correctly without global static linkage.
 
@@ -113,23 +113,23 @@ As the iOS pod count decreases, the build time penalty becomes more acceptable a
 
 ## Custom lane google_play_track_rollout_percentages in fastlane dir + associated monkey patches in Fastfile
 
-#### When we can remove this:
+#### When can we remove this:
 
 When this pr is accepted upstream or another way to fetch this data is supported by fastlane:
 https://github.com/fastlane/fastlane/pull/22029
 
-####
+#### Explanation/Context:
 
 This info is needed to automate our android rollout but not currently supported by fastlane.
 
 ## Custom supply command and associated patches in fastlane dir and Fastfile
 
-#### When we can remove this:
+#### When can we remove this:
 
 When this pr is accepted upstream or another way to promote historical builds is supported by fastlane:
 https://github.com/fastlane/fastlane/pull/22025
 
-####
+#### Explanation/Context:
 
 We want to be able to promote past android builds to prod because we are creating betas often and a release candidate may not be
 the latest. The developer APIs for google play only return the latest release and fastlane verifies that a release exists before allowing
@@ -139,31 +139,42 @@ promotion. We added custom logic to work around this.
 
 #### When can we remove this:
 
-When react-native-keys merges this PR
-https://github.com/numandev1/react-native-keys/pull/117
+The Android build-path hunk can go when react-native-keys merges https://github.com/numandev1/react-native-keys/pull/117
+
+The bridgeless/JSI hunks can go when react-native-keys supports the New Architecture without a bridge. There is no upstream PR for this yet — we should open one.
 
 #### Explanation/Context:
 
-Because RN >= 0.80 has moved react-native from `react-native/android` to `react-native/ReactAndroid`, we need to be looking at the new folder instead of the previous one
+Two unrelated problems in one patch:
+
+**1. Android build path.** Because RN >= 0.80 has moved react-native from `react-native/android` to `react-native/ReactAndroid`, we need to be looking at the new folder instead of the previous one.
+
+**2. Bridgeless (New Architecture) JSI installation.** The library installed its `secureFor` / `publicKeys` JSI host functions by reaching for `[RCTBridge currentBridge]` and casting to `RCTCxxBridge` to get the runtime. In bridgeless mode there is no bridge, so `install()` returned `false` and the globals were never defined — which breaks every consumer of `Keys` (all our env/secret access at startup).
+
+The patch reworks this without touching the public API:
+
+- `ios/Keys.mm` — extracts the binding setup into a shared `installKeysBindings(jsi::Runtime&)` helper, and under `RCT_NEW_ARCH_ENABLED` adopts `RCTTurboModuleWithJSIBindings` so RN calls `installJSIBindingsWithRuntime:callInvoker:` and hands us the runtime directly (no bridge or CallInvoker hacks). The JS-callable `install()` then just returns `true` when there is no bridge, and still falls back to the legacy `RCTCxxBridge` path on the old architecture.
+- `android/.../KeysModule.java` — `getJavaScriptContextHolder()` is still exposed on `BridgelessReactContext` (via `@UnstableReactNativeAPI`) and returns the active `ReactInstance`'s runtime pointer, so the JSI install works; we just guard against a null/zero holder instead of crashing.
+
+⚠️ `yarn patch <pkg>` extracts the **unpatched** source. Re-apply the existing patch before adding hunks or you will silently drop them, and run `yarn install` after `yarn patch-commit` (it does not refresh `node_modules`).
 
 ## Patch for @react-navigation/bottom-tabs
+
+#### When can we remove this:
+
+When `@react-navigation/bottom-tabs` supports animating the tab bar's appearance itself. There is no upstream issue or PR tracking this yet — we should open one. Rebuild the patch on every version bump.
+
+#### Explanation/Context:
 
 This patch allows us to animate the appearance of the bottom tabs. This is currently not supported by @react-navigation/bottom-tabs but it's something they do when the user shows/hides the keyboard.
 
 See https://github.com/artsy/eigen/pull/12249 for more details.
 
-## patch for react-native RCTEventEmitter
-
-#### Explanation/Context:
-
-We use a singleton pattern for our ARNotificationsManagerModule, which is also an RCTEventEmitter for things like push notification handling, there is a bug in react native where stopObserving is called when bridge is invalidated but listenerCount is
-not reset. This causes the module to never start listening again causing events not to be sent over the bridge.
+## react-native-reanimated package.json flags and react-native patch
 
 #### When can we remove this:
 
-It can be removed once if we stop using the singleton pattern or get rid of ARNotificationsManagerModule, or it is fixed upstream.
-
-## react-native-reanimated package.json flags and react-native patch
+When reanimated adopts these by default.
 
 #### Explanation/Context:
 
@@ -175,22 +186,24 @@ It can be removed once if we stop using the singleton pattern or get rid of ARNo
 
 We also patch `react-native` (`ReactNativeFeatureFlagsDefaults.h`) to flip `preventShadowTreeCommitExhaustion()` to return `true`, which is required for these flags to behave correctly.
 
-#### When can we remove this:
-
-When reanimated adopts these by default.
-
 ## react-native-webview passing constant for decelerationRate prop
-
-#### Explanation/Context:
-
-This is a bug on the new architecture on Android with this prop and react-native-webview.
 
 #### When can we remove this:
 
 When this is merged and we update react-native-webview to a version that contains it:
 https://github.com/react-native-webview/react-native-webview/pull/3885
 
+Still needed as of `react-native-webview@13.16.1`.
+
+#### Explanation/Context:
+
+This is a bug on the new architecture on Android with this prop and react-native-webview. The workaround lives in `src/app/Components/ArtsyWebView.tsx` — we pass the numeric constant `0.985` on Android instead of the `"fast"` string.
+
 ## patch for expo-build-disk-cache
+
+#### When can we remove this:
+
+When the upstream expo-build-disk-cache repository fixes the logging behavior and releases a new version that properly checks remote cache before logging cache misses.
 
 #### Explanation/Context:
 
@@ -203,20 +216,6 @@ The patch:
 - Improves the conditional logic around remote plugin downloading to properly return the cache path on success
 
 This ensures accurate logging when using remote cache plugins like our S3 build cache implementation.
-
-#### When we can remove this:
-
-When the upstream expo-build-disk-cache repository fixes the logging behavior and releases a new version that properly checks remote cache before logging cache misses.
-
-## patch for react-native
-
-#### Explanation/Context:
-
-Probably related with this sentry issue https://artsynet.sentry.io/issues/7043718518/events/0e89b1ce77cd4dfe95c45feefea1ed22/ EXC_BAD_ACCESS crash on iOS. This patch is attempting to fix the crash and was found in this reanimated issue (but is a react-native patch): https://github.com/software-mansion/react-native-reanimated/issues/7666#issuecomment-3053014969
-
-#### When can we remove this:
-
-When they address this issue on react native main repo
 
 ## Patch for react-native-ios-context-menu
 
@@ -252,50 +251,110 @@ https://github.com/gorhom/react-native-bottom-sheet/issues/2547
 
 On Fabric, reanimated's `scrollTo` uses `dispatchCommand` which forces a native commit cycle that re-triggers `onScroll` even when the scroll offset hasn't changed. In `useScrollEventsHandlersDefault`, when the scrollable state is `LOCKED`, `handleOnScroll` calls `scrollTo` to enforce the lock position, which fires another `onScroll`, which calls `scrollTo` again — creating an infinite recursion that crashes with "Maximum call stack size exceeded (native stack depth)".
 
-The patch adds a guard (`if (y === lockPosition) return`) in `handleOnScroll`, `handleOnEndDrag`, and `handleOnMomentumEnd` to skip the `scrollTo` call when the scroll position is already at the lock position. It also fixes a bug in `handleOnMomentumEnd` where `scrollableContentOffsetY.value` was incorrectly set to `0` instead of `lockPosition`.
+The patch adds a guard (`if (Math.abs(y - lockPosition) < 1) return`) in `handleOnScroll`, `handleOnEndDrag`, and `handleOnMomentumEnd` to skip the `scrollTo` call when the scroll position is already at the lock position. The epsilon comparison (rather than `===`) matters because the offset that comes back from the native scroll event is a float and is not always exactly equal to the position we asked for. It also fixes a bug in `handleOnMomentumEnd` where `scrollableContentOffsetY.value` was incorrectly set to `0` instead of `lockPosition`.
+
+Only `src/` is patched, not `lib/` — the package's `react-native` entry point is `src/index.ts`, so that is what Metro consumes.
 
 Sentry issue: https://artsynet.sentry.io/issues/7304441200/
 
+⚠️ **This patch has been lost once already.** It was dropped while bumping `@gorhom/bottom-sheet` 5.2.8 → 5.2.14 and re-ported afterwards. Neither half of it is upstream as of 5.2.14 (`handleOnMomentumEnd` there still sets `scrollableContentOffsetY.value = 0`), so **re-apply it on every version bump** and verify with:
+
+```sh
+grep -c "Math.abs(y - lockPosition)" node_modules/@gorhom/bottom-sheet/src/hooks/useScrollEventsHandlersDefault.ts  # expect 3
+```
+
+Note that `expo install --fix` silently strips `patch:` protocol descriptors from `package.json`, which is one way this goes missing.
+
 ## patch for @d11/react-native-fast-image
-
-#### Explanation/Context:
-
-Another dependency in the Expo/react-native ecosystem has brought in com.caverock:androidsvg-aar:1.4, the aar version of the library, which causes duplicate symbols errors when linking.
 
 #### When can we remove this:
 
 When the upstream @d11/react-native-fast-image closes and releases this PR https://github.com/dream-horizon-org/react-native-fast-image/pull/354/changes
 
+#### Explanation/Context:
+
+Another dependency in the Expo/react-native ecosystem has brought in com.caverock:androidsvg-aar:1.4, the aar version of the library, which causes duplicate symbols errors when linking.
+
 ## patch for expo-updates
 
-#### Explanation/Context:
-
-Started seeing blank screens on android when app was crashing instead of regularly crashing the app after we enabled new architecture. This patch attempts to fix that.
-
 #### When can we remove this:
 
-When the upstream expo-updates repository fixes the issue and releases a new version that properly handles crashes on Android with the new architecture. https://github.com/expo/expo/issues/41543
+**Hunk 1:** when the upstream expo-updates repository fixes the issue and releases a new version that properly handles crashes on Android with the new architecture. https://github.com/expo/expo/issues/41543
 
-## Hermes engine podspec path fix in react-native patch
+**Hunk 2:** when upstream fixes the `use_dev_client` detection. Still broken as of `expo-updates@57.0.21` — carry this hunk forward on every SDK bump.
 
 #### Explanation/Context:
 
-After the Expo 55 bump (`react-native@0.83.6`), the `hermes-engine.podspec` resolves `HERMES_CLI_PATH` (the path to `hermesc`) by running `node -p require.resolve("hermes-compiler", ...)` at pod install time. This produces an **absolute path** containing the current user's home directory (e.g. `/Users/george/…/node_modules/hermes-compiler/hermesc/osx-bin/hermesc`).
+Two unrelated hunks:
 
-Because each developer has a different username, CocoaPods computes a **different checksum** for the `hermes-engine` pod on every machine, causing `Podfile.lock` to show a diff after every `pod install` even when nothing actually changed. See upstream issue: https://github.com/facebook/react-native/issues/54891
+**1. `android/.../errorrecovery/ErrorRecovery.kt` — blank screens instead of crashes.** Started seeing blank screens on android when app was crashing instead of regularly crashing the app after we enabled new architecture. In bridgeless mode `onReactInstanceException` silently swallowed the exception once expo-updates had unregistered its own handler (i.e. more than ~10s after launch). The patch keeps a fallback handler around that forwards to the thread's default uncaught-exception handler, so the app crashes properly — and gets reported — instead of showing a blank screen.
 
-The fix (bundled into `.yarn/patches/react-native-npm-0.83.6-hermes-checksum.patch`) replaces the dynamic `node` resolution with a static CocoaPods-relative path: `$(PODS_ROOT)/../../node_modules/hermes-compiler/hermesc/osx-bin/hermesc`. This path is identical on every machine, so the checksum stabilises.
+**2. `ios/EXUpdates.podspec` — `use_dev_client` wrongly enabled.** Upstream detects expo-dev-client with:
+
+```rb
+use_dev_client = File.dirname(`node --print "require.resolve('expo-dev-client/package.json', ...)"`).length > 0
+```
+
+We do not install `expo-dev-client`, so the backtick returns `""`, `File.dirname("")` is `"."`, and `".".length > 0` is **true** — so Debug builds wrongly got `-DUSE_DEV_CLIENT=1`. It also leaked a node `MODULE_NOT_FOUND` stack trace to stderr on every `pod install`. The patch checks `$?.success?` and a non-empty result instead, and silences the stderr.
+
+## Patch for react-native-ios-utilities
 
 #### When can we remove this:
 
-When https://github.com/facebook/react-native/issues/54891 is resolved upstream and we upgrade to a version of `react-native` that uses a machine-independent path for `HERMES_CLI_PATH`.
+When `react-native-ios-utilities` stops referencing the legacy-architecture-only `RCTRootContentView`. `5.2.0` is the **latest published** version, so there is no upgrade to move to — we should report this upstream. Rebuild the patch on every version bump.
+
+#### Explanation/Context:
+
+The iOS build failed to link with `Undefined symbols: _OBJC_CLASS_$_RCTRootContentView`, referenced from `react-native-ios-utilities` (pulled in via `react-native-ios-context-menu` / zeego).
+
+`RCTRootContentView` is a legacy (Paper) class. RN 0.85+ removes the legacy architecture **and** ships a **prebuilt** React-Core (`RCT_USE_PREBUILT_RNCORE=1` by default) that is built with `RCT_REMOVE_LEGACY_ARCH=1`, so the symbol no longer exists in the binary we link against.
+
+The patch removes the `closestParentReactContentView` helper and returns `nil` from its single consumer — the tail fallback of `closestParentReactTouchHandler`, which `react-native-ios-context-menu` uses to cancel a touch handler. This is safe because eigen runs the New Architecture: `RCTRootContentView` is never present in a Fabric view hierarchy, so that fallback was already dead code for us.
+
+**Failed approach — do not retry:** setting `ENV['RCT_REMOVE_LEGACY_ARCH'] = '0'` in the Podfile. A compiler flag cannot add symbols back into a prebuilt binary; it would additionally require `RCT_USE_PREBUILT_RNCORE=0`, i.e. compiling React Native from source on every clean build.
+
+## Patch for react-native-safe-area-context
+
+#### When can we remove this:
+
+When upstream drops the unused `React` import from `jest/mock.tsx`, or when our Babel/TS config no longer errors on it.
+
+#### Explanation/Context:
+
+`jest/mock.tsx` does `import React, { useContext } from 'react'` but never references `React` itself. Under our Jest transform this trips the unused-import/`verbatimModuleSyntax`-style handling and fails the mock. The patch is a one-liner that drops the default import and keeps `{ useContext }`.
+
+Purely a test-time fix — it does not affect app code. Needs rebuilding on every `react-native-safe-area-context` version bump (it has already been carried across 5.6.2 → 5.7.0).
 
 ## patch for AFNetworking
+
+#### When can we remove this:
+
+When this gets addressed from Xcode side or we upgrade to a new version of AFNetworking
 
 #### Explanation/Context:
 
 On XCode 26.5 we get "error Use of private header from outside its module: 'netinet6/in6.h'" breaking the iOS build.
 
+## patch for react-native-collapsible-tab-view
+
 #### When can we remove this:
 
-When this gets addressed from Xcode side or we upgrade to a new version of AFNetworking
+When `react-native-collapsible-tab-view` makes the tab-sync frame window configurable, or tunes it per platform itself. There is no upstream issue for this yet — we should open one. `9.0.0-rc.0` is a pre-release, so re-apply the patch on every bump.
+
+#### Explanation/Context:
+
+`Container.tsx` runs a `useFrameCallback` (`syncScrollFrame`) that keeps the non-focused tabs' scroll offsets in sync with the focused one after a tab switch, and stops itself after a fixed 1500ms. On Android that window is far too long: the frame callback keeps firing while the user is already scrolling the new tab, which competes with the scroll and makes it feel janky.
+
+The patch shortens the window to 300ms on Android and leaves iOS at 1500ms. Added while enabling the New Architecture (https://github.com/artsy/eigen/pull/12825).
+
+## ORStackView patch in ios/patches
+
+#### When can we remove this:
+
+When `ORStackView` publishes a release newer than 2.0.3 with the missing `UIKit` imports, or when the native screens that use it (Live Auctions, City Guide) are rewritten in React Native and we can drop the pod.
+
+#### Explanation/Context:
+
+`ios/patches/ORStackView+2.0.3.diff` is applied by the `cocoapods-patch` plugin (`plugin 'cocoapods-patch'` in `ios/Podfile`, gem pinned in the `Gemfile`), the same mechanism as the AFNetworking patch above.
+
+ORStackView's public headers (`ORStackView.h`, `ORStackScrollView.h`, `ORSplitStackView.h`, `ORTagBasedAutoStackView.h`, `ORStackView+Private.h`) reference `UIView` / `UIScrollView` without importing UIKit, relying on it being pulled in transitively by the prefix header. Under modular/framework builds that no longer holds and the pod fails to compile. The patch just adds `#import <UIKit/UIKit.h>` to each header.

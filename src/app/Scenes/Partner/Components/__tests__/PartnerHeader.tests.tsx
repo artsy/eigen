@@ -1,5 +1,6 @@
 import { Button } from "@artsy/palette-mobile"
 import { PartnerHeaderTestsQuery } from "__generated__/PartnerHeaderTestsQuery.graphql"
+import { TypeEyebrow } from "app/Components/TypeEyebrow"
 import { PartnerHeaderContainer as PartnerHeader } from "app/Scenes/Partner/Components/PartnerHeader"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -70,6 +71,35 @@ describe("PartnerHeader", () => {
     })
 
     expect(extractText(tree.root)).toContain("Black Owned")
+  })
+
+  it("renders a type eyebrow above the name when the partner has a category", async () => {
+    const view = renderWithWrappersLEGACY(<TestRenderer />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          partner: { ...PartnerHeaderFixture, type: "Gallery" },
+        },
+      })
+    })
+
+    expect(extractText(view.root)).toContain("Gallery")
+    expect(extractText(view.root)).toContain("Gagosian")
+  })
+
+  it("renders no eyebrow when the partner has no type", async () => {
+    const view = renderWithWrappersLEGACY(<TestRenderer />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          partner: { ...PartnerHeaderFixture, type: null },
+        },
+      })
+    })
+
+    expect(view.root.findAll((node) => node.type === TypeEyebrow)).toHaveLength(0)
   })
 })
 

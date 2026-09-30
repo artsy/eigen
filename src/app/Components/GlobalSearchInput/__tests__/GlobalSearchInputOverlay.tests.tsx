@@ -38,66 +38,13 @@ const renderOverlay = (props: { hideModal?: () => void } = {}) =>
     { includeNavigation: true }
   )
 
-describe("GlobalSearchInputOverlay — Search by Photo entry point", () => {
+describe("GlobalSearchInputOverlay", () => {
   const mockUseExperimentFlag = useExperimentFlag as jest.Mock
 
   beforeEach(() => {
     jest.clearAllMocks()
     jest.mocked(useEnableArtAssistant).mockReturnValue(false)
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtsyLens: true })
-  })
-
-  it("hides the Search by Photo button when AREnableArtsyLens is off", () => {
-    mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtsyLens: false })
-
-    renderOverlay()
-
-    expect(screen.queryByTestId("search-by-photo-button")).not.toBeOnTheScreen()
-  })
-
-  it("renders the Search by Photo button when onyx_artsy-lens is on", () => {
-    mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
-
-    renderOverlay()
-
-    expect(screen.getByTestId("search-by-photo-button")).toBeOnTheScreen()
-  })
-
-  it("hides the Search by Photo button when onyx_artsy-lens is off", () => {
-    mockUseExperimentFlag.mockReturnValue(false)
-
-    renderOverlay()
-
-    expect(screen.queryByTestId("search-by-photo-button")).not.toBeOnTheScreen()
-  })
-
-  it("dismisses the overlay and navigates to /lens on press", () => {
-    mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
-    const hideModal = jest.fn()
-
-    renderOverlay({ hideModal })
-
-    fireEvent.press(screen.getByTestId("search-by-photo-button"))
-
-    expect(hideModal).toHaveBeenCalledTimes(1)
-    expect(navigate).toHaveBeenCalledWith("/lens")
-  })
-
-  it("reports the button tap as the overlay button entry point", () => {
-    mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
-
-    renderOverlay()
-
-    fireEvent.press(screen.getByTestId("search-by-photo-button"))
-
-    expect(mockTrackEvent).toHaveBeenCalledExactlyOnceWith({
-      action: "tappedSearchByImage",
-      context_module: "searchOverlay",
-      context_screen_owner_type: "home",
-      destination_screen_owner_type: "searchByImage",
-      type: "search_overlay_button",
-    })
   })
 
   describe("the Art Assistant entry point", () => {
@@ -164,7 +111,6 @@ describe("GlobalSearchInputOverlay — Search by Photo entry point", () => {
       )
 
       expect(screen.queryByTestId("search-overlay-camera-icon")).not.toBeOnTheScreen()
-      expect(screen.getByTestId("search-by-photo-button")).toBeOnTheScreen()
     })
 
     it("dismisses the overlay and navigates to /lens on press", () => {

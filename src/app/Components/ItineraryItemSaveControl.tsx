@@ -7,11 +7,12 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
 
 interface Props {
-  itemType: "SHOW" | "FAIR"
+  /** A gallery is a `LOCATION`: `itemID` is the location's id, not the partner's. */
+  itemType: "SHOW" | "FAIR" | "LOCATION"
   itemID: string
   itemSlug?: string
   name: string
-  /** Where this control is rendered — the show or fair's own page. */
+  /** Where this control is rendered — the item's own page. */
   contextScreenOwnerType: ScreenOwnerType
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string
@@ -28,11 +29,16 @@ const Control: React.FC<Props> = ({
   contextScreenOwnerSlug,
 }) => {
   const environment = useRelayEnvironment()
-  const variables = { itemID, isShow: itemType === "SHOW", isFair: itemType === "FAIR" }
+  const variables = {
+    itemID,
+    isShow: itemType === "SHOW",
+    isFair: itemType === "FAIR",
+    isLocation: itemType === "LOCATION",
+  }
   const data = useLazyLoadQuery<ItineraryItemSaveControlQuery>(Query, variables, {
     fetchPolicy: "network-only",
   })
-  const item = data.show ?? data.fair
+  const item = data.show ?? data.fair ?? data.location
 
   const refresh = () => {
     fetchQuery<ItineraryItemSaveControlQuery>(environment, Query, variables, {
@@ -82,7 +88,12 @@ export const ItineraryItemSaveControl: React.FC<Props> = (props) => {
 }
 
 const Query = graphql`
-  query ItineraryItemSaveControlQuery($itemID: String!, $isShow: Boolean!, $isFair: Boolean!) {
+  query ItineraryItemSaveControlQuery(
+    $itemID: String!
+    $isShow: Boolean!
+    $isFair: Boolean!
+    $isLocation: Boolean!
+  ) {
     show(id: $itemID) @include(if: $isShow) {
       isOnMyItineraries
       cityGuideCity {
@@ -91,6 +102,13 @@ const Query = graphql`
       }
     }
     fair(id: $itemID) @include(if: $isFair) {
+      isOnMyItineraries
+      cityGuideCity {
+        slug
+        name
+      }
+    }
+    location(id: $itemID) @include(if: $isLocation) {
       isOnMyItineraries
       cityGuideCity {
         slug

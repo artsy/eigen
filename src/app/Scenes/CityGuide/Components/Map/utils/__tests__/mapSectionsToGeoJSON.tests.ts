@@ -59,21 +59,10 @@ describe("mapPlacesToGeoJSON", () => {
     ])
   })
 
-  it("stamps id and a default icon into properties when numbering is off (the default)", () => {
+  it("stamps id and a default icon into properties", () => {
     const collection = mapPlacesToGeoJSON(flattenMapSections(SECTIONS))
 
     expect(collection.features[0].properties).toEqual({ id: FIRST_PLACE.id, icon: "pin" })
-  })
-
-  it("stamps a string number into properties when numbering is on", () => {
-    const collection = mapPlacesToGeoJSON(flattenMapSections(SECTIONS), { numbered: true })
-
-    expect(collection.features[0].properties).toEqual({
-      id: FIRST_PLACE.id,
-      icon: "pin",
-      number: "1",
-    })
-    expect(collection.features[1].properties.number).toEqual("2")
   })
 
   it("carries a place's own icon through instead of the default", () => {
@@ -95,19 +84,6 @@ describe("mapPlacesToGeoJSON", () => {
     const collection = mapPlacesToGeoJSON(flattenMapSections(sections))
 
     expect(collection.features[0].properties.icon).toEqual("pin-fair")
-  })
-
-  it("numbers by position in the list given, so a filtered section restarts at 1", () => {
-    const lastSection = SECTIONS[SECTIONS.length - 1]
-    const flattened = flattenMapSections(SECTIONS)
-    const lastSectionOnly = flattened.filter((f) => f.sectionId === lastSection.id)
-
-    // These sit late in the full list, but on their own they number from 1 again.
-    expect(
-      mapPlacesToGeoJSON(lastSectionOnly, { numbered: true }).features.map(
-        (f) => f.properties.number
-      )
-    ).toEqual(lastSection.places.map((_, i) => String(i + 1)))
   })
 
   it("returns an empty collection for no places", () => {

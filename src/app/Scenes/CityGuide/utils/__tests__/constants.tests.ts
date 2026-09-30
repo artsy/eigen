@@ -1,21 +1,14 @@
 import {
+  CLUSTER_COUNT_STYLE,
   getClusterCircleStyle,
-  getClusterCountStyle,
-  getStopCircleStyle,
   getStopSymbolStyle,
-  NUMBERED_CLUSTER_COUNT_FIELD,
   PIN_COLOR,
-  PLAIN_CLUSTER_COUNT_FIELD,
   SELECTED_COLOR,
 } from "app/Scenes/CityGuide/utils/constants"
 
-describe(getClusterCountStyle, () => {
-  it("reads the numbered cluster count field when numbered", () => {
-    expect(getClusterCountStyle(true).textField).toEqual(NUMBERED_CLUSTER_COUNT_FIELD)
-  })
-
-  it("reads the plain cluster count field when not numbered", () => {
-    expect(getClusterCountStyle(false).textField).toEqual(PLAIN_CLUSTER_COUNT_FIELD)
+describe("CLUSTER_COUNT_STYLE", () => {
+  it("shows the plain cluster count", () => {
+    expect(CLUSTER_COUNT_STYLE.textField).toEqual(["to-string", ["get", "point_count"]])
   })
 })
 
@@ -38,21 +31,6 @@ describe(getStopSymbolStyle, () => {
 
     expect(style.iconAllowOverlap).toBe(true)
     expect(style.iconIgnorePlacement).toBe(true)
-  })
-})
-
-describe(getStopCircleStyle, () => {
-  it("colours every pin black when no place is selected", () => {
-    expect(getStopCircleStyle(null).circleColor).toBe(PIN_COLOR)
-  })
-
-  it("recolours only the selected place's pin purple", () => {
-    expect(getStopCircleStyle("place-1").circleColor).toEqual([
-      "case",
-      ["==", ["get", "id"], "place-1"],
-      SELECTED_COLOR,
-      PIN_COLOR,
-    ])
   })
 })
 

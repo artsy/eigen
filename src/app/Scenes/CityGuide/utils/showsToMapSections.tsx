@@ -40,6 +40,7 @@ export const showsToMapSections = (
             itemID={show.internalID}
             itemSlug={show.slug ?? undefined}
             name={show.name ?? ""}
+            isOnMyItineraries={show.isOnMyItineraries}
             contextScreenOwnerType={context.contextScreenOwnerType}
             contextScreenOwnerSlug={context.contextScreenOwnerSlug}
           />

@@ -48,7 +48,6 @@ const unsaveableStop = makeItineraryStop({
 
 interface RowProps {
   stop: ItineraryStop
-  number: number
   citySlug: string
   itineraryId: string
   cityName: string
@@ -63,14 +62,15 @@ const renderRow = (props: RowProps) =>
   )
 
 describe("ItineraryStopRow", () => {
-  it("shows a check when the stop is already on one of my itineraries", () => {
+  // Read from the show, not the stop: saving the show elsewhere only updates the show.
+  it("shows a check when the stop's show is already on one of my itineraries", () => {
     renderRow({
       stop: makeItineraryStop({
         ...savedStop,
-        isOnMyItineraries: true,
+        isOnMyItineraries: false,
+        item: { ...savedStop.item, isOnMyItineraries: true } as ItineraryStop["item"],
         myItineraries: [{ internalID: "mine-1" }],
       }),
-      number: 1,
       citySlug: "london-united-kingdom",
       itineraryId: "guide-1",
       cityName: "London",
@@ -79,17 +79,15 @@ describe("ItineraryStopRow", () => {
     expect(screen.getByTestId("city-guide-save-button-check-icon")).toBeTruthy()
   })
 
-  it("renders the number, title, time and address", async () => {
+  it("renders the title, time and address", async () => {
     renderRow({
       stop: savedStop,
-      number: 2,
       citySlug: "london-united-kingdom",
       itineraryId: "guide-1",
       cityName: "London",
     })
 
     expect(await screen.findByText("Museum")).toBeTruthy()
-    expect(screen.getByText("2")).toBeTruthy()
     expect(screen.getByText("11am-4pm")).toBeTruthy()
     expect(screen.getByText("🏛 Trafalgar Square, WC2N 5DN")).toBeTruthy()
   })
@@ -111,7 +109,6 @@ describe("ItineraryStopRow", () => {
   it("leaves the note off the row", async () => {
     renderRow({
       stop: savedStop,
-      number: 2,
       citySlug: "london-united-kingdom",
       itineraryId: "guide-1",
       cityName: "London",
@@ -143,6 +140,7 @@ describe("ItineraryStopRow", () => {
           stop={withItem({
             __typename: "Show",
             internalID: "a-show-id",
+            isOnMyItineraries: null,
             name: "A show",
             href: "/show/a-show",
             slug: "a-show",
@@ -169,6 +167,7 @@ describe("ItineraryStopRow", () => {
           stop={withItem({
             __typename: "Show",
             internalID: "white-cube-georg-baselitz-back-again-id",
+            isOnMyItineraries: null,
             name: "Georg Baselitz: Back Again",
             href: "/show/white-cube-georg-baselitz-back-again",
             slug: "white-cube-georg-baselitz-back-again",
@@ -196,6 +195,7 @@ describe("ItineraryStopRow", () => {
           stop={withItem({
             __typename: "Location",
             internalID: "bermondsey-id",
+            isOnMyItineraries: null,
             name: "Bermondsey",
             city: null,
             address: null,
@@ -215,7 +215,7 @@ describe("ItineraryStopRow", () => {
 
       fireEvent.press(screen.getByTestId("stop-card-link"))
 
-      expect(navigate).toHaveBeenCalledWith("/partner/white-cube")
+      expect(navigate).toHaveBeenCalledWith("/partner/white-cube?locationID=bermondsey-id")
     })
 
     // A custom stop has no entity page, so it gets its own screen, addressed by the itinerary
@@ -224,7 +224,6 @@ describe("ItineraryStopRow", () => {
       renderWithWrappers(
         <ItineraryStopRow
           stop={unsaveableStop}
-          number={1}
           citySlug="london-united-kingdom"
           itineraryId="guide-1"
           cityName="London"
@@ -264,7 +263,6 @@ describe("ItineraryStopRow", () => {
     renderWithWrappers(
       <ItineraryStopRow
         stop={unsaveableStop}
-        number={1}
         citySlug="london-united-kingdom"
         itineraryId="guide-1"
         cityName="London"
@@ -280,7 +278,6 @@ describe("ItineraryStopRow", () => {
   it("shows the plus on a custom stop without waiting on a lookup", () => {
     renderRow({
       stop: unsaveableStop,
-      number: 1,
       citySlug: "london-united-kingdom",
       itineraryId: "guide-1",
       cityName: "London",
@@ -293,7 +290,6 @@ describe("ItineraryStopRow", () => {
     renderWithWrappers(
       <ItineraryStopRow
         stop={unsaveableStop}
-        number={1}
         citySlug="london-united-kingdom"
         itineraryId="guide-1"
         cityName="London"
@@ -308,7 +304,6 @@ describe("ItineraryStopRow", () => {
   it("shows a plus on an entity-backed stop", () => {
     renderRow({
       stop: savedStop,
-      number: 2,
       citySlug: "london-united-kingdom",
       itineraryId: "guide-1",
       cityName: "London",
@@ -327,7 +322,6 @@ describe("ItineraryStopRow", () => {
         <AddToItineraryProvider citySlug="london-united-kingdom" cityName="London">
           <ItineraryStopRow
             stop={savedStop}
-            number={2}
             citySlug="london-united-kingdom"
             itineraryId="guide-1"
             itinerarySlug="guide-one"
@@ -358,7 +352,6 @@ describe("ItineraryStopRow", () => {
         <AddToItineraryProvider citySlug="london-united-kingdom" cityName="London">
           <ItineraryStopRow
             stop={unsaveableStop}
-            number={1}
             citySlug="london-united-kingdom"
             itineraryId="guide-1"
             cityName="London"

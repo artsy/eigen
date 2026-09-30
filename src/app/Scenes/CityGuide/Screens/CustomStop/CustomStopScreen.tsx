@@ -11,7 +11,7 @@ import {
   customStopFromItinerary,
   customStopInput,
 } from "app/Scenes/CityGuide/Screens/CustomStop/utils/customStopFromItinerary"
-import { CUSTOM_CATEGORY_LABELS } from "app/Scenes/CityGuide/Screens/Itinerary/utils/stopCardFields"
+import { ITINERARY_STOP_CATEGORY_LABELS } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { goBack } from "app/system/navigation/navigate"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -113,7 +113,7 @@ const Stop: React.FC<Props> = ({ citySlug, itineraryId, stopId }) => {
 
   const admission =
     stop.isFreeAdmission == null ? undefined : stop.isFreeAdmission ? "Free" : "Paid Entry"
-  const categoryLabel = stop.category ? CUSTOM_CATEGORY_LABELS[stop.category] : undefined
+  const categoryLabel = stop.category ? ITINERARY_STOP_CATEGORY_LABELS[stop.category] : undefined
 
   return (
     <ProvideScreenTrackingWithCohesionSchema

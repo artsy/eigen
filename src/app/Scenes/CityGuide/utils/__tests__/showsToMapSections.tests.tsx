@@ -19,7 +19,7 @@ const makeShow = (overrides: Partial<Show> = {}): Show =>
     href: "/show/frida-kahlo",
     is_followed: false,
     exhibition_period: "Aug 24 – Sep 28, 2026",
-    location: { postalCode: "EC1M 5RR", coordinates: { lat: 51.5, lng: -0.1 } },
+    location: { coordinates: { lat: 51.5, lng: -0.1 } },
     ...overrides,
   }) as unknown as Show
 
@@ -51,7 +51,7 @@ describe("showsToMapSections", () => {
     const valid = makeShow({ id: "valid" })
     const invalid = makeShow({
       id: "invalid",
-      location: { postalCode: "EC1M 5RR", coordinates: { lat: null, lng: null } },
+      location: { cityGuideNeighborhood: null, coordinates: { lat: null, lng: null } },
     })
 
     const sections = showsToMapSections(makeSection([valid, invalid]), TEST_CONTEXT)
@@ -61,7 +61,7 @@ describe("showsToMapSections", () => {
 
   it("leaves a section with no valid places rather than dropping it", () => {
     const invalid = makeShow({
-      location: { postalCode: "EC1M 5RR", coordinates: { lat: undefined, lng: undefined } },
+      location: { cityGuideNeighborhood: null, coordinates: { lat: undefined, lng: undefined } },
     })
 
     const sections = showsToMapSections(makeSection([invalid]), TEST_CONTEXT)
@@ -116,6 +116,16 @@ describe("showsToMapSections", () => {
 
     expect(isValidElement(saveControl)).toBe(true)
     expect((saveControl as React.ReactElement).type).toBe(CityEventSaveControl)
+  })
+
+  it("passes the show's itinerary membership to the save control", () => {
+    const sections = showsToMapSections(
+      makeSection([makeShow({ isOnMyItineraries: true })]),
+      TEST_CONTEXT
+    )
+    const saveControl = sections[0].places[0].saveControl as React.ReactElement
+
+    expect(saveControl.props).toMatchObject({ isOnMyItineraries: true })
   })
 
   it("threads the calling screen's context onto the save control", () => {

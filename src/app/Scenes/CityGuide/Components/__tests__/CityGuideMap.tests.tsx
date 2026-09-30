@@ -1,9 +1,11 @@
 import { fireEvent, screen, within } from "@testing-library/react-native"
 import { CityGuideMapTestsQuery } from "__generated__/CityGuideMapTestsQuery.graphql"
 import { COLLAPSED_SHEET_HEIGHT } from "app/Scenes/CityGuide/Components/CityGuideBottomSheet"
+import { CityData } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 import { CityGuideMap } from "app/Scenes/CityGuide/Components/CityGuideMap"
 import { PREVIEW_BOTTOM_OFFSET } from "app/Scenes/CityGuide/utils/constants"
 import { MAX_GRAPHQL_INT } from "app/Scenes/CityGuide/utils/maxGraphQLInt"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import React from "react"
@@ -14,6 +16,8 @@ jest.mock("app/utils/hooks/useFeatureFlag", () => ({
   useFeatureFlag: () => mockItinerariesEnabled,
 }))
 
+const mockSetCamera = jest.fn()
+
 // The global @rnmapbox/maps mock (src/setupJest.tsx) doesn't stub UserTrackingModes, which
 // CityGuideMap reads to build its map props.
 jest.mock("@rnmapbox/maps", () => ({
@@ -23,7 +27,10 @@ jest.mock("@rnmapbox/maps", () => ({
     useEffect(() => onDidFinishLoadingMap?.(), [onDidFinishLoadingMap])
     return children
   },
-  Camera: () => null,
+  Camera: require("react").forwardRef((_props: any, ref: any) => {
+    require("react").useImperativeHandle(ref, () => ({ setCamera: mockSetCamera }))
+    return null
+  }),
   UserLocation: () => null,
   StyleURL: { Light: null },
   setAccessToken: () => jest.fn(),
@@ -42,12 +49,16 @@ jest.mock("app/Scenes/CityGuide/Components/CityGuideMapPins", () => ({
     return <Text onPress={() => onPress({ features: [feature] })}>tap pin</Text>
   },
 }))
+const cities: CityData[] = [
+  { slug: "new-york-ny-usa", name: "New York", coordinates: { lat: 40.7128, lng: -74.006 } },
+  { slug: "london-united-kingdom", name: "London", coordinates: { lat: 51.5072, lng: -0.1276 } },
+]
 
 const TestRenderer: React.FC<CityGuideMapTestsQuery["response"]> = ({ viewer }) => {
   if (!viewer) {
     return null
   }
-  return <CityGuideMap citySlug="new-york-ny-usa" viewer={viewer} />
+  return <CityGuideMap citySlug="new-york-ny-usa" cities={cities} viewer={viewer} />
 }
 
 describe("CityGuideMap", () => {
@@ -112,6 +123,34 @@ describe("CityGuideMap", () => {
     renderWithRelay(cityResolvers)
 
     expect(mockTrackEvent).not.toHaveBeenCalledWith(expect.objectContaining({ action_type: "tap" }))
+  })
+
+  it("flies to a picked city and shows its name before its data loads", () => {
+    __globalStoreTestUtils__?.injectState({
+      userPrefs: { previouslySelectedCitySlug: "new-york-ny-usa" },
+    })
+    const { mockResolveLastOperation } = renderWithRelay(cityResolvers)
+
+    fireEvent.press(screen.getByTestId("city-guide-city-switcher"))
+    fireEvent.press(screen.getByText("London"))
+
+    expect(mockSetCamera).toHaveBeenCalledWith(
+      expect.objectContaining({ centerCoordinate: [-0.1276, 51.5072], animationMode: "flyTo" })
+    )
+    expect(
+      within(screen.getByTestId("city-guide-city-switcher")).getByText("London")
+    ).toBeOnTheScreen()
+    expect(
+      __globalStoreTestUtils__?.getCurrentState().userPrefs.previouslySelectedCitySlug
+    ).toEqual("new-york-ny-usa")
+
+    mockResolveLastOperation({
+      City: () => ({ ...cityResolvers.City(), name: "London", slug: "london-united-kingdom" }),
+    })
+
+    expect(
+      __globalStoreTestUtils__?.getCurrentState().userPrefs.previouslySelectedCitySlug
+    ).toEqual("london-united-kingdom")
   })
 
   describe("pin card", () => {

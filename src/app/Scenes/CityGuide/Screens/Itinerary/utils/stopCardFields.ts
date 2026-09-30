@@ -5,26 +5,13 @@ import {
   itineraryStopTitle,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import {
+  ITINERARY_STOP_CATEGORY_LABELS,
   ItineraryStop,
-  ItineraryStopCategory,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { Show } from "app/Scenes/CityGuide/utils/types"
 import { DateTime } from "luxon"
 
 const MUSEUM_EMOJI = "🏛"
-
-/** Display label for a custom stop's category. MUSEUM/GALLERY/SHOW/FAIR never reach here — they
- * only apply to a stop with a resolved item, which renders through its own case below. */
-export const CUSTOM_CATEGORY_LABELS: Partial<Record<ItineraryStopCategory, string>> = {
-  CAFE: "Cafe",
-  RESTAURANT: "Restaurant",
-  BAR: "Bar",
-  HOTEL: "Hotel",
-  SHOP: "Shop",
-  PARK: "Park",
-  LANDMARK: "Landmark",
-  OTHER: "Other",
-}
 
 /**
  * Which card a stop renders as. Inferred rather than stored, from the resolved item's type
@@ -101,6 +88,7 @@ const placeLine = (
 
 export interface StopCardItem {
   readonly __typename: string
+  readonly internalID?: string
   readonly name?: string | null
   readonly city?: string | null
   readonly href?: string | null
@@ -196,7 +184,11 @@ export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null):
         subtitle: placeLine(item),
         hours,
         admission,
-        href: item.partner?.href ?? undefined,
+        // The partner page can't tell which of several locations the plus should add, so it
+        // is told which one this stop names.
+        href: item.partner?.href
+          ? `${item.partner.href}?locationID=${encodeURIComponent(item.internalID ?? "")}`
+          : undefined,
       }
 
     default:
@@ -205,7 +197,8 @@ export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null):
         title,
         // The designs put the place's type here ("Cafe", "Landmark"). Falls back to the
         // address when the curator left the category unset.
-        subtitle: (category && CUSTOM_CATEGORY_LABELS[category]) || stop.address || undefined,
+        subtitle:
+          (category && ITINERARY_STOP_CATEGORY_LABELS[category]) || stop.address || undefined,
         hours,
         admission,
         // Where the curator found it — the only thing a custom stop can link to.

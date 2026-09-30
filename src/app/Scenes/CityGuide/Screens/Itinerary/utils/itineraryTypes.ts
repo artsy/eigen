@@ -44,3 +44,18 @@ export type ItineraryStopCategory =
   | "PARK"
   | "LANDMARK"
   | "OTHER"
+
+export const ITINERARY_STOP_CATEGORY_LABELS: Record<ItineraryStopCategory, string> = {
+  MUSEUM: "Museum",
+  GALLERY: "Gallery",
+  SHOW: "Show",
+  FAIR: "Fair",
+  CAFE: "Cafe",
+  RESTAURANT: "Restaurant",
+  BAR: "Bar",
+  HOTEL: "Hotel",
+  SHOP: "Shop",
+  PARK: "Park",
+  LANDMARK: "Landmark",
+  OTHER: "Other",
+}

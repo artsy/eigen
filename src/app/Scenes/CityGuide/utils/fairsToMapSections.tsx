@@ -47,6 +47,7 @@ export const fairsToMapSections = (
             itemID={fair.internalID}
             itemSlug={fair.slug ?? undefined}
             name={fair.name ?? ""}
+            isOnMyItineraries={fair.isOnMyItineraries}
             contextScreenOwnerType={context.contextScreenOwnerType}
             contextScreenOwnerSlug={context.contextScreenOwnerSlug}
           />

@@ -239,6 +239,9 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               )
             }}
             horizontal
+            // Android defaults this to true; clipping during the onboarding Modal's first attach
+            // is the suspected cause of EIGEN-AZEK (NPE in ViewGroup.dispatchAttachedToWindow)
+            removeClippedSubviews={false}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{
               justifyContent: "center",
