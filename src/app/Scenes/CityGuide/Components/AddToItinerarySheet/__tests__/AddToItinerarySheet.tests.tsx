@@ -9,6 +9,7 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { MockPayloadGenerator } from "relay-test-utils"
 
+let mockContentGeneration = 0
 const mockShowToast = jest.fn()
 jest.mock("app/Components/Toast/toastHook", () => ({
   useToast: () => ({ show: mockShowToast }),
@@ -24,7 +25,7 @@ jest.mock("@gorhom/bottom-sheet", () => {
       const Footer = this.props.footerComponent
       return (
         <>
-          {super.render()}
+          <View key={mockContentGeneration}>{super.render()}</View>
           {!!Footer && <Footer animatedFooterPosition={{ value: 0 }} />}
         </>
       )
@@ -66,6 +67,7 @@ describe("AddToItinerarySheet", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    mockContentGeneration = 0
   })
 
   const withItineraries = (nodes: object[]) => ({
@@ -129,6 +131,37 @@ describe("AddToItinerarySheet", () => {
     fireEvent.press(row)
     expect(button).toBeDisabled()
     expect(screen.getByTestId("add-to-itinerary-done")).toBe(button)
+  })
+
+  it("preserves a quick selection when the modal remounts its content", async () => {
+    const view = renderWithWrappers(<AddToItinerarySheet {...props} />)
+    const environment = getMockRelayEnvironment()
+    const resolveItineraries = () => {
+      environment.mock.getAllOperations().forEach((operation) => {
+        environment.mock.resolve(
+          operation,
+          MockPayloadGenerator.generate(operation, withItineraries([itinerary("a", "My trip")]))
+        )
+      })
+    }
+    act(resolveItineraries)
+
+    fireEvent.press(await screen.findByTestId("add-to-itinerary-row"))
+    expect(screen.getByTestId("add-to-itinerary-done")).toBeEnabled()
+
+    // A remount after the opening animation must not undo a tap already made on a row.
+    mockContentGeneration += 1
+    view.rerender(<AddToItinerarySheet {...props} />)
+    expect(screen.getByTestId("add-to-itinerary-done")).toBeEnabled()
+    act(resolveItineraries)
+
+    expect(await screen.findByText("1 selected")).toBeOnTheScreen()
+    expect(screen.getByTestId("add-to-itinerary-row")).toBeChecked()
+    expect(screen.getByTestId("add-to-itinerary-done")).toBeEnabled()
+
+    fireEvent.press(screen.getByTestId("add-to-itinerary-row"))
+    expect(screen.getByText("0 selected")).toBeOnTheScreen()
+    expect(screen.getByTestId("add-to-itinerary-done")).toBeDisabled()
   })
 
   it.each(["SHOW", "FAIR"] as const)(

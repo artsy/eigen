@@ -60,29 +60,48 @@ interface DoneButtonState {
 
 const DISABLED_DONE_BUTTON: DoneButtonState = { disabled: true, loading: false }
 
-/** Shared with the footer outside Suspense; updates keep the same Button mounted. */
-const createDoneButtonStore = () => {
-  let snapshot = DISABLED_DONE_BUTTON
-  const listeners = new Set<() => void>()
+interface SelectionState {
+  initial: string[]
+  selected: string[]
+  createdItineraries: PayloadItinerary[]
+}
+
+/** Owned outside the modal so content remounts cannot discard a user's selection. */
+const createSheetStore = () => {
+  let footer = DISABLED_DONE_BUTTON
+  let selection: SelectionState | null = null
+  const footerListeners = new Set<() => void>()
+  const selectionListeners = new Set<() => void>()
 
   return {
-    getSnapshot: () => snapshot,
+    getSnapshot: () => footer,
     subscribe: (listener: () => void) => {
-      listeners.add(listener)
+      footerListeners.add(listener)
       return () => {
-        listeners.delete(listener)
+        footerListeners.delete(listener)
       }
     },
     update: (next: DoneButtonState) => {
-      snapshot = next
-      listeners.forEach((listener) => listener())
+      footer = next
+      footerListeners.forEach((listener) => listener())
+    },
+    getSelection: () => selection,
+    subscribeSelection: (listener: () => void) => {
+      selectionListeners.add(listener)
+      return () => {
+        selectionListeners.delete(listener)
+      }
+    },
+    updateSelection: (next: SelectionState) => {
+      selection = next
+      selectionListeners.forEach((listener) => listener())
     },
   }
 }
 
-type DoneButtonStore = ReturnType<typeof createDoneButtonStore>
+type SheetStore = ReturnType<typeof createSheetStore>
 
-const DoneFooter: React.FC<BottomSheetFooterProps & { store: DoneButtonStore }> = ({
+const DoneFooter: React.FC<BottomSheetFooterProps & { store: SheetStore }> = ({
   store,
   animatedFooterPosition,
 }) => {
@@ -125,7 +144,7 @@ export type AddToItineraryTarget = StopTarget & {
 }
 
 type Props = AddToItineraryTarget & {
-  footerStore: DoneButtonStore
+  sheetStore: SheetStore
   onClose: () => void
   /** Called after Done actually changes something, so the screen this sheet was opened from
    *  can refetch and stop showing a stale membership state. */
@@ -133,7 +152,7 @@ type Props = AddToItineraryTarget & {
 }
 
 const Sheet: React.FC<Props> = ({
-  footerStore,
+  sheetStore,
   citySlug,
   cityName,
   onClose,
@@ -184,17 +203,18 @@ const Sheet: React.FC<Props> = ({
 
   // Which rows open ticked: the itineraries the entity's memberships (or, failing those, the
   // stop it came from) say already hold it, kept to the ones actually listed.
-  const [initial] = useState(() => {
-    const holdingIDs =
-      memberships?.map(({ itineraryID }) => itineraryID) ??
-      myItineraries?.map(({ internalID }) => internalID) ??
-      []
-
-    return holdingIDs.filter((id) =>
-      fetchedItineraries.some((itinerary) => itinerary.internalID === id)
-    )
-  })
-  const [selected, setSelected] = useState<string[]>(initial)
+  const savedSelection = useSyncExternalStore(
+    sheetStore.subscribeSelection,
+    sheetStore.getSelection
+  )
+  const holdingIDs =
+    memberships?.map(({ itineraryID }) => itineraryID) ??
+    myItineraries?.map(({ internalID }) => internalID) ??
+    []
+  const initial =
+    savedSelection?.initial ??
+    holdingIDs.filter((id) => fetchedItineraries.some((itinerary) => itinerary.internalID === id))
+  const selected = savedSelection?.selected ?? initial
   const [isCreating, setIsCreating] = useState(false)
   const [isNaming, setIsNaming] = useState(false)
 
@@ -202,16 +222,21 @@ const Sheet: React.FC<Props> = ({
   // `create` mutates straight through the store, not through this screen's own
   // `useLazyLoadQuery`, so the itinerary it makes has to be added here by hand — otherwise it
   // neither shows in the list nor is findable by `applySelection` when Done is pressed.
-  const [createdItineraries, setCreatedItineraries] = useState<PayloadItinerary[]>([])
+  const createdItineraries = savedSelection?.createdItineraries ?? []
   const itineraries: PayloadItinerary[] = [...fetchedItineraries, ...createdItineraries]
   // A user with no itineraries has nothing to tick, so Done means "make me one" instead —
   // still something to do, even with nothing selected.
   const canAutoCreate = !itineraries.length && canCreate
 
-  const toggle = (id: string) =>
-    setSelected((current) =>
-      current.includes(id) ? current.filter((each) => each !== id) : [...current, id]
-    )
+  const toggle = (id: string) => {
+    const current = sheetStore.getSelection() ?? { initial, selected, createdItineraries }
+    sheetStore.updateSelection({
+      ...current,
+      selected: current.selected.includes(id)
+        ? current.selected.filter((each) => each !== id)
+        : [...current.selected, id],
+    })
+  }
 
   const create = async (title: string) => {
     setIsCreating(true)
@@ -242,12 +267,16 @@ const Sheet: React.FC<Props> = ({
 
       // A brand new itinerary has no stops and no section yet — `applySelection` creates the
       // section itself when it finds none, same as it does for any other itinerary.
-      setCreatedItineraries((current) => [
-        ...current,
-        { internalID, title, stopsCount: 0, heroImage: null },
-      ])
+      const current = sheetStore.getSelection() ?? { initial, selected, createdItineraries }
       // Ticked straight away, so Done adds the stop to what you just made.
-      setSelected((current) => [...current, internalID])
+      sheetStore.updateSelection({
+        ...current,
+        createdItineraries: [
+          ...current.createdItineraries,
+          { internalID, title, stopsCount: 0, heroImage: null },
+        ],
+        selected: [...current.selected, internalID],
+      })
       await keyboardHidden
       setIsNaming(false)
     } catch {
@@ -272,9 +301,9 @@ const Sheet: React.FC<Props> = ({
   }
 
   const done = async () => {
-    const state = footerStore.getSnapshot()
+    const state = sheetStore.getSnapshot()
     if (state.loading) return
-    footerStore.update({ ...state, loading: true })
+    sheetStore.update({ ...state, loading: true })
 
     try {
       let addedItineraryID: string | undefined
@@ -325,19 +354,23 @@ const Sheet: React.FC<Props> = ({
       // Left open on failure: dismissing would claim the change stuck.
       toast.show("Something went wrong. Please try again.", "bottom")
     } finally {
-      footerStore.update({ ...footerStore.getSnapshot(), loading: false })
+      sheetStore.update({ ...sheetStore.getSnapshot(), loading: false })
     }
   }
 
   useLayoutEffect(() => {
-    footerStore.update({
+    if (!sheetStore.getSelection()) {
+      sheetStore.updateSelection({ initial, selected, createdItineraries })
+    }
+    sheetStore.update({
       disabled: !selected.length && !initial.length && !canAutoCreate,
-      loading: footerStore.getSnapshot().loading,
+      loading: sheetStore.getSnapshot().loading,
       onPress: done,
     })
   })
 
-  useLayoutEffect(() => () => footerStore.update(DISABLED_DONE_BUTTON), [footerStore])
+  // The parent creates a fresh store when the target closes or changes. Do not reset it
+  // in content cleanup: Suspense and modal remounts must preserve the pending selection.
 
   return (
     <>
@@ -478,10 +511,10 @@ export const AddToItinerarySheet: React.FC<{
   onSaved?: () => void
 }> = ({ target, onClose, onSaved }) => {
   const targetKey = target ? sheetTargetKey(target) : null
-  const footerStore = useMemo(createDoneButtonStore, [targetKey])
+  const sheetStore = useMemo(createSheetStore, [targetKey])
   const Footer = useMemo(
-    () => (props: BottomSheetFooterProps) => <DoneFooter {...props} store={footerStore} />,
-    [footerStore]
+    () => (props: BottomSheetFooterProps) => <DoneFooter {...props} store={sheetStore} />,
+    [sheetStore]
   )
 
   return (
@@ -496,7 +529,7 @@ export const AddToItinerarySheet: React.FC<{
       {!!target && (
         <SheetWithSuspense
           key={sheetTargetKey(target)}
-          footerStore={footerStore}
+          sheetStore={sheetStore}
           {...target}
           onClose={onClose}
           onSaved={onSaved}
