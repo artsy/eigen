@@ -77,6 +77,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const shapeSourceRef = useRef<MapboxGL.ShapeSource>(null)
   const cameraCitySlugRef = useRef(props.citySlug)
+  const parentCitySlugRef = useRef(props.citySlug)
   const currentZoomRef = useRef(DefaultZoomLevel)
   const showsRef = useRef<{ [key: string]: Show }>({})
   const fairsRef = useRef<{ [key: string]: Fair }>({})
@@ -109,14 +110,18 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   }, [])
 
   // The parent can switch city too (e.g. a late location fix), and the camera only reads its
-  // `defaultSettings` on mount.
+  // `defaultSettings` on mount. A new cities array must not replay the parent's old slug
+  // while a picker selection is loading.
   useEffect(() => {
-    if (props.citySlug === cameraCitySlugRef.current) {
+    if (props.citySlug === parentCitySlugRef.current) {
       return
     }
     const coordinates = props.cities.find((city) => city.slug === props.citySlug)?.coordinates
     if (coordinates) {
-      flyToCity(props.citySlug, coordinates)
+      parentCitySlugRef.current = props.citySlug
+      if (props.citySlug !== cameraCitySlugRef.current) {
+        flyToCity(props.citySlug, coordinates)
+      }
     }
   }, [props.citySlug, props.cities])
 
@@ -506,16 +511,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
     >
       {/* The provider is what makes the cards' add-to-itinerary plus render at all. */}
       {enableGlobalMapList ? (
-        <AddToItineraryProvider
-          citySlug={viewer.city?.slug}
-          cityName={viewer.city?.name ?? ""}
-          onSaved={() =>
-            refetch(
-              { citySlug: cardCitySlug, maxInt: MAX_GRAPHQL_INT },
-              { fetchPolicy: "network-only" }
-            )
-          }
-        >
+        <AddToItineraryProvider citySlug={viewer.city?.slug} cityName={viewer.city?.name ?? ""}>
           {content}
         </AddToItineraryProvider>
       ) : (
