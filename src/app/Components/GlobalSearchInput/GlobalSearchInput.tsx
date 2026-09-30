@@ -8,6 +8,7 @@ import {
 } from "@artsy/palette-mobile"
 import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlay"
 import { useDismissSearchOverlayOnTabBarPress } from "app/Components/GlobalSearchInput/utils/useDismissSearchOverlayOnTabBarPress"
+import { ProgressiveOnboardingArtsyLens } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingArtsyLens"
 import {
   SEARCH_BY_PHOTO_ICON_CONTAINER_WIDTH,
   SearchByPhotoIconButton,
@@ -94,18 +95,23 @@ export const GlobalSearchInput = forwardRef<GlobalSearchInput, GlobalSearchInput
               justifyContent="center"
               width={SEARCH_BY_PHOTO_ICON_CONTAINER_WIDTH}
             >
-              <SearchByPhotoIconButton
-                onPress={() => {
-                  tracking.trackEvent(
-                    tappedSearchByImage({
-                      contextModule: ContextModule.header,
-                      contextScreenOwnerType: ownerType,
-                      type: "search_input_icon",
-                    })
-                  )
-                  navigate("/lens")
-                }}
-              />
+              <ProgressiveOnboardingArtsyLens
+                isSearchOverlayVisible={isVisible}
+                ownerType={ownerType}
+              >
+                <SearchByPhotoIconButton
+                  onPress={() => {
+                    tracking.trackEvent(
+                      tappedSearchByImage({
+                        contextModule: ContextModule.header,
+                        contextScreenOwnerType: ownerType,
+                        type: "search_input_icon",
+                      })
+                    )
+                    navigate("/lens")
+                  }}
+                />
+              </ProgressiveOnboardingArtsyLens>
             </Flex>
           )}
         </Flex>
