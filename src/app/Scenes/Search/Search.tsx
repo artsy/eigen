@@ -8,6 +8,7 @@ import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.gr
 import { ArtAssistantSearchButton } from "app/Components/GlobalSearchInput/ArtAssistantSearchButton"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
 import { tappedArtAssistant } from "app/Components/GlobalSearchInput/artAssistantTracks"
+import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { DiscoverSomethingNew } from "app/Scenes/Search/components/DiscoverSomethingNew/DiscoverSomethingNew"
 import { ExploreByCategory } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategory"
@@ -44,6 +45,7 @@ export const searchQueryDefaultVariables: SearchQuery$variables = {
 
 export const Search: React.FC = () => {
   const space = useSpace()
+  useEnableProgressiveOnboarding()
 
   const searchPillsRef = useRef<ScrollView>(null)
   const searchInputRef = useRef<GlobalSearchInput>(null)
