@@ -2219,6 +2219,18 @@ type ArticleOutlineEntry {
   slug: String!
 }
 
+type ArticleSectionArtworkGrid {
+  """
+  Published artworks in the grid, in editorial order. Unpublished artworks are omitted.
+  """
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+
+  """
+  Number of columns the grid renders (2, 3, or 4)
+  """
+  columns: Int!
+}
+
 type ArticleSectionCallout {
   article: String
   hideImage: String
@@ -2310,7 +2322,8 @@ enum ArticleSectionVideoLayout {
 }
 
 union ArticleSections =
-    ArticleSectionCallout
+    ArticleSectionArtworkGrid
+  | ArticleSectionCallout
   | ArticleSectionEmbed
   | ArticleSectionImageCollection
   | ArticleSectionImageSet
