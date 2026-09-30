@@ -2,7 +2,7 @@ import {
   CameraStrokeIcon,
   ImageSetIcon,
   MapPinIcon,
-  SparklesSquareStrokeIcon,
+  SparklesMessageIcon,
 } from "@artsy/icons/native"
 import { Flex, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -54,12 +54,12 @@ export const FindInspirationDifferently: React.FC = () => {
       description: "Describe what you want and we’ll find it",
       href: "/art-assistant",
       icon: (
-        <SparklesSquareStrokeIcon
+        <SparklesMessageIcon
           width={ICON_SIZE}
           height={ICON_SIZE}
           fill={cardTextColor}
           left="-2px"
-          top="-1px"
+          top="-3px"
         />
       ),
       beta: true,

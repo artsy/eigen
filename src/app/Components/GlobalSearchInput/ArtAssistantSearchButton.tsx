@@ -1,4 +1,4 @@
-import { SparklesSquareStrokeIcon } from "@artsy/icons/native"
+import { SparklesMessageIcon } from "@artsy/icons/native"
 import { Flex, Touchable } from "@artsy/palette-mobile"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 
@@ -26,7 +26,7 @@ export const ArtAssistantSearchButton: React.FC<ArtAssistantSearchButtonProps> =
       testID={testID}
     >
       <Flex px={`${ICON_HORIZONTAL_PADDING}px`}>
-        <SparklesSquareStrokeIcon fill="mono100" width={ICON_SIZE} height={ICON_SIZE} />
+        <SparklesMessageIcon fill="mono100" width={ICON_SIZE} height={ICON_SIZE} />
       </Flex>
     </Touchable>
   )
