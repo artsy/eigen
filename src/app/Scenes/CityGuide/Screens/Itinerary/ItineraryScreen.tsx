@@ -30,6 +30,7 @@ import {
   Itinerary as ItineraryData,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { moveStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/reorderStops"
+import { useCityGuideMapStatusBar } from "app/Scenes/CityGuide/hooks/useCityGuideMapStatusBar"
 import { goBack } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -89,6 +90,24 @@ interface Props {
   shareToken?: string
 }
 
+const ItineraryStatusBarOverlay: React.FC<{ visible: boolean; height: number }> = ({
+  visible,
+  height,
+}) =>
+  visible ? (
+    <Flex
+      testID="itinerary-status-bar-overlay"
+      pointerEvents="none"
+      position="absolute"
+      top={0}
+      left={0}
+      right={0}
+      height={height}
+      zIndex={1000}
+      style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+    />
+  ) : null
+
 const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   // An itinerary is addressed by its own id or slug and carries its city; `citySlug` only
   // looks the city's name up, for what a new itinerary is called when a custom stop is copied.
@@ -104,6 +123,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
 
   const itinerary = data.itinerary
   const [isMapView, setIsMapView] = useState(false)
+  useCityGuideMapStatusBar(isMapView, "light-content")
   const [selectedStopId, setSelectedStopId] = useState<string | null>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [coverSavedAt, setCoverSavedAt] = useState(0)
@@ -265,6 +285,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
         onSaved={refresh}
       >
         <Screen safeArea={false}>
+          <ItineraryStatusBarOverlay visible={!isMapView} height={top} />
           {/*
             The map fills the screen, so it gets a floating back button rather than a header
             bar: Screen.Header paints a solid background and can't be made transparent.

@@ -52,11 +52,12 @@ describe("CityGuideEventGuides", () => {
     ItinerariesConnection: () => ({ edges: nodes.map((node) => ({ node })) }),
   })
 
-  it("renders the static, unpressable section title", async () => {
+  it("opens the city’s curated guides when the section title is tapped", async () => {
     renderWithRelay(connection([itinerary("chill-vibes-only", "Chill Vibes Only")]), props)
 
     expect(await screen.findByText("City Guides")).toBeOnTheScreen()
-    expect(screen.queryByTestId("touchable-wrapper")).not.toBeOnTheScreen()
+    fireEvent.press(screen.getByTestId("touchable-wrapper"))
+    expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/curated-guides")
   })
 
   it("renders the city's curated guides", async () => {

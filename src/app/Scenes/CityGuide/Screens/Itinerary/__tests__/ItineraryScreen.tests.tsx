@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import {
   dropSortableItem,
@@ -9,7 +10,7 @@ import {
 } from "app/utils/tests/draxSortableListSpy"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { RefreshControl, ScrollView } from "react-native"
+import { RefreshControl, ScrollView, StatusBar } from "react-native"
 import RNShare from "react-native-share"
 import { ReactTestInstance } from "react-test-renderer"
 import { MockPayloadGenerator } from "relay-test-utils"
@@ -108,6 +109,32 @@ describe("ItineraryScreen", () => {
       context_screen_owner_slug: "chill-vibes-only",
     })
   })
+
+  it.each(["on", "off"] as const)(
+    "shows the translucent status bar only in list view with dark mode %s",
+    async (darkModeOption) => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ ARDarkModeSupport: true })
+      __globalStoreTestUtils__?.injectState({ devicePrefs: { darkModeOption } })
+      const setBarStyle = jest.spyOn(StatusBar, "setBarStyle").mockImplementation(() => {})
+      const { unmount } = renderWithRelay({ Itinerary: () => ITINERARY }, props)
+
+      try {
+        await screen.findByTestId("itinerary-status-bar-overlay")
+        await waitFor(() => expect(setBarStyle).toHaveBeenLastCalledWith("light-content", true))
+
+        fireEvent.press(await screen.findByTestId("itinerary-view-toggle"))
+        await waitFor(() => expect(setBarStyle).toHaveBeenLastCalledWith("dark-content", true))
+        expect(screen.queryByTestId("itinerary-status-bar-overlay")).not.toBeOnTheScreen()
+
+        fireEvent.press(screen.getByTestId("itinerary-view-toggle"))
+        expect(screen.getByTestId("itinerary-status-bar-overlay")).toBeOnTheScreen()
+        await waitFor(() => expect(setBarStyle).toHaveBeenLastCalledWith("light-content", true))
+      } finally {
+        unmount()
+        setBarStyle.mockRestore()
+      }
+    }
+  )
 
   it("tracks the map/list toggle under the cityGuideMapToggle module", async () => {
     renderWithRelay({ Itinerary: () => ITINERARY }, props)
