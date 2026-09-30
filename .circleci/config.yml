@@ -505,7 +505,7 @@ parameters:
   # Update Manually these versions below in order to hard overwrite the caches
   node_modules_cache_key:
     type: string
-    default: v31-node_modules-{{ checksum ".manifests/node_modules" }}
+    default: v32-node_modules-{{ checksum ".manifests/node_modules" }}
   gems_cache_key:
     type: string
     default: v17-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
@@ -520,10 +520,10 @@ parameters:
     default: v19-app_build_android-{{ checksum ".manifests/app_build" }}
   ios_native_code_cache_prefix:
     type: string
-    default: v21-test-success
+    default: v22-test-success
   android_native_cache_key:
     type: string
-    default: v21-test-success-{{ checksum ".manifests/android_native" }}
+    default: v22-test-success-{{ checksum ".manifests/android_native" }}
   android_docker_image:
     type: string
     default: "cimg/android:2026.02.1-node"
