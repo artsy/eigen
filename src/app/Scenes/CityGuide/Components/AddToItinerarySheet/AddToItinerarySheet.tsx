@@ -9,8 +9,12 @@ import {
   Text,
   useSpace,
 } from "@artsy/palette-mobile"
-import { BottomSheetFooter, BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet"
-import { Portal, PortalHost } from "@gorhom/portal"
+import {
+  BottomSheetFooter,
+  BottomSheetFooterProps,
+  BottomSheetScrollView,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet"
 import { AddToItinerarySheetCreateMutation } from "__generated__/AddToItinerarySheetCreateMutation.graphql"
 import { AddToItinerarySheetQuery } from "__generated__/AddToItinerarySheetQuery.graphql"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
@@ -35,7 +39,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { times } from "lodash"
-import { useState } from "react"
+import { useLayoutEffect, useMemo, useState, useSyncExternalStore } from "react"
 import { Platform } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -46,18 +50,64 @@ import { useTracking } from "react-tracking"
 const PAGE_SIZE = 20
 const ADD_ICON_SIZE = 16
 const SNAP_POINTS = ["50%", "95%"]
-/**
- * `BottomSheetFooter` only gets the animated value it needs when rendered through
- * `BottomSheetModal`'s own `footerComponent` prop, which is outside `Sheet`'s own (suspended,
- * data-fetching) content — so the Done button, which needs `Sheet`'s state, can't be built
- * there directly. Instead `Sheet` portals the actual button into a host sitting inside that
- * footer, so it renders in the right place while still being driven by `Sheet`'s own state.
- */
-const FOOTER_PORTAL_HOST = "add-to-itinerary-footer"
-/** Shared by the loading and loaded footers, so the host updates one node instead of swapping
- *  two, which would remount the button. */
-const FOOTER_PORTAL_NAME = "add-to-itinerary-done"
 const SKELETON_ROWS = 3
+
+interface DoneButtonState {
+  disabled: boolean
+  loading: boolean
+  onPress?: () => void
+}
+
+const DISABLED_DONE_BUTTON: DoneButtonState = { disabled: true, loading: false }
+
+/** Shared with the footer outside Suspense; updates keep the same Button mounted. */
+const createDoneButtonStore = () => {
+  let snapshot = DISABLED_DONE_BUTTON
+  const listeners = new Set<() => void>()
+
+  return {
+    getSnapshot: () => snapshot,
+    subscribe: (listener: () => void) => {
+      listeners.add(listener)
+      return () => {
+        listeners.delete(listener)
+      }
+    },
+    update: (next: DoneButtonState) => {
+      snapshot = next
+      listeners.forEach((listener) => listener())
+    },
+  }
+}
+
+type DoneButtonStore = ReturnType<typeof createDoneButtonStore>
+
+const DoneFooter: React.FC<BottomSheetFooterProps & { store: DoneButtonStore }> = ({
+  store,
+  animatedFooterPosition,
+}) => {
+  const { bottom } = useSafeAreaInsets()
+  const state = useSyncExternalStore(store.subscribe, store.getSnapshot)
+
+  return (
+    <BottomSheetFooter
+      animatedFooterPosition={animatedFooterPosition}
+      style={{ paddingBottom: Platform.OS === "android" ? bottom : 0 }}
+    >
+      <Flex p={2} backgroundColor="mono0">
+        <Button
+          testID="add-to-itinerary-done"
+          block
+          disabled={state.disabled}
+          loading={state.loading}
+          onPress={state.onPress}
+        >
+          Done
+        </Button>
+      </Flex>
+    </BottomSheetFooter>
+  )
+}
 
 /** An Artsy entity or a custom stop — whatever the sheet was opened for. */
 export type AddToItineraryTarget = StopTarget & {
@@ -75,6 +125,7 @@ export type AddToItineraryTarget = StopTarget & {
 }
 
 type Props = AddToItineraryTarget & {
+  footerStore: DoneButtonStore
   onClose: () => void
   /** Called after Done actually changes something, so the screen this sheet was opened from
    *  can refetch and stop showing a stale membership state. */
@@ -82,6 +133,7 @@ type Props = AddToItineraryTarget & {
 }
 
 const Sheet: React.FC<Props> = ({
+  footerStore,
   citySlug,
   cityName,
   onClose,
@@ -144,7 +196,6 @@ const Sheet: React.FC<Props> = ({
   })
   const [selected, setSelected] = useState<string[]>(initial)
   const [isCreating, setIsCreating] = useState(false)
-  const [isApplying, setIsApplying] = useState(false)
   const [isNaming, setIsNaming] = useState(false)
 
   const space = useSpace()
@@ -221,7 +272,9 @@ const Sheet: React.FC<Props> = ({
   }
 
   const done = async () => {
-    setIsApplying(true)
+    const state = footerStore.getSnapshot()
+    if (state.loading) return
+    footerStore.update({ ...state, loading: true })
 
     try {
       let addedItineraryID: string | undefined
@@ -272,9 +325,19 @@ const Sheet: React.FC<Props> = ({
       // Left open on failure: dismissing would claim the change stuck.
       toast.show("Something went wrong. Please try again.", "bottom")
     } finally {
-      setIsApplying(false)
+      footerStore.update({ ...footerStore.getSnapshot(), loading: false })
     }
   }
+
+  useLayoutEffect(() => {
+    footerStore.update({
+      disabled: !selected.length && !initial.length && !canAutoCreate,
+      loading: footerStore.getSnapshot().loading,
+      onPress: done,
+    })
+  })
+
+  useLayoutEffect(() => () => footerStore.update(DISABLED_DONE_BUTTON), [footerStore])
 
   return (
     <>
@@ -315,20 +378,6 @@ const Sheet: React.FC<Props> = ({
             />
           ))}
         </BottomSheetScrollView>
-
-        <Portal name={FOOTER_PORTAL_NAME} hostName={FOOTER_PORTAL_HOST}>
-          <Flex p={2} backgroundColor="mono0">
-            <Button
-              testID="add-to-itinerary-done"
-              block
-              loading={isApplying}
-              disabled={!selected.length && !initial.length && !canAutoCreate}
-              onPress={done}
-            >
-              Done
-            </Button>
-          </Flex>
-        </Portal>
       </BottomSheetView>
 
       <AutoHeightBottomSheet
@@ -408,14 +457,6 @@ const LoadingSheet: React.FC<AddToItineraryTarget> = ({ citySlug }) => (
         ))}
       </Flex>
     </Skeleton>
-
-    <Portal name={FOOTER_PORTAL_NAME} hostName={FOOTER_PORTAL_HOST}>
-      <Flex p={2} backgroundColor="mono0">
-        <Button testID="add-to-itinerary-done" block disabled>
-          Done
-        </Button>
-      </Flex>
-    </Portal>
   </BottomSheetView>
 )
 
@@ -436,7 +477,12 @@ export const AddToItinerarySheet: React.FC<{
   onClose: () => void
   onSaved?: () => void
 }> = ({ target, onClose, onSaved }) => {
-  const { bottom } = useSafeAreaInsets()
+  const targetKey = target ? sheetTargetKey(target) : null
+  const footerStore = useMemo(createDoneButtonStore, [targetKey])
+  const Footer = useMemo(
+    () => (props: BottomSheetFooterProps) => <DoneFooter {...props} store={footerStore} />,
+    [footerStore]
+  )
 
   return (
     <AutomountedBottomSheetModal
@@ -445,18 +491,12 @@ export const AddToItinerarySheet: React.FC<{
       snapPoints={SNAP_POINTS}
       enableDynamicSizing={false}
       onDismiss={onClose}
-      footerComponent={({ animatedFooterPosition }) => (
-        <BottomSheetFooter
-          animatedFooterPosition={animatedFooterPosition}
-          style={{ paddingBottom: Platform.OS === "android" ? bottom : 0 }}
-        >
-          <PortalHost name={FOOTER_PORTAL_HOST} />
-        </BottomSheetFooter>
-      )}
+      footerComponent={Footer}
     >
       {!!target && (
         <SheetWithSuspense
           key={sheetTargetKey(target)}
+          footerStore={footerStore}
           {...target}
           onClose={onClose}
           onSaved={onSaved}

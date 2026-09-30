@@ -1,7 +1,8 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { AddToItinerarySheet } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItinerarySheet"
 import { navigate } from "app/system/navigation/navigate"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -13,12 +14,30 @@ jest.mock("app/Components/Toast/toastHook", () => ({
   useToast: () => ({ show: mockShowToast }),
 }))
 
-// The bottom-sheet mock does not mount its footer host. Render portal children
-// inline here so these tests can exercise the Done button's mutation behavior.
-jest.mock("@gorhom/portal", () => ({
-  ...jest.requireActual("@gorhom/portal"),
-  Portal: ({ children }: { children: React.ReactNode }) => children,
-}))
+// The bundled mock omits the footer. Mount it as a component so its identity and state
+// updates behave like the real bottom sheet.
+jest.mock("@gorhom/bottom-sheet", () => {
+  const { View } = require("react-native")
+  const mock = require("@gorhom/bottom-sheet/mock")
+  class BottomSheetModal extends mock.BottomSheetModal {
+    render() {
+      const Footer = this.props.footerComponent
+      return (
+        <>
+          {super.render()}
+          {!!Footer && <Footer animatedFooterPosition={{ value: 0 }} />}
+        </>
+      )
+    }
+  }
+  return {
+    ...mock,
+    SCROLLABLE_TYPE: {},
+    createBottomSheetScrollableComponent: jest.fn().mockReturnValue(View),
+    BottomSheetModal,
+    BottomSheetFooter: View,
+  }
+})
 
 /** What the listing knows about an itinerary: no sections, those come from a second read. */
 const itinerary = (internalID: string, title: string) => ({
@@ -89,6 +108,27 @@ describe("AddToItinerarySheet", () => {
     expect(screen.getByTestId("add-to-itinerary-skeleton")).toBeOnTheScreen()
     expect(screen.getByTestId("add-to-itinerary-done")).toBeDisabled()
     expect(screen.queryByText(/selected$/)).toBeNull()
+  })
+
+  it("keeps the same Done button through loading and quick selection changes", async () => {
+    renderWithWrappers(<AddToItinerarySheet {...props} />)
+    const button = screen.getByTestId("add-to-itinerary-done")
+    expect(button).toBeDisabled()
+
+    act(() =>
+      getMockRelayEnvironment().mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, withItineraries([itinerary("a", "My trip")]))
+      )
+    )
+
+    const row = await screen.findByTestId("add-to-itinerary-row")
+    expect(screen.getByTestId("add-to-itinerary-done")).toBe(button)
+    fireEvent.press(row)
+    expect(button).toBeEnabled()
+    expect(screen.getByTestId("add-to-itinerary-done")).toBe(button)
+    fireEvent.press(row)
+    expect(button).toBeDisabled()
+    expect(screen.getByTestId("add-to-itinerary-done")).toBe(button)
   })
 
   it.each(["SHOW", "FAIR"] as const)(
