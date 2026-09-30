@@ -29,18 +29,32 @@ export const PreviewPROptions = () => {
   const downloadAndRun = async (pr: PreviewPR) => {
     setErrorMessage(null)
     setLoading(true)
+    const currentChannel = Updates.channel
+
+    const revertChannelSwitch = () => {
+      if (!currentChannel) {
+        return
+      }
+
+      try {
+        Updates.setUpdateRequestHeadersOverride({ "expo-channel-name": currentChannel })
+      } catch (revertError) {
+        console.error("Failed to restore the previous update channel:", revertError)
+      }
+    }
 
     try {
       Updates.setUpdateRequestHeadersOverride({ "expo-channel-name": pr.channel })
-      GlobalStore.actions.artsyPrefs.previewPR.setValue(pr)
 
       const check = await Updates.checkForUpdateAsync()
       if (!check.isAvailable) {
+        revertChannelSwitch()
         setErrorMessage(`No update has been published to ${pr.channel} yet.`)
         return
       }
 
       await Updates.fetchUpdateAsync()
+      GlobalStore.actions.artsyPrefs.previewPR.setValue(pr)
       await Updates.reloadAsync()
     } catch (error) {
       // Android refuses to reload on an emergency launch. The update is already downloaded, so
@@ -52,6 +66,7 @@ export const PreviewPROptions = () => {
         return
       }
 
+      revertChannelSwitch()
       setErrorMessage(`Error downloading update: ${error instanceof Error ? error.message : error}`)
     } finally {
       setLoading(false)

@@ -23,6 +23,22 @@ const mockFetch = (status: number, body: object = {}) => {
 
 const expand = () => fireEvent.press(screen.getByLabelText("Preview PR"))
 
+const loadAndConfirm = async () => {
+  renderWithWrappers(<PreviewPROptions />)
+  expand()
+  fireEvent.changeText(screen.getByLabelText("PR Number"), "123")
+  fireEvent.press(screen.getByText("Load PR"))
+  await waitFor(() => expect(Alert.alert).toHaveBeenCalledTimes(1))
+  const buttons = (Alert.alert as jest.Mock).mock.calls[0][2]
+  buttons.find((button: { text: string }) => button.text === "Switch").onPress()
+}
+
+const expectOverrideCalls = (...channels: string[]) => {
+  expect((Updates.setUpdateRequestHeadersOverride as jest.Mock).mock.calls).toEqual(
+    channels.map((channel) => [{ "expo-channel-name": channel }])
+  )
+}
+
 describe("PreviewPROptions", () => {
   beforeEach(() => {
     jest.clearAllMocks()
@@ -66,23 +82,46 @@ describe("PreviewPROptions", () => {
     expect(Alert.alert).toHaveBeenCalledTimes(1)
   })
 
-  it("does not download or reload when nothing is published to the channel", async () => {
+  it("restores the previous channel when nothing is published to the channel", async () => {
     mockFetch(200, openLabeledPR)
     ;(Updates.checkForUpdateAsync as jest.Mock).mockResolvedValueOnce({ isAvailable: false })
-    renderWithWrappers(<PreviewPROptions />)
-    expand()
 
-    fireEvent.changeText(screen.getByLabelText("PR Number"), "123")
-    fireEvent.press(screen.getByText("Load PR"))
-    await waitFor(() => expect(Alert.alert).toHaveBeenCalledTimes(1))
-    const buttons = (Alert.alert as jest.Mock).mock.calls[0][2]
-    buttons.find((button: { text: string }) => button.text === "Switch").onPress()
+    await loadAndConfirm()
 
     expect(
       await screen.findByText(/No update has been published to review-app-123/)
     ).toBeOnTheScreen()
     expect(Updates.fetchUpdateAsync).not.toHaveBeenCalled()
     expect(Updates.reloadAsync).not.toHaveBeenCalled()
+    expectOverrideCalls("review-app-123", Updates.channel as string)
+    expect(__globalStoreTestUtils__?.getCurrentState().artsyPrefs.previewPR.value).toBeNull()
+  })
+
+  it("restores the previous channel when the download fails", async () => {
+    mockFetch(200, openLabeledPR)
+    ;(Updates.fetchUpdateAsync as jest.Mock).mockRejectedValueOnce(new Error("network down"))
+
+    await loadAndConfirm()
+
+    expect(await screen.findByText(/Error downloading update: network down/)).toBeOnTheScreen()
+    expect(Updates.reloadAsync).not.toHaveBeenCalled()
+    expectOverrideCalls("review-app-123", Updates.channel as string)
+    expect(__globalStoreTestUtils__?.getCurrentState().artsyPrefs.previewPR.value).toBeNull()
+  })
+
+  it("keeps the new channel and saves the payload when the app cannot reload itself", async () => {
+    mockFetch(200, openLabeledPR)
+    ;(Updates.reloadAsync as jest.Mock).mockRejectedValueOnce(
+      Object.assign(new Error("reload failed"), { code: "ERR_UPDATES_RELOAD" })
+    )
+
+    await loadAndConfirm()
+
+    expect(await screen.findByText(/Force-quit and reopen the app/)).toBeOnTheScreen()
+    expectOverrideCalls("review-app-123")
+    expect(__globalStoreTestUtils__?.getCurrentState().artsyPrefs.previewPR.value).toMatchObject({
+      channel: "review-app-123",
+    })
   })
 
   it("shows the error and does not switch when the PR is not eligible", async () => {
