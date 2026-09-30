@@ -10,16 +10,21 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import {
-  BottomSheetFooter,
-  BottomSheetFooterProps,
   BottomSheetScrollView,
   BottomSheetView,
+  useBottomSheetInternal,
 } from "@gorhom/bottom-sheet"
 import { AddToItinerarySheetCreateMutation } from "__generated__/AddToItinerarySheetCreateMutation.graphql"
 import { AddToItinerarySheetQuery } from "__generated__/AddToItinerarySheetQuery.graphql"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { useToast } from "app/Components/Toast/toastHook"
+import {
+  AddToItinerarySheetContext,
+  SelectionState,
+  SheetActions,
+  useSheetContext,
+} from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItinerarySheetContext"
 import { AddToItineraryRow } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/components/AddToItineraryRow"
 import { CreateItineraryForm } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/components/CreateItineraryForm"
 import { useApplyItinerarySelection } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/useApplyItinerarySelection"
@@ -39,9 +44,10 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { times } from "lodash"
-import { useLayoutEffect, useMemo, useState, useSyncExternalStore } from "react"
+import { useCallback, useLayoutEffect, useMemo, useState } from "react"
 import { Platform } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
+import Animated, { useAnimatedStyle } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -52,80 +58,23 @@ const ADD_ICON_SIZE = 16
 const SNAP_POINTS = ["50%", "95%"]
 const SKELETON_ROWS = 3
 
-interface DoneButtonState {
-  disabled: boolean
-  loading: boolean
-  onPress?: () => void
+interface SheetSession {
+  key: string | null
+  selection: SelectionState | null
+  isSaving: boolean
 }
 
-const DISABLED_DONE_BUTTON: DoneButtonState = { disabled: true, loading: false }
+/** Fit the visible snap point, so the provider's button stays at the bottom of the sheet. */
+const SheetContent: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const { animatedLayoutState, animatedPosition } = useBottomSheetInternal()
+  const style = useAnimatedStyle(() => {
+    const { containerHeight, handleHeight } = animatedLayoutState.get()
+    return {
+      height: Math.max(0, containerHeight - animatedPosition.get() - Math.max(0, handleHeight)),
+    }
+  })
 
-interface SelectionState {
-  initial: string[]
-  selected: string[]
-  createdItineraries: PayloadItinerary[]
-}
-
-/** Owned outside the modal so content remounts cannot discard a user's selection. */
-const createSheetStore = () => {
-  let footer = DISABLED_DONE_BUTTON
-  let selection: SelectionState | null = null
-  const footerListeners = new Set<() => void>()
-  const selectionListeners = new Set<() => void>()
-
-  return {
-    getSnapshot: () => footer,
-    subscribe: (listener: () => void) => {
-      footerListeners.add(listener)
-      return () => {
-        footerListeners.delete(listener)
-      }
-    },
-    update: (next: DoneButtonState) => {
-      footer = next
-      footerListeners.forEach((listener) => listener())
-    },
-    getSelection: () => selection,
-    subscribeSelection: (listener: () => void) => {
-      selectionListeners.add(listener)
-      return () => {
-        selectionListeners.delete(listener)
-      }
-    },
-    updateSelection: (next: SelectionState) => {
-      selection = next
-      selectionListeners.forEach((listener) => listener())
-    },
-  }
-}
-
-type SheetStore = ReturnType<typeof createSheetStore>
-
-const DoneFooter: React.FC<BottomSheetFooterProps & { store: SheetStore }> = ({
-  store,
-  animatedFooterPosition,
-}) => {
-  const { bottom } = useSafeAreaInsets()
-  const state = useSyncExternalStore(store.subscribe, store.getSnapshot)
-
-  return (
-    <BottomSheetFooter
-      animatedFooterPosition={animatedFooterPosition}
-      style={{ paddingBottom: Platform.OS === "android" ? bottom : 0 }}
-    >
-      <Flex p={2} backgroundColor="mono0">
-        <Button
-          testID="add-to-itinerary-done"
-          block
-          disabled={state.disabled}
-          loading={state.loading}
-          onPress={state.onPress}
-        >
-          Done
-        </Button>
-      </Flex>
-    </BottomSheetFooter>
-  )
+  return <Animated.View style={style}>{children}</Animated.View>
 }
 
 /** An Artsy entity or a custom stop — whatever the sheet was opened for. */
@@ -144,7 +93,6 @@ export type AddToItineraryTarget = StopTarget & {
 }
 
 type Props = AddToItineraryTarget & {
-  sheetStore: SheetStore
   onClose: () => void
   /** Called after Done actually changes something, so the screen this sheet was opened from
    *  can refetch and stop showing a stale membership state. */
@@ -152,7 +100,6 @@ type Props = AddToItineraryTarget & {
 }
 
 const Sheet: React.FC<Props> = ({
-  sheetStore,
   citySlug,
   cityName,
   onClose,
@@ -165,6 +112,7 @@ const Sheet: React.FC<Props> = ({
   contextScreenOwnerSlug,
   ...target
 }) => {
+  const { selection: savedSelection, setSelection, actions } = useSheetContext()
   const toast = useToast()
   const environment = useRelayEnvironment()
   const applySelection = useApplyItinerarySelection()
@@ -203,10 +151,6 @@ const Sheet: React.FC<Props> = ({
 
   // Which rows open ticked: the itineraries the entity's memberships (or, failing those, the
   // stop it came from) say already hold it, kept to the ones actually listed.
-  const savedSelection = useSyncExternalStore(
-    sheetStore.subscribeSelection,
-    sheetStore.getSelection
-  )
   const holdingIDs =
     memberships?.map(({ itineraryID }) => itineraryID) ??
     myItineraries?.map(({ internalID }) => internalID) ??
@@ -229,12 +173,14 @@ const Sheet: React.FC<Props> = ({
   const canAutoCreate = !itineraries.length && canCreate
 
   const toggle = (id: string) => {
-    const current = sheetStore.getSelection() ?? { initial, selected, createdItineraries }
-    sheetStore.updateSelection({
-      ...current,
-      selected: current.selected.includes(id)
-        ? current.selected.filter((each) => each !== id)
-        : [...current.selected, id],
+    setSelection((saved) => {
+      const current = saved ?? { initial, selected, createdItineraries, canAutoCreate }
+      return {
+        ...current,
+        selected: current.selected.includes(id)
+          ? current.selected.filter((each) => each !== id)
+          : [...current.selected, id],
+      }
     })
   }
 
@@ -267,15 +213,18 @@ const Sheet: React.FC<Props> = ({
 
       // A brand new itinerary has no stops and no section yet — `applySelection` creates the
       // section itself when it finds none, same as it does for any other itinerary.
-      const current = sheetStore.getSelection() ?? { initial, selected, createdItineraries }
       // Ticked straight away, so Done adds the stop to what you just made.
-      sheetStore.updateSelection({
-        ...current,
-        createdItineraries: [
-          ...current.createdItineraries,
-          { internalID, title, stopsCount: 0, heroImage: null },
-        ],
-        selected: [...current.selected, internalID],
+      setSelection((saved) => {
+        const current = saved ?? { initial, selected, createdItineraries, canAutoCreate }
+        return {
+          ...current,
+          canAutoCreate: false,
+          createdItineraries: [
+            ...current.createdItineraries,
+            { internalID, title, stopsCount: 0, heroImage: null },
+          ],
+          selected: [...current.selected, internalID],
+        }
       })
       await keyboardHidden
       setIsNaming(false)
@@ -301,10 +250,6 @@ const Sheet: React.FC<Props> = ({
   }
 
   const done = async () => {
-    const state = sheetStore.getSnapshot()
-    if (state.loading) return
-    sheetStore.update({ ...state, loading: true })
-
     try {
       let addedItineraryID: string | undefined
       // Done means "make me one" — which is what `addStop` already does, including naming it
@@ -353,24 +298,15 @@ const Sheet: React.FC<Props> = ({
     } catch {
       // Left open on failure: dismissing would claim the change stuck.
       toast.show("Something went wrong. Please try again.", "bottom")
-    } finally {
-      sheetStore.update({ ...sheetStore.getSnapshot(), loading: false })
     }
   }
 
   useLayoutEffect(() => {
-    if (!sheetStore.getSelection()) {
-      sheetStore.updateSelection({ initial, selected, createdItineraries })
+    if (!savedSelection) {
+      setSelection((current) => current ?? { initial, selected, createdItineraries, canAutoCreate })
     }
-    sheetStore.update({
-      disabled: !selected.length && !initial.length && !canAutoCreate,
-      loading: sheetStore.getSnapshot().loading,
-      onPress: done,
-    })
+    actions.done = done
   })
-
-  // The parent creates a fresh store when the target closes or changes. Do not reset it
-  // in content cleanup: Suspense and modal remounts must preserve the pending selection.
 
   return (
     <>
@@ -510,12 +446,47 @@ export const AddToItinerarySheet: React.FC<{
   onClose: () => void
   onSaved?: () => void
 }> = ({ target, onClose, onSaved }) => {
+  const { bottom } = useSafeAreaInsets()
   const targetKey = target ? sheetTargetKey(target) : null
-  const sheetStore = useMemo(createSheetStore, [targetKey])
-  const Footer = useMemo(
-    () => (props: BottomSheetFooterProps) => <DoneFooter {...props} store={sheetStore} />,
-    [sheetStore]
+  const [session, setSession] = useState<SheetSession>({
+    key: targetKey,
+    selection: null,
+    isSaving: false,
+  })
+  // Reset before committing a different target; an effect could erase an early row tap.
+  if (session.key !== targetKey) {
+    setSession({ key: targetKey, selection: null, isSaving: false })
+  }
+  const actions = useMemo<SheetActions>(() => ({ key: targetKey, isSaving: false }), [targetKey])
+  const setSelection = useCallback(
+    (next: (current: SelectionState | null) => SelectionState) => {
+      setSession((current) =>
+        current.key === targetKey ? { ...current, selection: next(current.selection) } : current
+      )
+    },
+    [targetKey]
   )
+  const done = async () => {
+    if (actions.key !== targetKey || actions.isSaving || !actions.done) return
+    actions.isSaving = true
+    setSession((current) => ({ ...current, isSaving: true }))
+    try {
+      await actions.done()
+    } finally {
+      actions.isSaving = false
+      setSession((current) =>
+        current.key === targetKey ? { ...current, isSaving: false } : current
+      )
+    }
+  }
+  const selection = session.key === targetKey ? session.selection : null
+  const context = useMemo(
+    () => ({ selection, setSelection, actions }),
+    [selection, setSelection, actions]
+  )
+  const disabled =
+    !selection ||
+    (!selection.selected.length && !selection.initial.length && !selection.canAutoCreate)
 
   return (
     <AutomountedBottomSheetModal
@@ -524,17 +495,38 @@ export const AddToItinerarySheet: React.FC<{
       snapPoints={SNAP_POINTS}
       enableDynamicSizing={false}
       onDismiss={onClose}
-      footerComponent={Footer}
     >
-      {!!target && (
-        <SheetWithSuspense
-          key={sheetTargetKey(target)}
-          sheetStore={sheetStore}
-          {...target}
-          onClose={onClose}
-          onSaved={onSaved}
-        />
-      )}
+      <AddToItinerarySheetContext.Provider value={context}>
+        <SheetContent>
+          <Flex flex={1}>
+            {!!target && (
+              <SheetWithSuspense
+                key={sheetTargetKey(target)}
+                {...target}
+                onClose={onClose}
+                onSaved={onSaved}
+              />
+            )}
+          </Flex>
+
+          <Flex
+            backgroundColor="mono0"
+            style={{ paddingBottom: Platform.OS === "android" ? bottom : 0 }}
+          >
+            <Flex p={2}>
+              <Button
+                testID="add-to-itinerary-done"
+                block
+                disabled={disabled}
+                loading={session.isSaving}
+                onPress={done}
+              >
+                Done
+              </Button>
+            </Flex>
+          </Flex>
+        </SheetContent>
+      </AddToItinerarySheetContext.Provider>
     </AutomountedBottomSheetModal>
   )
 }

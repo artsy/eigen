@@ -15,20 +15,13 @@ jest.mock("app/Components/Toast/toastHook", () => ({
   useToast: () => ({ show: mockShowToast }),
 }))
 
-// The bundled mock omits the footer. Mount it as a component so its identity and state
-// updates behave like the real bottom sheet.
+// Simulate a modal content remount while the context provider keeps its session state.
 jest.mock("@gorhom/bottom-sheet", () => {
   const { View } = require("react-native")
   const mock = require("@gorhom/bottom-sheet/mock")
   class BottomSheetModal extends mock.BottomSheetModal {
     render() {
-      const Footer = this.props.footerComponent
-      return (
-        <>
-          <View key={mockContentGeneration}>{super.render()}</View>
-          {!!Footer && <Footer animatedFooterPosition={{ value: 0 }} />}
-        </>
-      )
+      return <View key={mockContentGeneration}>{super.render()}</View>
     }
   }
   return {
@@ -36,7 +29,10 @@ jest.mock("@gorhom/bottom-sheet", () => {
     SCROLLABLE_TYPE: {},
     createBottomSheetScrollableComponent: jest.fn().mockReturnValue(View),
     BottomSheetModal,
-    BottomSheetFooter: View,
+    useBottomSheetInternal: () => ({
+      animatedLayoutState: { get: () => ({ containerHeight: 800, handleHeight: 24 }) },
+      animatedPosition: { get: () => 400 },
+    }),
   }
 })
 
