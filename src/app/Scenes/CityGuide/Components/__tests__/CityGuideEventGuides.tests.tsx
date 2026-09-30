@@ -52,12 +52,42 @@ describe("CityGuideEventGuides", () => {
     ItinerariesConnection: () => ({ edges: nodes.map((node) => ({ node })) }),
   })
 
+  const guides = (count: number, options?: { featured?: boolean }) =>
+    Array.from({ length: count }, (_, index) =>
+      itinerary(`guide-${index + 1}`, `Guide ${index + 1}`, {
+        featured: !!options?.featured && index === count - 1,
+      })
+    )
+
   it("opens the city’s curated guides when the section title is tapped", async () => {
-    renderWithRelay(connection([itinerary("chill-vibes-only", "Chill Vibes Only")]), props)
+    renderWithRelay(connection(guides(5)), props)
 
     expect(await screen.findByText("City Guides")).toBeOnTheScreen()
     fireEvent.press(screen.getByTestId("touchable-wrapper"))
     expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/curated-guides")
+  })
+
+  it("leaves the section title untappable with 4 or fewer guides", async () => {
+    renderWithRelay(connection(guides(4)), props)
+
+    expect(await screen.findByText("City Guides")).toBeOnTheScreen()
+    expect(screen.queryByTestId("touchable-wrapper")).not.toBeOnTheScreen()
+    expect(screen.getAllByTestId("event-guide-row")).toHaveLength(4)
+  })
+
+  it("shows at most 4 guides", async () => {
+    renderWithRelay(connection(guides(6)), props)
+
+    expect(await screen.findAllByTestId("event-guide-row")).toHaveLength(4)
+    expect(screen.queryByText("Guide 5")).not.toBeOnTheScreen()
+  })
+
+  it("counts the featured guide toward the 4, even when it came back last", async () => {
+    renderWithRelay(connection(guides(6, { featured: true })), props)
+
+    expect(await screen.findByTestId("event-guide-featured")).toBeOnTheScreen()
+    expect(screen.getAllByTestId("event-guide-row")).toHaveLength(3)
+    expect(screen.getByText("Guide 6")).toBeOnTheScreen()
   })
 
   it("renders the city's curated guides", async () => {
