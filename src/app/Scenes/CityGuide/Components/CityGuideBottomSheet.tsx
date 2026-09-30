@@ -11,6 +11,8 @@ interface CityGuideBottomSheetProps extends CityGuideTabsProps {
 }
 
 const BORDER_RADIUS = 20
+/** The sheet's lowest snap point, which a pin tap collapses it to. */
+export const COLLAPSED_SHEET_HEIGHT = 30
 
 const CityGuideBottomSheetBackdrop = ({ animatedIndex, style }: BottomSheetBackdropProps) => {
   const color = useColor()
@@ -64,7 +66,7 @@ export const CityGuideBottomSheet: React.FC<CityGuideBottomSheetProps> = ({ ...p
       ref={bottomSheetRef}
       enableDynamicSizing={false}
       enablePanDownToClose={false}
-      snapPoints={[30, height * 0.75]}
+      snapPoints={[COLLAPSED_SHEET_HEIGHT, height * 0.75]}
       index={-1}
       handleIndicatorStyle={{
         ...defaultIndicatorHandleStyle(color),
