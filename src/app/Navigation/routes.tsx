@@ -81,6 +81,7 @@ import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { CityGuide } from "app/Scenes/CityGuide/CityGuide"
 import { CityGuideNew } from "app/Scenes/CityGuide/CityGuideNew"
 import { CityArticlesScreen } from "app/Scenes/CityGuide/Screens/CityArticles"
+import { CityCuratedGuidesScreen } from "app/Scenes/CityGuide/Screens/CityCuratedGuides"
 import { CityEventListScreen } from "app/Scenes/CityGuide/Screens/CityEventList/CityEventListScreen"
 import {
   CityFairListQueryRenderer,
@@ -1162,6 +1163,16 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/city-guide/:citySlug/events/:section",
     name: "CityEventList",
     Component: CityEventListScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  },
+  {
+    path: "/city-guide/:citySlug/curated-guides",
+    name: "CityCuratedGuides",
+    Component: CityCuratedGuidesScreen,
     options: {
       screenOptions: {
         headerShown: false,
