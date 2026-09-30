@@ -11,6 +11,7 @@ import { tappedArtAssistant } from "app/Components/GlobalSearchInput/artAssistan
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { DiscoverSomethingNew } from "app/Scenes/Search/components/DiscoverSomethingNew/DiscoverSomethingNew"
 import { ExploreByCategory } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategory"
+import { FindInspirationDifferently } from "app/Scenes/Search/components/FindInspirationDifferently"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 // eslint-disable-next-line no-restricted-imports
@@ -21,11 +22,9 @@ import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingCo
 import { Schema } from "app/utils/track"
 import { memo, RefObject, Suspense, useRef, useState } from "react"
 import { ScrollView } from "react-native"
-import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { SearchResults } from "./SearchResults"
-import { CityGuideCTA } from "./components/CityGuideCTA"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
 import { SEARCH_PILLS, TOP_PILL } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
@@ -55,8 +54,6 @@ export const Search: React.FC = () => {
 
   const scrollYOffset = useRef(0)
   const { trackEvent } = useTracking()
-
-  const shouldShowCityGuide = !isTablet()
 
   const {
     data: queryData,
@@ -146,8 +143,7 @@ export const Search: React.FC = () => {
           >
             <DiscoverSomethingNew />
             <ExploreByCategory />
-
-            <HorizontalPadding>{!!shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
+            <FindInspirationDifferently />
 
             <Spacer y={4} />
           </ScrollView>
@@ -183,10 +179,6 @@ const SearchScreenInner: React.FC<SearchScreenProps> = () => {
 }
 
 export const SearchScreen = memo(withProfiler(SearchScreenInner, { name: "Search" }))
-
-const HorizontalPadding: React.FC<React.PropsWithChildren> = ({ children }) => {
-  return <Box px={2}>{children}</Box>
-}
 
 const tracks = {
   tappedPill: (contextModule: ContextModule, subject: string, query: string) => ({

@@ -9,6 +9,7 @@ import {
 import {
   IMAGE_RATIO,
   MAX_TABLET_CATEGORY_CARD_WIDTH,
+  NEXT_CATEGORY_CARD_VISIBLE_FRACTION,
 } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategoryCard"
 import { getSearchRailCardWidth } from "app/Scenes/Search/components/searchRailCardWidth"
 import React from "react"
@@ -22,7 +23,8 @@ export const ExploreByCategoryCardsPlaceholder: React.FC = () => {
     space(2),
     0,
     space(1),
-    MAX_TABLET_CATEGORY_CARD_WIDTH
+    MAX_TABLET_CATEGORY_CARD_WIDTH,
+    NEXT_CATEGORY_CARD_VISIBLE_FRACTION
   )
 
   return (

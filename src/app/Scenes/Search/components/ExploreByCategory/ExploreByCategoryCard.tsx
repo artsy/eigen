@@ -34,7 +34,8 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
     space(2),
     0,
     space(1),
-    MAX_TABLET_CATEGORY_CARD_WIDTH
+    MAX_TABLET_CATEGORY_CARD_WIDTH,
+    NEXT_CATEGORY_CARD_VISIBLE_FRACTION
   )
 
   const handleCardPress = () => {
@@ -76,8 +77,9 @@ const fragment = graphql`
   }
 `
 
-export const IMAGE_RATIO = 1.5
-export const MAX_TABLET_CATEGORY_CARD_WIDTH = 240
+export const IMAGE_RATIO = 1.9
+export const MAX_TABLET_CATEGORY_CARD_WIDTH = 250
+export const NEXT_CATEGORY_CARD_VISIBLE_FRACTION = 0.25
 
 const tracks = {
   tappedCardGroup: (category: string, href: string, index: number) => ({
