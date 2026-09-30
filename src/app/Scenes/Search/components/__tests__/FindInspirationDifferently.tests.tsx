@@ -32,7 +32,7 @@ describe("FindInspirationDifferently", () => {
   it("shows City Guide and Discover Daily when the other features are unavailable", () => {
     renderWithWrappers(<FindInspirationDifferently />)
 
-    expect(screen.getByText("Find Inspiration Differently")).toBeOnTheScreen()
+    expect(screen.getByText("Discover Art Your Way")).toBeOnTheScreen()
     expect(screen.getByText("Discover Daily")).toBeOnTheScreen()
     expect(screen.getByText("City Guide")).toBeOnTheScreen()
     expect(screen.queryByText("Artsy Lens")).not.toBeOnTheScreen()

@@ -102,7 +102,7 @@ export const FindInspirationDifferently: React.FC = () => {
 
   return (
     <Flex px={2} pt={1}>
-      <SectionTitle title="Find Inspiration Differently" />
+      <SectionTitle title="Discover Art Your Way" />
 
       <Flex flexDirection="row" flexWrap="wrap" gap={1}>
         {cards.map((card) => (
