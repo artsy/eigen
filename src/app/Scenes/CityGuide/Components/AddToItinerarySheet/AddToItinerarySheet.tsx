@@ -36,7 +36,9 @@ import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { times } from "lodash"
 import { useState } from "react"
+import { Platform } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -433,29 +435,36 @@ export const AddToItinerarySheet: React.FC<{
   target: AddToItineraryTarget | null
   onClose: () => void
   onSaved?: () => void
-}> = ({ target, onClose, onSaved }) => (
-  <AutomountedBottomSheetModal
-    visible={!!target}
-    name="AddToItinerary"
-    snapPoints={SNAP_POINTS}
-    enableDynamicSizing={false}
-    onDismiss={onClose}
-    footerComponent={({ animatedFooterPosition }) => (
-      <BottomSheetFooter animatedFooterPosition={animatedFooterPosition}>
-        <PortalHost name={FOOTER_PORTAL_HOST} />
-      </BottomSheetFooter>
-    )}
-  >
-    {!!target && (
-      <SheetWithSuspense
-        key={sheetTargetKey(target)}
-        {...target}
-        onClose={onClose}
-        onSaved={onSaved}
-      />
-    )}
-  </AutomountedBottomSheetModal>
-)
+}> = ({ target, onClose, onSaved }) => {
+  const { bottom } = useSafeAreaInsets()
+
+  return (
+    <AutomountedBottomSheetModal
+      visible={!!target}
+      name="AddToItinerary"
+      snapPoints={SNAP_POINTS}
+      enableDynamicSizing={false}
+      onDismiss={onClose}
+      footerComponent={({ animatedFooterPosition }) => (
+        <BottomSheetFooter
+          animatedFooterPosition={animatedFooterPosition}
+          style={{ paddingBottom: Platform.OS === "android" ? bottom : 0 }}
+        >
+          <PortalHost name={FOOTER_PORTAL_HOST} />
+        </BottomSheetFooter>
+      )}
+    >
+      {!!target && (
+        <SheetWithSuspense
+          key={sheetTargetKey(target)}
+          {...target}
+          onClose={onClose}
+          onSaved={onSaved}
+        />
+      )}
+    </AutomountedBottomSheetModal>
+  )
+}
 
 /** What the stop being added points at, for `addedStopToItinerary`'s `context_owner_type`. A
  *  custom stop has no Artsy entity, so it is tracked under its own City Guide owner type
