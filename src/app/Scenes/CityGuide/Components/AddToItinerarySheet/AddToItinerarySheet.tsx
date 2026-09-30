@@ -169,7 +169,13 @@ const Sheet: React.FC<Props> = ({
         environment,
         CreateMutation,
         // Guarded by `canCreate`, which is what gates this whole view.
-        { input: { citySlug: citySlug as string, title } }
+        {
+          input: {
+            citySlug: citySlug as string,
+            title,
+            authorName: data.me?.name?.trim() || undefined,
+          },
+        }
       )
       const response = created.createItinerary?.responseOrError
       const internalID =
@@ -483,6 +489,7 @@ const Query = graphql`
     }
 
     me {
+      name
       itinerariesConnection(citySlug: $citySlug, first: $first) {
         edges {
           node {

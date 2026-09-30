@@ -44,7 +44,10 @@ describe("AddToItinerarySheet", () => {
 
   const withItineraries = (nodes: object[]) => ({
     Query: () => ({ sourceShow: null, sourceFair: null }),
-    Me: () => ({ itinerariesConnection: { edges: nodes.map((node) => ({ node })) } }),
+    Me: () => ({
+      name: "Alex Collector",
+      itinerariesConnection: { edges: nodes.map((node) => ({ node })) },
+    }),
   })
 
   /** The show the sheet was opened for already sits on these itineraries, as these stops. */
@@ -731,6 +734,7 @@ describe("AddToItinerarySheet", () => {
       expect(operation.request.variables.input).toEqual({
         citySlug: "london-united-kingdom",
         title: "Frieze week",
+        authorName: "Alex Collector",
       })
     })
 
