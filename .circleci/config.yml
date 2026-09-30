@@ -508,16 +508,16 @@ parameters:
     default: v31-node_modules-{{ checksum ".manifests/node_modules" }}
   gems_cache_key:
     type: string
-    default: v16-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+    default: v17-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
   cocoapods_cache_key:
     type: string
-    default: v34-pods-{{ checksum ".manifests/cocoapods" }}
+    default: v35-pods-{{ checksum ".manifests/cocoapods" }}
   app_build_ios_cache_key:
     type: string
-    default: v33-app_build_ios-{{ checksum ".manifests/app_build" }}
+    default: v34-app_build_ios-{{ checksum ".manifests/app_build" }}
   app_build_android_cache_key:
     type: string
-    default: v18-app_build_android-{{ checksum ".manifests/app_build" }}
+    default: v19-app_build_android-{{ checksum ".manifests/app_build" }}
   ios_native_code_cache_prefix:
     type: string
     default: v21-test-success
