@@ -1,4 +1,4 @@
-import { SparklesSquareStrokeIcon } from "@artsy/icons/native"
+import { SparklesMessageIcon } from "@artsy/icons/native"
 import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { useArtAssistantTracking } from "app/Scenes/ArtAssistant/hooks/useArtAssistantTracking"
 
@@ -22,7 +22,7 @@ export const ArtAssistantEmptyState: React.FC<ArtAssistantEmptyStateProps> = ({
   return (
     <Flex flex={1} pt={2}>
       <Flex flexDirection="row" alignItems="center" justifyContent="center">
-        <SparklesSquareStrokeIcon
+        <SparklesMessageIcon
           fill="mono60"
           width={EMPTY_STATE_ICON_SIZE}
           height={EMPTY_STATE_ICON_SIZE}
