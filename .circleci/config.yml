@@ -166,9 +166,8 @@ commands:
       - android/change_java_version:
           java_version: 17
       - run:
-          name: Install system packages
-          # libyaml-dev is needed to compile psych 5 (pulled in by fastlane -> irb -> rdoc)
-          command: sudo apt-get install -y ninja-build libyaml-dev
+          name: Install ninja
+          command: sudo apt-get install ninja-build
       - checkout
       - generate-checksums
       - restore_cache:
