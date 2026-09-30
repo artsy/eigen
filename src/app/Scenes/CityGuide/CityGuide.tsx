@@ -2,6 +2,7 @@ import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
 import { CityGuideCitiesLoadFailure } from "app/Scenes/CityGuide/Components/CityGuideCitiesLoadFailure"
 import { CityGuideMapQueryRenderer } from "app/Scenes/CityGuide/Components/CityGuideMapQueryRenderer"
 import { useCityGuideCities } from "app/Scenes/CityGuide/hooks/useCityGuideCities"
+import { useCityGuideMapStatusBar } from "app/Scenes/CityGuide/hooks/useCityGuideMapStatusBar"
 import { useInitialLocation } from "app/Scenes/CityGuide/hooks/useInitialLocation"
 import { goBack } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -29,8 +30,14 @@ const CityGuideLoading: React.FC = () => (
   </Screen>
 )
 
-export const CityGuide = withSuspense<CityGuideProps>({
+const CityGuideWithSuspense = withSuspense<CityGuideProps>({
   Component: CityGuideWithCities,
   LoadingFallback: CityGuideLoading,
   ErrorFallback: (fallbackProps) => <CityGuideCitiesLoadFailure {...fallbackProps} />,
 })
+
+export const CityGuide: React.FC<CityGuideProps> = (props) => {
+  useCityGuideMapStatusBar(true)
+
+  return <CityGuideWithSuspense {...props} />
+}

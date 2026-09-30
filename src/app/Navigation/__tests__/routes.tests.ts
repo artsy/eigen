@@ -73,6 +73,14 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes to a city's curated guides", () => {
+    expect(matchRoute("/city-guide/london-united-kingdom/curated-guides")).toEqual({
+      module: "CityCuratedGuides",
+      params: { citySlug: "london-united-kingdom" },
+      type: "match",
+    })
+  })
+
   it("routes to CityGuideItinerary", () => {
     expect(matchRoute("/city-guide/london-united-kingdom/itinerary/chill-vibes-only"))
       .toMatchInlineSnapshot(`
