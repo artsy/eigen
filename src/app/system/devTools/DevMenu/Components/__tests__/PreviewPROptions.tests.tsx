@@ -35,7 +35,7 @@ describe("PreviewPROptions", () => {
     renderWithWrappers(<PreviewPROptions />)
     expand()
 
-    fireEvent.changeText(screen.getByPlaceholderText("PR number"), "123")
+    fireEvent.changeText(screen.getByLabelText("PR Number"), "123")
     fireEvent.press(screen.getByText("Load PR"))
 
     await waitFor(() => expect(Alert.alert).toHaveBeenCalledTimes(1))
@@ -72,7 +72,7 @@ describe("PreviewPROptions", () => {
     renderWithWrappers(<PreviewPROptions />)
     expand()
 
-    fireEvent.changeText(screen.getByPlaceholderText("PR number"), "123")
+    fireEvent.changeText(screen.getByLabelText("PR Number"), "123")
     fireEvent.press(screen.getByText("Load PR"))
     await waitFor(() => expect(Alert.alert).toHaveBeenCalledTimes(1))
     const buttons = (Alert.alert as jest.Mock).mock.calls[0][2]
@@ -90,7 +90,7 @@ describe("PreviewPROptions", () => {
     renderWithWrappers(<PreviewPROptions />)
     expand()
 
-    fireEvent.changeText(screen.getByPlaceholderText("PR number"), "123")
+    fireEvent.changeText(screen.getByLabelText("PR Number"), "123")
     fireEvent.press(screen.getByText("Load PR"))
 
     expect(await screen.findByText("PR #123 is not open")).toBeOnTheScreen()

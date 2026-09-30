@@ -133,6 +133,7 @@ export const PreviewPROptions = () => {
 
           <>
             <Input
+              aria-label="PR Number"
               title="PR Number"
               keyboardType="number-pad"
               returnKeyType="go"
