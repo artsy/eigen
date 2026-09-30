@@ -133,7 +133,7 @@ export const PreviewPROptions = () => {
 
           <>
             <Input
-              placeholder="PR number"
+              title="PR Number"
               keyboardType="number-pad"
               returnKeyType="go"
               editable={channelSwitchingAllowed}
