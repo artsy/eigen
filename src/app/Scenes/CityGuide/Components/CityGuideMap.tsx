@@ -1,22 +1,27 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Flex, useColor, useSpace } from "@artsy/palette-mobile"
 import MapboxGL from "@rnmapbox/maps"
 import { CityGuideFair_fair$key } from "__generated__/CityGuideFair_fair.graphql"
 import { CityGuideMap_viewer$key } from "__generated__/CityGuideMap_viewer.graphql"
 import { CityGuideShow_show$key } from "__generated__/CityGuideShow_show.graphql"
+import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { CityFilterPills } from "app/Scenes/CityGuide/Components/CityFilterPills"
-import { CityGuideBottomSheet } from "app/Scenes/CityGuide/Components/CityGuideBottomSheet"
+import {
+  CityGuideBottomSheet,
+  COLLAPSED_SHEET_HEIGHT,
+} from "app/Scenes/CityGuide/Components/CityGuideBottomSheet"
 import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 import { CityGuideMapHeader } from "app/Scenes/CityGuide/Components/CityGuideMapHeader"
 import { CityGuideMapPins } from "app/Scenes/CityGuide/Components/CityGuideMapPins"
-import {
-  CityGuideShowCardOverlay,
-  SHOW_CARD_HEIGHT,
-} from "app/Scenes/CityGuide/Components/CityGuideShowCardOverlay"
+import { MapPreviewCard } from "app/Scenes/CityGuide/Components/Map/MapPreviewCard"
+import { MapPreviewCardRail } from "app/Scenes/CityGuide/Components/Map/MapPreviewCardRail"
 import { cityGuideFairFragment } from "app/Scenes/CityGuide/utils/CityGuideFair"
 import { cityGuideShowFragment } from "app/Scenes/CityGuide/utils/CityGuideShow"
+import { activeItemsToMapPlaces } from "app/Scenes/CityGuide/utils/activeItemsToMapPlaces"
 import { bucketCityResults, BucketResults } from "app/Scenes/CityGuide/utils/bucketCityResults"
 import { buildFeatureCollections } from "app/Scenes/CityGuide/utils/buildFeatureCollections"
 import { cityTabs } from "app/Scenes/CityGuide/utils/cityTabs"
+import { PREVIEW_BOTTOM_OFFSET } from "app/Scenes/CityGuide/utils/constants"
 import { EventEmitter } from "app/Scenes/CityGuide/utils/eventEmitter"
 import { extractShowAndFairMaps } from "app/Scenes/CityGuide/utils/extractShowAndFairMaps"
 import { getNearestFeatureToTap } from "app/Scenes/CityGuide/utils/getNearestFeatureToTap"
@@ -72,6 +77,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const shapeSourceRef = useRef<MapboxGL.ShapeSource>(null)
   const cameraCitySlugRef = useRef(props.citySlug)
+  const parentCitySlugRef = useRef(props.citySlug)
   const currentZoomRef = useRef(DefaultZoomLevel)
   const showsRef = useRef<{ [key: string]: Show }>({})
   const fairsRef = useRef<{ [key: string]: Fair }>({})
@@ -89,7 +95,6 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   )
   const featureCollections = useMemo(() => buildFeatureCollections(bucketResults), [bucketResults])
 
-  const [isSavingShow, setIsSavingShow] = useState(false)
   const [mapLoaded, setMapLoaded] = useState(false)
   const [activePin, setActivePin] = useState<GeoJSON.Feature | null>(null)
   const [showCityPicker, setShowCityPicker] = useState(false)
@@ -105,14 +110,18 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   }, [])
 
   // The parent can switch city too (e.g. a late location fix), and the camera only reads its
-  // `defaultSettings` on mount.
+  // `defaultSettings` on mount. A new cities array must not replay the parent's old slug
+  // while a picker selection is loading.
   useEffect(() => {
-    if (props.citySlug === cameraCitySlugRef.current) {
+    if (props.citySlug === parentCitySlugRef.current) {
       return
     }
     const coordinates = props.cities.find((city) => city.slug === props.citySlug)?.coordinates
     if (coordinates) {
-      flyToCity(props.citySlug, coordinates)
+      parentCitySlugRef.current = props.citySlug
+      if (props.citySlug !== cameraCitySlugRef.current) {
+        flyToCity(props.citySlug, coordinates)
+      }
     }
   }, [props.citySlug, props.cities])
 
@@ -257,10 +266,8 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   }
 
   const onPressMap = () => {
-    if (!isSavingShow) {
-      setActiveShows([])
-      setActivePin(null)
-    }
+    setActiveShows([])
+    setActivePin(null)
   }
 
   const onDidFinishLoadingMap = () => {
@@ -370,15 +377,31 @@ export const CityGuideMap: React.FC<Props> = (props) => {
     })
   }
 
-  return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.CityGuideMap,
-        context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
-        context_screen_owner_slug: props.citySlug,
-        context_screen_owner_id: props.citySlug,
-      }}
-    >
+  // Follows the city picker: switching cities refetches `viewer.city` without new props.
+  const cardCitySlug = viewer.city?.slug ?? props.citySlug
+  const currentItemsById = useMemo(
+    () => new Map([...shows, ...upcomingShows, ...fairs].map((item) => [item.id, item])),
+    [shows, upcomingShows, fairs]
+  )
+  const activePlaces = useMemo(
+    () =>
+      activeItemsToMapPlaces(
+        activeShows.map((item) => currentItemsById.get(item.id) ?? item),
+        {
+          contextScreenOwnerType: OwnerType.cityGuideMap,
+          contextScreenOwnerSlug: cardCitySlug,
+        }
+      ),
+    [activeShows, cardCitySlug, currentItemsById]
+  )
+
+  // Without the flag, a pin tap collapses the bottom sheet, which renders over the card.
+  const previewBottomOffset = enableGlobalMapList
+    ? PREVIEW_BOTTOM_OFFSET
+    : COLLAPSED_SHEET_HEIGHT + safeAreaInsets.bottom
+
+  const content = (
+    <>
       <CityGuideMapHeader
         safeAreaInsetTop={safeAreaInsets.top}
         cityName={isLoadingCity ? loadingCityName : viewer.city?.name}
@@ -452,22 +475,19 @@ export const CityGuideMap: React.FC<Props> = (props) => {
             </>
           )}
         </MapboxGL.MapView>
-        {!!city && activeShows.length > 0 && (
+        {!!city && activePlaces.length > 0 && (
           <Flex
+            testID="city-guide-map-preview"
             position="absolute"
-            bottom={0}
+            bottom={previewBottomOffset}
             left={0}
             right={0}
-            height={SHOW_CARD_HEIGHT}
-            justifyContent="flex-end"
           >
-            <CityGuideShowCardOverlay
-              activeShows={activeShows}
-              showsRef={showsRef}
-              fairsRef={fairsRef}
-              onSaveStarted={() => setIsSavingShow(true)}
-              onSaveEnded={() => setIsSavingShow(false)}
-            />
+            {activePlaces.length === 1 ? (
+              <MapPreviewCard place={activePlaces[0]} citySlug={cardCitySlug} />
+            ) : (
+              <MapPreviewCardRail places={activePlaces} citySlug={cardCitySlug} />
+            )}
           </Flex>
         )}
         {!enableGlobalMapList && (
@@ -477,6 +497,26 @@ export const CityGuideMap: React.FC<Props> = (props) => {
           />
         )}
       </Flex>
+    </>
+  )
+
+  return (
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.CityGuideMap,
+        context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+        context_screen_owner_slug: props.citySlug,
+        context_screen_owner_id: props.citySlug,
+      }}
+    >
+      {/* The provider is what makes the cards' add-to-itinerary plus render at all. */}
+      {enableGlobalMapList ? (
+        <AddToItineraryProvider citySlug={viewer.city?.slug} cityName={viewer.city?.name ?? ""}>
+          {content}
+        </AddToItineraryProvider>
+      ) : (
+        content
+      )}
     </ProvideScreenTracking>
   )
 }

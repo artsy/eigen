@@ -19,6 +19,8 @@ const makeFair = (overrides: Partial<Fair> = {}): Fair =>
     name: "Frieze London",
     exhibition_period: "Oct 9 – Oct 12, 2026",
     location: {
+      name: "Regent’s Park",
+      city: "London",
       address: "The Regent's Park, London NW1 4NR",
       coordinates: { lat: 51.53, lng: -0.15 },
     },
@@ -50,12 +52,31 @@ describe("fairsToMapSections", () => {
     })
   })
 
+  it("uses itinerary card fields and the fair image", () => {
+    const fair = makeFair({
+      image: { url: "https://example.com/fair.jpg", image_url: null, aspect_ratio: 1 },
+    })
+    const [section] = fairsToMapSections(makeSection([fair]), TEST_CONTEXT)
+
+    expect(section.places[0]).toMatchObject({
+      card: {
+        kind: "fair",
+        title: "Frieze London",
+        subtitle: "Regent’s Park",
+        hours: "Oct 9 – Oct 12, 2026",
+      },
+      image: { url: "https://example.com/fair.jpg" },
+    })
+  })
+
   it("drops fairs with invalid coordinates rather than trusting them", () => {
     const valid = makeFair({ id: "valid" })
     const invalid = makeFair({
       id: "invalid",
       location: {
         address: "The Regent's Park, London NW1 4NR",
+        name: null,
+        city: null,
         cityGuideNeighborhood: null,
         coordinates: { lat: null, lng: null },
       },
@@ -70,6 +91,8 @@ describe("fairsToMapSections", () => {
     const invalid = makeFair({
       location: {
         address: "The Regent's Park, London NW1 4NR",
+        name: null,
+        city: null,
         cityGuideNeighborhood: null,
         coordinates: { lat: undefined, lng: undefined },
       },
@@ -127,6 +150,8 @@ describe("fairsToMapSections", () => {
         makeFair({
           location: {
             address: null,
+            name: null,
+            city: null,
             cityGuideNeighborhood: null,
             coordinates: { lat: 51.53, lng: -0.15 },
           },

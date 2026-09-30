@@ -5,14 +5,9 @@ export interface MapPlace {
   title: string
   coordinates: { lat: number; lng: number }
   href?: string | null
-  /**
-   * The same card content shown in the itinerary list — see `StopCard`. Set by the itinerary
-   * adapter; the plain city-events adapter has no equivalent and uses `detail` instead.
-   */
+  /** The same card content shown in the itinerary list. */
   card?: StopCardFields
   image?: { url: string; blurhash?: string | null } | null
-  /** Injected, so the card holds no Relay or context dependency. Ignored once `card` is set. */
-  detail?: React.ReactNode
   saveControl?: React.ReactNode
   /**
    * Name of a pin sprite in the Artsy Mapbox style, e.g. "pin", "pin-saved", "pin-fair".
