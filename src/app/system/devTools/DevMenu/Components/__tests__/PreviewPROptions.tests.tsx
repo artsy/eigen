@@ -182,7 +182,6 @@ describe("PreviewPROptions", () => {
       expect(screen.getByText(/Channel: review-app-123/)).toBeOnTheScreen()
       expect(screen.getByText(/PR: #123/)).toBeOnTheScreen()
       expect(screen.getByText(/Title: feat: add thing/)).toBeOnTheScreen()
-      expect(screen.getByText(/Commit: abcdef1/)).toBeOnTheScreen()
       expect(global.fetch).not.toHaveBeenCalled()
     })
 

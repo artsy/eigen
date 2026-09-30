@@ -136,7 +136,6 @@ export const PreviewPROptions = () => {
                   `Channel: ${Updates.channel}`,
                   `PR: #${activePRNumber}`,
                   activePR && `Title: ${activePR.title}`,
-                  activePR && `Commit: ${activePR.sha.slice(0, 7)}`,
                 ]
                   .filter(Boolean)
                   .join("\n")}
