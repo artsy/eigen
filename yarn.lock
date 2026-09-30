@@ -7750,9 +7750,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@segment/analytics-react-native@npm:2.24.0":
-  version: 2.24.0
-  resolution: "@segment/analytics-react-native@npm:2.24.0"
+"@segment/analytics-react-native@npm:2.24.1":
+  version: 2.24.1
+  resolution: "@segment/analytics-react-native@npm:2.24.1"
   dependencies:
     "@segment/tsub": "npm:2.0.0"
     "@stdlib/number-float64-base-normalize": "npm:0.0.8"
@@ -7768,17 +7768,18 @@ __metadata:
   peerDependenciesMeta:
     "@react-native-async-storage/async-storage":
       optional: true
-  checksum: 10c0/86a3e204313c72e6e4a5795f98cd5c943440840c832997f3bdc5706a2b5230e69abea9c3d117de409db9d1c2e07cb5ee0023fc13fe4ba42010e7440006a85b72
+    react-native-get-random-values:
+      optional: true
+  checksum: 10c0/9a377aa76937dc40739bcd3f676faf77541b4f448d7c32ccdfbb5954bf4a29156a4f03aaeecb3276725a4de1a6aff4fdc63e715278cec63613bb642751c629e9
   languageName: node
   linkType: hard
 
-"@segment/sovran-react-native@npm:1.1.4":
-  version: 1.1.4
-  resolution: "@segment/sovran-react-native@npm:1.1.4"
+"@segment/sovran-react-native@npm:1.1.5":
+  version: 1.1.5
+  resolution: "@segment/sovran-react-native@npm:1.1.5"
   dependencies:
     ansi-regex: "npm:5.0.1"
     deepmerge: "npm:^4.2.2"
-    shell-quote: "npm:1.8.0"
     uuid: "npm:^14.0.0"
   peerDependencies:
     "@react-native-async-storage/async-storage": 2.x
@@ -7788,7 +7789,9 @@ __metadata:
   peerDependenciesMeta:
     "@react-native-async-storage/async-storage":
       optional: true
-  checksum: 10c0/a42d5e25983380ee271c7604d5e79faaf19e2f4ed33c531b27d1cd316df8ff57e71655e8871bd29e6d210fc584c736299898e5347ee94286634d148922d64dc3
+    react-native-get-random-values:
+      optional: true
+  checksum: 10c0/daa0f4b4f05578aaf97b93fcf0ffa783d98f93bb35c4ee2882f238060f6c90985d1dd50bde2e13f9f6032fc9cc2370e0cbd7ea5b9f9825449c40d5c8ff226e1d
   languageName: node
   linkType: hard
 
@@ -13543,9 +13546,9 @@ __metadata:
     "@rozenite/network-activity-plugin": "npm:2.1.0"
     "@rozenite/performance-monitor-plugin": "npm:2.1.0"
     "@rozenite/react-navigation-plugin": "npm:2.1.0"
-    "@segment/analytics-react-native": "npm:2.24.0"
+    "@segment/analytics-react-native": "npm:2.24.1"
     "@segment/analytics-react-native-plugin-braze": "npm:0.9.0"
-    "@segment/sovran-react-native": "npm:1.1.4"
+    "@segment/sovran-react-native": "npm:1.1.5"
     "@sentry/react-native": "npm:8.13.0"
     "@shopify/flash-list": "npm:2.2.2"
     "@stripe/stripe-react-native": "npm:0.64.0"
@@ -18323,15 +18326,15 @@ __metadata:
   linkType: hard
 
 "joi@npm:^17.2.1":
-  version: 17.13.4
-  resolution: "joi@npm:17.13.4"
+  version: 17.13.8
+  resolution: "joi@npm:17.13.8"
   dependencies:
     "@hapi/hoek": "npm:^9.3.0"
     "@hapi/topo": "npm:^5.1.0"
     "@sideway/address": "npm:^4.1.5"
     "@sideway/formula": "npm:^3.0.1"
     "@sideway/pinpoint": "npm:^2.0.0"
-  checksum: 10c0/5addfef638e90eb6a45a72e3884128d8d9a80c487cb8bfcb949be179b875ad1095af347fa1bd05c4ebec2b2ccbc3f3db5f34501c8672ecd16100de2b77087122
+  checksum: 10c0/7fe2b38d26dfcbcf1836892384ba2f42f83058795f32dcb3733de4c3b97cac923a8b9053738f10701663872a994f77af351c71e1428117a20bbfc1f94768f648
   languageName: node
   linkType: hard
 
@@ -20055,15 +20058,15 @@ __metadata:
   linkType: hard
 
 "morgan@npm:^1.10.0":
-  version: 1.11.0
-  resolution: "morgan@npm:1.11.0"
+  version: 1.12.1
+  resolution: "morgan@npm:1.12.1"
   dependencies:
     basic-auth: "npm:~2.0.1"
     debug: "npm:2.6.9"
     depd: "npm:~2.0.0"
     on-finished: "npm:~2.4.1"
     on-headers: "npm:~1.1.0"
-  checksum: 10c0/1d8c67bdeb34dc4112f5b6cbff0d5b4ef14bfdcb9f67a7ae67fc7a77282c18dd493a11dc8dff1ff2e285c1846947cfdc3698fdceb1fa7bea2a09fe6cb754455d
+  checksum: 10c0/543ef12deae8c30d12df9cd0412353dc6003a075530a2c093099a91792fa969778d5eeb863f0fdcbd0333f25281b17a5b7bc3e38cf759024679b24ca7b950be9
   languageName: node
   linkType: hard
 

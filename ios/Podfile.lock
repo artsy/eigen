@@ -3363,7 +3363,7 @@ PODS:
   - SDWebImageWebPCoder (0.14.6):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.17)
-  - segment-analytics-react-native (2.24.0):
+  - segment-analytics-react-native (2.24.1):
     - React-Core
     - sovran-react-native
   - Sentry (9.15.0):
@@ -3373,7 +3373,7 @@ PODS:
   - sift-react-native (0.1.15):
     - React
     - Sift
-  - sovran-react-native (1.1.4):
+  - sovran-react-native (1.1.5):
     - React-Core
   - Specta (2.0.0)
   - Starscream (4.0.8)
@@ -4318,11 +4318,11 @@ SPEC CHECKSUMS:
   SDWebImageAVIFCoder: afe194a084e851f70228e4be35ef651df0fc5c57
   SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c
   SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
-  segment-analytics-react-native: acb03fcffad10bfff49f13f5f6e58a832466a9a2
+  segment-analytics-react-native: 22fefcc89ea57ca9bf21344eba164ccaabb2835f
   Sentry: d5b72948d692d369ded835e2e77baadcd3c492dd
   Sift: 742454b5796a717df185f6dbae569e5dce357322
   sift-react-native: 136f9b31b8324dbed1436bfbb0ec6b3b01c587e1
-  sovran-react-native: 803ccf23b24c8c5da99f249d4a0e317d62fa35e7
+  sovran-react-native: adab7580e38f67c0e8679df1cf277d1075b83ed8
   Specta: b79d84043684b35ffdc2680df578dc318ec2efc2
   Starscream: 19b5533ddb925208db698f0ac508a100b884a1b9
   Stripe: 0421dcc510a52f2abf63bbf03a547caf6639dce7
