@@ -1,4 +1,5 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
+import { BottomSheetModal } from "@gorhom/bottom-sheet"
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { AddToItinerarySheet } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItinerarySheet"
 import { navigate } from "app/system/navigation/navigate"
@@ -145,9 +146,11 @@ describe("AddToItinerarySheet", () => {
     fireEvent.press(await screen.findByTestId("add-to-itinerary-row"))
     expect(screen.getByTestId("add-to-itinerary-done")).toBeEnabled()
 
-    // A remount after the opening animation must not undo a tap already made on a row.
-    mockContentGeneration += 1
-    view.rerender(<AddToItinerarySheet {...props} />)
+    // Remount only the modal content, keeping the surrounding sheet provider mounted.
+    act(() => {
+      mockContentGeneration += 1
+      view.UNSAFE_getByType(BottomSheetModal).instance.forceUpdate()
+    })
     expect(screen.getByTestId("add-to-itinerary-done")).toBeEnabled()
     act(resolveItineraries)
 
