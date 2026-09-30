@@ -1,6 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Join, Screen, Spacer, Theme } from "@artsy/palette-mobile"
 import { CityGuideNewQuery } from "__generated__/CityGuideNewQuery.graphql"
+import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { CityGuideCitiesLoadFailure } from "app/Scenes/CityGuide/Components/CityGuideCitiesLoadFailure"
 import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
@@ -81,6 +82,7 @@ interface CityGuideNewProps {
 }
 
 const CityGuideNewWithCities: React.FC<CityGuideNewProps> = ({ citySlug: preselectedCitySlug }) => {
+  useEnableProgressiveOnboarding()
   const cities = useCityGuideCities()
   const fallbackCity = cities.find((city) => city.slug === "new-york-ny-usa") ?? cities[0]
 
