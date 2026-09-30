@@ -2,7 +2,6 @@ import { PushPromptLogicModel, getPushPromptLogicModel } from "app/store/PushPro
 import { EchoModel, getEchoModel } from "./config/EchoModel"
 import { ExperimentsModel, getExperimentsModel } from "./config/ExperimentsModel"
 import { FeaturesModel, getFeaturesModel } from "./config/FeaturesModel"
-import { getPreviewPRModel, PreviewPRModel } from "./config/PreviewPRModel"
 import { getUserIsDev, UserIsDevModel } from "./config/UserIsDevModel"
 
 export interface ArtsyPrefsModel {
@@ -11,7 +10,6 @@ export interface ArtsyPrefsModel {
   userIsDev: UserIsDevModel
   experiments: ExperimentsModel
   pushPromptLogic: PushPromptLogicModel
-  previewPR: PreviewPRModel
 }
 
 export const getArtsyPrefsModel = (): ArtsyPrefsModel => ({
@@ -20,5 +18,4 @@ export const getArtsyPrefsModel = (): ArtsyPrefsModel => ({
   userIsDev: getUserIsDev(),
   experiments: getExperimentsModel(),
   pushPromptLogic: getPushPromptLogicModel(),
-  previewPR: getPreviewPRModel(),
 })

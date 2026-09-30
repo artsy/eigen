@@ -72,10 +72,9 @@ export const Versions = {
   AddFollowedOnboardingArtistsToOnboardingModel: 59,
   AddInitialsToFollowedOnboardingArtists: 60,
   RemoveOnboardingArtQuizState: 61,
-  AddPreviewPRToArtsyPrefsModel: 62,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddPreviewPRToArtsyPrefsModel
+export const CURRENT_APP_VERSION = Versions.RemoveOnboardingArtQuizState
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -402,9 +401,6 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.RemoveOnboardingArtQuizState]: (state) => {
     delete state.onboarding.onboardingArtQuizState
-  },
-  [Versions.AddPreviewPRToArtsyPrefsModel]: (state) => {
-    state.artsyPrefs.previewPR = { value: null }
   },
 }
 

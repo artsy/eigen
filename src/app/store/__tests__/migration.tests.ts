@@ -1365,23 +1365,4 @@ describe("App version Versions.AddInfiniteDiscoveryModel", () => {
       expect(migratedState.onboarding.onboardingArtQuizState).toEqual(undefined)
     })
   })
-  describe("App version Versions.AddPreviewPRToArtsyPrefsModel", () => {
-    it("should add previewPR to the artsyPrefs model", () => {
-      const migrationToTest = Versions.AddPreviewPRToArtsyPrefsModel
-
-      const previousState = migrate({
-        state: { version: 0 },
-        toVersion: migrationToTest - 1,
-      }) as any
-
-      expect(previousState.artsyPrefs.previewPR).toEqual(undefined)
-
-      const migratedState = migrate({
-        state: previousState,
-        toVersion: migrationToTest,
-      }) as any
-
-      expect(migratedState.artsyPrefs.previewPR).toEqual({ value: null })
-    })
-  })
 })

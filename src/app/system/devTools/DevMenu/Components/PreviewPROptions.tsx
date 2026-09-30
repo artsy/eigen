@@ -1,7 +1,6 @@
 import { Button, Flex, Input, Message, ProgressBar, Spacer, Text } from "@artsy/palette-mobile"
 import { Expandable } from "app/Components/Expandable"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
-import { GlobalStore } from "app/store/GlobalStore"
 import { isCodedError } from "app/system/devTools/DevMenu/Components/ExpoUpdatesOptions"
 import {
   fetchPreviewPR,
@@ -14,9 +13,6 @@ import { Alert } from "react-native"
 
 export const PreviewPROptions = () => {
   const activePRNumber = parsePreviewChannel(Updates.channel)
-  const storedPR = GlobalStore.useAppState((state) => state.artsyPrefs.previewPR.value)
-  // storedPR can be stale from previous previews, only show if they match
-  const activePR = storedPR?.channel === Updates.channel ? storedPR : null
 
   const [prNumber, setPrNumber] = useState("")
   const [loading, setLoading] = useState(false)
@@ -54,7 +50,6 @@ export const PreviewPROptions = () => {
       }
 
       await Updates.fetchUpdateAsync()
-      GlobalStore.actions.artsyPrefs.previewPR.setValue(pr)
       await Updates.reloadAsync()
     } catch (error) {
       // Android refuses to reload on an emergency launch. The update is already downloaded, so
@@ -132,13 +127,7 @@ export const PreviewPROptions = () => {
             <>
               <Message
                 title="Active Preview"
-                text={[
-                  `Channel: ${Updates.channel}`,
-                  `PR: #${activePRNumber}`,
-                  activePR && `Title: ${activePR.title}`,
-                ]
-                  .filter(Boolean)
-                  .join("\n")}
+                text={`Channel: ${Updates.channel}\nPR: #${activePRNumber}`}
                 variant="info"
               />
               <Spacer y={2} />
