@@ -30,6 +30,8 @@ import {
 } from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
 import { refetchCityGuideItinerariesRail } from "app/Scenes/CityGuide/utils/CityGuideItinerariesRailQuery"
 import { itineraryStopsCount } from "app/Scenes/CityGuide/utils/itineraryStopsCount"
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { times } from "lodash"
@@ -220,15 +222,20 @@ const Sheet: React.FC<Props> = ({
     setIsApplying(true)
 
     try {
+      let addedItineraryID: string | undefined
       // Done means "make me one" — which is what `addStop` already does, including naming it
       // and its section (and refetching the rail itself).
       if (canAutoCreate) {
         // Always a membership change: `addStop` makes the one itinerary this stop now sits on.
         const { itineraryID } = await addStop(target)
+        addedItineraryID = itineraryID
         onSaved?.()
         trackAddedStop([itineraryID])
       } else {
         const changes = await applySelection({ target, initial, selected, memberships })
+        if (changes.added.length === 1 && changes.removed.length === 0) {
+          addedItineraryID = changes.added[0]
+        }
 
         if (changes.added.length > 0 || changes.removed.length > 0) {
           onSaved?.()
@@ -243,7 +250,21 @@ const Sheet: React.FC<Props> = ({
         }
       }
 
-      toast.show("Changes Saved", "bottom")
+      const addedItineraryCitySlug =
+        fetchedItineraries.find((itinerary) => itinerary.internalID === addedItineraryID)
+          ?.citySlug ?? citySlug
+
+      if (addedItineraryID && addedItineraryCitySlug) {
+        toast.show("Added to your Itinerary", "bottom", {
+          backgroundColor: "green100",
+          cta: "View Itinerary",
+          onPress: () =>
+            navigate(`/city-guide/${addedItineraryCitySlug}/itinerary/${addedItineraryID}`),
+          hideOnPress: true,
+        })
+      } else {
+        toast.show("Changes Saved", "bottom", { backgroundColor: "green100" })
+      }
       onClose()
     } catch {
       // Left open on failure: dismissing would claim the change stuck.
@@ -493,6 +514,7 @@ const Query = graphql`
       itinerariesConnection(citySlug: $citySlug, first: $first) {
         edges {
           node {
+            citySlug
             internalID
             title
             isCurated

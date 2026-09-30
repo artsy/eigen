@@ -1,11 +1,17 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { AddToItinerarySheet } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItinerarySheet"
+import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { MockPayloadGenerator } from "relay-test-utils"
+
+const mockShowToast = jest.fn()
+jest.mock("app/Components/Toast/toastHook", () => ({
+  useToast: () => ({ show: mockShowToast }),
+}))
 
 // The bottom-sheet mock does not mount its footer host. Render portal children
 // inline here so these tests can exercise the Done button's mutation behavior.
@@ -18,6 +24,7 @@ jest.mock("@gorhom/portal", () => ({
 const itinerary = (internalID: string, title: string) => ({
   internalID,
   title,
+  citySlug: "london-united-kingdom",
   isCurated: false,
   stopsCount: 0,
   heroImage: null,
@@ -271,6 +278,36 @@ describe("AddToItinerarySheet", () => {
   })
 
   describe("Done", () => {
+    it("keeps Changes Saved green when adding to multiple itineraries", async () => {
+      const view = renderWithRelay(
+        withItineraries([itinerary("a", "First"), itinerary("b", "Second")]),
+        props
+      )
+      await screen.findByText("Second")
+      screen.getAllByTestId("add-to-itinerary-row").forEach((row) => fireEvent.press(row))
+      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+      for (const id of ["a", "b"]) {
+        await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection(id))
+        await resolveNext(view, "useApplyItinerarySelectionAddMutation", {
+          Mutation: () => ({
+            createItineraryStop: {
+              responseOrError: {
+                __typename: "ItineraryStopMutationSuccess",
+                itineraryStop: { internalID: `stop-${id}` },
+              },
+            },
+          }),
+        })
+      }
+
+      await waitFor(() =>
+        expect(mockShowToast).toHaveBeenCalledWith("Changes Saved", "bottom", {
+          backgroundColor: "green100",
+        })
+      )
+    })
+
     // The listing serializes at :short, which has no sections, so the ticked itinerary's own
     // are read through Query.itinerary — the same record the itinerary screen renders from.
     it("adds a stop to a newly ticked itinerary and nothing to an untouched one", async () => {
@@ -440,6 +477,20 @@ describe("AddToItinerarySheet", () => {
           })
         )
       )
+
+      await waitFor(() =>
+        expect(mockShowToast).toHaveBeenCalledWith(
+          "Added to your Itinerary",
+          "bottom",
+          expect.objectContaining({
+            backgroundColor: "green100",
+            cta: "View Itinerary",
+            hideOnPress: true,
+          })
+        )
+      )
+      mockShowToast.mock.calls.at(-1)?.[2].onPress()
+      expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/itinerary/b")
     })
 
     // Ticking several rows still lands on all of them in a single Done tap — one event with
@@ -562,6 +613,17 @@ describe("AddToItinerarySheet", () => {
           })
         )
       )
+      await waitFor(() =>
+        expect(mockShowToast).toHaveBeenCalledWith(
+          "Added to your Itinerary",
+          "bottom",
+          expect.objectContaining({ backgroundColor: "green100", cta: "View Itinerary" })
+        )
+      )
+      mockShowToast.mock.calls.at(-1)?.[2].onPress()
+      expect(navigate).toHaveBeenCalledWith(
+        "/city-guide/london-united-kingdom/itinerary/auto-created"
+      )
     })
 
     it("fires nothing when no tick changed", async () => {
@@ -579,6 +641,9 @@ describe("AddToItinerarySheet", () => {
 
       await waitFor(() => expect(props.onClose).toHaveBeenCalled())
       expect(view.env.mock.getAllOperations()).toHaveLength(0)
+      expect(mockShowToast).toHaveBeenCalledWith("Changes Saved", "bottom", {
+        backgroundColor: "green100",
+      })
     })
   })
 
