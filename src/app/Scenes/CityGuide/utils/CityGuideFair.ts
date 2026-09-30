@@ -16,6 +16,8 @@ export const cityGuideFairFragment = graphql`
       partners
     }
     location {
+      name
+      city
       address
       cityGuideNeighborhood {
         slug

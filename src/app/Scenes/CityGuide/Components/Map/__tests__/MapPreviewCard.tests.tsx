@@ -4,6 +4,7 @@ import { MapPlace } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsT
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { Text, TouchableOpacity } from "react-native"
 
 const place = (overrides: Partial<MapPlace> = {}): MapPlace => ({
   id: "place-1",
@@ -24,6 +25,34 @@ describe("MapPreviewCard", () => {
     fireEvent.press(screen.getByText("Frieze London"))
 
     expect(navigate).toHaveBeenCalledWith("/fair/frieze-london-2026")
+  })
+
+  it("uses StopCard even when a place only supplies a title", () => {
+    renderWithWrappers(<MapPreviewCard place={place()} citySlug="london-united-kingdom" />)
+
+    expect(screen.getByTestId("stop-card")).toBeOnTheScreen()
+  })
+
+  it("keeps saving separate from card navigation and tracking", () => {
+    const save = jest.fn()
+    renderWithWrappers(
+      <MapPreviewCard
+        place={place({
+          saveControl: (
+            <TouchableOpacity accessibilityRole="button" onPress={save}>
+              <Text>Save</Text>
+            </TouchableOpacity>
+          ),
+        })}
+        citySlug="london-united-kingdom"
+      />
+    )
+
+    fireEvent.press(screen.getByText("Save"))
+
+    expect(save).toHaveBeenCalledTimes(1)
+    expect(navigate).not.toHaveBeenCalled()
+    expect(mockTrackEvent).not.toHaveBeenCalled()
   })
 
   it("tracks the tap when the card will navigate", () => {

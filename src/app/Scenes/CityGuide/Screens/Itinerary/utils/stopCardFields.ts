@@ -8,7 +8,7 @@ import {
   ITINERARY_STOP_CATEGORY_LABELS,
   ItineraryStop,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
-import { Show } from "app/Scenes/CityGuide/utils/types"
+import { Fair, Show } from "app/Scenes/CityGuide/utils/types"
 import { DateTime } from "luxon"
 
 const MUSEUM_EMOJI = "🏛"
@@ -220,4 +220,13 @@ export const showCardFields = (show: Show): StopCardFields => ({
   hours: show.exhibition_period ?? undefined,
   admission: admissionLabel(show.isFreeAdmission),
   href: show.href ?? undefined,
+})
+
+/** A fair preview uses its venue and running dates, as an itinerary stop does. */
+export const fairCardFields = (fair: Fair): StopCardFields => ({
+  kind: "fair",
+  title: fair.name ?? "",
+  subtitle: placeLine(fair.location),
+  hours: fair.exhibition_period ?? undefined,
+  href: `/fair/${fair.slug}`,
 })
