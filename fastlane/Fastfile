@@ -625,6 +625,7 @@ lane :deploy_to_expo_updates do |options|
   description = options[:description]
   rollout_percentage = options[:rollout_percentage]
   platform = options[:platform]
+  preview = options[:preview].to_s == 'true'
 
   # important! this must match the release version specified
   # in Eigen in order for sourcemaps to work correctly
@@ -661,11 +662,12 @@ lane :deploy_to_expo_updates do |options|
     ENV['SENTRY_RELEASE'] = "#{p}-#{release_name_base}"
     puts "🔧 Uploading sourcemaps to Sentry with release: #{p}-#{release_name_base}"
     sh("cd .. && npx sentry-expo-upload-sourcemaps dist/_expo/static/js/#{p}")
-    tag_and_push(tag: "#{p}-#{release_name_base}")
+    tag_and_push(tag: "#{p}-#{release_name_base}") unless preview
   end
 
   puts "🚀 Deploying to #{deployment_name} with description '#{description}' for platform #{platform}"
   puts "🎯 Rollout: #{rollout_percentage}%" if rollout_percentage
+  puts "🏷️ Preview mode: skipped git tagging" if preview
 end
 
 def set_expo_release_values(deployment_name)
