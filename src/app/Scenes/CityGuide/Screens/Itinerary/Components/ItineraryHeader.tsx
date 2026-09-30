@@ -27,6 +27,11 @@ export const ItineraryHeader: React.FC<Props> = ({
   const heroImage = itinerary.heroImage
   const localCover = useItineraryLocalCover(itinerary.internalID, localCoverRefreshKey)
   const heroUrl = localCover?.path ?? heroImage?.url
+  const personalLabel = itinerary.isMine
+    ? "Your Itinerary"
+    : itinerary.authorName?.trim()
+      ? `Created by ${itinerary.authorName.trim()}`
+      : "Shared Itinerary"
 
   return (
     <Flex>
@@ -51,11 +56,10 @@ export const ItineraryHeader: React.FC<Props> = ({
           />
 
           <Flex p={2}>
-            {/* The designs label your own itinerary above its name. A curated guide has its
-                byline instead, below. */}
+            {/* Personal itineraries identify their owner; curated guides have a byline below. */}
             {!itinerary.isCurated && (
               <Text variant="xs" color="white">
-                Your Itinerary
+                {personalLabel}
               </Text>
             )}
 
@@ -71,7 +75,7 @@ export const ItineraryHeader: React.FC<Props> = ({
         </Flex>
       ) : (
         <Flex testID="itinerary-header-no-image" px={2} pb={2} style={{ paddingTop: topInset }}>
-          {!itinerary.isCurated && <Text variant="xs">Your Itinerary</Text>}
+          {!itinerary.isCurated && <Text variant="xs">{personalLabel}</Text>}
 
           <Text variant="xl">{itinerary.title}</Text>
           {!!itinerary.subtitle && <Text variant="sm">{itinerary.subtitle}</Text>}
@@ -100,6 +104,7 @@ const fragment = graphql`
   fragment ItineraryHeader_itinerary on Itinerary {
     internalID
     isCurated
+    isMine
     title
     subtitle
     description

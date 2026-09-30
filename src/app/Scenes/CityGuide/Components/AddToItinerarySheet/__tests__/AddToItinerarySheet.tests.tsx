@@ -1,23 +1,47 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { BottomSheetModal } from "@gorhom/bottom-sheet"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { AddToItinerarySheet } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItinerarySheet"
+import { navigate } from "app/system/navigation/navigate"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { MockPayloadGenerator } from "relay-test-utils"
 
-// The bottom-sheet mock does not mount its footer host. Render portal children
-// inline here so these tests can exercise the Done button's mutation behavior.
-jest.mock("@gorhom/portal", () => ({
-  ...jest.requireActual("@gorhom/portal"),
-  Portal: ({ children }: { children: React.ReactNode }) => children,
+let mockContentGeneration = 0
+const mockShowToast = jest.fn()
+jest.mock("app/Components/Toast/toastHook", () => ({
+  useToast: () => ({ show: mockShowToast }),
 }))
+
+// Simulate a modal content remount while the context provider keeps its session state.
+jest.mock("@gorhom/bottom-sheet", () => {
+  const { View } = require("react-native")
+  const mock = require("@gorhom/bottom-sheet/mock")
+  class BottomSheetModal extends mock.BottomSheetModal {
+    render() {
+      return <View key={mockContentGeneration}>{super.render()}</View>
+    }
+  }
+  return {
+    ...mock,
+    SCROLLABLE_TYPE: {},
+    createBottomSheetScrollableComponent: jest.fn().mockReturnValue(View),
+    BottomSheetModal,
+    useBottomSheetInternal: () => ({
+      animatedLayoutState: { get: () => ({ containerHeight: 800, handleHeight: 24 }) },
+      animatedPosition: { get: () => 400 },
+    }),
+  }
+})
 
 /** What the listing knows about an itinerary: no sections, those come from a second read. */
 const itinerary = (internalID: string, title: string) => ({
   internalID,
   title,
+  citySlug: "london-united-kingdom",
   isCurated: false,
   stopsCount: 0,
   heroImage: null,
@@ -40,11 +64,15 @@ describe("AddToItinerarySheet", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    mockContentGeneration = 0
   })
 
   const withItineraries = (nodes: object[]) => ({
     Query: () => ({ sourceShow: null, sourceFair: null }),
-    Me: () => ({ itinerariesConnection: { edges: nodes.map((node) => ({ node })) } }),
+    Me: () => ({
+      name: "Alex Collector",
+      itinerariesConnection: { edges: nodes.map((node) => ({ node })) },
+    }),
   })
 
   /** The show the sheet was opened for already sits on these itineraries, as these stops. */
@@ -79,6 +107,60 @@ describe("AddToItinerarySheet", () => {
     expect(screen.getByTestId("add-to-itinerary-skeleton")).toBeOnTheScreen()
     expect(screen.getByTestId("add-to-itinerary-done")).toBeDisabled()
     expect(screen.queryByText(/selected$/)).toBeNull()
+  })
+
+  it("keeps the same Done button through loading and quick selection changes", async () => {
+    renderWithWrappers(<AddToItinerarySheet {...props} />)
+    const button = screen.getByTestId("add-to-itinerary-done")
+    expect(button).toBeDisabled()
+
+    act(() =>
+      getMockRelayEnvironment().mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, withItineraries([itinerary("a", "My trip")]))
+      )
+    )
+
+    const row = await screen.findByTestId("add-to-itinerary-row")
+    expect(screen.getByTestId("add-to-itinerary-done")).toBe(button)
+    fireEvent.press(row)
+    expect(button).toBeEnabled()
+    expect(screen.getByTestId("add-to-itinerary-done")).toBe(button)
+    fireEvent.press(row)
+    expect(button).toBeDisabled()
+    expect(screen.getByTestId("add-to-itinerary-done")).toBe(button)
+  })
+
+  it("preserves a quick selection when the modal remounts its content", async () => {
+    const view = renderWithWrappers(<AddToItinerarySheet {...props} />)
+    const environment = getMockRelayEnvironment()
+    const resolveItineraries = () => {
+      environment.mock.getAllOperations().forEach((operation) => {
+        environment.mock.resolve(
+          operation,
+          MockPayloadGenerator.generate(operation, withItineraries([itinerary("a", "My trip")]))
+        )
+      })
+    }
+    act(resolveItineraries)
+
+    fireEvent.press(await screen.findByTestId("add-to-itinerary-row"))
+    expect(screen.getByTestId("add-to-itinerary-done")).toBeEnabled()
+
+    // Remount only the modal content, keeping the surrounding sheet provider mounted.
+    act(() => {
+      mockContentGeneration += 1
+      view.UNSAFE_getByType(BottomSheetModal).instance.forceUpdate()
+    })
+    expect(screen.getByTestId("add-to-itinerary-done")).toBeEnabled()
+    act(resolveItineraries)
+
+    expect(await screen.findByText("1 selected")).toBeOnTheScreen()
+    expect(screen.getByTestId("add-to-itinerary-row")).toBeChecked()
+    expect(screen.getByTestId("add-to-itinerary-done")).toBeEnabled()
+
+    fireEvent.press(screen.getByTestId("add-to-itinerary-row"))
+    expect(screen.getByText("0 selected")).toBeOnTheScreen()
+    expect(screen.getByTestId("add-to-itinerary-done")).toBeDisabled()
   })
 
   it.each(["SHOW", "FAIR"] as const)(
@@ -268,6 +350,36 @@ describe("AddToItinerarySheet", () => {
   })
 
   describe("Done", () => {
+    it("keeps Changes Saved green when adding to multiple itineraries", async () => {
+      const view = renderWithRelay(
+        withItineraries([itinerary("a", "First"), itinerary("b", "Second")]),
+        props
+      )
+      await screen.findByText("Second")
+      screen.getAllByTestId("add-to-itinerary-row").forEach((row) => fireEvent.press(row))
+      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+      for (const id of ["a", "b"]) {
+        await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection(id))
+        await resolveNext(view, "useApplyItinerarySelectionAddMutation", {
+          Mutation: () => ({
+            createItineraryStop: {
+              responseOrError: {
+                __typename: "ItineraryStopMutationSuccess",
+                itineraryStop: { internalID: `stop-${id}` },
+              },
+            },
+          }),
+        })
+      }
+
+      await waitFor(() =>
+        expect(mockShowToast).toHaveBeenCalledWith("Changes Saved", "bottom", {
+          backgroundColor: "green100",
+        })
+      )
+    })
+
     // The listing serializes at :short, which has no sections, so the ticked itinerary's own
     // are read through Query.itinerary — the same record the itinerary screen renders from.
     it("adds a stop to a newly ticked itinerary and nothing to an untouched one", async () => {
@@ -437,6 +549,20 @@ describe("AddToItinerarySheet", () => {
           })
         )
       )
+
+      await waitFor(() =>
+        expect(mockShowToast).toHaveBeenCalledWith(
+          "Added to your Itinerary",
+          "bottom",
+          expect.objectContaining({
+            backgroundColor: "green100",
+            cta: "View Itinerary",
+            hideOnPress: true,
+          })
+        )
+      )
+      mockShowToast.mock.calls.at(-1)?.[2].onPress()
+      expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/itinerary/b")
     })
 
     // Ticking several rows still lands on all of them in a single Done tap — one event with
@@ -559,6 +685,17 @@ describe("AddToItinerarySheet", () => {
           })
         )
       )
+      await waitFor(() =>
+        expect(mockShowToast).toHaveBeenCalledWith(
+          "Added to your Itinerary",
+          "bottom",
+          expect.objectContaining({ backgroundColor: "green100", cta: "View Itinerary" })
+        )
+      )
+      mockShowToast.mock.calls.at(-1)?.[2].onPress()
+      expect(navigate).toHaveBeenCalledWith(
+        "/city-guide/london-united-kingdom/itinerary/auto-created"
+      )
     })
 
     it("fires nothing when no tick changed", async () => {
@@ -576,6 +713,9 @@ describe("AddToItinerarySheet", () => {
 
       await waitFor(() => expect(props.onClose).toHaveBeenCalled())
       expect(view.env.mock.getAllOperations()).toHaveLength(0)
+      expect(mockShowToast).toHaveBeenCalledWith("Changes Saved", "bottom", {
+        backgroundColor: "green100",
+      })
     })
   })
 
@@ -731,6 +871,7 @@ describe("AddToItinerarySheet", () => {
       expect(operation.request.variables.input).toEqual({
         citySlug: "london-united-kingdom",
         title: "Frieze week",
+        authorName: "Alex Collector",
       })
     })
 

@@ -377,6 +377,36 @@ describe("ItineraryScreen", () => {
     expect(screen.queryByTestId("itinerary-share")).not.toBeOnTheScreen()
   })
 
+  it.each([
+    {
+      heroImage: ITINERARY.heroImage,
+      authorName: "Alex Collector",
+      label: "Created by Alex Collector",
+    },
+    { heroImage: null, authorName: "Alex Collector", label: "Created by Alex Collector" },
+    { heroImage: ITINERARY.heroImage, authorName: null, label: "Shared Itinerary" },
+    { heroImage: null, authorName: " ", label: "Shared Itinerary" },
+  ])(
+    "identifies a shared itinerary as $label with hero $heroImage",
+    async ({ heroImage, authorName, label }) => {
+      renderWithRelay(
+        {
+          Itinerary: () => ({
+            ...ITINERARY,
+            isCurated: false,
+            isMine: false,
+            heroImage,
+            authorName,
+          }),
+        },
+        { ...props, shareToken: "tok" }
+      )
+
+      expect(await screen.findByText(label)).toBeOnTheScreen()
+      expect(screen.queryByText("Your Itinerary")).not.toBeOnTheScreen()
+    }
+  )
+
   // `ItineraryStop.image` is the curator's uploaded one, and the app sends none when it
   // creates a stop, so without a fallback every entity-backed stop rendered an empty box.
   describe("a stop's image", () => {

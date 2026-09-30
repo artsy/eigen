@@ -4,6 +4,7 @@ import { StopCardFields } from "app/Scenes/CityGuide/Screens/Itinerary/utils/sto
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useState } from "react"
+import { Text as RNText } from "react-native"
 
 /** The designs' card image: taller than square, at 60 wide. Flush with the card's own corners. */
 const IMAGE_WIDTH = 60
@@ -125,41 +126,46 @@ export const StopCard: React.FC<Props> = ({
             }}
           >
             {!!card.eventKind && <TypeEyebrow>{card.eventKind}</TypeEyebrow>}
-
-            <Text variant="sm-display" numberOfLines={1} ellipsizeMode="tail" fontWeight="500">
-              {card.title}
-            </Text>
+            <RNText numberOfLines={1} ellipsizeMode="tail">
+              <Text variant="sm-display" fontWeight="500">
+                {card.title}
+              </Text>
+            </RNText>
 
             {!!card.subtitle && (
-              <Text variant="xs" color="mono60" numberOfLines={1} ellipsizeMode="tail">
-                {card.subtitle}
-              </Text>
+              <RNText numberOfLines={1} ellipsizeMode="tail">
+                <Text variant="xs" color="mono60">
+                  {card.subtitle}
+                </Text>
+              </RNText>
             )}
 
             {(!!card.hours || !!card.admission) && (
               <Flex flexDirection="row" alignItems="center" gap={0.5}>
-                {!!card.hours && (
-                  <Text variant="xs" color="mono60">
-                    {card.hours}
-                  </Text>
-                )}
+                <RNText numberOfLines={1} ellipsizeMode="tail">
+                  {!!card.hours && (
+                    <Text variant="xs" color="mono60">
+                      {card.hours}
+                    </Text>
+                  )}
 
-                {/* The designs separate the two with a 4pt dot, shown only when both are there. */}
-                {!!card.hours && !!card.admission && (
-                  <Flex
-                    testID="stop-card-meta-dot"
-                    width={DOT_SIZE}
-                    height={DOT_SIZE}
-                    borderRadius={DOT_SIZE / 2}
-                    backgroundColor="mono60"
-                  />
-                )}
+                  {/* The designs separate the two with a 4pt dot, shown only when both are there. */}
+                  {!!card.hours && !!card.admission && (
+                    <Flex
+                      testID="stop-card-meta-dot"
+                      width={DOT_SIZE}
+                      height={DOT_SIZE}
+                      borderRadius={DOT_SIZE / 2}
+                      backgroundColor="mono60"
+                    />
+                  )}
 
-                {!!card.admission && (
-                  <Text variant="xs" color="mono60">
-                    {card.admission}
-                  </Text>
-                )}
+                  {!!card.admission && (
+                    <Text variant="xs" color="mono60">
+                      {card.admission}
+                    </Text>
+                  )}
+                </RNText>
               </Flex>
             )}
           </Flex>

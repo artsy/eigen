@@ -213,7 +213,13 @@ export const useCityItineraryStops = ({
         const created = await mutate<useCityItineraryStopsCreateItineraryMutation>(
           environment,
           createItineraryMutation,
-          { input: { citySlug, title: defaultItineraryTitle(cityName) } }
+          {
+            input: {
+              citySlug,
+              title: defaultItineraryTitle(cityName),
+              authorName: data?.me?.name?.trim() || undefined,
+            },
+          }
         )
         const response = created.createItinerary?.responseOrError
 
@@ -355,6 +361,7 @@ export const useCityItineraryStops = ({
 const lookupQuery = graphql`
   query useCityItineraryStopsLookupQuery($citySlug: String!) {
     me {
+      name
       itinerariesConnection(citySlug: $citySlug, first: 1) {
         edges {
           node {

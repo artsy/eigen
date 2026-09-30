@@ -9,13 +9,22 @@ import {
   Text,
   useSpace,
 } from "@artsy/palette-mobile"
-import { BottomSheetFooter, BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet"
-import { Portal, PortalHost } from "@gorhom/portal"
+import {
+  BottomSheetScrollView,
+  BottomSheetView,
+  useBottomSheetInternal,
+} from "@gorhom/bottom-sheet"
 import { AddToItinerarySheetCreateMutation } from "__generated__/AddToItinerarySheetCreateMutation.graphql"
 import { AddToItinerarySheetQuery } from "__generated__/AddToItinerarySheetQuery.graphql"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { useToast } from "app/Components/Toast/toastHook"
+import {
+  AddToItinerarySheetContext,
+  SelectionState,
+  SheetActions,
+  useSheetContext,
+} from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItinerarySheetContext"
 import { AddToItineraryRow } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/components/AddToItineraryRow"
 import { CreateItineraryForm } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/components/CreateItineraryForm"
 import { useApplyItinerarySelection } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/useApplyItinerarySelection"
@@ -30,11 +39,16 @@ import {
 } from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
 import { refetchCityGuideItinerariesRail } from "app/Scenes/CityGuide/utils/CityGuideItinerariesRailQuery"
 import { itineraryStopsCount } from "app/Scenes/CityGuide/utils/itineraryStopsCount"
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { times } from "lodash"
-import { useState } from "react"
+import { useCallback, useLayoutEffect, useMemo, useState } from "react"
+import { Platform } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
+import Animated, { useAnimatedStyle } from "react-native-reanimated"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -42,18 +56,26 @@ import { useTracking } from "react-tracking"
 const PAGE_SIZE = 20
 const ADD_ICON_SIZE = 16
 const SNAP_POINTS = ["50%", "95%"]
-/**
- * `BottomSheetFooter` only gets the animated value it needs when rendered through
- * `BottomSheetModal`'s own `footerComponent` prop, which is outside `Sheet`'s own (suspended,
- * data-fetching) content — so the Done button, which needs `Sheet`'s state, can't be built
- * there directly. Instead `Sheet` portals the actual button into a host sitting inside that
- * footer, so it renders in the right place while still being driven by `Sheet`'s own state.
- */
-const FOOTER_PORTAL_HOST = "add-to-itinerary-footer"
-/** Shared by the loading and loaded footers, so the host updates one node instead of swapping
- *  two, which would remount the button. */
-const FOOTER_PORTAL_NAME = "add-to-itinerary-done"
 const SKELETON_ROWS = 3
+
+interface SheetSession {
+  key: string | null
+  selection: SelectionState | null
+  isSaving: boolean
+}
+
+/** Fit the visible snap point, so the provider's button stays at the bottom of the sheet. */
+const SheetContent: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const { animatedLayoutState, animatedPosition } = useBottomSheetInternal()
+  const style = useAnimatedStyle(() => {
+    const { containerHeight, handleHeight } = animatedLayoutState.get()
+    return {
+      height: Math.max(0, containerHeight - animatedPosition.get() - Math.max(0, handleHeight)),
+    }
+  })
+
+  return <Animated.View style={style}>{children}</Animated.View>
+}
 
 /** An Artsy entity or a custom stop — whatever the sheet was opened for. */
 export type AddToItineraryTarget = StopTarget & {
@@ -90,6 +112,7 @@ const Sheet: React.FC<Props> = ({
   contextScreenOwnerSlug,
   ...target
 }) => {
+  const { selection: savedSelection, setSelection, actions } = useSheetContext()
   const toast = useToast()
   const environment = useRelayEnvironment()
   const applySelection = useApplyItinerarySelection()
@@ -128,35 +151,38 @@ const Sheet: React.FC<Props> = ({
 
   // Which rows open ticked: the itineraries the entity's memberships (or, failing those, the
   // stop it came from) say already hold it, kept to the ones actually listed.
-  const [initial] = useState(() => {
-    const holdingIDs =
-      memberships?.map(({ itineraryID }) => itineraryID) ??
-      myItineraries?.map(({ internalID }) => internalID) ??
-      []
-
-    return holdingIDs.filter((id) =>
-      fetchedItineraries.some((itinerary) => itinerary.internalID === id)
-    )
-  })
-  const [selected, setSelected] = useState<string[]>(initial)
+  const holdingIDs =
+    memberships?.map(({ itineraryID }) => itineraryID) ??
+    myItineraries?.map(({ internalID }) => internalID) ??
+    []
+  const initial =
+    savedSelection?.initial ??
+    holdingIDs.filter((id) => fetchedItineraries.some((itinerary) => itinerary.internalID === id))
+  const selected = savedSelection?.selected ?? initial
   const [isCreating, setIsCreating] = useState(false)
-  const [isApplying, setIsApplying] = useState(false)
   const [isNaming, setIsNaming] = useState(false)
 
   const space = useSpace()
   // `create` mutates straight through the store, not through this screen's own
   // `useLazyLoadQuery`, so the itinerary it makes has to be added here by hand — otherwise it
   // neither shows in the list nor is findable by `applySelection` when Done is pressed.
-  const [createdItineraries, setCreatedItineraries] = useState<PayloadItinerary[]>([])
+  const createdItineraries = savedSelection?.createdItineraries ?? []
   const itineraries: PayloadItinerary[] = [...fetchedItineraries, ...createdItineraries]
   // A user with no itineraries has nothing to tick, so Done means "make me one" instead —
   // still something to do, even with nothing selected.
   const canAutoCreate = !itineraries.length && canCreate
 
-  const toggle = (id: string) =>
-    setSelected((current) =>
-      current.includes(id) ? current.filter((each) => each !== id) : [...current, id]
-    )
+  const toggle = (id: string) => {
+    setSelection((saved) => {
+      const current = saved ?? { initial, selected, createdItineraries, canAutoCreate }
+      return {
+        ...current,
+        selected: current.selected.includes(id)
+          ? current.selected.filter((each) => each !== id)
+          : [...current.selected, id],
+      }
+    })
+  }
 
   const create = async (title: string) => {
     setIsCreating(true)
@@ -169,7 +195,13 @@ const Sheet: React.FC<Props> = ({
         environment,
         CreateMutation,
         // Guarded by `canCreate`, which is what gates this whole view.
-        { input: { citySlug: citySlug as string, title } }
+        {
+          input: {
+            citySlug: citySlug as string,
+            title,
+            authorName: data.me?.name?.trim() || undefined,
+          },
+        }
       )
       const response = created.createItinerary?.responseOrError
       const internalID =
@@ -181,12 +213,19 @@ const Sheet: React.FC<Props> = ({
 
       // A brand new itinerary has no stops and no section yet — `applySelection` creates the
       // section itself when it finds none, same as it does for any other itinerary.
-      setCreatedItineraries((current) => [
-        ...current,
-        { internalID, title, stopsCount: 0, heroImage: null },
-      ])
       // Ticked straight away, so Done adds the stop to what you just made.
-      setSelected((current) => [...current, internalID])
+      setSelection((saved) => {
+        const current = saved ?? { initial, selected, createdItineraries, canAutoCreate }
+        return {
+          ...current,
+          canAutoCreate: false,
+          createdItineraries: [
+            ...current.createdItineraries,
+            { internalID, title, stopsCount: 0, heroImage: null },
+          ],
+          selected: [...current.selected, internalID],
+        }
+      })
       await keyboardHidden
       setIsNaming(false)
     } catch {
@@ -211,18 +250,21 @@ const Sheet: React.FC<Props> = ({
   }
 
   const done = async () => {
-    setIsApplying(true)
-
     try {
+      let addedItineraryID: string | undefined
       // Done means "make me one" — which is what `addStop` already does, including naming it
       // and its section (and refetching the rail itself).
       if (canAutoCreate) {
         // Always a membership change: `addStop` makes the one itinerary this stop now sits on.
         const { itineraryID } = await addStop(target)
+        addedItineraryID = itineraryID
         onSaved?.()
         trackAddedStop([itineraryID])
       } else {
         const changes = await applySelection({ target, initial, selected, memberships })
+        if (changes.added.length === 1 && changes.removed.length === 0) {
+          addedItineraryID = changes.added[0]
+        }
 
         if (changes.added.length > 0 || changes.removed.length > 0) {
           onSaved?.()
@@ -237,15 +279,34 @@ const Sheet: React.FC<Props> = ({
         }
       }
 
-      toast.show("Changes Saved", "bottom")
+      const addedItineraryCitySlug =
+        fetchedItineraries.find((itinerary) => itinerary.internalID === addedItineraryID)
+          ?.citySlug ?? citySlug
+
+      if (addedItineraryID && addedItineraryCitySlug) {
+        toast.show("Added to your Itinerary", "bottom", {
+          backgroundColor: "green100",
+          cta: "View Itinerary",
+          onPress: () =>
+            navigate(`/city-guide/${addedItineraryCitySlug}/itinerary/${addedItineraryID}`),
+          hideOnPress: true,
+        })
+      } else {
+        toast.show("Changes Saved", "bottom", { backgroundColor: "green100" })
+      }
       onClose()
     } catch {
       // Left open on failure: dismissing would claim the change stuck.
       toast.show("Something went wrong. Please try again.", "bottom")
-    } finally {
-      setIsApplying(false)
     }
   }
+
+  useLayoutEffect(() => {
+    if (!savedSelection) {
+      setSelection((current) => current ?? { initial, selected, createdItineraries, canAutoCreate })
+    }
+    actions.done = done
+  })
 
   return (
     <>
@@ -286,20 +347,6 @@ const Sheet: React.FC<Props> = ({
             />
           ))}
         </BottomSheetScrollView>
-
-        <Portal name={FOOTER_PORTAL_NAME} hostName={FOOTER_PORTAL_HOST}>
-          <Flex p={2} backgroundColor="mono0">
-            <Button
-              testID="add-to-itinerary-done"
-              block
-              loading={isApplying}
-              disabled={!selected.length && !initial.length && !canAutoCreate}
-              onPress={done}
-            >
-              Done
-            </Button>
-          </Flex>
-        </Portal>
       </BottomSheetView>
 
       <AutoHeightBottomSheet
@@ -379,14 +426,6 @@ const LoadingSheet: React.FC<AddToItineraryTarget> = ({ citySlug }) => (
         ))}
       </Flex>
     </Skeleton>
-
-    <Portal name={FOOTER_PORTAL_NAME} hostName={FOOTER_PORTAL_HOST}>
-      <Flex p={2} backgroundColor="mono0">
-        <Button testID="add-to-itinerary-done" block disabled>
-          Done
-        </Button>
-      </Flex>
-    </Portal>
   </BottomSheetView>
 )
 
@@ -406,29 +445,91 @@ export const AddToItinerarySheet: React.FC<{
   target: AddToItineraryTarget | null
   onClose: () => void
   onSaved?: () => void
-}> = ({ target, onClose, onSaved }) => (
-  <AutomountedBottomSheetModal
-    visible={!!target}
-    name="AddToItinerary"
-    snapPoints={SNAP_POINTS}
-    enableDynamicSizing={false}
-    onDismiss={onClose}
-    footerComponent={({ animatedFooterPosition }) => (
-      <BottomSheetFooter animatedFooterPosition={animatedFooterPosition}>
-        <PortalHost name={FOOTER_PORTAL_HOST} />
-      </BottomSheetFooter>
-    )}
-  >
-    {!!target && (
-      <SheetWithSuspense
-        key={sheetTargetKey(target)}
-        {...target}
-        onClose={onClose}
-        onSaved={onSaved}
-      />
-    )}
-  </AutomountedBottomSheetModal>
-)
+}> = ({ target, onClose, onSaved }) => {
+  const { bottom } = useSafeAreaInsets()
+  const targetKey = target ? sheetTargetKey(target) : null
+  const [session, setSession] = useState<SheetSession>({
+    key: targetKey,
+    selection: null,
+    isSaving: false,
+  })
+  // Reset before committing a different target; an effect could erase an early row tap.
+  if (session.key !== targetKey) {
+    setSession({ key: targetKey, selection: null, isSaving: false })
+  }
+  const actions = useMemo<SheetActions>(() => ({ key: targetKey, isSaving: false }), [targetKey])
+  const setSelection = useCallback(
+    (next: (current: SelectionState | null) => SelectionState) => {
+      setSession((current) =>
+        current.key === targetKey ? { ...current, selection: next(current.selection) } : current
+      )
+    },
+    [targetKey]
+  )
+  const done = async () => {
+    if (actions.key !== targetKey || actions.isSaving || !actions.done) return
+    actions.isSaving = true
+    setSession((current) => ({ ...current, isSaving: true }))
+    try {
+      await actions.done()
+    } finally {
+      actions.isSaving = false
+      setSession((current) =>
+        current.key === targetKey ? { ...current, isSaving: false } : current
+      )
+    }
+  }
+  const selection = session.key === targetKey ? session.selection : null
+  const context = useMemo(
+    () => ({ selection, setSelection, actions }),
+    [selection, setSelection, actions]
+  )
+  const disabled =
+    !selection ||
+    (!selection.selected.length && !selection.initial.length && !selection.canAutoCreate)
+
+  return (
+    <AutomountedBottomSheetModal
+      visible={!!target}
+      name="AddToItinerary"
+      snapPoints={SNAP_POINTS}
+      enableDynamicSizing={false}
+      onDismiss={onClose}
+    >
+      <AddToItinerarySheetContext.Provider value={context}>
+        <SheetContent>
+          <Flex flex={1}>
+            {!!target && (
+              <SheetWithSuspense
+                key={sheetTargetKey(target)}
+                {...target}
+                onClose={onClose}
+                onSaved={onSaved}
+              />
+            )}
+          </Flex>
+
+          <Flex
+            backgroundColor="mono0"
+            style={{ paddingBottom: Platform.OS === "android" ? bottom : 0 }}
+          >
+            <Flex p={2}>
+              <Button
+                testID="add-to-itinerary-done"
+                block
+                disabled={disabled}
+                loading={session.isSaving}
+                onPress={done}
+              >
+                Done
+              </Button>
+            </Flex>
+          </Flex>
+        </SheetContent>
+      </AddToItinerarySheetContext.Provider>
+    </AutomountedBottomSheetModal>
+  )
+}
 
 /** What the stop being added points at, for `addedStopToItinerary`'s `context_owner_type`. A
  *  custom stop has no Artsy entity, so it is tracked under its own City Guide owner type
@@ -483,9 +584,11 @@ const Query = graphql`
     }
 
     me {
+      name
       itinerariesConnection(citySlug: $citySlug, first: $first) {
         edges {
           node {
+            citySlug
             internalID
             title
             isCurated

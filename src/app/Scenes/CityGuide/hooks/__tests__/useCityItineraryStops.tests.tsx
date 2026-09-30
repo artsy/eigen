@@ -308,7 +308,7 @@ describe("useCityItineraryStops", () => {
     const promise = result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
 
     await resolveNext("useCityItineraryStopsLookupQuery", {
-      Me: () => ({ itinerariesConnection: { edges: [] } }),
+      Me: () => ({ name: "Alex Collector", itinerariesConnection: { edges: [] } }),
     })
 
     await waitFor(() =>
@@ -321,6 +321,7 @@ describe("useCityItineraryStops", () => {
     expect(env.mock.getMostRecentOperation().request.variables.input).toEqual({
       citySlug: "london-united-kingdom",
       title: defaultItineraryTitle("London"),
+      authorName: "Alex Collector",
     })
 
     env.mock.resolveMostRecentOperation((operation) =>
@@ -425,7 +426,7 @@ describe("useCityItineraryStops", () => {
     const promise = result.current.removeStop({ itemType: "SHOW", itemID: "show-1" })
 
     await resolveNext("useCityItineraryStopsLookupQuery", {
-      Me: () => ({ itinerariesConnection: { edges: [] } }),
+      Me: () => ({ name: "Alex Collector", itinerariesConnection: { edges: [] } }),
     })
 
     await expect(promise).resolves.toBeNull()
