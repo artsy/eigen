@@ -1,6 +1,5 @@
-import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
-import { ProgressiveOnboardingArtsyLens } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingArtsyLens"
+import { ProgressiveOnboardingArtAssistant } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingArtAssistant"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -27,18 +26,12 @@ jest.mock("@react-navigation/native", () => ({
   useIsFocused: () => mockUseIsFocused(),
 }))
 
-describe("ProgressiveOnboardingArtsyLens", () => {
-  const renderTooltip = (
-    isSearchOverlayVisible = false,
-    ownerType: OwnerType.home | OwnerType.search = OwnerType.home
-  ) =>
+describe("ProgressiveOnboardingArtAssistant", () => {
+  const renderTooltip = (isSearchOverlayVisible = false) =>
     renderWithWrappers(
-      <ProgressiveOnboardingArtsyLens
-        isSearchOverlayVisible={isSearchOverlayVisible}
-        ownerType={ownerType}
-      >
-        <Text>Camera</Text>
-      </ProgressiveOnboardingArtsyLens>
+      <ProgressiveOnboardingArtAssistant isSearchOverlayVisible={isSearchOverlayVisible}>
+        <Text>Assistant button</Text>
+      </ProgressiveOnboardingArtAssistant>
     )
 
   beforeEach(() => {
@@ -46,26 +39,23 @@ describe("ProgressiveOnboardingArtsyLens", () => {
     mockUseIsFocused.mockReturnValue(true)
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
-        sessionState: {
-          isReady: true,
-          activePopover: undefined,
-          deferHomeTooltipsThisSession: false,
-        },
+        sessionState: { isReady: true, activePopover: undefined },
         dismissed: [],
       },
     })
   })
 
-  it("shows the Artsy Lens copy and tracks the view", async () => {
+  it("shows the two-line copy with a Beta badge and tracks the view", async () => {
     renderTooltip()
 
-    expect(await screen.findByText("Artsy Lens")).toBeOnTheScreen()
-    expect(screen.getByText("Take a picture of a work to find more like it")).toBeOnTheScreen()
+    expect(await screen.findByText("Art Assistant")).toBeOnTheScreen()
+    expect(screen.getByText("Beta")).toBeOnTheScreen()
+    expect(screen.getByText("Describe what you want and we'll find it")).toBeOnTheScreen()
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tooltipViewed",
-      context_owner_type: "home",
+      context_owner_type: "search",
       context_module: "header",
-      type: "artsy-lens",
+      type: "art-assistant",
     })
     expect(__globalStoreTestUtils__?.getCurrentState().progressiveOnboarding.dismissed).toEqual([])
   })
@@ -73,63 +63,32 @@ describe("ProgressiveOnboardingArtsyLens", () => {
   it("remembers dismissal and does not show the tooltip again", async () => {
     const { unmount } = renderTooltip()
 
-    expect(await screen.findByText("Artsy Lens")).toBeOnTheScreen()
-
-    fireEvent.press(screen.getByText("Dismiss"))
+    fireEvent.press(await screen.findByText("Dismiss"))
 
     expect(__globalStoreTestUtils__?.getCurrentState().progressiveOnboarding.dismissed).toEqual([
-      { key: "artsy-lens", timestamp: expect.any(Number) },
+      { key: "art-assistant", timestamp: expect.any(Number) },
     ])
 
     unmount()
-    renderTooltip(false, OwnerType.search)
-
-    expect(screen.queryByText("Artsy Lens")).not.toBeOnTheScreen()
-  })
-
-  it("can first appear on Search and tracks Search as its context", async () => {
-    renderTooltip(false, OwnerType.search)
-
-    expect(await screen.findByText("Artsy Lens")).toBeOnTheScreen()
-    expect(mockTrackEvent).toHaveBeenCalledWith({
-      action: "tooltipViewed",
-      context_owner_type: "search",
-      context_module: "header",
-      type: "artsy-lens",
-    })
-  })
-
-  it("waits until Home is focused", () => {
-    mockUseIsFocused.mockReturnValue(false)
     renderTooltip()
 
-    expect(screen.queryByText("Artsy Lens")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Art Assistant")).not.toBeOnTheScreen()
   })
 
-  it("waits when Home tooltips are deferred for this session", () => {
+  it("waits while another popover is active", () => {
     __globalStoreTestUtils__?.injectState({
-      progressiveOnboarding: { sessionState: { deferHomeTooltipsThisSession: true } },
+      progressiveOnboarding: { sessionState: { isReady: true, activePopover: "other" } },
     })
 
     renderTooltip()
 
-    expect(screen.queryByText("Artsy Lens")).not.toBeOnTheScreen()
-  })
-
-  it("can still appear on Search when Home tooltips are deferred", async () => {
-    __globalStoreTestUtils__?.injectState({
-      progressiveOnboarding: { sessionState: { deferHomeTooltipsThisSession: true } },
-    })
-
-    renderTooltip(false, OwnerType.search)
-
-    expect(await screen.findByText("Artsy Lens")).toBeOnTheScreen()
+    expect(screen.queryByText("Art Assistant")).not.toBeOnTheScreen()
   })
 
   it("stays hidden behind the search overlay", () => {
     renderTooltip(true)
 
-    expect(screen.queryByText("Artsy Lens")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Art Assistant")).not.toBeOnTheScreen()
   })
 })
 
