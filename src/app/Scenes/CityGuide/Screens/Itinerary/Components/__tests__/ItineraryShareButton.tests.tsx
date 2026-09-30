@@ -24,7 +24,7 @@ describe("ItineraryShareButton", () => {
     jest.clearAllMocks()
   })
 
-  it("renders nothing for a curated itinerary", async () => {
+  it("shares a curated guide", async () => {
     renderWithRelay({
       Itinerary: () => ({
         internalID: "guide-1",
@@ -32,13 +32,23 @@ describe("ItineraryShareButton", () => {
         citySlug: "london-united-kingdom",
         title: "Chill Vibes Only",
         isCurated: true,
+        isMine: false,
         shareToken: null,
       }),
     })
 
+    fireEvent.press(await screen.findByTestId("itinerary-share"))
+
     await new Promise((resolve) => setTimeout(resolve, 0))
 
-    expect(screen.queryByTestId("itinerary-share")).not.toBeOnTheScreen()
+    expect(RNShare.open).toHaveBeenCalledWith(
+      expect.objectContaining({
+        title: "Chill Vibes Only",
+        message: expect.stringContaining(
+          "https://staging.artsy.net/city-guide/london-united-kingdom/itinerary/chill-vibes-only"
+        ),
+      })
+    )
   })
 
   it("renders nothing for someone else's personal itinerary", async () => {
