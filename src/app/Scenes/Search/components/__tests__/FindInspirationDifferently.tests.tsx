@@ -58,12 +58,27 @@ describe("FindInspirationDifferently", () => {
     expect(screen.queryByText("Artsy Lens")).not.toBeOnTheScreen()
   })
 
+  it("exposes the card description and beta status to screen readers", () => {
+    jest.mocked(useEnableArtsyLens).mockReturnValue(true)
+
+    renderWithWrappers(<FindInspirationDifferently />)
+
+    expect(screen.getByRole("button", { name: "Artsy Lens, beta" })).toHaveProp(
+      "accessibilityHint",
+      "Find matching art with just a photo"
+    )
+    expect(screen.getByRole("button", { name: "Discover Daily" })).toHaveProp(
+      "accessibilityHint",
+      "Find art you love, one swipe at a time"
+    )
+  })
+
   it("opens the new City Guide when the itineraries flag is on", () => {
     jest.mocked(useFeatureFlag).mockReturnValue(true)
 
     renderWithWrappers(<FindInspirationDifferently />)
 
-    fireEvent.press(screen.getByRole("button", { name: "City Guide" }))
+    fireEvent.press(screen.getByRole("button", { name: "City Guide, beta" }))
 
     expect(navigate).toHaveBeenCalledWith("/city-guide")
   })
@@ -71,7 +86,7 @@ describe("FindInspirationDifferently", () => {
   it("opens the legacy City Guide when the itineraries flag is off", () => {
     renderWithWrappers(<FindInspirationDifferently />)
 
-    fireEvent.press(screen.getByRole("button", { name: "City Guide" }))
+    fireEvent.press(screen.getByRole("button", { name: "City Guide, beta" }))
 
     expect(navigate).toHaveBeenCalledWith("/local-discovery")
   })

@@ -21,9 +21,8 @@ export const FindInspirationDifferently: React.FC = () => {
   const showArtsyLens = useEnableArtsyLens()
   const showArtAssistant = useEnableArtAssistant()
   const enableCityGuideItineraries = useFeatureFlag("AREnableCityGuideItineraries")
-  const supportDarkMode = useFeatureFlag("ARDarkModeSupport")
   const colorScheme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
-  const isDarkMode = supportDarkMode && colorScheme === "dark"
+  const isDarkMode = colorScheme === "dark"
   const cardBackgroundColor = isDarkMode ? "mono5" : "mono100"
   const cardTextColor = isDarkMode ? "mono100" : "mono0"
   const betaBackgroundColor = isDarkMode ? "mono10" : "mono60"
@@ -101,8 +100,6 @@ export const FindInspirationDifferently: React.FC = () => {
     },
   ].filter((card) => card.visible)
 
-  if (!cards.length) return null
-
   return (
     <Flex px={2} pt={1}>
       <SectionTitle title="Find Inspiration Differently" />
@@ -113,7 +110,8 @@ export const FindInspirationDifferently: React.FC = () => {
             key={card.title}
             to={card.href}
             accessibilityRole="button"
-            accessibilityLabel={card.title}
+            accessibilityLabel={card.beta ? `${card.title}, beta` : card.title}
+            accessibilityHint={card.description}
           >
             <Flex
               width={cardWidth}
