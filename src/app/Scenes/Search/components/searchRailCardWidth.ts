@@ -8,15 +8,18 @@ export const getSearchRailCardWidth = (
   leadingPadding: number,
   trailingPadding: number,
   gap: number,
-  maxTabletCardWidth = DEFAULT_MAX_TABLET_CARD_WIDTH
+  maxTabletCardWidth = DEFAULT_MAX_TABLET_CARD_WIDTH,
+  trailingCardFraction = 0.5
 ) => {
   const contentWidth = screenWidth - leadingPadding - trailingPadding
   const fullCards = isTablet()
     ? Math.max(
         PHONE_FULL_CARDS,
-        Math.ceil((contentWidth - maxTabletCardWidth / 2) / (maxTabletCardWidth + gap))
+        Math.ceil(
+          (contentWidth - maxTabletCardWidth * trailingCardFraction) / (maxTabletCardWidth + gap)
+        )
       )
     : PHONE_FULL_CARDS
 
-  return (contentWidth - fullCards * gap) / (fullCards + 0.5)
+  return (contentWidth - fullCards * gap) / (fullCards + trailingCardFraction)
 }

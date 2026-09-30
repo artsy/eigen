@@ -38,8 +38,9 @@ describe("Search", () => {
     // Pill should not be visible
     expect(screen.queryByText("Artists")).not.toBeOnTheScreen()
 
-    // should show City Guide
-    expect(screen.getByText("City Guide")).toBeOnTheScreen()
+    expect(screen.getByText("Find Inspiration Differently")).toBeOnTheScreen()
+    expect(screen.getByText("Discover Daily")).toBeOnTheScreen()
+    expect(screen.queryByText("Explore art on view")).not.toBeOnTheScreen()
 
     fireEvent.changeText(searchInput, "Ba")
   })
