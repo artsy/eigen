@@ -117,16 +117,10 @@ jobs:
 
       - name: Compute merge-base fingerprint
         if: steps.cache.outputs.cache-hit != 'true'
+        shell: bash
         run: |
           mkdir -p .native-fingerprint
           npx @expo/fingerprint fingerprint:generate | jq -r '.hash' > .native-fingerprint/fingerprint.txt
-
-      - name: Save merge-base fingerprint
-        if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
-        with:
-          path: .native-fingerprint
-          key: native-fingerprint-${{ steps.merge-base.outputs.sha }}
 
       - name: Read merge-base fingerprint
         id: resolve
@@ -138,6 +132,13 @@ jobs:
           fi
           echo "Merge base ${{ steps.merge-base.outputs.sha }} has fingerprint $fp_base"
           echo "fp_base=$fp_base" >> "$GITHUB_OUTPUT"
+
+      - name: Save merge-base fingerprint
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .native-fingerprint
+          key: native-fingerprint-${{ steps.merge-base.outputs.sha }}
 
   # Fingerprint at the PR head. Same setup as expo-fingerprint-check.yml, or the hash differs.
   pr-fingerprint:
