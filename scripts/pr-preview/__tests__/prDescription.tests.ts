@@ -11,7 +11,7 @@ import {
 const input = {
   status: "level",
   publishResult: "success",
-  channel: "preview-pr-13422",
+  channel: "review-app-13422",
   sha: "<sha>",
   fpBase: "a".repeat(40),
   fpPr: "b".repeat(40),
@@ -27,7 +27,7 @@ describe("buildPreviewReport", () => {
     const report = buildPreviewReport(input)
 
     expect(report).toContain(
-      "Published `<sha>` to the `preview-pr-13422` channel for runtime `9.19.0`."
+      "Published `<sha>` to the `review-app-13422` channel for runtime `9.19.0`."
     )
     expect(report).not.toContain("[!")
   })
@@ -64,7 +64,7 @@ describe("buildPreviewReport", () => {
   it("reports a failed publish instead of claiming success", () => {
     const report = buildPreviewReport({ ...input, status: "behind", publishResult: "failure" })
 
-    expect(report).toContain("Publishing to `preview-pr-13422` failed")
+    expect(report).toContain("Publishing to `review-app-13422` failed")
     expect(report).toContain(input.runUrl)
     expect(report).not.toContain("Published `")
     expect(report).not.toContain("PR number")

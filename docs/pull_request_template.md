@@ -36,7 +36,7 @@ This PR resolves [] <!-- eg [PROJECT-XXXX] -->
 
 <!-- pr-preview:start -->
 
-<!-- PR preview section, to be when there's a preview bundle for the PR -->
+<!-- PR preview section, to be updated when there's a preview bundle for the PR -->
 
 <!-- pr-preview:end -->
 

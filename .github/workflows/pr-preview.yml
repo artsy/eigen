@@ -1,7 +1,7 @@
 name: PR Preview
 
 # While a PR carries the `preview` label, every push publishes its JS bundle to the Expo Updates
-# channel `preview-pr-<number>`, as long as the PR has not changed native code.
+# channel `review-app-<number>`, as long as the PR has not changed native code.
 #
 # The native check (scripts/pr-preview/checkNativeStatus.ts) compares three fingerprints:
 #   level:  PR matches main's latest build        -> publish
@@ -18,7 +18,7 @@ permissions:
   pull-requests: write # edit the PR description
 
 env:
-  CHANNEL: preview-pr-${{ github.event.pull_request.number }}
+  CHANNEL: review-app-${{ github.event.pull_request.number }}
 
 # Every event that does nothing gets its own group (the run id). Otherwise, adding an unrelated
 # label would cancel a publish that is still running, then skip itself, and leave no preview.
