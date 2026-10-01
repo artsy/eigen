@@ -75,7 +75,7 @@ export const buildPreviewReport = ({
       published,
       "",
       "> [!WARNING]",
-      "> `main`'s native code has changed this branch was created, hence the bundle will runs on a native build that's newer than the one this PR was written against",
+      "> `main`'s native code has changed since this branch was created, so the bundle will run on a native build that's newer than the one this PR was written against",
       "> Rebase onto `main` to clear this warning.",
       "",
       fingerprintTable([
