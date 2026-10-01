@@ -100,7 +100,7 @@ const Picker: React.FC<Props> = ({ citySlug, currentItineraryId, currentItinerar
                 onPress={() => switchTo(itinerary)}
               >
                 <Flex px={2} py={1}>
-                  <Text variant="sm" weight={isCurrent ? "medium" : "regular"} color="black">
+                  <Text variant="sm" weight={isCurrent ? "medium" : "regular"} color="mono100">
                     {itinerary.title}
                   </Text>
                   {stopsCount !== undefined && (
