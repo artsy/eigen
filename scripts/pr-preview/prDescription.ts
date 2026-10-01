@@ -23,6 +23,11 @@ interface PreviewReportInput {
   fpPr: string
   fpMain: string
   runUrl: string
+  prNumber: string
+  /** `expo.runtimeVersion` of the PR */
+  runtimePr: string
+  /** `expo.runtimeVersion` of main */
+  runtimeMain: string
 }
 
 const fingerprintTable = (rows: ReadonlyArray<readonly [label: string, fingerprint: string]>) =>
@@ -42,6 +47,9 @@ export const buildPreviewReport = ({
   fpPr,
   fpMain,
   runUrl,
+  prNumber,
+  runtimePr,
+  runtimeMain,
 }: PreviewReportInput) => {
   const heading = "### PR preview"
 
@@ -67,11 +75,31 @@ export const buildPreviewReport = ({
     ].join("\n")
   }
 
-  const published = `Published \`${sha.slice(0, 7)}\` to the \`${channel}\` channel.`
+  const howToTry = [
+    `**PR number: ${prNumber}**`,
+    "Enter it in the dev menu under Preview PRs, in the PR number field.",
+  ]
+  const published = `Published \`${sha.slice(
+    0,
+    7
+  )}\` to the \`${channel}\` channel for runtime \`${runtimePr}\`.`
+
+  // Fingerprints skip `expo.runtimeVersion`, so a PR branched before a release bump still reads `level`
+  const runtimeWarning =
+    runtimePr === runtimeMain
+      ? []
+      : [
+          "",
+          "> [!WARNING]",
+          `> This bundle targets runtime \`${runtimePr}\`, but \`main\` is on \`${runtimeMain}\`, so builds from \`main\` won't load it.`,
+          "> Rebase onto `main` to pick up the new version.",
+        ]
 
   if (status === "behind") {
     return [
       heading,
+      ...howToTry,
+      "",
       published,
       "",
       "> [!WARNING]",
@@ -82,10 +110,11 @@ export const buildPreviewReport = ({
         ["PR (same as merge base)", fpPr],
         ["Main", fpMain],
       ]),
+      ...runtimeWarning,
     ].join("\n")
   }
 
-  return [heading, published].join("\n")
+  return [heading, ...howToTry, "", published, ...runtimeWarning].join("\n")
 }
 
 /** Replaces the managed block in `body`, or appends it when the body has none */

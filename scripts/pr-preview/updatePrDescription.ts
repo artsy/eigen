@@ -2,7 +2,8 @@
  * Writes the PR preview result into a managed block of the PR description.
  *
  * Reads everything from the environment, so the workflow never interpolates values into a shell line:
- *   GH_TOKEN, REPO, PR_NUMBER, STATUS, PUBLISH_RESULT, CHANNEL, SHA, FP_BASE, FP_PR, FP_MAIN, RUN_URL
+ *   GH_TOKEN, REPO, PR_NUMBER, STATUS, PUBLISH_RESULT, CHANNEL, SHA, FP_BASE, FP_PR, FP_MAIN, RUN_URL,
+ *   RUNTIME_PR, RUNTIME_MAIN
  *
  * Usage:
  *   yarn tsx scripts/pr-preview/updatePrDescription.ts
@@ -50,6 +51,9 @@ const run = () => {
     fpPr: readEnv("FP_PR"),
     fpMain: readEnv("FP_MAIN"),
     runUrl: readEnv("RUN_URL"),
+    prNumber: readEnv("PR_NUMBER"),
+    runtimePr: readEnv("RUNTIME_PR"),
+    runtimeMain: readEnv("RUNTIME_MAIN"),
   })
 
   const currentBody = parsePullRequestBody(
