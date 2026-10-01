@@ -120,6 +120,8 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
         ItemSeparatorComponent={() => <Spacer x={0.5} />}
         renderItem={({ item: pill, index }) => (
           <Flex key={pill.title} style={{ position: "relative" }}>
+            {!!pill.isFeatured && <FeaturedPillGlow />}
+
             <RouterLink
               hasChildTouchable
               to={pill.href}
@@ -143,10 +145,6 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
                 </Text>
               </Pill>
             </RouterLink>
-
-            {/* Painted after the pill, not before: `Pill`'s own opaque background would
-                otherwise cover the ring, since both share the same box. */}
-            {!!pill.isFeatured && <FeaturedPillGlow />}
           </Flex>
         )}
       />
