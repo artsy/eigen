@@ -39,7 +39,7 @@ const isErrorWithMessage = (error: unknown): error is { message: string } => {
   )
 }
 
-const isCodedError = (error: unknown): error is { code: string } => {
+export const isCodedError = (error: unknown): error is { code: string } => {
   return typeof error === "object" && error !== null && "code" in error
 }
 
