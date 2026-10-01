@@ -34310,6 +34310,11 @@ type Query {
     ignoreDisplayWindow: Boolean
 
     """
+    Include every unpublished curated guide, not only your own. Only editors can use this.
+    """
+    includeDrafts: Boolean
+
+    """
     Only curated (editorial) or only personal itineraries
     """
     isCurated: Boolean
@@ -44137,6 +44142,11 @@ type Viewer {
     Include guides outside their display window. Only editors can use this.
     """
     ignoreDisplayWindow: Boolean
+
+    """
+    Include every unpublished curated guide, not only your own. Only editors can use this.
+    """
+    includeDrafts: Boolean
 
     """
     Only curated (editorial) or only personal itineraries
