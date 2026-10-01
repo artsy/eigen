@@ -1,114 +1,173 @@
+import { useColor } from "@artsy/palette-mobile"
 import React, { useEffect, useState } from "react"
 import { LayoutChangeEvent, StyleSheet, View } from "react-native"
 import Animated, {
+  cancelAnimation,
   Easing,
-  useAnimatedProps,
+  useAnimatedStyle,
   useSharedValue,
   withRepeat,
   withTiming,
 } from "react-native-reanimated"
-import { Rect, Svg } from "react-native-svg"
-
-const AnimatedRect = Animated.createAnimatedComponent(Rect)
+import { Path, Svg } from "react-native-svg"
 
 const TRACE_DURATION = 4500
 
+/** Width of the traced ring, drawn just outside the pill's own edge. */
+const RING_WIDTH = 1
+
 /**
- * Each animated ring's color and dash/gap split, as a fraction (0-1) of the pill's own
- * perimeter — computed from the pill's measured size, since `react-native-svg` only honors
- * `pathLength`'s percentage-based dash math on web, not on iOS/Android. Lightest and tightest
- * dash first, darkest and widest gap last — all nine share one clockwise sweep, so layering
- * them reads as a blue comet trailing around the pill rather than nine separate rings.
+ * The comet as colour bands, each spanning `from`-`to` as a fraction of a full turn, clockwise
+ * from its sharp edge: mostly dark blue, fading through lighter blues to the resting outline.
  */
-const RINGS = [
-  { color: "#CED1F2", dash: 0.94, gap: 0.06 },
-  { color: "#B7BCEE", dash: 0.905, gap: 0.095 },
-  { color: "#9FA6EB", dash: 0.87, gap: 0.13 },
-  { color: "#8891E8", dash: 0.835, gap: 0.165 },
-  { color: "#707BE5", dash: 0.8, gap: 0.2 },
-  { color: "#5966E1", dash: 0.765, gap: 0.235 },
-  { color: "#4150DE", dash: 0.73, gap: 0.27 },
-  { color: "#2A3BDB", dash: 0.695, gap: 0.305 },
-  { color: "#1023D7", dash: 0.65, gap: 0.35 },
+const BANDS = [
+  { color: "#1023D7", from: 0, to: 0.65 },
+  { color: "#2A3BDB", from: 0.65, to: 0.695 },
+  { color: "#4150DE", from: 0.695, to: 0.73 },
+  { color: "#5966E1", from: 0.73, to: 0.765 },
+  { color: "#707BE5", from: 0.765, to: 0.8 },
+  { color: "#8891E8", from: 0.8, to: 0.835 },
+  { color: "#9FA6EB", from: 0.835, to: 0.87 },
+  { color: "#B7BCEE", from: 0.87, to: 0.905 },
+  { color: "#CED1F2", from: 0.905, to: 0.94 },
+  { color: "#E6E7F5", from: 0.94, to: 1 },
 ] as const
 
-/** Always-visible resting outline the comet sweeps over. */
-const BASE_RING_COLOR = "#E6E7F5"
+const wedgePath = (center: number, from: number, to: number) => {
+  const point = (fraction: number) => {
+    const angle = fraction * 2 * Math.PI
+    return `${center + center * Math.cos(angle)} ${center + center * Math.sin(angle)}`
+  }
+  const largeArc = to - from > 0.5 ? 1 : 0
+
+  return `M ${center} ${center} L ${point(from)} A ${center} ${center} 0 ${largeArc} 1 ${point(
+    to
+  )} Z`
+}
 
 /**
  * A rotating blue "comet" traced around a pill's border, to mark it as featured (currently
  * only the City Guide navigation pill, when `isFeatured` is true).
  *
- * Absolutely positioned over the pill by the caller; renders nothing of its own but the traced
- * border, so it composes with whatever the pill already renders instead of replacing it. Needs
- * `onLayout` from the same box the pill fills, since the dash lengths are fractions of the
- * pill's own (rounded-rect) perimeter, not fixed pixels — a wider pill (a longer title) gets a
- * proportionally longer dash, so the comet always looks the same relative size.
+ * Must be rendered *before* the pill, inside the same box: it extends `RING_WIDTH` past that box
+ * on every side and the pill's opaque background hides everything but that outer ring.
+ *
+ * Only `transform` is animated. Animating SVG props (e.g. `strokeDashoffset`) on Fabric forces a
+ * shadow tree commit on every frame, which starves React's own commits and freezes the app.
  */
 export const FeaturedPillGlow: React.FC = () => {
+  const color = useColor()
   const [size, setSize] = useState<{ width: number; height: number } | null>(null)
-  const offset = useSharedValue(0)
+  const progress = useSharedValue(0)
 
   const onLayout = (event: LayoutChangeEvent) => {
     const { width, height } = event.nativeEvent.layout
     setSize({ width, height })
   }
 
-  // A fully-rounded pill: corner radius is half the (shorter) height. Perimeter of a
-  // rounded rect = the two straight edge pairs, shortened by the corners, plus the four
-  // corners' arcs, which together make exactly one full circle of that radius.
-  const perimeter = size
-    ? 2 * (size.width + size.height - 2 * (size.height / 2)) + 2 * Math.PI * (size.height / 2)
-    : 0
-
   useEffect(() => {
-    if (!perimeter) return
-
-    offset.set(perimeter)
-    offset.set(
-      withRepeat(withTiming(0, { duration: TRACE_DURATION, easing: Easing.linear }), -1, false)
+    progress.set(0)
+    progress.set(
+      withRepeat(withTiming(1, { duration: TRACE_DURATION, easing: Easing.linear }), -1, false)
     )
-  }, [offset, perimeter])
 
-  const animatedProps = useAnimatedProps(() => ({
-    strokeDashoffset: offset.get(),
-  }))
+    return () => cancelAnimation(progress)
+  }, [progress])
+
+  const width = size?.width ?? 0
+  const height = size?.height ?? 0
+
+  // Points the comet's sharp edge at a spot moving at constant speed along the pill's outline,
+  // so it doesn't race around the rounded ends and crawl along the straight edges.
+  const rotatingStyle = useAnimatedStyle(() => {
+    const radius = height / 2
+    const straight = Math.max(width - height, 0)
+    const arc = Math.PI * radius
+    const distance = progress.get() * 2 * (straight + arc)
+
+    let x: number
+    let y: number
+    if (distance < straight) {
+      x = distance - straight / 2
+      y = -radius
+    } else if (distance < straight + arc) {
+      const angle = -Math.PI / 2 + (distance - straight) / radius
+      x = straight / 2 + radius * Math.cos(angle)
+      y = radius * Math.sin(angle)
+    } else if (distance < 2 * straight + arc) {
+      x = straight / 2 - (distance - straight - arc)
+      y = radius
+    } else {
+      const angle = Math.PI / 2 + (distance - 2 * straight - arc) / radius
+      x = -straight / 2 + radius * Math.cos(angle)
+      y = radius * Math.sin(angle)
+    }
+
+    return { transform: [{ rotate: `${Math.atan2(y, x)}rad` }] }
+  })
+
+  // The rotating square has to cover the whole pill at any angle, hence its diagonal.
+  const diameter = Math.ceil(Math.hypot(width, height))
+  const center = diameter / 2
 
   return (
-    // `onLayout` lives on this plain `View`, not the `Svg` below: `react-native-svg`'s native
-    // renderer needs concrete numeric `width`/`height` to paint anything at all, so it can't be
-    // the thing that measures its own size — a `View` sized by `StyleSheet.absoluteFill` from
-    // its parent (the pill) can.
-    <View style={StyleSheet.absoluteFill} pointerEvents="none" onLayout={onLayout}>
+    <View
+      pointerEvents="none"
+      onLayout={onLayout}
+      style={[styles.container, { borderRadius: height / 2 }]}
+    >
       {!!size && (
-        <Svg width={size.width} height={size.height}>
-          <Rect
-            x={0.75}
-            y={0.75}
-            width={size.width - 1.5}
-            height={size.height - 1.5}
-            rx={size.height / 2}
-            fill="none"
-            stroke={BASE_RING_COLOR}
-            strokeWidth={1}
+        <>
+          <Animated.View
+            style={[
+              {
+                position: "absolute",
+                width: diameter,
+                height: diameter,
+                left: (width - diameter) / 2,
+                top: (height - diameter) / 2,
+              },
+              rotatingStyle,
+            ]}
+          >
+            <Svg width={diameter} height={diameter}>
+              {BANDS.map((band) => (
+                <Path
+                  key={band.color}
+                  d={wedgePath(center, band.from, band.to)}
+                  fill={band.color}
+                />
+              ))}
+            </Svg>
+          </Animated.View>
+
+          {/* Keeps the comet from showing through while the pill fades on press. */}
+          <View
+            style={[
+              styles.cover,
+              { borderRadius: height / 2 - RING_WIDTH, backgroundColor: color("mono0") },
+            ]}
           />
-          {RINGS.map((ring) => (
-            <AnimatedRect
-              key={ring.color}
-              x={0.75}
-              y={0.75}
-              width={size.width - 1.5}
-              height={size.height - 1.5}
-              rx={size.height / 2}
-              fill="none"
-              stroke={ring.color}
-              strokeWidth={1}
-              strokeDasharray={[perimeter * ring.dash, perimeter * ring.gap]}
-              animatedProps={animatedProps}
-            />
-          ))}
-        </Svg>
+        </>
       )}
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    position: "absolute",
+    top: -RING_WIDTH,
+    left: -RING_WIDTH,
+    right: -RING_WIDTH,
+    bottom: -RING_WIDTH,
+    overflow: "hidden",
+  },
+  cover: {
+    position: "absolute",
+    top: RING_WIDTH,
+    left: RING_WIDTH,
+    right: RING_WIDTH,
+    bottom: RING_WIDTH,
+  },
+})
