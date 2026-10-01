@@ -120,7 +120,8 @@ export const buildPreviewReport = ({
 /** Replaces the managed block in `body`, or appends it when the body has none */
 export const upsertPreviewBlock = ({ body, report }: { body: string; report: string }) => {
   const block = `${BLOCK_START}\n${report}\n${BLOCK_END}`
-  const start = body.indexOf(BLOCK_START)
+  // The last start marker is the block we appended. An orphan marker the author left behind stays untouched.
+  const start = body.lastIndexOf(BLOCK_START)
   const end = body.indexOf(BLOCK_END, start)
 
   if (start !== -1 && end !== -1) {

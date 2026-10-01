@@ -140,6 +140,26 @@ describe("upsertPreviewBlock", () => {
       `${body}\n\n${BLOCK_START}\nnew\n${BLOCK_END}`
     )
   })
+
+  it.each([
+    ["end", `Intro\n${BLOCK_START}\nold report\n\nAuthor notes`],
+    ["start", `Intro\nold report\n${BLOCK_END}\n\nAuthor notes`],
+  ])(
+    "keeps the author's text and a single block over repeated runs when the %s marker is missing",
+    (_, broken) => {
+      const first = upsertPreviewBlock({ body: broken, report: "one" })
+      const third = upsertPreviewBlock({
+        body: upsertPreviewBlock({ body: first, report: "two" }),
+        report: "three",
+      })
+
+      expect(third).toContain("Author notes")
+      expect(third).toContain("three")
+      expect(third).not.toContain("two")
+      expect(third.split(BLOCK_START)).toHaveLength(first.split(BLOCK_START).length)
+      expect(third.split(BLOCK_END)).toHaveLength(first.split(BLOCK_END).length)
+    }
+  )
 })
 
 describe("parsePullRequestBody", () => {
