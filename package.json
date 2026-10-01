@@ -80,7 +80,7 @@
     "start": "WITH_ROZENITE=true concurrently --raw 'react-native start' 'yarn relay:watch'",
     "start:reset-cache": "yarn start --reset-cache",
     "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/main/_schemaV2.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
-    "sync-schema:localhost": "cd ../metaphysics && yarn dump-schema ../eigen/data/schema.graphql && cd -; yarn prettier --write --parser graphql data/schema.graphql",
+    "sync-schema:localhost": "(cd ../metaphysics && yarn dump-schema ../eigen/data/schema.graphql) && yarn prettier --write --parser graphql data/schema.graphql",
     "test": "jest",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
     "test:watch": "jest --watch",
