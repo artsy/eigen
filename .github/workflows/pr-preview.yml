@@ -1,0 +1,325 @@
+name: PR Preview
+
+# While a PR carries the `preview` label, every push publishes its JS bundle to the Expo Updates
+# channel `preview-pr-<number>`, as long as the PR has not changed native code.
+#
+# The native check (scripts/pr-preview/checkNativeStatus.ts) compares three fingerprints:
+#   level:  PR matches main's latest build        -> publish
+#   behind: main changed native code since the PR -> publish, and warn in the PR description
+#   ahead:  the PR changed native code            -> don't publish, ask for new betas
+# The result is written into a managed block of the PR description.
+
+on:
+  pull_request:
+    types: [labeled, unlabeled, synchronize, closed]
+
+permissions:
+  contents: read
+  pull-requests: write # edit the PR description
+
+env:
+  CHANNEL: preview-pr-${{ github.event.pull_request.number }}
+
+# Every event that does nothing gets its own group (the run id). Otherwise, adding an unrelated
+# label would cancel a publish that is still running, then skip itself, and leave no preview.
+# `closed` and removing the `preview` label stay in the shared group so they cancel a running publish.
+concurrency:
+  group: pr-preview-${{ github.event.pull_request.number }}-${{ (github.event.pull_request.head.repo.full_name == github.repository && ((github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'preview')) || ((github.event.action == 'labeled' || github.event.action == 'unlabeled') && github.event.label.name == 'preview') || (github.event.action == 'closed' && contains(github.event.pull_request.labels.*.name, 'preview')))) && 'active' || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  # Fingerprint at the commit where the PR branched off main. Main's workflow caches it under
+  # native-fingerprint-<sha>; on a miss we compute it here and save it for the next push.
+  base-fingerprint:
+    # Same-repo PRs only: fork PRs get no secrets, so they would fail inside the setup steps.
+    # The first two jobs carry the gate. Every later job depends on them and is skipped with them.
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.state == 'open' &&
+      (
+        (github.event.action == 'labeled' && github.event.label.name == 'preview') ||
+        (github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'preview'))
+      )
+    runs-on: macos-26
+    timeout-minutes: 20
+    outputs:
+      fp_base: ${{ steps.resolve.outputs.fp_base }}
+
+    steps:
+      # The PR head, not the merge commit, and the full history for merge-base
+      - name: Checkout PR head
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Find merge base with main
+        id: merge-base
+        run: echo "sha=$(git merge-base HEAD origin/main)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore merge-base fingerprint
+        id: cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .native-fingerprint
+          key: native-fingerprint-${{ steps.merge-base.outputs.sha }}
+
+      # From here to the save step, the tree is the merge base, so the setup actions below are the
+      # ones that existed there. The fingerprint command is inline because the PR's scripts are
+      # missing from older merge bases.
+      - name: Checkout merge base
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: git checkout --detach "${{ steps.merge-base.outputs.sha }}"
+
+      - name: Configure AWS credentials
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Setup JavaScript environment
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: ./.github/actions/setup-javascript-environment
+
+      - name: Setup Ruby
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: ./.github/actions/setup-ruby
+
+      - name: Setup iOS environment
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: ./.github/actions/setup-ios-environment
+
+      - name: Set up Java
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17"
+
+      - name: Cache Gradle dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            android/.gradle
+          key: gradle-v2-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-v2-${{ runner.os }}-
+
+      - name: Download android assets
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: ./scripts/setup/download-assets-android
+        shell: bash
+
+      - name: Compute merge-base fingerprint
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p .native-fingerprint
+          npx @expo/fingerprint fingerprint:generate | jq -r '.hash' > .native-fingerprint/fingerprint.txt
+
+      - name: Save merge-base fingerprint
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .native-fingerprint
+          key: native-fingerprint-${{ steps.merge-base.outputs.sha }}
+
+      - name: Read merge-base fingerprint
+        id: resolve
+        run: |
+          fp_base=$(tr -d '[:space:]' < .native-fingerprint/fingerprint.txt)
+          if ! echo "$fp_base" | grep -Eq '^[0-9a-f]{40}$'; then
+            echo "Merge-base fingerprint is not a 40-character sha1: \"$fp_base\"" >&2
+            exit 1
+          fi
+          echo "Merge base ${{ steps.merge-base.outputs.sha }} has fingerprint $fp_base"
+          echo "fp_base=$fp_base" >> "$GITHUB_OUTPUT"
+
+  # Fingerprint at the PR head. Same setup as expo-fingerprint-check.yml, or the hash differs.
+  pr-fingerprint:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.state == 'open' &&
+      (
+        (github.event.action == 'labeled' && github.event.label.name == 'preview') ||
+        (github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'preview'))
+      )
+    runs-on: macos-26
+    timeout-minutes: 20
+    outputs:
+      fp_pr: ${{ steps.fingerprint.outputs.fingerprint }}
+
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Setup JavaScript environment
+        uses: ./.github/actions/setup-javascript-environment
+
+      - name: Setup Ruby
+        uses: ./.github/actions/setup-ruby
+
+      - name: Setup iOS environment
+        uses: ./.github/actions/setup-ios-environment
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17"
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            android/.gradle
+          key: gradle-v2-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-v2-${{ runner.os }}-
+
+      - name: Download android assets
+        run: ./scripts/setup/download-assets-android
+        shell: bash
+
+      - name: Generate PR fingerprint
+        id: fingerprint
+        run: yarn tsx scripts/pr-preview/checkNativeStatus.ts fingerprint
+
+  native-status:
+    needs: [base-fingerprint, pr-fingerprint]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      status: ${{ steps.status.outputs.status }}
+      fp_base: ${{ steps.status.outputs.fp_base }}
+      fp_pr: ${{ steps.status.outputs.fp_pr }}
+      fp_main: ${{ steps.status.outputs.fp_main }}
+
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      # Reads main's latest fingerprint from S3
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Setup JavaScript environment
+        uses: ./.github/actions/setup-javascript-environment
+
+      - name: Compare fingerprints
+        id: status
+        env:
+          FP_BASE: ${{ needs.base-fingerprint.outputs.fp_base }}
+          FP_PR: ${{ needs.pr-fingerprint.outputs.fp_pr }}
+        run: yarn tsx scripts/pr-preview/checkNativeStatus.ts status --base "$FP_BASE" --pr "$FP_PR"
+
+  # `ahead` skips this job: the PR changed native code, so the bundle could crash builds without it.
+  publish:
+    needs: native-status
+    if: needs.native-status.outputs.status != 'ahead'
+    runs-on: macos-26
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup repository environment
+        uses: ./.github/actions/setup-repo-environment
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Setup JavaScript environment
+        uses: ./.github/actions/setup-javascript-environment
+
+      - name: Setup Ruby
+        uses: ./.github/actions/setup-ruby
+
+      - name: Download fonts from s3
+        run: ./scripts/setup/download-fonts
+
+      - name: Install bin modules
+        uses: ./.github/actions/setup-bin-modules
+
+      - name: Cache Metro bundler cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/metro
+          key: metro-v1-${{ runner.os }}-${{ hashFiles('yarn.lock', 'babel.config.js', 'alias.js', 'metro.config.js') }}
+
+      # The lane puts the description inside single quotes in a shell line, so it carries only the PR
+      # number and SHA, never the PR title.
+      - name: Publish to Expo Updates
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_UPDATES_TOKEN }}
+          DESCRIPTION: "PR preview #${{ github.event.pull_request.number }} at ${{ github.event.pull_request.head.sha }}"
+        run: bundle exec fastlane deploy_to_expo_updates deployment_name:"$CHANNEL" description:"$DESCRIPTION" platform:all preview:true
+
+  update-pr-description:
+    needs: [native-status, publish]
+    # !cancelled() instead of always(): a run cancelled by a newer push must not write a stale report.
+    if: ${{ !cancelled() && needs.native-status.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup JavaScript environment
+        uses: ./.github/actions/setup-javascript-environment
+
+      - name: Write preview result to the PR description
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          SHA: ${{ github.event.pull_request.head.sha }}
+          STATUS: ${{ needs.native-status.outputs.status }}
+          PUBLISH_RESULT: ${{ needs.publish.result }}
+          FP_BASE: ${{ needs.native-status.outputs.fp_base }}
+          FP_PR: ${{ needs.native-status.outputs.fp_pr }}
+          FP_MAIN: ${{ needs.native-status.outputs.fp_main }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: yarn tsx scripts/pr-preview/updatePrDescription.ts
+
+  # TODO: PHIRE-3442
+  cleanup-preview:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      (
+        (github.event.action == 'closed' && contains(github.event.pull_request.labels.*.name, 'preview')) ||
+        (github.event.action == 'unlabeled' && github.event.label.name == 'preview')
+      )
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Clean up preview channel
+        run: echo "Cleanup of $CHANNEL is not implemented yet."

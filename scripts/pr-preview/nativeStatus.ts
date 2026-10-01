@@ -1,5 +1,7 @@
 type Fingerprint = string & { readonly __type: "Fingerprint" }
 
+export type NativeStatus = "level" | "ahead" | "behind"
+
 export interface Fingerprints {
   /** Fingerprint at merge-base(PR, main) */
   base: Fingerprint
@@ -28,7 +30,7 @@ export const parseFingerprint = ({ value, label }: { value: unknown; label: stri
  * ahead:  the PR changed native code since it branched off
  * behind: the PR didn't touch native code, but main did
  */
-export const checkNativeStatus = ({ base, pr, main }: Fingerprints) => {
+export const checkNativeStatus = ({ base, pr, main }: Fingerprints): NativeStatus => {
   if (pr === main) return "level"
   if (pr !== base) return "ahead"
   return "behind"
