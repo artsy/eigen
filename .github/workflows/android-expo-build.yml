@@ -51,14 +51,8 @@ jobs:
       - name: Setup Android environment
         uses: ./.github/actions/setup-android-environment
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.1.7"
-          bundler-cache: true
-
-      - name: Install Ruby dependencies
-        run: bundle install
+      - name: Setup Ruby
+        uses: ./.github/actions/setup-ruby
 
       - name: Setup JavaScript environment
         uses: ./.github/actions/setup-javascript-environment
