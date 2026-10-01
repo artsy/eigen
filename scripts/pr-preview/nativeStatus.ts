@@ -1,5 +1,10 @@
 type Fingerprint = string & { readonly __type: "Fingerprint" }
 
+/**
+ * - `level`:  the PR fingerprint matches main's
+ * - `ahead`:  the PR changed native code since it branched off
+ * - `behind`: the PR didn't touch native code, but main did
+ */
 export type NativeStatus = "level" | "ahead" | "behind"
 
 export interface Fingerprints {
@@ -26,9 +31,9 @@ export const parseFingerprint = ({ value, label }: { value: unknown; label: stri
 }
 
 /**
- * level:  the PR fingerprint matches main's
- * ahead:  the PR changed native code since it branched off
- * behind: the PR didn't touch native code, but main did
+ * - `level`:  the PR fingerprint matches main's
+ * - `ahead`:  the PR changed native code since it branched off
+ * - `behind`: the PR didn't touch native code, but main did
  */
 export const checkNativeStatus = ({ base, pr, main }: Fingerprints): NativeStatus => {
   if (pr === main) return "level"
