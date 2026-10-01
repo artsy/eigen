@@ -45,7 +45,13 @@ export const PreviewPROptions = () => {
       const check = await Updates.checkForUpdateAsync()
       if (!check.isAvailable) {
         revertChannelSwitch()
-        setErrorMessage(`No update has been published to ${pr.channel} yet.`)
+        setErrorMessage(
+          check.reason &&
+            check.reason !==
+              Updates.UpdateCheckResultNotAvailableReason.NO_UPDATE_AVAILABLE_ON_SERVER
+            ? `Update check failed: ${check.reason}`
+            : `No update has been published to ${pr.channel} yet.`
+        )
         return
       }
 
@@ -54,7 +60,7 @@ export const PreviewPROptions = () => {
     } catch (error) {
       // Android refuses to reload on an emergency launch. The update is already downloaded, so
       // reopening the app runs it.
-      if (isCodedError(error) && error?.code === "ERR_UPDATES_RELOAD") {
+      if (isCodedError(error) && error.code === "ERR_UPDATES_RELOAD") {
         setErrorMessage(
           "Update downloaded, but the app can't reload itself. Force-quit and reopen the app to run it."
         )

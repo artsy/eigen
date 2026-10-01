@@ -128,6 +128,10 @@ jest.mock("expo-updates", () => {
     checkForUpdateAsync: jest.fn(),
     reloadAsync: jest.fn(),
     setUpdateRequestHeadersOverride: jest.fn(),
+    UpdateCheckResultNotAvailableReason: {
+      NO_UPDATE_AVAILABLE_ON_SERVER: "noUpdateAvailableOnServer",
+      UPDATE_REJECTED_BY_SELECTION_POLICY: "updateRejectedBySelectionPolicy",
+    },
     useUpdates: jest.fn(() => ({ isDownloading: false, downloadProgress: 0 })),
     isEnabled: true,
     isEmbeddedLaunch: false,

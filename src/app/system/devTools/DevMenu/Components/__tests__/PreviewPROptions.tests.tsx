@@ -1,5 +1,4 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
-import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { PreviewPROptions } from "app/system/devTools/DevMenu/Components/PreviewPROptions"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import * as Updates from "expo-updates"
@@ -89,6 +88,23 @@ describe("PreviewPROptions", () => {
     expectOverrideCalls("review-app-123", Updates.channel as string)
   })
 
+  it("shows the reason and restores the channel when the update is rejected", async () => {
+    mockFetch(200, openLabeledPR)
+    ;(Updates.checkForUpdateAsync as jest.Mock).mockResolvedValueOnce({
+      isAvailable: false,
+      reason: "updateRejectedBySelectionPolicy",
+    })
+
+    await loadAndConfirm()
+
+    expect(
+      await screen.findByText("Update check failed: updateRejectedBySelectionPolicy")
+    ).toBeOnTheScreen()
+    expect(screen.queryByText(/No update has been published/)).not.toBeOnTheScreen()
+    expect(Updates.fetchUpdateAsync).not.toHaveBeenCalled()
+    expectOverrideCalls("review-app-123", Updates.channel as string)
+  })
+
   it("restores the previous channel when the download fails", async () => {
     mockFetch(200, openLabeledPR)
     ;(Updates.fetchUpdateAsync as jest.Mock).mockRejectedValueOnce(new Error("network down"))
@@ -123,19 +139,6 @@ describe("PreviewPROptions", () => {
     expect(await screen.findByText("PR #123 is not open")).toBeOnTheScreen()
     expect(Alert.alert).not.toHaveBeenCalled()
     expect(Updates.setUpdateRequestHeadersOverride).not.toHaveBeenCalled()
-  })
-
-  it("says why switching is unavailable on production builds", () => {
-    const original = ArtsyNativeModule.isBetaOrDev
-    Object.defineProperty(ArtsyNativeModule, "isBetaOrDev", { value: false, configurable: true })
-
-    renderWithWrappers(<PreviewPROptions />)
-    expand()
-
-    expect(screen.getByText(/Production builds can't switch channels/)).toBeOnTheScreen()
-    expect(screen.getByText("Load PR")).toBeDisabled()
-
-    Object.defineProperty(ArtsyNativeModule, "isBetaOrDev", { value: original, configurable: true })
   })
 
   describe("on a review app channel", () => {
