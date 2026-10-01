@@ -60,6 +60,7 @@ const ArticleBodyQuery = graphql`
     ...ArticleHero_article
     ...ArticleSectionText_article
     ...ArticleSectionImageSet_article
+    ...ArticleSectionArtworkGrid_article
     sections {
       ...ArticleSection_section
     }

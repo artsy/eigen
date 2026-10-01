@@ -36,6 +36,13 @@ jest.mock("app/Scenes/Article/Components/Sections/ArticleSectionEmbed", () => {
   }
 })
 
+jest.mock("app/Scenes/Article/Components/Sections/ArticleSectionArtworkGrid", () => {
+  const { Text } = require("react-native")
+  return {
+    ArticleSectionArtworkGrid: () => <Text>ArticleSectionArtworkGrid</Text>,
+  }
+})
+
 describe("ArticleSection", () => {
   const { renderWithRelay } = setupTestWrapper<ArticleSectionTestQuery>({
     Component: ({ article }) => {
@@ -45,6 +52,7 @@ describe("ArticleSection", () => {
       query ArticleSectionTestQuery @relay_test_operation {
         article(id: "article-id") {
           ...ArticleSectionText_article
+          ...ArticleSectionArtworkGrid_article
           sections {
             ...ArticleSection_section
           }
@@ -109,6 +117,20 @@ describe("ArticleSection", () => {
     expect(screen.getByText("ArticleSectionEmbed")).toBeOnTheScreen()
   })
 
+  it("renders ArticleSectionArtworkGrid when __typename is ArticleSectionArtworkGrid", () => {
+    renderWithRelay({
+      Article: () => ({
+        sections: [
+          {
+            __typename: "ArticleSectionArtworkGrid",
+          },
+        ],
+      }),
+    })
+
+    expect(screen.getByText("ArticleSectionArtworkGrid")).toBeOnTheScreen()
+  })
+
   it("renders null for unknown __typename", () => {
     renderWithRelay({
       Article: () => ({
@@ -124,5 +146,6 @@ describe("ArticleSection", () => {
     expect(screen.queryByText("ArticleSectionImageCollection")).not.toBeOnTheScreen()
     expect(screen.queryByText("ArticleSectionImageSet")).not.toBeOnTheScreen()
     expect(screen.queryByText("ArticleSectionEmbed")).not.toBeOnTheScreen()
+    expect(screen.queryByText("ArticleSectionArtworkGrid")).not.toBeOnTheScreen()
   })
 })

@@ -21,6 +21,7 @@ interface Props {
   hidePartner?: boolean
   isLoading?: boolean
   itemMargin?: number
+  numColumns?: number
   onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data, itemIndex?: number) => void
   trackTap?: (artworkSlug: string, itemIndex?: number) => void
   trackingFlow?: string
@@ -39,6 +40,7 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
   contextScreenOwnerType,
   hidePartner = false,
   isLoading,
+  numColumns,
   onPress,
   trackTap,
   saleInfoTextStyle,
@@ -60,7 +62,10 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
           <MasonryInfiniteScrollArtworkGrid
             artworks={artworks as unknown as MasonryArtworkItem[]}
             contextModule={contextModule}
+            contextScreenOwnerId={contextScreenOwnerId}
+            contextScreenOwnerSlug={contextScreenOwnerSlug}
             contextScreenOwnerType={contextScreenOwnerType}
+            numColumns={numColumns}
             scrollEnabled={false}
             hidePartner={hidePartner}
             trackTap={trackTap}
