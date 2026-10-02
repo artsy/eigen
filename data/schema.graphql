@@ -8246,7 +8246,12 @@ input BulkUpdateArtworksMetadataInput {
   priceAdjustment: Int
 
   """
-  The currency for the artworks. Required when setting flat shipping fees.
+  Adjusts the artworks' catalog prices by a signed flat amount in major units (500 = £500). Negative decreases. Requires priceCurrency; only artworks whose catalog price currency matches are changed.
+  """
+  priceAdjustmentAmount: Float
+
+  """
+  The currency for the artworks. Required when setting flat shipping fees or priceAdjustmentAmount.
   """
   priceCurrency: String
 
@@ -8264,6 +8269,11 @@ input BulkUpdateArtworksMetadataInput {
   The price in minor units, targeting the catalog artwork field
   """
   priceMinor: Int
+
+  """
+  Rounds adjusted prices to the nearest 10 major units. Only valid with priceAdjustment or priceAdjustmentAmount.
+  """
+  priceRounding: BulkUpdatePriceRoundingEnum
 
   """
   Private notes about the artwork
@@ -8365,6 +8375,15 @@ type BulkUpdateMetadataPreviewCounts {
   """
   nonEditable: Int!
   total: Int!
+}
+
+"""
+Rounding applied to adjusted prices, to the nearest 10 major units
+"""
+enum BulkUpdatePriceRoundingEnum {
+  DOWN
+  NONE
+  UP
 }
 
 """
