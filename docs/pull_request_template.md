@@ -34,6 +34,12 @@ This PR resolves [] <!-- eg [PROJECT-XXXX] -->
 
 - [ ] I would like **at least one** of the reviewers to **run** this PR on the simulator or device.
 
+<!-- pr-preview:start -->
+
+<!-- PR preview section, to be updated when there's a preview bundle for the PR -->
+
+<!-- pr-preview:end -->
+
 <details><summary>Changelog updates</summary>
 
 ### Changelog updates
