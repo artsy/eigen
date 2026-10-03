@@ -3326,10 +3326,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@braze/react-native-sdk@npm:16.1.0":
-  version: 16.1.0
-  resolution: "@braze/react-native-sdk@npm:16.1.0"
-  checksum: 10c0/dbb509c38157570f6be412442e3fdea7418b7084ed71421f3b34584fceda1d7b7cfe7cb0ebea05db4d2ffa85df7d90600122cf668371f4396d3aa0998bdd59ca
+"@braze/react-native-sdk@npm:23.1.0":
+  version: 23.1.0
+  resolution: "@braze/react-native-sdk@npm:23.1.0"
+  checksum: 10c0/9134c089a50bf206ee09f1468b63998eefac863131009821281529f3365bddffb53eed17d963653623ee55a2ef1a72cf44d869713b019e955b41d3afc72d676f
   languageName: node
   linkType: hard
 
@@ -13503,7 +13503,7 @@ __metadata:
     "@babel/preset-react": "npm:7.18.6"
     "@babel/preset-typescript": "npm:7.18.6"
     "@babel/runtime": "npm:7.26.10"
-    "@braze/react-native-sdk": "npm:16.1.0"
+    "@braze/react-native-sdk": "npm:23.1.0"
     "@d11/react-native-fast-image": "patch:@d11/react-native-fast-image@npm%3A8.13.0#~/.yarn/patches/@d11-react-native-fast-image-npm-8.13.0-1ba5757ff5.patch"
     "@expo/react-native-action-sheet": "npm:4.1.1"
     "@gorhom/bottom-sheet": "patch:@gorhom/bottom-sheet@npm%3A5.2.14#~/.yarn/patches/@gorhom-bottom-sheet-npm-5.2.14-369bca24fd.patch"
