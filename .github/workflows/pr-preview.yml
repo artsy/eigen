@@ -337,16 +337,14 @@ jobs:
         (github.event.action == 'unlabeled' && github.event.label.name == 'preview')
       )
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
 
     steps:
-      - name: Checkout PR head
+      - name: Checkout
         uses: actions/checkout@v5
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Setup Node
-        uses: ./.github/actions/setup-node
+      - name: Setup JavaScript environment
+        uses: ./.github/actions/setup-javascript-environment
 
       - name: Install bin modules
         uses: ./.github/actions/setup-bin-modules
@@ -369,20 +367,6 @@ jobs:
           }
           delete channel
           delete branch
-
-  reset-pr-description:
-    needs: cleanup-preview
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    steps:
-      - name: Checkout PR head
-        uses: actions/checkout@v5
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Setup JavaScript environment
-        uses: ./.github/actions/setup-javascript-environment
 
       - name: Reset the preview section of the PR description
         env:
