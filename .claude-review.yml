@@ -3,7 +3,8 @@ exclude:
     - "update metaphysics graphql schema"
     - "update expo runtimeVersion"
     - "bump version"
-    - "chore(release): * RC"
+    - "^chore: prepare for next release"
+    - '^chore\(release\):'
 
 focus_areas:
   - |
