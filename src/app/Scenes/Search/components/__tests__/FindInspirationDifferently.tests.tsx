@@ -129,6 +129,7 @@ describe("FindInspirationDifferently", () => {
 
     renderWithWrappers(<FindInspirationDifferently />)
 
+    expect(screen.getByText("BETA")).toBeOnTheScreen()
     fireEvent.press(screen.getByRole("button", { name: "City Guide, beta" }))
 
     expect(navigate).toHaveBeenCalledWith("/city-guide")
@@ -146,7 +147,8 @@ describe("FindInspirationDifferently", () => {
   it("opens the legacy City Guide when the itineraries flag is off", () => {
     renderWithWrappers(<FindInspirationDifferently />)
 
-    fireEvent.press(screen.getByRole("button", { name: "City Guide, beta" }))
+    expect(screen.queryByText("BETA")).not.toBeOnTheScreen()
+    fireEvent.press(screen.getByRole("button", { name: "City Guide" }))
 
     expect(navigate).toHaveBeenCalledWith("/local-discovery")
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)

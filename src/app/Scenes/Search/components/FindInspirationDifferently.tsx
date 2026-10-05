@@ -11,7 +11,7 @@ import {
   MapPinIcon,
   SparklesMessageIcon,
 } from "@artsy/icons/native"
-import { Flex, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Flex, Text, useColor, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
@@ -36,6 +36,7 @@ interface DiscoveryMethodCard {
 export const FindInspirationDifferently: React.FC = () => {
   const { trackEvent } = useTracking()
   const space = useSpace()
+  const color = useColor()
   const { width: screenWidth } = useScreenDimensions()
   const showArtsyLens = useEnableArtsyLens()
   const showArtAssistant = useEnableArtAssistant()
@@ -44,7 +45,6 @@ export const FindInspirationDifferently: React.FC = () => {
   const isDarkMode = colorScheme === "dark"
   const cardBackgroundColor = isDarkMode ? "mono5" : "mono100"
   const cardTextColor = isDarkMode ? "mono100" : "mono0"
-  const betaBackgroundColor = isDarkMode ? "mono10" : "mono60"
   const isTabletDevice = isTablet()
   const columns = isTabletDevice ? 4 : 2
   const cardWidth = (screenWidth - space(2) * 2 - space(1) * (columns - 1)) / columns
@@ -116,7 +116,7 @@ export const FindInspirationDifferently: React.FC = () => {
           top="-1px"
         />
       ),
-      beta: true,
+      beta: enableCityGuideItineraries,
       // City Guide (both the new and the legacy versions) is not supported on tablets
       visible: !isTabletDevice,
       destinationOwnerType: cityGuideOwnerType,
@@ -166,18 +166,14 @@ export const FindInspirationDifferently: React.FC = () => {
               <Flex flexDirection="row" alignItems="flex-start" justifyContent="space-between">
                 {card.icon}
                 {!!card.beta && (
-                  <Flex
-                    backgroundColor={betaBackgroundColor}
-                    borderRadius={100}
-                    px={1}
-                    py={0.5}
-                    position="relative"
-                    top="-2px"
+                  <Text
+                    color="white"
+                    backgroundColor={color("blue100")}
+                    style={{ paddingHorizontal: space(0.5) }}
+                    variant="xs"
                   >
-                    <Text variant="xxs" color={cardTextColor}>
-                      BETA
-                    </Text>
-                  </Flex>
+                    BETA
+                  </Text>
                 )}
               </Flex>
 
