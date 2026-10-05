@@ -1,3 +1,5 @@
+import * as Updates from "expo-updates"
+
 export interface PreviewPR {
   channel: string
   prNumber: number
@@ -15,6 +17,9 @@ export const parsePreviewChannel = (channel?: string | null) => {
   const match = channel?.match(/^review-app-(\d+)$/)
   return match ? Number(match[1]) : null
 }
+
+export const isRunningPreviewBundle = () =>
+  !!parsePreviewChannel(Updates.channel) && !Updates.isEmbeddedLaunch && !Updates.isEmergencyLaunch
 
 export const fetchPreviewPR = async (prNumber: number): Promise<PreviewPR> => {
   const response = await fetch(`https://api.github.com/repos/artsy/eigen/pulls/${prNumber}`, {
