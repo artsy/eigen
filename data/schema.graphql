@@ -29584,6 +29584,16 @@ type Partner implements Node {
   ): ArtistsWithAlertCountsConnection
 
   """
+  An Artwork belonging to this partner, scoped so it can only resolve artworks this partner owns and the current user can manage. Requires authentication.
+  """
+  artwork(
+    """
+    The slug or ID of the Artwork
+    """
+    id: String!
+  ): Artwork
+
+  """
   Artwork duplicate pairs for this partner
   """
   artworkDuplicatePairsConnection(
@@ -30255,6 +30265,16 @@ type Partner implements Node {
   vatInformation: String
   vatNumber: String
   vatStatus: String
+
+  """
+  A Viewing Room belonging to this partner, scoped so it can only resolve viewing rooms this partner owns and the current user can manage. Requires authentication.
+  """
+  viewingRoom(
+    """
+    The ID of the Viewing Room
+    """
+    id: ID!
+  ): ViewingRoom
   viewingRoomsConnection(
     after: String
     before: String
