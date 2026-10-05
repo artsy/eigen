@@ -1,4 +1,11 @@
 import {
+  ActionType,
+  ContextModule,
+  OwnerType,
+  ScreenOwnerType,
+  TappedCardGroup,
+} from "@artsy/cohesion"
+import {
   CameraStrokeIcon,
   ImageSetIcon,
   MapPinIcon,
@@ -12,10 +19,22 @@ import { useEnableArtAssistant } from "app/utils/hooks/useEnableArtAssistant"
 import { useEnableArtsyLens } from "app/utils/hooks/useEnableArtsyLens"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isTablet } from "react-native-device-info"
+import { useTracking } from "react-tracking"
 
 const ICON_SIZE = 20
 
+interface DiscoveryMethodCard {
+  title: string
+  description: string
+  href: string
+  icon: React.ReactNode
+  beta: boolean
+  visible: boolean
+  destinationOwnerType: ScreenOwnerType
+}
+
 export const FindInspirationDifferently: React.FC = () => {
+  const { trackEvent } = useTracking()
   const space = useSpace()
   const { width: screenWidth } = useScreenDimensions()
   const showArtsyLens = useEnableArtsyLens()
@@ -30,9 +49,26 @@ export const FindInspirationDifferently: React.FC = () => {
   const columns = isTabletDevice ? 4 : 2
   const cardWidth = (screenWidth - space(2) * 2 - space(1) * (columns - 1)) / columns
   const cardHeight = Math.max(125, cardWidth * 0.8)
+  const cityGuideHref = enableCityGuideItineraries ? "/city-guide" : "/local-discovery"
+  const cityGuideOwnerType = enableCityGuideItineraries
+    ? OwnerType.cityGuide
+    : OwnerType.cityGuideMap
+
+  const trackCardGroup = (destinationOwnerType: ScreenOwnerType, href: string) => {
+    const event: TappedCardGroup = {
+      action: ActionType.tappedCardGroup,
+      context_module: ContextModule.artDiscoveryMethods,
+      context_screen_owner_type: OwnerType.search,
+      destination_screen_owner_type: destinationOwnerType,
+      destination_path: href,
+      type: "thumbnail",
+    }
+
+    trackEvent(event)
+  }
 
   // The SVGs have different internal insets; align their visible strokes with the card padding.
-  const cards = [
+  const cards: DiscoveryMethodCard[] = [
     {
       title: "Artsy Lens",
       description: "Find matching art with just a photo",
@@ -48,6 +84,7 @@ export const FindInspirationDifferently: React.FC = () => {
       ),
       beta: true,
       visible: showArtsyLens,
+      destinationOwnerType: OwnerType.searchByImage,
     },
     {
       title: "Art Assistant",
@@ -64,11 +101,12 @@ export const FindInspirationDifferently: React.FC = () => {
       ),
       beta: true,
       visible: showArtAssistant,
+      destinationOwnerType: OwnerType.artAssistant,
     },
     {
       title: "City Guide",
       description: "Create your own art world hit list",
-      href: enableCityGuideItineraries ? "/city-guide" : "/local-discovery",
+      href: cityGuideHref,
       icon: (
         <MapPinIcon
           width={ICON_SIZE}
@@ -81,6 +119,7 @@ export const FindInspirationDifferently: React.FC = () => {
       beta: true,
       // City Guide (both the new and the legacy versions) is not supported on tablets
       visible: !isTabletDevice,
+      destinationOwnerType: cityGuideOwnerType,
     },
     {
       title: "Discover Daily",
@@ -97,21 +136,24 @@ export const FindInspirationDifferently: React.FC = () => {
       ),
       beta: false,
       visible: true,
+      destinationOwnerType: OwnerType.infiniteDiscoveryArtwork,
     },
-  ].filter((card) => card.visible)
+  ]
+  const visibleCards = cards.filter((card) => card.visible)
 
   return (
     <Flex px={2} pt={1}>
       <SectionTitle title="Discover Art Your Way" />
 
       <Flex flexDirection="row" flexWrap="wrap" gap={1}>
-        {cards.map((card) => (
+        {visibleCards.map((card) => (
           <RouterLink
             key={card.title}
             to={card.href}
             accessibilityRole="button"
             accessibilityLabel={card.beta ? `${card.title}, beta` : card.title}
             accessibilityHint={card.description}
+            onPress={() => trackCardGroup(card.destinationOwnerType, card.href)}
           >
             <Flex
               width={cardWidth}
