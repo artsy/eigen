@@ -4,6 +4,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { useEnableArtAssistant } from "app/utils/hooks/useEnableArtAssistant"
 import { useEnableArtsyLens } from "app/utils/hooks/useEnableArtsyLens"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { isTablet } from "react-native-device-info"
 
@@ -73,6 +74,56 @@ describe("FindInspirationDifferently", () => {
     )
   })
 
+  it.each([
+    {
+      name: "Artsy Lens, beta",
+      href: "/lens",
+      event: {
+        action: "tappedCardGroup",
+        context_module: "artDiscoveryMethods",
+        context_screen_owner_type: "search",
+        destination_screen_owner_type: "searchByImage",
+        destination_path: "/lens",
+        type: "thumbnail",
+      },
+    },
+    {
+      name: "Art Assistant, beta",
+      href: "/art-assistant",
+      event: {
+        action: "tappedCardGroup",
+        context_module: "artDiscoveryMethods",
+        context_screen_owner_type: "search",
+        destination_screen_owner_type: "artAssistant",
+        destination_path: "/art-assistant",
+        type: "thumbnail",
+      },
+    },
+    {
+      name: "Discover Daily",
+      href: "/infinite-discovery",
+      event: {
+        action: "tappedCardGroup",
+        context_module: "artDiscoveryMethods",
+        context_screen_owner_type: "search",
+        destination_screen_owner_type: "infiniteDiscoveryArtwork",
+        destination_path: "/infinite-discovery",
+        type: "thumbnail",
+      },
+    },
+  ])("tracks one event and opens $name when its card is tapped", ({ name, href, event }) => {
+    jest.mocked(useEnableArtsyLens).mockReturnValue(true)
+    jest.mocked(useEnableArtAssistant).mockReturnValue(true)
+
+    renderWithWrappers(<FindInspirationDifferently />)
+
+    fireEvent.press(screen.getByRole("button", { name }))
+
+    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+    expect(mockTrackEvent).toHaveBeenCalledWith(event)
+    expect(navigate).toHaveBeenCalledWith(href)
+  })
+
   it("opens the new City Guide when the itineraries flag is on", () => {
     jest.mocked(useFeatureFlag).mockReturnValue(true)
 
@@ -81,6 +132,15 @@ describe("FindInspirationDifferently", () => {
     fireEvent.press(screen.getByRole("button", { name: "City Guide, beta" }))
 
     expect(navigate).toHaveBeenCalledWith("/city-guide")
+    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedCardGroup",
+      context_module: "artDiscoveryMethods",
+      context_screen_owner_type: "search",
+      destination_screen_owner_type: "cityGuide",
+      destination_path: "/city-guide",
+      type: "thumbnail",
+    })
   })
 
   it("opens the legacy City Guide when the itineraries flag is off", () => {
@@ -89,6 +149,15 @@ describe("FindInspirationDifferently", () => {
     fireEvent.press(screen.getByRole("button", { name: "City Guide, beta" }))
 
     expect(navigate).toHaveBeenCalledWith("/local-discovery")
+    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedCardGroup",
+      context_module: "artDiscoveryMethods",
+      context_screen_owner_type: "search",
+      destination_screen_owner_type: "cityGuideMap",
+      destination_path: "/local-discovery",
+      type: "thumbnail",
+    })
   })
 
   it("hides City Guide on tablets", () => {
