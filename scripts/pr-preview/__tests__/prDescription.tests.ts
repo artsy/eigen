@@ -1,7 +1,10 @@
+import { readFileSync } from "fs"
+import { join } from "path"
 import {
   BLOCK_END,
   BLOCK_START,
   buildPreviewReport,
+  EMPTY_REPORT,
   isNativeStatus,
   isPublishResult,
   parsePullRequestBody,
@@ -160,6 +163,28 @@ describe("upsertPreviewBlock", () => {
       expect(third.split(BLOCK_END)).toHaveLength(first.split(BLOCK_END).length)
     }
   )
+})
+
+describe("clearing the block", () => {
+  const clear = (body: string) => upsertPreviewBlock({ body, report: EMPTY_REPORT })
+
+  it("puts the template's placeholder in place of a report and keeps the text around it", () => {
+    const body = `Intro\n\n${BLOCK_START}\n### PR preview\nPublished\n${BLOCK_END}\n\nOutro`
+
+    expect(clear(body)).toEqual(`Intro\n\n${BLOCK_START}\n${EMPTY_REPORT}\n${BLOCK_END}\n\nOutro`)
+  })
+
+  it("changes nothing the second time", () => {
+    const once = clear(`Intro\n\n${BLOCK_START}\nreport\n${BLOCK_END}`)
+
+    expect(clear(once)).toEqual(once)
+  })
+
+  it("uses the placeholder from the PR template", () => {
+    const template = readFileSync(join(__dirname, "../../../docs/pull_request_template.md"), "utf8")
+
+    expect(template).toContain(EMPTY_REPORT)
+  })
 })
 
 describe("parsePullRequestBody", () => {

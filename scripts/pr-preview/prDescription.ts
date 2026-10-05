@@ -14,6 +14,10 @@ export const isPublishResult = (value: string): value is PublishResult =>
 export const BLOCK_START = "<!-- pr-preview:start -->"
 export const BLOCK_END = "<!-- pr-preview:end -->"
 
+/** What the PR template shows before a preview exists. Keep in sync with docs/pull_request_template.md. */
+export const EMPTY_REPORT =
+  "<!-- PR preview section, to be updated when there's a preview bundle for the PR -->"
+
 interface PreviewReportInput {
   status: NativeStatus
   publishResult: PublishResult
