@@ -10,6 +10,7 @@ import { version } from "./../../../app.json"
 import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { DevToggleMap, FeatureMap } from "./config/FeaturesModel"
 import { persistenceMiddleware, unpersist } from "./persistence"
+import type { HomeFeedArm } from "app/Scenes/MyProfile/DevicePrefsModel"
 
 function createGlobalStore() {
   const middleware: Middleware[] = []
@@ -181,6 +182,11 @@ export function unsafe_getDevToggle(key: DevToggleName) {
     throw new Error(`Unable to access ${key} before GlobalStore bootstraps`)
   }
   return false
+}
+
+export function unsafe_getHomeFeedArm(): HomeFeedArm {
+  const state = globalStoreInstance().getState() ?? null
+  return state?.devicePrefs.homeFeedArm ?? "off"
 }
 
 export function unsafe_getUserAccessToken() {

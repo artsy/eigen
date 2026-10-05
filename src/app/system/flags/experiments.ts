@@ -33,6 +33,11 @@ export const experiments = {
   "onyx_send-art-assistant-messages-to-segment": {
     description: "Send Art Assistant message and response text to Segment",
   },
+  "onyx_home-feed-simplification": {
+    description:
+      "Home feed simplification A/B/C test (reduced-content baseline + variants). Note: section composition is decided server-side in Metaphysics by userID; a dev-menu override here only affects client-side reads, not the MP-composed feed.",
+    variantSuggestions: ["control", "reduced_current", "hierarchy_breadth", "merchandising"],
+  },
 } satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments

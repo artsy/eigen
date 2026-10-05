@@ -11,6 +11,7 @@ import { EnvironmentOptions } from "app/system/devTools/DevMenu/Components/Envir
 import { Experiments } from "app/system/devTools/DevMenu/Components/Experiments"
 import { ExpoUpdatesOptions } from "app/system/devTools/DevMenu/Components/ExpoUpdatesOptions"
 import { FeatureFlags } from "app/system/devTools/DevMenu/Components/FeatureFlags"
+import { HomeFeedArmOptions } from "app/system/devTools/DevMenu/Components/HomeFeedArmOptions"
 import { NavButtons } from "app/system/devTools/DevMenu/Components/NavButtons"
 import { NavigateTo } from "app/system/devTools/DevMenu/Components/NavigateTo"
 import { PreviewPROptions } from "app/system/devTools/DevMenu/Components/PreviewPROptions"
@@ -104,6 +105,7 @@ export const DevMenu: React.FC<{}> = () => {
       <Join separator={<Spacer y={1} />}>
         <NavigateTo />
         <EnvironmentOptions onClose={goBack} />
+        <HomeFeedArmOptions />
         <ExpoUpdatesOptions />
         <PreviewPROptions />
         <PushNotificationOptions />

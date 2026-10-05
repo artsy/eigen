@@ -6,16 +6,30 @@ import { Appearance, Platform, StatusBar } from "react-native"
 
 export type DarkModeOption = "on" | "off" | "system"
 
+export const HOME_FEED_ARMS = [
+  "off",
+  "control",
+  "reduced_current",
+  "hierarchy_breadth",
+  "merchandising",
+] as const
+export type HomeFeedArm = (typeof HOME_FEED_ARMS)[number]
+
 export interface DevicePrefsModel {
   environment: EnvironmentModel
   sessionState: {
     isDeepZoomModalVisible: boolean
     key: number
   }
+  // dev-only override that forces the server-composed home feed arm (via the
+  // x-home-feed-arm header). "off" means send no header / normal assignment.
+  homeFeedArm: HomeFeedArm
+
   // color scheme
   darkModeOption: DarkModeOption
   colorScheme: Computed<this, "light" | "dark", GlobalStoreModel>
 
+  setHomeFeedArm: Action<this, HomeFeedArm>
   setDarkModeOption: Action<this, DarkModeOption>
   setIsDeepZoomModalVisible: Action<this, this["sessionState"]["isDeepZoomModalVisible"]>
   updateStatusBarStyle: EffectOn<this>
@@ -29,6 +43,8 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
     isDeepZoomModalVisible: false,
     key: 0,
   },
+
+  homeFeedArm: "off",
 
   darkModeOption: "system",
   colorScheme: computed([(_, store) => store], (store) => {
@@ -52,6 +68,9 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
     }
   }),
 
+  setHomeFeedArm: action((state, arm) => {
+    state.homeFeedArm = arm
+  }),
   setDarkModeOption: action((state, option) => {
     state.darkModeOption = option
   }),

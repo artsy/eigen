@@ -3,6 +3,7 @@ import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import {
   getCurrentEmissionState,
   globalStoreInstance,
+  unsafe_getHomeFeedArm,
   unsafe__getEnvironment,
 } from "app/store/GlobalStore"
 import { CACHEABLE_DIRECTIVE_REGEX } from "app/system/relay/helpers/cacheHeaderMiddlewareHelpers"
@@ -103,9 +104,14 @@ export function metaphysicsURLMiddleware() {
         // If using CDN, include them only if the request is not cacheable
         shouldSkipCDNCache(req as GraphQLRequest)
 
+      // dev-only home feed arm override; rides only CDN-skipping (personalized)
+      // requests so it can't poison the shared CDN cache. MP ignores it on prod.
+      const homeFeedArm = unsafe_getHomeFeedArm()
+
       const authHeaders = {
         "X-USER-ID": userID,
         "X-ACCESS-TOKEN": authenticationToken,
+        ...(homeFeedArm !== "off" ? { "x-home-feed-arm": homeFeedArm } : {}),
       }
 
       return {
