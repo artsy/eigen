@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react-native"
-import { DynamicIslandEnvironmentIndicator } from "app/utils/DynamicIslandStagingIndicator"
+import { DynamicIslandEnvironmentIndicator } from "app/utils/DynamicIslandEnvironmentIndicator"
 import { useEnvironmentColor } from "app/utils/hooks/useEnvironmentColor"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Platform, StyleSheet, useWindowDimensions } from "react-native"
