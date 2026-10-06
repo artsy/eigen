@@ -39,6 +39,7 @@ export const environment = defineEnvironmentOptions({
       local: "http://localhost:5001/v2",
       staging: "https://metaphysics-cdn-staging.artsy.net/v2",
       production: "https://metaphysics-cdn.artsy.net/v2",
+      reviewApp: "https://metaphysics-homefeed-simplify.artsy.net/v2",
     },
   },
   metaphysicsURL: {
