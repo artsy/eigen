@@ -13680,7 +13680,6 @@ __metadata:
     react-native-performance: "npm:5.1.4"
     react-native-permissions: "npm:5.4.4"
     react-native-reanimated: "npm:4.5.1"
-    react-native-reanimated-zoom: "npm:0.3.3"
     react-native-render-html: "npm:6.3.4"
     react-native-safe-area-context: "patch:react-native-safe-area-context@npm%3A5.7.0#~/.yarn/patches/react-native-safe-area-context-npm-5.7.0-fcff6bf187.patch"
     react-native-screens: "npm:4.26.0"
@@ -13694,6 +13693,7 @@ __metadata:
     react-native-webview: "npm:13.16.1"
     react-native-worklets: "npm:0.10.1"
     react-native-youtube-iframe: "npm:2.4.1"
+    react-native-zoom-reanimated: "npm:1.6.0"
     react-relay: "npm:18.2.0"
     react-relay-network-modern: "npm:6.2.2"
     react-test-renderer: "npm:19.2.3"
@@ -22083,18 +22083,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated-zoom@npm:0.3.3":
-  version: 0.3.3
-  resolution: "react-native-reanimated-zoom@npm:0.3.3"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-    react-native-gesture-handler: "*"
-    react-native-reanimated: "*"
-  checksum: 10c0/91770ef305c9b978dc0f4e4088ea17e8637eda58a111ed64a4a544df9c562b744f99edd1a814e9c5f53c48b437e6ea6c2d1b0ca4c501a6f8b6498c0f23ff0e5d
-  languageName: node
-  linkType: hard
-
 "react-native-reanimated@npm:4.5.1":
   version: 4.5.1
   resolution: "react-native-reanimated@npm:4.5.1"
@@ -22306,6 +22294,18 @@ __metadata:
     react-native-webview:
       optional: true
   checksum: 10c0/966fe52c3a298b01e58259d3f9bf9c94d8764ec7452918f9e0b2cc7f977461b8d9d8e3023a1b5fcc6ca0d470ec0ea3cc4dc1714a6e6ae62b3b16e552faf8deda
+  languageName: node
+  linkType: hard
+
+"react-native-zoom-reanimated@npm:1.6.0":
+  version: 1.6.0
+  resolution: "react-native-zoom-reanimated@npm:1.6.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-gesture-handler: ">=2.0.0"
+    react-native-reanimated: ">=3.0.0"
+  checksum: 10c0/eae42228b5ef2440a6027107ac7660eb2c57ae01b43e480b7e2b401e4c97e3b6ca2677db9c06ecf5a305849f6fcec2ccf925d9b5e92ea2f237c1b4fd5dd26a08
   languageName: node
   linkType: hard
 
