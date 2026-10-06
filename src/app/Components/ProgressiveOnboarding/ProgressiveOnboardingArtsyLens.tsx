@@ -3,7 +3,7 @@ import { Flex, Popover, Text } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
 import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
-import { GlobalStore } from "app/store/GlobalStore"
+import { getCurrentEmissionState, GlobalStore } from "app/store/GlobalStore"
 import { PROGRESSIVE_ONBOARDING_ARTSY_LENS } from "app/store/ProgressiveOnboardingModel"
 import { Sentinel } from "app/utils/Sentinel"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
@@ -17,6 +17,7 @@ export const ProgressiveOnboardingArtsyLens: React.FC<
 > = ({ children, isSearchOverlayVisible, ownerType }) => {
   const [isInView, setIsInView] = useState(false)
   const isFocused = useIsFocused()
+  const { launchCount } = getCurrentEmissionState()
   const {
     isDismissed,
     sessionState: { isReady, deferHomeTooltipsThisSession },
@@ -29,6 +30,7 @@ export const ProgressiveOnboardingArtsyLens: React.FC<
   })
 
   const isDisplayable =
+    launchCount >= 3 &&
     isReady &&
     isFocused &&
     isInView &&
