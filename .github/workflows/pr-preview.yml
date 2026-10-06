@@ -1,18 +1,9 @@
 name: PR Preview
 
-# While a PR carries the `preview` label, or its branch name starts with `review-app-`, every push
-# publishes its JS bundle to the Expo Updates channel `review-app-<number>`, as long as the PR
-# has not changed native code. Draft PRs count.
-#
 # The native check (scripts/pr-preview/checkNativeStatus.ts) compares three fingerprints:
 #   level:  PR matches main's latest build        -> publish
 #   behind: main changed native code since the PR -> publish, and warn in the PR description
 #   ahead:  the PR changed native code            -> don't publish, ask for new betas
-# The result is written into a managed block of the PR description.
-#
-# Removing the label or closing the PR deletes the channel and its branch from Expo, then resets
-# that block of the description to the placeholder the PR template starts with. On a `review-app-*`
-# branch, removing the label does nothing: the branch name still asks for a preview.
 
 on:
   pull_request:
@@ -20,25 +11,22 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write # edit the PR description
+  pull-requests: write
 
 env:
   CHANNEL: review-app-${{ github.event.pull_request.number }}
 
-# Runs for one PR share a group, so a newer push cancels an older publish, and closing the PR or
-# removing the label cancels a publish before cleanup. Label events for any other label do nothing,
-# so they get their own group (the run id). Otherwise adding an unrelated label would cancel a
-# running publish, then skip itself, and leave no preview.
+# Events for any other label get their own group, so they can't cancel a running publish.
+# Removing the label from a `review-app-*` PR still cancels one. Though it's rare, the next push fixes it.
 concurrency:
   group: pr-preview-${{ github.event.pull_request.number }}-${{ (github.event.action == 'labeled' || github.event.action == 'unlabeled') && github.event.label.name != 'preview' && github.run_id || 'shared' }}
   cancel-in-progress: true
 
 jobs:
-  # Fingerprint at the commit where the PR branched off main. Main's workflow caches it under
-  # native-fingerprint-<sha>; on a miss we compute it here and save it for the next push.
+  # expo-fingerprint-check.yml caches main's fingerprints as native-fingerprint-<sha>. On a miss,
+  # this job computes the merge base's and saves it for the next push.
   base-fingerprint:
-    # Same-repo PRs only: fork PRs get no secrets, so they would fail inside the setup steps.
-    # The first two jobs carry the gate. Every later job depends on them and is skipped with them.
+    # Same-repo PRs only. Fork PRs get no secrets, so they would fail in the setup steps.
     if: >-
       github.event.pull_request.head.repo.full_name == github.repository &&
       github.event.pull_request.state == 'open' &&
@@ -55,7 +43,6 @@ jobs:
       fp_base: ${{ steps.resolve.outputs.fp_base }}
 
     steps:
-      # The PR head, not the merge commit, and the full history for merge-base
       - name: Checkout PR head
         uses: actions/checkout@v5
         with:
@@ -73,9 +60,9 @@ jobs:
           path: .native-fingerprint
           key: native-fingerprint-${{ steps.merge-base.outputs.sha }}
 
-      # From here to the save step, the tree is the merge base, so the setup actions below are the
-      # ones that existed there. The fingerprint command is inline because the PR's scripts are
-      # missing from older merge bases.
+      # From here to the save step, the tree is at the merge base, so the setup actions below are the
+      # versions from that commit. The fingerprint command is inline because older merge bases don't
+      # have the PR's scripts.
       - name: Checkout merge base
         if: steps.cache.outputs.cache-hit != 'true'
         run: git checkout --detach "${{ steps.merge-base.outputs.sha }}"
@@ -149,7 +136,7 @@ jobs:
           path: .native-fingerprint
           key: native-fingerprint-${{ steps.merge-base.outputs.sha }}
 
-  # Fingerprint at the PR head. Same setup as expo-fingerprint-check.yml, or the hash differs.
+  # The setup must match expo-fingerprint-check.yml, or the hash differs.
   pr-fingerprint:
     if: >-
       github.event.pull_request.head.repo.full_name == github.repository &&
@@ -231,7 +218,6 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
-      # Reads main's latest fingerprint from S3
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -261,7 +247,6 @@ jobs:
           echo "pr=$runtime_pr" >> "$GITHUB_OUTPUT"
           echo "main=$runtime_main" >> "$GITHUB_OUTPUT"
 
-  # `ahead` skips this job: the PR changed native code, so the bundle could crash builds without it.
   publish:
     needs: native-status
     if: needs.native-status.outputs.status != 'ahead'
@@ -308,7 +293,7 @@ jobs:
 
   update-pr-description:
     needs: [native-status, publish]
-    # !cancelled() instead of always(): a run cancelled by a newer push must not write a stale report.
+    # !cancelled() and not always(), so a run cancelled by a newer push doesn't write a stale report.
     if: ${{ !cancelled() && needs.native-status.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
