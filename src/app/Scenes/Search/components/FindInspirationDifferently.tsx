@@ -22,6 +22,7 @@ import { isTablet } from "react-native-device-info"
 import { useTracking } from "react-tracking"
 
 const ICON_SIZE = 20
+const SMALL_CARD_WIDTH = 165
 
 interface DiscoveryMethodCard {
   title: string
@@ -179,7 +180,7 @@ export const FindInspirationDifferently: React.FC = () => {
 
               <Flex>
                 <Text
-                  variant={cardWidth < 175 ? "sm-display" : "md"}
+                  variant={cardWidth < SMALL_CARD_WIDTH ? "sm-display" : "md"}
                   color={cardTextColor}
                   numberOfLines={2}
                 >
