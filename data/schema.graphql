@@ -45,17 +45,72 @@ enum AIAgentActivity {
   THINKING
 }
 
+"""
+Artists to render as cards, in the order they were selected.
+"""
+type AIAgentArtistsSection {
+  artists: [Artist!]!
+}
+
+"""
+Artworks to render as cards, in the order they were selected.
+"""
+type AIAgentArtworksSection {
+  artworks: [Artwork!]!
+}
+
+"""
+One group of cards an earlier answer actually showed the collector -- not everything its prose mentioned.
+"""
+input AIAgentDisplayedSectionInput {
+  entityType: AIAgentEntityType!
+
+  """
+  The entities' `internalID`s, in the order they were displayed.
+  """
+  internalIDs: [String!]!
+}
+
+"""
+The kind of entity a replayed section's ids refer to.
+"""
+enum AIAgentEntityType {
+  ARTIST
+  ARTWORK
+}
+
 union AIAgentEvent = AIAgentTextDelta | AIAgentToolCall | AIAgentToolResult | AIAgentTurnComplete
 
 input AIAgentMessageInput {
+  """
+  Superseded by `displayedSections`. Equivalent to a single ARTWORK section; both may be sent, and ids common to the two are counted once.
+  """
   artworkIDs: [String!]
   content: String!
+
+  """
+  The cards this message showed, by entity type and in display order, so a follow-up like "the second artist" has something to resolve against. Meaningful only on an ASSISTANT message; ignored on a USER one. At most one section is read per message today.
+  """
+  displayedSections: [AIAgentDisplayedSectionInput!]
   role: AIAgentRole!
 }
+
+"""
+A homogeneous group of entities the answer selected. Clients dispatch on `__typename` and may safely ignore a member they don't know yet.
+"""
+union AIAgentResponseSection = AIAgentArtistsSection | AIAgentArtworksSection
 
 enum AIAgentRole {
   ASSISTANT
   USER
+}
+
+"""
+A kind of card group an answer can attach to its prose.
+"""
+enum AIAgentSectionType {
+  ARTISTS
+  ARTWORKS
 }
 
 type AIAgentTextDelta {
@@ -92,10 +147,15 @@ type AIAgentToolResult {
 
 type AIAgentTurnComplete {
   """
-  Artworks referenced in the answer, for rendering as cards.
+  Artworks referenced in the answer, for rendering as cards. Superseded by `sections`, which also carries other entity types; kept in lockstep with the artworks section for clients that predate it.
   """
   artworks: [Artwork!]
   message: String
+
+  """
+  The entity cards accompanying `message`, each section holding one entity type in the order it should be displayed. Empty for a text-only answer or a turn that produced no answer at all. Currently at most one section per answer.
+  """
+  sections: [AIAgentResponseSection!]!
   stopReason: String!
   toolCallCount: Int!
 }
@@ -120,6 +180,11 @@ input AIAgentTurnInput {
   The new user message.
   """
   message: String!
+
+  """
+  The section types this client can render. Defaults to `[ARTWORKS]` when omitted, so a client that predates `sections` keeps working off the legacy `artworks` field. Declare a type only once you render it: the answer's prose is written on the assumption that the cards it asked for will appear, so a section you drop reads as a broken answer rather than a missing rail. Keep the set constant for a build rather than varying it per turn.
+  """
+  supportedSections: [AIAgentSectionType!]
 }
 
 type AIPromptTemplate {

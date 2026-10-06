@@ -3,7 +3,6 @@ import { Flex, Text } from "@artsy/palette-mobile"
 import { ArtAssistantArtworkRailQuery } from "__generated__/ArtAssistantArtworkRailQuery.graphql"
 import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
 import { ArtworkRail, ArtworkRailPlaceholder } from "app/Components/ArtworkRail/ArtworkRail"
-import { ArtAssistantArtworkRailState } from "app/Scenes/ArtAssistant/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -11,7 +10,8 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ArtAssistantArtworkRailProps {
-  state: ArtAssistantArtworkRailState
+  /** `internalID`s from the answer's artworks section, in the order it chose. */
+  artworkIDs: string[]
 }
 
 const ArtworkRailLoading: React.FC = () => (
@@ -26,65 +26,48 @@ const ArtworkRailEmpty: React.FC = () => (
   </Text>
 )
 
-const ArtworkRailError: React.FC<{ message?: string }> = ({ message }) => (
+const ArtworkRailError: React.FC = () => (
   <Text color="mono60" px={2} variant="xs" testID="art-assistant-artwork-rail-error">
-    {message ?? "Artwork suggestions are unavailable."}
+    Artwork suggestions are unavailable.
   </Text>
 )
 
-export const ArtAssistantArtworkRail: React.FC<ArtAssistantArtworkRailProps> = ({ state }) => {
-  if (state.status === "loading") {
-    return <ArtworkRailLoading />
-  }
-
-  if (state.status === "empty") {
+export const ArtAssistantArtworkRail: React.FC<ArtAssistantArtworkRailProps> = ({ artworkIDs }) => {
+  if (artworkIDs.length === 0) {
     return <ArtworkRailEmpty />
   }
 
-  if (state.status === "error") {
-    return <ArtworkRailError message={state.message} />
-  }
-
-  if (state.artworkIDs.length === 0) {
-    return <ArtworkRailEmpty />
-  }
-
-  return <ArtAssistantArtworkRailQueryRenderer artworkIDs={state.artworkIDs} />
+  return <ArtAssistantArtworkRailQueryRenderer artworkIDs={artworkIDs} />
 }
 
-interface ArtAssistantArtworkRailQueryRendererProps {
-  artworkIDs: string[]
-}
+const ArtAssistantArtworkRailQueryRenderer: React.FC<ArtAssistantArtworkRailProps> = withSuspense({
+  Component: ({ artworkIDs }) => {
+    const data = useLazyLoadQuery<ArtAssistantArtworkRailQuery>(
+      artworkRailQuery,
+      {
+        artworkIDs,
+        first: artworkIDs.length,
+      },
+      { fetchPolicy: "store-or-network" }
+    )
+    const artworks = extractNodes(data.artworksConnection).slice()
+    const rankByID = new Map(artworkIDs.map((id, index) => [id, index]))
 
-const ArtAssistantArtworkRailQueryRenderer: React.FC<ArtAssistantArtworkRailQueryRendererProps> =
-  withSuspense({
-    Component: ({ artworkIDs }) => {
-      const data = useLazyLoadQuery<ArtAssistantArtworkRailQuery>(
-        artworkRailQuery,
-        {
-          artworkIDs,
-          first: artworkIDs.length,
-        },
-        { fetchPolicy: "store-or-network" }
-      )
-      const artworks = extractNodes(data.artworksConnection).slice()
-      const rankByID = new Map(artworkIDs.map((id, index) => [id, index]))
+    artworks.sort(
+      (firstArtwork, secondArtwork) =>
+        (rankByID.get(firstArtwork.internalID) ?? Number.MAX_SAFE_INTEGER) -
+        (rankByID.get(secondArtwork.internalID) ?? Number.MAX_SAFE_INTEGER)
+    )
 
-      artworks.sort(
-        (firstArtwork, secondArtwork) =>
-          (rankByID.get(firstArtwork.internalID) ?? Number.MAX_SAFE_INTEGER) -
-          (rankByID.get(secondArtwork.internalID) ?? Number.MAX_SAFE_INTEGER)
-      )
+    if (artworks.length === 0) {
+      return <ArtworkRailEmpty />
+    }
 
-      if (artworks.length === 0) {
-        return <ArtworkRailEmpty />
-      }
-
-      return <ReadyArtworkRail artworks={artworks} />
-    },
-    LoadingFallback: ArtworkRailLoading,
-    ErrorFallback: () => <ArtworkRailError />,
-  })
+    return <ReadyArtworkRail artworks={artworks} />
+  },
+  LoadingFallback: ArtworkRailLoading,
+  ErrorFallback: () => <ArtworkRailError />,
+})
 
 const ReadyArtworkRail: React.FC<{
   artworks: React.ComponentProps<typeof ArtworkRail>["artworks"]

@@ -56,38 +56,36 @@ describe("ArtAssistantArtworkRail", () => {
     })
   })
 
-  it("renders loading state using the standard rail placeholder", () => {
-    renderWithWrappers(<ArtAssistantArtworkRail state={{ status: "loading" }} />)
+  it("renders loading state using the standard rail placeholder while the query is pending", () => {
+    renderWithWrappers(<ArtAssistantArtworkRail artworkIDs={ARTWORK_IDS} />)
 
     expect(screen.getByTestId("art-assistant-artwork-rail-loading")).toBeOnTheScreen()
   })
 
-  it("renders empty state", () => {
-    renderWithWrappers(<ArtAssistantArtworkRail state={{ status: "empty" }} />)
+  it("renders empty state for a section with no artworks", () => {
+    renderWithWrappers(<ArtAssistantArtworkRail artworkIDs={[]} />)
 
     expect(screen.getByText("No matching artworks found.")).toBeOnTheScreen()
   })
 
-  it("renders empty state for a completed response without artworks", () => {
-    renderWithWrappers(<ArtAssistantArtworkRail state={{ status: "ready", artworkIDs: [] }} />)
+  it("renders empty state when none of the cited artworks resolve", async () => {
+    const { renderWithRelay } = setupTestWrapper<ArtAssistantArtworkRailQuery>({
+      Component: () => <ArtAssistantArtworkRail artworkIDs={ARTWORK_IDS} />,
+    })
 
-    expect(screen.getByText("No matching artworks found.")).toBeOnTheScreen()
-  })
+    renderWithRelay({ Query: () => ({ artworksConnection: { edges: [] } }) })
 
-  it("renders error state", () => {
-    renderWithWrappers(
-      <ArtAssistantArtworkRail state={{ status: "error", message: "Could not load artworks." }} />
+    await waitForElementToBeRemoved(() =>
+      screen.queryByTestId("art-assistant-artwork-rail-loading")
     )
 
-    expect(screen.getByText("Could not load artworks.")).toBeOnTheScreen()
+    expect(screen.getByText("No matching artworks found.")).toBeOnTheScreen()
   })
 })
 
 const renderReadyRail = () => {
   const { renderWithRelay } = setupTestWrapper<ArtAssistantArtworkRailQuery>({
-    Component: () => (
-      <ArtAssistantArtworkRail state={{ status: "ready", artworkIDs: ARTWORK_IDS }} />
-    ),
+    Component: () => <ArtAssistantArtworkRail artworkIDs={ARTWORK_IDS} />,
   })
 
   return renderWithRelay({ Query: () => mockResponse })
