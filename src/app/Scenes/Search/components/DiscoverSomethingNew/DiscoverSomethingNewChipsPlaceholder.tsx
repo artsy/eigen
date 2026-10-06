@@ -12,7 +12,7 @@ export const DiscoverSomethingNewChipsPlaceholder: React.FC = () => {
   return (
     <Skeleton>
       <Flex testID="DiscoverSomethingNewChipsPlaceholder">
-        <SectionTitle title="Discover Something New" mx={2} />
+        <SectionTitle title="Discover Something New" mx={2} mb={1} />
 
         <FlatList
           horizontal

@@ -144,7 +144,7 @@ export const FindInspirationDifferently: React.FC = () => {
 
   return (
     <Flex px={2} pt={1}>
-      <SectionTitle title="Discover Art Your Way" />
+      <SectionTitle title="Discover Art Your Way" mb={1} />
 
       <Flex flexDirection="row" flexWrap="wrap" gap={1}>
         {visibleCards.map((card) => (
