@@ -28,7 +28,6 @@ const mockUseEnvironmentColor = useEnvironmentColor as jest.Mock
 
 describe("DynamicIslandEnvironmentIndicator", () => {
   beforeEach(() => {
-    Platform.OS = "ios"
     mockInsets.top = 62
     mockUseEnvironmentColor.mockReturnValue("orange100")
     ;(useWindowDimensions as jest.Mock).mockReturnValue({ width: 402, height: 874 })
