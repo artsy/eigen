@@ -16,10 +16,11 @@ permissions:
 env:
   CHANNEL: review-app-${{ github.event.pull_request.number }}
 
-# Events for any other label get their own group, so they can't cancel a running publish.
-# Removing the label from a `review-app-*` PR still cancels one. Though it's rare, the next push fixes it.
+# Only events that can publish or clean up share a group. Others get their own (the run id), so they
+# can't cancel a running publish or cleanup. Removing the label from a `review-app-*` PR still
+# cancels a publish. Though it's rare, the next push fixes it.
 concurrency:
-  group: pr-preview-${{ github.event.pull_request.number }}-${{ (github.event.action == 'labeled' || github.event.action == 'unlabeled') && github.event.label.name != 'preview' && github.run_id || 'shared' }}
+  group: pr-preview-${{ github.event.pull_request.number }}-${{ (github.event.label.name == 'preview' || (github.event.action != 'labeled' && github.event.action != 'unlabeled' && (contains(github.event.pull_request.labels.*.name, 'preview') || startsWith(github.event.pull_request.head.ref, 'review-app-')))) && 'shared' || github.run_id }}
   cancel-in-progress: true
 
 jobs:
