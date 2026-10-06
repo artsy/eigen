@@ -1,7 +1,8 @@
 name: PR Preview
 
-# While a PR carries the `preview` label, every push publishes its JS bundle to the Expo Updates
-# channel `review-app-<number>`, as long as the PR has not changed native code.
+# While a PR carries the `preview` label, or its branch name starts with `review-app-`, every push
+# publishes its JS bundle to the Expo Updates channel `review-app-<number>`, as long as the PR
+# has not changed native code. Draft PRs count.
 #
 # The native check (scripts/pr-preview/checkNativeStatus.ts) compares three fingerprints:
 #   level:  PR matches main's latest build        -> publish
@@ -10,11 +11,12 @@ name: PR Preview
 # The result is written into a managed block of the PR description.
 #
 # Removing the label or closing the PR deletes the channel and its branch from Expo, then resets
-# that block of the description to the placeholder the PR template starts with.
+# that block of the description to the placeholder the PR template starts with. On a `review-app-*`
+# branch, removing the label does nothing: the branch name still asks for a preview.
 
 on:
   pull_request:
-    types: [labeled, unlabeled, synchronize, closed]
+    types: [opened, labeled, unlabeled, synchronize, closed]
 
 permissions:
   contents: read
@@ -23,11 +25,12 @@ permissions:
 env:
   CHANNEL: review-app-${{ github.event.pull_request.number }}
 
-# Every event that does nothing gets its own group (the run id). Otherwise, adding an unrelated
-# label would cancel a publish that is still running, then skip itself, and leave no preview.
-# `closed` and removing the `preview` label stay in the shared group so they cancel a running publish.
+# Runs for one PR share a group, so a newer push cancels an older publish, and closing the PR or
+# removing the label cancels a publish before cleanup. Label events for any other label do nothing,
+# so they get their own group (the run id). Otherwise adding an unrelated label would cancel a
+# running publish, then skip itself, and leave no preview.
 concurrency:
-  group: pr-preview-${{ github.event.pull_request.number }}-${{ (github.event.pull_request.head.repo.full_name == github.repository && ((github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'preview')) || ((github.event.action == 'labeled' || github.event.action == 'unlabeled') && github.event.label.name == 'preview') || (github.event.action == 'closed' && contains(github.event.pull_request.labels.*.name, 'preview')))) && 'active' || github.run_id }}
+  group: pr-preview-${{ github.event.pull_request.number }}-${{ (github.event.action == 'labeled' || github.event.action == 'unlabeled') && github.event.label.name != 'preview' && github.run_id || 'shared' }}
   cancel-in-progress: true
 
 jobs:
@@ -41,7 +44,10 @@ jobs:
       github.event.pull_request.state == 'open' &&
       (
         (github.event.action == 'labeled' && github.event.label.name == 'preview') ||
-        (github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'preview'))
+        (
+          (github.event.action == 'synchronize' || github.event.action == 'opened' || github.event.action == 'reopened') &&
+          (contains(github.event.pull_request.labels.*.name, 'preview') || startsWith(github.event.pull_request.head.ref, 'review-app-'))
+        )
       )
     runs-on: macos-26
     timeout-minutes: 20
@@ -150,7 +156,10 @@ jobs:
       github.event.pull_request.state == 'open' &&
       (
         (github.event.action == 'labeled' && github.event.label.name == 'preview') ||
-        (github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'preview'))
+        (
+          (github.event.action == 'synchronize' || github.event.action == 'opened' || github.event.action == 'reopened') &&
+          (contains(github.event.pull_request.labels.*.name, 'preview') || startsWith(github.event.pull_request.head.ref, 'review-app-'))
+        )
       )
     runs-on: macos-26
     timeout-minutes: 20
@@ -333,8 +342,14 @@ jobs:
     if: >-
       github.event.pull_request.head.repo.full_name == github.repository &&
       (
-        (github.event.action == 'closed' && contains(github.event.pull_request.labels.*.name, 'preview')) ||
-        (github.event.action == 'unlabeled' && github.event.label.name == 'preview')
+        (
+          github.event.action == 'closed' &&
+          (contains(github.event.pull_request.labels.*.name, 'preview') || startsWith(github.event.pull_request.head.ref, 'review-app-'))
+        ) ||
+        (
+          github.event.action == 'unlabeled' && github.event.label.name == 'preview' &&
+          !startsWith(github.event.pull_request.head.ref, 'review-app-')
+        )
       )
     runs-on: ubuntu-latest
     timeout-minutes: 10
