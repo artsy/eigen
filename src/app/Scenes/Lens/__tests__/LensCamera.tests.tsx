@@ -52,9 +52,8 @@ describe("LensCamera", () => {
     renderWithWrappers(<LensCamera {...navigationProps} />)
 
     expect(screen.getByText("ARTSY LENS")).toBeOnTheScreen()
-    expect(
-      screen.getByText("Take a photo and we'll match it with a similar artwork.")
-    ).toBeOnTheScreen()
+    expect(screen.getByText("See something you love?")).toBeOnTheScreen()
+    expect(screen.getByText("We'll find more artworks like it.")).toBeOnTheScreen()
     expect(screen.getByTestId("lens-library-photo-icon")).toBeOnTheScreen()
   })
 

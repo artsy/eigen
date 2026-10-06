@@ -174,8 +174,12 @@ export const LensCamera: React.FC<Props> = ({ navigation }) => {
               </Text>
             </Flex>
 
-            <Text variant="sm" color="mono0" textAlign="center" mt={1}>
-              Take a photo and we'll match it with a similar artwork.
+            <Text variant="lg-display" color="mono0" textAlign="center" mt={1}>
+              See something you love?
+            </Text>
+
+            <Text variant="sm" color="mono0" textAlign="center" mt={0.5}>
+              We'll find more artworks like it.
             </Text>
           </Flex>
         </Flex>
