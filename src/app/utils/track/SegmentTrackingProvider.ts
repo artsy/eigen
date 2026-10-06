@@ -1,6 +1,7 @@
 import { SegmentClient, createClient } from "@segment/analytics-react-native"
 import { BrazePlugin } from "@segment/analytics-react-native-plugin-braze"
 import { addBreadcrumb } from "@sentry/react-native"
+import { isRunningPreviewBundle } from "app/system/devTools/DevMenu/utils/previewPR"
 import { AddAppNamePlugin } from "app/utils/track/AddAppNamePlugin"
 import { AddExpoUpdateIdPlugin } from "app/utils/track/AddExpoUpdateIdPlugin"
 import { visualize } from "app/utils/visualizer"
@@ -12,9 +13,14 @@ export const SEGMENT_TRACKING_PROVIDER = "SEGMENT_TRACKING_PROVIDER"
 
 const visualizeDevToggle = "DTShowAnalyticsVisualiser"
 
-let analytics: SegmentClient
+let analytics: SegmentClient | undefined
 export const SegmentTrackingProvider: TrackingProvider = {
   setup: () => {
+    if (isRunningPreviewBundle()) {
+      console.log("[preview] Segment disabled for PR preview bundle.")
+      return
+    }
+
     // prettier-ignore
     const writeKey = Platform.select({
       ios: __DEV__
@@ -31,14 +37,15 @@ export const SegmentTrackingProvider: TrackingProvider = {
       return null
     }
 
-    analytics = createClient({ writeKey: writeKey })
-    analytics.add({ plugin: new BrazePlugin() })
-    analytics.add({ plugin: new AddAppNamePlugin() })
-    analytics.add({ plugin: new AddExpoUpdateIdPlugin() })
+    const client = createClient({ writeKey: writeKey })
+    client.add({ plugin: new BrazePlugin() })
+    client.add({ plugin: new AddAppNamePlugin() })
+    client.add({ plugin: new AddExpoUpdateIdPlugin() })
+    analytics = client
   },
 
   identify: (userId, traits) => {
-    analytics.identify(userId, traits)
+    analytics?.identify(userId, traits)
   },
 
   postEvent: (info) => {
@@ -51,7 +58,7 @@ export const SegmentTrackingProvider: TrackingProvider = {
     if ("screen_name" in info) {
       const { screen_name, ...rest } = info
       visualize("Screen", screen_name, info, visualizeDevToggle)
-      analytics.screen(screen_name, rest as any)
+      analytics?.screen(screen_name, rest as any)
       return
     }
 
@@ -60,10 +67,10 @@ export const SegmentTrackingProvider: TrackingProvider = {
       if (isCohesionScreen(info)) {
         const { context_screen_owner_type } = info
         visualize("Screen", context_screen_owner_type, info, visualizeDevToggle)
-        analytics.screen(context_screen_owner_type, info as any)
+        analytics?.screen(context_screen_owner_type, info as any)
       } else {
         visualize("Track", action, info, visualizeDevToggle)
-        analytics.track(action, info as any)
+        analytics?.track(action, info as any)
       }
       return
     }
@@ -71,21 +78,21 @@ export const SegmentTrackingProvider: TrackingProvider = {
     if ("action_type" in info) {
       const { action_type, ...rest } = info
       visualize("Track", action_type, info, visualizeDevToggle)
-      analytics.track(action_type, rest as any)
+      analytics?.track(action_type, rest as any)
       return
     }
 
     if ("name" in info) {
       const { name, ...rest } = info
       visualize("Track", name, info, visualizeDevToggle)
-      analytics.track(name, rest as any)
+      analytics?.track(name, rest as any)
       return
     }
 
     if ("context_screen" in info) {
       const { context_screen, ...rest } = info
       visualize("Screen", context_screen, info, visualizeDevToggle)
-      analytics.screen(context_screen, rest as any)
+      analytics?.screen(context_screen, rest as any)
       return
     }
 
