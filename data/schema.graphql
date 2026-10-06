@@ -39267,6 +39267,16 @@ input UpdateArtistSocialsMutationInput {
   Artist's Instagram handle.
   """
   instagramHandle: String
+
+  """
+  Confirms the user has rights to display content from the Instagram account. Required when setting a handle.
+  """
+  instagramHandleAcknowledged: Boolean
+
+  """
+  Partner the user is acting on behalf of. Required, as a verified representative of the artist, when setting a handle.
+  """
+  partnerId: String
 }
 
 type UpdateArtistSocialsMutationPayload {
