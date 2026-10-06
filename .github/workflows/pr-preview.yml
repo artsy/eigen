@@ -8,6 +8,9 @@ name: PR Preview
 #   behind: main changed native code since the PR -> publish, and warn in the PR description
 #   ahead:  the PR changed native code            -> don't publish, ask for new betas
 # The result is written into a managed block of the PR description.
+#
+# Removing the label or closing the PR deletes the channel and its branch from Expo, then resets
+# that block of the description to the placeholder the PR template starts with.
 
 on:
   pull_request:
@@ -324,9 +327,8 @@ jobs:
           RUNTIME_PR: ${{ needs.native-status.outputs.runtime_pr }}
           RUNTIME_MAIN: ${{ needs.native-status.outputs.runtime_main }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: yarn tsx scripts/pr-preview/updatePrDescription.ts
+        run: yarn tsx scripts/pr-preview/updatePrDescription.ts report
 
-  # TODO: PHIRE-3442
   cleanup-preview:
     if: >-
       github.event.pull_request.head.repo.full_name == github.repository &&
@@ -335,8 +337,40 @@ jobs:
         (github.event.action == 'unlabeled' && github.event.label.name == 'preview')
       )
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
 
     steps:
-      - name: Clean up preview channel
-        run: echo "Cleanup of $CHANNEL is not implemented yet."
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup JavaScript environment
+        uses: ./.github/actions/setup-javascript-environment
+
+      - name: Install bin modules
+        uses: ./.github/actions/setup-bin-modules
+
+      - name: Delete preview channel and branch
+        shell: bash
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_UPDATES_TOKEN }}
+        run: |
+          delete() {
+            local kind=$1 out
+            if out=$(./bin/node_modules/.bin/eas "$kind:delete" "$CHANNEL" --non-interactive 2>&1); then
+              echo "$out"
+            elif grep -q "Could not find $kind" <<<"$out"; then
+              echo "$kind $CHANNEL is already gone"
+            else
+              echo "$out" >&2
+              return 1
+            fi
+          }
+          delete channel
+          delete branch
+
+      - name: Reset the preview section of the PR description
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: yarn tsx scripts/pr-preview/updatePrDescription.ts clear
