@@ -14972,6 +14972,11 @@ input CreateArtworkMutationInput {
   partnerId: String!
 
   """
+  If present, the newly created artwork will be added to this partner list (collection).
+  """
+  partnerListId: String
+
+  """
   If present, the newly created artwork will be added to this show.
   """
   partnerShowId: String
