@@ -9,6 +9,8 @@ export interface PreviewPR {
 
 export const PREVIEW_LABEL = "preview"
 
+const REVIEW_APP_BRANCH_PREFIX = "review-app-"
+
 const PREVIEW_CHANNEL_PREFIX = "review-app-"
 
 export const getPreviewChannel = (prNumber: number) => `${PREVIEW_CHANNEL_PREFIX}${prNumber}`
@@ -40,9 +42,14 @@ export const fetchPreviewPR = async (prNumber: number): Promise<PreviewPR> => {
     throw new Error(`PR #${prNumber} is not open`)
   }
 
+  // Same rule as .github/workflows/pr-preview.yml: the label, or a `review-app-*` branch
   const labels: Array<{ name: string }> = pr.labels ?? []
-  if (!labels.some((label) => label.name === PREVIEW_LABEL)) {
-    throw new Error(`PR #${prNumber} doesn't have the "${PREVIEW_LABEL}" label`)
+  const hasPreviewLabel = labels.some((label) => label.name === PREVIEW_LABEL)
+  const isReviewAppBranch = String(pr.head?.ref ?? "").startsWith(REVIEW_APP_BRANCH_PREFIX)
+  if (!hasPreviewLabel && !isReviewAppBranch) {
+    throw new Error(
+      `PR #${prNumber} doesn't have the "${PREVIEW_LABEL}" label and isn't on a ${REVIEW_APP_BRANCH_PREFIX}* branch`
+    )
   }
 
   return {
