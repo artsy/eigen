@@ -1,4 +1,7 @@
-import { itineraryStopFields_image$data } from "__generated__/itineraryStopFields_image.graphql"
+import {
+  itineraryStopFields_image$data,
+  itineraryStopFields_image$key,
+} from "__generated__/itineraryStopFields_image.graphql"
 import { formatStopClockTime } from "app/Scenes/CityGuide/Screens/Itinerary/utils/formatStopClockTime"
 import {
   ItinerarySaveTarget,
@@ -6,7 +9,7 @@ import {
   ItineraryStop,
   ItineraryStopCategory,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
-import { graphql } from "react-relay"
+import { graphql, readInlineData } from "react-relay"
 
 /**
  * Narrows the `Show | Fair | Location` union to the members this client knows. Relay adds a
@@ -127,12 +130,13 @@ export const itineraryStopEvent = (
 }
 
 /**
- * Only what picking a stop's image reads. Spread unmasked into any query that needs a stop's
- * picture (the itinerary screen's, the itinerary image fallback's), so both share
- * `itineraryStopImage` and read the same fields with the same arguments.
+ * Only what picking a stop's image reads. Inline, so `itineraryStopImage` can read it with
+ * `readInlineData` outside render — in a loop over every stop, or a `fetchQuery` callback —
+ * where `useFragment` can't run. Spread into any query that needs a stop's picture (the
+ * itinerary screen's, the itinerary image fallback's), so both pick the same image.
  */
 export const itineraryStopImageFragment = graphql`
-  fragment itineraryStopFields_image on ItineraryStop {
+  fragment itineraryStopFields_image on ItineraryStop @inline {
     image {
       url(version: "small")
       blurhash
@@ -165,14 +169,12 @@ export const itineraryStopImageFragment = graphql`
   }
 `
 
-export type ItineraryStopImageFields = Omit<itineraryStopFields_image$data, " $fragmentType">
-
 /**
  * The entity's own picture, for a stop with no uploaded one. `ItineraryStop.image` is only
  * set when the curator uploaded something, so without this every app-created stop shows an empty box.
  */
 const itemImage = (
-  item: ItineraryStopImageFields["item"]
+  item: itineraryStopFields_image$data["item"]
 ): { url: string; blurhash?: string | null } | undefined => {
   if (!item) return undefined
 
@@ -197,8 +199,10 @@ const itemImage = (
 }
 
 export const itineraryStopImage = (
-  stop: ItineraryStopImageFields
+  stopRef: itineraryStopFields_image$key
 ): { url: string; blurhash?: string | null } | null => {
+  const stop = readInlineData(itineraryStopImageFragment, stopRef)
+
   if (stop.image?.url) {
     return { url: stop.image.url, blurhash: stop.image.blurhash }
   }
@@ -213,7 +217,7 @@ export const itineraryStopImage = (
  * itinerary agrees on the same image rather than each digging for a different one.
  */
 export const itineraryFallbackImage = (
-  sections: ReadonlyArray<{ readonly stops: ReadonlyArray<ItineraryStopImageFields> }>
+  sections: ReadonlyArray<{ readonly stops: ReadonlyArray<itineraryStopFields_image$key> }>
 ): { url: string; blurhash?: string | null } | null => {
   const firstStop = sections.find((section) => section.stops.length > 0)?.stops[0]
 

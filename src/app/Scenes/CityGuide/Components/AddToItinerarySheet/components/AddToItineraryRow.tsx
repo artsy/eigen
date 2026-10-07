@@ -30,7 +30,11 @@ export const AddToItineraryRow: React.FC<Props> = ({
   selected,
   onPress,
 }) => {
-  const fallbackImageUrl = useItineraryFallbackImage({ itineraryID, stopsCount })
+  const fallbackImageUrl = useItineraryFallbackImage({
+    itineraryID,
+    stopsCount,
+    skip: !!serverImageUrl,
+  })
   const imageUrl = serverImageUrl ?? fallbackImageUrl
 
   return (

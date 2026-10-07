@@ -154,13 +154,10 @@ describe("ItineraryListItem", () => {
       expect(screen.getByTestId("itinerary-list-item-no-image")).toBeOnTheScreen()
     })
 
-    it("prefers the uploaded cover over the first stop's image", () => {
+    it("shows the uploaded cover without fetching the stops", () => {
       renderWithWrappers(<ItineraryListItem {...props} itineraryID="abc" />)
 
-      resolveFallback([
-        { internalID: "stop-1", image: { url: "https://example.com/stop-1.jpg" }, item: null },
-      ])
-
+      expect(getMockRelayEnvironment().mock.getAllOperations()).toHaveLength(0)
       expect(screen.getByTestId("itinerary-list-item-image")).toHaveProp(
         "src",
         "https://example.com/hero.jpg"

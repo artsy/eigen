@@ -6,13 +6,15 @@ import { fetchQuery, graphql, useRelayEnvironment } from "react-relay"
 interface Options {
   itineraryID: string | null | undefined
   stopsCount?: number
+  /** Set once the itinerary has a cover of its own, so nothing is fetched just to be discarded. */
+  skip?: boolean
 }
 
 /**
  * The first stop's picture, for the places that list itineraries through
  * `me.itinerariesConnection`: Gravity serialises that listing at `:short`, without sections
  * (see `fetchItinerarySections`), so the stops are read per itinerary through `Query.itinerary`.
- * Fetched whether or not the itinerary has a cover; callers simply prefer the cover.
+ * Only for itineraries with no cover: callers pass `skip` when they already have one.
  *
  * Doesn't suspend: a list of these would otherwise need a boundary per row. Until it resolves
  * (or if it fails) it returns undefined, and the caller keeps its placeholder.
@@ -20,11 +22,12 @@ interface Options {
 export const useItineraryFallbackImage = ({
   itineraryID,
   stopsCount,
+  skip = false,
 }: Options): string | undefined => {
   const environment = useRelayEnvironment()
   const [url, setUrl] = useState<string | undefined>(undefined)
   // A brand new itinerary has no stops to borrow a picture from.
-  const shouldSkip = !itineraryID || stopsCount === 0
+  const shouldSkip = skip || !itineraryID || stopsCount === 0
 
   useEffect(() => {
     if (shouldSkip || !itineraryID) {
@@ -59,7 +62,7 @@ const query = graphql`
         internalID
         stops {
           internalID
-          ...itineraryStopFields_image @relay(mask: false)
+          ...itineraryStopFields_image
         }
       }
     }

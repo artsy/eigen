@@ -556,7 +556,7 @@ export const itineraryQuery = graphql`
             url(version: "small")
             blurhash
           }
-          ...itineraryStopFields_image @relay(mask: false)
+          ...itineraryStopFields_image
           isOnMyItineraries
           myItineraries {
             internalID

@@ -48,7 +48,11 @@ export const ItineraryListItem: React.FC<Props> = ({
   const isCard = variant === "card"
   const color = useColor()
   const localCover = useItineraryLocalCover(itineraryID)
-  const fallbackImageUrl = useItineraryFallbackImage({ itineraryID, stopsCount })
+  const fallbackImageUrl = useItineraryFallbackImage({
+    itineraryID,
+    stopsCount,
+    skip: !!localCover || !!serverImageUrl,
+  })
   const imageUrl = localCover?.path ?? serverImageUrl ?? fallbackImageUrl
 
   return (
