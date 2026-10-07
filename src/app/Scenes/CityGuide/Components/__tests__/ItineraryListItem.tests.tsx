@@ -4,6 +4,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
+import { createOperationDescriptor, getRequest } from "relay-runtime"
 import { MockPayloadGenerator } from "relay-test-utils"
 
 // React-test-renderer has issues with memo components, so we need to mock the palette-mobile
@@ -152,6 +153,68 @@ describe("ItineraryListItem", () => {
       ])
 
       expect(screen.getByTestId("itinerary-list-item-no-image")).toBeOnTheScreen()
+    })
+
+    const seedStore = (sections: object[]) => {
+      const fallbackImageQuery = require("__generated__/useItineraryFallbackImageQuery.graphql")
+      getMockRelayEnvironment().commitPayload(
+        createOperationDescriptor(getRequest(fallbackImageQuery.default ?? fallbackImageQuery), {
+          id: "abc",
+        }),
+        { itinerary: { id: "itinerary-abc", sections } }
+      )
+    }
+
+    it("shows the stored image straight away, then the network's", () => {
+      seedStore([
+        {
+          id: "section-1",
+          internalID: "section-1",
+          stops: [
+            {
+              id: "stop-1",
+              internalID: "stop-1",
+              image: { url: "https://example.com/cached.jpg", blurhash: null },
+              item: null,
+            },
+          ],
+        },
+      ])
+
+      renderWithWrappers(<ItineraryListItem {...props} itineraryID="abc" imageUrl={null} />)
+
+      expect(screen.getByTestId("itinerary-list-item-image")).toHaveProp(
+        "src",
+        "https://example.com/cached.jpg"
+      )
+
+      resolveFallback([
+        { internalID: "stop-1", image: { url: "https://example.com/fresh.jpg" }, item: null },
+      ])
+
+      expect(screen.getByTestId("itinerary-list-item-image")).toHaveProp(
+        "src",
+        "https://example.com/fresh.jpg"
+      )
+    })
+
+    // The sheet reads a brand new itinerary's sections while it's still empty, and adding the
+    // stop afterwards doesn't update that list in the store.
+    it("still asks the network when the store's copy is stale", () => {
+      seedStore([])
+
+      renderWithWrappers(<ItineraryListItem {...props} itineraryID="abc" imageUrl={null} />)
+
+      expect(screen.getByTestId("itinerary-list-item-no-image")).toBeOnTheScreen()
+
+      resolveFallback([
+        { internalID: "stop-1", image: { url: "https://example.com/stop-1.jpg" }, item: null },
+      ])
+
+      expect(screen.getByTestId("itinerary-list-item-image")).toHaveProp(
+        "src",
+        "https://example.com/stop-1.jpg"
+      )
     })
 
     it("shows the uploaded cover without fetching the stops", () => {

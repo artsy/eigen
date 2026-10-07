@@ -2,6 +2,7 @@ import { useItineraryFallbackImageQuery } from "__generated__/useItineraryFallba
 import { itineraryFallbackImage } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { useEffect, useState } from "react"
 import { fetchQuery, graphql, useRelayEnvironment } from "react-relay"
+import { createOperationDescriptor, getRequest } from "relay-runtime"
 
 interface Options {
   itineraryID: string | null | undefined
@@ -35,15 +36,24 @@ export const useItineraryFallbackImage = ({
       return
     }
 
+    const pickURL = (data: useItineraryFallbackImageQuery["response"]) =>
+      itineraryFallbackImage(data.itinerary?.sections ?? [])?.url
+
+    // store-and-network, which `fetchQuery` doesn't offer: the store may be stale after a stop
+    // is added, so it only shows first.
+    const operation = createOperationDescriptor(getRequest(query), { id: itineraryID })
+    if (environment.check(operation).status === "available") {
+      const cached = environment.lookup(operation.fragment).data
+      setUrl(pickURL(cached as useItineraryFallbackImageQuery["response"]))
+    }
+
     const subscription = fetchQuery<useItineraryFallbackImageQuery>(
       environment,
       query,
       { id: itineraryID },
-      { fetchPolicy: "store-or-network" }
+      { fetchPolicy: "network-only" }
     ).subscribe({
-      next: (data) => {
-        setUrl(itineraryFallbackImage(data.itinerary?.sections ?? [])?.url)
-      },
+      next: (data) => setUrl(pickURL(data)),
       error: () => {
         // Keep the placeholder.
       },
