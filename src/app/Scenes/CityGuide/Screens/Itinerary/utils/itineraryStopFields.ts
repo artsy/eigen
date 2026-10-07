@@ -1,3 +1,4 @@
+import { itineraryStopFields_image$data } from "__generated__/itineraryStopFields_image.graphql"
 import { formatStopClockTime } from "app/Scenes/CityGuide/Screens/Itinerary/utils/formatStopClockTime"
 import {
   ItinerarySaveTarget,
@@ -5,6 +6,7 @@ import {
   ItineraryStop,
   ItineraryStopCategory,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+import { graphql } from "react-relay"
 
 /**
  * Narrows the `Show | Fair | Location` union to the members this client knows. Relay adds a
@@ -125,11 +127,52 @@ export const itineraryStopEvent = (
 }
 
 /**
+ * Only what picking a stop's image reads. Spread unmasked into any query that needs a stop's
+ * picture (the itinerary screen's, the itinerary image fallback's), so both share
+ * `itineraryStopImage` and read the same fields with the same arguments.
+ */
+export const itineraryStopImageFragment = graphql`
+  fragment itineraryStopFields_image on ItineraryStop {
+    image {
+      url(version: "small")
+      blurhash
+    }
+    item {
+      __typename
+      ... on Show {
+        coverImage {
+          url
+          blurhash
+        }
+      }
+      ... on Fair {
+        image {
+          url
+          blurhash
+        }
+      }
+      ... on Location {
+        partner {
+          profile {
+            image {
+              url
+              blurhash
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+export type ItineraryStopImageFields = Omit<itineraryStopFields_image$data, " $fragmentType">
+
+/**
  * The entity's own picture, for a stop with no uploaded one. `ItineraryStop.image` is only
  * set when the curator uploaded something, so without this every app-created stop shows an empty box.
  */
 const itemImage = (
-  item: ItineraryStop["item"]
+  item: ItineraryStopImageFields["item"]
 ): { url: string; blurhash?: string | null } | undefined => {
   if (!item) return undefined
 
@@ -154,13 +197,27 @@ const itemImage = (
 }
 
 export const itineraryStopImage = (
-  stop: ItineraryStop
+  stop: ItineraryStopImageFields
 ): { url: string; blurhash?: string | null } | null => {
   if (stop.image?.url) {
     return { url: stop.image.url, blurhash: stop.image.blurhash }
   }
 
   return itemImage(stop.item) ?? null
+}
+
+/**
+ * Stands in for an itinerary's cover while it has none: the first stop's picture, in the order
+ * the itinerary screen lists its stops — sections as they arrive, then stops within each. Only
+ * the first stop: if it has no picture there is no fallback, so every place showing the
+ * itinerary agrees on the same image rather than each digging for a different one.
+ */
+export const itineraryFallbackImage = (
+  sections: ReadonlyArray<{ readonly stops: ReadonlyArray<ItineraryStopImageFields> }>
+): { url: string; blurhash?: string | null } | null => {
+  const firstStop = sections.find((section) => section.stops.length > 0)?.stops[0]
+
+  return firstStop ? itineraryStopImage(firstStop) : null
 }
 
 /**

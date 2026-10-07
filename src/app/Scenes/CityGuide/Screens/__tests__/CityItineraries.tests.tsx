@@ -114,10 +114,15 @@ describe("CityItineraries", () => {
       screen.UNSAFE_getByType(RefreshControl).props.onRefresh()
     })
 
-    await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
-    expect(view.env.mock.getAllOperations()[0].request.node.params.name).toBe(
-      "CityItinerariesPaginationQuery"
-    )
+    const listOperations = () =>
+      view.env.mock
+        .getAllOperations()
+        .filter(
+          (operation) => operation.request.node.params.name !== "useItineraryFallbackImageQuery"
+        )
+
+    await waitFor(() => expect(listOperations().length).toBe(1))
+    expect(listOperations()[0].request.node.params.name).toBe("CityItinerariesPaginationQuery")
     expect(screen.getByText("A")).toBeOnTheScreen()
   })
 })

@@ -45,6 +45,7 @@ const stop = (n: number) => ({
   category: "GALLERY",
   note: null,
   imageURL: null,
+  image: null,
   latitude: 51.5,
   longitude: -0.1,
   startTime: "11:00am",
@@ -200,6 +201,52 @@ describe("ItineraryScreen", () => {
     expect(await screen.findByText("Chill Vibes Only")).toBeOnTheScreen()
     expect(screen.queryByTestId("itinerary-hero-image")).not.toBeOnTheScreen()
     expect(screen.queryByTestId("itinerary-hero-scrim")).not.toBeOnTheScreen()
+  })
+
+  it("falls back to the first stop's image when the itinerary has no hero", async () => {
+    renderWithRelay(
+      {
+        Itinerary: () => ({
+          ...ITINERARY,
+          heroImage: null,
+          sections: [
+            {
+              ...ITINERARY.sections[0],
+              stops: [{ ...stop(1), image: { url: "https://example.com/stop-1.jpg" } }, stop(2)],
+            },
+            ITINERARY.sections[1],
+          ],
+        }),
+      },
+      props
+    )
+
+    expect(await screen.findByTestId("itinerary-hero-image")).toHaveProp(
+      "src",
+      "https://example.com/stop-1.jpg"
+    )
+  })
+
+  it("has no fallback when the first stop has no image, even if a later one does", async () => {
+    renderWithRelay(
+      {
+        Itinerary: () => ({
+          ...ITINERARY,
+          heroImage: null,
+          sections: [
+            {
+              ...ITINERARY.sections[0],
+              stops: [stop(1), { ...stop(2), image: { url: "https://example.com/stop-2.jpg" } }],
+            },
+            ITINERARY.sections[1],
+          ],
+        }),
+      },
+      props
+    )
+
+    expect(await screen.findByText("Chill Vibes Only")).toBeOnTheScreen()
+    expect(screen.queryByTestId("itinerary-hero-image")).not.toBeOnTheScreen()
   })
 
   describe("your own itinerary", () => {
