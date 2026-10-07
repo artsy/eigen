@@ -130,9 +130,6 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
-  const previouslyAppliedFiltersState = ArtworksFiltersStore.useStoreState(
-    (state) => state.previouslyAppliedFilters
-  )
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
 
   const applyFiltersAction = ArtworksFiltersStore.useStoreActions(
@@ -207,11 +204,15 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
     })
   }
 
-  const isApplyButtonEnabled =
-    selectedFiltersState.length > 0 ||
-    (previouslyAppliedFiltersState.length === 0 && appliedFiltersState.length > 0)
-
   const handleApplyPress = () => {
+    // nothing staged to apply: treat the tap as a dismissal, reusing the same
+    // path as closing the panel — unlike exitModal, this lets consumers that
+    // only track dismissals (not applies) see this one.
+    if (selectedFiltersState.length === 0) {
+      handleClosingModal()
+      return
+    }
+
     const appliedFiltersParams = filterArtworksParams(appliedFiltersState, filterTypeState)
     // TODO: Update to use cohesion
     switch (mode) {
@@ -435,7 +436,6 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
               </Stack.Navigator>
 
               <ArtworkFilterApplyButton
-                disabled={!isApplyButtonEnabled}
                 onPress={handleApplyPress}
                 onCreateAlertPress={handleCreateAlertPress}
                 shouldShowCreateAlertButton={shouldShowCreateAlertButton}
