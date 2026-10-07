@@ -24,6 +24,7 @@ import { ItineraryHeader } from "app/Scenes/CityGuide/Screens/Itinerary/Componen
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
 import { ItineraryShareButton } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryShareButton"
 import { useReorderItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/useReorderItineraryStop"
+import { itineraryFallbackImage } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { itineraryStopsToMapSections } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToMapSections"
 import {
   ItineraryScrollHandlers,
@@ -270,6 +271,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
     guide copied onto it brings its days along) they need their headings to be told apart.
   */
   const showSectionHeaders = isEditorial || sections.length > 1
+  const fallbackImage = itineraryFallbackImage(sections)
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -409,6 +411,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                     itinerary={itinerary}
                     topInset={top + NAVBAR_HEIGHT}
                     localCoverRefreshKey={coverSavedAt}
+                    fallbackImage={fallbackImage}
                   />
 
                   <Flex px={2} pt={2}>
@@ -553,6 +556,7 @@ export const itineraryQuery = graphql`
             url(version: "small")
             blurhash
           }
+          ...itineraryStopFields_image
           isOnMyItineraries
           myItineraries {
             internalID
