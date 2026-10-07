@@ -1,8 +1,10 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { ItineraryListItem } from "app/Scenes/CityGuide/Components/ItineraryListItem"
 import { navigate } from "app/system/navigation/navigate"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
+import { MockPayloadGenerator } from "relay-test-utils"
 
 // React-test-renderer has issues with memo components, so we need to mock the palette-mobile
 // Image component. See https://github.com/facebook/react/issues/17301
@@ -113,5 +115,53 @@ describe("ItineraryListItem", () => {
     renderWithWrappers(<ItineraryListItem {...props} />)
 
     expect(screen.getByTestId("itinerary-list-item-image")).toBeOnTheScreen()
+  })
+
+  describe("first stop fallback", () => {
+    const resolveFallback = (stops: object[]) => {
+      act(() => {
+        getMockRelayEnvironment().mock.resolveMostRecentOperation((operation) => {
+          expect(operation.request.node.params.name).toBe("useItineraryFallbackImageQuery")
+          return MockPayloadGenerator.generate(operation, {
+            Itinerary: () => ({ sections: [{ internalID: "section-1", stops }] }),
+          })
+        })
+      })
+    }
+
+    it("shows the first stop's image when the itinerary has no cover", () => {
+      renderWithWrappers(<ItineraryListItem {...props} itineraryID="abc" imageUrl={null} />)
+
+      resolveFallback([
+        { internalID: "stop-1", image: { url: "https://example.com/stop-1.jpg" }, item: null },
+        { internalID: "stop-2", image: { url: "https://example.com/stop-2.jpg" }, item: null },
+      ])
+
+      expect(screen.getByTestId("itinerary-list-item-image")).toHaveProp(
+        "src",
+        "https://example.com/stop-1.jpg"
+      )
+    })
+
+    it("keeps the placeholder when the first stop has no image", () => {
+      renderWithWrappers(<ItineraryListItem {...props} itineraryID="abc" imageUrl={null} />)
+
+      resolveFallback([
+        { internalID: "stop-1", image: null, item: null },
+        { internalID: "stop-2", image: { url: "https://example.com/stop-2.jpg" }, item: null },
+      ])
+
+      expect(screen.getByTestId("itinerary-list-item-no-image")).toBeOnTheScreen()
+    })
+
+    it("shows the uploaded cover without fetching the stops", () => {
+      renderWithWrappers(<ItineraryListItem {...props} itineraryID="abc" />)
+
+      expect(getMockRelayEnvironment().mock.getAllOperations()).toHaveLength(0)
+      expect(screen.getByTestId("itinerary-list-item-image")).toHaveProp(
+        "src",
+        "https://example.com/hero.jpg"
+      )
+    })
   })
 })
