@@ -43,6 +43,8 @@ Then run:
 ./scripts/deploys/expo-updates/deploy-to-expo-updates-ci canary
 ```
 
+To let reviewers try a PR without taking over canary, use a [PR preview](creating_pr_preview.md) instead.
+
 By default an update goes out to both platforms. Pass `--platform ios` or `--platform android` to target one.
 
 ### Publishing from an older branch (fallback)
