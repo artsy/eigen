@@ -14652,6 +14652,42 @@ type CreateArtistSuccess {
 
 union CreateArtistSuccessOrErrorType = CreateArtistFailure | CreateArtistSuccess
 
+type CreateArtnetArtworkFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateArtnetArtworkMutationInput {
+  """
+  Artnet's own ID for the artist (Gravity has no mapping to it).
+  """
+  artnetArtistID: Int
+
+  """
+  The ID of the artwork to distribute to Artnet.
+  """
+  artworkID: String!
+  clientMutationId: String
+
+  """
+  Whether Artnet should publish the artwork once created.
+  """
+  published: Boolean
+}
+
+type CreateArtnetArtworkMutationPayload {
+  """
+  On success: the created ArtnetArtwork. On error: the error that occurred.
+  """
+  artnetArtworkOrError: CreateArtnetArtworkResponseOrError
+  clientMutationId: String
+}
+
+union CreateArtnetArtworkResponseOrError = CreateArtnetArtworkFailure | CreateArtnetArtworkSuccess
+
+type CreateArtnetArtworkSuccess {
+  artnetArtwork: ArtnetArtwork
+}
+
 type CreateArtnetImportArtistAssignmentFailure {
   mutationError: GravityMutationError
 }
@@ -26707,6 +26743,11 @@ type Mutation {
   createArtist(input: CreateArtistMutationInput!): CreateArtistMutationPayload
 
   """
+  Creates an ArtnetArtwork from an existing artwork and its catalog artwork, and pushes the create to Artnet. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
+  """
+  createArtnetArtwork(input: CreateArtnetArtworkMutationInput!): CreateArtnetArtworkMutationPayload
+
+  """
   Kicks off a background job to pull a gallery's Artnet inventory and create corresponding Artsy artwork records.
   """
   createArtnetImport(input: CreateArtnetImportMutationInput!): CreateArtnetImportMutationPayload
@@ -27751,6 +27792,11 @@ type Mutation {
   Update an artist's social handles.
   """
   updateArtistSocials(input: UpdateArtistSocialsMutationInput!): UpdateArtistSocialsMutationPayload
+
+  """
+  Updates an ArtnetArtwork and pushes the supported changes to Artnet. At least one of `published`, `availability` or `syncOn` is required. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
+  """
+  updateArtnetArtwork(input: UpdateArtnetArtworkMutationInput!): UpdateArtnetArtworkMutationPayload
 
   """
   Updates an artwork.
@@ -39295,6 +39341,47 @@ type UpdateArtistSocialsSuccess {
 
 type UpdateArtistSuccess {
   artist: Artist
+}
+
+type UpdateArtnetArtworkFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtnetArtworkMutationInput {
+  """
+  Gravity availability (e.g. `for sale`, `sold`), normalized to an Artnet sale status.
+  """
+  availability: String
+  clientMutationId: String
+
+  """
+  The ID of the ArtnetArtwork.
+  """
+  id: String!
+
+  """
+  Publish or unpublish the artwork on Artnet.
+  """
+  published: Boolean
+
+  """
+  Also push the artwork-sourced fields (title, dimensions), making Gravity the source of truth for them. Set when the edit came from an inventory row rather than the Artnet row.
+  """
+  syncOn: Boolean
+}
+
+type UpdateArtnetArtworkMutationPayload {
+  """
+  On success: the updated ArtnetArtwork. On error: the error that occurred.
+  """
+  artnetArtworkOrError: UpdateArtnetArtworkResponseOrError
+  clientMutationId: String
+}
+
+union UpdateArtnetArtworkResponseOrError = UpdateArtnetArtworkFailure | UpdateArtnetArtworkSuccess
+
+type UpdateArtnetArtworkSuccess {
+  artnetArtwork: ArtnetArtwork
 }
 
 input UpdateArtworkEditionSetInput {
