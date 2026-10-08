@@ -26,6 +26,7 @@ import {
 } from "__generated__/HomeViewSectionNavigationPills_section.graphql"
 import { Pin } from "app/Components/Icons/Pin"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { FeaturedPillGlow } from "app/Scenes/HomeView/Sections/Components/FeaturedPillGlow"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -145,7 +146,7 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
 
             {/* Painted after the pill, not before: `Pill`'s own opaque background would
                 otherwise cover the ring, since both share the same box. */}
-            {/* {!!pill.isFeatured && <FeaturedPillGlow />} */}
+            {!!pill.isFeatured && <FeaturedPillGlow />}
           </Flex>
         )}
       />
