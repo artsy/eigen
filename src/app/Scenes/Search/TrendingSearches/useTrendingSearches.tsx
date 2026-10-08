@@ -1,14 +1,11 @@
-import {
-  TrendingSearchPeriod,
-  useTrendingSearchesQuery,
-} from "__generated__/useTrendingSearchesQuery.graphql"
+import { useTrendingSearchesQuery } from "__generated__/useTrendingSearchesQuery.graphql"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const trendingSearchesQuery = graphql`
-  query useTrendingSearchesQuery($period: TrendingSearchPeriod!) @cacheable {
+  query useTrendingSearchesQuery @cacheable {
     viewer {
       searchDropdown {
-        trending(period: $period) {
+        trending(period: ONE_DAY) {
           artists(first: 7) {
             artist {
               internalID
@@ -37,12 +34,10 @@ export const trendingSearchesQuery = graphql`
   }
 `
 
-export type TrendingPeriod = TrendingSearchPeriod
-
-export const useTrendingSearches = (period: TrendingPeriod) => {
+export const useTrendingSearches = () => {
   const data = useLazyLoadQuery<useTrendingSearchesQuery>(
     trendingSearchesQuery,
-    { period },
+    {},
     { fetchPolicy: "store-or-network" }
   )
 

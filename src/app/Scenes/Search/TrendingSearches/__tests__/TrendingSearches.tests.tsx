@@ -13,7 +13,7 @@ const { renderWithRelay } = setupTestWrapper<useTrendingSearchesQuery>({
 })
 
 describe("TrendingSearches", () => {
-  it("renders trending artists and artworks with the period toggle", async () => {
+  it("renders trending artists and artworks without period tabs", async () => {
     renderWithRelay({
       Artist: () => ({ internalID: "banksy", name: "Banksy", href: "/artist/banksy" }),
     })
@@ -23,7 +23,25 @@ describe("TrendingSearches", () => {
     expect(screen.getByText("Trending Artists")).toBeOnTheScreen()
     expect(screen.getByText("Trending Artworks")).toBeOnTheScreen()
 
-    expect(screen.getByRole("button", { selected: true, name: "Today" })).toBeOnTheScreen()
-    expect(screen.getByRole("button", { selected: false, name: "Past 7 Days" })).toBeOnTheScreen()
+    expect(screen.queryByText("Today")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Past 7 Days")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Past 30 Days")).not.toBeOnTheScreen()
+  })
+
+  it("only requests the ONE_DAY trending period", async () => {
+    const requestedPeriods: unknown[] = []
+
+    const { env } = renderWithRelay({
+      TrendingSearches: (context) => {
+        requestedPeriods.push(context.args?.period)
+        return {}
+      },
+      Artist: () => ({ internalID: "banksy", name: "Banksy", href: "/artist/banksy" }),
+    })
+
+    await screen.findByText("Banksy")
+
+    expect(requestedPeriods).toEqual(["ONE_DAY"])
+    expect(env.mock.getAllOperations()).toHaveLength(0)
   })
 })
