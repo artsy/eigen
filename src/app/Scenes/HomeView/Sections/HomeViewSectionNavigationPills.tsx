@@ -26,7 +26,6 @@ import {
 } from "__generated__/HomeViewSectionNavigationPills_section.graphql"
 import { Pin } from "app/Components/Icons/Pin"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
-import { FeaturedPillGlow } from "app/Scenes/HomeView/Sections/Components/FeaturedPillGlow"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { GlobalStore } from "app/store/GlobalStore"
