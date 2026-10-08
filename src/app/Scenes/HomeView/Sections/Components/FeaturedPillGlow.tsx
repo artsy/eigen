@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react"
-import { LayoutChangeEvent, StyleSheet, View } from "react-native"
+import { LayoutChangeEvent, StyleSheet } from "react-native"
 import Animated, {
+  cancelAnimation,
   Easing,
   useAnimatedProps,
+  useAnimatedStyle,
   useSharedValue,
-  withRepeat,
+  withDelay,
   withTiming,
 } from "react-native-reanimated"
 import { Rect, Svg } from "react-native-svg"
@@ -12,6 +14,9 @@ import { Rect, Svg } from "react-native-svg"
 const AnimatedRect = Animated.createAnimatedComponent(Rect)
 
 const TRACE_DURATION = 4500
+
+/** How long the glow takes to fade away once the comet has completed its trace. */
+const FADE_DURATION = 600
 
 /**
  * Each animated ring's color and dash/gap split, as a fraction (0-1) of the pill's own
@@ -48,6 +53,7 @@ const BASE_RING_COLOR = "#E6E7F5"
 export const FeaturedPillGlow: React.FC = () => {
   const [size, setSize] = useState<{ width: number; height: number } | null>(null)
   const offset = useSharedValue(0)
+  const opacity = useSharedValue(1)
 
   const onLayout = (event: LayoutChangeEvent) => {
     const { width, height } = event.nativeEvent.layout
@@ -65,21 +71,34 @@ export const FeaturedPillGlow: React.FC = () => {
     if (!perimeter) return
 
     offset.set(perimeter)
-    offset.set(
-      withRepeat(withTiming(0, { duration: TRACE_DURATION, easing: Easing.linear }), -1, false)
-    )
-  }, [offset, perimeter])
+    offset.set(withTiming(0, { duration: TRACE_DURATION, easing: Easing.linear }))
+    opacity.set(1)
+    opacity.set(withDelay(TRACE_DURATION, withTiming(0, { duration: FADE_DURATION })))
+
+    return () => {
+      cancelAnimation(offset)
+      cancelAnimation(opacity)
+    }
+  }, [offset, opacity, perimeter])
 
   const animatedProps = useAnimatedProps(() => ({
     strokeDashoffset: offset.get(),
   }))
 
+  const fadeStyle = useAnimatedStyle(() => ({
+    opacity: opacity.get(),
+  }))
+
   return (
-    // `onLayout` lives on this plain `View`, not the `Svg` below: `react-native-svg`'s native
+    // `onLayout` lives on this `Animated.View`, not the `Svg` below: `react-native-svg`'s native
     // renderer needs concrete numeric `width`/`height` to paint anything at all, so it can't be
     // the thing that measures its own size — a `View` sized by `StyleSheet.absoluteFill` from
     // its parent (the pill) can.
-    <View style={StyleSheet.absoluteFill} pointerEvents="none" onLayout={onLayout}>
+    <Animated.View
+      style={[StyleSheet.absoluteFill, fadeStyle]}
+      pointerEvents="none"
+      onLayout={onLayout}
+    >
       {!!size && (
         <Svg width={size.width} height={size.height}>
           <Rect
@@ -109,6 +128,6 @@ export const FeaturedPillGlow: React.FC = () => {
           ))}
         </Svg>
       )}
-    </View>
+    </Animated.View>
   )
 }
