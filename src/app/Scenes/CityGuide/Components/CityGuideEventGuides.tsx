@@ -1,11 +1,14 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex, Join, Spacer } from "@artsy/palette-mobile"
 import { CityGuideEventGuides_query$key } from "__generated__/CityGuideEventGuides_query.graphql"
+import { ProgressiveOnboardingCityGuide } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingCityGuide"
 import { SectionTitle } from "app/Components/SectionTitle"
 import {
   FeaturedGuideItem,
   GuideListItem,
 } from "app/Scenes/CityGuide/Components/CityGuideGuideListItem"
 import { toGuideRows } from "app/Scenes/CityGuide/utils/toGuideRows"
+import { PROGRESSIVE_ONBOARDING_CITY_GUIDE_CURATED_GUIDES } from "app/store/ProgressiveOnboardingModel"
 import { Schema } from "app/utils/track"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -38,25 +41,33 @@ export const CityGuideEventGuides: React.FC<Props> = ({ citySlug, query: queryRe
 
   return (
     <Flex backgroundColor="mono100" py={2}>
-      <SectionTitle
-        variant="large"
-        title="City Guides"
-        titleColor="mono0"
-        px={2}
-        href={hasMore ? `/city-guide/${citySlug}/curated-guides` : undefined}
-        onPress={
-          hasMore
-            ? () =>
-                trackEvent({
-                  action_name: Schema.ActionNames.ViewAll,
-                  action_type: Schema.ActionTypes.Tap,
-                  owner_type: Schema.OwnerEntityTypes.CityGuide,
-                  owner_slug: citySlug,
-                  context_module: "cityGuideCard",
-                })
-            : undefined
-        }
-      />
+      <ProgressiveOnboardingCityGuide
+        onboardingKey={PROGRESSIVE_ONBOARDING_CITY_GUIDE_CURATED_GUIDES}
+        title="Expert-curated Guides"
+        description="Click to discover our art picks in cities across the globe."
+        placement="bottom"
+        contextModule={ContextModule.cityGuideCard}
+      >
+        <SectionTitle
+          variant="large"
+          title="City Guides"
+          titleColor="mono0"
+          px={2}
+          href={hasMore ? `/city-guide/${citySlug}/curated-guides` : undefined}
+          onPress={
+            hasMore
+              ? () =>
+                  trackEvent({
+                    action_name: Schema.ActionNames.ViewAll,
+                    action_type: Schema.ActionTypes.Tap,
+                    owner_type: Schema.OwnerEntityTypes.CityGuide,
+                    owner_slug: citySlug,
+                    context_module: "cityGuideCard",
+                  })
+              : undefined
+          }
+        />
+      </ProgressiveOnboardingCityGuide>
 
       <Flex testID="city-guides-list" px={2}>
         <Join separator={<Spacer y={2} />}>
