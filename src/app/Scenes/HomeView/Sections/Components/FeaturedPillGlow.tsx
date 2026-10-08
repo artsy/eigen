@@ -6,12 +6,15 @@ import Animated, {
   Easing,
   useAnimatedStyle,
   useSharedValue,
-  withRepeat,
+  withDelay,
   withTiming,
 } from "react-native-reanimated"
 import { Path, Svg } from "react-native-svg"
 
 const TRACE_DURATION = 4500
+
+/** How long the comet takes to fade away once it has completed its trace. */
+const FADE_DURATION = 600
 
 /** Width of the traced ring, drawn just outside the pill's own edge. */
 const RING_WIDTH = 1
@@ -52,13 +55,14 @@ const wedgePath = (center: number, from: number, to: number) => {
  * Must be rendered *before* the pill, inside the same box: it extends `RING_WIDTH` past that box
  * on every side and the pill's opaque background hides everything but that outer ring.
  *
- * Only `transform` is animated. Animating SVG props (e.g. `strokeDashoffset`) on Fabric forces a
+ * Only `transform` and `opacity` are animated. Animating SVG props (e.g. `strokeDashoffset`) on Fabric forces a
  * shadow tree commit on every frame, which starves React's own commits and freezes the app.
  */
 export const FeaturedPillGlow: React.FC = () => {
   const color = useColor()
   const [size, setSize] = useState<{ width: number; height: number } | null>(null)
   const progress = useSharedValue(0)
+  const opacity = useSharedValue(1)
 
   const onLayout = (event: LayoutChangeEvent) => {
     const { width, height } = event.nativeEvent.layout
@@ -67,12 +71,15 @@ export const FeaturedPillGlow: React.FC = () => {
 
   useEffect(() => {
     progress.set(0)
-    progress.set(
-      withRepeat(withTiming(1, { duration: TRACE_DURATION, easing: Easing.linear }), -1, false)
-    )
+    progress.set(withTiming(1, { duration: TRACE_DURATION, easing: Easing.linear }))
+    opacity.set(1)
+    opacity.set(withDelay(TRACE_DURATION, withTiming(0, { duration: FADE_DURATION })))
 
-    return () => cancelAnimation(progress)
-  }, [progress])
+    return () => {
+      cancelAnimation(progress)
+      cancelAnimation(opacity)
+    }
+  }, [progress, opacity])
 
   const width = size?.width ?? 0
   const height = size?.height ?? 0
@@ -103,7 +110,7 @@ export const FeaturedPillGlow: React.FC = () => {
       y = radius * Math.sin(angle)
     }
 
-    return { transform: [{ rotate: `${Math.atan2(y, x)}rad` }] }
+    return { opacity: opacity.get(), transform: [{ rotate: `${Math.atan2(y, x)}rad` }] }
   })
 
   // The rotating square has to cover the whole pill at any angle, hence its diagonal.
