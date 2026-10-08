@@ -1,44 +1,42 @@
 name: PR Preview
 
-# While a PR carries the `preview` label, every push publishes its JS bundle to the Expo Updates
-# channel `review-app-<number>`, as long as the PR has not changed native code.
-#
 # The native check (scripts/pr-preview/checkNativeStatus.ts) compares three fingerprints:
 #   level:  PR matches main's latest build        -> publish
 #   behind: main changed native code since the PR -> publish, and warn in the PR description
 #   ahead:  the PR changed native code            -> don't publish, ask for new betas
-# The result is written into a managed block of the PR description.
 
 on:
   pull_request:
-    types: [labeled, unlabeled, synchronize, closed]
+    types: [opened, labeled, unlabeled, synchronize, closed]
 
 permissions:
   contents: read
-  pull-requests: write # edit the PR description
+  pull-requests: write
 
 env:
   CHANNEL: review-app-${{ github.event.pull_request.number }}
 
-# Every event that does nothing gets its own group (the run id). Otherwise, adding an unrelated
-# label would cancel a publish that is still running, then skip itself, and leave no preview.
-# `closed` and removing the `preview` label stay in the shared group so they cancel a running publish.
+# Only events that can publish or clean up share a group. Others get their own (the run id), so they
+# can't cancel a running publish or cleanup. Removing the label from a `review-app-*` PR still
+# cancels a publish. Though it's rare, the next push fixes it.
 concurrency:
-  group: pr-preview-${{ github.event.pull_request.number }}-${{ (github.event.pull_request.head.repo.full_name == github.repository && ((github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'preview')) || ((github.event.action == 'labeled' || github.event.action == 'unlabeled') && github.event.label.name == 'preview') || (github.event.action == 'closed' && contains(github.event.pull_request.labels.*.name, 'preview')))) && 'active' || github.run_id }}
+  group: pr-preview-${{ github.event.pull_request.number }}-${{ (github.event.label.name == 'preview' || (github.event.action != 'labeled' && github.event.action != 'unlabeled' && (contains(github.event.pull_request.labels.*.name, 'preview') || startsWith(github.event.pull_request.head.ref, 'review-app-')))) && 'shared' || github.run_id }}
   cancel-in-progress: true
 
 jobs:
-  # Fingerprint at the commit where the PR branched off main. Main's workflow caches it under
-  # native-fingerprint-<sha>; on a miss we compute it here and save it for the next push.
+  # expo-fingerprint-check.yml caches main's fingerprints as native-fingerprint-<sha>. On a miss,
+  # this job computes the merge base's and saves it for the next push.
   base-fingerprint:
-    # Same-repo PRs only: fork PRs get no secrets, so they would fail inside the setup steps.
-    # The first two jobs carry the gate. Every later job depends on them and is skipped with them.
+    # Same-repo PRs only. Fork PRs get no secrets, so they would fail in the setup steps.
     if: >-
       github.event.pull_request.head.repo.full_name == github.repository &&
       github.event.pull_request.state == 'open' &&
       (
         (github.event.action == 'labeled' && github.event.label.name == 'preview') ||
-        (github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'preview'))
+        (
+          (github.event.action == 'synchronize' || github.event.action == 'opened') &&
+          (contains(github.event.pull_request.labels.*.name, 'preview') || startsWith(github.event.pull_request.head.ref, 'review-app-'))
+        )
       )
     runs-on: macos-26
     timeout-minutes: 20
@@ -46,7 +44,6 @@ jobs:
       fp_base: ${{ steps.resolve.outputs.fp_base }}
 
     steps:
-      # The PR head, not the merge commit, and the full history for merge-base
       - name: Checkout PR head
         uses: actions/checkout@v5
         with:
@@ -64,9 +61,9 @@ jobs:
           path: .native-fingerprint
           key: native-fingerprint-${{ steps.merge-base.outputs.sha }}
 
-      # From here to the save step, the tree is the merge base, so the setup actions below are the
-      # ones that existed there. The fingerprint command is inline because the PR's scripts are
-      # missing from older merge bases.
+      # From here to the save step, the tree is at the merge base, so the setup actions below are the
+      # versions from that commit. The fingerprint command is inline because older merge bases don't
+      # have the PR's scripts.
       - name: Checkout merge base
         if: steps.cache.outputs.cache-hit != 'true'
         run: git checkout --detach "${{ steps.merge-base.outputs.sha }}"
@@ -140,14 +137,17 @@ jobs:
           path: .native-fingerprint
           key: native-fingerprint-${{ steps.merge-base.outputs.sha }}
 
-  # Fingerprint at the PR head. Same setup as expo-fingerprint-check.yml, or the hash differs.
+  # The setup must match expo-fingerprint-check.yml, or the hash differs.
   pr-fingerprint:
     if: >-
       github.event.pull_request.head.repo.full_name == github.repository &&
       github.event.pull_request.state == 'open' &&
       (
         (github.event.action == 'labeled' && github.event.label.name == 'preview') ||
-        (github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'preview'))
+        (
+          (github.event.action == 'synchronize' || github.event.action == 'opened') &&
+          (contains(github.event.pull_request.labels.*.name, 'preview') || startsWith(github.event.pull_request.head.ref, 'review-app-'))
+        )
       )
     runs-on: macos-26
     timeout-minutes: 20
@@ -219,7 +219,6 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
-      # Reads main's latest fingerprint from S3
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -249,7 +248,6 @@ jobs:
           echo "pr=$runtime_pr" >> "$GITHUB_OUTPUT"
           echo "main=$runtime_main" >> "$GITHUB_OUTPUT"
 
-  # `ahead` skips this job: the PR changed native code, so the bundle could crash builds without it.
   publish:
     needs: native-status
     if: needs.native-status.outputs.status != 'ahead'
@@ -296,7 +294,7 @@ jobs:
 
   update-pr-description:
     needs: [native-status, publish]
-    # !cancelled() instead of always(): a run cancelled by a newer push must not write a stale report.
+    # !cancelled() and not always(), so a run cancelled by a newer push doesn't write a stale report.
     if: ${{ !cancelled() && needs.native-status.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -324,19 +322,56 @@ jobs:
           RUNTIME_PR: ${{ needs.native-status.outputs.runtime_pr }}
           RUNTIME_MAIN: ${{ needs.native-status.outputs.runtime_main }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: yarn tsx scripts/pr-preview/updatePrDescription.ts
+        run: yarn tsx scripts/pr-preview/updatePrDescription.ts report
 
-  # TODO: PHIRE-3442
   cleanup-preview:
     if: >-
       github.event.pull_request.head.repo.full_name == github.repository &&
       (
-        (github.event.action == 'closed' && contains(github.event.pull_request.labels.*.name, 'preview')) ||
-        (github.event.action == 'unlabeled' && github.event.label.name == 'preview')
+        (
+          github.event.action == 'closed' &&
+          (contains(github.event.pull_request.labels.*.name, 'preview') || startsWith(github.event.pull_request.head.ref, 'review-app-'))
+        ) ||
+        (
+          github.event.action == 'unlabeled' && github.event.label.name == 'preview' &&
+          !startsWith(github.event.pull_request.head.ref, 'review-app-')
+        )
       )
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
 
     steps:
-      - name: Clean up preview channel
-        run: echo "Cleanup of $CHANNEL is not implemented yet."
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup JavaScript environment
+        uses: ./.github/actions/setup-javascript-environment
+
+      - name: Install bin modules
+        uses: ./.github/actions/setup-bin-modules
+
+      - name: Delete preview channel and branch
+        shell: bash
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_UPDATES_TOKEN }}
+        run: |
+          delete() {
+            local kind=$1 out
+            if out=$(./bin/node_modules/.bin/eas "$kind:delete" "$CHANNEL" --non-interactive 2>&1); then
+              echo "$out"
+            elif grep -q "Could not find $kind" <<<"$out"; then
+              echo "$kind $CHANNEL is already gone"
+            else
+              echo "$out" >&2
+              return 1
+            fi
+          }
+          delete channel
+          delete branch
+
+      - name: Reset the preview section of the PR description
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: yarn tsx scripts/pr-preview/updatePrDescription.ts clear

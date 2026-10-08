@@ -29643,9 +29643,14 @@ type Partner implements Node {
     last: Int
 
     """
-    Filter by import source: 'bulk_import' or 'multi_add'. Returns all sources if omitted.
+    Filter by import source: 'bulk_import', 'multi_add', or 'partner_conversion'.
     """
-    source: String
+    source: String @deprecated(reason: "Use `sources` instead.")
+
+    """
+    Filter by one or more import sources: 'bulk_import', 'multi_add', 'partner_conversion'. Defaults to 'bulk_import' and 'partner_conversion' if omitted.
+    """
+    sources: [String]
   ): ArtworkImportConnection
 
   """
@@ -30194,6 +30199,16 @@ type Partner implements Node {
     """
     priceCurrency: String
   ): ShippingPresetConnection
+
+  """
+  A Show belonging to this partner, scoped so it can only resolve shows owned by this partner. Requires authentication.
+  """
+  show(
+    """
+    The ID of the Show
+    """
+    id: String!
+  ): Show
   showPromoted: Boolean
 
   """
@@ -39257,6 +39272,16 @@ input UpdateArtistSocialsMutationInput {
   Artist's Instagram handle.
   """
   instagramHandle: String
+
+  """
+  Confirms the user has rights to display content from the Instagram account. Required when setting a handle.
+  """
+  instagramHandleAcknowledged: Boolean
+
+  """
+  Partner the user is acting on behalf of. Required, as a verified representative of the artist, when setting a handle.
+  """
+  partnerId: String
 }
 
 type UpdateArtistSocialsMutationPayload {

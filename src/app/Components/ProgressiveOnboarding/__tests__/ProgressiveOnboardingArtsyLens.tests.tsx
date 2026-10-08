@@ -1,6 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ProgressiveOnboardingArtsyLens } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingArtsyLens"
+import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -28,6 +29,7 @@ jest.mock("@react-navigation/native", () => ({
 }))
 
 describe("ProgressiveOnboardingArtsyLens", () => {
+  const originalLaunchCount = ArtsyNativeModule.launchCount
   const renderTooltip = (
     isSearchOverlayVisible = false,
     ownerType: OwnerType.home | OwnerType.search = OwnerType.home
@@ -43,6 +45,7 @@ describe("ProgressiveOnboardingArtsyLens", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    ArtsyNativeModule.launchCount = 3
     mockUseIsFocused.mockReturnValue(true)
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
@@ -54,6 +57,36 @@ describe("ProgressiveOnboardingArtsyLens", () => {
         dismissed: [],
       },
     })
+  })
+
+  afterEach(() => {
+    ArtsyNativeModule.launchCount = originalLaunchCount
+  })
+
+  it.each([OwnerType.home, OwnerType.search] as const)(
+    "stays hidden on %s during the first two launches",
+    (ownerType) => {
+      for (const launchCount of [1, 2]) {
+        ArtsyNativeModule.launchCount = launchCount
+        const { unmount } = renderTooltip(false, ownerType)
+
+        expect(screen.queryByText("Artsy Lens")).not.toBeOnTheScreen()
+        expect(mockTrackEvent).not.toHaveBeenCalled()
+        expect(
+          __globalStoreTestUtils__?.getCurrentState().progressiveOnboarding.sessionState
+            .activePopover
+        ).toBeUndefined()
+
+        unmount()
+      }
+    }
+  )
+
+  it.each([3, 4])("can appear from launch %s onwards", async (launchCount) => {
+    ArtsyNativeModule.launchCount = launchCount
+    renderTooltip()
+
+    expect(await screen.findByText("Artsy Lens")).toBeOnTheScreen()
   })
 
   it("shows the Artsy Lens copy and tracks the view", async () => {
@@ -104,6 +137,19 @@ describe("ProgressiveOnboardingArtsyLens", () => {
     renderTooltip()
 
     expect(screen.queryByText("Artsy Lens")).not.toBeOnTheScreen()
+  })
+
+  it("waits while another progressive onboarding popover is active", () => {
+    __globalStoreTestUtils__?.injectState({
+      progressiveOnboarding: { sessionState: { activePopover: "another-popover" } },
+    })
+
+    renderTooltip()
+
+    expect(screen.queryByText("Artsy Lens")).not.toBeOnTheScreen()
+    expect(
+      __globalStoreTestUtils__?.getCurrentState().progressiveOnboarding.sessionState.activePopover
+    ).toBe("another-popover")
   })
 
   it("waits when Home tooltips are deferred for this session", () => {

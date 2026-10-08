@@ -33,7 +33,7 @@ export const DiscoverSomethingNewChips: React.FC<DiscoverSomethingNewChipsProps>
 
   return (
     <Flex>
-      <SectionTitle title="Discover Something New" mx={2} />
+      <SectionTitle title="Discover Something New" mx={2} mb={1} />
 
       <FlatList
         testID="DiscoverSomethingNewCards"
