@@ -29643,11 +29643,6 @@ type Partner implements Node {
     last: Int
 
     """
-    Filter by import source: 'bulk_import', 'multi_add', or 'partner_conversion'.
-    """
-    source: String @deprecated(reason: "Use `sources` instead.")
-
-    """
     Filter by one or more import sources: 'bulk_import', 'multi_add', 'partner_conversion'. Defaults to 'bulk_import' and 'partner_conversion' if omitted.
     """
     sources: [String]
