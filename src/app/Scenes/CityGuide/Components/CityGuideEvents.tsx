@@ -1,13 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Join, Spacer } from "@artsy/palette-mobile"
 import { CityGuideEvents_city$key } from "__generated__/CityGuideEvents_city.graphql"
-import { ProgressiveOnboardingCityGuide } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingCityGuide"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { CityEventRailCard } from "app/Scenes/CityGuide/Components/CityEventRailCard"
 import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { CityFairRailCard } from "app/Scenes/CityGuide/Components/CityFairRailCard"
 import { CityEventSectionKey } from "app/Scenes/CityGuide/utils/cityEventSectionKey"
-import { PROGRESSIVE_ONBOARDING_CITY_GUIDE_ADD_TO_ITINERARY } from "app/store/ProgressiveOnboardingModel"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { FlatList } from "react-native"
@@ -152,7 +150,7 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
           onPress={trackSectionTap("shows")}
           data={currentShows}
           keyExtractor={(show) => show.internalID}
-          renderItem={(show, index) => {
+          renderItem={(show, _index) => {
             const saveControl = (
               <CityEventSaveControl
                 itemType="SHOW"
@@ -184,21 +182,7 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
                     )
                   )
                 }
-                saveControl={
-                  index === 0 ? (
-                    <ProgressiveOnboardingCityGuide
-                      onboardingKey={PROGRESSIVE_ONBOARDING_CITY_GUIDE_ADD_TO_ITINERARY}
-                      title="Build & Share Itineraries"
-                      description="Click + to save places and events, then customize and share."
-                      placement="top"
-                      contextModule={ContextModule.currentShowsRail}
-                    >
-                      {saveControl}
-                    </ProgressiveOnboardingCityGuide>
-                  ) : (
-                    saveControl
-                  )
-                }
+                saveControl={saveControl}
               />
             )
           }}
