@@ -3970,6 +3970,14 @@ type ArtnetImport {
   deletedCount: Int
   errorCount: Int
   errorMessage: String
+  finalizedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
 
   """
   A globally unique ID.
@@ -3989,6 +3997,8 @@ type ArtnetImport {
 enum ArtnetImportState {
   COMPLETED
   FAILED
+  FINALIZED
+  FINALIZING
   PENDING
   PROCESSING
 }
@@ -20404,6 +20414,28 @@ type FiltersForArtworksConnectionEdge {
   node: ArtworkFilterNode
 }
 
+type FinalizeArtnetImportFailure {
+  mutationError: GravityMutationError
+}
+
+input FinalizeArtnetImportInput {
+  artnetImportID: String!
+  clientMutationId: String
+}
+
+type FinalizeArtnetImportPayload {
+  clientMutationId: String
+  finalizeArtnetImportOrError: FinalizeArtnetImportResponseOrError
+}
+
+union FinalizeArtnetImportResponseOrError =
+    FinalizeArtnetImportFailure
+  | FinalizeArtnetImportSuccess
+
+type FinalizeArtnetImportSuccess {
+  artnetImport: ArtnetImport
+}
+
 type FollowArtist {
   artist: Artist
   auto: Boolean
@@ -27425,6 +27457,11 @@ type Mutation {
   excludeArtistFromDiscovery(
     input: ExcludeArtistFromDiscoveryInput!
   ): ExcludeArtistFromDiscoveryPayload
+
+  """
+  Finalize a completed Artnet import. Its artworks appear in the partner's inventory once the import reaches the FINALIZED state.
+  """
+  finalizeArtnetImport(input: FinalizeArtnetImportInput!): FinalizeArtnetImportPayload
 
   """
   Follow (or unfollow) an artist
