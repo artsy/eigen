@@ -3,8 +3,10 @@ import { themeGet } from "@styled-system/theme-get"
 import { FeaturedCollectionsRail_collection$data } from "__generated__/FeaturedCollectionsRail_collection.graphql"
 import { FeaturedCollectionsRail_collectionGroup$data } from "__generated__/FeaturedCollectionsRail_collectionGroup.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
+import { MarkdownText } from "app/Components/MarkdownText/MarkdownText"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
 import { Schema } from "app/utils/track"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -21,11 +23,23 @@ type FeaturedCollection = FeaturedCollectionsRail_collectionGroup$data["members"
 export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (props) => {
   const color = useColor()
   const tracking = useTracking()
+  const enableEnrichedMarkdown = useFeatureFlag("AREnableEnrichedMarkdown")
 
   const { collection, collectionGroup } = props
   const collections = collectionGroup?.members ?? []
 
   const handleMarkdown = (markdown: string, titleLength: number) => {
+    if (enableEnrichedMarkdown) {
+      return (
+        <MarkdownText
+          markdown={markdown}
+          color="mono100"
+          numberOfLines={titleLength > 32 ? 3 : 4}
+          presentLinksModally
+        />
+      )
+    }
+
     const markdownRules = defaultRules({
       modal: true,
       ruleOverrides: {

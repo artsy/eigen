@@ -3,9 +3,11 @@ import { FairMoreInfoQuery } from "__generated__/FairMoreInfoQuery.graphql"
 import { FairMoreInfo_fair$data } from "__generated__/FairMoreInfo_fair.graphql"
 import { LocationMapContainer } from "app/Components/LocationMap/LocationMap"
 import { Markdown } from "app/Components/Markdown"
+import { MarkdownText } from "app/Components/MarkdownText/MarkdownText"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { defaultRules } from "app/utils/renderMarkdown"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -34,6 +36,14 @@ export const shouldShowLocationMap = (
 export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
   const markdownRules = defaultRules({ useNewTextStyles: true })
   const space = useSpace()
+  const enableEnrichedMarkdown = useFeatureFlag("AREnableEnrichedMarkdown")
+
+  const renderMarkdownContent = (markdown: string) =>
+    enableEnrichedMarkdown ? (
+      <MarkdownText markdown={markdown} />
+    ) : (
+      <Markdown rules={markdownRules}>{markdown}</Markdown>
+    )
 
   const sections = compact([
     {
@@ -44,7 +54,7 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
       title: "Summary",
       content: (
         <>
-          <Markdown rules={markdownRules}>{fair.summary}</Markdown>
+          {renderMarkdownContent(fair.summary)}
           <Spacer y={1} />
         </>
       ),
@@ -53,7 +63,7 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
       title: "About",
       content: (
         <>
-          <Markdown rules={markdownRules}>{fair.about}</Markdown>
+          {renderMarkdownContent(fair.about)}
           <Spacer y={1} />
         </>
       ),
@@ -91,7 +101,7 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
       content: (
         <>
           <Text variant="sm">Hours</Text>
-          <Markdown rules={markdownRules}>{fair.fairHours}</Markdown>
+          {renderMarkdownContent(fair.fairHours)}
           <Spacer y={1} />
         </>
       ),
@@ -101,7 +111,7 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
       content: (
         <>
           <Text variant="sm">Tickets</Text>
-          <Markdown rules={markdownRules}>{fair.fairTickets}</Markdown>
+          {renderMarkdownContent(fair.fairTickets)}
           <Spacer y={1} />
         </>
       ),
@@ -122,7 +132,7 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
       content: (
         <>
           <Text variant="sm">Links</Text>
-          <Markdown rules={markdownRules}>{fair.fairLinks}</Markdown>
+          {renderMarkdownContent(fair.fairLinks)}
           <Spacer y={1} />
         </>
       ),
@@ -132,7 +142,7 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
       content: (
         <>
           <Text variant="sm">Contact</Text>
-          <Markdown rules={markdownRules}>{fair.fairContact}</Markdown>
+          {renderMarkdownContent(fair.fairContact)}
           <Spacer y={1} />
         </>
       ),
