@@ -4,9 +4,11 @@ import { Icon20 } from "app/Components/Bidding/Components/Icon"
 import { Title } from "app/Components/Bidding/Components/Title"
 import { Flex } from "app/Components/Bidding/Elements/Flex"
 import { Markdown } from "app/Components/Markdown"
+import { MarkdownText } from "app/Components/MarkdownText/MarkdownText"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 import { dismissModal } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { defaultRules } from "app/utils/renderMarkdown"
 import { Schema, screenTrack } from "app/utils/track"
 import React from "react"
@@ -81,6 +83,29 @@ const markdownRules = defaultRules({
     },
   },
 })
+
+const RegistrationResultMessage: React.FC<{ message: string }> = ({ message }) => {
+  const enableEnrichedMarkdown = useFeatureFlag("AREnableEnrichedMarkdown")
+
+  if (enableEnrichedMarkdown) {
+    return (
+      <Flex mb={6}>
+        <MarkdownText
+          markdown={message}
+          variant="sm-display"
+          textAlign="center"
+          presentLinksModally
+        />
+      </Flex>
+    )
+  }
+
+  return (
+    <Markdown rules={markdownRules} mb={6}>
+      {message}
+    </Markdown>
+  )
+}
 
 const resultEnumToPageName = (result: RegistrationStatus) => {
   let pageName: Schema.PageNames
@@ -167,9 +192,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
             <Title mt={2} mb={4}>
               {title}
             </Title>
-            <Markdown rules={markdownRules} mb={6}>
-              {msg}
-            </Markdown>
+            <RegistrationResultMessage message={msg} />
           </Flex>
           <Button
             variant="outline"
