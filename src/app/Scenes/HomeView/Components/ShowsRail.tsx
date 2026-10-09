@@ -6,7 +6,7 @@ import {
   ShowsRail_showsConnection$key,
 } from "__generated__/ShowsRail_showsConnection.graphql"
 import { CardWithMetaDataSkeleton as SkeletonShowCard } from "app/Components/Cards/CardWithMetaData"
-import { SectionTitle } from "app/Components/SectionTitle"
+import { SectionTitle, SectionTitleVariants } from "app/Components/SectionTitle"
 import { ShowCardContainer } from "app/Components/ShowCard"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
@@ -27,13 +27,14 @@ interface ShowsRailProps extends FlexProps {
   contextModule?: ContextModule
   onTrack?: (show: ExtractNodeType<ShowsRail_showsConnection$data>, index: number) => void
   title: string
+  titleVariant?: SectionTitleVariants
 }
 
 // Because we never show more than 2 shows per gallery we need to overfetch, filter out, and then limit the number of shows.
 const NUMBER_OF_SHOWS = 10
 
 export const ShowsRail: React.FC<ShowsRailProps> = memo(
-  ({ location, contextModule, onTrack, title, ...flexProps }) => {
+  ({ location, contextModule, onTrack, title, titleVariant, ...flexProps }) => {
     const tracking = useTracking()
 
     const queryVariables = location ? { near: location } : { includeShowsNearIpBasedLocation: true }
@@ -82,6 +83,7 @@ export const ShowsRail: React.FC<ShowsRailProps> = memo(
       <Flex {...flexProps}>
         <SectionTitle
           title={title}
+          variant={titleVariant}
           mx={2}
           href="/shows-for-you"
           onPress={() => {
@@ -162,11 +164,13 @@ interface ShowsRailContainerProps extends FlexProps {
   title: string
   contextModule?: ContextModule
   onTrack?: (show: ExtractNodeType<ShowsRail_showsConnection$data>, index: number) => void
+  titleVariant?: SectionTitleVariants
 }
 
 export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
   contextModule,
   onTrack,
+  titleVariant,
   ...flexProps
 }) => {
   const visualizeLocation = useDevToggle("DTLocationDetectionVisialiser")
@@ -192,6 +196,7 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
         location={location}
         contextModule={contextModule}
         onTrack={onTrack}
+        titleVariant={titleVariant}
       />
     </Suspense>
   )

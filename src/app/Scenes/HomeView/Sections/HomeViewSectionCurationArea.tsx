@@ -119,6 +119,7 @@ export const HomeViewSectionCurationArea: React.FC<HomeViewSectionCurationAreaPr
     <Flex {...flexProps} backgroundColor={backgroundColor} py={backgroundColor ? 2 : undefined}>
       <SectionTitle
         mx={2}
+        variant="xlarge"
         title={section.component?.title}
         subtitle={section.component?.description}
       />
@@ -346,6 +347,7 @@ const CurationRail: React.FC<{
         <SectionTitle
           href={moreHref}
           mx={2}
+          variant="large"
           title={rail.title ?? railSection.component?.title}
           subtitle={rail.title ? undefined : railSection.component?.description}
           onPress={moreHref ? onMorePress : undefined}
@@ -391,6 +393,7 @@ const CurationRail: React.FC<{
         title={rail.title ?? railSection.component?.title ?? ""}
         subtitle={rail.title ? undefined : railSection.component?.description ?? undefined}
         titleHref={moreHref}
+        titleVariant="large"
         onTitlePress={() => {
           tracking.tappedArticleGroupViewAll(
             railContextModule,
@@ -436,6 +439,7 @@ const CurationRail: React.FC<{
         <SectionTitle
           href={moreHref || undefined}
           mx={2}
+          variant="large"
           title={rail.title ?? railSection.component?.title}
           subtitle={rail.title ? undefined : railSection.component?.description}
           onPress={moreHref ? onMorePress : undefined}
@@ -465,6 +469,7 @@ const CurationRail: React.FC<{
     return (
       <ShowsRailContainer
         title={rail.title ?? railSection.component?.title ?? "Shows"}
+        titleVariant="large"
         contextModule={railContextModule}
         onTrack={(show, index) => {
           tracking.tappedShowGroup(show.internalID, show.slug, railContextModule, index)

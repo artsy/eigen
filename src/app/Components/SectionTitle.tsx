@@ -3,7 +3,7 @@ import { Flex, FlexProps, SpacingUnit, Text, TextProps } from "@artsy/palette-mo
 import { toTitleCase } from "@artsy/to-title-case"
 import { RouterLink } from "app/system/navigation/RouterLink"
 
-type SectionTitleVariants = "small" | "default" | "large"
+export type SectionTitleVariants = "small" | "default" | "large" | "xlarge"
 
 const STATES: Record<
   SectionTitleVariants,
@@ -19,6 +19,10 @@ const STATES: Record<
   },
   large: {
     titleVariant: "md",
+    iconSize: 24,
+  },
+  xlarge: {
+    titleVariant: "lg-display",
     iconSize: 24,
   },
 }

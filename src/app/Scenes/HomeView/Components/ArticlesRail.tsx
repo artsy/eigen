@@ -4,7 +4,7 @@ import {
   ArticlesRail_articlesConnection$key,
 } from "__generated__/ArticlesRail_articlesConnection.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
-import { SectionTitle } from "app/Components/SectionTitle"
+import { SectionTitle, SectionTitleVariants } from "app/Components/SectionTitle"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -22,12 +22,13 @@ interface ArticlesRailProps {
   title: string
   subtitle?: string
   titleHref?: string | null
+  titleVariant?: SectionTitleVariants
 }
 
 type Articles = ExtractNodeType<ArticlesRail_articlesConnection$data>
 
 export const ArticlesRail: React.FC<ArticlesRailProps> = memo(
-  ({ onTitlePress, onPress, title, subtitle, titleHref, ...restProps }) => {
+  ({ onTitlePress, onPress, title, subtitle, titleHref, titleVariant, ...restProps }) => {
     const articlesConnection = useFragment(articlesConnectionFragment, restProps.articlesConnection)
 
     const articles = extractNodes(articlesConnection)
@@ -56,6 +57,7 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = memo(
           onPress={onTitlePress}
           title={title}
           subtitle={subtitle}
+          variant={titleVariant}
         />
 
         <Flex>
