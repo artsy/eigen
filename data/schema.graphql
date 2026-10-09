@@ -21953,6 +21953,18 @@ type HomeViewComponentBehaviorsViewAll {
 }
 
 """
+A referenced section rendered as a rail inside a curation area
+"""
+type HomeViewCurationAreaRail {
+  section: HomeViewSectionGeneric
+
+  """
+  Label override for this rail; null → use the section's own title.
+  """
+  title: String
+}
+
+"""
 A user activity section in the home view
 """
 type HomeViewSectionActivity implements HomeViewSectionGeneric & Node {
@@ -22189,7 +22201,7 @@ type HomeViewSectionCards implements HomeViewSectionGeneric & Node {
 }
 
 """
-A curation area: one lead content rail plus entry chips to other curation areas
+A curation area: an ordered set of rails and/or a group of entry chips
 """
 type HomeViewSectionCurationArea implements HomeViewSectionGeneric & Node {
   chipsConnection(after: String, before: String, first: Int, last: Int): HomeViewCardConnection
@@ -22224,13 +22236,12 @@ type HomeViewSectionCurationArea implements HomeViewSectionGeneric & Node {
   A type-specific ID likely used as a database ID.
   """
   internalID: ID!
-  leadSection: HomeViewSectionGeneric
-  leadTitle: String
 
   """
   [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
   """
   ownerType: String
+  rails: [HomeViewCurationAreaRail!]!
 }
 
 """

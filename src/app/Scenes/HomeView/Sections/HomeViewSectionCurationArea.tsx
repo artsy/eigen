@@ -15,11 +15,18 @@ import {
   HomeViewSectionCurationArea_section$key,
 } from "__generated__/HomeViewSectionCurationArea_section.graphql"
 import { ArtworkRail, ArtworkRailPlaceholder } from "app/Components/ArtworkRail/ArtworkRail"
+import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { ArticlesRail } from "app/Scenes/HomeView/Components/ArticlesRail"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { ShowsRailContainer } from "app/Scenes/HomeView/Components/ShowsRail"
 import { HomeViewStore } from "app/Scenes/HomeView/HomeViewContext"
+import { FairCard } from "app/Scenes/HomeView/Sections/FairCard"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
+import {
+  HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
+  HORIZONTAL_FLATLIST_WINDOW_SIZE,
+} from "app/Scenes/HomeView/helpers/constants"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
@@ -77,9 +84,11 @@ export const HomeViewSectionCurationArea: React.FC<HomeViewSectionCurationAreaPr
       ? CHIP_LAYOUTS.large
       : CHIP_LAYOUTS.compact
 
-  // The editorial area (articles lead) gets a tinted background and a horizontal
+  // The editorial area (an articles rail) gets a tinted background and a horizontal
   // news-card rail; the artworks area keeps the default background and compact chips.
-  const isEditorialArea = section.leadSection?.__typename === "HomeViewSectionArticles"
+  const isEditorialArea = section.rails.some(
+    (rail) => rail.section?.__typename === "HomeViewSectionArticles"
+  )
 
   const handleChipPress = (chip: Chip, chipIndex: number) => {
     tracking.tappedCardGroup(
@@ -103,41 +112,47 @@ export const HomeViewSectionCurationArea: React.FC<HomeViewSectionCurationAreaPr
         subtitle={section.component?.description}
       />
 
-      <LeadRail section={section} containerInternalID={section.internalID} />
+      {section.rails.map((rail, railIndex) => (
+        <CurationRail key={railIndex} rail={rail} containerInternalID={section.internalID} />
+      ))}
 
-      {section.chipsTitle ? (
+      {chips.length > 0 && (
         <>
-          <Separator my={2} />
-          <SectionTitle
-            mx={2}
-            title={section.chipsTitle}
-            href={section.chipsHref ?? undefined}
-            onPress={
-              section.chipsHref
-                ? () =>
-                    tracking.tappedCardGroupViewAll(
-                      contextModule,
-                      section.chipsOwnerType as ScreenOwnerType
-                    )
-                : undefined
-            }
-          />
-        </>
-      ) : null}
+          {section.chipsTitle ? (
+            <>
+              <Separator my={2} />
+              <SectionTitle
+                mx={2}
+                title={section.chipsTitle}
+                href={section.chipsHref ?? undefined}
+                onPress={
+                  section.chipsHref
+                    ? () =>
+                        tracking.tappedCardGroupViewAll(
+                          contextModule,
+                          section.chipsOwnerType as ScreenOwnerType
+                        )
+                    : undefined
+                }
+              />
+            </>
+          ) : null}
 
-      {isEditorialArea ? (
-        <NewsChipRail chips={chips} onChipPress={handleChipPress} />
-      ) : (
-        <Flex flexDirection="row" flexWrap="wrap" mx={2} mt={2}>
-          {chips.map((chip, chipIndex) => (
-            <CurationChip
-              key={chip.entityID ?? chipIndex}
-              chip={chip}
-              thumbSize={layout.thumbSize}
-              onPress={() => handleChipPress(chip, chipIndex)}
-            />
-          ))}
-        </Flex>
+          {isEditorialArea ? (
+            <NewsChipRail chips={chips} onChipPress={handleChipPress} />
+          ) : (
+            <Flex flexDirection="row" flexWrap="wrap" mx={2} mt={2}>
+              {chips.map((chip, chipIndex) => (
+                <CurationChip
+                  key={chip.entityID ?? chipIndex}
+                  chip={chip}
+                  thumbSize={layout.thumbSize}
+                  onPress={() => handleChipPress(chip, chipIndex)}
+                />
+              ))}
+            </Flex>
+          )}
+        </>
       )}
 
       <HomeViewSectionSentinel
@@ -258,37 +273,43 @@ const NewsChipCard: React.FC<{
   )
 }
 
-// Narrows the polymorphic `leadSection` and renders it as a plain rail (Artworks →
-// ArtworkRail, Articles → ArticlesRail) — NOT via the standalone section component,
-// whose own internalID would be absent from the FlatList's viewableSections and
-// silently break impressions (those are anchored on the container's internalID
-// here). `leadTitle` lets the instance override the lead's own title so block copy
-// can diverge from the standalone rail; when set, the lead subtitle is suppressed
-// to avoid repeating the container tagline. Renders nothing for any other lead type.
-const LeadRail: React.FC<{
-  section: HomeViewSectionCurationArea_section$data
+type CurationAreaRail = HomeViewSectionCurationArea_section$data["rails"][number]
+
+// Renders one rail of a curation area as a bare rail component — NOT via the
+// standalone <HomeViewSection…>, whose own internalID would be absent from the
+// FlatList's viewableSections and silently break impressions (those anchor on the
+// container's internalID here). `rail.title` overrides the section's own title so
+// block copy can diverge from the standalone rail; when set, the subtitle is
+// suppressed to avoid repeating the container tagline. Shows self-fetch
+// location-based data via ShowsRailContainer (same as the standalone Shows section).
+// Unsupported section types render nothing.
+const CurationRail: React.FC<{
+  rail: CurationAreaRail
   containerInternalID: string
-}> = ({ section, containerInternalID }) => {
+}> = ({ rail, containerInternalID }) => {
   const tracking = useHomeViewTracking()
   const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
 
-  const lead = section.leadSection
+  const railSection = rail.section
 
-  const leadContextModule = (
-    lead?.__typename === "HomeViewSectionArtworks" || lead?.__typename === "HomeViewSectionArticles"
-      ? lead.contextModule
+  const railContextModule = (
+    railSection?.__typename === "HomeViewSectionArtworks" ||
+    railSection?.__typename === "HomeViewSectionArticles" ||
+    railSection?.__typename === "HomeViewSectionFairs" ||
+    railSection?.__typename === "HomeViewSectionShows"
+      ? railSection.contextModule
       : undefined
   ) as ContextModule
 
   const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
     isInViewport: viewableSections.includes(containerInternalID),
-    contextModule: leadContextModule,
+    contextModule: railContextModule,
   })
 
-  if (lead?.__typename === "HomeViewSectionArtworks") {
-    let artworks = extractNodes(lead.artworksConnection)
+  if (railSection?.__typename === "HomeViewSectionArtworks") {
+    let artworks = extractNodes(railSection.artworksConnection)
 
-    if (isDislikeArtworksEnabledFor(leadContextModule)) {
+    if (isDislikeArtworksEnabledFor(railContextModule)) {
       artworks = artworks.filter((artwork) => !artwork.isDisliked)
     }
 
@@ -296,16 +317,16 @@ const LeadRail: React.FC<{
       return null
     }
 
-    const viewAll = lead.component?.behaviors?.viewAll
+    const viewAll = railSection.component?.behaviors?.viewAll
     const moreHref = getHomeViewSectionHref(viewAll?.href, {
-      internalID: lead.internalID,
-      __typename: lead.__typename,
+      internalID: railSection.internalID,
+      __typename: railSection.__typename,
     })
 
     const onMorePress = () => {
       tracking.tappedArtworkGroupViewAll(
-        leadContextModule,
-        (viewAll?.ownerType || lead.ownerType) as ScreenOwnerType
+        railContextModule,
+        (viewAll?.ownerType || railSection.ownerType) as ScreenOwnerType
       )
     }
 
@@ -314,13 +335,13 @@ const LeadRail: React.FC<{
         <SectionTitle
           href={moreHref}
           mx={2}
-          title={section.leadTitle ?? lead.component?.title}
-          subtitle={section.leadTitle ? undefined : lead.component?.description}
+          title={rail.title ?? railSection.component?.title}
+          subtitle={rail.title ? undefined : railSection.component?.description}
           onPress={moreHref ? onMorePress : undefined}
         />
 
         <ArtworkRail
-          contextModule={leadContextModule}
+          contextModule={railContextModule}
           contextScreenOwnerType={OwnerType.home}
           artworks={artworks}
           showSaveIcon
@@ -331,7 +352,7 @@ const LeadRail: React.FC<{
               artwork.internalID,
               artwork.slug,
               artwork.collectorSignals,
-              leadContextModule,
+              railContextModule,
               position
             )
           }}
@@ -342,31 +363,100 @@ const LeadRail: React.FC<{
     )
   }
 
-  if (lead?.__typename === "HomeViewSectionArticles") {
-    if (!lead.articlesConnection) {
+  if (railSection?.__typename === "HomeViewSectionArticles") {
+    if (!railSection.articlesConnection) {
       return null
     }
 
-    const viewAll = lead.component?.behaviors?.viewAll
+    const viewAll = railSection.component?.behaviors?.viewAll
     const moreHref = getHomeViewSectionHref(viewAll?.href, {
-      internalID: lead.internalID,
-      __typename: lead.__typename,
+      internalID: railSection.internalID,
+      __typename: railSection.__typename,
     })
 
     return (
       <ArticlesRail
-        articlesConnection={lead.articlesConnection}
-        title={section.leadTitle ?? lead.component?.title ?? ""}
-        subtitle={section.leadTitle ? undefined : lead.component?.description ?? undefined}
+        articlesConnection={railSection.articlesConnection}
+        title={rail.title ?? railSection.component?.title ?? ""}
+        subtitle={rail.title ? undefined : railSection.component?.description ?? undefined}
         titleHref={moreHref}
         onTitlePress={() => {
           tracking.tappedArticleGroupViewAll(
-            leadContextModule,
-            (viewAll?.ownerType || lead.ownerType) as ScreenOwnerType
+            railContextModule,
+            (viewAll?.ownerType || railSection.ownerType) as ScreenOwnerType
           )
         }}
         onPress={(article, position) => {
-          tracking.tappedArticleGroup(article.internalID, article.slug, leadContextModule, position)
+          tracking.tappedArticleGroup(article.internalID, article.slug, railContextModule, position)
+        }}
+      />
+    )
+  }
+
+  if (railSection?.__typename === "HomeViewSectionFairs") {
+    const fairs = extractNodes(railSection.fairsConnection)
+
+    if (!fairs.length) {
+      return null
+    }
+
+    const viewAll = railSection.component?.behaviors?.viewAll
+    let moreHref =
+      viewAll &&
+      getHomeViewSectionHref(viewAll?.href, {
+        internalID: railSection.internalID,
+        __typename: railSection.__typename,
+      })
+
+    // Mirrors HomeViewSectionFairs: the Featured Fairs instance has no server viewAll.
+    if (!moreHref && railSection.internalID === "home-view-section-featured-fairs") {
+      moreHref = "/featured-fairs"
+    }
+
+    const onMorePress = () => {
+      tracking.tappedFairGroupViewAll(
+        railContextModule,
+        (viewAll?.ownerType || railSection.ownerType) as ScreenOwnerType
+      )
+    }
+
+    return (
+      <Flex>
+        <SectionTitle
+          href={moreHref || undefined}
+          mx={2}
+          title={rail.title ?? railSection.component?.title}
+          subtitle={rail.title ? undefined : railSection.component?.description}
+          onPress={moreHref ? onMorePress : undefined}
+        />
+
+        <CardRailFlatList
+          data={fairs}
+          initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
+          windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
+          renderItem={({ item, index }) => (
+            <FairCard
+              key={item.internalID}
+              fair={item}
+              onPress={(fair) => {
+                tracking.tappedFairGroup(fair.internalID, fair.slug, railContextModule, index)
+              }}
+            />
+          )}
+        />
+      </Flex>
+    )
+  }
+
+  if (railSection?.__typename === "HomeViewSectionShows") {
+    // Shows self-fetch location-based data (me.showsConnection) inside
+    // ShowsRailContainer — exactly as the standalone Shows section does.
+    return (
+      <ShowsRailContainer
+        title={rail.title ?? railSection.component?.title ?? "Shows"}
+        contextModule={railContextModule}
+        onTrack={(show, index) => {
+          tracking.tappedShowGroup(show.internalID, show.slug, railContextModule, index)
         }}
       />
     )
@@ -386,53 +476,87 @@ const fragment = graphql`
       type
       description
     }
-    leadTitle
     chipsTitle
     chipsHref
     chipsOwnerType
     ownerType
-    leadSection {
-      __typename
-      ... on HomeViewSectionArtworks {
-        internalID
-        contextModule
-        ownerType
-        component {
-          title
-          description
-          behaviors {
-            viewAll {
-              href
-              ownerType
+    rails {
+      title
+      section {
+        __typename
+        ... on HomeViewSectionArtworks {
+          internalID
+          contextModule
+          ownerType
+          component {
+            title
+            description
+            behaviors {
+              viewAll {
+                href
+                ownerType
+              }
+            }
+          }
+          artworksConnection(first: 10) {
+            edges {
+              node {
+                internalID
+                isDisliked @include(if: $enableHidingDislikedArtworks)
+                ...ArtworkRail_artworks
+              }
             }
           }
         }
-        artworksConnection(first: 10) {
-          edges {
-            node {
-              internalID
-              isDisliked @include(if: $enableHidingDislikedArtworks)
-              ...ArtworkRail_artworks
+        ... on HomeViewSectionArticles {
+          internalID
+          contextModule
+          ownerType
+          component {
+            title
+            description
+            behaviors {
+              viewAll {
+                href
+                ownerType
+              }
+            }
+          }
+          articlesConnection(first: 10) {
+            ...ArticlesRail_articlesConnection
+          }
+        }
+        ... on HomeViewSectionFairs {
+          internalID
+          contextModule
+          ownerType
+          component {
+            title
+            description
+            behaviors {
+              viewAll {
+                href
+                ownerType
+              }
+            }
+          }
+          fairsConnection(first: 10) {
+            edges {
+              node {
+                href
+                internalID
+                slug
+                ...FairCard_fair
+              }
             }
           }
         }
-      }
-      ... on HomeViewSectionArticles {
-        internalID
-        contextModule
-        ownerType
-        component {
-          title
-          description
-          behaviors {
-            viewAll {
-              href
-              ownerType
-            }
+        ... on HomeViewSectionShows {
+          internalID
+          contextModule
+          component {
+            title
           }
-        }
-        articlesConnection(first: 10) {
-          ...ArticlesRail_articlesConnection
         }
       }
     }

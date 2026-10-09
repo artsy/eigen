@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { HomeViewSectionCurationAreaTestsQuery } from "__generated__/HomeViewSectionCurationAreaTestsQuery.graphql"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionCurationArea } from "app/Scenes/HomeView/Sections/HomeViewSectionCurationArea"
@@ -10,6 +10,15 @@ import { StyleSheet } from "react-native"
 import { graphql } from "react-relay"
 
 jest.mock("app/utils/hooks/withSuspense")
+
+// Shows rails self-fetch location-based shows; provide a location so the rail's
+// own query fires (same mock the standalone Shows section test uses).
+jest.mock("@react-native-community/geolocation", () => ({
+  setRNConfiguration: jest.fn(),
+  getCurrentPosition: jest.fn((success) => {
+    success({ coords: { latitude: 1, longitude: 2 } })
+  }),
+}))
 
 const leadSection = {
   __typename: "HomeViewSectionArtworks",
@@ -80,10 +89,9 @@ const section = (overrides: Record<string, any> = {}) => ({
   internalID: "home-view-section-curation-area",
   contextModule: "curationAreaRail",
   component: { title: "Chosen by our curators", type: "CurationArea" },
-  leadTitle: null,
   chipsTitle: null,
   chipsHref: null,
-  leadSection,
+  rails: [{ title: null, section: leadSection }],
   ...chipsConnection,
   ...overrides,
 })
@@ -131,11 +139,10 @@ const editorialSection = (overrides: Record<string, any> = {}) => ({
     description: "Your guide to the art world",
     type: "CurationArea",
   },
-  leadTitle: "Editorial",
   chipsTitle: "Art News",
   chipsHref: "/news",
   chipsOwnerType: "marketNews",
-  leadSection: editorialLeadSection,
+  rails: [{ title: "Editorial", section: editorialLeadSection }],
   chipsConnection: {
     edges: [
       {
@@ -273,13 +280,13 @@ describe("HomeViewSectionCurationArea", () => {
     expect(StyleSheet.flatten(thumb.props.style).width).toBe(60)
   })
 
-  it("renders nothing for the lead rail when the lead is an unsupported section type", () => {
+  it("renders nothing for a rail whose section is an unsupported type", () => {
     renderWithRelay({
       HomeViewSectionCurationArea: () =>
-        section({ leadSection: { __typename: "HomeViewSectionArtists" } }),
+        section({ rails: [{ title: null, section: { __typename: "HomeViewSectionArtists" } }] }),
     })
 
-    // Container + chips still render; no lead rail.
+    // Container + chips still render; no rail.
     expect(screen.getByText("Chosen by Our Curators")).toBeOnTheScreen()
     expect(screen.queryByText("Curators' Picks")).not.toBeOnTheScreen()
     expect(screen.getByText("Recommended Artists")).toBeOnTheScreen()
@@ -293,10 +300,10 @@ describe("HomeViewSectionCurationArea", () => {
       expect(screen.getByText("Your guide to the art world")).toBeOnTheScreen()
     })
 
-    it("renders the articles lead with the leadTitle override and suppresses the lead subtitle", () => {
+    it("renders the articles rail with the rail-title override and suppresses the rail subtitle", () => {
       renderWithRelay({ HomeViewSectionCurationArea: () => editorialSection() })
 
-      // leadTitle overrides the rail's own "Artsy Editorial" title.
+      // rail.title overrides the section's own "Artsy Editorial" title.
       expect(screen.getByText("Editorial")).toBeOnTheScreen()
       expect(screen.getByText(/Article 1/)).toBeOnTheScreen()
       expect(screen.getByText(/Article 2/)).toBeOnTheScreen()
@@ -360,6 +367,77 @@ describe("HomeViewSectionCurationArea", () => {
         type: "thumbnail",
       })
       expect(navigate).toHaveBeenCalledWith("/article/news-1-slug")
+    })
+  })
+
+  describe("What's Happening instance (rails-only: fairs + shows, no chips)", () => {
+    const whatsHappeningSection = (overrides: Record<string, any> = {}) => ({
+      internalID: "home-view-section-whats-happening-curation-area",
+      contextModule: "curationAreaRail",
+      component: {
+        title: "What's Happening",
+        description: "See art world events around the world",
+        type: "CurationArea",
+      },
+      chipsTitle: null,
+      chipsHref: null,
+      chipsOwnerType: null,
+      rails: [
+        {
+          title: null,
+          section: {
+            __typename: "HomeViewSectionFairs",
+            internalID: "home-view-section-featured-fairs",
+            contextModule: "fairsRail",
+            ownerType: "fairs",
+            component: { title: "Featured Fairs", description: null, behaviors: { viewAll: null } },
+            fairsConnection: {
+              edges: [{ node: { href: "/fair/fair-1", internalID: "fair-1-id", slug: "fair-1" } }],
+            },
+          },
+        },
+        {
+          title: "Shows Near You",
+          section: {
+            __typename: "HomeViewSectionShows",
+            internalID: "home-view-section-shows-for-you",
+            contextModule: "showsRail",
+            component: { title: "Shows for You" },
+          },
+        },
+      ],
+      chipsConnection: { edges: [] },
+      ...overrides,
+    })
+
+    it("renders the fairs rail and no chips group", () => {
+      renderWithRelay({ HomeViewSectionCurationArea: () => whatsHappeningSection() })
+
+      expect(screen.getByText("Featured Fairs")).toBeOnTheScreen()
+      // No chips: rails-only area has no header and an empty chips connection.
+      expect(screen.queryByText("Art News")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("news-chip-thumbnail")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("curation-chip-thumbnail")).not.toBeOnTheScreen()
+    })
+
+    it("renders the shows rail with the 'Shows Near You' title override", async () => {
+      const { mockResolveLastOperation } = renderWithRelay({
+        HomeViewSectionCurationArea: () => whatsHappeningSection(),
+      })
+
+      // The shows rail self-fetches its own location-based connection.
+      act(() => {
+        mockResolveLastOperation({
+          ShowConnection: () => ({ edges: [{ node: { name: "show 1" } }] }),
+        })
+      })
+
+      await waitForElementToBeRemoved(() => screen.queryByTestId("show-rail-placeholder"), {
+        timeout: 10000,
+      })
+
+      expect(screen.getByText("Shows Near You")).toBeOnTheScreen()
+      expect(screen.getByText("show 1")).toBeOnTheScreen()
     })
   })
 })
