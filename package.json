@@ -186,6 +186,7 @@
     "react-native-collapsible-tab-view": "patch:react-native-collapsible-tab-view@npm%3A9.0.0-rc.0#~/.yarn/patches/react-native-collapsible-tab-view-npm-9.0.0-rc.0-5363b327de.patch",
     "react-native-device-info": "14.0.0",
     "react-native-drax": "^1.1.0",
+    "react-native-enriched-markdown": "1.1.1",
     "react-native-fbsdk-next": "13.4.1",
     "react-native-gesture-handler": "2.32.0",
     "react-native-get-random-values": "1.11.0",
@@ -398,5 +399,10 @@
         "typescript"
       ]
     }
+  },
+  "enriched-markdown": {
+    "enableCodeHighlight": false,
+    "enableMath": false,
+    "enableVideo": false
   }
 }

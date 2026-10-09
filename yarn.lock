@@ -13661,6 +13661,7 @@ __metadata:
     react-native-collapsible-tab-view: "patch:react-native-collapsible-tab-view@npm%3A9.0.0-rc.0#~/.yarn/patches/react-native-collapsible-tab-view-npm-9.0.0-rc.0-5363b327de.patch"
     react-native-device-info: "npm:14.0.0"
     react-native-drax: "npm:^1.1.0"
+    react-native-enriched-markdown: "npm:1.1.1"
     react-native-fbsdk-next: "npm:13.4.1"
     react-native-gesture-handler: "npm:2.32.0"
     react-native-get-random-values: "npm:1.11.0"
@@ -21797,6 +21798,20 @@ __metadata:
     react-native-gesture-handler: ">=2.0.0"
     react-native-reanimated: ^4.0.0
   checksum: 10c0/1c4269157c69a82b2febf09b70f1008413fcbe351655aa6452d4b4de621e829fb6e28faa0a19b42b9ed02454587a5b2543249bdd1e73e86bff285bee289ebc11
+  languageName: node
+  linkType: hard
+
+"react-native-enriched-markdown@npm:1.1.1":
+  version: 1.1.1
+  resolution: "react-native-enriched-markdown@npm:1.1.1"
+  peerDependencies:
+    katex: ">=0.16.0"
+    react: "*"
+    react-native: "*"
+  peerDependenciesMeta:
+    katex:
+      optional: true
+  checksum: 10c0/c3df3edacc673bfbb4ee58c8deb69d36531a430ef3780a47a2f8a9829ba8fa79beb290132007f91dee00f8feffe92688830dfecdf115003c66157aac7dda662d
   languageName: node
   linkType: hard
 
