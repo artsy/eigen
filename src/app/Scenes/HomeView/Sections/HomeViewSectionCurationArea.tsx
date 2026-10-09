@@ -38,10 +38,12 @@ import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledF
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
-// TODO: promote to a palette token once the design system adopts it — this warm
-// off-white (RGB 254, 248, 237) is the editorial curation area background and is not
-// yet in @artsy/palette-mobile.
+// TODO: these per-area background tints are hardcoded switches on rail type — they
+// should become MP/config-driven (part of the configurable-vs-hardcoded sweep).
+// Editorial area: warm off-white (RGB 254, 248, 237) — not a palette token yet.
 const EDITORIAL_CURATION_AREA_BACKGROUND_COLOR = "#FEF8ED"
+// "What's Happening" (events) area: palette mono5 (#F7F7F7), per spec token Greys/Mono5.
+const EVENTS_CURATION_AREA_BACKGROUND_COLOR = "mono5"
 
 // Presentation variants. MP sends `component.type`; the data shape is identical
 // across variants, so this is a pure layout switch. Today MP only sends
@@ -90,6 +92,19 @@ export const HomeViewSectionCurationArea: React.FC<HomeViewSectionCurationAreaPr
     (rail) => rail.section?.__typename === "HomeViewSectionArticles"
   )
 
+  // The "What's Happening" events area (fairs/shows rails) gets its own tinted background.
+  const hasEventsRail = section.rails.some(
+    (rail) =>
+      rail.section?.__typename === "HomeViewSectionShows" ||
+      rail.section?.__typename === "HomeViewSectionFairs"
+  )
+
+  const backgroundColor = isEditorialArea
+    ? EDITORIAL_CURATION_AREA_BACKGROUND_COLOR
+    : hasEventsRail
+      ? EVENTS_CURATION_AREA_BACKGROUND_COLOR
+      : undefined
+
   const handleChipPress = (chip: Chip, chipIndex: number) => {
     tracking.tappedCardGroup(
       chip.entityID as string,
@@ -101,11 +116,7 @@ export const HomeViewSectionCurationArea: React.FC<HomeViewSectionCurationAreaPr
   }
 
   return (
-    <Flex
-      {...flexProps}
-      backgroundColor={isEditorialArea ? EDITORIAL_CURATION_AREA_BACKGROUND_COLOR : undefined}
-      py={isEditorialArea ? 2 : undefined}
-    >
+    <Flex {...flexProps} backgroundColor={backgroundColor} py={backgroundColor ? 2 : undefined}>
       <SectionTitle
         mx={2}
         title={section.component?.title}
