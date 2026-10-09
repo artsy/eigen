@@ -64,7 +64,7 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
   }
 
   return (
-    <Flex {...flexProps} mt={1}>
+    <Flex {...flexProps} mt={1} backgroundColor="red">
       <FlatList
         data={navigationPills}
         horizontal
