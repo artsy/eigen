@@ -8,7 +8,10 @@ import {
   Color,
   bullet,
 } from "@artsy/palette-mobile"
+import { MarkdownReadMore } from "app/Components/MarkdownText/MarkdownReadMore"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { plainTextFromTree } from "app/utils/plainTextFromTree"
 import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
 import { sendEmailWithMailTo } from "app/utils/sendEmail"
@@ -31,9 +34,22 @@ interface Props {
   textVariant?: PaletteTextProps["variant"]
   linkTextVariant?: PaletteTextProps["variant"]
   onExpand?: (isExpanded: boolean) => void
+  /** Line clamp used when `AREnableEnrichedMarkdown` is enabled. Derived from `maxChars` when omitted. */
+  numberOfLines?: number
 }
 
-export const ReadMore = React.memo(
+export const ReadMore = React.memo((props: Props) => {
+  const enableEnrichedMarkdown = useFeatureFlag("AREnableEnrichedMarkdown")
+
+  if (enableEnrichedMarkdown) {
+    const { color, textStyle: _textStyle, ...rest } = props
+    return <MarkdownReadMore {...rest} color={color as Color | undefined} />
+  }
+
+  return <LegacyReadMore {...props} />
+})
+
+export const LegacyReadMore = React.memo(
   ({
     content,
     maxChars,

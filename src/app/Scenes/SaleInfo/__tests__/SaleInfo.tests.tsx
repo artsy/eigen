@@ -2,6 +2,7 @@ import { screen } from "@testing-library/react-native"
 import { SaleInfoTestsQuery } from "__generated__/SaleInfoTestsQuery.graphql"
 import { RegisterToBidButton } from "app/Scenes/Sale/Components/RegisterToBidButton"
 import { SaleInfoContainer, tests } from "app/Scenes/SaleInfo/SaleInfo"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -19,6 +20,31 @@ describe("SaleInfo", () => {
       }
     `,
     variables: { saleID: "sale-id" },
+  })
+
+  describe("description", () => {
+    const description = "About the sale:\n\n- First lot\n- Second lot\n\n[Contact us](/contact)"
+
+    it("renders a description containing a list", () => {
+      renderWithRelay({ Sale: () => ({ ...mockSale, description }) })
+
+      expect(screen.getByText(/First lot/)).toBeOnTheScreen()
+      expect(screen.getByText(/Second lot/)).toBeOnTheScreen()
+    })
+
+    describe("when AREnableEnrichedMarkdown is enabled", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableEnrichedMarkdown: true })
+      })
+
+      it("renders the description with the native markdown renderer", () => {
+        renderWithRelay({ Sale: () => ({ ...mockSale, description }) })
+
+        expect(screen.getByText(/First lot/)).toBeOnTheScreen()
+        expect(screen.getByText(/Second lot/)).toBeOnTheScreen()
+        expect(screen.getByText("Contact us")).toBeOnTheScreen()
+      })
+    })
   })
 
   it("shows register to bid button", () => {
