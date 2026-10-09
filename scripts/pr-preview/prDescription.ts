@@ -81,7 +81,7 @@ export const buildPreviewReport = ({
 
   const howToTry = [
     `**PR number: ${prNumber}**`,
-    "Enter it in the dev menu under Preview PRs, in the PR number field.",
+    "Enter it in the dev menu under Preview PR, in the PR number field.",
   ]
   const published = `Published \`${sha.slice(
     0,
