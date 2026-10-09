@@ -134,6 +134,7 @@ const editorialSection = (overrides: Record<string, any> = {}) => ({
   leadTitle: "Editorial",
   chipsTitle: "Art News",
   chipsHref: "/news",
+  chipsOwnerType: "marketNews",
   leadSection: editorialLeadSection,
   chipsConnection: {
     edges: [
@@ -330,6 +331,13 @@ describe("HomeViewSectionCurationArea", () => {
       expect(screen.getByText("News Chip 1")).toBeOnTheScreen()
 
       fireEvent.press(screen.getByText("Art News"))
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: "tappedCardGroup",
+        context_module: "curationAreaRail",
+        context_screen_owner_type: "home",
+        destination_screen_owner_type: "marketNews",
+        type: "viewAll",
+      })
       expect(navigate).toHaveBeenCalledWith("/news")
     })
 

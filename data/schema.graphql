@@ -22198,6 +22198,11 @@ type HomeViewSectionCurationArea implements HomeViewSectionGeneric & Node {
   'View all' destination for the chips group.
   """
   chipsHref: String
+
+  """
+  [Analytics] `owner type` for the chips group's 'view all' tap.
+  """
+  chipsOwnerType: String
   chipsTitle: String
 
   """

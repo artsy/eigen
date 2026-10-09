@@ -112,7 +112,15 @@ export const HomeViewSectionCurationArea: React.FC<HomeViewSectionCurationAreaPr
             mx={2}
             title={section.chipsTitle}
             href={section.chipsHref ?? undefined}
-            onPress={section.chipsHref ? () => {} : undefined}
+            onPress={
+              section.chipsHref
+                ? () =>
+                    tracking.tappedCardGroupViewAll(
+                      contextModule,
+                      section.chipsOwnerType as ScreenOwnerType
+                    )
+                : undefined
+            }
           />
         </>
       ) : null}
@@ -381,6 +389,7 @@ const fragment = graphql`
     leadTitle
     chipsTitle
     chipsHref
+    chipsOwnerType
     ownerType
     leadSection {
       __typename
