@@ -203,6 +203,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCityGuideArticlesForYou",
   },
+  AREnableEnrichedMarkdown: {
+    description: "Render markdown natively with enriched-markdown (all call sites)",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
