@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { SelectArtworkListsForArtworkQuery } from "__generated__/SelectArtworkListsForArtworkQuery.graphql"
 import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ArtworkEntity } from "app/Components/ArtworkLists/types"
@@ -6,6 +6,8 @@ import * as utils from "app/Components/ArtworkLists/types"
 import { selectArtworkListsForArtworkQuery } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/components/SelectArtworkListsForArtwork"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { Platform } from "react-native"
+import { KeyboardController } from "react-native-keyboard-controller"
 
 describe("ArtworkListsProvider", () => {
   const initialStateSpy = jest.spyOn(utils, "getArtworkListsStoreInitialState")
@@ -317,6 +319,60 @@ describe("ArtworkListsProvider", () => {
           expect(screen.getByText("2 lists selected")).toBeOnTheScreen()
         })
       })
+    })
+  })
+
+  describe("Newly created artwork list (regression: ONYX-2196)", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkListOfferability: true })
+      // The form's "Save" button only renders on Android (iOS submits via the
+      // keyboard's return key), so force Android to drive submission here.
+      Platform.OS = "android"
+    })
+
+    afterEach(() => {
+      Platform.OS = "ios"
+    })
+
+    it("renders a checkbox, not a toggle, for a list just created from this flow", async () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+      jest.spyOn(KeyboardController, "isVisible").mockReturnValue(false)
+
+      mockResolveLastOperation({
+        Me: () => ({ savedArtworksArtworkList, customArtworkLists: { edges: [] } }),
+      })
+
+      await screen.findByText("Saved Artworks")
+
+      fireEvent.press(screen.getByText("Create New List"))
+      fireEvent.changeText(screen.getByPlaceholderText("Name your list"), "My New List")
+      fireEvent.press(screen.getByText("Save"))
+
+      await waitFor(() => {
+        mockResolveLastOperation({
+          Mutation: () => ({
+            createCollection: {
+              responseOrError: {
+                __typename: "CreateCollectionSuccess",
+                collection: {
+                  internalID: "new-list-id",
+                  name: "My New List",
+                  // Mirrors the real mutation: it never selects `isSavedArtwork`.
+                  shareableWithPartners: true,
+                  artworksCount: 0,
+                },
+              },
+            },
+          }),
+        })
+      })
+
+      await screen.findByText("My New List")
+
+      // Before the fix, the missing `isSavedArtwork` field made this row look
+      // indistinguishable from an Offer Settings row, so it rendered a Switch.
+      expect(screen.queryAllByRole("switch")).toHaveLength(0)
+      expect(screen.getByTestId("artworkListItemSelectedIcon")).toBeOnTheScreen()
     })
   })
 
