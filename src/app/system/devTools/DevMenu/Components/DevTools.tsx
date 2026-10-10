@@ -62,6 +62,12 @@ export const DevTools: React.FC<{}> = () => {
               dismissModal(() => navigate("/lens"))
             }}
           />
+          <DevMenuButtonItem
+            title="Open Markdown Playground"
+            onPress={() => {
+              dismissModal(() => navigate("/dev/markdown-playground"))
+            }}
+          />
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <Flex>
               <MenuItem title="Migration version" />

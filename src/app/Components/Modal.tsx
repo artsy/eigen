@@ -1,5 +1,7 @@
 import { Text, TextProps, Button } from "@artsy/palette-mobile"
 import themeGet from "@styled-system/theme-get"
+import { MarkdownText, MarkdownTextProps } from "app/Components/MarkdownText/MarkdownText"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { defaultRules, MarkdownRules } from "app/utils/renderMarkdown"
 import React from "react"
 import { Modal as RNModal, TouchableWithoutFeedback, View, ViewProps } from "react-native"
@@ -36,6 +38,32 @@ const ModalInnerView = styled.View`
 `
 
 const DEFAULT_MARKDOWN_RULES = defaultRules({})
+
+const ModalDetailText: React.FC<{
+  detailText: string
+  markdownRules: MarkdownRules
+  textAlign: ModalProps["textAlign"]
+}> = ({ detailText, markdownRules, textAlign }) => {
+  const enableEnrichedMarkdown = useFeatureFlag("AREnableEnrichedMarkdown")
+
+  if (enableEnrichedMarkdown) {
+    return (
+      <View style={{ paddingBottom: 15 }}>
+        <MarkdownText
+          markdown={detailText}
+          color="mono60"
+          textAlign={textAlign as MarkdownTextProps["textAlign"]}
+        />
+      </View>
+    )
+  }
+
+  return (
+    <Markdown rules={markdownRules} pb="15px">
+      {detailText}
+    </Markdown>
+  )
+}
 
 export class Modal extends React.Component<ModalProps, ModalState> {
   constructor(props: ModalProps) {
@@ -89,9 +117,11 @@ export class Modal extends React.Component<ModalProps, ModalState> {
                     {headerText}
                   </Text>
                 </View>
-                <Markdown rules={markdownRules} pb="15px">
-                  {detailText}
-                </Markdown>
+                <ModalDetailText
+                  detailText={detailText}
+                  markdownRules={markdownRules}
+                  textAlign={this.props.textAlign}
+                />
                 <Button
                   onPress={() => {
                     this.closeModal()

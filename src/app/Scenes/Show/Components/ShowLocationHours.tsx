@@ -1,6 +1,8 @@
 import { Box, BoxProps, Text } from "@artsy/palette-mobile"
 import { ShowLocationHours_location$data } from "__generated__/ShowLocationHours_location.graphql"
 import { Markdown } from "app/Components/Markdown"
+import { MarkdownText } from "app/Components/MarkdownText/MarkdownText"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { defaultRules } from "app/utils/renderMarkdown"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -14,6 +16,8 @@ const ShowLocationHours: React.FC<ShowLocationHours> = ({
   location: { openingHours },
   ...rest
 }) => {
+  const enableEnrichedMarkdown = useFeatureFlag("AREnableEnrichedMarkdown")
+
   if (!openingHours?.text && !openingHours?.schedules) {
     return null
   }
@@ -21,7 +25,11 @@ const ShowLocationHours: React.FC<ShowLocationHours> = ({
   if (!!openingHours.text) {
     return (
       <Box {...rest}>
-        <Markdown rules={MARKDOWN_RULES}>{openingHours.text}</Markdown>
+        {enableEnrichedMarkdown ? (
+          <MarkdownText markdown={openingHours.text} />
+        ) : (
+          <Markdown rules={MARKDOWN_RULES}>{openingHours.text}</Markdown>
+        )}
       </Box>
     )
   }

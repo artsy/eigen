@@ -4,12 +4,14 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { Timer } from "app/Components/Bidding/Components/Timer"
 import { BidFlowContextStore } from "app/Components/Bidding/Context/BidFlowContextProvider"
 import { Markdown } from "app/Components/Markdown"
+import { MarkdownText } from "app/Components/MarkdownText/MarkdownText"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 // eslint-disable-next-line no-restricted-imports
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useEffect } from "react"
 import { Image, ImageRequireSource } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -38,6 +40,7 @@ export const BidResult: React.FC<BidResultProps> = ({
     params: { bidderPositionResult, saleArtwork, refreshBidderInfo, refreshSaleArtwork },
   },
 }) => {
+  const enableEnrichedMarkdown = useFeatureFlag("AREnableEnrichedMarkdown")
   const biddingEndAt = BidFlowContextStore.useStoreState((state) => state.biddingEndAt)
   const setSelectedBidIndex = BidFlowContextStore.useStoreActions(
     (actions) => actions.setSelectedBidIndex
@@ -110,13 +113,27 @@ export const BidResult: React.FC<BidResultProps> = ({
               : messageHeader || "You’re the highest bidder"}
           </Text>
 
-          {status !== "WINNING" && (
-            <Markdown mb={6}>
-              {status === "PENDING"
-                ? POLLING_TIMEOUT_MESSAGES.description
-                : messageDescriptionMD ?? ""}
-            </Markdown>
-          )}
+          {status !== "WINNING" &&
+            (enableEnrichedMarkdown ? (
+              <Flex mb={6}>
+                <MarkdownText
+                  markdown={
+                    status === "PENDING"
+                      ? POLLING_TIMEOUT_MESSAGES.description
+                      : messageDescriptionMD ?? ""
+                  }
+                  color="mono60"
+                  textAlign="center"
+                  presentLinksModally
+                />
+              </Flex>
+            ) : (
+              <Markdown mb={6}>
+                {status === "PENDING"
+                  ? POLLING_TIMEOUT_MESSAGES.description
+                  : messageDescriptionMD ?? ""}
+              </Markdown>
+            ))}
 
           {!!shouldDisplayTimer && (
             <Timer

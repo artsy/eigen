@@ -91,6 +91,8 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
  */
 jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
 
+jest.mock("react-native-enriched-markdown", () => require("react-native-enriched-markdown/jest"))
+
 jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
 
 jest.mock("react-native-safe-area-context", () => mockSafeAreaContext)
