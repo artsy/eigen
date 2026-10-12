@@ -83,7 +83,7 @@ const ArtAssistantSuggestedReplies: React.FC<{
         <Touchable
           accessibilityHint="Sends this as your next message"
           accessibilityRole="button"
-          key={reply}
+          key={`${index}-${reply}`}
           onPress={() => onSelect(reply, index)}
           underlayColor="mono5"
           style={{ borderRadius: 25, maxWidth: "85%", overflow: "hidden" }}
