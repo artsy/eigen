@@ -58,6 +58,13 @@ enum AIAgentRole {
   USER
 }
 
+type AIAgentSuggestedReply {
+  """
+  Sent verbatim as the next turn's `message` when tapped.
+  """
+  text: String!
+}
+
 type AIAgentTextDelta {
   text: String!
 }
@@ -97,6 +104,11 @@ type AIAgentTurnComplete {
   artworks: [Artwork!]
   message: String
   stopReason: String!
+
+  """
+  Follow-ups the collector can tap to continue the conversation. Null when suggested replies are disabled or the turn did not finish with an answer.
+  """
+  suggestedReplies: [AIAgentSuggestedReply!]
   toolCallCount: Int!
 }
 
