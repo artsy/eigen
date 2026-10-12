@@ -35,5 +35,7 @@ export const ArtAssistantResponseSection: React.FC<ArtAssistantResponseSectionPr
       return <ArtAssistantArtworkRail artworkIDs={section.artworkIDs} />
     case "artists":
       return <ArtAssistantArtistRail artistIDs={section.artistIDs} />
+    default:
+      assertNever(section)
   }
 }
