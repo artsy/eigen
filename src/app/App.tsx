@@ -31,7 +31,7 @@ import Keys from "react-native-keys"
 import { useWebViewCookies } from "./Components/ArtsyWebView"
 import { Providers } from "./Providers"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
-import { DynamicIslandStagingIndicator } from "./utils/DynamicIslandStagingIndicator"
+import { DynamicIslandEnvironmentIndicator } from "./utils/DynamicIslandEnvironmentIndicator"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
@@ -128,7 +128,7 @@ const InnerApp = () => {
         <Main />
       </DevMenuWrapper>
 
-      <DynamicIslandStagingIndicator />
+      <DynamicIslandEnvironmentIndicator />
     </Providers>
   )
 }

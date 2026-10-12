@@ -1,20 +1,19 @@
 import * as NavigationBar from "expo-navigation-bar"
 
 /**
- * Sets the appearance of the Android system navigation bar.
+ * Since Expo SDK 56 (edge-to-edge) the system owns the navigation bar background, so only the
+ * button color can change.
  *
- * Since Expo SDK 56 (edge-to-edge), the navigation bar background color can no longer be set:
- * the system owns the background and the app draws behind it. We can only control the content
- * (button/icon) style, where "light" means a light bar with dark content and "dark" means a dark
- * bar with light content — matching the backgrounds we used to set explicitly.
+ * `setStyle` takes the button color, although expo's type docs say it takes the bar color. The
+ * native module maps "dark" to dark buttons.
  */
 export const setAndroidNavigationBarColor = (theme: "light" | "dark") => {
   switch (theme) {
     case "dark":
-      NavigationBar.setStyle("dark")
+      NavigationBar.setStyle("light")
       break
     case "light":
-      NavigationBar.setStyle("light")
+      NavigationBar.setStyle("dark")
       break
 
     default:

@@ -40,6 +40,13 @@ class MainActivity : ReactActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         RNBootSplash.init(this, R.style.BootTheme)
 
+        // On Android 12/12L, handling the splash exit makes the platform write the bar appearance
+        // on our window. After that it ignores the systemUiVisibility flags that androidx uses for
+        // StatusBar and NavigationBar styles, so light mode gets white bar icons.
+        if (Build.VERSION.SDK_INT in Build.VERSION_CODES.S..Build.VERSION_CODES.S_V2) {
+            splashScreen.clearOnExitAnimationListener()
+        }
+
         // Following line is required to prevent a crash
         // See HACKS.md for more context
         // https://github.com/software-mansion/react-native-screens/issues/17

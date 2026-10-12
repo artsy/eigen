@@ -2,7 +2,7 @@ import { Box, Flex, useTheme } from "@artsy/palette-mobile"
 import { AuthContext } from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
 import { useOnboardingAuthTracking } from "app/Scenes/Onboarding/Screens/Auth/hooks/useOnboardingAuthTracking"
 import { useScreenDimensions } from "app/utils/hooks"
-import { useIsStaging } from "app/utils/hooks/useIsStaging"
+import { useEnvironmentColor } from "app/utils/hooks/useEnvironmentColor"
 import { MotiView } from "moti"
 import { useEffect, useMemo } from "react"
 import { Easing } from "react-native-reanimated"
@@ -21,7 +21,7 @@ const HEIGHT = {
 }
 
 export const AuthModal: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const isStaging = useIsStaging()
+  const environmentColor = useEnvironmentColor()
   const { height: screenHeight } = useScreenDimensions()
 
   const { isModalExpanded, isMounted, currentScreen } = AuthContext.useStoreState((state) => state)
@@ -78,7 +78,7 @@ export const AuthModal: React.FC<React.PropsWithChildren> = ({ children }) => {
           borderRadius: space(1),
           overflow: "hidden",
           position: "relative",
-          ...(!!isStaging && { borderTopWidth: 2, borderTopColor: color("devpurple") }),
+          ...(!!environmentColor && { borderTopWidth: 2, borderTopColor: color(environmentColor) }),
         }}
       >
         <Flex justifyContent="center" p={1}>

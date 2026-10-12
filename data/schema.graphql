@@ -157,6 +157,11 @@ type AIAgentTurnComplete {
   """
   sections: [AIAgentResponseSection!]!
   stopReason: String!
+
+  """
+  Follow-ups the collector can tap to continue the conversation. Null when suggested replies are disabled or the turn did not finish with an answer.
+  """
+  suggestedReplies: [AIAgentSuggestedReply!]
   toolCallCount: Int!
 }
 
@@ -4035,6 +4040,14 @@ type ArtnetImport {
   deletedCount: Int
   errorCount: Int
   errorMessage: String
+  finalizedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
 
   """
   A globally unique ID.
@@ -4054,6 +4067,8 @@ type ArtnetImport {
 enum ArtnetImportState {
   COMPLETED
   FAILED
+  FINALIZED
+  FINALIZING
   PENDING
   PROCESSING
 }
@@ -14717,6 +14732,42 @@ type CreateArtistSuccess {
 
 union CreateArtistSuccessOrErrorType = CreateArtistFailure | CreateArtistSuccess
 
+type CreateArtnetArtworkFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateArtnetArtworkMutationInput {
+  """
+  Artnet's own ID for the artist (Gravity has no mapping to it).
+  """
+  artnetArtistID: Int
+
+  """
+  The ID of the artwork to distribute to Artnet.
+  """
+  artworkID: String!
+  clientMutationId: String
+
+  """
+  Whether Artnet should publish the artwork once created.
+  """
+  published: Boolean
+}
+
+type CreateArtnetArtworkMutationPayload {
+  """
+  On success: the created ArtnetArtwork. On error: the error that occurred.
+  """
+  artnetArtworkOrError: CreateArtnetArtworkResponseOrError
+  clientMutationId: String
+}
+
+union CreateArtnetArtworkResponseOrError = CreateArtnetArtworkFailure | CreateArtnetArtworkSuccess
+
+type CreateArtnetArtworkSuccess {
+  artnetArtwork: ArtnetArtwork
+}
+
 type CreateArtnetImportArtistAssignmentFailure {
   mutationError: GravityMutationError
 }
@@ -15035,6 +15086,11 @@ input CreateArtworkMutationInput {
   The ID of the partner under which the artwork is created.
   """
   partnerId: String!
+
+  """
+  If present, the newly created artwork will be added to this partner list (collection).
+  """
+  partnerListId: String
 
   """
   If present, the newly created artwork will be added to this show.
@@ -20426,6 +20482,28 @@ type FiltersForArtworksConnectionEdge {
   The item at the end of the edge
   """
   node: ArtworkFilterNode
+}
+
+type FinalizeArtnetImportFailure {
+  mutationError: GravityMutationError
+}
+
+input FinalizeArtnetImportInput {
+  artnetImportID: String!
+  clientMutationId: String
+}
+
+type FinalizeArtnetImportPayload {
+  clientMutationId: String
+  finalizeArtnetImportOrError: FinalizeArtnetImportResponseOrError
+}
+
+union FinalizeArtnetImportResponseOrError =
+    FinalizeArtnetImportFailure
+  | FinalizeArtnetImportSuccess
+
+type FinalizeArtnetImportSuccess {
+  artnetImport: ArtnetImport
 }
 
 type FollowArtist {
@@ -26767,6 +26845,11 @@ type Mutation {
   createArtist(input: CreateArtistMutationInput!): CreateArtistMutationPayload
 
   """
+  Creates an ArtnetArtwork from an existing artwork and its catalog artwork, and pushes the create to Artnet. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
+  """
+  createArtnetArtwork(input: CreateArtnetArtworkMutationInput!): CreateArtnetArtworkMutationPayload
+
+  """
   Kicks off a background job to pull a gallery's Artnet inventory and create corresponding Artsy artwork records.
   """
   createArtnetImport(input: CreateArtnetImportMutationInput!): CreateArtnetImportMutationPayload
@@ -27446,6 +27529,11 @@ type Mutation {
   ): ExcludeArtistFromDiscoveryPayload
 
   """
+  Finalize a completed Artnet import. Its artworks appear in the partner's inventory once the import reaches the FINALIZED state.
+  """
+  finalizeArtnetImport(input: FinalizeArtnetImportInput!): FinalizeArtnetImportPayload
+
+  """
   Follow (or unfollow) an artist
   """
   followArtist(input: FollowArtistInput!): FollowArtistPayload
@@ -27811,6 +27899,11 @@ type Mutation {
   Update an artist's social handles.
   """
   updateArtistSocials(input: UpdateArtistSocialsMutationInput!): UpdateArtistSocialsMutationPayload
+
+  """
+  Updates an ArtnetArtwork and pushes the supported changes to Artnet. At least one of `published`, `availability` or `syncOn` is required. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
+  """
+  updateArtnetArtwork(input: UpdateArtnetArtworkMutationInput!): UpdateArtnetArtworkMutationPayload
 
   """
   Updates an artwork.
@@ -29649,6 +29742,16 @@ type Partner implements Node {
   ): ArtistsWithAlertCountsConnection
 
   """
+  An Artwork belonging to this partner, scoped so it can only resolve artworks this partner owns and the current user can manage. Requires authentication.
+  """
+  artwork(
+    """
+    The slug or ID of the Artwork
+    """
+    id: String!
+  ): Artwork
+
+  """
   Artwork duplicate pairs for this partner
   """
   artworkDuplicatePairsConnection(
@@ -29693,9 +29796,9 @@ type Partner implements Node {
     last: Int
 
     """
-    Filter by import source: 'bulk_import' or 'multi_add'. Returns all sources if omitted.
+    Filter by one or more import sources: 'bulk_import', 'multi_add', 'partner_conversion'. Defaults to 'bulk_import' and 'partner_conversion' if omitted.
     """
-    source: String
+    sources: [String]
   ): ArtworkImportConnection
 
   """
@@ -30244,6 +30347,16 @@ type Partner implements Node {
     """
     priceCurrency: String
   ): ShippingPresetConnection
+
+  """
+  A Show belonging to this partner, scoped so it can only resolve shows owned by this partner. Requires authentication.
+  """
+  show(
+    """
+    The ID of the Show
+    """
+    id: String!
+  ): Show
   showPromoted: Boolean
 
   """
@@ -30320,6 +30433,16 @@ type Partner implements Node {
   vatInformation: String
   vatNumber: String
   vatStatus: String
+
+  """
+  A Viewing Room belonging to this partner, scoped so it can only resolve viewing rooms this partner owns and the current user can manage. Requires authentication.
+  """
+  viewingRoom(
+    """
+    The ID of the Viewing Room
+    """
+    id: ID!
+  ): ViewingRoom
   viewingRoomsConnection(
     after: String
     before: String
@@ -39079,8 +39202,8 @@ The rolling window a trending ranking was computed over.
 """
 enum TrendingSearchPeriod {
   ONE_DAY
-  SEVEN_DAYS
-  THIRTY_DAYS
+  SEVEN_DAYS @deprecated(reason: "Only ONE_DAY is served; other periods return today's ranking.")
+  THIRTY_DAYS @deprecated(reason: "Only ONE_DAY is served; other periods return today's ranking.")
 }
 
 """
@@ -39297,6 +39420,16 @@ input UpdateArtistSocialsMutationInput {
   Artist's Instagram handle.
   """
   instagramHandle: String
+
+  """
+  Confirms the user has rights to display content from the Instagram account. Required when setting a handle.
+  """
+  instagramHandleAcknowledged: Boolean
+
+  """
+  Partner the user is acting on behalf of. Required, as a verified representative of the artist, when setting a handle.
+  """
+  partnerId: String
 }
 
 type UpdateArtistSocialsMutationPayload {
@@ -39315,6 +39448,47 @@ type UpdateArtistSocialsSuccess {
 
 type UpdateArtistSuccess {
   artist: Artist
+}
+
+type UpdateArtnetArtworkFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtnetArtworkMutationInput {
+  """
+  Gravity availability (e.g. `for sale`, `sold`), normalized to an Artnet sale status.
+  """
+  availability: String
+  clientMutationId: String
+
+  """
+  The ID of the ArtnetArtwork.
+  """
+  id: String!
+
+  """
+  Publish or unpublish the artwork on Artnet.
+  """
+  published: Boolean
+
+  """
+  Also push the artwork-sourced fields (title, dimensions), making Gravity the source of truth for them. Set when the edit came from an inventory row rather than the Artnet row.
+  """
+  syncOn: Boolean
+}
+
+type UpdateArtnetArtworkMutationPayload {
+  """
+  On success: the updated ArtnetArtwork. On error: the error that occurred.
+  """
+  artnetArtworkOrError: UpdateArtnetArtworkResponseOrError
+  clientMutationId: String
+}
+
+union UpdateArtnetArtworkResponseOrError = UpdateArtnetArtworkFailure | UpdateArtnetArtworkSuccess
+
+type UpdateArtnetArtworkSuccess {
+  artnetArtwork: ArtnetArtwork
 }
 
 input UpdateArtworkEditionSetInput {

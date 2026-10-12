@@ -16,17 +16,21 @@ interface Props {
   topInset: number
   /** Change it to re-read a cover just saved from the edit sheet. */
   localCoverRefreshKey?: unknown
+  /** Shown while the itinerary has no cover of its own — see `itineraryFallbackImage`. */
+  fallbackImage?: { url: string; blurhash?: string | null } | null
 }
 
 export const ItineraryHeader: React.FC<Props> = ({
   itinerary: itineraryRef,
   topInset,
   localCoverRefreshKey,
+  fallbackImage,
 }) => {
   const itinerary = useFragment(fragment, itineraryRef)
   const heroImage = itinerary.heroImage
   const localCover = useItineraryLocalCover(itinerary.internalID, localCoverRefreshKey)
-  const heroUrl = localCover?.path ?? heroImage?.url
+  const isFallback = !localCover && !heroImage?.url && !!fallbackImage
+  const heroUrl = localCover?.path ?? heroImage?.url ?? fallbackImage?.url
   const personalLabel = itinerary.isMine
     ? "Your Itinerary"
     : itinerary.authorName?.trim()
@@ -42,8 +46,12 @@ export const ItineraryHeader: React.FC<Props> = ({
               testID="itinerary-hero-image"
               src={heroUrl}
               performResize={!localCover}
-              blurhash={localCover ? null : heroImage?.blurhash}
-              aspectRatio={localCover?.aspectRatio ?? heroImage?.aspectRatio}
+              blurhash={
+                localCover ? null : isFallback ? fallbackImage?.blurhash : heroImage?.blurhash
+              }
+              aspectRatio={
+                localCover?.aspectRatio ?? (isFallback ? undefined : heroImage?.aspectRatio)
+              }
               resizeMode="cover"
               style={{ width: "100%", height: HERO_HEIGHT }}
             />

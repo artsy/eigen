@@ -6,15 +6,18 @@ import {
 import { ImageCarouselVimeoVideo } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
-import { useCallback, useContext, useEffect, useMemo, useState } from "react"
-import { FlatList, Modal, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
+import {
+  FlatList,
+  LayoutChangeEvent,
+  Modal,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+} from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
-import { createZoomListComponent } from "react-native-reanimated-zoom"
 import { ImageCarouselCloseButton } from "./ImageCarouselCloseButton"
 import { ImageZoomViewAndroid } from "./ImageZoomViewAndroid"
 import { IndexIndicator } from "./IndexIndicator"
-
-const ZoomFlatList = createZoomListComponent(FlatList)
 
 export const ImageCarouselFullScreenAndroid = () => {
   const screenDimensions = useScreenDimensions()
@@ -24,6 +27,17 @@ export const ImageCarouselFullScreenAndroid = () => {
   const initialScrollIndex = useMemo(() => imageIndex.current, [])
   const { setIsDeepZoomModalVisible } = GlobalStore.actions.devicePrefs
   const [showBackButton, setShowBackButton] = useState(false)
+  const listRef = useRef<FlatList<ImageCarouselMedia>>(null)
+  // The modal is edge-to-edge on Android 15+, so it is taller than Dimensions' "window".
+  // Size the pages from the modal's own layout instead.
+  const [measuredPageSize, setMeasuredPageSize] = useState<{ width: number; height: number }>()
+  const pageWidth = measuredPageSize?.width ?? screenDimensions.width
+  const pageHeight = measuredPageSize?.height ?? screenDimensions.height
+
+  const onLayout = useCallback((e: LayoutChangeEvent) => {
+    const { width, height } = e.nativeEvent.layout
+    setMeasuredPageSize({ width, height })
+  }, [])
 
   const onClose = useCallback(() => {
     dispatch({ type: "FULL_SCREEN_DISMISSED" })
@@ -41,29 +55,31 @@ export const ImageCarouselFullScreenAndroid = () => {
   const renderItem = useCallback(
     ({ item, index }: { item: ImageCarouselMedia; index: number }) => {
       if (item.__typename === "Video") {
-        return (
-          <ImageCarouselVimeoVideo
-            width={screenDimensions.width}
-            height={screenDimensions.height}
-            vimeoUrl={item.url}
-          />
-        )
+        return <ImageCarouselVimeoVideo width={pageWidth} height={pageHeight} vimeoUrl={item.url} />
       }
 
-      return <ImageZoomViewAndroid image={item} index={index} />
+      return (
+        <ImageZoomViewAndroid
+          image={item}
+          index={index}
+          width={pageWidth}
+          height={pageHeight}
+          parentScrollRef={listRef}
+        />
+      )
     },
-    [screenDimensions.orientation]
+    [pageWidth, pageHeight]
   )
 
   // Update the imageIndex on scroll
   const onScroll = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const nextImageIndex = Math.round(e.nativeEvent.contentOffset.x / screenDimensions.width)
+      const nextImageIndex = Math.round(e.nativeEvent.contentOffset.x / pageWidth)
       if (fullScreenState.current === "entered" && nextImageIndex !== imageIndex.current) {
         dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex })
       }
     },
-    [screenDimensions.orientation]
+    [pageWidth]
   )
 
   return (
@@ -81,8 +97,12 @@ export const ImageCarouselFullScreenAndroid = () => {
     >
       {!!showBackButton && <ImageCarouselCloseButton onClose={onClose} />}
 
-      <GestureHandlerRootView style={{ flex: 1, backgroundColor: color("mono0") }}>
-        <ZoomFlatList<ImageCarouselMedia>
+      <GestureHandlerRootView
+        style={{ flex: 1, backgroundColor: color("mono0") }}
+        onLayout={onLayout}
+      >
+        <FlatList<ImageCarouselMedia>
+          ref={listRef}
           data={media}
           pagingEnabled
           showsHorizontalScrollIndicator={false}
@@ -93,8 +113,8 @@ export const ImageCarouselFullScreenAndroid = () => {
           initialScrollIndex={initialScrollIndex}
           getItemLayout={(_, index) => ({
             index,
-            offset: index * screenDimensions.width,
-            length: screenDimensions.width,
+            offset: index * pageWidth,
+            length: pageWidth,
           })}
           onScroll={onScroll}
           initialNumToRender={2}

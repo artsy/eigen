@@ -38,6 +38,18 @@ describe("renderMarkdown", () => {
     expect(screen.queryByText(/###/)).toBeNull()
   })
 
+  it("renders list items with new text styles", () => {
+    const componentList = renderMarkdown(
+      "Intro\n\n- first item\n- second item\n",
+      defaultRules({ useNewTextStyles: true })
+    ) as any
+
+    renderWithWrappers(<Flex>{componentList}</Flex>)
+
+    expect(screen.getByText(/first item/)).toBeTruthy()
+    expect(screen.getByText(/second item/)).toBeTruthy()
+  })
+
   it("returns markdown for multiple paragraphs and links", () => {
     const componentList = renderMarkdown(
       "This is a [first](/artist/first) paragraph\n\nAnd that is a [second](/gene/second) paragraph"

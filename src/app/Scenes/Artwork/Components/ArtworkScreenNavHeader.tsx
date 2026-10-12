@@ -1,6 +1,6 @@
 import { Flex } from "@artsy/palette-mobile"
 import { ArtworkScreenNavHeader_artwork$key } from "__generated__/ArtworkScreenNavHeader_artwork.graphql"
-import { useIsStaging } from "app/utils/hooks/useIsStaging"
+import { useEnvironmentColor } from "app/utils/hooks/useEnvironmentColor"
 import { graphql, useFragment } from "react-relay"
 import { ArtworkScreenHeaderCreateAlert } from "./ArtworkScreenHeaderCreateAlert"
 
@@ -11,7 +11,7 @@ interface ArtworkScreenNavHeaderProps {
 }
 
 export const ArtworkScreenNavHeader: React.FC<ArtworkScreenNavHeaderProps> = ({ artwork }) => {
-  const isStaging = useIsStaging()
+  const environmentColor = useEnvironmentColor()
 
   const data = useFragment<ArtworkScreenNavHeader_artwork$key>(
     ArtworkScreenNavHeader_artwork,
@@ -26,9 +26,9 @@ export const ArtworkScreenNavHeader: React.FC<ArtworkScreenNavHeaderProps> = ({ 
       flexDirection="row"
       accessibilityRole="header"
       accessibilityLabel="Artwork page header"
-      {...(!!isStaging && {
+      {...(!!environmentColor && {
         borderBottomWidth: 2,
-        borderBottomColor: "devpurple",
+        borderBottomColor: environmentColor,
       })}
     >
       <ArtworkScreenHeaderCreateAlert artworkRef={data} />

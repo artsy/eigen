@@ -22,7 +22,7 @@ export const ExploreByCategoryCards: React.FC<ExploreByCategoryCardsProps> = ({
   }
 
   return (
-    <Flex py={2} gap={2}>
+    <Flex py={2} gap={1}>
       <Text px={2}>Explore by Category</Text>
       <FlatList
         testID="ExploreByCategoryCards"

@@ -1,5 +1,6 @@
 import { makeItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/__tests__/itineraryTestFixtures"
 import {
+  itineraryFallbackImage,
   itineraryStopCoordinates,
   itineraryStopDisplayTime,
   itineraryStopIsOnMyItineraries,
@@ -113,5 +114,59 @@ describe("itineraryStopIsOnMyItineraries", () => {
 
   it("reads a custom stop's membership from the stop", () => {
     expect(itineraryStopIsOnMyItineraries(stop({ isOnMyItineraries: true, item: null }))).toBe(true)
+  })
+})
+
+describe("itineraryFallbackImage", () => {
+  it("uses the first stop's own image", () => {
+    const sections = [
+      {
+        stops: [
+          stop({ image: { url: "https://example.com/first.jpg" } }),
+          stop({ image: { url: "https://example.com/second.jpg" } }),
+        ],
+      },
+    ]
+
+    expect(itineraryFallbackImage(sections)?.url).toBe("https://example.com/first.jpg")
+  })
+
+  it("falls back to the first stop's entity image", () => {
+    const sections = [
+      {
+        stops: [
+          stop({
+            image: null,
+            item: { __typename: "Show", coverImage: { url: "https://example.com/show.jpg" } },
+          }),
+        ],
+      },
+    ]
+
+    expect(itineraryFallbackImage(sections)?.url).toBe("https://example.com/show.jpg")
+  })
+
+  it("skips empty sections to reach the first stop", () => {
+    const sections = [
+      { stops: [] },
+      { stops: [stop({ image: { url: "https://example.com/day-2.jpg" } })] },
+    ]
+
+    expect(itineraryFallbackImage(sections)?.url).toBe("https://example.com/day-2.jpg")
+  })
+
+  it("is null when the first stop has no image, even if a later one does", () => {
+    const sections = [
+      {
+        stops: [stop({ image: null }), stop({ image: { url: "https://example.com/second.jpg" } })],
+      },
+    ]
+
+    expect(itineraryFallbackImage(sections)).toBeNull()
+  })
+
+  it("is null with no stops at all", () => {
+    expect(itineraryFallbackImage([])).toBeNull()
+    expect(itineraryFallbackImage([{ stops: [] }])).toBeNull()
   })
 })

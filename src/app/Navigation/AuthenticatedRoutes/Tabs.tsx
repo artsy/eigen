@@ -21,7 +21,7 @@ import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { Onboarding } from "app/Scenes/Onboarding/Screens/Onboarding/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useIsStaging } from "app/utils/hooks/useIsStaging"
+import { useEnvironmentColor } from "app/utils/hooks/useEnvironmentColor"
 import { postEventToProviders } from "app/utils/track/providers"
 import { useCallback, useEffect, useState } from "react"
 import { Easing, InteractionManager, PixelRatio, Platform } from "react-native"
@@ -55,7 +55,7 @@ export const TAB_BAR_ANIMATION_DURATION = 300
 const AppTabs: React.FC = () => {
   const { tabsBadges } = useBottomTabsBadges()
   const color = useColor()
-  const isStaging = useIsStaging()
+  const environmentColor = useEnvironmentColor()
   const insets = useSafeAreaInsets()
 
   const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
@@ -94,10 +94,9 @@ const AppTabs: React.FC = () => {
     })
   }, [])
 
-  const stagingTabBarStyle = {
-    borderColor: color("devpurple"),
-    borderTopWidth: 1,
-  }
+  const environmentTabBarStyle = environmentColor
+    ? { borderColor: color(environmentColor), borderTopWidth: 1 }
+    : {}
 
   return (
     <Tab.Navigator
@@ -110,7 +109,7 @@ const AppTabs: React.FC = () => {
             position: "absolute",
             height: BOTTOM_TABS_HEIGHT + insets.bottom,
 
-            ...(isStaging ? stagingTabBarStyle : {}),
+            ...environmentTabBarStyle,
           },
           tabBarHideOnKeyboard: true,
           tabBarVisible: hidesBottomTabs,

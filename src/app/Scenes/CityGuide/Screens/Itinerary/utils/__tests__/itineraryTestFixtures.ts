@@ -4,8 +4,8 @@ import {
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 
 /** Minimal GraphQL-shaped stop for unit tests. Cast keeps fixtures terse. */
-export const makeItineraryStop = (overrides: Record<string, unknown> = {}): ItineraryStop =>
-  ({
+export const makeItineraryStop = (overrides: Record<string, unknown> = {}): ItineraryStop => {
+  const stop = {
     internalID: "stop-1",
     title: "Stop title",
     address: null,
@@ -24,7 +24,15 @@ export const makeItineraryStop = (overrides: Record<string, unknown> = {}): Itin
     endAtISO: null,
     item: null,
     ...overrides,
-  }) as ItineraryStop
+  }
+
+  // `itineraryStopFields_image` is an @inline fragment: Relay stores what it selects under the
+  // fragment's name, which is where `readInlineData` looks, so a plain fixture has to as well.
+  return {
+    ...stop,
+    __fragments: { itineraryStopFields_image: { image: stop.image, item: stop.item } },
+  } as unknown as ItineraryStop
+}
 
 export const makeItinerary = (
   stops: ItineraryStop[],

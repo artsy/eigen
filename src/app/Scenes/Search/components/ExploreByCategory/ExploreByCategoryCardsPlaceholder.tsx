@@ -29,7 +29,7 @@ export const ExploreByCategoryCardsPlaceholder: React.FC = () => {
 
   return (
     <Skeleton>
-      <Flex py={2} gap={2}>
+      <Flex py={2} gap={1}>
         <Flex px={2}>
           <SkeletonText>Explore by Category</SkeletonText>
         </Flex>

@@ -1,4 +1,26 @@
-import { fetchPreviewPR, parsePreviewChannel } from "app/system/devTools/DevMenu/utils/previewPR"
+import {
+  fetchPreviewPR,
+  isRunningPreviewBundle,
+  parsePreviewChannel,
+} from "app/system/devTools/DevMenu/utils/previewPR"
+
+const mockUpdates: {
+  channel: string | null
+  isEmbeddedLaunch: boolean
+  isEmergencyLaunch: boolean
+} = { channel: null, isEmbeddedLaunch: false, isEmergencyLaunch: false }
+
+jest.mock("expo-updates", () => ({
+  get channel() {
+    return mockUpdates.channel
+  },
+  get isEmbeddedLaunch() {
+    return mockUpdates.isEmbeddedLaunch
+  },
+  get isEmergencyLaunch() {
+    return mockUpdates.isEmergencyLaunch
+  },
+}))
 
 const mockResponse = (status: number, body: object = {}) =>
   Promise.resolve({ status, ok: status >= 200 && status < 300, json: () => Promise.resolve(body) })
@@ -64,5 +86,35 @@ describe("parsePreviewChannel", () => {
     expect(parsePreviewChannel("staging")).toBeNull()
     expect(parsePreviewChannel("review-app-")).toBeNull()
     expect(parsePreviewChannel(null)).toBeNull()
+  })
+})
+
+describe("isRunningPreviewBundle", () => {
+  beforeEach(() => {
+    mockUpdates.channel = "review-app-123"
+    mockUpdates.isEmbeddedLaunch = false
+    mockUpdates.isEmergencyLaunch = false
+  })
+
+  it("is true when an update from a review app channel is running", () => {
+    expect(isRunningPreviewBundle()).toBe(true)
+  })
+
+  it("is false on other channels", () => {
+    mockUpdates.channel = "staging"
+    expect(isRunningPreviewBundle()).toBe(false)
+
+    mockUpdates.channel = null
+    expect(isRunningPreviewBundle()).toBe(false)
+  })
+
+  it("is false when the embedded bundle is running", () => {
+    mockUpdates.isEmbeddedLaunch = true
+    expect(isRunningPreviewBundle()).toBe(false)
+  })
+
+  it("is false on an emergency launch", () => {
+    mockUpdates.isEmergencyLaunch = true
+    expect(isRunningPreviewBundle()).toBe(false)
   })
 })

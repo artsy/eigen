@@ -22,12 +22,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/cohesion@npm:4.412.0":
-  version: 4.412.0
-  resolution: "@artsy/cohesion@npm:4.412.0"
+"@artsy/cohesion@npm:4.413.0":
+  version: 4.413.0
+  resolution: "@artsy/cohesion@npm:4.413.0"
   dependencies:
     core-js: "npm:3"
-  checksum: 10c0/d8bab6674779232d617ae31c7acc422baf754ef11574df6e44c17890442b7efdd2bc70104fb5ef14fec43f6c35662341d3c87ab30f4dd286816164e30ff75db7
+  checksum: 10c0/ba3c275cb244c3e74746af59ea0806ea61820636f6b7a9fdd39c3ee2850ed16e0873007928113e28c94800131a7229ae8c17d53de4a639cfd171897ec7f27bef
   languageName: node
   linkType: hard
 
@@ -49,9 +49,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/palette-mobile@npm:24.15.0":
-  version: 24.15.0
-  resolution: "@artsy/palette-mobile@npm:24.15.0"
+"@artsy/palette-mobile@npm:24.18.0":
+  version: 24.18.0
+  resolution: "@artsy/palette-mobile@npm:24.18.0"
   dependencies:
     "@artsy/palette-tokens": "npm:7.0.0"
     "@react-spring/native": "npm:10.0.3"
@@ -72,7 +72,7 @@ __metadata:
     react-native-svg: "*"
     react-native-worklets: "*"
     styled-components: ">= 5"
-  checksum: 10c0/4d9b7cbb15982d26524b7527a7443389c3ec6f57708238f9969137b5422ebfa30322f50d6b6a711a5641fc7e9797b7bc2f89eb55a64f0dd306761664cd2c9309
+  checksum: 10c0/2e74614df763bf1c320325a6d5c5d83bcb6cd20ed1563abc269885f938903307c78e28fe23805b38d037a7649e3b342652ad7ea91abf706826de3854daa9931c
   languageName: node
   linkType: hard
 
@@ -11644,7 +11644,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"braces@npm:3.0.3":
+"braces@npm:^3.0.3":
   version: 3.0.3
   resolution: "braces@npm:3.0.3"
   dependencies:
@@ -12348,17 +12348,18 @@ __metadata:
   linkType: hard
 
 "compression@npm:^1.7.1, compression@npm:^1.7.4":
-  version: 1.8.1
-  resolution: "compression@npm:1.8.1"
+  version: 1.8.2
+  resolution: "compression@npm:1.8.2"
   dependencies:
     bytes: "npm:3.1.2"
     compressible: "npm:~2.0.18"
     debug: "npm:2.6.9"
+    destroy: "npm:1.2.0"
     negotiator: "npm:~0.6.4"
     on-headers: "npm:~1.1.0"
     safe-buffer: "npm:5.2.1"
     vary: "npm:~1.1.2"
-  checksum: 10c0/85114b0b91c16594dc8c671cd9b05ef5e465066a60e5a4ed8b4551661303559a896ed17bb72c4234c04064e078f6ca86a34b8690349499a43f6fc4b844475da4
+  checksum: 10c0/f95be7122323fdffcaadc807f42da38b5227eeac7d9997c1c4314abd7ca4a4de2daa3d5bd4e142706bef4d34fa0f64cd265c6f074b221143e18da1215c0a07ab
   languageName: node
   linkType: hard
 
@@ -13490,9 +13491,9 @@ __metadata:
   resolution: "eigen@workspace:."
   dependencies:
     "@artsy/changelog": "npm:0.1.0"
-    "@artsy/cohesion": "npm:4.412.0"
+    "@artsy/cohesion": "npm:4.413.0"
     "@artsy/icons": "npm:3.82.0"
-    "@artsy/palette-mobile": "npm:24.15.0"
+    "@artsy/palette-mobile": "npm:24.18.0"
     "@artsy/to-title-case": "npm:1.2.0"
     "@artsy/update-repo": "npm:0.8.2"
     "@babel/core": "npm:7.29.0"
@@ -13680,7 +13681,6 @@ __metadata:
     react-native-performance: "npm:5.1.4"
     react-native-permissions: "npm:5.4.4"
     react-native-reanimated: "npm:4.5.1"
-    react-native-reanimated-zoom: "npm:0.3.3"
     react-native-render-html: "npm:6.3.4"
     react-native-safe-area-context: "patch:react-native-safe-area-context@npm%3A5.7.0#~/.yarn/patches/react-native-safe-area-context-npm-5.7.0-fcff6bf187.patch"
     react-native-screens: "npm:4.26.0"
@@ -13694,6 +13694,7 @@ __metadata:
     react-native-webview: "npm:13.16.1"
     react-native-worklets: "npm:0.10.1"
     react-native-youtube-iframe: "npm:2.4.1"
+    react-native-zoom-reanimated: "npm:1.6.0"
     react-relay: "npm:18.2.0"
     react-relay-network-modern: "npm:6.2.2"
     react-test-renderer: "npm:19.2.3"
@@ -21398,12 +21399,12 @@ __metadata:
   linkType: hard
 
 "proxy-addr@npm:^2.0.7, proxy-addr@npm:~2.0.7":
-  version: 2.0.7
-  resolution: "proxy-addr@npm:2.0.7"
+  version: 2.0.8
+  resolution: "proxy-addr@npm:2.0.8"
   dependencies:
     forwarded: "npm:0.2.0"
     ipaddr.js: "npm:1.9.1"
-  checksum: 10c0/c3eed999781a35f7fd935f398b6d8920b6fb00bbc14287bc6de78128ccc1a02c89b95b56742bf7cf0362cc333c61d138532049c7dedc7a328ef13343eff81210
+  checksum: 10c0/58398f36e5b1f72b1011ca21844c0c41a9a3b6f2f0d101bcdb19abb3f3dd9626b27a96e53da777ded901eb67faed0304a4bc1d435b235e436f66f8e5e1fe1f5e
   languageName: node
   linkType: hard
 
@@ -22083,18 +22084,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated-zoom@npm:0.3.3":
-  version: 0.3.3
-  resolution: "react-native-reanimated-zoom@npm:0.3.3"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-    react-native-gesture-handler: "*"
-    react-native-reanimated: "*"
-  checksum: 10c0/91770ef305c9b978dc0f4e4088ea17e8637eda58a111ed64a4a544df9c562b744f99edd1a814e9c5f53c48b437e6ea6c2d1b0ca4c501a6f8b6498c0f23ff0e5d
-  languageName: node
-  linkType: hard
-
 "react-native-reanimated@npm:4.5.1":
   version: 4.5.1
   resolution: "react-native-reanimated@npm:4.5.1"
@@ -22306,6 +22295,18 @@ __metadata:
     react-native-webview:
       optional: true
   checksum: 10c0/966fe52c3a298b01e58259d3f9bf9c94d8764ec7452918f9e0b2cc7f977461b8d9d8e3023a1b5fcc6ca0d470ec0ea3cc4dc1714a6e6ae62b3b16e552faf8deda
+  languageName: node
+  linkType: hard
+
+"react-native-zoom-reanimated@npm:1.6.0":
+  version: 1.6.0
+  resolution: "react-native-zoom-reanimated@npm:1.6.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-gesture-handler: ">=2.0.0"
+    react-native-reanimated: ">=3.0.0"
+  checksum: 10c0/eae42228b5ef2440a6027107ac7660eb2c57ae01b43e480b7e2b401e4c97e3b6ca2677db9c06ecf5a305849f6fcec2ccf925d9b5e92ea2f237c1b4fd5dd26a08
   languageName: node
   linkType: hard
 
@@ -23816,10 +23817,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shell-quote@npm:1.9.0":
-  version: 1.9.0
-  resolution: "shell-quote@npm:1.9.0"
-  checksum: 10c0/a39960107eb086b02394cfceb3c732bd3bf567b568719ff47101448fc3f1bf4a59ecfdd8960ff7ea564d749ef8bda70f2c82a768f22d8c7aeeabf2b64f53b7e8
+"shell-quote@npm:^1.6.1, shell-quote@npm:^1.8.4":
+  version: 1.12.0
+  resolution: "shell-quote@npm:1.12.0"
+  checksum: 10c0/1605a4ed6a758bf13de7cb8197a4184d8015f7a4dbdcd6cd4a717d5b30b3ae7666300cc4ae7f3155cf80ace9739e9e82061ee5aa1a648f53f5fab31a220816d0
   languageName: node
   linkType: hard
 
@@ -24075,9 +24076,9 @@ __metadata:
   linkType: hard
 
 "source-map-js@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "source-map-js@npm:1.2.1"
-  checksum: 10c0/7bda1fc4c197e3c6ff17de1b8b2c20e60af81b63a52cb32ec5a5d67a20a7d42651e2cb34ebe93833c5a2a084377e17455854fee3e21e7925c64a51b6a52b0faf
+  version: 1.2.2
+  resolution: "source-map-js@npm:1.2.2"
+  checksum: 10c0/d5d6dec62266834f83dd4f8a2606a196fb1a006ca5d53b0ef80ee513b7eba2f4e2ae241f4bc129ae7e9b80dea24f6e3d92b446b7e6e96be7653cab8888168a94
   languageName: node
   linkType: hard
 

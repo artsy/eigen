@@ -29,18 +29,10 @@ import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeView
 import { FeaturedPillGlow } from "app/Scenes/HomeView/Sections/Components/FeaturedPillGlow"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import React, { memo } from "react"
 import { FlatList, Platform } from "react-native"
-import Animated, {
-  Easing,
-  useAnimatedStyle,
-  withDelay,
-  withSequence,
-  withTiming,
-} from "react-native-reanimated"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionNavigationPillsProps {
@@ -51,10 +43,6 @@ interface HomeViewSectionNavigationPillsProps {
 export type NavigationPill = NonNullable<
   NonNullable<NonNullable<HomeViewSectionNavigationPills_section$data>["navigationPills"]>[number]
 >
-
-const ANIMATION_DURATION = 500
-const DELAY_DURATION = 400
-const TRANSLATE_X = 20
 
 export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationPillsProps> = ({
   section: sectionProp,
@@ -67,39 +55,9 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
 
   const tracking = useHomeViewTracking()
 
-  const { isSplashScreenVisible } = GlobalStore.useAppState((state) => state.sessionState)
-
   const navigationPills = section.navigationPills.filter(
     (pill) => pill?.title && pill.href
   ) as NavigationPill[]
-
-  const animatedStyles = useAnimatedStyle(() => {
-    const translateX = isSplashScreenVisible
-      ? withTiming(0, {
-          duration: 1000,
-          easing: Easing.bezier(0.25, 0.1, 0.25, 1.0),
-        })
-      : withSequence(
-          withDelay(
-            // A small delay to make the animation is more clear to the user
-            // And to avoid showing the animation as soon as the screen is loaded
-            DELAY_DURATION,
-            withTiming(-TRANSLATE_X, {
-              duration: ANIMATION_DURATION / 2,
-              easing: Easing.inOut(Easing.ease),
-            })
-          ),
-          withTiming(0, {
-            duration: ANIMATION_DURATION / 2,
-            easing: Easing.inOut(Easing.ease),
-          })
-        )
-
-    return {
-      transform: [{ translateX }],
-      overflow: "visible",
-    }
-  })
 
   if (!navigationPills.length) {
     return null
@@ -107,11 +65,11 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
 
   return (
     <Flex {...flexProps} mt={1}>
-      <Animated.FlatList
+      <FlatList
         data={navigationPills}
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={animatedStyles}
+        style={{ overflow: "visible" }}
         contentContainerStyle={[
           {
             paddingHorizontal: space(2),

@@ -1,5 +1,6 @@
 import { NoArtIcon } from "@artsy/icons/native"
 import { Flex, Image, Text, useColor } from "@artsy/palette-mobile"
+import { useItineraryFallbackImage } from "app/Scenes/CityGuide/hooks/useItineraryFallbackImage"
 import { useItineraryLocalCover } from "app/Scenes/CityGuide/hooks/useItineraryLocalCover"
 import { CARD_SHADOW } from "app/Scenes/CityGuide/utils/constants"
 import { RouterLink } from "app/system/navigation/RouterLink"
@@ -17,7 +18,10 @@ interface Props {
   /** Omitted when nothing knows the count — see `itineraryStopsCount`. */
   stopsCount?: number
   imageUrl?: string | null
-  /** Lets a cover saved from this device show while the server still returns the old one. */
+  /**
+   * Lets a cover saved from this device show while the server still returns the old one, and
+   * lets an itinerary with no cover at all borrow its first stop's picture.
+   */
   itineraryID?: string
   href: string
   /** The share icon on the list screen's rows. The home rail's cards have none. */
@@ -44,7 +48,12 @@ export const ItineraryListItem: React.FC<Props> = ({
   const isCard = variant === "card"
   const color = useColor()
   const localCover = useItineraryLocalCover(itineraryID)
-  const imageUrl = localCover?.path ?? serverImageUrl
+  const fallbackImageUrl = useItineraryFallbackImage({
+    itineraryID,
+    stopsCount,
+    skip: !!localCover || !!serverImageUrl,
+  })
+  const imageUrl = localCover?.path ?? serverImageUrl ?? fallbackImageUrl
 
   return (
     <RouterLink

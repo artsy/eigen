@@ -59,8 +59,8 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
       <Flex borderRadius={5} overflow="hidden">
         <Image src={card.imageUrl} width={cardWidth} aspectRatio={IMAGE_RATIO} />
 
-        <Flex position="absolute" top={0} left={0} backgroundColor="mono0" p={0.5}>
-          <Text variant="md">{card.title}</Text>
+        <Flex position="absolute" top={1} left={1} backgroundColor="mono0" p={0.5}>
+          <Text variant="sm-display">{card.title}</Text>
         </Flex>
       </Flex>
     </RouterLink>
