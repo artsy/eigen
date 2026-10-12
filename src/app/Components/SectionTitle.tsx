@@ -45,7 +45,7 @@ export const SectionTitle: React.FC<
   title,
   titleColor = "mono100",
   variant = "default",
-  RightButtonContent = () => <RightButton variant={variant} />,
+  RightButtonContent = () => <RightButton variant={variant} titleColor={titleColor} />,
   ...flexProps
 }) => {
   let titleText
@@ -109,10 +109,16 @@ const Wrapper: React.FC<
   }
 }
 
-const RightButton = ({ variant }: { variant: SectionTitleVariants }) => (
+const RightButton = ({
+  variant,
+  titleColor,
+}: {
+  variant: SectionTitleVariants
+  titleColor: TextProps["color"]
+}) => (
   <Flex flexDirection="row" flex={1}>
     <Flex my="auto">
-      <ChevronRightIcon width={STATES[variant].iconSize} fill="mono100" ml={0.5} />
+      <ChevronRightIcon width={STATES[variant].iconSize} fill={titleColor} ml={0.5} />
     </Flex>
   </Flex>
 )
