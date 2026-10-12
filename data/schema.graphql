@@ -113,6 +113,13 @@ enum AIAgentSectionType {
   ARTWORKS
 }
 
+type AIAgentSuggestedReply {
+  """
+  Sent verbatim as the next turn's `message` when tapped.
+  """
+  text: String!
+}
+
 type AIAgentTextDelta {
   text: String!
 }
@@ -147,15 +154,15 @@ type AIAgentToolResult {
 
 type AIAgentTurnComplete {
   """
-  Artworks referenced in the answer, for rendering as cards. Superseded by `sections`, which also carries other entity types; kept in lockstep with the artworks section for clients that predate it.
+  Artworks referenced in the answer, for rendering as cards. Superseded by `sections`, which also carries other entity types; always the same works as the artworks section, for clients that predate it.
   """
   artworks: [Artwork!]
   message: String
 
   """
-  The entity cards accompanying `message`, each section holding one entity type in the order it should be displayed. Empty for a text-only answer or a turn that produced no answer at all. Currently at most one section per answer.
+  The entity cards accompanying `message`, each section holding one entity type in the order it should be displayed. Empty for a text-only answer or a turn that produced no answer at all; null only when the cards themselves failed to resolve. Currently at most one section per answer.
   """
-  sections: [AIAgentResponseSection!]!
+  sections: [AIAgentResponseSection!]
   stopReason: String!
 
   """
