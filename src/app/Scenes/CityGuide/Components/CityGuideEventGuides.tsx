@@ -70,7 +70,7 @@ export const CityGuideEventGuides: React.FC<Props> = ({ citySlug, query: queryRe
       </ProgressiveOnboardingCityGuide>
 
       <Flex testID="city-guides-list" px={2}>
-        <Join separator={<Spacer y={2} />}>
+        <Join separator={<Spacer y={4} />}>
           {!!featuredRow && (
             <FeaturedGuideItem key={featuredRow.id} item={featuredRow} citySlug={citySlug} />
           )}

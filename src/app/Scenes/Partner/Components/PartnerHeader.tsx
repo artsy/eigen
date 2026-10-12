@@ -2,6 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { PartnerHeader_partner$data } from "__generated__/PartnerHeader_partner.graphql"
 import { ItineraryItemSaveControl } from "app/Components/ItineraryItemSaveControl"
+import { ItineraryStopNote } from "app/Components/ItineraryStopNote/ItineraryStopNote"
 import { PartnerBanner } from "app/Components/PartnerBanner"
 import { Stack } from "app/Components/Stack"
 import { TypeEyebrow } from "app/Components/TypeEyebrow"
@@ -12,8 +13,11 @@ import { PartnerFollowButtonFragmentContainer as FollowButton } from "./PartnerF
 const PartnerHeader: React.FC<{
   partner: PartnerHeader_partner$data
   locationID?: string
+  /** The City Guide stop the page was opened from, whose curator's note shows under the name. */
+  stopID?: string
+  shareToken?: string
   showOnlyFollowButton?: boolean
-}> = ({ partner, locationID, showOnlyFollowButton }) => {
+}> = ({ partner, locationID, stopID, shareToken, showOnlyFollowButton }) => {
   const eligibleArtworks = partner.counts?.eligibleArtworks ?? 0
 
   const galleryBadges = ["Black Owned", "Women Owned"]
@@ -38,6 +42,8 @@ const PartnerHeader: React.FC<{
           <SaveToItinerary partner={partner} locationID={locationID} />
         </Flex>
 
+        {!!stopID && <ItineraryStopNote stopID={stopID} shareToken={shareToken} mt={2} />}
+
         <Flex flexGrow={0} flexShrink={0} pt={1}>
           <FollowButton partner={partner} />
         </Flex>
@@ -57,6 +63,8 @@ const PartnerHeader: React.FC<{
 
           <SaveToItinerary partner={partner} locationID={locationID} />
         </Flex>
+
+        {!!stopID && <ItineraryStopNote stopID={stopID} shareToken={shareToken} mt={2} />}
 
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center" mt={1}>
           <Stack spacing={0.5}>
