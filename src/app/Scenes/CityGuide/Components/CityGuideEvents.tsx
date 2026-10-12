@@ -258,8 +258,10 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
 }
 
 /**
- * `status: RUNNING` rather than `CURRENT`, which would overlap `UPCOMING` and put the same
- * show under both Current Shows and Opening Soon.
+ * Shows take `status: RUNNING` rather than `CURRENT`, which would overlap `UPCOMING` and put
+ * the same show under both Current Shows and Opening Soon. Fairs have no Opening Soon to
+ * overlap, so they take `CURRENT`, as the map does: fairs run for a few days, so `RUNNING`
+ * leaves the rail empty — and hidden — in the days before a city's fair week opens.
  *
  * Opening Soon takes a single formatted `startAt` rather than `exhibitionPeriod`: the section
  * is about when a show opens, and the designs show one date. Formatting stays on the server,
@@ -268,7 +270,7 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
 const fragment = graphql`
   fragment CityGuideEvents_city on City
   @argumentDefinitions(first: { type: "Int!" }, forYou: { type: "Boolean!", defaultValue: false }) {
-    fairsConnection(first: $first, status: RUNNING, sort: START_AT_ASC) {
+    fairsConnection(first: $first, status: CURRENT, sort: START_AT_ASC) {
       edges {
         node {
           internalID
