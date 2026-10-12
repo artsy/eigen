@@ -24,6 +24,9 @@ export const artAssistantAgentTurnSubscription = graphql`
         artworks {
           internalID
         }
+        suggestedReplies {
+          text
+        }
       }
     }
   }

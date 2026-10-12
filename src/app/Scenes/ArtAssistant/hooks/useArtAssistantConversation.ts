@@ -43,8 +43,13 @@ export const ART_ASSISTANT_TURN_IDLE_TIMEOUT_MS = 120_000
 
 export const useArtAssistantConversation = () => {
   const environment = useRelayEnvironment()
-  const { trackMessageSent, trackNewChat, trackResponseReceived, trackTurnFailed } =
-    useArtAssistantTracking()
+  const {
+    trackMessageSent,
+    trackNewChat,
+    trackResponseReceived,
+    trackSuggestedReplyTapped,
+    trackTurnFailed,
+  } = useArtAssistantTracking()
   const userID = GlobalStore.useAppState((state) => state.auth.userID)
   const authenticationToken = GlobalStore.useAppState((state) => state.auth.userAccessToken)
   const [messages, setMessages] = useState<ArtAssistantMessage[]>([])
@@ -311,7 +316,24 @@ export const useArtAssistantConversation = () => {
     ]
   )
 
-  return { isResponding, messages, startNewConversation, submit }
+  const trackSuggestedReplyTappedInConversation = useCallback(
+    (reply: string, position: number, responseMessageID: string) =>
+      trackSuggestedReplyTapped({
+        conversationID: conversationID.current,
+        position,
+        reply,
+        responseMessageID,
+      }),
+    [trackSuggestedReplyTapped]
+  )
+
+  return {
+    isResponding,
+    messages,
+    startNewConversation,
+    submit,
+    trackSuggestedReplyTapped: trackSuggestedReplyTappedInConversation,
+  }
 }
 
 export const reduceActiveTurn = (turn: ActiveTurn, event: NormalizedAgentEvent): ActiveTurn => {
@@ -346,6 +368,7 @@ export const reduceActiveTurn = (turn: ActiveTurn, event: NormalizedAgentEvent):
           phase: "complete",
           activity: undefined,
           artworkRail: artworks.length > 0 ? { status: "ready", artworkIDs } : undefined,
+          suggestedReplies: (event.suggestedReplies ?? []).map((reply) => reply.text),
         },
       }
     }

@@ -67,6 +67,7 @@ describe("Art Assistant conversation reducer", () => {
       stopReason: "end_turn",
       toolCallCount: 1,
       artworks: [{ internalID: "first" }, { internalID: "second" }],
+      suggestedReplies: [],
     } as Extract<NormalizedEvent, { __typename: "AIAgentTurnComplete" }>
 
     const result = reduceActiveTurn(createActiveTurn(), event)
@@ -75,6 +76,21 @@ describe("Art Assistant conversation reducer", () => {
       phase: "complete",
       text: "Here are two works.",
       artworkRail: { status: "ready", artworkIDs: ["first", "second"] },
+    })
+  })
+
+  it("keeps the answer's suggested replies in order", () => {
+    const result = reduceActiveTurn(createActiveTurn(), {
+      __typename: "AIAgentTurnComplete",
+      message: "Here are two works.",
+      stopReason: "end_turn",
+      toolCallCount: 1,
+      artworks: [],
+      suggestedReplies: [{ text: "Show me cheaper ones" }, { text: "Only paintings" }],
+    })
+
+    expect(result.message).toMatchObject({
+      suggestedReplies: ["Show me cheaper ones", "Only paintings"],
     })
   })
 
@@ -90,6 +106,7 @@ describe("Art Assistant conversation reducer", () => {
       stopReason: "end_turn",
       toolCallCount: 0,
       artworks: [],
+      suggestedReplies: null,
     })
 
     expect(result.message).toMatchObject({
@@ -443,6 +460,40 @@ describe("useArtAssistantConversation tracking", () => {
       conversation_id: conversationID,
       message_count: 2,
     })
+  })
+
+  it("reports a tapped suggested reply without its text while the content experiment is off", () => {
+    const { environment, result } = renderConversation()
+
+    act(() => result.current.submit("blue painting"))
+
+    const conversationID =
+      environment.mock.getMostRecentOperation().request.variables.input.conversationID
+
+    act(() => result.current.trackSuggestedReplyTapped("Only paintings", 1, "assistant-1"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedArtAssistantSuggestedReply",
+      context_module: "artAssistantSuggestedReplies",
+      context_screen_owner_type: "artAssistant",
+      conversation_id: conversationID,
+      position: 1,
+      response_message_id: "assistant-1",
+    })
+  })
+
+  it("reports the tapped suggested reply text while the content experiment is on", () => {
+    jest
+      .mocked(useExperimentFlag)
+      .mockImplementation((name) => name === "onyx_send-art-assistant-messages-to-segment")
+
+    const { result } = renderConversation()
+
+    act(() => result.current.trackSuggestedReplyTapped("Only paintings", 1, "assistant-1"))
+
+    const [tapped] = trackedEvents(["tappedArtAssistantSuggestedReply"])
+
+    expect(tapped.reply).toBe("Only paintings")
   })
 
   it("does not report a new chat when there is nothing to discard", () => {

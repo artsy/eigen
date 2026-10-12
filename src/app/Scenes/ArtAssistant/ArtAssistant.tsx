@@ -42,7 +42,8 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   const [prompt, setPrompt] = useState("")
   const [isComposerFocused, setIsComposerFocused] = useState(false)
   const [isNewChatDialogVisible, setIsNewChatDialogVisible] = useState(false)
-  const { isResponding, messages, startNewConversation, submit } = useArtAssistantConversation()
+  const { isResponding, messages, startNewConversation, submit, trackSuggestedReplyTapped } =
+    useArtAssistantConversation()
   const [messageHeights, setMessageHeights] = useState<Record<string, number>>({})
   const composerInputRef = useRef<InputRef>(null)
   const messageListRef = useRef<FlashListRef<ArtAssistantMessageType>>(null)
@@ -99,6 +100,11 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   // A suggestion is sent the moment it is picked, so it never becomes a typed prompt.
   const handleSelectSuggestion = (suggestion: string) => {
     sendPrompt(suggestion, "suggestion")
+  }
+
+  const handleSelectSuggestedReply = (reply: string, position: number, responseMessageID: string) => {
+    trackSuggestedReplyTapped(reply, position, responseMessageID)
+    sendPrompt(reply, "suggestion")
   }
 
   const handleSend = () => {
@@ -217,7 +223,12 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
                 mb={index === messages.length - 1 ? 0 : 2}
                 onLayout={(event) => handleMessageLayout(item.id, event.nativeEvent.layout.height)}
               >
-                <ArtAssistantMessage message={item} />
+                <ArtAssistantMessage
+                  message={item}
+                  onSelectSuggestedReply={
+                    index === messages.length - 1 ? handleSelectSuggestedReply : undefined
+                  }
+                />
               </Flex>
             )}
             style={{ flex: 1 }}
