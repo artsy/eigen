@@ -180,6 +180,8 @@ web-build/
 # Cursor MCP server
 .cursor/mcp.json
 
+# ai handoffs
+handoffs/
 
 # yarn 4
 .yarn/*
