@@ -3,6 +3,7 @@ import { ArtAssistantArtistRailQuery } from "__generated__/ArtAssistantArtistRai
 import { ArtAssistantArtistRail } from "app/Scenes/ArtAssistant/Components/ArtAssistantArtistRail"
 import { navigate } from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
@@ -40,6 +41,25 @@ describe("ArtAssistantArtistRail", () => {
     fireEvent.press(screen.getByText("Andy Warhol"))
 
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
+  })
+
+  it("reports the tapped artist against the Art Assistant results", async () => {
+    renderReadyRail()
+
+    await waitForElementToBeRemoved(() => screen.queryByTestId("art-assistant-artist-rail-loading"))
+
+    fireEvent.press(screen.getByText("Andy Warhol"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedArtistGroup",
+      context_module: "artAssistantResults",
+      context_screen_owner_type: "artAssistant",
+      destination_screen_owner_type: "artist",
+      destination_screen_owner_id: ARTIST_IDS[1],
+      destination_screen_owner_slug: "andy-warhol",
+      horizontal_slide_position: 1,
+      type: "thumbnail",
+    })
   })
 
   it("renders a skeleton while the query is pending", () => {

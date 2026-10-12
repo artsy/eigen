@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType, TappedArtistGroup } from "@artsy/cohesion"
 import {
   Flex,
   Join,
@@ -18,6 +19,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface ArtAssistantArtistRailProps {
   /** `internalID`s from the answer's artists section, in the order it chose. */
@@ -90,15 +92,38 @@ const ArtAssistantArtistRailQueryRenderer: React.FC<ArtAssistantArtistRailProps>
   ErrorFallback: () => <ArtistRailError />,
 })
 
-const ReadyArtistRail: React.FC<{ artists: Artist[] }> = ({ artists }) => (
-  <Flex testID="art-assistant-artist-rail">
-    <CardRailFlatList<Artist>
-      data={artists}
-      keyExtractor={(artist) => artist.internalID}
-      renderItem={({ item }) => <ArtistCardContainer artist={item} showDefaultFollowButton />}
-    />
-  </Flex>
-)
+const ReadyArtistRail: React.FC<{ artists: Artist[] }> = ({ artists }) => {
+  const { trackEvent } = useTracking()
+
+  return (
+    <Flex testID="art-assistant-artist-rail">
+      <CardRailFlatList<Artist>
+        data={artists}
+        keyExtractor={(artist) => artist.internalID}
+        renderItem={({ item, index }) => (
+          <ArtistCardContainer
+            artist={item}
+            showDefaultFollowButton
+            onPress={() => trackEvent(tracks.tappedArtist(item, index))}
+          />
+        )}
+      />
+    </Flex>
+  )
+}
+
+const tracks = {
+  tappedArtist: (artist: Artist, index: number): TappedArtistGroup => ({
+    action: ActionType.tappedArtistGroup,
+    context_module: ContextModule.artAssistantResults,
+    context_screen_owner_type: OwnerType.artAssistant,
+    destination_screen_owner_type: OwnerType.artist,
+    destination_screen_owner_id: artist.internalID,
+    destination_screen_owner_slug: artist.slug,
+    horizontal_slide_position: index,
+    type: "thumbnail",
+  }),
+}
 
 const artistRailQuery = graphql`
   query ArtAssistantArtistRailQuery($artistIDs: [String], $first: Int!) {
@@ -106,6 +131,7 @@ const artistRailQuery = graphql`
       edges {
         node {
           internalID
+          slug
           ...ArtistCard_artist
         }
       }
