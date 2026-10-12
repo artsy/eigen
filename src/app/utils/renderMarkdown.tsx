@@ -1,5 +1,6 @@
 import { Flex, LinkText, Separator, Text, TextProps } from "@artsy/palette-mobile"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { decode } from "html-entities"
 import { map } from "lodash"
@@ -136,11 +137,7 @@ export function defaultRules({
             )
           }
 
-          const listItemText = useNewTextStyles ? (
-            <Text variant="sm" key={String(state.key) + 1}>
-              {output(node.content, state)}
-            </Text>
-          ) : (
+          const listItemText = (
             <Text variant="sm" key={String(state.key) + 1}>
               {output(item, state)}
             </Text>
