@@ -39144,8 +39144,8 @@ The rolling window a trending ranking was computed over.
 """
 enum TrendingSearchPeriod {
   ONE_DAY
-  SEVEN_DAYS
-  THIRTY_DAYS
+  SEVEN_DAYS @deprecated(reason: "Only ONE_DAY is served; other periods return today's ranking.")
+  THIRTY_DAYS @deprecated(reason: "Only ONE_DAY is served; other periods return today's ranking.")
 }
 
 """
