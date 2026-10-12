@@ -8,7 +8,6 @@ const CARD_WIDTH = 150
 const CARD_HEIGHT = 250
 /** Space kept clear at the title's right so it never runs under the save control. */
 const CONTROL_WIDTH = 18
-const SCRIM_COLOR = "rgba(0, 0, 0, 0.2)"
 
 interface Props {
   image: string
@@ -46,12 +45,12 @@ export const CityFairRailCard: React.FC<Props> = ({ image, title, href, saveCont
           />
           {/* The scrim fills the card and the caption sits inside it, so the two stay in one
               stacking order without absolute positioning. */}
-          <Flex flex={1} justifyContent="flex-end" px={1} pb={1} backgroundColor={SCRIM_COLOR}>
+          <Flex flex={1} justifyContent="flex-end" px={1} pb={1}>
             <Flex flexDirection="row" alignItems="flex-end">
               <Flex flex={1}>
                 <Text
                   variant="md"
-                  color="mono0"
+                  color="white"
                   // Value intentionally set to match the design value
                   fontSize="26px"
                   numberOfLines={4}
