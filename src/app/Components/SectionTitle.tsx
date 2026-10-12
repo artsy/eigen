@@ -112,7 +112,7 @@ const Wrapper: React.FC<
 const RightButton = ({ variant }: { variant: SectionTitleVariants }) => (
   <Flex flexDirection="row" flex={1}>
     <Flex my="auto">
-      <ChevronRightIcon width={STATES[variant].iconSize} fill="mono60" ml={0.5} />
+      <ChevronRightIcon width={STATES[variant].iconSize} fill="mono100" ml={0.5} />
     </Flex>
   </Flex>
 )

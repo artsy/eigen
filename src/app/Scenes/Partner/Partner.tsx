@@ -32,11 +32,14 @@ interface PartnerProps {
   artistSlug?: string
   /** The location a City Guide stop named, so the header's plus adds that one. */
   locationID?: string
+  /** The City Guide stop the page was opened from, whose curator's note the header shows. */
+  stopID?: string
+  shareToken?: string
   relay: RelayRefetchProp
 }
 
 const Partner: React.FC<PartnerProps> = (props) => {
-  const { partner, initialTab, artistSlug, locationID } = props
+  const { partner, initialTab, artistSlug, locationID, stopID, shareToken } = props
   const { partnerType, displayFullPartnerPage } = partner
 
   useEffect(() => {
@@ -60,7 +63,12 @@ const Partner: React.FC<PartnerProps> = (props) => {
           showLargeHeaderText={false}
           initialTabName={initialTab}
           BelowTitleHeaderComponent={() => (
-            <PartnerHeader partner={partner} locationID={locationID} />
+            <PartnerHeader
+              partner={partner}
+              locationID={locationID}
+              stopID={stopID}
+              shareToken={shareToken}
+            />
           )}
           headerProps={{ onBack: goBack, hideTitle: true }}
         >
@@ -88,7 +96,13 @@ const Partner: React.FC<PartnerProps> = (props) => {
         showLargeHeaderText={false}
         initialTabName={initialTab}
         BelowTitleHeaderComponent={() => (
-          <PartnerHeader partner={partner} locationID={locationID} showOnlyFollowButton />
+          <PartnerHeader
+            partner={partner}
+            locationID={locationID}
+            stopID={stopID}
+            shareToken={shareToken}
+            showOnlyFollowButton
+          />
         )}
         headerProps={{ onBack: goBack, hideTitle: true }}
       >
@@ -141,6 +155,8 @@ export const PartnerQueryRenderer: React.FC<{
   isVisible: boolean
   artistSlug?: string
   locationID?: string
+  stopID?: string
+  shareToken?: string
 }> = ({ partnerID, artistSlug, ...others }) => {
   return (
     <QueryRenderer<PartnerQuery>

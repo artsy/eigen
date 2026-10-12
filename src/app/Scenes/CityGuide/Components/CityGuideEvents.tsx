@@ -103,7 +103,7 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
   const openingShows = extractNodes(city?.openingShows)
 
   return (
-    <Join separator={<Spacer y={2} />}>
+    <Join separator={<Spacer y={4} />}>
       {/*
         A section with nothing in it is hidden entirely, header included: an empty rail under
         a "Current London Fairs" heading reads as a broken screen rather than as "no fairs".

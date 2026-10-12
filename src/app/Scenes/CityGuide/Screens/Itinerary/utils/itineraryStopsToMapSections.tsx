@@ -11,6 +11,7 @@ import {
   itineraryStopSaveTarget,
   itineraryStopTitle,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
+import { itineraryStopHref } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopHref"
 import {
   Itinerary,
   ItineraryStop,
@@ -67,12 +68,16 @@ export const itineraryStopsToMapSections = (
         // test `ItineraryStopRow` uses for its own plus.
         const isCustom = !stop.item && !saveTarget
         const card = stopCardFields(stop, stop.item)
-        // A custom stop's own screen, exactly as `ItineraryStopRow` builds it — `card.href` is
-        // only ever the curator's outbound source link (or nothing), so falling back to it here
-        // left a tapped custom-stop pin with no destination at all.
-        const href = isCustom
-          ? `/city-guide/${citySlug}/itinerary/${itinerary.internalID}/stop/${stop.internalID}`
-          : card.href ?? null
+        // Exactly as `ItineraryStopRow` builds it — `card.href` is only ever a custom stop's
+        // outbound source link (or nothing), so falling back to it here left a tapped
+        // custom-stop pin with no destination at all.
+        const href =
+          itineraryStopHref(stop, card, {
+            citySlug,
+            itineraryId: itinerary.internalID,
+            shareToken: itinerary.shareToken,
+            isCustom,
+          }) ?? null
 
         return {
           id: stop.internalID,

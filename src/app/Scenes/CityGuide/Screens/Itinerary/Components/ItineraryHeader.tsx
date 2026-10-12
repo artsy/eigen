@@ -4,7 +4,7 @@ import { useItineraryLocalCover } from "app/Scenes/CityGuide/hooks/useItineraryL
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment } from "react-relay"
 
-const HERO_HEIGHT = 300
+const HERO_HEIGHT = 340
 
 interface Props {
   itinerary: ItineraryHeader_itinerary$key
@@ -60,7 +60,7 @@ export const ItineraryHeader: React.FC<Props> = ({
           <LinearGradient
             testID="itinerary-hero-scrim"
             colors={["transparent", "rgba(0,0,0,0.7)"]}
-            style={{ position: "absolute", bottom: 0, width: "100%", height: HERO_HEIGHT / 2 }}
+            style={{ position: "absolute", bottom: 0, width: "100%", height: HERO_HEIGHT * 0.75 }}
           />
 
           <Flex p={2}>
