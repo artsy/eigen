@@ -16,7 +16,7 @@ export const ArtAssistantMessage: React.FC<ArtAssistantMessageProps> = ({
   const isUser = message.role === "user"
   const suggestedReplies =
     message.role === "assistant" && message.phase === "complete"
-      ? (message.suggestedReplies ?? [])
+      ? message.suggestedReplies ?? []
       : []
   const hasAssistantSuggestedReplies = !!onSelectSuggestedReply && suggestedReplies.length > 0
 
@@ -46,10 +46,12 @@ export const ArtAssistantMessage: React.FC<ArtAssistantMessageProps> = ({
         </Flex>
       )}
 
-      {!!hasAssistantSuggestedReplies && <ArtAssistantSuggestedReplies
+      {!!hasAssistantSuggestedReplies && (
+        <ArtAssistantSuggestedReplies
           replies={suggestedReplies}
           onSelect={(reply, position) => onSelectSuggestedReply(reply, position, message.id)}
-        />}
+        />
+      )}
     </Flex>
   )
 }

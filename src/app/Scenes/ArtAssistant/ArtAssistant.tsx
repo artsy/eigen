@@ -82,17 +82,17 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
     )
   }, [])
 
-  const sendPrompt = (promptText: string, type: SentArtAssistantMessage["type"]) => {
-    const text = promptText.trim()
+  const canSendPrompt = (promptText: string) => !!promptText.trim() && !isResponding
 
-    if (!text || isResponding) {
+  const sendPrompt = (promptText: string, type: SentArtAssistantMessage["type"]) => {
+    if (!canSendPrompt(promptText)) {
       return
     }
 
     const userMessageIndex = messages.length
 
     pendingScrollIndex.current = userMessageIndex
-    void submit(text, { type })
+    void submit(promptText.trim(), { type })
     setPrompt("")
     dismissComposerKeyboard()
   }
@@ -102,7 +102,15 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
     sendPrompt(suggestion, "suggestion")
   }
 
-  const handleSelectSuggestedReply = (reply: string, position: number, responseMessageID: string) => {
+  const handleSelectSuggestedReply = (
+    reply: string,
+    position: number,
+    responseMessageID: string
+  ) => {
+    if (!canSendPrompt(reply)) {
+      return
+    }
+
     trackSuggestedReplyTapped(reply, position, responseMessageID)
     sendPrompt(reply, "suggestion")
   }
