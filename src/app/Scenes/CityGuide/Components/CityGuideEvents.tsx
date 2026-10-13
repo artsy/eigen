@@ -128,6 +128,8 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
                 // the Fair page header.
                 !!fair.location?.address && (
                   <CityEventSaveControl
+                    // Value intentionally because it's on top of an image(contrast)
+                    color="white"
                     itemType="FAIR"
                     itemID={fair.internalID}
                     itemSlug={fair.slug ?? undefined}

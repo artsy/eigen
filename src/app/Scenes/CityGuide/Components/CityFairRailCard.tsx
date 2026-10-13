@@ -50,6 +50,7 @@ export const CityFairRailCard: React.FC<Props> = ({ image, title, href, saveCont
               <Flex flex={1}>
                 <Text
                   variant="md"
+                  // Value intentionally because it's on top of an image(contrast)
                   color="white"
                   // Value intentionally set to match the design value
                   fontSize="26px"
