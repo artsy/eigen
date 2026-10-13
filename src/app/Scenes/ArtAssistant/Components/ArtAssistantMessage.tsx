@@ -31,8 +31,6 @@ export const ArtAssistantMessage: React.FC<ArtAssistantMessageProps> = ({ messag
 
       {message.role === "assistant" &&
         message.sections?.map((section, index) => (
-          // A terminal answer's sections never move, so the index is a stable key. Streamed,
-          // dynamically inserted blocks would need a server-supplied ID instead.
           <Flex alignSelf="stretch" key={`${message.id}:${index}`} mt={1} mx={-2}>
             <ArtAssistantResponseSection section={section} />
           </Flex>

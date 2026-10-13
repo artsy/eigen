@@ -28,6 +28,26 @@ interface ArtAssistantArtistRailProps {
 
 type Artist = ExtractNodeType<ArtAssistantArtistRailQuery["response"]["artistsConnection"]>
 
+const ReadyArtistRail: React.FC<{ artists: Artist[] }> = ({ artists }) => {
+  const { trackEvent } = useTracking()
+
+  return (
+    <Flex testID="art-assistant-artist-rail">
+      <CardRailFlatList<Artist>
+        data={artists}
+        keyExtractor={(artist) => artist.internalID}
+        renderItem={({ item, index }) => (
+          <ArtistCardContainer
+            artist={item}
+            showDefaultFollowButton
+            onPress={() => trackEvent(tracks.tappedArtist(item, index))}
+          />
+        )}
+      />
+    </Flex>
+  )
+}
+
 const ArtistRailLoading: React.FC = () => (
   <Skeleton>
     <Flex flexDirection="row" ml={2} testID="art-assistant-artist-rail-loading">
@@ -43,26 +63,6 @@ const ArtistRailLoading: React.FC = () => (
     </Flex>
   </Skeleton>
 )
-
-const ArtistRailEmpty: React.FC = () => (
-  <Text color="mono60" px={2} variant="xs" testID="art-assistant-artist-rail-empty">
-    No matching artists found.
-  </Text>
-)
-
-const ArtistRailError: React.FC = () => (
-  <Text color="mono60" px={2} variant="xs" testID="art-assistant-artist-rail-error">
-    Artist suggestions are unavailable.
-  </Text>
-)
-
-export const ArtAssistantArtistRail: React.FC<ArtAssistantArtistRailProps> = ({ artistIDs }) => {
-  if (artistIDs.length === 0) {
-    return <ArtistRailEmpty />
-  }
-
-  return <ArtAssistantArtistRailQueryRenderer artistIDs={artistIDs} />
-}
 
 const ArtAssistantArtistRailQueryRenderer: React.FC<ArtAssistantArtistRailProps> = withSuspense({
   Component: ({ artistIDs }) => {
@@ -92,24 +92,24 @@ const ArtAssistantArtistRailQueryRenderer: React.FC<ArtAssistantArtistRailProps>
   ErrorFallback: () => <ArtistRailError />,
 })
 
-const ReadyArtistRail: React.FC<{ artists: Artist[] }> = ({ artists }) => {
-  const { trackEvent } = useTracking()
+const ArtistRailEmpty: React.FC = () => (
+  <Text color="mono60" px={2} variant="xs" testID="art-assistant-artist-rail-empty">
+    No matching artists found.
+  </Text>
+)
 
-  return (
-    <Flex testID="art-assistant-artist-rail">
-      <CardRailFlatList<Artist>
-        data={artists}
-        keyExtractor={(artist) => artist.internalID}
-        renderItem={({ item, index }) => (
-          <ArtistCardContainer
-            artist={item}
-            showDefaultFollowButton
-            onPress={() => trackEvent(tracks.tappedArtist(item, index))}
-          />
-        )}
-      />
-    </Flex>
-  )
+const ArtistRailError: React.FC = () => (
+  <Text color="mono60" px={2} variant="xs" testID="art-assistant-artist-rail-error">
+    Artist suggestions are unavailable.
+  </Text>
+)
+
+export const ArtAssistantArtistRail: React.FC<ArtAssistantArtistRailProps> = ({ artistIDs }) => {
+  if (artistIDs.length === 0) {
+    return <ArtistRailEmpty />
+  }
+
+  return <ArtAssistantArtistRailQueryRenderer artistIDs={artistIDs} />
 }
 
 const tracks = {
