@@ -56,6 +56,77 @@ describe("ArtAssistant", () => {
     )
   })
 
+  it("sends a suggested reply from the latest answer as soon as it is picked", async () => {
+    const environment = createMockEnvironment()
+    renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+    fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "Warhol prints")
+    fireEvent.press(screen.getByLabelText("Send"))
+
+    await act(async () => {
+      environment.mock.nextValue(environment.mock.getMostRecentOperation(), {
+        data: {
+          aiAgentTurn: {
+            __typename: "AIAgentTurnComplete",
+            message: "Here are a few.",
+            stopReason: "end_turn",
+            toolCallCount: 1,
+            artworks: [],
+            suggestedReplies: [{ text: "Show me cheaper ones" }, { text: "Only paintings" }],
+          },
+        },
+      })
+    })
+
+    fireEvent.press(screen.getByText("Only paintings"))
+
+    expect(environment.mock.getMostRecentOperation().request.variables.input).toEqual(
+      expect.objectContaining({ message: "Only paintings" })
+    )
+    expect(screen.queryByText("Show me cheaper ones")).not.toBeOnTheScreen()
+  })
+
+  it("reports a tapped suggested reply with its position and the answer that offered it", async () => {
+    const environment = createMockEnvironment()
+    renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+    fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "Warhol prints")
+    fireEvent.press(screen.getByLabelText("Send"))
+
+    await act(async () => {
+      environment.mock.nextValue(environment.mock.getMostRecentOperation(), {
+        data: {
+          aiAgentTurn: {
+            __typename: "AIAgentTurnComplete",
+            message: "Here are a few.",
+            stopReason: "end_turn",
+            toolCallCount: 1,
+            artworks: [],
+            suggestedReplies: [{ text: "Show me cheaper ones" }, { text: "Only paintings" }],
+          },
+        },
+      })
+    })
+
+    fireEvent.press(screen.getByText("Only paintings"))
+
+    const event = (action: string) =>
+      mockTrackEvent.mock.calls
+        .map(([call]) => call as Record<string, any>)
+        .find((call) => call.action === action)
+    const tapped = event("tappedArtAssistantSuggestedReply")
+
+    expect(tapped).toEqual(
+      expect.objectContaining({
+        context_module: "artAssistantSuggestedReplies",
+        context_screen_owner_type: "artAssistant",
+        position: 1,
+      })
+    )
+    expect(tapped?.conversation_id).toEqual(event("sentArtAssistantMessage")?.conversation_id)
+    expect(tapped?.response_message_id).toEqual(event("receivedArtAssistantResponse")?.message_id)
+  })
+
   it("enables Send when the prompt has text", () => {
     renderWithWrappers(<ArtAssistant />)
 

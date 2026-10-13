@@ -6,6 +6,7 @@ import {
   ReceivedArtAssistantResponse,
   SentArtAssistantMessage,
   TappedArtAssistantNewChat,
+  TappedArtAssistantSuggestedReply,
   TappedArtAssistantSuggestion,
 } from "@artsy/cohesion"
 import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
@@ -32,6 +33,13 @@ interface ResponseReceived {
   toolCallCount: number
 }
 
+interface SuggestedReplyTapped {
+  conversationID: string
+  position: number
+  reply: string
+  responseMessageID: string
+}
+
 interface TurnFailed {
   conversationID: string
   durationMs: number
@@ -43,8 +51,8 @@ interface TurnFailed {
 }
 
 /**
- * Art Assistant tracking. Everything but the message and response text is always sent; the text
- * itself is user and agent content, so it only rides along while the
+ * Art Assistant tracking. Everything but the message, response and suggested reply text is always
+ * sent; the text itself is user and agent content, so it only rides along while the
  * `onyx_send-art-assistant-messages-to-segment` experiment is on. That gate lives in Unleash
  * rather than in echo so it can be turned off without an app release, and turning it off keeps
  * every other field: the counts, timings and failure rates survive a decision not to collect
@@ -67,6 +75,23 @@ export const useArtAssistantTracking = () => {
       trackEvent(payload)
     },
     [trackEvent]
+  )
+
+  const trackSuggestedReplyTapped = useCallback(
+    ({ conversationID, position, reply, responseMessageID }: SuggestedReplyTapped) => {
+      const payload: TappedArtAssistantSuggestedReply = {
+        action: ActionType.tappedArtAssistantSuggestedReply,
+        context_module: ContextModule.artAssistantSuggestedReplies,
+        context_screen_owner_type: OwnerType.artAssistant,
+        conversation_id: conversationID,
+        position,
+        response_message_id: responseMessageID,
+        ...(canTrackMessageContent ? { reply } : {}),
+      }
+
+      trackEvent(payload)
+    },
+    [canTrackMessageContent, trackEvent]
   )
 
   const trackNewChat = useCallback(
@@ -168,6 +193,7 @@ export const useArtAssistantTracking = () => {
     trackMessageSent,
     trackNewChat,
     trackResponseReceived,
+    trackSuggestedReplyTapped,
     trackSuggestionTapped,
     trackTurnFailed,
   }
