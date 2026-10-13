@@ -3,6 +3,7 @@ import { Flex, Spacer, Spinner } from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import { RecommendedArtistsRailFollowMutation } from "__generated__/RecommendedArtistsRailFollowMutation.graphql"
 import { RecommendedArtistsRail_me$data } from "__generated__/RecommendedArtistsRail_me.graphql"
+import { ArtistCard } from "app/Components/ArtistCard/ArtistCard"
 import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { RailScrollProps } from "app/Scenes/HomeView/Components/types"
@@ -18,7 +19,6 @@ import {
   RelayPaginationProp,
 } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ArtistCard } from "./ArtistCard"
 
 const MAX_ARTISTS = 20
 const PAGE_SIZE = 6

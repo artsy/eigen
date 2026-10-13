@@ -61,33 +61,95 @@ describe("Art Assistant conversation reducer", () => {
   })
 
   it("publishes the final answer and preserves artwork ranking", () => {
-    const event = {
-      __typename: "AIAgentTurnComplete" as const,
-      message: "Here are two works.",
-      stopReason: "end_turn",
-      toolCallCount: 1,
-      artworks: [{ internalID: "first" }, { internalID: "second" }],
-      suggestedReplies: [],
-    } as Extract<NormalizedEvent, { __typename: "AIAgentTurnComplete" }>
-
-    const result = reduceActiveTurn(createActiveTurn(), event)
+    const result = reduceActiveTurn(
+      createActiveTurn(),
+      terminalEvent({
+        message: "Here are two works.",
+        sections: [
+          {
+            __typename: "AIAgentArtworksSection",
+            artworks: [{ internalID: "first" }, { internalID: "second" }],
+          },
+        ],
+        artworks: [{ internalID: "first" }, { internalID: "second" }],
+      })
+    )
 
     expect(result.message).toMatchObject({
       phase: "complete",
       text: "Here are two works.",
-      artworkRail: { status: "ready", artworkIDs: ["first", "second"] },
+      sections: [{ type: "artworks", artworkIDs: ["first", "second"] }],
     })
   })
 
-  it("keeps the answer's suggested replies in order", () => {
-    const result = reduceActiveTurn(createActiveTurn(), {
-      __typename: "AIAgentTurnComplete",
-      message: "Here are two works.",
-      stopReason: "end_turn",
-      toolCallCount: 1,
-      artworks: [],
-      suggestedReplies: [{ text: "Show me cheaper ones" }, { text: "Only paintings" }],
+  it("publishes an artists section", () => {
+    const result = reduceActiveTurn(
+      createActiveTurn(),
+      terminalEvent({
+        message: "Two artists you might like.",
+        sections: [
+          {
+            __typename: "AIAgentArtistsSection",
+            artists: [{ internalID: "warhol" }, { internalID: "basquiat" }],
+          },
+        ],
+        artworks: [],
+      })
+    )
+
+    expect(result.message).toMatchObject({
+      phase: "complete",
+      sections: [{ type: "artists", artistIDs: ["warhol", "basquiat"] }],
     })
+  })
+
+  it("ignores a section type this client does not know yet", () => {
+    const result = reduceActiveTurn(
+      createActiveTurn(),
+      terminalEvent({
+        message: "Two shows worth a visit.",
+        sections: [{ __typename: "%other" }],
+        artworks: [],
+      })
+    )
+
+    expect(result.message).toMatchObject({ phase: "complete", sections: undefined })
+  })
+
+  it("falls back to legacy artworks when no section arrived", () => {
+    const result = reduceActiveTurn(
+      createActiveTurn(),
+      terminalEvent({
+        message: "Here are two works.",
+        sections: [],
+        artworks: [{ internalID: "first" }, { internalID: "second" }],
+      })
+    )
+
+    expect(result.message).toMatchObject({
+      sections: [{ type: "artworks", artworkIDs: ["first", "second"] }],
+    })
+  })
+
+  it("leaves a text-only answer without sections", () => {
+    const result = reduceActiveTurn(
+      createActiveTurn(),
+      terminalEvent({ message: "We can't show that.", sections: [], artworks: [] })
+    )
+
+    expect(result.message).toMatchObject({ phase: "complete", sections: undefined })
+  })
+
+  it("keeps the answer's suggested replies in order", () => {
+    const result = reduceActiveTurn(
+      createActiveTurn(),
+      terminalEvent({
+        message: "Here are two works.",
+        sections: [],
+        artworks: [],
+        suggestedReplies: [{ text: "Show me cheaper ones" }, { text: "Only paintings" }],
+      })
+    )
 
     expect(result.message).toMatchObject({
       suggestedReplies: ["Show me cheaper ones", "Only paintings"],
@@ -100,14 +162,10 @@ describe("Art Assistant conversation reducer", () => {
       text: "Recovered answer",
     })
 
-    const result = reduceActiveTurn(streaming, {
-      __typename: "AIAgentTurnComplete",
-      message: null,
-      stopReason: "end_turn",
-      toolCallCount: 0,
-      artworks: [],
-      suggestedReplies: null,
-    })
+    const result = reduceActiveTurn(
+      streaming,
+      terminalEvent({ message: null, sections: [], artworks: [] })
+    )
 
     expect(result.message).toMatchObject({
       phase: "error",
@@ -115,15 +173,23 @@ describe("Art Assistant conversation reducer", () => {
     })
   })
 
-  it("includes previously shown artwork IDs in follow-up history", () => {
+  it("replays previously shown cards by entity type and display order", () => {
     const messages: ArtAssistantMessage[] = [
       { id: "user", role: "user", text: "show me blue works" },
       {
-        id: "assistant",
+        id: "assistant-artworks",
         role: "assistant",
         text: "Here are some works.",
         phase: "complete",
-        artworkRail: { status: "ready", artworkIDs: ["first", "second"] },
+        sections: [{ type: "artworks", artworkIDs: ["first", "second"] }],
+      },
+      { id: "user-artists", role: "user", text: "who else should I look at" },
+      {
+        id: "assistant-artists",
+        role: "assistant",
+        text: "These artists, then.",
+        phase: "complete",
+        sections: [{ type: "artists", artistIDs: ["warhol"] }],
       },
     ]
 
@@ -132,7 +198,32 @@ describe("Art Assistant conversation reducer", () => {
       {
         role: "ASSISTANT",
         content: "Here are some works.",
-        artworkIDs: ["first", "second"],
+        displayedSections: [{ entityType: "ARTWORK", internalIDs: ["first", "second"] }],
+      },
+      { role: "USER", content: "who else should I look at" },
+      {
+        role: "ASSISTANT",
+        content: "These artists, then.",
+        displayedSections: [{ entityType: "ARTIST", internalIDs: ["warhol"] }],
+      },
+    ])
+  })
+
+  it("omits displayed sections from a text-only answer", () => {
+    expect(
+      toHistory([
+        {
+          id: "assistant",
+          role: "assistant",
+          text: "That's not something we can show you.",
+          phase: "complete",
+        },
+      ])
+    ).toEqual([
+      {
+        role: "ASSISTANT",
+        content: "That's not something we can show you.",
+        displayedSections: undefined,
       },
     ])
   })
@@ -162,19 +253,29 @@ describe("useArtAssistantConversation", () => {
     expect(result.current.messages).toBe(messagesAfterSubmit)
 
     act(() => {
-      emit(environment, operation, {
-        __typename: "AIAgentTurnComplete",
-        message: "Final answer",
-        stopReason: "end_turn",
-        toolCallCount: 0,
-        artworks: [],
-      })
+      emit(
+        environment,
+        operation,
+        terminalEvent({ message: "Final answer", sections: [], artworks: [] })
+      )
     })
 
     expect(result.current.messages).not.toBe(messagesAfterSubmit)
     expect(result.current.messages.at(-1)).toMatchObject({
       phase: "complete",
       text: "Final answer",
+    })
+  })
+
+  it("declares the section types this build can render", () => {
+    const { environment, result } = renderConversation()
+
+    act(() => result.current.submit("blue painting"))
+
+    // Metaphysics defaults an omitted list to [ARTWORKS], so sending it is what opts this build
+    // into artist sections at all — and what keeps prose from promising cards we can't render.
+    expect(environment.mock.getMostRecentOperation().request.variables.input).toMatchObject({
+      supportedSections: ["ARTWORKS", "ARTISTS"],
     })
   })
 
@@ -188,13 +289,11 @@ describe("useArtAssistantConversation", () => {
     const operation = environment.mock.getMostRecentOperation()
 
     act(() => {
-      emit(environment, operation, {
-        __typename: "AIAgentTurnComplete",
-        message: "I found a few works for you.",
-        stopReason: "end_turn",
-        toolCallCount: 1,
-        artworks: [],
-      })
+      emit(
+        environment,
+        operation,
+        terminalEvent({ message: "I found a few works for you.", sections: [], artworks: [] })
+      )
     })
 
     // No `environment.mock.complete(operation)`: the stream is still open.
@@ -223,6 +322,18 @@ const emit = (
 ) => environment.mock.nextValue(operation, { data: { aiAgentTurn } })
 
 type NormalizedEvent = NonNullable<useArtAssistantConversationAgentTurnSubscription$data["aiAgentTurn"]>
+type TerminalEvent = Extract<NormalizedEvent, { __typename: "AIAgentTurnComplete" }>
+
+const terminalEvent = (
+  event: Pick<TerminalEvent, "message" | "sections" | "artworks"> &
+    Partial<Pick<TerminalEvent, "suggestedReplies">>
+): TerminalEvent => ({
+  __typename: "AIAgentTurnComplete",
+  stopReason: "end_turn",
+  toolCallCount: 1,
+  suggestedReplies: [],
+  ...event,
+})
 
 const createActiveTurn = (): ActiveTurn => ({
   didReceiveTerminalEvent: false,

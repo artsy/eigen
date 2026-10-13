@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtistCardTestsQuery } from "__generated__/ArtistCardTestsQuery.graphql"
-import { ArtistCardContainer } from "app/Scenes/HomeView/Components/ArtistRails/ArtistCard"
+import { ArtistCardContainer } from "app/Components/ArtistCard/ArtistCard"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql, useMutation } from "react-relay"

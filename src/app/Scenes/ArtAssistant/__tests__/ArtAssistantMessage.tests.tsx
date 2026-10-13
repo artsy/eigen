@@ -83,6 +83,42 @@ describe("ArtAssistantMessage", () => {
     expect(screen.getByText("Thinking...")).toHaveStyle({ color: "#C2C2C2" })
   })
 
+  it("renders a rail per section, dispatching on the section type", () => {
+    renderWithWrappers(
+      <ArtAssistantMessage
+        message={{
+          id: "assistant-1",
+          role: "assistant",
+          text: "Here's what we found.",
+          phase: "complete",
+          sections: [
+            { type: "artworks", artworkIDs: ["artwork-id"] },
+            { type: "artists", artistIDs: ["artist-id"] },
+          ],
+        }}
+      />
+    )
+
+    expect(screen.getByTestId("art-assistant-artwork-rail-loading")).toBeOnTheScreen()
+    expect(screen.getByTestId("art-assistant-artist-rail-loading")).toBeOnTheScreen()
+  })
+
+  it("renders no rail for a text-only answer", () => {
+    renderWithWrappers(
+      <ArtAssistantMessage
+        message={{
+          id: "assistant-1",
+          role: "assistant",
+          text: "That's not something we can show you.",
+          phase: "complete",
+        }}
+      />
+    )
+
+    expect(screen.queryByTestId("art-assistant-artwork-rail-loading")).not.toBeOnTheScreen()
+    expect(screen.queryByTestId("art-assistant-artist-rail-loading")).not.toBeOnTheScreen()
+  })
+
   it("renders an assistant error", () => {
     renderWithWrappers(
       <ArtAssistantMessage

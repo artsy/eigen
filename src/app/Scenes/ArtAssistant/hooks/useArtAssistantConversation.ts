@@ -1,13 +1,15 @@
 import { ArtAssistantTurnFailed, OwnerType, SentArtAssistantMessage } from "@artsy/cohesion"
 import {
   AIAgentActivity,
+  AIAgentDisplayedSectionInput,
   AIAgentMessageInput,
   useArtAssistantConversationAgentTurnSubscription,
   useArtAssistantConversationAgentTurnSubscription$data,
   useArtAssistantConversationAgentTurnSubscription$variables,
 } from "__generated__/useArtAssistantConversationAgentTurnSubscription.graphql"
+import { ART_ASSISTANT_SUPPORTED_SECTIONS } from "app/Scenes/ArtAssistant/Components/ArtAssistantResponseSection"
 import { useArtAssistantTracking } from "app/Scenes/ArtAssistant/hooks/useArtAssistantTracking"
-import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/types"
+import { ArtAssistantMessage, ArtAssistantSection } from "app/Scenes/ArtAssistant/types"
 import {
   ART_ASSISTANT_GENERIC_ERROR,
   ArtAssistantTurnFailure,
@@ -21,6 +23,7 @@ import { v4 as uuid } from "uuid"
 
 type AssistantMessage = Extract<ArtAssistantMessage, { role: "assistant" }>
 type NormalizedAgentEvent = NonNullable<useArtAssistantConversationAgentTurnSubscription$data["aiAgentTurn"]>
+type TerminalAgentEvent = Extract<NormalizedAgentEvent, { __typename: "AIAgentTurnComplete" }>
 
 export interface ActiveTurn {
   message: AssistantMessage
@@ -61,6 +64,23 @@ const agentTurnSubscription = graphql`
         message
         stopReason
         toolCallCount
+
+        sections {
+          __typename
+
+          ... on AIAgentArtworksSection {
+            artworks {
+              internalID
+            }
+          }
+
+          ... on AIAgentArtistsSection {
+            artists {
+              internalID
+            }
+          }
+        }
+
         artworks {
           internalID
         }
@@ -197,6 +217,7 @@ export const useArtAssistantConversation = () => {
         conversationID: conversationID.current,
         message: text,
         history: toHistory(previousMessages),
+        supportedSections: ART_ASSISTANT_SUPPORTED_SECTIONS,
       }
       const variables: useArtAssistantConversationAgentTurnSubscription$variables = { input }
 
@@ -387,8 +408,7 @@ export const reduceActiveTurn = (turn: ActiveTurn, event: NormalizedAgentEvent):
         return failActiveTurn({ ...turn, didReceiveTerminalEvent: true })
       }
 
-      const artworks = event.artworks ?? []
-      const artworkIDs = artworks.map((artwork) => artwork.internalID)
+      const sections = toSections(event)
 
       return {
         ...turn,
@@ -398,7 +418,7 @@ export const reduceActiveTurn = (turn: ActiveTurn, event: NormalizedAgentEvent):
           text,
           phase: "complete",
           activity: undefined,
-          artworkRail: artworks.length > 0 ? { status: "ready", artworkIDs } : undefined,
+          sections: sections.length > 0 ? sections : undefined,
           suggestedReplies: (event.suggestedReplies ?? []).map((reply) => reply.text),
         },
       }
@@ -418,15 +438,59 @@ export const toHistory = (messages: ArtAssistantMessage[]): AIAgentMessageInput[
       return []
     }
 
+    const displayedSections = (message.sections ?? []).map(toDisplayedSection)
+
     return [
       {
         role: "ASSISTANT" as const,
         content: message.text,
-        artworkIDs:
-          message.artworkRail?.status === "ready" ? message.artworkRail.artworkIDs : undefined,
+        displayedSections: displayedSections.length > 0 ? displayedSections : undefined,
       },
     ]
   })
+
+/**
+ * Metaphysics' typed `sections` are the canonical result set; `artworks` is the field that
+ * predates them and is kept in lockstep with the artworks section, so it is only read when no
+ * section arrived at all. A section type this client doesn't know yet is skipped rather than
+ * guessed at, which is what makes adding shows or fairs server-side a non-breaking change.
+ */
+const toSections = (event: TerminalAgentEvent): ArtAssistantSection[] => {
+  const sections = (event.sections ?? [])
+    .flatMap((section): ArtAssistantSection[] => {
+      switch (section.__typename) {
+        case "AIAgentArtworksSection":
+          return [{ type: "artworks", artworkIDs: toInternalIDs(section.artworks) }]
+        case "AIAgentArtistsSection":
+          return [{ type: "artists", artistIDs: toInternalIDs(section.artists) }]
+        default:
+          return []
+      }
+    })
+    // An empty section would render as a rail with no cards. Metaphysics already drops those,
+    // so this only guards the legacy shapes and a future server regression.
+    .filter((section) => sectionSize(section) > 0)
+
+  if (sections.length > 0) {
+    return sections
+  }
+
+  const artworkIDs = toInternalIDs(event.artworks ?? [])
+
+  return artworkIDs.length > 0 ? [{ type: "artworks", artworkIDs }] : []
+}
+
+const toInternalIDs = (entities: readonly { readonly internalID: string }[]) =>
+  entities.map((entity) => entity.internalID)
+
+const sectionSize = (section: ArtAssistantSection) =>
+  section.type === "artworks" ? section.artworkIDs.length : section.artistIDs.length
+
+// GraphQL has no input unions, so replayed sections are described by an entity-type tag plus IDs.
+const toDisplayedSection = (section: ArtAssistantSection): AIAgentDisplayedSectionInput =>
+  section.type === "artworks"
+    ? { entityType: "ARTWORK", internalIDs: section.artworkIDs }
+    : { entityType: "ARTIST", internalIDs: section.artistIDs }
 
 const activityCopy = (activity: AIAgentActivity) =>
   activity === "%future added value" ? ACTIVITY_COPY.THINKING : ACTIVITY_COPY[activity]
@@ -441,6 +505,6 @@ const failActiveTurn = (turn: ActiveTurn): ActiveTurn => ({
     text: ART_ASSISTANT_GENERIC_ERROR,
     phase: "error",
     activity: undefined,
-    artworkRail: undefined,
+    sections: undefined,
   },
 })

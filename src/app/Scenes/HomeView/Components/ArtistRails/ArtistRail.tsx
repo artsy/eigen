@@ -6,6 +6,7 @@ import { Flex, useSpace } from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"
 import { ArtistRail_rail$data } from "__generated__/ArtistRail_rail.graphql"
+import { ArtistCard } from "app/Components/ArtistCard/ArtistCard"
 import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
 import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -16,7 +17,6 @@ import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View, ViewProps } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ArtistCard } from "./ArtistCard"
 
 type SuggestedArtist = Pick<
   ArtistCard_artist$data,

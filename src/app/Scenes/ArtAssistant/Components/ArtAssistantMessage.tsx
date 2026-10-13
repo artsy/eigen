@@ -1,5 +1,5 @@
 import { Flex, Text } from "@artsy/palette-mobile"
-import { ArtAssistantArtworkRail } from "app/Scenes/ArtAssistant/Components/ArtAssistantArtworkRail"
+import { ArtAssistantResponseSection } from "app/Scenes/ArtAssistant/Components/ArtAssistantResponseSection"
 import { ArtAssistantSuggestedReplies } from "app/Scenes/ArtAssistant/Components/ArtAssistantSuggestedReplies"
 import { ArtAssistantMessage as ArtAssistantMessageType } from "app/Scenes/ArtAssistant/types"
 
@@ -40,11 +40,12 @@ export const ArtAssistantMessage: React.FC<ArtAssistantMessageProps> = ({
         </Text>
       </Flex>
 
-      {message.role === "assistant" && !!message.artworkRail && (
-        <Flex alignSelf="stretch" mt={1} mx={-2}>
-          <ArtAssistantArtworkRail state={message.artworkRail} />
-        </Flex>
-      )}
+      {message.role === "assistant" &&
+        message.sections?.map((section, index) => (
+          <Flex alignSelf="stretch" key={`${message.id}:${index}`} mt={1} mx={-2}>
+            <ArtAssistantResponseSection section={section} />
+          </Flex>
+        ))}
 
       {!!hasAssistantSuggestedReplies && (
         <ArtAssistantSuggestedReplies
