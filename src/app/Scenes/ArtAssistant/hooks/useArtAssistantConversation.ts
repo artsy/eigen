@@ -3,13 +3,12 @@ import {
   AIAgentActivity,
   AIAgentDisplayedSectionInput,
   AIAgentMessageInput,
-  ArtAssistantAgentTurnSubscription,
-  ArtAssistantAgentTurnSubscription$data,
-  ArtAssistantAgentTurnSubscription$variables,
-} from "__generated__/ArtAssistantAgentTurnSubscription.graphql"
+  useArtAssistantConversationAgentTurnSubscription,
+  useArtAssistantConversationAgentTurnSubscription$data,
+  useArtAssistantConversationAgentTurnSubscription$variables,
+} from "__generated__/useArtAssistantConversationAgentTurnSubscription.graphql"
 import { ART_ASSISTANT_SUPPORTED_SECTIONS } from "app/Scenes/ArtAssistant/Components/ArtAssistantResponseSection"
 import { useArtAssistantTracking } from "app/Scenes/ArtAssistant/hooks/useArtAssistantTracking"
-import { artAssistantAgentTurnSubscription } from "app/Scenes/ArtAssistant/transport/ArtAssistantAgentTurnSubscription"
 import { ArtAssistantMessage, ArtAssistantSection } from "app/Scenes/ArtAssistant/types"
 import {
   ART_ASSISTANT_GENERIC_ERROR,
@@ -19,11 +18,11 @@ import {
 import { GlobalStore } from "app/store/GlobalStore"
 import { metaphysicsSubscriptionErrorStatus } from "app/system/relay/helpers/metaphysicsSubscriptionError"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { requestSubscription, useRelayEnvironment } from "react-relay"
+import { graphql, requestSubscription, useRelayEnvironment } from "react-relay"
 import { v4 as uuid } from "uuid"
 
 type AssistantMessage = Extract<ArtAssistantMessage, { role: "assistant" }>
-type NormalizedAgentEvent = NonNullable<ArtAssistantAgentTurnSubscription$data["aiAgentTurn"]>
+type NormalizedAgentEvent = NonNullable<useArtAssistantConversationAgentTurnSubscription$data["aiAgentTurn"]>
 type TerminalAgentEvent = Extract<NormalizedAgentEvent, { __typename: "AIAgentTurnComplete" }>
 
 export interface ActiveTurn {
@@ -44,10 +43,64 @@ const ACTIVITY_COPY: Record<Exclude<AIAgentActivity, "%future added value">, str
 
 export const ART_ASSISTANT_TURN_IDLE_TIMEOUT_MS = 120_000
 
+const agentTurnSubscription = graphql`
+  subscription useArtAssistantConversationAgentTurnSubscription($input: AIAgentTurnInput!) {
+    aiAgentTurn(input: $input) {
+      __typename
+
+      ... on AIAgentTextDelta {
+        text
+      }
+
+      ... on AIAgentToolCall {
+        activity
+      }
+
+      ... on AIAgentToolResult {
+        ok
+      }
+
+      ... on AIAgentTurnComplete {
+        message
+        stopReason
+        toolCallCount
+
+        sections {
+          __typename
+
+          ... on AIAgentArtworksSection {
+            artworks {
+              internalID
+            }
+          }
+
+          ... on AIAgentArtistsSection {
+            artists {
+              internalID
+            }
+          }
+        }
+
+        artworks {
+          internalID
+        }
+        suggestedReplies {
+          text
+        }
+      }
+    }
+  }
+`
+
 export const useArtAssistantConversation = () => {
   const environment = useRelayEnvironment()
-  const { trackMessageSent, trackNewChat, trackResponseReceived, trackTurnFailed } =
-    useArtAssistantTracking()
+  const {
+    trackMessageSent,
+    trackNewChat,
+    trackResponseReceived,
+    trackSuggestedReplyTapped,
+    trackTurnFailed,
+  } = useArtAssistantTracking()
   const userID = GlobalStore.useAppState((state) => state.auth.userID)
   const authenticationToken = GlobalStore.useAppState((state) => state.auth.userAccessToken)
   const [messages, setMessages] = useState<ArtAssistantMessage[]>([])
@@ -166,7 +219,7 @@ export const useArtAssistantConversation = () => {
         history: toHistory(previousMessages),
         supportedSections: ART_ASSISTANT_SUPPORTED_SECTIONS,
       }
-      const variables: ArtAssistantAgentTurnSubscription$variables = { input }
+      const variables: useArtAssistantConversationAgentTurnSubscription$variables = { input }
 
       abort()
 
@@ -237,8 +290,8 @@ export const useArtAssistantConversation = () => {
         responseTimeout.current = timeout
       }
 
-      subscription = requestSubscription<ArtAssistantAgentTurnSubscription>(environment, {
-        subscription: artAssistantAgentTurnSubscription,
+      subscription = requestSubscription<useArtAssistantConversationAgentTurnSubscription>(environment, {
+        subscription: agentTurnSubscription,
         variables,
         onNext: (data) => {
           const event = data?.aiAgentTurn
@@ -315,7 +368,24 @@ export const useArtAssistantConversation = () => {
     ]
   )
 
-  return { isResponding, messages, startNewConversation, submit }
+  const trackSuggestedReplyTappedInConversation = useCallback(
+    (reply: string, position: number, responseMessageID: string) =>
+      trackSuggestedReplyTapped({
+        conversationID: conversationID.current,
+        position,
+        reply,
+        responseMessageID,
+      }),
+    [trackSuggestedReplyTapped]
+  )
+
+  return {
+    isResponding,
+    messages,
+    startNewConversation,
+    submit,
+    trackSuggestedReplyTapped: trackSuggestedReplyTappedInConversation,
+  }
 }
 
 export const reduceActiveTurn = (turn: ActiveTurn, event: NormalizedAgentEvent): ActiveTurn => {
@@ -349,6 +419,7 @@ export const reduceActiveTurn = (turn: ActiveTurn, event: NormalizedAgentEvent):
           phase: "complete",
           activity: undefined,
           sections: sections.length > 0 ? sections : undefined,
+          suggestedReplies: (event.suggestedReplies ?? []).map((reply) => reply.text),
         },
       }
     }

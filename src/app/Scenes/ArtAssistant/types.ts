@@ -21,4 +21,5 @@ export type ArtAssistantMessage =
       phase: "responding" | "complete" | "error"
       activity?: string
       sections?: ArtAssistantSection[]
+      suggestedReplies?: string[]
     }

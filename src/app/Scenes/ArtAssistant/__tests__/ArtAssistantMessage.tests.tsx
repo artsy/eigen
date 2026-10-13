@@ -1,5 +1,5 @@
 import { Theme } from "@artsy/palette-mobile"
-import { render, screen } from "@testing-library/react-native"
+import { fireEvent, render, screen } from "@testing-library/react-native"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/Components/ArtAssistantMessage"
 import { ART_ASSISTANT_GENERIC_ERROR } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -132,5 +132,34 @@ describe("ArtAssistantMessage", () => {
     )
 
     expect(screen.getByText(ART_ASSISTANT_GENERIC_ERROR)).toBeOnTheScreen()
+  })
+
+  describe("suggested replies", () => {
+    const answered = {
+      id: "assistant-1",
+      role: "assistant" as const,
+      text: "I found a few works.",
+      phase: "complete" as const,
+      suggestedReplies: ["Show me cheaper ones", "Only paintings"],
+    }
+
+    it("sends the tapped reply", () => {
+      const onSelectSuggestedReply = jest.fn()
+      renderWithWrappers(
+        <ArtAssistantMessage message={answered} onSelectSuggestedReply={onSelectSuggestedReply} />
+      )
+
+      expect(screen.getByText("Suggestions")).toBeOnTheScreen()
+
+      fireEvent.press(screen.getByText("Only paintings"))
+
+      expect(onSelectSuggestedReply).toHaveBeenCalledWith("Only paintings", 1, "assistant-1")
+    })
+
+    it("are not offered on an earlier answer", () => {
+      renderWithWrappers(<ArtAssistantMessage message={answered} />)
+
+      expect(screen.queryByTestId("art-assistant-suggested-replies")).not.toBeOnTheScreen()
+    })
   })
 })

@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react-native"
-import { ArtAssistantAgentTurnSubscription$data } from "__generated__/ArtAssistantAgentTurnSubscription.graphql"
+import { useArtAssistantConversationAgentTurnSubscription$data } from "__generated__/useArtAssistantConversationAgentTurnSubscription.graphql"
 import { TestProviders } from "app/Providers"
 import {
   ActiveTurn,
@@ -138,6 +138,22 @@ describe("Art Assistant conversation reducer", () => {
     )
 
     expect(result.message).toMatchObject({ phase: "complete", sections: undefined })
+  })
+
+  it("keeps the answer's suggested replies in order", () => {
+    const result = reduceActiveTurn(
+      createActiveTurn(),
+      terminalEvent({
+        message: "Here are two works.",
+        sections: [],
+        artworks: [],
+        suggestedReplies: [{ text: "Show me cheaper ones" }, { text: "Only paintings" }],
+      })
+    )
+
+    expect(result.message).toMatchObject({
+      suggestedReplies: ["Show me cheaper ones", "Only paintings"],
+    })
   })
 
   it("shows a generic error when the terminal message is null, even after text deltas", () => {
@@ -305,15 +321,17 @@ const emit = (
   aiAgentTurn: object
 ) => environment.mock.nextValue(operation, { data: { aiAgentTurn } })
 
-type NormalizedEvent = NonNullable<ArtAssistantAgentTurnSubscription$data["aiAgentTurn"]>
+type NormalizedEvent = NonNullable<useArtAssistantConversationAgentTurnSubscription$data["aiAgentTurn"]>
 type TerminalEvent = Extract<NormalizedEvent, { __typename: "AIAgentTurnComplete" }>
 
 const terminalEvent = (
-  event: Pick<TerminalEvent, "message" | "sections" | "artworks">
+  event: Pick<TerminalEvent, "message" | "sections" | "artworks"> &
+    Partial<Pick<TerminalEvent, "suggestedReplies">>
 ): TerminalEvent => ({
   __typename: "AIAgentTurnComplete",
   stopReason: "end_turn",
   toolCallCount: 1,
+  suggestedReplies: [],
   ...event,
 })
 
@@ -553,6 +571,40 @@ describe("useArtAssistantConversation tracking", () => {
       conversation_id: conversationID,
       message_count: 2,
     })
+  })
+
+  it("reports a tapped suggested reply without its text while the content experiment is off", () => {
+    const { environment, result } = renderConversation()
+
+    act(() => result.current.submit("blue painting"))
+
+    const conversationID =
+      environment.mock.getMostRecentOperation().request.variables.input.conversationID
+
+    act(() => result.current.trackSuggestedReplyTapped("Only paintings", 1, "assistant-1"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedArtAssistantSuggestedReply",
+      context_module: "artAssistantSuggestedReplies",
+      context_screen_owner_type: "artAssistant",
+      conversation_id: conversationID,
+      position: 1,
+      response_message_id: "assistant-1",
+    })
+  })
+
+  it("reports the tapped suggested reply text while the content experiment is on", () => {
+    jest
+      .mocked(useExperimentFlag)
+      .mockImplementation((name) => name === "onyx_send-art-assistant-messages-to-segment")
+
+    const { result } = renderConversation()
+
+    act(() => result.current.trackSuggestedReplyTapped("Only paintings", 1, "assistant-1"))
+
+    const [tapped] = trackedEvents(["tappedArtAssistantSuggestedReply"])
+
+    expect(tapped.reply).toBe("Only paintings")
   })
 
   it("does not report a new chat when there is nothing to discard", () => {

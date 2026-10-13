@@ -1,4 +1,4 @@
-import { AIAgentSectionType } from "__generated__/ArtAssistantAgentTurnSubscription.graphql"
+import { AIAgentSectionType } from "__generated__/useArtAssistantConversationAgentTurnSubscription.graphql"
 import { ArtAssistantArtistRail } from "app/Scenes/ArtAssistant/Components/ArtAssistantArtistRail"
 import { ArtAssistantArtworkRail } from "app/Scenes/ArtAssistant/Components/ArtAssistantArtworkRail"
 import { ArtAssistantSection } from "app/Scenes/ArtAssistant/types"
