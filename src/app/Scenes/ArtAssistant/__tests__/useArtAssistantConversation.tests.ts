@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react-native"
-import { ArtAssistantAgentTurnSubscription$data } from "__generated__/ArtAssistantAgentTurnSubscription.graphql"
+import { useArtAssistantConversationAgentTurnSubscription$data } from "__generated__/useArtAssistantConversationAgentTurnSubscription.graphql"
 import { TestProviders } from "app/Providers"
 import {
   ActiveTurn,
@@ -222,7 +222,7 @@ const emit = (
   aiAgentTurn: object
 ) => environment.mock.nextValue(operation, { data: { aiAgentTurn } })
 
-type NormalizedEvent = NonNullable<ArtAssistantAgentTurnSubscription$data["aiAgentTurn"]>
+type NormalizedEvent = NonNullable<useArtAssistantConversationAgentTurnSubscription$data["aiAgentTurn"]>
 
 const createActiveTurn = (): ActiveTurn => ({
   didReceiveTerminalEvent: false,

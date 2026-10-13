@@ -2,12 +2,11 @@ import { ArtAssistantTurnFailed, OwnerType, SentArtAssistantMessage } from "@art
 import {
   AIAgentActivity,
   AIAgentMessageInput,
-  ArtAssistantAgentTurnSubscription,
-  ArtAssistantAgentTurnSubscription$data,
-  ArtAssistantAgentTurnSubscription$variables,
-} from "__generated__/ArtAssistantAgentTurnSubscription.graphql"
+  useArtAssistantConversationAgentTurnSubscription,
+  useArtAssistantConversationAgentTurnSubscription$data,
+  useArtAssistantConversationAgentTurnSubscription$variables,
+} from "__generated__/useArtAssistantConversationAgentTurnSubscription.graphql"
 import { useArtAssistantTracking } from "app/Scenes/ArtAssistant/hooks/useArtAssistantTracking"
-import { artAssistantAgentTurnSubscription } from "app/Scenes/ArtAssistant/transport/ArtAssistantAgentTurnSubscription"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/types"
 import {
   ART_ASSISTANT_GENERIC_ERROR,
@@ -17,11 +16,11 @@ import {
 import { GlobalStore } from "app/store/GlobalStore"
 import { metaphysicsSubscriptionErrorStatus } from "app/system/relay/helpers/metaphysicsSubscriptionError"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { requestSubscription, useRelayEnvironment } from "react-relay"
+import { graphql, requestSubscription, useRelayEnvironment } from "react-relay"
 import { v4 as uuid } from "uuid"
 
 type AssistantMessage = Extract<ArtAssistantMessage, { role: "assistant" }>
-type NormalizedAgentEvent = NonNullable<ArtAssistantAgentTurnSubscription$data["aiAgentTurn"]>
+type NormalizedAgentEvent = NonNullable<useArtAssistantConversationAgentTurnSubscription$data["aiAgentTurn"]>
 
 export interface ActiveTurn {
   message: AssistantMessage
@@ -40,6 +39,38 @@ const ACTIVITY_COPY: Record<Exclude<AIAgentActivity, "%future added value">, str
 }
 
 export const ART_ASSISTANT_TURN_IDLE_TIMEOUT_MS = 120_000
+
+const agentTurnSubscription = graphql`
+  subscription useArtAssistantConversationAgentTurnSubscription($input: AIAgentTurnInput!) {
+    aiAgentTurn(input: $input) {
+      __typename
+
+      ... on AIAgentTextDelta {
+        text
+      }
+
+      ... on AIAgentToolCall {
+        activity
+      }
+
+      ... on AIAgentToolResult {
+        ok
+      }
+
+      ... on AIAgentTurnComplete {
+        message
+        stopReason
+        toolCallCount
+        artworks {
+          internalID
+        }
+        suggestedReplies {
+          text
+        }
+      }
+    }
+  }
+`
 
 export const useArtAssistantConversation = () => {
   const environment = useRelayEnvironment()
@@ -167,7 +198,7 @@ export const useArtAssistantConversation = () => {
         message: text,
         history: toHistory(previousMessages),
       }
-      const variables: ArtAssistantAgentTurnSubscription$variables = { input }
+      const variables: useArtAssistantConversationAgentTurnSubscription$variables = { input }
 
       abort()
 
@@ -238,8 +269,8 @@ export const useArtAssistantConversation = () => {
         responseTimeout.current = timeout
       }
 
-      subscription = requestSubscription<ArtAssistantAgentTurnSubscription>(environment, {
-        subscription: artAssistantAgentTurnSubscription,
+      subscription = requestSubscription<useArtAssistantConversationAgentTurnSubscription>(environment, {
+        subscription: agentTurnSubscription,
         variables,
         onNext: (data) => {
           const event = data?.aiAgentTurn
