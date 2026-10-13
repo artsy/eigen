@@ -2380,6 +2380,10 @@ type ArticleSectionText {
 }
 
 type ArticleSectionVideo {
+  """
+  Width divided by height (e.g. 0.5625 for a 9:16 portrait video). Defaults to 16:9.
+  """
+  aspectRatio: Float!
   backgroundColor: String
   caption: String
 
