@@ -40,7 +40,7 @@ describe("buildPreviewReport", () => {
       const report = buildPreviewReport({ ...input, status })
 
       expect(report).toContain("**PR number: 13422**")
-      expect(report).toContain("dev menu under Preview PRs, in the PR number field")
+      expect(report).toContain("dev menu under Preview PR, in the PR number field")
     }
   })
 
