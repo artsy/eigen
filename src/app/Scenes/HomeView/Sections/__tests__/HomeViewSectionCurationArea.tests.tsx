@@ -6,7 +6,6 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { StyleSheet } from "react-native"
 import { graphql } from "react-relay"
 
 jest.mock("app/utils/hooks/withSuspense")
@@ -64,6 +63,7 @@ const chipsConnection = {
       {
         node: {
           title: "Recommended Artists",
+          subtitle: "Explore a curated selection of exciting artists.",
           href: "/recommended-artists-route",
           entityID: "recommended-artists-id",
           entityType: "HomeViewSection",
@@ -74,6 +74,7 @@ const chipsConnection = {
       {
         node: {
           title: "Trending Artists",
+          subtitle: null,
           href: "/trending-artists-route",
           entityID: "trending-artists-id",
           entityType: "HomeViewSection",
@@ -234,13 +235,15 @@ describe("HomeViewSectionCurationArea", () => {
     expect(navigate).toHaveBeenCalledWith("/artwork-2-href")
   })
 
-  it("renders each chip, including one without an image", () => {
+  it("renders each chip as a collection card, including one without an image", () => {
     renderWithRelay({ HomeViewSectionCurationArea: () => section() })
 
     expect(screen.getByText("Recommended Artists")).toBeOnTheScreen()
     expect(screen.getByText("Trending Artists")).toBeOnTheScreen()
-    // Both chips render a thumbnail (image when present, placeholder otherwise).
-    expect(screen.getAllByTestId("curation-chip-thumbnail")).toHaveLength(2)
+    // The chip subtitle renders as the card description.
+    expect(screen.getByText("Explore a curated selection of exciting artists.")).toBeOnTheScreen()
+    // Each card renders an image (or placeholder when absent).
+    expect(screen.getAllByTestId("collection-card-image")).toHaveLength(2)
   })
 
   it("tracks and navigates when a chip is tapped", () => {
@@ -259,25 +262,6 @@ describe("HomeViewSectionCurationArea", () => {
       type: "thumbnail",
     })
     expect(navigate).toHaveBeenCalledWith("/recommended-artists-route")
-  })
-
-  it("selects the compact chip layout by default (V2)", () => {
-    renderWithRelay({ HomeViewSectionCurationArea: () => section() })
-
-    const thumb = screen.getAllByTestId("curation-chip-thumbnail")[0]
-    expect(StyleSheet.flatten(thumb.props.style).width).toBe(45)
-  })
-
-  it("selects the large chip layout for the V1 component type", () => {
-    renderWithRelay({
-      HomeViewSectionCurationArea: () =>
-        section({
-          component: { title: "Chosen by our curators", type: "CurationAreaLeadChipsLarge" },
-        }),
-    })
-
-    const thumb = screen.getAllByTestId("curation-chip-thumbnail")[0]
-    expect(StyleSheet.flatten(thumb.props.style).width).toBe(60)
   })
 
   it("renders nothing for a rail whose section is an unsupported type", () => {

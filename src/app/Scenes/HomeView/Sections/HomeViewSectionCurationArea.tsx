@@ -1,4 +1,5 @@
 import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
+import { ChevronRightIcon } from "@artsy/icons/native"
 import {
   Flex,
   FlexProps,
@@ -45,18 +46,6 @@ const EDITORIAL_CURATION_AREA_BACKGROUND_COLOR = "#FEF8ED"
 // "What's Happening" (events) area: palette mono5 (#F7F7F7), per spec token Greys/Mono5.
 const EVENTS_CURATION_AREA_BACKGROUND_COLOR = "mono5"
 
-// Presentation variants. MP sends `component.type`; the data shape is identical
-// across variants, so this is a pure layout switch. Today MP only sends
-// "CurationArea" (→ V2). The V1 string is TODO until that treatment lands on MP.
-const CURATION_AREA_TYPE_LARGE_CHIPS = "CurationAreaLeadChipsLarge"
-
-const CHIP_LAYOUTS = {
-  // V2 (default): 3 compact chips
-  compact: { thumbSize: 45 },
-  // V1: 2 large chips
-  large: { thumbSize: 60 },
-}
-
 type Chip = NonNullable<
   NonNullable<
     NonNullable<
@@ -80,11 +69,6 @@ export const HomeViewSectionCurationArea: React.FC<HomeViewSectionCurationAreaPr
 
   const contextModule = section.contextModule as ContextModule
   const chips = extractNodes(section.chipsConnection)
-
-  const layout =
-    section.component?.type === CURATION_AREA_TYPE_LARGE_CHIPS
-      ? CHIP_LAYOUTS.large
-      : CHIP_LAYOUTS.compact
 
   // The editorial area (an articles rail) gets a tinted background and a horizontal
   // news-card rail; the artworks area keeps the default background and compact chips.
@@ -153,16 +137,7 @@ export const HomeViewSectionCurationArea: React.FC<HomeViewSectionCurationAreaPr
           {isEditorialArea ? (
             <NewsChipRail chips={chips} onChipPress={handleChipPress} />
           ) : (
-            <Flex flexDirection="row" flexWrap="wrap" mx={2} mt={2}>
-              {chips.map((chip, chipIndex) => (
-                <CurationChip
-                  key={chip.entityID ?? chipIndex}
-                  chip={chip}
-                  thumbSize={layout.thumbSize}
-                  onPress={() => handleChipPress(chip, chipIndex)}
-                />
-              ))}
-            </Flex>
+            <CollectionCardRail chips={chips} onChipPress={handleChipPress} />
           )}
         </>
       )}
@@ -176,36 +151,85 @@ export const HomeViewSectionCurationArea: React.FC<HomeViewSectionCurationAreaPr
   )
 }
 
-const CurationChip: React.FC<{
+const COLLECTION_CARD_IMAGE_HEIGHT = 190
+
+// "Curated" area chips rendered as cards: an artwork image, the entry title, a short
+// description, and a chevron affordance. TODO: the spec stacks 3 artwork images
+// (chip.images) — rendering a single image (chip.image) for now.
+const CollectionCardRail: React.FC<{
+  chips: Chip[]
+  onChipPress: (chip: Chip, index: number) => void
+}> = ({ chips, onChipPress }) => {
+  const { width } = useScreenDimensions()
+  const cardWidth = width * 0.75
+
+  return (
+    <FlatList
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      data={chips}
+      keyExtractor={(item, index) => item.entityID ?? String(index)}
+      ListHeaderComponent={() => <Spacer x={2} />}
+      ListFooterComponent={() => <Spacer x={2} />}
+      ItemSeparatorComponent={() => <Spacer x={2} />}
+      renderItem={({ item, index }) => (
+        <CollectionCard chip={item} width={cardWidth} onPress={() => onChipPress(item, index)} />
+      )}
+    />
+  )
+}
+
+const CollectionCard: React.FC<{
   chip: Chip
-  thumbSize: number
+  width: number
   onPress: () => void
-}> = ({ chip, thumbSize, onPress }) => {
+}> = ({ chip, width, onPress }) => {
   const color = useColor()
   const imageURL = chip.image?.imageURL
 
   return (
     <RouterLink to={chip.href} onPress={onPress}>
-      <Flex flexDirection="row" alignItems="center" mr={2} mb={1}>
+      <Flex width={width}>
         {imageURL ? (
           <Image
-            testID="curation-chip-thumbnail"
+            testID="collection-card-image"
             src={imageURL}
-            width={thumbSize}
-            height={thumbSize}
+            width={width}
+            height={COLLECTION_CARD_IMAGE_HEIGHT}
+            style={{ borderRadius: 6 }}
           />
         ) : (
           <Flex
-            testID="curation-chip-thumbnail"
-            width={thumbSize}
-            height={thumbSize}
+            testID="collection-card-image"
+            width={width}
+            height={COLLECTION_CARD_IMAGE_HEIGHT}
             backgroundColor={color("mono10")}
-            borderRadius={2}
+            borderRadius={6}
           />
         )}
-        <Text variant="xs" ml={1}>
-          {chip.title}
-        </Text>
+
+        <Flex flexDirection="row" alignItems="center" mt={1}>
+          <Flex flex={1} mr={1}>
+            <Text variant="sm-display">{chip.title}</Text>
+            {!!chip.subtitle && (
+              <Text variant="xs" color="mono60" numberOfLines={2}>
+                {chip.subtitle}
+              </Text>
+            )}
+          </Flex>
+
+          <Flex
+            width={40}
+            height={40}
+            borderRadius={20}
+            borderWidth={1}
+            borderColor="mono10"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <ChevronRightIcon width={18} height={18} />
+          </Flex>
+        </Flex>
       </Flex>
     </RouterLink>
   )
@@ -580,6 +604,7 @@ const fragment = graphql`
       edges {
         node {
           title
+          subtitle
           href
           entityID
           entityType
