@@ -15,7 +15,8 @@ export const eigenSentryReleaseName = () => {
   const expoReleaseNameBase = appJson().expoReleaseNameBase
   if (expoReleaseNameBase && expoReleaseNameBase !== "none") {
     const prefix = Platform.OS === "ios" ? "ios" : "android"
-    return prefix + "-" + expoReleaseNameBase
+    const expoDist = appJson().expoDist
+    return prefix + "-" + expoReleaseNameBase.replace(expoDist, eigenSentryDist())
   } else {
     const prefix = Platform.OS === "ios" ? "ios" : "android"
     const buildNumber = DeviceInfo.getBuildNumber()
@@ -27,7 +28,8 @@ export const eigenSentryReleaseName = () => {
 const eigenSentryDist = () => {
   const expoDist = appJson().expoDist
   if (expoDist && expoDist !== "none") {
-    return expoDist
+    // Android build numbers have no dots (2026100716), like native Android releases
+    return Platform.OS === "android" ? expoDist.replace(/\./g, "") : expoDist
   } else {
     return DeviceInfo.getBuildNumber()
   }
