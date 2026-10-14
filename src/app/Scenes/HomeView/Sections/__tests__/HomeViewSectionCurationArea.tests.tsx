@@ -89,6 +89,7 @@ const chipsConnection = {
 const section = (overrides: Record<string, any> = {}) => ({
   internalID: "home-view-section-curation-area",
   contextModule: "curationAreaRail",
+  backgroundColor: "#F7F7F7",
   component: { title: "Chosen by our curators", type: "CurationArea" },
   chipsTitle: null,
   chipsHref: null,
@@ -135,6 +136,7 @@ const editorialLeadSection = {
 const editorialSection = (overrides: Record<string, any> = {}) => ({
   internalID: "home-view-section-editorial-curation-area",
   contextModule: "curationAreaRail",
+  backgroundColor: "#FEF8ED",
   component: {
     title: "Artsy Editorial",
     description: "Your guide to the art world",
@@ -358,6 +360,7 @@ describe("HomeViewSectionCurationArea", () => {
     const whatsHappeningSection = (overrides: Record<string, any> = {}) => ({
       internalID: "home-view-section-whats-happening-curation-area",
       contextModule: "curationAreaRail",
+      backgroundColor: "#F7F7F7",
       component: {
         title: "What's Happening",
         description: "See art world events around the world",

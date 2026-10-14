@@ -39,13 +39,6 @@ import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledF
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
-// TODO: these per-area background tints are hardcoded switches on rail type — they
-// should become MP/config-driven (part of the configurable-vs-hardcoded sweep).
-// Editorial area: warm off-white (RGB 254, 248, 237) — not a palette token yet.
-const EDITORIAL_CURATION_AREA_BACKGROUND_COLOR = "#FEF8ED"
-// "What's Happening" (events) area: palette mono5 (#F7F7F7), per spec token Greys/Mono5.
-const EVENTS_CURATION_AREA_BACKGROUND_COLOR = "mono5"
-
 type Chip = NonNullable<
   NonNullable<
     NonNullable<
@@ -70,24 +63,12 @@ export const HomeViewSectionCurationArea: React.FC<HomeViewSectionCurationAreaPr
   const contextModule = section.contextModule as ContextModule
   const chips = extractNodes(section.chipsConnection)
 
-  // The editorial area (an articles rail) gets a tinted background and a horizontal
-  // news-card rail; the artworks area keeps the default background and compact chips.
+  // Background tint is server-driven (null → untinted). The editorial area (an articles
+  // rail) still drives the chip presentation: news cards vs collection cards.
+  const backgroundColor = section.backgroundColor ?? undefined
   const isEditorialArea = section.rails.some(
     (rail) => rail.section?.__typename === "HomeViewSectionArticles"
   )
-
-  // The "What's Happening" events area (fairs/shows rails) gets its own tinted background.
-  const hasEventsRail = section.rails.some(
-    (rail) =>
-      rail.section?.__typename === "HomeViewSectionShows" ||
-      rail.section?.__typename === "HomeViewSectionFairs"
-  )
-
-  const backgroundColor = isEditorialArea
-    ? EDITORIAL_CURATION_AREA_BACKGROUND_COLOR
-    : hasEventsRail
-      ? EVENTS_CURATION_AREA_BACKGROUND_COLOR
-      : undefined
 
   const handleChipPress = (chip: Chip, chipIndex: number) => {
     tracking.tappedCardGroup(
@@ -511,6 +492,7 @@ const fragment = graphql`
     __typename
     internalID
     contextModule
+    backgroundColor
     component {
       title
       type

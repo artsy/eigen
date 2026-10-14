@@ -22204,6 +22204,10 @@ type HomeViewSectionCards implements HomeViewSectionGeneric & Node {
 A curation area: an ordered set of rails and/or a group of entry chips
 """
 type HomeViewSectionCurationArea implements HomeViewSectionGeneric & Node {
+  """
+  Background tint for the whole area as a raw hex string (null → untinted).
+  """
+  backgroundColor: String
   chipsConnection(after: String, before: String, first: Int, last: Int): HomeViewCardConnection
 
   """
