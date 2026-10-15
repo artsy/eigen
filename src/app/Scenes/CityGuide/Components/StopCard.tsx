@@ -10,8 +10,6 @@ import { Text as RNText } from "react-native"
 const IMAGE_WIDTH = 60
 /** The card's own height, which the image matches. Grows with the text — see `textHeight`. */
 const CARD_HEIGHT = 70
-/** The dot between hours and admission. */
-const DOT_SIZE = 4
 const CARD_RADIUS = 8
 const ROW_STYLE = { flex: 1 } as const
 
@@ -149,15 +147,10 @@ export const StopCard: React.FC<Props> = ({
                     </Text>
                   )}
 
-                  {/* The designs separate the two with a 4pt dot, shown only when both are there. */}
                   {!!card.hours && !!card.admission && (
-                    <Flex
-                      testID="stop-card-meta-dot"
-                      width={DOT_SIZE}
-                      height={DOT_SIZE}
-                      borderRadius={DOT_SIZE / 2}
-                      backgroundColor="mono60"
-                    />
+                    <Text testID="stop-card-meta-dot" color="mono60">
+                      {" • "}
+                    </Text>
                   )}
 
                   {!!card.admission && (

@@ -340,7 +340,7 @@ const Query = graphql`
         name
       }
 
-      fairsConnection(first: 100, status: RUNNING, sort: START_AT_ASC) @include(if: $includeFairs) {
+      fairsConnection(first: 100, status: CURRENT, sort: START_AT_ASC) @include(if: $includeFairs) {
         totalCount
         edges {
           node {

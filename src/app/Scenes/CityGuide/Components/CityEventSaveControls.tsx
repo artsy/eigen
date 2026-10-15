@@ -1,4 +1,5 @@
 import { ActionType, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
+import { TextProps } from "@artsy/palette-mobile"
 import { useAddToItinerary } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { CityGuideSaveButton } from "app/Scenes/CityGuide/Components/CityGuideSaveButton"
 import { CityItineraryItemType } from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
@@ -15,6 +16,7 @@ interface Props {
   itemSlug?: string
   /** Used for the accessibility label and nothing else. */
   name: string
+  color?: TextProps["color"]
   isOnMyItineraries?: boolean | null
   myItineraries?: readonly { readonly internalID: string }[] | null
   /** The itinerary stop that led here, when there is one. Used to refresh memberships. */
@@ -70,6 +72,7 @@ export const CityEventSaveControl: React.FC<Props> = ({
   itemID,
   itemSlug,
   name,
+  color,
   iconSize,
   isOnMyItineraries,
   myItineraries,
@@ -90,6 +93,7 @@ export const CityEventSaveControl: React.FC<Props> = ({
 
   return (
     <CityGuideSaveButton
+      color={color}
       iconSize={iconSize}
       isSaved={!!isOnMyItineraries}
       accessibilityLabel={

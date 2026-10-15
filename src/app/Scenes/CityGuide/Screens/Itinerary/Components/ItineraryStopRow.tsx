@@ -11,6 +11,7 @@ import {
   itineraryStopSaveTarget,
   itineraryStopTitle,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
+import { itineraryStopHref } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopHref"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { stopCardFields } from "app/Scenes/CityGuide/Screens/Itinerary/utils/stopCardFields"
 
@@ -45,11 +46,7 @@ export const ItineraryStopRow: React.FC<Props> = ({
   const card = stopCardFields(stop, stop.item)
   // Nothing resolved from Artsy: no entity to follow and no entity page to open.
   const isCustom = !stop.item && !saveTarget
-  // A custom stop's only link is wherever the curator found it, which leads out of Artsy, so
-  // it goes to its own screen instead.
-  const href = isCustom
-    ? `/city-guide/${citySlug}/itinerary/${itineraryId}/stop/${stop.internalID}`
-    : card.href
+  const href = itineraryStopHref(stop, card, { citySlug, itineraryId, shareToken, isCustom })
 
   return (
     // `width="100%"`: without a definite width here, `StopCard`'s own `flex={1}` has nothing

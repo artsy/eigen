@@ -1,12 +1,12 @@
-import { screen } from "@testing-library/react-native"
+import { act, screen } from "@testing-library/react-native"
 import { ShowTestsQuery } from "__generated__/ShowTestsQuery.graphql"
 import { Show, ShowFragmentContainer } from "app/Scenes/Show/Show"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 describe("Show", () => {
-  const { renderWithRelay } = setupTestWrapper<ShowTestsQuery>({
-    Component: ({ show }) => <ShowFragmentContainer show={show!} />,
+  const { renderWithRelay } = setupTestWrapper<ShowTestsQuery, { stopID?: string }>({
+    Component: ({ show, stopID }) => <ShowFragmentContainer show={show!} stopID={stopID} />,
     query: graphql`
       query ShowTestsQuery($showID: String!) @relay_test_operation {
         show(id: $showID) {
@@ -62,5 +62,22 @@ describe("Show", () => {
     renderWithRelay()
 
     expect(screen.getByTestId("HeaderArtworksFilter")).toBeTruthy()
+  })
+
+  it("renders the note of the City Guide stop it was opened from", async () => {
+    const { mockResolveLastOperation } = renderWithRelay({}, { stopID: "stop-1" })
+
+    act(() => {
+      mockResolveLastOperation({ ItineraryStop: () => ({ note: "Head upstairs first." }) })
+    })
+
+    expect(await screen.findByText("What to see")).toBeOnTheScreen()
+    expect(screen.getByText("Head upstairs first.")).toBeOnTheScreen()
+  })
+
+  it("asks for no stop note when not opened from a City Guide stop", () => {
+    renderWithRelay()
+
+    expect(screen.queryByText("What to see")).not.toBeOnTheScreen()
   })
 })

@@ -103,7 +103,7 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
   const openingShows = extractNodes(city?.openingShows)
 
   return (
-    <Join separator={<Spacer y={2} />}>
+    <Join separator={<Spacer y={4} />}>
       {/*
         A section with nothing in it is hidden entirely, header included: an empty rail under
         a "Current London Fairs" heading reads as a broken screen rather than as "no fairs".
@@ -128,6 +128,8 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
                 // the Fair page header.
                 !!fair.location?.address && (
                   <CityEventSaveControl
+                    // Value intentionally because it's on top of an image(contrast)
+                    color="white"
                     itemType="FAIR"
                     itemID={fair.internalID}
                     itemSlug={fair.slug ?? undefined}
@@ -258,8 +260,10 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
 }
 
 /**
- * `status: RUNNING` rather than `CURRENT`, which would overlap `UPCOMING` and put the same
- * show under both Current Shows and Opening Soon.
+ * Shows take `status: RUNNING` rather than `CURRENT`, which would overlap `UPCOMING` and put
+ * the same show under both Current Shows and Opening Soon. Fairs have no Opening Soon to
+ * overlap, so they take `CURRENT`, as the map does: fairs run for a few days, so `RUNNING`
+ * leaves the rail empty — and hidden — in the days before a city's fair week opens.
  *
  * Opening Soon takes a single formatted `startAt` rather than `exhibitionPeriod`: the section
  * is about when a show opens, and the designs show one date. Formatting stays on the server,
@@ -268,7 +272,7 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
 const fragment = graphql`
   fragment CityGuideEvents_city on City
   @argumentDefinitions(first: { type: "Int!" }, forYou: { type: "Boolean!", defaultValue: false }) {
-    fairsConnection(first: $first, status: RUNNING, sort: START_AT_ASC) {
+    fairsConnection(first: $first, status: CURRENT, sort: START_AT_ASC) {
       edges {
         node {
           internalID
