@@ -107,31 +107,53 @@ lane :notify_beta_failed do |options|
   )
 end
 
+SENTRY_BASE_URL = 'https://artsynet.sentry.io'
+SENTRY_PROJECT_ID = '5867225'
+SENTRY_DASHBOARD_ID = '622403'
+
+# The Expo tag name is also the Sentry release name, see eigenSentryReleaseName().
+def sentry_release_url(release_name)
+  "#{SENTRY_BASE_URL}/explore/releases/#{release_name}/?environment=production&project=#{SENTRY_PROJECT_ID}"
+end
+
+def sentry_mobile_vitals_url(release_name)
+  "#{SENTRY_BASE_URL}/dashboard/#{SENTRY_DASHBOARD_ID}/?environment=production&project=#{SENTRY_PROJECT_ID}&statsPeriod=30d&release=#{release_name}"
+end
+
 desc "Notifies in slack that an Expo Update was published to production"
 lane :notify_expo_update_published do |options|
   description = options[:description]
   rollout_percentage = options[:rollout_percentage]
+  ios_tag = options[:ios_tag]
+  android_tag = options[:android_tag]
+  release_url = options[:release_url]
+  pr_url = options[:pr_url]
 
-  rollout_line = (rollout_percentage.nil? || rollout_percentage.empty?) ? "Rollout: 100%" : "Rollout: #{rollout_percentage}%"
+  rollout_line = (rollout_percentage.nil? || rollout_percentage.to_s.empty?) ? 'Rollout: all users' : "Rollout: #{rollout_percentage}% of users"
 
   message = <<~MSG
               :rocket: :iphone:
               An Expo Update was published to *production*.
               #{rollout_line}
               Description: #{description}
-              See GitHub action run for more details.
             MSG
 
   github_repo = ENV['GITHUB_REPOSITORY']
   run_id = ENV['GITHUB_RUN_ID']
-  github_url = "https://github.com/#{github_repo}/actions/runs/#{run_id}"
+
+  # Same monitoring links as a store release, so an OTA update is watched the same way.
+  payload = { 'GitHub Actions' => "https://github.com/#{github_repo}/actions/runs/#{run_id}" }
+  payload['Release'] = release_url if release_url && !release_url.empty?
+  payload['Hotfix PR'] = pr_url if pr_url && !pr_url.empty?
+  payload['iOS health'] = sentry_release_url(ios_tag) if ios_tag && !ios_tag.empty?
+  payload['Android health'] = sentry_release_url(android_tag) if android_tag && !android_tag.empty?
+  payload['iOS Mobile Vitals'] = sentry_mobile_vitals_url(ios_tag) if ios_tag && !ios_tag.empty?
+  payload['Android Mobile Vitals'] = sentry_mobile_vitals_url(android_tag) if android_tag && !android_tag.empty?
 
   slack(
     message: message,
     success: true,
-    payload: {
-      'GitHub Actions' => github_url
-    },
+    payload: payload,
     default_payloads: []
   )
 end
