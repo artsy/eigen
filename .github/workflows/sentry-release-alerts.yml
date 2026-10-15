@@ -1,0 +1,227 @@
+name: Sentry release alerts
+
+# Creates a Sentry crash-rate detector per release, wired to the shared "Mobile Release Crash Rate"
+# alert so it notifies #mobile-alerts.
+#
+# Called by release.yml (native store releases) and deploy-expo-update.yml (production Expo
+# Updates). The release versions passed in must match `eigenSentryReleaseName()` exactly — the
+# detector's query is a literal string match — which is why callers pass the git tags fastlane
+# published rather than recomputing them.
+
+on:
+  workflow_call:
+    inputs:
+      release_versions:
+        description: 'JSON array of Sentry release versions, e.g. ["ios-9.21.0-2026.10.15.09"]'
+        required: true
+        type: string
+      supersede_previous:
+        description: >-
+          Disable the earlier detectors for this same platform and app version once the new one
+          exists. Used by Expo Updates, where each hotfix replaces the bundle the previous one
+          shipped, so the older detector is left watching a release nobody runs. Native releases
+          leave this false: users who haven't updated are still on the older build.
+        required: false
+        default: false
+        type: boolean
+    secrets:
+      sentry_auth_token:
+        required: true
+      slack_channel_id:
+        required: true
+      slack_integration_id:
+        required: true
+      owner_team:
+        required: true
+
+env:
+  SENTRY_ALERT_CRITICAL_THRESHOLD: 99.2
+  SENTRY_ALERT_WARNING_THRESHOLD: 99.5
+  SENTRY_ALERT_RESOLVE_THRESHOLD: 99.7
+  SENTRY_API: https://sentry.io/api/0/organizations/artsynet
+  SENTRY_SLACK_CHANNEL_ID: ${{ secrets.slack_channel_id }}
+  SENTRY_SLACK_INTEGRATION_ID: ${{ secrets.slack_integration_id }}
+  SENTRY_OWNER_TEAM: ${{ secrets.owner_team }}
+
+jobs:
+  sentry-alert-workflow:
+    runs-on: ubuntu-latest
+    outputs:
+      workflow_id: ${{ steps.find_or_create.outputs.workflow_id }}
+
+    steps:
+      - name: Find or create Mobile Release Crash Rate workflow
+        id: find_or_create
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.sentry_auth_token }}
+        run: |
+          set -o pipefail
+
+          # Reuse the alert across releases so the Slack action isn't recreated every time -
+          # only the per-release detector (crash rate thresholds) is release-specific.
+          workflow_name="Mobile Release Crash Rate"
+
+          existing_id=$(curl --fail-with-body -s -X GET "${SENTRY_API}/workflows/" \
+            -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
+            | jq -r --arg name "$workflow_name" '.[] | select(.name == $name) | .id' | head -n1)
+
+          if [ -n "$existing_id" ]; then
+            echo "Found existing alert '$workflow_name' (id: $existing_id)"
+            workflow_id="$existing_id"
+          else
+            echo "Creating alert '$workflow_name'"
+            workflow_id=$(curl --fail-with-body -X POST "${SENTRY_API}/workflows/" \
+              -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
+              -H 'Content-Type: application/json' \
+              -d "{
+                \"name\": \"$workflow_name\",
+                \"enabled\": true,
+                \"owner\": \"team:${{ env.SENTRY_OWNER_TEAM }}\",
+                \"triggers\": { \"logicType\": \"any-short\", \"conditions\": [] },
+                \"action_filters\": [
+                  {
+                    \"logicType\": \"any\",
+                    \"conditions\": [
+                      { \"type\": \"issue_priority_greater_or_equal\", \"comparison\": 75, \"conditionResult\": true },
+                      { \"type\": \"issue_priority_deescalating\", \"comparison\": 75, \"conditionResult\": true }
+                    ],
+                    \"actions\": [
+                      {
+                        \"type\": \"slack\",
+                        \"integrationId\": \"${{ env.SENTRY_SLACK_INTEGRATION_ID }}\",
+                        \"config\": {
+                          \"targetType\": \"specific\",
+                          \"targetIdentifier\": \"${{ env.SENTRY_SLACK_CHANNEL_ID }}\",
+                          \"targetDisplay\": \"#mobile-alerts\"
+                        },
+                        \"data\": {},
+                        \"status\": \"active\"
+                      }
+                    ]
+                  },
+                  {
+                    \"logicType\": \"any\",
+                    \"conditions\": [
+                      { \"type\": \"issue_priority_greater_or_equal\", \"comparison\": 50, \"conditionResult\": true },
+                      { \"type\": \"issue_priority_deescalating\", \"comparison\": 50, \"conditionResult\": true }
+                    ],
+                    \"actions\": [
+                      {
+                        \"type\": \"slack\",
+                        \"integrationId\": \"${{ env.SENTRY_SLACK_INTEGRATION_ID }}\",
+                        \"config\": {
+                          \"targetType\": \"specific\",
+                          \"targetIdentifier\": \"${{ env.SENTRY_SLACK_CHANNEL_ID }}\",
+                          \"targetDisplay\": \"#mobile-alerts\"
+                        },
+                        \"data\": {},
+                        \"status\": \"active\"
+                      }
+                    ]
+                  }
+                ]
+              }" | jq -r '.id')
+            echo "Created alert '$workflow_name' (id: $workflow_id)"
+          fi
+
+          echo "workflow_id=$workflow_id" >> "$GITHUB_OUTPUT"
+
+  create-sentry-alerts:
+    needs: sentry-alert-workflow
+    runs-on: ubuntu-latest
+    strategy:
+      # One platform failing shouldn't stop the other from getting its detector.
+      fail-fast: false
+      matrix:
+        release_version: ${{ fromJson(inputs.release_versions) }}
+
+    steps:
+      - name: Create Sentry crash rate monitor
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.sentry_auth_token }}
+          RELEASE_VERSION: ${{ matrix.release_version }}
+          WORKFLOW_ID: ${{ needs.sentry-alert-workflow.outputs.workflow_id }}
+        run: |
+          set -o pipefail
+
+          detector_name="Release Crashes Threshold - ${RELEASE_VERSION}"
+
+          # Creating is not idempotent, so a re-run of this job would otherwise add a second
+          # detector for the same release — two identical Slack alerts for every incident.
+          existing_id=$(curl --fail-with-body -s -X GET "${SENTRY_API}/projects/eigen/detectors/?per_page=100" \
+            -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
+            | jq -r --arg name "$detector_name" '.[] | select(.name == $name) | .id' | head -n1)
+
+          if [ -n "$existing_id" ]; then
+            echo "Detector '$detector_name' already exists (id: $existing_id), leaving it alone."
+            exit 0
+          fi
+
+          curl --fail-with-body -X POST "${SENTRY_API}/projects/eigen/detectors/" \
+            -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
+            -H 'Content-Type: application/json' \
+            -d "{
+              \"name\": \"$detector_name\",
+              \"type\": \"metric_issue\",
+              \"owner\": \"team:${{ env.SENTRY_OWNER_TEAM }}\",
+              \"workflowIds\": [${WORKFLOW_ID}],
+              \"dataSources\": [
+                {
+                  \"queryType\": 2,
+                  \"dataset\": \"metrics\",
+                  \"aggregate\": \"percentage(sessions_crashed, sessions) AS _crash_rate_alert_aggregate\",
+                  \"query\": \"release:${RELEASE_VERSION}\",
+                  \"timeWindow\": 7200,
+                  \"environment\": \"production\",
+                  \"eventTypes\": []
+                }
+              ],
+              \"config\": { \"detectionType\": \"static\" },
+              \"conditionGroup\": {
+                \"logicType\": \"any\",
+                \"conditions\": [
+                  { \"type\": \"lt\", \"comparison\": ${{ env.SENTRY_ALERT_CRITICAL_THRESHOLD }}, \"conditionResult\": 75 },
+                  { \"type\": \"lt\", \"comparison\": ${{ env.SENTRY_ALERT_WARNING_THRESHOLD }}, \"conditionResult\": 50 },
+                  { \"type\": \"gte\", \"comparison\": ${{ env.SENTRY_ALERT_RESOLVE_THRESHOLD }}, \"conditionResult\": 0 }
+                ]
+              }
+            }"
+
+      - name: Disable superseded detectors
+        if: inputs.supersede_previous
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.sentry_auth_token }}
+          RELEASE_VERSION: ${{ matrix.release_version }}
+        run: |
+          set -o pipefail
+
+          # An Expo Update replaces the whole JS bundle, so once this release is out nobody is
+          # running the previous one. Its detector would keep evaluating a crash rate over a
+          # shrinking handful of sessions, which gets noisy and then meaningless.
+          #
+          # Everything up to the publish timestamp, e.g. "ios-expo-production-9.21.0-". Derived
+          # from this matrix entry so it stays platform-scoped: iOS must not disable Android's
+          # detector. It is version-scoped too, so the native release's own detector survives —
+          # users who haven't taken the update are still on that build — as do other versions.
+          # The trailing "-" keeps 9.2.1 from matching 9.2.10.
+          keep="Release Crashes Threshold - ${RELEASE_VERSION}"
+          prefix="Release Crashes Threshold - ${RELEASE_VERSION%-*}-"
+
+          superseded=$(curl --fail-with-body -s -X GET "${SENTRY_API}/projects/eigen/detectors/?per_page=100" \
+            -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
+            | jq -r --arg prefix "$prefix" --arg keep "$keep" \
+              '.[] | select(.name | startswith($prefix)) | select(.name != $keep)
+                   | select(.enabled == true) | .id')
+
+          if [ -z "$superseded" ]; then
+            echo "Nothing to supersede for '${prefix}'."
+            exit 0
+          fi
+
+          for id in $superseded; do
+            echo "Disabling superseded detector $id"
+            curl --fail-with-body -s -X PUT "${SENTRY_API}/projects/eigen/detectors/${id}/" \
+              -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
+              -H 'Content-Type: application/json' \
+              -d '{ "enabled": false }' > /dev/null
+          done
