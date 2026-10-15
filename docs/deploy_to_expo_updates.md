@@ -27,14 +27,23 @@ The script:
 
 - refuses to dispatch if your commit isn't pushed, or if `origin/<branch>` doesn't have the workflow file yet (see [Publishing from an older branch](#publishing-from-an-older-branch-fallback) below)
 - runs the same fingerprint pre-flight described below, against your local checkout, before dispatching
-- for `production`, defaults the rollout to 50% if you don't pass one, and asks you to confirm
+- for `production`, goes out to all users unless you pass a rollout percentage, and asks you to confirm either way
 - dispatches and returns immediately, printing the run URL. It doesn't wait for the run to finish, so watch progress there or in the Actions tab.
 
 We have 3 channels currently:
 
-- production - only for hotfix releases to real users
+- production - only for hotfix releases to real users, and only through the hotfix process below
 - staging - the latest main changes
-- canary - for developer testing off main
+- canary - for developer testing off main, and published automatically for every commit on a `hotfix-v*` branch
+
+> [!IMPORTANT] > **Publishing to `production` is gated.** It only works from a `hotfix-vX.Y.Z` branch that has a
+> hotfix PR and a successful canary of the same commit, and it always covers both platforms. There
+> is no override. Start one with `start-hotfix` — see
+> [Deploy a hotfix](deploy_a_hotfix.md#expo-updates-hotfix) for the whole flow, the gate's rules,
+> and the records a production publish leaves behind.
+>
+> Versions released before October 2026 predate the gate and are still published with the local
+> fallback below.
 
 For testing your changes you want canary. Deploying to canary will make any previous deploys unavailable so drop a note in **#practice-mobile** to make sure you are not overwriting others work.
 Then run:
@@ -45,7 +54,7 @@ Then run:
 
 To let reviewers try a PR without taking over canary, use a [PR preview](creating_pr_preview.md) instead.
 
-By default an update goes out to both platforms. Pass `--platform ios` or `--platform android` to target one.
+By default an update goes out to both platforms. Pass `--platform ios` or `--platform android` to target one — for canary and staging only, since production always covers both.
 
 ### Publishing from an older branch (fallback)
 
@@ -99,7 +108,9 @@ The reference depends on the channel:
 
 If native code has drifted you'll see `❌ Native code has drifted from ...` and the publish stops. That's working as intended — deploy a new beta rather than trying to force the update out.
 
-`--check-against-version` switches canary/staging to compare against the current app version's shipped fingerprint instead of the latest beta's. Use it when you're deploying from a branch that isn't based on current main — a hotfix branch cut from an old release tag, for example. It's a no-op for production, which already does this.
+`--check-against-version` switches canary/staging to compare against the current app version's shipped fingerprint instead of the latest beta's. Use it when you're deploying from a branch that isn't based on current main — a hotfix branch, for example. It's a no-op for production, which already does this.
+
+`deploy-to-expo-updates-ci` sets it for you on a hotfix branch, so the first canary from a new `hotfix-v*` branch compares against the right build. It matches both the OTA naming (`hotfix-vX.Y.Z`) and the older native one (`X.Y.Z-hotfix`).
 
 ### Where does the reference fingerprint come from?
 

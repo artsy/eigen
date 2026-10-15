@@ -1,0 +1,109 @@
+# Creates the GitHub release for a shipped build, for both kinds of release:
+#   - release.yml           — a store submission, with GitHub's generated notes
+#   - deploy-expo-update.yml — a production Expo Update, with the hotfix PR's section as notes
+#
+# Both get the same Sentry and Mobile Vitals links. The tag name is the Sentry release name in
+# both cases (see eigenSentryReleaseName()), so the links are built the same way.
+name: Create GitHub release
+
+on:
+  workflow_call:
+    inputs:
+      ios_tag:
+        description: "iOS tag the release hangs off, and the iOS Sentry release name"
+        required: true
+        type: string
+      android_tag:
+        description: "Android tag, used for the Android Sentry links"
+        required: true
+        type: string
+      previous_tag:
+        description: "Tag the changelog is compared against"
+        required: true
+        type: string
+      title:
+        description: "Release title, e.g. 'v9.21.0' or 'v9.21.0 hotfix 2 (OTA)'"
+        required: true
+        type: string
+      extra_notes:
+        description: "Markdown prepended to the Sentry links. Used when generate_notes is false."
+        required: false
+        type: string
+        default: ""
+      generate_notes:
+        description: "Let GitHub generate the changelog from merged PRs since previous_tag"
+        required: false
+        type: boolean
+        default: true
+      make_latest:
+        description: "Mark this as the repository's latest release"
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IOS_TAG: ${{ inputs.ios_tag }}
+          ANDROID_TAG: ${{ inputs.android_tag }}
+          PREVIOUS_TAG: ${{ inputs.previous_tag }}
+          TITLE: ${{ inputs.title }}
+          EXTRA_NOTES: ${{ inputs.extra_notes }}
+          GENERATE_NOTES: ${{ inputs.generate_notes }}
+          MAKE_LATEST: ${{ inputs.make_latest }}
+        run: |
+          set -euo pipefail
+
+          # Sentry release names are the tag names without the -submission suffix.
+          ios_version=$(echo "$IOS_TAG" | sed -E 's/-submission$//')
+          android_version=$(echo "$ANDROID_TAG" | sed -E 's/-submission$//')
+
+          sentry_base_url="https://artsynet.sentry.io"
+          project_id="5867225"
+          dashboard_id="622403"
+
+          ios_link="${sentry_base_url}/explore/releases/${ios_version}/?environment=production&project=${project_id}"
+          android_link="${sentry_base_url}/explore/releases/${android_version}/?environment=production&project=${project_id}"
+
+          # Mobile vitals dashboard, filtered by release; the release is already platform-specific
+          mobile_vitals_ios_link="${sentry_base_url}/dashboard/${dashboard_id}/?environment=production&project=${project_id}&statsPeriod=30d&release=${ios_version}"
+          mobile_vitals_android_link="${sentry_base_url}/dashboard/${dashboard_id}/?environment=production&project=${project_id}&statsPeriod=30d&release=${android_version}"
+
+          sentry_header="Check the health of this release in Sentry:"
+          sentry_footer=":apple: [iOS Release details](${ios_link}) | :robot: [Android Release details](${android_link})"
+          sentry_mobile_vitals_details=":apple: [Mobile Vitals iOS](${mobile_vitals_ios_link}) | :robot: [Mobile Vitals Android](${mobile_vitals_android_link})"
+
+          notes=$(printf "%s\n\n%s\n\n%s" "$sentry_header" "$sentry_footer" "$sentry_mobile_vitals_details")
+
+          args=(
+            "$IOS_TAG"
+            --repo "${{ github.repository }}"
+            --title "$TITLE"
+          )
+
+          if [ "$GENERATE_NOTES" = "true" ]; then
+            args+=(--generate-notes --notes-start-tag "$PREVIOUS_TAG")
+          else
+            # Cherry-picked commits aren't linked to their original PRs, so GitHub's generated
+            # notes come back empty for a hotfix. Use the section start-hotfix wrote into the
+            # hotfix PR, plus a compare link.
+            compare="**Full changelog**: ${{ github.server_url }}/${{ github.repository }}/compare/${PREVIOUS_TAG}...${IOS_TAG}"
+            notes=$(printf "%s\n\n%s\n\n%s" "$EXTRA_NOTES" "$compare" "$notes")
+          fi
+
+          if [ "$MAKE_LATEST" != "true" ]; then
+            args+=(--latest=false)
+          fi
+
+          gh release create "${args[@]}" --notes "$notes"
