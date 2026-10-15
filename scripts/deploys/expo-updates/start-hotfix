@@ -165,17 +165,14 @@ else
   heading_verb="Applied"
 fi
 
-if [ -z "$existing_pr" ]; then
-  hotfix_number=1
-else
-  hotfix_number=$(( $(gh pr view "$existing_pr" --json body --jq '.body' | grep -c '^## Hotfix ' || true) + 1 ))
-fi
-
+# The heading carries the commit this was applied on top of, which is how CI works out which
+# sections are going out in a given production publish: everything from the section whose base is
+# the last published commit onwards. It deliberately isn't a counter — several sections can be
+# applied before anyone publishes, so a counter here would disagree with the release's own
+# "hotfix N", which counts publishes.
 section=$(cat <<SECTION
 
-## Hotfix $hotfix_number
-
-$heading_verb on top of \`$(git rev-parse --short "$base_sha")\`:
+## $heading_verb on top of \`$(git rev-parse --short "$base_sha")\` · $(date -u +%Y-%m-%d)
 
 $commits
 
@@ -222,7 +219,7 @@ fi
 
 cat <<NEXT
 
-✅ Hotfix $hotfix_number is on '$hotfix_branch'.
+✅ Your fix is on '$hotfix_branch'.
    $pr_url
 
 A canary publish of this commit started automatically when the branch was pushed:

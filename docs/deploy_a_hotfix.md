@@ -59,6 +59,10 @@ This:
 - cherry-picks each SHA (stopping hard if the fix turns out to touch native code)
 - pushes the branch and opens — or extends — the **hotfix PR**
 
+Several fixes can go out together. Pass them in one go, oldest first, or run `start-hotfix` again
+whenever the next fix lands — the result is the same branch either way. The only difference is that
+each run pushes, and each push publishes its own canary, so QA the newest one.
+
 ### One branch per app version
 
 There is one `hotfix-vX.Y.Z` branch per released version, and every OTA hotfix for that version

@@ -137,18 +137,41 @@ const writeOutput = (key: string, value: string) => {
   appendFileSync(file, `${key}<<${delimiter}\n${value}\n${delimiter}\n`)
 }
 
+const SECTION_HEADING = /^## (?=(?:Applied|Reverted) on top of )/m
+
 /**
- * The newest "## Hotfix N" section of the hotfix PR, which start-hotfix wrote when it applied the
- * fix. Used as the body of the GitHub release, because `gh --generate-notes` comes back nearly
- * empty for cherry-picked commits — they aren't linked to their original PRs.
+ * The sections of the hotfix PR that this publish is actually shipping — everything start-hotfix
+ * wrote since the last production publish, which is usually one section but is more whenever
+ * several fixes were applied before anyone published.
+ *
+ * Used as the body of the GitHub release, because `gh --generate-notes` comes back nearly empty
+ * for cherry-picked commits — they aren't linked to their original PRs.
+ *
+ * Each heading records the commit the section was applied on top of, and the previous production
+ * tag points at the tip of the last section that shipped — which is the base of the first one that
+ * hasn't. So the slice starts at the section naming that commit, or at the beginning when nothing
+ * has been published for this version yet.
  */
-const latestHotfixSection = (prNumber: number) => {
+const unpublishedHotfixSections = (prNumber: number, previousProductionTag: string | null) => {
   const body = tryRun("gh", ["pr", "view", String(prNumber), "--json", "body", "--jq", ".body"])
   if (!body) return ""
 
-  const sections = body.split(/^## (?=Hotfix )/m)
-  const latest = sections.length > 1 ? sections[sections.length - 1] : ""
-  return latest ? `## ${latest.trim()}` : ""
+  const sections = body
+    .split(SECTION_HEADING)
+    .slice(1)
+    .map((section) => `## ${section.trim()}`)
+  if (sections.length === 0) return ""
+
+  const publishedSha = previousProductionTag
+    ? tryRun("git", ["rev-parse", "--short", `${previousProductionTag}^{commit}`])
+    : null
+  const firstUnpublished = publishedSha
+    ? sections.findIndex((section) => section.includes(`\`${publishedSha}\``))
+    : 0
+
+  // A heading we can't place means the PR was hand-edited; shipping every section is the safer
+  // way to be wrong, since it over-reports rather than hiding a fix that is going out.
+  return sections.slice(firstUnpublished === -1 ? 0 : firstUnpublished).join("\n\n")
 }
 
 const main = () => {
@@ -225,7 +248,7 @@ const main = () => {
       pullRequest
         ? `Published from [#${pullRequest.number}](${REPO_URL}/pull/${pullRequest.number}).`
         : "",
-      pullRequest ? latestHotfixSection(pullRequest.number) : "",
+      pullRequest ? unpublishedHotfixSections(pullRequest.number, previousProductionTags.ios) : "",
     ]
       .filter(Boolean)
       .join("\n\n")
