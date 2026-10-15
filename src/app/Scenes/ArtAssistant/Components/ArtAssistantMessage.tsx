@@ -1,17 +1,22 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { ArtAssistantErrorActions } from "app/Scenes/ArtAssistant/Components/ArtAssistantErrorActions"
 import { ArtAssistantResponseSection } from "app/Scenes/ArtAssistant/Components/ArtAssistantResponseSection"
 import { ArtAssistantSuggestedReplies } from "app/Scenes/ArtAssistant/Components/ArtAssistantSuggestedReplies"
 import { ArtAssistantMessage as ArtAssistantMessageType } from "app/Scenes/ArtAssistant/types"
+import { ArtAssistantErrorAction } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
 
 interface ArtAssistantMessageProps {
   message: ArtAssistantMessageType
   /** Only passed for the latest answer, so older turns don't offer replies */
   onSelectSuggestedReply?: (reply: string, position: number, responseMessageID: string) => void
+  /** Only passed for the latest answer, since acting on an older failure makes no sense */
+  onSelectErrorAction?: (action: ArtAssistantErrorAction) => void
 }
 
 export const ArtAssistantMessage: React.FC<ArtAssistantMessageProps> = ({
   message,
   onSelectSuggestedReply,
+  onSelectErrorAction,
 }) => {
   const isUser = message.role === "user"
   const suggestedReplies =
@@ -52,6 +57,13 @@ export const ArtAssistantMessage: React.FC<ArtAssistantMessageProps> = ({
           replies={suggestedReplies}
           onSelect={(reply, position) => onSelectSuggestedReply(reply, position, message.id)}
         />
+      )}
+
+      {message.role === "assistant" && !!message.error && !!onSelectErrorAction && (
+        <>
+          <Spacer y={2} />
+          <ArtAssistantErrorActions error={message.error} onSelect={onSelectErrorAction} />
+        </>
       )}
     </Flex>
   )

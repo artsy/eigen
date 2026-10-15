@@ -1,7 +1,7 @@
 import { Theme } from "@artsy/palette-mobile"
 import { fireEvent, render, screen } from "@testing-library/react-native"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/Components/ArtAssistantMessage"
-import { ART_ASSISTANT_GENERIC_ERROR } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
+import { ART_ASSISTANT_ERRORS } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("ArtAssistantMessage", () => {
@@ -119,19 +119,35 @@ describe("ArtAssistantMessage", () => {
     expect(screen.queryByTestId("art-assistant-artist-rail-loading")).not.toBeOnTheScreen()
   })
 
-  it("renders an assistant error", () => {
-    renderWithWrappers(
-      <ArtAssistantMessage
-        message={{
-          id: "assistant-1",
-          role: "assistant",
-          text: ART_ASSISTANT_GENERIC_ERROR,
-          phase: "error",
-        }}
-      />
-    )
+  describe("errors", () => {
+    const failed = {
+      id: "assistant-1",
+      role: "assistant" as const,
+      text: ART_ASSISTANT_ERRORS.conversation_limit.message,
+      phase: "error" as const,
+      error: "conversation_limit" as const,
+    }
 
-    expect(screen.getByText(ART_ASSISTANT_GENERIC_ERROR)).toBeOnTheScreen()
+    it("renders the error with its actions", () => {
+      const onSelectErrorAction = jest.fn()
+      renderWithWrappers(
+        <ArtAssistantMessage message={failed} onSelectErrorAction={onSelectErrorAction} />
+      )
+
+      expect(screen.getByText(ART_ASSISTANT_ERRORS.conversation_limit.message)).toBeOnTheScreen()
+
+      fireEvent.press(screen.getByText("Yes! Open a new chat window"))
+      fireEvent.press(screen.getByText("No, I'm done for now"))
+
+      expect(onSelectErrorAction.mock.calls).toEqual([["newChat"], ["close"]])
+    })
+
+    it("does not offer actions on an earlier error", () => {
+      renderWithWrappers(<ArtAssistantMessage message={failed} />)
+
+      expect(screen.getByText(ART_ASSISTANT_ERRORS.conversation_limit.message)).toBeOnTheScreen()
+      expect(screen.queryByTestId("art-assistant-error-actions")).not.toBeOnTheScreen()
+    })
   })
 
   describe("suggested replies", () => {

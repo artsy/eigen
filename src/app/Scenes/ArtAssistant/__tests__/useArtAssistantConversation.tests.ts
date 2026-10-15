@@ -8,7 +8,7 @@ import {
   useArtAssistantConversation,
 } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/types"
-import { ART_ASSISTANT_GENERIC_ERROR } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
+import { ART_ASSISTANT_ERRORS } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { MetaphysicsSubscriptionError } from "app/system/relay/helpers/metaphysicsSubscriptionError"
@@ -156,7 +156,7 @@ describe("Art Assistant conversation reducer", () => {
     })
   })
 
-  it("shows a generic error when the terminal message is null, even after text deltas", () => {
+  it("asks for a more specific prompt when the agent finished without an answer, even after text deltas", () => {
     const streaming = reduceActiveTurn(createActiveTurn(), {
       __typename: "AIAgentTextDelta",
       text: "Recovered answer",
@@ -169,7 +169,8 @@ describe("Art Assistant conversation reducer", () => {
 
     expect(result.message).toMatchObject({
       phase: "error",
-      text: ART_ASSISTANT_GENERIC_ERROR,
+      error: "unclear",
+      text: ART_ASSISTANT_ERRORS.unclear.message,
     })
   })
 
@@ -321,7 +322,9 @@ const emit = (
   aiAgentTurn: object
 ) => environment.mock.nextValue(operation, { data: { aiAgentTurn } })
 
-type NormalizedEvent = NonNullable<useArtAssistantConversationAgentTurnSubscription$data["aiAgentTurn"]>
+type NormalizedEvent = NonNullable<
+  useArtAssistantConversationAgentTurnSubscription$data["aiAgentTurn"]
+>
 type TerminalEvent = Extract<NormalizedEvent, { __typename: "AIAgentTurnComplete" }>
 
 const terminalEvent = (
@@ -495,7 +498,8 @@ describe("useArtAssistantConversation tracking", () => {
     })
     expect(result.current.messages.at(-1)).toMatchObject({
       phase: "error",
-      text: ART_ASSISTANT_GENERIC_ERROR,
+      error: "timeout",
+      text: ART_ASSISTANT_ERRORS.timeout.message,
     })
     expect(trackedEventsOfType("receivedArtAssistantResponse")).toHaveLength(0)
   })
@@ -520,7 +524,8 @@ describe("useArtAssistantConversation tracking", () => {
     })
     expect(result.current.messages.at(-1)).toMatchObject({
       phase: "error",
-      text: ART_ASSISTANT_GENERIC_ERROR,
+      error: "generic",
+      text: ART_ASSISTANT_ERRORS.generic.message,
     })
   })
 
@@ -533,7 +538,8 @@ describe("useArtAssistantConversation tracking", () => {
 
     expect(result.current.messages.at(-1)).toMatchObject({
       phase: "error",
-      text: ART_ASSISTANT_GENERIC_ERROR,
+      error: "generic",
+      text: ART_ASSISTANT_ERRORS.generic.message,
     })
   })
 
@@ -550,7 +556,8 @@ describe("useArtAssistantConversation tracking", () => {
     expect(failed.prompt_message_id).toEqual(sent.message_id)
     expect(result.current.messages.at(-1)).toMatchObject({
       phase: "error",
-      text: ART_ASSISTANT_GENERIC_ERROR,
+      error: "generic",
+      text: ART_ASSISTANT_ERRORS.generic.message,
     })
   })
 
@@ -605,6 +612,119 @@ describe("useArtAssistantConversation tracking", () => {
     const [tapped] = trackedEvents(["tappedArtAssistantSuggestedReply"])
 
     expect(tapped.reply).toBe("Only paintings")
+  })
+
+  it("tells the collector to come back later when they ran out of turns", () => {
+    const { environment, result } = renderConversation()
+
+    act(() => result.current.submit("blue painting"))
+
+    act(() =>
+      emit(environment, environment.mock.getMostRecentOperation(), {
+        __typename: "AIAgentTurnComplete",
+        message: null,
+        stopReason: "rate_limited",
+        toolCallCount: 0,
+        artworks: null,
+      })
+    )
+
+    expect(result.current.messages.at(-1)).toMatchObject({
+      phase: "error",
+      error: "rate_limited",
+      text: ART_ASSISTANT_ERRORS.rate_limited.message,
+    })
+  })
+
+  it("offers a new chat when Metaphysics rejects the conversation as too large", () => {
+    const { environment, result } = renderConversation()
+
+    act(() => result.current.submit("blue painting"))
+
+    act(() =>
+      environment.mock.rejectMostRecentOperation(
+        new MetaphysicsSubscriptionError("Conversation input is too large (max 100000 bytes)", {
+          status: 200,
+          graphQLErrors: ["Conversation input is too large (max 100000 bytes)"],
+        })
+      )
+    )
+
+    expect(result.current.messages.at(-1)).toMatchObject({
+      phase: "error",
+      error: "conversation_limit",
+    })
+  })
+
+  it("does not send a turn once the history is longer than Metaphysics accepts", () => {
+    const { environment, result } = renderConversation()
+
+    // 20 answered turns are 40 history messages, the most Metaphysics accepts.
+    for (let turn = 0; turn <= 20; turn++) {
+      act(() => result.current.submit(`prompt ${turn}`))
+      act(() =>
+        emit(environment, environment.mock.getMostRecentOperation(), {
+          __typename: "AIAgentTurnComplete",
+          message: `answer ${turn}`,
+          stopReason: "end_turn",
+          toolCallCount: 0,
+          artworks: [],
+        })
+      )
+    }
+
+    const operationCount = environment.mock.getAllOperations().length
+    jest.mocked(mockTrackEvent).mockClear()
+
+    act(() => result.current.submit("one more"))
+
+    expect(environment.mock.getAllOperations()).toHaveLength(operationCount)
+    expect(trackedEventsOfType("sentArtAssistantMessage")).toHaveLength(0)
+    expect(result.current.isResponding).toBe(false)
+    expect(result.current.messages.slice(-2)).toMatchObject([
+      { role: "user", text: "one more" },
+      { role: "assistant", phase: "error", error: "conversation_limit" },
+    ])
+  })
+
+  it("asks the failed prompt again in place of the failed exchange", () => {
+    const { environment, result } = renderConversation()
+
+    act(() => result.current.submit("blue painting"))
+    act(() => environment.mock.complete(environment.mock.getMostRecentOperation()))
+
+    act(() => result.current.retry())
+
+    const { input } = environment.mock.getMostRecentOperation().request.variables
+
+    expect(input.message).toBe("blue painting")
+    expect(input.history).toEqual([])
+    expect(result.current.messages).toMatchObject([
+      { role: "user", text: "blue painting" },
+      { role: "assistant", phase: "responding" },
+    ])
+  })
+
+  it("does not retry an answer that did not fail", () => {
+    const { environment, result } = renderConversation()
+
+    act(() => result.current.submit("blue painting"))
+    act(() =>
+      emit(environment, environment.mock.getMostRecentOperation(), {
+        __typename: "AIAgentTurnComplete",
+        message: "I found two works for you.",
+        stopReason: "end_turn",
+        toolCallCount: 1,
+        artworks: [],
+      })
+    )
+
+    const operationCount = environment.mock.getAllOperations().length
+
+    act(() => result.current.retry())
+
+    expect(environment.mock.getAllOperations()).toHaveLength(operationCount)
+    expect(result.current.messages).toHaveLength(2)
   })
 
   it("does not report a new chat when there is nothing to discard", () => {
