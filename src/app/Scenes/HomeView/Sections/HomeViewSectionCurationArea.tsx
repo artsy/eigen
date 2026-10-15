@@ -160,6 +160,38 @@ const CollectionCardRail: React.FC<{
   )
 }
 
+// Simple overlapping stack of up to 3 artwork thumbnails. Not the exact design fan —
+// a lightweight first pass to confirm the images render; refine the layout later.
+const CollectionImageStack: React.FC<{ urls: string[]; width: number }> = ({ urls, width }) => {
+  const imageWidth = width * 0.55
+  const imageHeight = COLLECTION_CARD_IMAGE_HEIGHT - 30
+  const stepX = urls.length > 1 ? (width - imageWidth) / (urls.length - 1) : 0
+  const stepY = 15
+
+  return (
+    <Flex width={width} height={COLLECTION_CARD_IMAGE_HEIGHT}>
+      {urls.map((url, index) => (
+        <Image
+          key={index}
+          testID="collection-card-stack-image"
+          src={url}
+          width={imageWidth}
+          height={imageHeight}
+          style={{
+            position: "absolute",
+            left: index * stepX,
+            top: (urls.length - 1 - index) * stepY,
+            zIndex: urls.length - index,
+            borderRadius: 6,
+            borderWidth: 2,
+            borderColor: "white",
+          }}
+        />
+      ))}
+    </Flex>
+  )
+}
+
 const CollectionCard: React.FC<{
   chip: Chip
   width: number
@@ -167,11 +199,17 @@ const CollectionCard: React.FC<{
 }> = ({ chip, width, onPress }) => {
   const color = useColor()
   const imageURL = chip.image?.imageURL
+  const stackURLs = (chip.images ?? [])
+    .map((image) => image?.imageURL)
+    .filter((url): url is string => !!url)
+    .slice(0, 3)
 
   return (
     <RouterLink to={chip.href} onPress={onPress}>
       <Flex width={width}>
-        {imageURL ? (
+        {stackURLs.length > 0 ? (
+          <CollectionImageStack urls={stackURLs} width={width} />
+        ) : imageURL ? (
           <Image
             testID="collection-card-image"
             src={imageURL}
@@ -592,6 +630,9 @@ const fragment = graphql`
           entityType
           contextModule
           image {
+            imageURL
+          }
+          images {
             imageURL
           }
         }

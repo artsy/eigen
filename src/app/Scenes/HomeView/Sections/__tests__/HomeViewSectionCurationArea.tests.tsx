@@ -69,6 +69,7 @@ const chipsConnection = {
           entityType: "HomeViewSection",
           contextModule: "curationAreaRail",
           image: { imageURL: "https://url.com/chip.jpg" },
+          images: null,
         },
       },
       {
@@ -80,6 +81,7 @@ const chipsConnection = {
           entityType: "HomeViewSection",
           contextModule: "curationAreaRail",
           image: null,
+          images: null,
         },
       },
     ],
@@ -246,6 +248,37 @@ describe("HomeViewSectionCurationArea", () => {
     expect(screen.getByText("Explore a curated selection of exciting artists.")).toBeOnTheScreen()
     // Each card renders an image (or placeholder when absent).
     expect(screen.getAllByTestId("collection-card-image")).toHaveLength(2)
+  })
+
+  it("renders a 3-image stack for a chip that has multiple images", () => {
+    renderWithRelay({
+      HomeViewSectionCurationArea: () =>
+        section({
+          chipsConnection: {
+            edges: [
+              {
+                node: {
+                  title: "Blue-Chip Icons",
+                  subtitle: "Legendary artists.",
+                  href: "/collection/blue-chip",
+                  entityID: "blue-chip-id",
+                  entityType: "MarketingCollection",
+                  contextModule: "curationAreaRail",
+                  image: null,
+                  images: [
+                    { imageURL: "https://url.com/1.jpg" },
+                    { imageURL: "https://url.com/2.jpg" },
+                    { imageURL: "https://url.com/3.jpg" },
+                  ],
+                },
+              },
+            ],
+          },
+        }),
+    })
+
+    expect(screen.getByText("Blue-Chip Icons")).toBeOnTheScreen()
+    expect(screen.getAllByTestId("collection-card-stack-image")).toHaveLength(3)
   })
 
   it("tracks and navigates when a chip is tapped", () => {
