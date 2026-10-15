@@ -3,7 +3,7 @@ import { act, fireEvent, screen } from "@testing-library/react-native"
 import { ArtAssistant } from "app/Scenes/ArtAssistant/ArtAssistant"
 import { ART_ASSISTANT_SUGGESTIONS } from "app/Scenes/ArtAssistant/Components/ArtAssistantEmptyState"
 import { ART_ASSISTANT_TURN_IDLE_TIMEOUT_MS } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
-import { ART_ASSISTANT_GENERIC_ERROR } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
+import { ART_ASSISTANT_ERRORS } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL, renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -264,7 +264,7 @@ describe("ArtAssistant", () => {
     fireEvent.press(screen.getByLabelText("Send"))
 
     const operation = environment.mock.getMostRecentOperation()
-    const timeout = ART_ASSISTANT_GENERIC_ERROR
+    const timeout = ART_ASSISTANT_ERRORS.timeout.message
 
     act(() => {
       jest.advanceTimersByTime(ART_ASSISTANT_TURN_IDLE_TIMEOUT_MS - 1)
@@ -370,6 +370,80 @@ describe("ArtAssistant", () => {
 
     expect(input.conversationID).not.toEqual(firstConversationID)
     expect(input.history).toEqual([])
+  })
+
+  describe("error actions", () => {
+    const sendAndFail = (
+      environment: ReturnType<typeof createMockEnvironment>,
+      stopReason: string
+    ) => {
+      fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "blue painting")
+      fireEvent.press(screen.getByLabelText("Send"))
+
+      act(() => {
+        environment.mock.nextValue(environment.mock.getMostRecentOperation(), {
+          data: {
+            aiAgentTurn: {
+              __typename: "AIAgentTurnComplete",
+              message: null,
+              stopReason,
+              toolCallCount: 0,
+              artworks: null,
+            },
+          },
+        })
+      })
+    }
+
+    it("asks the same prompt again", () => {
+      const environment = createMockEnvironment()
+      renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+      sendAndFail(environment, "max_iterations")
+
+      expect(screen.getByText(ART_ASSISTANT_ERRORS.timeout.message)).toBeOnTheScreen()
+
+      fireEvent.press(screen.getByText("Try the same ask again"))
+
+      expect(environment.mock.getMostRecentOperation().request.variables.input).toEqual(
+        expect.objectContaining({ message: "blue painting", history: [] })
+      )
+      expect(screen.getAllByTestId("art-assistant-user-message")).toHaveLength(1)
+      expect(screen.queryByText(ART_ASSISTANT_ERRORS.timeout.message)).not.toBeOnTheScreen()
+    })
+
+    it("hides the actions when the collector would rather ask something else", () => {
+      const environment = createMockEnvironment()
+      renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+      sendAndFail(environment, "max_iterations")
+      fireEvent.press(screen.getByText("Forget it, I'll ask something else"))
+
+      expect(screen.getByText(ART_ASSISTANT_ERRORS.timeout.message)).toBeOnTheScreen()
+      expect(screen.queryByTestId("art-assistant-error-actions")).not.toBeOnTheScreen()
+    })
+
+    it("starts a new chat without asking for confirmation again", () => {
+      const environment = createMockEnvironment()
+      renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+      sendAndFail(environment, "error")
+      fireEvent.press(screen.getByText("Start a new chat instead"))
+
+      expect(screen.queryByText("Start a new chat?")).not.toBeOnTheScreen()
+      expect(screen.queryByText("blue painting")).not.toBeOnTheScreen()
+      expect(screen.getByText("What are you looking for?")).toBeOnTheScreen()
+    })
+
+    it("offers nothing to tap when the collector ran out of turns", () => {
+      const environment = createMockEnvironment()
+      renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+      sendAndFail(environment, "rate_limited")
+
+      expect(screen.getByText(ART_ASSISTANT_ERRORS.rate_limited.message)).toBeOnTheScreen()
+      expect(screen.queryByTestId("art-assistant-error-actions")).not.toBeOnTheScreen()
+    })
   })
 
   it("reports the screen view", () => {

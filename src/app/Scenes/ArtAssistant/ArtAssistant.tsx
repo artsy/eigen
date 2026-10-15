@@ -18,6 +18,7 @@ import { ArtAssistantEmptyState } from "app/Scenes/ArtAssistant/Components/ArtAs
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/Components/ArtAssistantMessage"
 import { useArtAssistantConversation } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
 import { ArtAssistantMessage as ArtAssistantMessageType } from "app/Scenes/ArtAssistant/types"
+import { ArtAssistantErrorAction } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
 import { goBack } from "app/system/navigation/navigate"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -42,7 +43,8 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   const [prompt, setPrompt] = useState("")
   const [isComposerFocused, setIsComposerFocused] = useState(false)
   const [isNewChatDialogVisible, setIsNewChatDialogVisible] = useState(false)
-  const { isResponding, messages, startNewConversation, submit, trackSuggestedReplyTapped } =
+  const [dismissedErrorID, setDismissedErrorID] = useState<string | null>(null)
+  const { isResponding, messages, retry, startNewConversation, submit, trackSuggestedReplyTapped } =
     useArtAssistantConversation()
   const [messageHeights, setMessageHeights] = useState<Record<string, number>>({})
   const composerInputRef = useRef<InputRef>(null)
@@ -117,6 +119,25 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
 
   const handleSend = () => {
     sendPrompt(prompt, "typed")
+  }
+
+  const handleSelectErrorAction = (action: ArtAssistantErrorAction, messageID: string) => {
+    switch (action) {
+      case "retry":
+        pendingScrollIndex.current = Math.max(0, messages.length - 2)
+        retry()
+        return
+      case "dismiss":
+        setDismissedErrorID(messageID)
+        composerInputRef.current?.focus()
+        return
+      case "newChat":
+        handleStartNewConversation()
+        return
+      case "close":
+        onClose()
+        return
+    }
   }
 
   const scrollToPendingTurn = useCallback(() => {
@@ -235,6 +256,11 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
                   message={item}
                   onSelectSuggestedReply={
                     index === messages.length - 1 ? handleSelectSuggestedReply : undefined
+                  }
+                  onSelectErrorAction={
+                    index === messages.length - 1 && item.id !== dismissedErrorID
+                      ? (action) => handleSelectErrorAction(action, item.id)
+                      : undefined
                   }
                 />
               </Flex>

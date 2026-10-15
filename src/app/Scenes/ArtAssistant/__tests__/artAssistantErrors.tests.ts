@@ -1,6 +1,42 @@
 import { captureException, captureMessage } from "@sentry/react-native"
-import { reportArtAssistantTurnFailure } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
+import {
+  artAssistantErrorKindForStopReason,
+  artAssistantErrorKindForStreamError,
+  reportArtAssistantTurnFailure,
+} from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
 import { MetaphysicsSubscriptionError } from "app/system/relay/helpers/metaphysicsSubscriptionError"
+
+describe("artAssistantErrorKindForStopReason", () => {
+  it.each([
+    ["rate_limited", "rate_limited"],
+    ["max_iterations", "timeout"],
+    ["aborted", "timeout"],
+    ["error", "generic"],
+    ["stop", "unclear"],
+    ["end_turn", "unclear"],
+  ])("maps %s to %s", (stopReason, kind) => {
+    expect(artAssistantErrorKindForStopReason(stopReason)).toBe(kind)
+  })
+})
+
+describe("artAssistantErrorKindForStreamError", () => {
+  it("recognizes Metaphysics' conversation guardrails", () => {
+    const error = new MetaphysicsSubscriptionError("rejected", {
+      graphQLErrors: ["Conversation history is too long (max 40 messages)"],
+    })
+
+    expect(artAssistantErrorKindForStreamError(error)).toBe("conversation_limit")
+  })
+
+  it("treats any other failure as generic", () => {
+    expect(
+      artAssistantErrorKindForStreamError(
+        new MetaphysicsSubscriptionError("Too many requests", { status: 429 })
+      )
+    ).toBe("generic")
+    expect(artAssistantErrorKindForStreamError(new Error("boom"))).toBe("generic")
+  })
+})
 
 describe("reportArtAssistantTurnFailure", () => {
   beforeEach(() => {

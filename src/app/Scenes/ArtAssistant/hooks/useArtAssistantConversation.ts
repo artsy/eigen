@@ -11,8 +11,12 @@ import { ART_ASSISTANT_SUPPORTED_SECTIONS } from "app/Scenes/ArtAssistant/Compon
 import { useArtAssistantTracking } from "app/Scenes/ArtAssistant/hooks/useArtAssistantTracking"
 import { ArtAssistantMessage, ArtAssistantSection } from "app/Scenes/ArtAssistant/types"
 import {
-  ART_ASSISTANT_GENERIC_ERROR,
+  ART_ASSISTANT_ERRORS,
+  ART_ASSISTANT_MAX_HISTORY_MESSAGES,
+  ArtAssistantErrorKind,
   ArtAssistantTurnFailure,
+  artAssistantErrorKindForStopReason,
+  artAssistantErrorKindForStreamError,
   reportArtAssistantTurnFailure,
 } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -22,7 +26,9 @@ import { graphql, requestSubscription, useRelayEnvironment } from "react-relay"
 import { v4 as uuid } from "uuid"
 
 type AssistantMessage = Extract<ArtAssistantMessage, { role: "assistant" }>
-type NormalizedAgentEvent = NonNullable<useArtAssistantConversationAgentTurnSubscription$data["aiAgentTurn"]>
+type NormalizedAgentEvent = NonNullable<
+  useArtAssistantConversationAgentTurnSubscription$data["aiAgentTurn"]
+>
 type TerminalAgentEvent = Extract<NormalizedAgentEvent, { __typename: "AIAgentTurnComplete" }>
 
 export interface ActiveTurn {
@@ -150,6 +156,7 @@ export const useArtAssistantConversation = () => {
 
       const startedAt = Date.now()
       const previousMessages = messagesRef.current
+      const history = toHistory(previousMessages)
       const userMessage: ArtAssistantMessage = { id: uuid(), role: "user", text }
       const assistantMessage: AssistantMessage = {
         id: uuid(),
@@ -175,6 +182,13 @@ export const useArtAssistantConversation = () => {
           promptMessageID: userMessage.id,
           stopReason: failure.stopReason,
         })
+
+      // Metaphysics would reject this turn, so nothing is sent and nothing is reported.
+      if (history.length > ART_ASSISTANT_MAX_HISTORY_MESSAGES) {
+        activeTurn = failActiveTurn(activeTurn, "conversation_limit")
+        setMessages([...previousMessages, userMessage, activeTurn.message])
+        return
+      }
 
       isRespondingRef.current = true
       setIsResponding(true)
@@ -206,7 +220,7 @@ export const useArtAssistantConversation = () => {
       }
 
       if (!userID || !authenticationToken) {
-        updateAssistant(failActiveTurn(activeTurn))
+        updateAssistant(failActiveTurn(activeTurn, "generic"))
         trackFailure("unauthenticated")
         isRespondingRef.current = false
         setIsResponding(false)
@@ -216,7 +230,7 @@ export const useArtAssistantConversation = () => {
       const input = {
         conversationID: conversationID.current,
         message: text,
-        history: toHistory(previousMessages),
+        history,
         supportedSections: ART_ASSISTANT_SUPPORTED_SECTIONS,
       }
       const variables: useArtAssistantConversationAgentTurnSubscription$variables = { input }
@@ -271,7 +285,7 @@ export const useArtAssistantConversation = () => {
         }
 
         reportFailure({ outcome: "idle_timeout" })
-        updateAssistant(failActiveTurn(activeTurn))
+        updateAssistant(failActiveTurn(activeTurn, "timeout"))
         finish()
       }
 
@@ -290,64 +304,67 @@ export const useArtAssistantConversation = () => {
         responseTimeout.current = timeout
       }
 
-      subscription = requestSubscription<useArtAssistantConversationAgentTurnSubscription>(environment, {
-        subscription: agentTurnSubscription,
-        variables,
-        onNext: (data) => {
-          const event = data?.aiAgentTurn
+      subscription = requestSubscription<useArtAssistantConversationAgentTurnSubscription>(
+        environment,
+        {
+          subscription: agentTurnSubscription,
+          variables,
+          onNext: (data) => {
+            const event = data?.aiAgentTurn
 
-          restartIdleTimeout()
+            restartIdleTimeout()
 
-          if (event) {
-            const nextTurn = reduceActiveTurn(activeTurn, event)
-            updateAssistant(nextTurn)
+            if (event) {
+              const nextTurn = reduceActiveTurn(activeTurn, event)
+              updateAssistant(nextTurn)
 
-            if (event.__typename === "AIAgentTurnComplete") {
-              if (nextTurn.message.phase === "error") {
-                reportFailure({ outcome: "stopped_without_answer", stopReason: event.stopReason })
-              } else {
-                const artworks = event.artworks ?? []
+              if (event.__typename === "AIAgentTurnComplete") {
+                if (nextTurn.message.phase === "error") {
+                  reportFailure({ outcome: "stopped_without_answer", stopReason: event.stopReason })
+                } else {
+                  const artworks = event.artworks ?? []
 
-                trackResponseReceived({
-                  conversationID: input.conversationID,
-                  durationMs: Date.now() - startedAt,
-                  itemIDs: artworks.map((artwork) => artwork.internalID),
-                  itemType: artworks.length > 0 ? OwnerType.artwork : undefined,
-                  messageID: assistantMessage.id,
-                  promptMessageID: userMessage.id,
-                  response: nextTurn.message.text,
-                  stopReason: event.stopReason,
-                  toolCallCount: event.toolCallCount,
-                })
+                  trackResponseReceived({
+                    conversationID: input.conversationID,
+                    durationMs: Date.now() - startedAt,
+                    itemIDs: artworks.map((artwork) => artwork.internalID),
+                    itemType: artworks.length > 0 ? OwnerType.artwork : undefined,
+                    messageID: assistantMessage.id,
+                    promptMessageID: userMessage.id,
+                    response: nextTurn.message.text,
+                    stopReason: event.stopReason,
+                    toolCallCount: event.toolCallCount,
+                  })
+                }
+
+                // Metaphysics keeps the stream open after the answer is final, so end the turn on
+                // the application-level terminal event instead of waiting for the protocol one.
+                finishTurn()
               }
-
-              // Metaphysics keeps the stream open after the answer is final, so end the turn on
-              // the application-level terminal event instead of waiting for the protocol one.
-              finishTurn()
             }
-          }
-        },
-        onError: (error) => {
-          if (activeTurn.didReceiveTerminalEvent) {
-            // The answer is already on screen, so keep it and only report the broken stream.
-            reportFailure({ outcome: "trailing_stream_error", error })
+          },
+          onError: (error) => {
+            if (activeTurn.didReceiveTerminalEvent) {
+              // The answer is already on screen, so keep it and only report the broken stream.
+              reportFailure({ outcome: "trailing_stream_error", error })
+              finish()
+              return
+            }
+
+            reportFailure({ outcome: "stream_error", error })
+            updateAssistant(failActiveTurn(activeTurn, artAssistantErrorKindForStreamError(error)))
             finish()
-            return
-          }
+          },
+          onCompleted: () => {
+            if (!activeTurn.didReceiveTerminalEvent && activeTurn.message.phase === "responding") {
+              reportFailure({ outcome: "ended_without_answer" })
+              updateAssistant(failActiveTurn(activeTurn, "generic"))
+            }
 
-          reportFailure({ outcome: "stream_error", error })
-          updateAssistant(failActiveTurn(activeTurn))
-          finish()
-        },
-        onCompleted: () => {
-          if (!activeTurn.didReceiveTerminalEvent && activeTurn.message.phase === "responding") {
-            reportFailure({ outcome: "ended_without_answer" })
-            updateAssistant(failActiveTurn(activeTurn))
-          }
-
-          finish()
-        },
-      })
+            finish()
+          },
+        }
+      )
 
       if (didFinish) {
         subscription.dispose()
@@ -368,6 +385,23 @@ export const useArtAssistantConversation = () => {
     ]
   )
 
+  /**
+   * Asks the latest prompt again in place of the answer that failed it, so the failed exchange
+   * doesn't linger in the transcript or get replayed as history.
+   */
+  const retry = useCallback(() => {
+    const current = messagesRef.current
+    const failed = current.at(-1)
+    const prompt = current.at(-2)
+
+    if (failed?.role !== "assistant" || failed.phase !== "error" || prompt?.role !== "user") {
+      return
+    }
+
+    messagesRef.current = current.slice(0, -2)
+    submit(prompt.text)
+  }, [submit])
+
   const trackSuggestedReplyTappedInConversation = useCallback(
     (reply: string, position: number, responseMessageID: string) =>
       trackSuggestedReplyTapped({
@@ -382,6 +416,7 @@ export const useArtAssistantConversation = () => {
   return {
     isResponding,
     messages,
+    retry,
     startNewConversation,
     submit,
     trackSuggestedReplyTapped: trackSuggestedReplyTappedInConversation,
@@ -405,7 +440,10 @@ export const reduceActiveTurn = (turn: ActiveTurn, event: NormalizedAgentEvent):
       const text = event.message
 
       if (!text?.trim()) {
-        return failActiveTurn({ ...turn, didReceiveTerminalEvent: true })
+        return failActiveTurn(
+          { ...turn, didReceiveTerminalEvent: true },
+          artAssistantErrorKindForStopReason(event.stopReason)
+        )
       }
 
       const sections = toSections(event)
@@ -498,12 +536,13 @@ const activityCopy = (activity: AIAgentActivity) =>
 const setActivity = (message: AssistantMessage, activity: string): AssistantMessage =>
   message.activity === activity ? message : { ...message, activity }
 
-const failActiveTurn = (turn: ActiveTurn): ActiveTurn => ({
+const failActiveTurn = (turn: ActiveTurn, error: ArtAssistantErrorKind): ActiveTurn => ({
   ...turn,
   message: {
     ...turn.message,
-    text: ART_ASSISTANT_GENERIC_ERROR,
+    text: ART_ASSISTANT_ERRORS[error].message,
     phase: "error",
+    error,
     activity: undefined,
     sections: undefined,
   },

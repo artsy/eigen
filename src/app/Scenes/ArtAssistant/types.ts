@@ -1,3 +1,5 @@
+import { ArtAssistantErrorKind } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
+
 /**
  * What an answer showed alongside its prose, reduced to the entity type and the IDs in display
  * order. Metaphysics sends full `Artwork`/`Artist` nodes on the subscription payload, but we keep
@@ -20,6 +22,7 @@ export type ArtAssistantMessage =
       text: string
       phase: "responding" | "complete" | "error"
       activity?: string
+      error?: ArtAssistantErrorKind
       sections?: ArtAssistantSection[]
       suggestedReplies?: string[]
     }
