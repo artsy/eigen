@@ -1,5 +1,5 @@
 import { AddStrokeIcon, CheckmarkFillIcon } from "@artsy/icons/native"
-import { Button, Flex, Touchable } from "@artsy/palette-mobile"
+import { Button, Flex, TextProps, Touchable } from "@artsy/palette-mobile"
 
 const DEFAULT_ICON_SIZE = 24
 const HIT_SLOP = { top: 10, bottom: 10, left: 10, right: 10 }
@@ -7,6 +7,7 @@ const HIT_SLOP = { top: 10, bottom: 10, left: 10, right: 10 }
 interface Props {
   isSaved: boolean
   onPress: () => void
+  color?: TextProps["color"]
   isSaving?: boolean
   accessibilityLabel?: string
   /**
@@ -26,6 +27,7 @@ interface Props {
 export const CityGuideSaveButton: React.FC<Props> = ({
   isSaved,
   onPress,
+  color = "mono100",
   isSaving = false,
   accessibilityLabel,
   variant = "icon",
@@ -63,12 +65,14 @@ export const CityGuideSaveButton: React.FC<Props> = ({
         {isSaved ? (
           <CheckmarkFillIcon
             testID="city-guide-save-button-check-icon"
+            fill={color}
             width={iconSize}
             height={iconSize}
           />
         ) : (
           <AddStrokeIcon
             testID="city-guide-save-button-add-icon"
+            fill={color}
             width={iconSize}
             height={iconSize}
           />

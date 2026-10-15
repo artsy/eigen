@@ -4,6 +4,7 @@ import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
+import { ItineraryStopNote } from "app/Components/ItineraryStopNote/ItineraryStopNote"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -25,15 +26,21 @@ interface Section {
   element: React.JSX.Element
 }
 
-interface ShowQueryRendererProps {
+/** The City Guide stop the show was opened from, whose curator's note the page shows. */
+interface ItineraryStopProps {
+  stopID?: string
+  shareToken?: string
+}
+
+interface ShowQueryRendererProps extends ItineraryStopProps {
   showID: string
 }
 
-interface ShowProps {
+interface ShowProps extends ItineraryStopProps {
   show: Show_show$data
 }
 
-export const Show: React.FC<ShowProps> = ({ show }) => {
+export const Show: React.FC<ShowProps> = ({ show, stopID, shareToken }) => {
   const [visible, setVisible] = useState(false)
   const filterComponentAnimationValue = new Animated.Value(0)
 
@@ -56,7 +63,16 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
       ? [{ key: "install-shots", element: <ShowInstallShots show={show} /> }]
       : []),
 
-    // Directly under the carousel, per the designs. Renders nothing without a partner name
+    ...(stopID
+      ? [
+          {
+            key: "itinerary-stop-note",
+            element: <ItineraryStopNote stopID={stopID} shareToken={shareToken} mx={2} />,
+          },
+        ]
+      : []),
+
+    // Under the carousel and any City Guide stop's note, per the designs. Renders nothing without a partner name
     // and an address, so a show with neither adds no empty band.
     { key: "partner-location", element: <ShowPartnerLocation show={show} /> },
 
@@ -161,7 +177,11 @@ export const ShowScreenQuery = graphql`
   }
 `
 
-export const ShowQueryRenderer: React.FC<ShowQueryRendererProps> = ({ showID }) => {
+export const ShowQueryRenderer: React.FC<ShowQueryRendererProps> = ({
+  showID,
+  stopID,
+  shareToken,
+}) => {
   return (
     <QueryRenderer<ShowQuery>
       environment={getRelayEnvironment()}
@@ -172,6 +192,7 @@ export const ShowQueryRenderer: React.FC<ShowQueryRendererProps> = ({ showID }) 
       }}
       render={renderWithPlaceholder({
         Container: ShowFragmentContainer,
+        initialProps: { stopID, shareToken },
         renderPlaceholder: () => <ShowPlaceholder />,
       })}
     />

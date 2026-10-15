@@ -2,6 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { Flex, Image, Screen, Text, Touchable } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { CustomStopScreenQuery } from "__generated__/CustomStopScreenQuery.graphql"
+import { ItineraryStopNoteText } from "app/Components/ItineraryStopNote/ItineraryStopNote"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { tappedOnMap } from "app/Components/LocationMap/LocationMap"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
@@ -180,13 +181,11 @@ const Stop: React.FC<Props> = ({ citySlug, itineraryId, stopId }) => {
                 )}
               </Flex>
 
-              <StopAddress stop={stop} />
-
               {!!stop.description && (
-                <Flex px={2} pt={2}>
-                  <Text variant="sm">{stop.description}</Text>
-                </Flex>
+                <ItineraryStopNoteText note={stop.description} px={2} pt={1} pb={2} />
               )}
+
+              <StopAddress stop={stop} />
 
               {/* Leads off Artsy, so it is offered as a link rather than navigated to. */}
               {!!stop.sourceURL && (
