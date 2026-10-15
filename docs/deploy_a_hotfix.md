@@ -146,6 +146,22 @@ Every production publish leaves:
   run, and each platform's Sentry health and Mobile Vitals
 - a **comment on the hotfix PR** saying it shipped, who it went to, and where to watch it
 - a **section in the hotfix PR**, written by `start-hotfix`
+- a **Sentry crash-rate alert** on the new release, at a full rollout (see below)
+
+### Crash alerts
+
+A full-rollout production publish creates a Sentry crash-rate alert per platform, the same one a
+store release gets: crash-free sessions under 99.5% over two hours warns, under 99.2% is critical,
+and it resolves at 99.7%. It notifies `#mobile-alerts`.
+
+Each publish **disables the alert from the previous hotfix** for the same version and platform.
+An Expo Update replaces the whole JS bundle, so once a new one is out nobody is running the old
+one, and its alert would be judging a crash rate on a handful of leftover sessions. The store
+release's own alert is left alone — users who haven't taken the update are still on that build.
+
+> [!NOTE]
+> A **partial rollout gets no alert** — too few sessions for a rate to mean anything. Watch the
+> release links in the Slack message by hand. Publishing at 100% creates the alert.
 
 ### The production gate
 
