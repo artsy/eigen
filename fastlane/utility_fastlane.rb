@@ -129,13 +129,23 @@ lane :notify_expo_update_published do |options|
   release_url = options[:release_url]
   pr_url = options[:pr_url]
 
-  rollout_line = (rollout_percentage.nil? || rollout_percentage.to_s.empty?) ? 'Rollout: all users' : "Rollout: #{rollout_percentage}% of users"
+  full_rollout = rollout_percentage.nil? || rollout_percentage.to_s.empty?
+  rollout_line = full_rollout ? 'Rollout: all users' : "Rollout: #{rollout_percentage}% of users"
+
+  # A crash-rate detector is only created at a full rollout - a slice of users doesn't produce
+  # enough sessions for the rate to mean anything. Say so, so nobody assumes they're covered.
+  alert_line = if full_rollout
+                 'A Sentry crash-rate alert is watching this release.'
+               else
+                 ':warning: No crash-rate alert for a partial rollout - watch the links below.'
+               end
 
   message = <<~MSG
               :rocket: :iphone:
               An Expo Update was published to *production*.
               #{rollout_line}
               Description: #{description}
+              #{alert_line}
             MSG
 
   github_repo = ENV['GITHUB_REPOSITORY']
