@@ -92,6 +92,9 @@ export const usePopoverCoordinator = ({
 
   const isVisible = useShowDelay(() => canShow && isHolder, delay)
 
+  // Open *completion*, not open start. The stuck case we are guarding against is a
+  // popover that begins opening and never finishes measuring, so keying the watchdog off
+  // `onOpenStart` would have made it blind to exactly that.
   const hasOpenedRef = useRef(false)
 
   const forceRecover = useCallback(
@@ -112,7 +115,10 @@ export const usePopoverCoordinator = ({
     }
     const timeout = setTimeout(() => {
       if (!hasOpenedRef.current) {
-        forceRecover("never opened")
+        // Covers both ways this goes wrong: the library silently refusing to open a
+        // second popover (it only console.warns), and a bubble that starts opening and
+        // never finishes. Neither fires `onOpenComplete`.
+        forceRecover("never finished opening")
       }
     }, POPOVER_OPEN_TIMEOUT_MS)
     return () => clearTimeout(timeout)
@@ -135,7 +141,7 @@ export const usePopoverCoordinator = ({
     return () => releaseRef.current()
   }, [])
 
-  const onOpenStart = useCallback(() => {
+  const onOpenComplete = useCallback(() => {
     hasOpenedRef.current = true
   }, [])
 
@@ -152,5 +158,5 @@ export const usePopoverCoordinator = ({
     return () => popoverTelemetry.released(id)
   }, [id, isHolder])
 
-  return { isVisible, remountKey, onOpenStart, onCloseComplete, release }
+  return { isVisible, remountKey, onOpenComplete, onCloseComplete, release }
 }
