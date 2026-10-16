@@ -1,4 +1,4 @@
-import { Text } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { OnboardingPopover } from "app/Components/ProgressiveOnboarding/OnboardingPopover"
 import { GlobalStore } from "app/store/GlobalStore"
 import {
@@ -32,7 +32,9 @@ export const InfiniteDiscoveryArtworkCardPopover: React.FC<
         : undefined
 
   if (!reminderKey) {
-    return children
+    // Keep the wrapper: every card that carries no reminder went through it before, and
+    // the card layout depends on it.
+    return <Flex>{children}</Flex>
   }
 
   return (

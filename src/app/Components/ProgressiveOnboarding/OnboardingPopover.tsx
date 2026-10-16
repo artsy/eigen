@@ -5,7 +5,7 @@ import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnbo
 import { GlobalStore } from "app/store/GlobalStore"
 import { ProgressiveOnboardingKey } from "app/store/ProgressiveOnboardingModel"
 import React from "react"
-import { StyleProp, ViewStyle } from "react-native"
+import { StyleProp, ViewProps, ViewStyle } from "react-native"
 
 interface OnboardingPopoverProps {
   /** Doubles as the popover lock's owner id, so the lock is readable in Sentry. */
@@ -32,6 +32,8 @@ interface OnboardingPopoverProps {
   onDismiss?: () => void
   /** Escape hatch for surfaces that need a transparent backdrop (e.g. the tab bar). */
   backgroundStyle?: StyleProp<ViewStyle>
+  /** Applied to the anchor wrapper; some anchors must not swallow touches. */
+  pointerEvents?: ViewProps["pointerEvents"]
 }
 
 /**
@@ -58,6 +60,7 @@ export const OnboardingPopover: React.FC<React.PropsWithChildren<OnboardingPopov
   contextModule,
   onDismiss,
   backgroundStyle,
+  pointerEvents,
   children,
 }) => {
   const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
@@ -65,7 +68,7 @@ export const OnboardingPopover: React.FC<React.PropsWithChildren<OnboardingPopov
 
   const isDisplayable = when && !isDismissed(id).status
 
-  const { isVisible, remountKey, onOpenStart, onCloseComplete } = usePopoverCoordinator({
+  const { isVisible, remountKey, onOpenComplete, onCloseComplete } = usePopoverCoordinator({
     id,
     isDisplayable,
     delay,
@@ -77,7 +80,14 @@ export const OnboardingPopover: React.FC<React.PropsWithChildren<OnboardingPopov
     contextModule: contextModule ?? ContextModule.header,
   })
 
-  const handleOpenComplete = contextModule ? trackEvent : undefined
+  const handleOpenComplete = () => {
+    // The coordinator needs this to call off its watchdog, whether or not we track.
+    onOpenComplete()
+
+    if (contextModule) {
+      trackEvent()
+    }
+  }
 
   // The dark popover paints on a dark surface, the light one on a light surface.
   const titleColor = variant === "light" ? "mono100" : "mono0"
@@ -98,7 +108,6 @@ export const OnboardingPopover: React.FC<React.PropsWithChildren<OnboardingPopov
       visible={isVisible}
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
-      onOpenStart={onOpenStart}
       onOpenComplete={handleOpenComplete}
       onCloseComplete={onCloseComplete}
       variant={variant}
@@ -125,7 +134,7 @@ export const OnboardingPopover: React.FC<React.PropsWithChildren<OnboardingPopov
         )
       }
     >
-      <Flex>{children}</Flex>
+      <Flex pointerEvents={pointerEvents}>{children}</Flex>
     </Popover>
   )
 }
