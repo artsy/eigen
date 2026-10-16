@@ -6,6 +6,7 @@ import {
 } from "@gorhom/bottom-sheet"
 import { DefaultBottomSheetBackdrop } from "app/Components/BottomSheet/DefaultBottomSheetBackdrop"
 import { defaultIndicatorHandleStyle } from "app/Components/BottomSheet/defaultIndicatorHandleStyle"
+import { usePresentedOverlay } from "app/Components/ProgressiveOnboarding/popoverPresentationContext"
 import { useSentryBottomSheetTag } from "app/system/errorReporting/useSentryBottomSheetTag"
 import { FC, useCallback, useEffect, useRef, useState } from "react"
 import { BackHandler } from "react-native"
@@ -32,7 +33,12 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
   const { height: screenHeight, safeAreaInsets } = useScreenDimensions()
 
   // gorhom's own `name` prop is a good enough identifier when a caller already passes one.
-  useSentryBottomSheetTag(sentryName ?? rest.name, visible)
+  const overlayName = sentryName ?? rest.name
+  useSentryBottomSheetTag(overlayName, visible)
+
+  // Onboarding popovers are full-screen native Modals; without this they would happily
+  // present on top of an open sheet.
+  usePresentedOverlay(overlayName ?? "bottom-sheet", visible)
 
   // dismiss modal on back button press on Android
   const androidBackHandler = useCallback(() => {
