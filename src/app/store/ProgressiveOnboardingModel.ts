@@ -29,11 +29,6 @@ export interface ProgressiveOnboardingModel {
     deferHomeTooltipsThisSession: boolean
   }
   setIsReady: Action<this, boolean>
-  /**
-   * @deprecated Unconditional: it overwrites whoever currently holds the lock.
-   * Use `acquireActivePopover` / `releaseActivePopover` instead.
-   */
-  setActivePopover: Action<this, string | undefined>
   /** Claims the lock for `id`. No-op if another popover already holds it. */
   acquireActivePopover: Action<this, string>
   /** Releases the lock. No-op unless `id` is the current holder. */
@@ -78,9 +73,6 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
   }),
   setIsReady: action((state, isReady) => {
     state.sessionState.isReady = isReady
-  }),
-  setActivePopover: action((state, id) => {
-    state.sessionState.activePopover = id
   }),
   acquireActivePopover: action((state, id) => {
     if (state.sessionState.activePopover) {
