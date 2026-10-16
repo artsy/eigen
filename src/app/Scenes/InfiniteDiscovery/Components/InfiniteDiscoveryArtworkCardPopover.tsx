@@ -1,4 +1,5 @@
-import { Flex, Popover, Text } from "@artsy/palette-mobile"
+import { Text } from "@artsy/palette-mobile"
+import { OnboardingPopover } from "app/Components/ProgressiveOnboarding/OnboardingPopover"
 import { GlobalStore } from "app/store/GlobalStore"
 import {
   PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_1,
@@ -14,9 +15,7 @@ interface InfiniteDiscoveryArtworkCardPopoverProps {
 export const InfiniteDiscoveryArtworkCardPopover: React.FC<
   InfiniteDiscoveryArtworkCardPopoverProps
 > = ({ children, index, isTopCard }) => {
-  const { dismiss } = GlobalStore.actions.progressiveOnboarding
   const {
-    isDismissed,
     sessionState: { isReady },
   } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
 
@@ -24,53 +23,33 @@ export const InfiniteDiscoveryArtworkCardPopover: React.FC<
   const isNewUserOnboardingSession =
     GlobalStore.useAppState((state) => state.onboarding.onboardingState) === "incomplete"
 
-  const showSaveAlertReminder1 =
-    index === FIRST_REMINDER_SWIPES_COUNT &&
-    !isDismissed(PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_1).status &&
-    isReady
-  const showSaveAlertReminder2 =
-    index === SECOND_REMINDER_SWIPES_COUNT &&
-    !isDismissed(PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_2).status &&
-    isReady
+  // Only two cards in the deck ever carry a reminder; the rest render nothing extra.
+  const reminderKey =
+    index === FIRST_REMINDER_SWIPES_COUNT
+      ? PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_1
+      : index === SECOND_REMINDER_SWIPES_COUNT
+        ? PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_2
+        : undefined
 
-  const dismissPopover = () => {
-    switch (index) {
-      case FIRST_REMINDER_SWIPES_COUNT:
-        dismiss(PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_1)
-        break
-
-      case SECOND_REMINDER_SWIPES_COUNT:
-        dismiss(PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_2)
-        break
-      default:
-        break
-    }
+  if (!reminderKey) {
+    return children
   }
 
-  if (
-    !isNewUserOnboardingSession &&
-    isTopCard &&
-    !hasSavedArtworks &&
-    (showSaveAlertReminder1 || showSaveAlertReminder2)
-  ) {
-    return (
-      <Popover
-        visible
-        onDismiss={dismissPopover}
-        onPressOutside={dismissPopover}
-        title={
-          <Text variant="xs" color="mono0" fontWeight="bold">
-            Save artworks to get better{"\n"}recommendations and to signal your{"\n"}interest to
-            galleries.
-          </Text>
-        }
-        placement="top"
-      >
-        {children}
-      </Popover>
-    )
-  }
-  return <Flex>{children}</Flex>
+  return (
+    <OnboardingPopover
+      id={reminderKey}
+      when={!isNewUserOnboardingSession && !!isTopCard && !hasSavedArtworks && isReady}
+      placement="top"
+      title={
+        <Text variant="xs" color="mono0" fontWeight="bold">
+          Save artworks to get better{"\n"}recommendations and to signal your{"\n"}interest to
+          galleries.
+        </Text>
+      }
+    >
+      {children}
+    </OnboardingPopover>
+  )
 }
 
 const FIRST_REMINDER_SWIPES_COUNT = 4

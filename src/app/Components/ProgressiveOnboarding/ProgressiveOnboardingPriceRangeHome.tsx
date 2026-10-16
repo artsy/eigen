@@ -1,14 +1,12 @@
 import { ActionType, ContextModule, OwnerType, TappedPopover } from "@artsy/cohesion"
-import { Flex, Popover, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { fetchPriceRange } from "app/Components/PriceRange/fetchPriceRange"
-import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
-import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
-import { internal_navigationRef } from "app/Navigation/Navigation"
+import { OnboardingPopover } from "app/Components/ProgressiveOnboarding/OnboardingPopover"
 import { GlobalStore } from "app/store/GlobalStore"
 import { PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME } from "app/store/ProgressiveOnboardingModel"
 // eslint-disable-next-line no-restricted-imports
 import { navigate, switchTab } from "app/system/navigation/navigate"
-import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
+import { useCurrentRouteName } from "app/utils/hooks/useCurrentRouteName"
 import { useEffect, useState } from "react"
 import { useTracking } from "react-tracking"
 
@@ -23,7 +21,6 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<React.PropsWithChildr
   children,
 }) => {
   const {
-    isDismissed: isDismissedFn,
     sessionState: { isReady, deferHomeTooltipsThisSession },
   } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
 
@@ -31,13 +28,7 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<React.PropsWithChildr
 
   const tracking = useTracking()
 
-  const { dismiss, setIsReady } = GlobalStore.actions.progressiveOnboarding
-
-  const { trackEvent } = useProgressiveOnboardingTracking({
-    name: PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME,
-    contextScreenOwnerType: OwnerType.home,
-    contextModule: ContextModule.bottomTabs,
-  })
+  const { dismiss } = GlobalStore.actions.progressiveOnboarding
 
   useEffect(() => {
     fetchPriceRange().then((result) => {
@@ -45,33 +36,13 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<React.PropsWithChildr
     })
   }, [])
 
-  const currentRoute = internal_navigationRef.current?.getCurrentRoute()?.name
-
-  const isDismissed = isDismissedFn(PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME).status
-
-  const isPriceRangePopoverDisplayable =
-    hasPriceRange === false &&
-    currentRoute === "Home" &&
-    !isDismissed &&
-    isReady &&
-    !deferHomeTooltipsThisSession
-
-  const { isActive, clearActivePopover } = useSetActivePopover(isPriceRangePopoverDisplayable)
-
-  const debounceIsActive = useDebouncedValue({
-    value: isActive,
-    delay: PRICE_RANGE_ONBOARDING_POPOVER_DELAY,
-  })
+  // Reactive: the tab bar never unmounts, so reading the route during render left this
+  // eligible long after we had navigated away. With a 4s delay that mattered a lot.
+  const currentRoute = useCurrentRouteName()
 
   const handleDismiss = () => {
-    setIsReady(false)
     dismiss(PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME)
   }
-
-  const isVisible =
-    debounceIsActive.debouncedValue &&
-    // We are intentionally checking for isDismissed again here to ensure that the popover is dismissed without delay
-    !isDismissed
 
   const onPress = () => {
     handleDismiss()
@@ -86,13 +57,17 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<React.PropsWithChildr
   }
 
   return (
-    <Popover
-      visible={isVisible}
-      onDismiss={handleDismiss}
-      onPressOutside={handleDismiss}
-      onCloseComplete={clearActivePopover}
-      onOpenComplete={trackEvent}
+    <OnboardingPopover
+      id={PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME}
+      when={
+        hasPriceRange === false &&
+        currentRoute === "Home" &&
+        !!isReady &&
+        !deferHomeTooltipsThisSession
+      }
+      delay={PRICE_RANGE_ONBOARDING_POPOVER_DELAY}
       placement="top"
+      onDismiss={handleDismiss}
       title={
         <Touchable accessibilityRole="button" noFeedback onPress={onPress}>
           <Text variant="xs" color="mono0" fontWeight="bold">
@@ -109,9 +84,11 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<React.PropsWithChildr
           </Flex>
         </Touchable>
       }
+      contextScreenOwnerType={OwnerType.home}
+      contextModule={ContextModule.bottomTabs}
     >
-      <Flex>{children}</Flex>
-    </Popover>
+      {children}
+    </OnboardingPopover>
   )
 }
 
