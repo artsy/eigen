@@ -22963,6 +22963,11 @@ type Image {
     version: [String]
     width: Int
   ): ResizedImageUrl
+
+  """
+  Remote URL the image was created from (e.g. an Artnet import). Only present while the image is still processing.
+  """
+  sourceURL: String
   tileBaseURL: String
   tileFormat: String
   tileSize: Int
