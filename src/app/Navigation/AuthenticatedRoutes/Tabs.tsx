@@ -130,39 +130,26 @@ const AppTabs: React.FC = () => {
             },
           },
           tabBarIcon: ({ focused }) => {
-            const Icon = () => {
-              return (
-                <Flex pt={1}>
-                  <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
-                </Flex>
-              )
-            }
-
-            const WrappedProfileIcon = () => {
-              return (
-                <ProgressiveOnboardingPriceRangeHome>
-                  <Icon />
-                </ProgressiveOnboardingPriceRangeHome>
-              )
-            }
-
-            const WrappedFavoritesIcon = () => {
-              return (
-                <ProgressiveOnboardingFavoritesTab>
-                  <Icon />
-                </ProgressiveOnboardingFavoritesTab>
-              )
-            }
+            // Rendered as elements, not as components declared in here: a component
+            // defined inside this callback gets a new identity on every tab bar render,
+            // which remounts the popovers below and can leave one stuck mid-open.
+            const icon = (
+              <Flex pt={1}>
+                <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
+              </Flex>
+            )
 
             if (route.name === "profile") {
-              return <WrappedProfileIcon />
+              return (
+                <ProgressiveOnboardingPriceRangeHome>{icon}</ProgressiveOnboardingPriceRangeHome>
+              )
             }
 
             if (route.name === "favorites") {
-              return <WrappedFavoritesIcon />
+              return <ProgressiveOnboardingFavoritesTab>{icon}</ProgressiveOnboardingFavoritesTab>
             }
 
-            return <Icon />
+            return icon
           },
           tabBarButton: (props) => (
             <PlatformPressable
