@@ -1,12 +1,13 @@
 import { useIsFocused } from "@react-navigation/native"
 import { useOnSaveArtwork } from "app/Components/ProgressiveOnboarding/useOnSaveArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
+import { PROGRESSIVE_ONBOARDING_SAVE_ARTWORK } from "app/store/ProgressiveOnboardingModel"
 import { useEffect } from "react"
 
 // Dismiss "save-artwork" onboarding alert if an artwork was saved before
 export const useDismissSavedArtwork = (saved?: boolean | null) => {
   const { setProfileTabSavedArtwork } = useOnSaveArtwork()
-  const { dismiss, setActivePopover, setIsReady } = GlobalStore.actions.progressiveOnboarding
+  const { dismiss, releaseActivePopover, setIsReady } = GlobalStore.actions.progressiveOnboarding
   const {
     isDismissed,
     sessionState: { isReady },
@@ -22,8 +23,9 @@ export const useDismissSavedArtwork = (saved?: boolean | null) => {
 
     // If an Artwork was saved before and wasn't dismissed, dismiss and enable bottom tab notification
     if (saved && !dismissed) {
-      dismiss("save-artwork")
-      setActivePopover(undefined)
+      dismiss(PROGRESSIVE_ONBOARDING_SAVE_ARTWORK)
+      // Owner-aware: no-ops unless save-artwork actually holds the lock.
+      releaseActivePopover(PROGRESSIVE_ONBOARDING_SAVE_ARTWORK)
       setIsReady(true)
       setProfileTabSavedArtwork()
     }

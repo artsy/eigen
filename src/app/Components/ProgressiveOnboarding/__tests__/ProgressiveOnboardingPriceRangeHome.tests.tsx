@@ -29,6 +29,9 @@ jest.mock("app/Navigation/Navigation", () => ({
       getCurrentRoute: () => ({
         name: "Home",
       }),
+      // useCurrentRouteName subscribes to route changes rather than reading the ref
+      // during render, so the mock has to look like a real navigation container.
+      addListener: () => jest.fn(),
     },
   },
 }))
