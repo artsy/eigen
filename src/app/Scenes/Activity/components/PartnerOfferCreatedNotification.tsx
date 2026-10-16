@@ -87,9 +87,13 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
 
               <Spacer y={0.5} />
 
-              {!!subtitle && <Text variant="sm-display">{subtitle}</Text>}
+              {!!subtitle && (
+                <>
+                  <Text variant="sm-display">{subtitle}</Text>
 
-              <Spacer y={0.5} />
+                  <Spacer y={0.5} />
+                </>
+              )}
 
               {/* @ts-ignore: fix ExpiresInTimer fragment data */}
               {shouldDisplayExpiresInTimer(notificationType, item) && (
