@@ -2,158 +2,201 @@
 
 Occasionally a bug is found in a live release that requires a quick mitigation. For these cases we can deploy a build outside our normal release cadence with _only_ the critical bug fix added.
 
-There are 2 methods of deploying hot fixes depending on the issue:
+There are 2 methods of deploying hotfixes depending on the issue:
 
-1. **Expo Updates (js) Releases**: If the issue only affects javascript code we can deploy a hotfix with Expo updates and users will get the update automatically on the next run of the app. This is the faster path — use it whenever the fix is JS-only.
+1. **Expo Updates (JS) hotfix**: if the fix is JS-only, we publish it over the air and users get it on the next run of the app. This is the faster path — use it whenever the fix is JS-only.
+2. **Native hotfix**: if the fix touches native code we must ship a new build through app review. Users still have to update, so this is a mitigation rather than an immediate fix. An expedited App Store review can be requested, sparingly and with no guarantee. Google Play has no expedited review, but is typically faster anyway.
 
-> [!IMPORTANT]
->
-> **Expo Updates is available for production hotfixes, but if you need to do one please let the #product-sapphire team know first before using it.**
-
-2. **Native Releases**: If the issue affects native code we must deploy new build and send through the app review process as normal. Note this build will still need to go through the review process and user's will need to update so this is only a mitigation not an immediate fix. If a faster release is necessary you can request an expedited review for the app store but this should be done sparingly and is not guaranteed to be approved. Google Play does not offer expedited reviews but their review process is typically faster.
-
-## Get the release files and environment variables
-
-Run:
-
-```
-yarn setup:releases
-```
-
-## Check out the tag corresponding with the last release of Eigen
-
-All our live release versions should have a corresponding tag in git that will end in `-submission`.
-
-You can find the latest release tags using the script:
-
-`./scripts/deploys/latest-submissions`
-
-This will output the latest submission tags:
-
-```
-Latest iOS submission: ios-8.34.0-2024.03.07.11-submission
-Latest Android submission: android-8.34.0-1674645623-submission
-```
-
-If it was a typical release they should be equivalent code and you should be safe to choose one, but if you have doubts you can confirm in the compare view in github.
-
-For our example let's say our last released build is `7.2.0 (2022.2.3.14)`
-We will want to checkout the tag `ios-7.2.0-2022.02.03.14-submission`:
-
-`git checkout ios-7.2.0-2022.02.03.14-submission`
-
-## Create a branch for the hotfix
-
-`git branch 7.2.0-hotfix`
-
-`git checkout 7.2.0-hotfix`
-
-## Apply the fix(es) using the script
-
-Get the commit hash for the bug fix you want to release in the hotfix. If it was merged into main you want the hash of the merge commit.
-You can find it in the github ui or by checking out main after the merge and running `git log --oneline`.
-
-Run the script `./scripts/deploys/expo-updates/apply-fix <commit-hash>`
-Passing the commit hash of the fix, if there are multiple you can run multiple times.
-
-If you see output like: `Warning: native code changed you cannot use expo updates for this hotfix, please follow the native beta deployment steps.`
-The changes affected native code and cannot be deployed through codepush, please follow the `Native release hotfix process` section of this document.
-Otherwise follow the steps in `Expo updates release hotfix process`.
+A production Expo Update reaches users **without store review**, so it gets the same guarantees as a
+store release: the code is on a hotfix branch, that branch has a hotfix PR, a canary of the exact
+same commit was QA'd first, and the publish leaves a GitHub release and a Slack message behind it.
+CI enforces this and **there is no override** — see [the production gate](#the-production-gate).
 
 > [!IMPORTANT]
-> Expo Updates is not yet available for hotfixes, please follow the `Native release hotfix process`
+> Let the #product-sapphire team know before publishing a production hotfix.
 
-<details>
-  <summary>Expo updates release hotfix process</summary>
+---
 
-## Check if there is already a hot fix targeting this app version
+# Expo Updates hotfix
 
-Ask #practice-mobile if anything has been deployed as a hot fix previously targeting this app version. If so you will want to pull the commits in from this hot fix to your branch to make sure all fixes are present.
+## 0. Prerequisites
 
-## Install dependencies
-
-Since the branch you are on is older than main it is likely some node deps are out of date locally. You will need to update your local deps otherwise the
-deployment to expo updates will fail.
-
-`yarn setup:artsy`
-
-`yarn install:all`
-
-You will also need the release vars and bin deps:
-
-```
+```sh
 yarn setup:releases
 ./scripts/setup/install-bin
 ```
 
-> ⚠️ **IMPORTANT:** If the install results in changes to Podfile.lock you must do a Native Release Hotfix. Please refer to that section of the docs.
+You also need the [GitHub CLI](https://cli.github.com/) (`gh auth login`).
 
-## Deploy your change to expo updates canary channel
+The hotfix branch is older than `main`, so your local dependencies are probably out of date — the
+publish will fail otherwise:
 
-Let `#practice-mobile` know you will be deploying a hotfix and to hold off deploying to expo updates or betas.
+```sh
+yarn setup:artsy
+yarn install:all
+```
 
-Since the canary channel checks for `main`'s native code fingerprint, we would need to pass `--check-against-version` to check the shipped version's fingerprint. `deploy-to-expo-updates-ci` defaults this to `true` automatically on any branch ending in `-hotfix`, so you can normally leave it off.
+> ⚠️ If this changes `Podfile.lock`, the fix needs a **native hotfix**, not an Expo Update.
 
-Run the script to deploy the hotfix to the canary channel:
+## 1. Land the fix on `main`
 
-`./scripts/deploys/expo-updates/deploy-to-expo-updates-ci 'canary' 'hotfix description'`
+Hotfixes are cherry-picked from `main`, so the fix must be reviewed and merged there first. The
+hotfix PR itself needs no approval — the fix's own PR is the review.
 
-By default this deploys to both platforms. Pass `--platform ios` or `--platform android` to target just one, e.g. if the fix is platform-specific:
+Note the commit's SHA on `main` (the merge/squash commit).
 
-`./scripts/deploys/expo-updates/deploy-to-expo-updates-ci 'canary' 'hotfix description' --platform ios`
+## 2. Start the hotfix
 
-This runs the same fingerprint check against your local checkout first, catching a native-code mismatch before anything is dispatched, then dispatches the publish to GitHub Actions and prints the run's URL. The command returns as soon as the dispatch is accepted, not when the publish finishes, so wait for that run to succeed (watch the URL or the Actions tab) before moving on.
+Find the live app version (`./scripts/deploys/latest-submissions`), then:
 
-If your hotfix branch predates the CI publish workflow, the command tells you so and prints the equivalent `deploy-to-expo-updates` command to run locally instead. See [Publishing from an older branch (fallback)](deploy_to_expo_updates.md#publishing-from-an-older-branch-fallback) for what that needs.
+```sh
+./scripts/deploys/expo-updates/start-hotfix 9.21.0 <sha> [<sha>...]
+```
 
-## Test your update in the firebase equivalent of the production app
+This:
 
-Find and download the equivalent build in firebase app tester to the production app, it should have the same build number as the latest submissions found in step 1.
+- creates `hotfix-v9.21.0` from `rc-v9.21.0`, or **adds to it** if it already exists
+- cherry-picks each SHA (stopping hard if the fix turns out to touch native code)
+- pushes the branch and opens — or extends — the **hotfix PR**
 
-Enable the dev menu and download the expo-updates bundle from the canary channel.
-Test that the fix is working as intended and do some basic QA to make sure the app is functioning correctly.
+Several fixes can go out together. Pass them in one go, oldest first, or run `start-hotfix` again
+whenever the next fix lands — the result is the same branch either way. The only difference is that
+each run pushes, and each push publishes its own canary, so QA the newest one.
 
-## Deploy the update to production
+### One branch per app version
 
-If QA goes well run the script to promote the bundle to production.
-Make sure to monitor the app as it rolls out to users.
+There is one `hotfix-vX.Y.Z` branch per released version, and every OTA hotfix for that version
+goes on it. An Expo Update ships the **whole JS bundle**, so the second hotfix has to contain the
+first. Adding to the same branch guarantees that; cutting a fresh branch from `rc-v` would silently
+revert the earlier fix.
 
-> ⚠️ **IMPORTANT:** This will deploy the commit currently pushed on your branch to production. Make sure you are on the branch with the changes you want to deploy and _only_ the changes you want to deploy!
+The branch tip is always what's live. The hotfix PR is the record of that, which is why it is
+marked **"Do not merge"** and closed by hand rather than merged.
 
-`./scripts/deploys/expo-updates/deploy-to-expo-updates-ci production 'hotfix description'`
+To drop an earlier hotfix on purpose:
 
-If you don't pass a rollout percentage it defaults to 50%. The script warns you and asks you to confirm before dispatching. If it is critical to get the fix out fast you can pass `100` explicitly; otherwise, leave it at 50% and monitor before updating to 100% (see "Update rollout" below):
+```sh
+./scripts/deploys/expo-updates/start-hotfix 9.21.0 --revert <sha>
+```
 
-`./scripts/deploys/expo-updates/deploy-to-expo-updates-ci production 'hotfix description' 100`
+> [!IMPORTANT]
+> If you roll an update back with `rollback`, the branch tip still contains the rolled-back code
+> and the gate can't tell. Run `start-hotfix --revert <sha>` before the next production publish, or
+> the next hotfix will ship it again.
 
-The command returns as soon as the run is dispatched, not when the publish finishes. A production Expo Update reaches users with no other review step, so the Slack message posted on both success and failure is how you find out it actually landed. Don't consider the hotfix shipped until you see that message.
+## 3. The canary publishes itself
+
+Every push to a `hotfix-v*` branch publishes a canary of that commit automatically — no command to
+run. `start-hotfix` prints the link to the run; it takes roughly 10–20 minutes.
+
+This isn't just convenience. The production gate requires a canary of the **exact commit** you're
+about to publish, so if you push another commit to the hotfix branch, the canary you QA'd no longer
+matches and you have to QA the new one. Publishing a canary per commit is what keeps that honest.
+
+If a newer commit is pushed while a canary is still running, the older run is cancelled — it was
+about to publish a bundle nobody will ship.
+
+The canary channel normally compares native code against `main`'s fingerprint. On a hotfix branch
+it compares against the fingerprint of the build that actually shipped for this version instead,
+which is the one your users are running.
+
+You can still publish a canary by hand — for a second opinion after an EAS hiccup, say:
+
+```sh
+./scripts/deploys/expo-updates/deploy-to-expo-updates-ci canary 'hotfix description'
+```
+
+## 4. QA on the shipped build
+
+> [!IMPORTANT]
+> QA has to happen on a **Firebase App Tester** build, on both iOS and Android. TestFlight builds
+> can't load a canary — only the Firebase distribution has the dev menu you need to switch
+> channels.
+
+Download the Firebase build matching the live version — the same build number as the submission
+tag. Enable the dev menu, pull the bundle from the **canary** channel, relaunch, and check both the
+fix and that the app is generally healthy. An Expo Update replaces the whole JS bundle, not just
+your diff.
+
+> One app version can have several native builds with different fingerprints, so QA the build that
+> matches what shipped, not a later beta of the same version.
+
+## 5. Publish to production
+
+```sh
+./scripts/deploys/expo-updates/deploy-to-expo-updates-ci production 'hotfix description'
+```
+
+Goes out to **all users** unless you ask for less. Pass a percentage to ship to a slice first and
+watch it before widening:
+
+```sh
+./scripts/deploys/expo-updates/deploy-to-expo-updates-ci production 'hotfix description' 25
+```
+
+The script asks you to confirm, naming the commit and who it's going to.
+
+The run posts to Slack on success and failure. Don't consider the hotfix shipped until you see it.
+
+Every production publish leaves:
+
+- a **GitHub release** — `v9.21.0 hotfix 1 (OTA)`, with Sentry and Mobile Vitals links and the
+  changelog from the hotfix PR
+- a **Slack message** carrying the same monitoring links a store release gets: the release, the
+  run, and each platform's Sentry health and Mobile Vitals
+- a **comment on the hotfix PR** saying it shipped, who it went to, and where to watch it
+- a **section in the hotfix PR**, written by `start-hotfix`
+
+### The production gate
+
+Before anything is published, CI checks that:
+
+1. the publish covers **both platforms**
+2. the branch is `hotfix-v<app.json version>` and the commit is its **tip**
+3. a hotfix PR from that branch into `rc-v<version>` exists and was **never merged**
+4. the commit descends from the store submission **and** from every OTA hotfix already published
+   for this version
+5. a **successful canary of the same commit**, covering both platforms, exists
+
+If any of these fail, the publish stops before `eas update` runs. There is no override: if GitHub
+Actions or EAS is down, the fallbacks are a rollback (not gated) or a native hotfix.
+
+The gate lives in `scripts/deploys/expo-updates/productionGate/`.
 
 ### Update rollout
 
-If all looks good with the fix you can update the rollout to all users:
+```sh
+./scripts/deploys/expo-updates/update-rollout
+```
 
-`./scripts/deploys/expo-updates/update-rollout`
-
-This will start an interactive dialog where you can choose the release you want to update the rollout for.
+Interactive; pick the release and raise its rollout.
 
 ### Rolling back
 
-If the fix turns out to be bad, roll it back:
+```sh
+./scripts/deploys/expo-updates/rollback
+```
 
-`./scripts/deploys/expo-updates/rollback`
+Prompts you to choose an earlier published update or the build's embedded update, then republishes
+your choice as the channel's latest. Afterwards, see the `--revert` note in step 2.
 
-The script doesn't pick a rollback target for you. It prompts you to choose an earlier
-published update or the build's embedded update, then republishes your choice as the
-channel's latest update.
-
-> Both of these run locally. You'll need to be logged in to the `artsy_mobile` account:
+> Both run locally against the `artsy_mobile` account:
 > `./bin/node_modules/.bin/eas login --no-browser` (credentials in 1Password; `--no-browser` keeps
 > the username/password prompt instead of trusting whatever account your browser is signed into).
 
-</details>
+## Versions released before this process existed
 
-<details>
-  <summary>Native release hotfix process</summary>
+Versions released before October 2026 have no `rc-v` branch workflow support for this flow, and
+their branches predate the CI publish workflow. They are assumed healthy; if one ever needs a
+hotfix, publish it locally as before with
+[`deploy-to-expo-updates`](deploy_to_expo_updates.md#publishing-from-an-older-branch-fallback).
+`deploy-to-expo-updates-ci` detects this and prints the exact local command to run.
+
+---
+
+# Native hotfix
+
+Native hotfix branches keep the older `X.Y.Z-hotfix` naming and are not published over the air.
 
 ## Update the version number of the app to match next release
 
@@ -181,7 +224,7 @@ Follow the instructions for [deploying to app store](https://github.com/artsy/ei
 
 Make sure to QA the bug fix changes and run through the QA script before releasing to users.
 
-</details>
+---
 
 ## Gotchas and FAQS
 

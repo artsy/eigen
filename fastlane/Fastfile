@@ -664,7 +664,15 @@ lane :deploy_to_expo_updates do |options|
     ENV['SENTRY_RELEASE'] = release_name
     puts "🔧 Uploading sourcemaps to Sentry with release: #{release_name}"
     sh("cd .. && npx sentry-expo-upload-sourcemaps dist/_expo/static/js/#{p}")
-    tag_and_push(tag: release_name) unless preview
+    next if preview
+
+    tag_and_push(tag: release_name)
+
+    # The tag name embeds the publish hour (see set_expo_release_values), so CI can't
+    # recompute it safely afterwards. Hand it back to the workflow instead, which uses
+    # it for the GitHub release and the Sentry release links.
+    github_output = ENV['GITHUB_OUTPUT']
+    File.write(github_output, "#{p}_expo_tag=#{release_name}\n", mode: 'a') if github_output
   end
 
   puts "🚀 Deploying to #{deployment_name} with description '#{description}' for platform #{platform}"

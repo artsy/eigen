@@ -123,8 +123,9 @@ if ! git cat-file -e "origin/$branch:.github/workflows/$WORKFLOW_FILE" 2>/dev/nu
   exit 1
 fi
 
-# Compare fingerprint against version on hotfix branches
-if [ "$check_against_version_explicit" = false ] && [[ "$branch" == *-hotfix ]]; then
+# Compare fingerprint against the version's shipped build on hotfix branches
+# ('hotfix-vX.Y.Z' for OTA hotfixes, the older 'X.Y.Z-hotfix' for native ones)
+if [ "$check_against_version_explicit" = false ] && { [[ "$branch" == hotfix-v* ]] || [[ "$branch" == *-hotfix ]]; }; then
   check_against_version=true
   echo "Branch '$branch' looks like a hotfix branch — defaulting to --check-against-version."
 fi
@@ -142,13 +143,23 @@ if [ -z "$description" ]; then
   description="Commit: $commit_hash, Description: $commit_description"
 fi
 
-if [ "$deployment" = "production" ] && [ -z "$rollout" ]; then
-  rollout=50
-  echo "No rollout percentage given for production — defaulting to 50%."
+# The production gate rejects these in CI; fail here so you don't wait for a run to find out.
+if [ "$deployment" = "production" ] && [ "$platform" != "all" ]; then
+  echo "❌ Production updates always cover both platforms, but --platform is '$platform'." >&2
+  echo "   Publish both, or ship a platform-specific fix behind a check in the JS." >&2
+  exit 1
 fi
 
+# A rollout percentage is opt-in: pass one to ship to a slice of users first, leave it off to go
+# out to everyone.
 if [ "$deployment" = "production" ]; then
-  echo -e "\033[0;33mWarning: You are about to deploy to production with a rollout of ${rollout}%.\033[0m"
+  if [ -n "$rollout" ]; then
+    rollout_description="${rollout}% of users"
+  else
+    rollout_description="all users"
+  fi
+
+  echo -e "\033[0;33mWarning: You are about to deploy to production, to ${rollout_description}.\033[0m"
   echo -e "\033[0;33mThis will publish commit ${sha:0:8} on '$branch' to production users.\033[0m"
   read -r -p "Are you sure you want to continue? (y/N): " confirm
   if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
