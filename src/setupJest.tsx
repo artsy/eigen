@@ -472,6 +472,12 @@ jest.mock("app/utils/hooks/useDebouncedValue", () => ({
   useDebouncedValue: ({ value }: any) => ({ debouncedValue: value }),
 }))
 
+// Same intent as the useDebouncedValue mock above: tests assert the gating logic, not
+// the wall-clock delay. Tests that specifically exercise the delay unmock this.
+jest.mock("app/Components/ProgressiveOnboarding/useShowDelay", () => ({
+  useShowDelay: (predicate: () => boolean) => predicate(),
+}))
+
 jest.mock("@notifee/react-native", () => ({
   displayNotification: jest.fn(),
   getNotificationSettings: jest.fn(),
