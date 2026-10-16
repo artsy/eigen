@@ -14,6 +14,7 @@ import { setTag } from "@sentry/react-native"
 export const SENTRY_TAGS = {
   route: "route",
   bottomSheet: "bottom_sheet",
+  activePopover: "active_popover",
 } as const
 
 /**
@@ -30,4 +31,8 @@ export const setSentryRouteTag = (routeName: string | undefined) => {
 
 export const setSentryBottomSheetTag = (name: string) => {
   setTag(SENTRY_TAGS.bottomSheet, name)
+}
+
+export const setSentryActivePopoverTag = (name: string) => {
+  setTag(SENTRY_TAGS.activePopover, name)
 }
