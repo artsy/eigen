@@ -4,10 +4,12 @@ import { SaleInfoQueryRendererQuery } from "__generated__/SaleInfoQueryRendererQ
 import { SaleInfo_me$data } from "__generated__/SaleInfo_me.graphql"
 import { SaleInfo_sale$data } from "__generated__/SaleInfo_sale.graphql"
 import { Markdown } from "app/Components/Markdown"
+import { MarkdownText } from "app/Components/MarkdownText/MarkdownText"
 import { MenuItem } from "app/Components/MenuItem"
 import { RegisterToBidButtonContainer } from "app/Scenes/Sale/Components/RegisterToBidButton"
 import { saleStatus } from "app/Scenes/Sale/helpers"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderText, PlaceholderBox } from "app/utils/placeholders"
 import { defaultRules } from "app/utils/renderMarkdown"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -57,6 +59,7 @@ const markdownRules = defaultRules({ useNewTextStyles: true })
 
 export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
   const space = useSpace()
+  const enableEnrichedMarkdown = useFeatureFlag("AREnableEnrichedMarkdown")
 
   const panResponder = useRef<any>(null)
   useEffect(() => {
@@ -111,7 +114,9 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
                 />
               </Flex>
             )}
-            {Platform.OS === "ios" ? (
+            {enableEnrichedMarkdown ? (
+              <MarkdownText markdown={sale.description ?? ""} />
+            ) : Platform.OS === "ios" ? (
               <View {...(panResponder.current?.panHandlers || {})}>
                 <Markdown rules={markdownRules}>{sale.description ?? ""}</Markdown>
               </View>
