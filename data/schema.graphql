@@ -14315,6 +14315,11 @@ type Conversation implements Node {
   ): CommerceOrderConnectionWithTotalCount
 
   """
+  Whether the partner can send a personalized offer from this conversation. Null when it can't be determined; treat that as not eligible.
+  """
+  partnerOfferEligibility: PartnerOfferEligibility
+
+  """
   Partner offers for this conversation's artwork, scoped to the user who initiated the conversation (from_id).
   """
   partnerOffersConnection(
@@ -31858,6 +31863,80 @@ type PartnerOfferEdge {
   The item at the end of the edge
   """
   node: PartnerOffer
+}
+
+"""
+Whether a partner can send a personalized offer from a conversation.
+"""
+type PartnerOfferEligibility {
+  details: PartnerOfferEligibilityDetails
+  status: PartnerOfferEligibilityStatus
+}
+
+type PartnerOfferEligibilityDetails {
+  """
+  The active personalized offer. Set when already offered.
+  """
+  partnerOfferID: String
+
+  """
+  Why the partner can't send an offer. Set when ineligible.
+  """
+  reason: PartnerOfferIneligibleReason
+}
+
+enum PartnerOfferEligibilityStatus {
+  """
+  The collector already has an active personalized offer for this artwork.
+  """
+  ALREADY_OFFERED
+
+  """
+  The partner can send a personalized offer.
+  """
+  ELIGIBLE
+
+  """
+  The partner can't send an offer; see `details.reason`.
+  """
+  INELIGIBLE
+}
+
+enum PartnerOfferIneligibleReason {
+  """
+  The artwork has an active bulk offer.
+  """
+  ACTIVE_BULK_OFFER
+
+  """
+  The conversation's artwork can't receive partner offers.
+  """
+  ARTWORK_NOT_OFFERABLE
+
+  """
+  The conversation has no collector user.
+  """
+  COLLECTOR_NOT_FOUND
+
+  """
+  A personalized offer for this collector and artwork already expired.
+  """
+  EXPIRED_PERSONALIZED_OFFER
+
+  """
+  The conversation is older than the offer window.
+  """
+  OFFER_WINDOW_CLOSED
+
+  """
+  The collector already has an order with the partner on this artwork.
+  """
+  PARTNER_VISIBLE_ORDER
+
+  """
+  Eligibility couldn't be determined (a dependent service was unreachable).
+  """
+  UNAVAILABLE
 }
 
 enum PartnerOfferSorts {
