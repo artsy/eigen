@@ -13,8 +13,7 @@ export const useOnSaveArtwork = () => {
   const setProfileTabSavedArtwork = useCallback(() => {
     if (!isDismissed("save-artwork").status) {
       dismiss(PROGRESSIVE_ONBOARDING_SAVE_ARTWORK)
-      // Owner-aware: no-ops unless the save-artwork popover is the one holding the lock.
-      // It used to clear the lock blindly, stealing it from whoever did hold it.
+      // Release by key, so this no-ops unless save-artwork is the current holder.
       releaseActivePopover(PROGRESSIVE_ONBOARDING_SAVE_ARTWORK)
       setIsReady(true)
     }

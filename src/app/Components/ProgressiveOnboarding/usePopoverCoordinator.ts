@@ -18,24 +18,19 @@ export const POPOVER_RELEASE_GRACE_MS = 1500
 
 interface UsePopoverCoordinatorArgs {
   id: ProgressiveOnboardingKey
-  /** Everything the caller knows about whether this popover wants to be shown. */
+  /** The caller's own condition, already combined with "not yet dismissed". */
   isDisplayable: boolean
-  /** Delay before showing, to let layout settle. Hiding is never delayed. */
+  /** Delay before showing. Hiding is never delayed. */
   delay?: number
 }
 
 /**
  * Owns the "one popover at a time" lock for a single popover, and recovers from the two
- * ways the underlying library leaves one stuck.
+ * ways the underlying library leaves one stuck: a bubble that never finishes measuring,
+ * and a second popover the library silently refuses to open. Neither fires any callback,
+ * and the only recovery for either is to unmount — which is what `remountKey` is for.
  *
- * Background: palette's `Popover` renders `react-native-popover-view` in its default
- * `RN_MODAL` mode, so every popover is a transparent full-screen native `<Modal>`. If
- * `isVisible` goes false before the bubble has measured and opened, the library only
- * sets `animateOutAfterShow` — if it never opens, the Modal stays mounted and swallows
- * every touch in the app. The library also refuses to open a second popover while one is
- * showing, but only `console.warn`s about it, so a refused popover never fires its
- * open/close callbacks either. In both cases the only recovery is to unmount it, which is
- * what `remountKey` is for.
+ * See `docs/popovers.md` for why a popover is a full-screen native `<Modal>` at all.
  */
 export const usePopoverCoordinator = ({
   id,
@@ -120,7 +115,6 @@ export const usePopoverCoordinator = ({
     [id, release]
   )
 
-  // Watchdog: told to show, never reported open.
   useEffect(() => {
     if (!isVisible) {
       return
