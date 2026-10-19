@@ -11,6 +11,9 @@ import { useSentryBottomSheetTag } from "app/system/errorReporting/useSentryBott
 import { FC, useCallback, useEffect, useRef, useState } from "react"
 import { BackHandler } from "react-native"
 
+let anonymousOverlayCount = 0
+const nextAnonymousOverlayId = () => `anonymous-${++anonymousOverlayCount}`
+
 export interface AutomountedBottomSheetModalProps extends BottomSheetModalProps {
   visible: boolean
   closeOnBackdropClick?: boolean
@@ -37,8 +40,10 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
   useSentryBottomSheetTag(overlayName, visible)
 
   // Onboarding popovers are full-screen native Modals; without this they would happily
-  // present on top of an open sheet.
-  usePresentedOverlay(overlayName ?? "bottom-sheet", visible)
+  // present on top of an open sheet. The id must be unique per instance, not per name:
+  // most sheets pass no name, and a shared id means closing one deregisters the others.
+  const overlayId = useRef(`BottomSheet-${overlayName ?? nextAnonymousOverlayId()}`).current
+  usePresentedOverlay(overlayId, visible)
 
   // dismiss modal on back button press on Android
   const androidBackHandler = useCallback(() => {
