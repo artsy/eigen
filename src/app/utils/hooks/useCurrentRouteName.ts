@@ -1,33 +1,9 @@
-import { internal_navigationRef } from "app/Navigation/Navigation"
-import { useEffect, useState } from "react"
+import { useCurrentRoute } from "app/utils/hooks/useCurrentRoute"
 
 /**
  * The name of the route currently on top, kept up to date as navigation happens.
  *
- * Reading `internal_navigationRef.current?.getCurrentRoute()` during render looks
- * equivalent but is not: the ref is mutable, so React never re-renders when the route
- * changes and the value silently goes stale. Anything that gates on "am I still on the
- * screen I was mounted for" needs this instead.
+ * Use `useCurrentRoute` instead when you need to tell two instances of the same route
+ * apart — the name is shared by every artist screen, every artwork screen, and so on.
  */
-export const useCurrentRouteName = () => {
-  const [routeName, setRouteName] = useState<string | undefined>(
-    () => internal_navigationRef.current?.getCurrentRoute()?.name
-  )
-
-  useEffect(() => {
-    const navigation = internal_navigationRef.current
-
-    if (!navigation) {
-      return
-    }
-
-    // Sync once on mount: the ref can be populated after our initial render.
-    setRouteName(navigation.getCurrentRoute()?.name)
-
-    return navigation.addListener("state", () => {
-      setRouteName(navigation.getCurrentRoute()?.name)
-    })
-  }, [])
-
-  return routeName
-}
+export const useCurrentRouteName = () => useCurrentRoute().name

@@ -59,8 +59,13 @@ Surfaces supply the condition and the copy. The component owns everything else:
   the timer started, which is how popovers surfaced on the wrong screen. Hiding is never
   delayed.
 - **Route identity.** The route is captured when the popover becomes displayable and
-  re-checked at show time. If it changed, the request is **dropped, not deferred** — the
-  moment has passed.
+  re-checked at show time, **by key rather than by name** — two artist screens stacked on
+  each other share a name, and our popover is a full-screen Modal that would render above
+  the new one quite happily. Once we leave that route the request is **dropped, not
+  deferred**: navigating back does not revive it, because by then the user is several
+  screens and possibly minutes past the moment it belonged to. It re-arms the next time
+  the popover stops being displayable and becomes so again, so a fresh visit to the screen
+  gets a fresh chance.
 - **Overlay awareness.** It will not present while anything is registered in the
   presentation context, and force-recovers if something is presented while it is open.
 - **Watchdogs.** If it is told to show and never reports itself open, the lock is

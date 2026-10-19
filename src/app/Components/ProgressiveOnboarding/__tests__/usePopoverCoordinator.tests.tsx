@@ -13,10 +13,13 @@ import {
   PROGRESSIVE_ONBOARDING_OFFER_SETTINGS,
   PROGRESSIVE_ONBOARDING_SAVE_ARTWORK,
 } from "app/store/ProgressiveOnboardingModel"
+import { CurrentRoute } from "app/utils/hooks/useCurrentRoute"
 import { act } from "react"
 
-jest.mock("app/utils/hooks/useCurrentRouteName", () => ({
-  useCurrentRouteName: () => "Home",
+let mockCurrentRoute: CurrentRoute = { name: "Home", key: "Home-1" }
+
+jest.mock("app/utils/hooks/useCurrentRoute", () => ({
+  useCurrentRoute: () => mockCurrentRoute,
 }))
 
 // The coordinator's own delay behaviour is covered in useShowDelay.tests; here we want
@@ -30,6 +33,7 @@ describe("usePopoverCoordinator", () => {
 
   beforeEach(() => {
     __resetPresentedOverlays__()
+    mockCurrentRoute = { name: "Home", key: "Home-1" }
   })
 
   it("shows and takes the lock when displayable", async () => {
@@ -154,5 +158,96 @@ describe("usePopoverCoordinator", () => {
     expect(lock()).toBeUndefined()
 
     jest.useRealTimers()
+  })
+  it("does not show after navigating to another instance of the same route", () => {
+    const { result, rerender } = renderHook<
+      ReturnType<typeof usePopoverCoordinator>,
+      { isDisplayable: boolean }
+    >(
+      ({ isDisplayable }) =>
+        usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable }),
+      { wrapper, initialProps: { isDisplayable: false } }
+    )
+
+    rerender({ isDisplayable: true })
+    expect(result.current.isVisible).toBe(true)
+
+    // Same route name, different instance — pushing an artist screen over an artist
+    // screen. A name comparison would see no change here.
+    mockCurrentRoute = { name: "Home", key: "Home-2" }
+    rerender({ isDisplayable: true })
+
+    expect(result.current.isVisible).toBe(false)
+  })
+
+  it("does not revive the request when navigating back to the anchor route", () => {
+    const { result, rerender } = renderHook<
+      ReturnType<typeof usePopoverCoordinator>,
+      { isDisplayable: boolean }
+    >(
+      ({ isDisplayable }) =>
+        usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable }),
+      { wrapper, initialProps: { isDisplayable: false } }
+    )
+
+    rerender({ isDisplayable: true })
+    expect(result.current.isVisible).toBe(true)
+
+    mockCurrentRoute = { name: "Artwork", key: "Artwork-1" }
+    rerender({ isDisplayable: true })
+    expect(result.current.isVisible).toBe(false)
+
+    mockCurrentRoute = { name: "Home", key: "Home-1" }
+    rerender({ isDisplayable: true })
+
+    // The moment has passed: the user is minutes and several screens past the thing
+    // that made this displayable.
+    expect(result.current.isVisible).toBe(false)
+  })
+
+  it("re-arms on a fresh visit once it stops being displayable", () => {
+    const { result, rerender } = renderHook<
+      ReturnType<typeof usePopoverCoordinator>,
+      { isDisplayable: boolean }
+    >(
+      ({ isDisplayable }) =>
+        usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable }),
+      { wrapper, initialProps: { isDisplayable: false } }
+    )
+
+    rerender({ isDisplayable: true })
+    mockCurrentRoute = { name: "Artwork", key: "Artwork-1" }
+    rerender({ isDisplayable: true })
+    expect(result.current.isVisible).toBe(false)
+
+    // A fresh visit to the screen: the anchor is re-captured while we are standing on
+    // it, which is why the reset has to happen on the new route rather than the old one.
+    mockCurrentRoute = { name: "Home", key: "Home-2" }
+    rerender({ isDisplayable: false })
+    rerender({ isDisplayable: true })
+
+    expect(result.current.isVisible).toBe(true)
+  })
+  it("still shows when the navigator resolves the route after the first render", () => {
+    // The ref can be empty on our first render; the real hook fills it in from a mount
+    // effect. Treating that as a navigation would sink any popover displayable at launch.
+    mockCurrentRoute = { name: undefined, key: undefined }
+
+    const { result, rerender } = renderHook<
+      ReturnType<typeof usePopoverCoordinator>,
+      { isDisplayable: boolean }
+    >(
+      ({ isDisplayable }) =>
+        usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable }),
+      {
+        wrapper,
+        initialProps: { isDisplayable: true },
+      }
+    )
+
+    mockCurrentRoute = { name: "Home", key: "Home-1" }
+    rerender({ isDisplayable: true })
+
+    expect(result.current.isVisible).toBe(true)
   })
 })
