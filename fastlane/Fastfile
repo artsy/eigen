@@ -87,9 +87,14 @@ lane :ship_beta_ios do |options|
   # Add badge if firebase deployment
   if deployment_target == 'firebase'
     puts "Adding badge for firebase deployment..."
-    # The spaces at the beginning and end are important to avoid the badge being cut off
-    add_badge(shield: " #{bundle_version}-#{FIREBASE_BADGE_TEXT_COLOR} ", custom: FIREBASE_BADGE_IMAGE_PATH)
-    UI.success("✅ Badge added for firebase deployment")
+    begin
+      # The spaces at the beginning and end are important to avoid the badge being cut off
+      add_badge(shield: " #{bundle_version}-#{FIREBASE_BADGE_TEXT_COLOR} ", custom: FIREBASE_BADGE_IMAGE_PATH)
+      UI.success("✅ Badge added for firebase deployment")
+    rescue StandardError => e
+      # The badge is cosmetic, don't fail the whole build over it
+      UI.error("⚠️ Badge failed, shipping unbadged: #{e.message}")
+    end
   end
 
   # Workaround for timeout in ci

@@ -44,7 +44,9 @@ jobs:
         uses: ./.github/actions/setup-bin-modules
 
       - name: Install imagemagick & librsvg for badge
-        run: brew install imagemagick librsvg
+        # brew update is required: the runner image pins a formula snapshot that can
+        # serve a known-broken imagemagick (7.1.2-33 breaks mogrify's format inference)
+        run: brew update && brew install imagemagick librsvg
 
       - name: Build and deploy iOS to Firebase
         run: bundle exec fastlane ship_beta_ios deployment_target:firebase
