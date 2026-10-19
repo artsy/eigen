@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Braze reads every `com_braze_*` / `com_appboy_*` entry in res/values/braze.xml by NAME via
+  Resources.getIdentifier() (BrazeConfigurationProvider), so nothing statically references them
+  and the resource shrinker considers them unreachable. Without this, release builds ship with
+  no API key and no FCM sender id, and push notifications silently never register.
+
+  Braze added its own res/raw/braze_sdk_keep.xml in a later SDK; @braze/react-native-sdk 16.1.0
+  pins com.braze:android-sdk-ui:37.0.0, which predates it. Drop this file once that wrapper
+  moves to an SDK that ships the keep rules itself.
+
+  @mipmap/ic_notification is listed explicitly because it is only reached through the
+  com_braze_push_*_notification_icon drawable aliases.
+
+  NOTE: this file must NOT be named keep.xml. The React Native Gradle plugin generates its own
+  res/raw/keep.xml for bundled JS image assets, and generated res wins over src/main/res during
+  resource merging — a same-named file here is overwritten wholesale, not merged. Differently
+  named keep files are all honoured (see firebase_common_keep.xml, keep_cronet_api.xml).
+-->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="
+        @string/com_braze_*,
+        @string/com_appboy_*,
+        @integer/com_braze_*,
+        @integer/com_appboy_*,
+        @bool/com_braze_*,
+        @bool/com_appboy_*,
+        @color/com_braze_*,
+        @color/com_appboy_*,
+        @array/com_braze_*,
+        @array/com_appboy_*,
+        @drawable/com_braze_*,
+        @drawable/com_appboy_*,
+        @mipmap/ic_notification
+    " />
