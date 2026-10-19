@@ -10,7 +10,7 @@ import { StyleProp, ViewProps, ViewStyle } from "react-native"
 interface OnboardingPopoverProps {
   /** Doubles as the popover lock's owner id, so the lock is readable in Sentry. */
   id: ProgressiveOnboardingKey
-  /** Everything the surface knows about whether this should show. */
+  /** The surface's own condition: focus, in-view, feature flags, counts. */
   when: boolean
   /** A string gets the standard popover typography; pass a node for anything richer. */
   title: string | React.ReactElement
@@ -89,7 +89,6 @@ export const OnboardingPopover: React.FC<React.PropsWithChildren<OnboardingPopov
     }
   }
 
-  // The dark popover paints on a dark surface, the light one on a light surface.
   const titleColor = variant === "light" ? "mono100" : "mono0"
 
   const handleDismiss = () => {
@@ -97,8 +96,8 @@ export const OnboardingPopover: React.FC<React.PropsWithChildren<OnboardingPopov
       onDismiss()
       return
     }
-    // Dismissal no longer frees the lock; the coordinator gives it back once the popover
-    // has actually finished closing.
+    // Dismissing must not free the lock: the coordinator releases it once the popover
+    // has finished closing, so a sibling cannot mount a second Modal mid-animation.
     dismiss(id)
   }
 

@@ -24,7 +24,7 @@ export const useDismissSavedArtwork = (saved?: boolean | null) => {
     // If an Artwork was saved before and wasn't dismissed, dismiss and enable bottom tab notification
     if (saved && !dismissed) {
       dismiss(PROGRESSIVE_ONBOARDING_SAVE_ARTWORK)
-      // Owner-aware: no-ops unless save-artwork actually holds the lock.
+      // Release by key, so this no-ops unless save-artwork is the current holder.
       releaseActivePopover(PROGRESSIVE_ONBOARDING_SAVE_ARTWORK)
       setIsReady(true)
       setProfileTabSavedArtwork()

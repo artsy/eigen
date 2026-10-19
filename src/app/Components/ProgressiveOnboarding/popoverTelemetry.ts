@@ -6,14 +6,10 @@ const CATEGORY = "popover"
 /**
  * Observability for the popover lock.
  *
- * Why this is needed at all: a stuck popover is an invisible full-screen `<Modal>` that
- * swallows touches while the JS and main threads stay perfectly responsive. Nothing
- * crashes and nothing hangs, so Sentry's app-hang/ANR detection cannot see it — which is
- * why we have never had a number for how many users hit it. Any signal has to be
- * deliberate.
- *
- * The tag gives attribution on events that are already being sent; the breadcrumbs give
- * the lock's recent history inside whatever gets reported next.
+ * A stuck popover blocks touches without hanging either thread, so app-hang detection
+ * cannot see it and any signal has to be deliberate. The tag attributes events that are
+ * already being sent; the breadcrumbs carry the lock's recent history into whatever gets
+ * reported next. Neither is a count of affected users — see `docs/popovers.md`.
  */
 export const popoverTelemetry = {
   acquired: (id: string) => {
@@ -27,9 +23,8 @@ export const popoverTelemetry = {
   },
 
   /**
-   * The watchdog fired: the popover held the lock but never reported itself open, so we
-   * force-released it and remounted to unmount a potentially stuck Modal. This is the
-   * one event worth counting — it is the closest thing we have to "a user was affected".
+   * The popover held the lock but never reported itself open, so it was force-released
+   * and remounted to unmount a potentially stuck Modal.
    */
   watchdogFired: (id: string, reason: string) => {
     setSentryActivePopoverTag(SENTRY_TAG_NONE)

@@ -36,8 +36,9 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<React.PropsWithChildr
     })
   }, [])
 
-  // Reactive: the tab bar never unmounts, so reading the route during render left this
-  // eligible long after we had navigated away. With a 4s delay that mattered a lot.
+  // Must be reactive: the tab bar never unmounts, so a route read during render would
+  // not re-run and would keep this eligible after we navigate away — and with a 4s delay
+  // there is plenty of time to navigate away.
   const currentRoute = useCurrentRouteName()
 
   const handleDismiss = () => {

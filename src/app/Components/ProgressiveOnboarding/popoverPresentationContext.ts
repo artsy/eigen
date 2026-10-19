@@ -45,12 +45,7 @@ const getSnapshot = () => presented.size > 0
 export const useHasPresentedOverlay = () =>
   useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
 
-/**
- * Registers an overlay for as long as it is open, and on unmount.
- *
- * @param id Stable identifier; keep it aligned with the component name.
- * @param isOpen Whether the overlay is currently presented.
- */
+/** Registers an overlay for as long as it is open, and deregisters it on unmount. */
 export const usePresentedOverlay = (id: string, isOpen: boolean) => {
   useEffect(() => {
     if (!isOpen) {
@@ -61,7 +56,6 @@ export const usePresentedOverlay = (id: string, isOpen: boolean) => {
   }, [id, isOpen])
 }
 
-/** Test-only: drops all registrations. */
 export const __resetPresentedOverlays__ = () => {
   presented.clear()
   emit()

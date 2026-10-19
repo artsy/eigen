@@ -24,8 +24,8 @@ export const ProgressiveOnboardingFavoritesTab: React.FC<React.PropsWithChildren
 
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
 
-  // Reactive: the tab bar never unmounts, so a stale route read here kept the popover
-  // eligible on screens we had navigated to.
+  // Must be reactive: the tab bar never unmounts, so a route read during render would
+  // not re-run and would keep this eligible on whatever screen we navigate to.
   const currentRoute = useCurrentRouteName()
 
   const handleDismiss = () => {
