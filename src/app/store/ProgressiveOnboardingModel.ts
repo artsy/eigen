@@ -24,6 +24,7 @@ export interface ProgressiveOnboardingModel {
     // active at the same time. Claim it with `acquireActivePopover` and give it
     // back with `releaseActivePopover` — both check ownership inside the reducer,
     // so two popovers becoming displayable in the same commit cannot both win.
+    // Holds a per-instance owner (`<key>#<instance>`), not the bare key.
     activePopover?: string
     // Each Home tooltip must check this itself; setting it doesn't block anything on its own
     deferHomeTooltipsThisSession: boolean

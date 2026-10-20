@@ -16,6 +16,8 @@ export const POPOVER_OPEN_TIMEOUT_MS = 3000
 /** Grace period before a popover that stopped being displayable gives the lock back. */
 export const POPOVER_RELEASE_GRACE_MS = 1500
 
+let instanceCount = 0
+
 interface UsePopoverCoordinatorArgs {
   id: ProgressiveOnboardingKey
   /** The caller's own condition, already combined with "not yet dismissed". */
@@ -46,16 +48,22 @@ export const usePopoverCoordinator = ({
   const currentRoute = useCurrentRoute()
   const [remountKey, setRemountKey] = useState(0)
 
-  const isHolder = activePopover === id
+  // The lock is owned by this instance, not by the key: two mounted popovers can share a
+  // key (artist screen over artist screen), and the covered one's release must not pull
+  // the lock from under the one on top. The key stays in front for readability.
+  const [instance] = useState(() => ++instanceCount)
+  const owner = `${id}#${instance}`
+  const isHolder = activePopover === owner
 
-  // The id we actually acquired, which is what we must release. It can differ from `id`:
-  // the alert reminder switches keys the moment reminder 1 is dismissed, and releasing
-  // under the new key would leave the old one holding the lock for the whole session.
-  const heldIdRef = useRef<ProgressiveOnboardingKey | undefined>(undefined)
+  // What we actually acquired, which is what we must release. The key can change while we
+  // hold it: the alert reminder switches keys the moment reminder 1 is dismissed, and
+  // releasing under the new key would leave the old one holding the lock for the session.
+  const heldRef = useRef<{ owner: string; id: ProgressiveOnboardingKey } | undefined>(undefined)
   if (isHolder) {
-    heldIdRef.current = id
+    heldRef.current = { owner, id }
   }
-  const heldId = activePopover && activePopover === heldIdRef.current ? activePopover : undefined
+  const heldId =
+    activePopover && activePopover === heldRef.current?.owner ? heldRef.current.id : undefined
 
   // The route this popover was asked to show for. Compared by key, not name: pushing a
   // second screen of the same type (artist over artist) leaves the name identical, and
@@ -84,12 +92,12 @@ export const usePopoverCoordinator = ({
   const canShow = isDisplayable && !hasPresentedOverlay && !hasLeftAnchorRouteRef.current
 
   const release = useCallback(() => {
-    const idToRelease = heldIdRef.current
-    if (!idToRelease) {
+    const held = heldRef.current
+    if (!held) {
       return
     }
-    heldIdRef.current = undefined
-    releaseActivePopover(idToRelease)
+    heldRef.current = undefined
+    releaseActivePopover(held.owner)
   }, [releaseActivePopover])
 
   // Set by the watchdog so a popover that failed to open doesn't immediately re-acquire
@@ -108,8 +116,8 @@ export const usePopoverCoordinator = ({
     }
     // The reducer still checks ownership, so two popovers becoming showable in the same
     // commit cannot both win.
-    acquireActivePopover(id)
-  }, [acquireActivePopover, activePopover, canShow, id])
+    acquireActivePopover(owner)
+  }, [acquireActivePopover, activePopover, canShow, owner])
 
   // Pending from the moment we are told to show until the popover reports that it opened
   // or closed. Deliberately not cleared when `isVisible` goes false: hiding a bubble that
