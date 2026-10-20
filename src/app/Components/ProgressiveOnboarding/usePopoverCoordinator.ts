@@ -48,6 +48,15 @@ export const usePopoverCoordinator = ({
 
   const isHolder = activePopover === id
 
+  // The id we actually acquired, which is what we must release. It can differ from `id`:
+  // the alert reminder switches keys the moment reminder 1 is dismissed, and releasing
+  // under the new key would leave the old one holding the lock for the whole session.
+  const heldIdRef = useRef<ProgressiveOnboardingKey | undefined>(undefined)
+  if (isHolder) {
+    heldIdRef.current = id
+  }
+  const heldId = activePopover && activePopover === heldIdRef.current ? activePopover : undefined
+
   // The route this popover was asked to show for. Compared by key, not name: pushing a
   // second screen of the same type (artist over artist) leaves the name identical, and
   // our popover is a full-screen Modal that would render above the new screen quite
@@ -75,27 +84,42 @@ export const usePopoverCoordinator = ({
   const canShow = isDisplayable && !hasPresentedOverlay && !hasLeftAnchorRouteRef.current
 
   const release = useCallback(() => {
-    releaseActivePopover(id)
-  }, [id, releaseActivePopover])
-
-  useEffect(() => {
-    if (!canShow) {
+    const idToRelease = heldIdRef.current
+    if (!idToRelease) {
       return
     }
-    // Safe unconditionally: the reducer ignores this while someone else holds the lock,
-    // so two popovers becoming displayable in the same commit cannot both win.
+    heldIdRef.current = undefined
+    releaseActivePopover(idToRelease)
+  }, [releaseActivePopover])
+
+  // Set by the watchdog so a popover that failed to open doesn't immediately re-acquire
+  // the lock it was just stripped of. Cleared once it stops being showable, so a later,
+  // separate chance to show still gets taken.
+  const hasGivenUpRef = useRef(false)
+  if (!canShow) {
+    hasGivenUpRef.current = false
+  }
+
+  // Re-runs whenever the lock changes hands, so a popover that became showable while a
+  // sibling was still closing (the next step of a chain) takes the lock once it's free.
+  useEffect(() => {
+    if (!canShow || activePopover || hasGivenUpRef.current) {
+      return
+    }
+    // The reducer still checks ownership, so two popovers becoming showable in the same
+    // commit cannot both win.
     acquireActivePopover(id)
-  }, [acquireActivePopover, canShow, id])
+  }, [acquireActivePopover, activePopover, canShow, id])
 
   // Give the lock back once we no longer want it, after a grace period so a brief flicker
   // in `isDisplayable` doesn't hand the lock to a sibling mid-animation.
   useEffect(() => {
-    if (canShow || !isHolder) {
+    if (!heldId || (canShow && isHolder)) {
       return
     }
     const timeout = setTimeout(release, POPOVER_RELEASE_GRACE_MS)
     return () => clearTimeout(timeout)
-  }, [canShow, isHolder, release])
+  }, [canShow, heldId, isHolder, release])
 
   const isVisible = useShowDelay(() => canShow && isHolder, delay)
 
@@ -108,6 +132,7 @@ export const usePopoverCoordinator = ({
     (reason: string) => {
       popoverTelemetry.watchdogFired(id, reason)
       hasOpenedRef.current = false
+      hasGivenUpRef.current = true
       release()
       // Remounting is the only way to unmount a Modal the library has left showing.
       setRemountKey((key) => key + 1)
@@ -141,11 +166,9 @@ export const usePopoverCoordinator = ({
   // Release on unmount. Without this, a popover whose host disappears (tab switch,
   // navigation, scroll) holds the lock for the rest of the session and silently kills
   // every popover that comes after it.
-  const releaseRef = useRef(release)
-  releaseRef.current = release
   useEffect(() => {
-    return () => releaseRef.current()
-  }, [])
+    return () => release()
+  }, [release])
 
   const onOpenComplete = useCallback(() => {
     hasOpenedRef.current = true
@@ -157,12 +180,12 @@ export const usePopoverCoordinator = ({
   }, [release])
 
   useEffect(() => {
-    if (!isHolder) {
+    if (!heldId) {
       return
     }
-    popoverTelemetry.acquired(id)
-    return () => popoverTelemetry.released(id)
-  }, [id, isHolder])
+    popoverTelemetry.acquired(heldId)
+    return () => popoverTelemetry.released(heldId)
+  }, [heldId])
 
   return { isVisible, remountKey, onOpenComplete, onCloseComplete, release }
 }
