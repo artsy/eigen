@@ -33,14 +33,15 @@ const COMPOSER_VERTICAL_PADDING = (COMPOSER_COLLAPSED_HEIGHT - COMPOSER_LINE_HEI
 const COMPOSER_MAX_TEXT_HEIGHT = 4 * COMPOSER_LINE_HEIGHT
 
 interface ArtAssistantProps {
+  initialPrompt?: string
   onClose?: () => void
 }
 
-export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) => {
+export const ArtAssistant: React.FC<ArtAssistantProps> = ({ initialPrompt = "", onClose = goBack }) => {
   const color = useColor()
   const space = useSpace()
   const { bottom } = useSafeAreaInsets()
-  const [prompt, setPrompt] = useState("")
+  const [prompt, setPrompt] = useState(initialPrompt)
   const [isComposerFocused, setIsComposerFocused] = useState(false)
   const [isNewChatDialogVisible, setIsNewChatDialogVisible] = useState(false)
   const [dismissedErrorID, setDismissedErrorID] = useState<string | null>(null)

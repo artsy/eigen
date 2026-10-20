@@ -23,6 +23,7 @@ export const SingleIndexEmptyResultsMessage: React.FC<SingleIndexEmptyResultsMes
       {showArtAssistant ? (
         <SearchEmptyResultsArtAssistantCTA
           contextModule={getContextModuleByPillName(selectedPill.displayName)}
+          query={query}
         />
       ) : (
         <>

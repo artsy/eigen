@@ -7,13 +7,14 @@ import { useTracking } from "react-tracking"
 
 interface SearchEmptyResultsArtAssistantCTAProps {
   contextModule: ContextModule
+  query: string
 }
 
 // Replaces the "no results" message when Art Assistant is enabled. Callers are responsible for
 // checking `useEnableArtAssistant` and falling back to their regular empty message.
 export const SearchEmptyResultsArtAssistantCTA: React.FC<
   SearchEmptyResultsArtAssistantCTAProps
-> = ({ contextModule }) => {
+> = ({ contextModule, query }) => {
   const { trackEvent } = useTracking()
 
   const handlePress = () => {
@@ -35,7 +36,13 @@ export const SearchEmptyResultsArtAssistantCTA: React.FC<
         Describe it and Art Assistant will help you find it.
       </Text>
 
-      <RouterLink to="/art-assistant" disablePrefetch hasChildTouchable onPress={handlePress}>
+      <RouterLink
+        to="/art-assistant"
+        navigationProps={{ initialPrompt: query.trim() }}
+        disablePrefetch
+        hasChildTouchable
+        onPress={handlePress}
+      >
         <Button
           accessibilityLabel="Ask Art Assistant"
           icon={<SparklesMessageIcon />}

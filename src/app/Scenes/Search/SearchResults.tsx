@@ -68,8 +68,8 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
   )
 }
 
-const TopResultsEmptyMessage: React.FC = () => (
+const TopResultsEmptyMessage: React.FC<{ query: string }> = ({ query }) => (
   <Flex pt={2}>
-    <SearchEmptyResultsArtAssistantCTA contextModule={ContextModule.topTab} />
+    <SearchEmptyResultsArtAssistantCTA contextModule={ContextModule.topTab} query={query} />
   </Flex>
 )

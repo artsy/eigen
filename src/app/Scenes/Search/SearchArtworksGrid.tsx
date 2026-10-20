@@ -118,7 +118,10 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
           ListEmptyComponent={
             <Box mb="80px" pt={6}>
               {showArtAssistant ? (
-                <SearchEmptyResultsArtAssistantCTA contextModule={ContextModule.artworksTab} />
+                <SearchEmptyResultsArtAssistantCTA
+                  contextModule={ContextModule.artworksTab}
+                  query={keyword}
+                />
               ) : (
                 <Box px={2}>
                   <Text variant="sm-display" textAlign="center">

@@ -41,6 +41,16 @@ describe("ArtAssistant", () => {
     })
   })
 
+  it("prefills the composer with the initial prompt without sending it", () => {
+    const environment = createMockEnvironment()
+    renderWithHookWrappersTL(<ArtAssistant initialPrompt="moody seascapes" />, environment)
+
+    expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp("value", "moody seascapes")
+    expect(screen.getByLabelText("Send")).toBeEnabled()
+    expect(screen.queryByTestId("art-assistant-user-message")).not.toBeOnTheScreen()
+    expect(environment.mock.getAllOperations()).toHaveLength(0)
+  })
+
   it("sends a suggestion as soon as it is picked", () => {
     const environment = createMockEnvironment()
     renderWithHookWrappersTL(<ArtAssistant />, environment)
