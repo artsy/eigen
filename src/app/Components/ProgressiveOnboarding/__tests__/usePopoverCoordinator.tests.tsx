@@ -6,12 +6,16 @@ import {
 } from "app/Components/ProgressiveOnboarding/popoverPresentationContext"
 import {
   POPOVER_OPEN_TIMEOUT_MS,
+  POPOVER_RELEASE_GRACE_MS,
   usePopoverCoordinator,
 } from "app/Components/ProgressiveOnboarding/usePopoverCoordinator"
 import { GlobalStoreProvider, __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import {
+  PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1,
+  PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2,
   PROGRESSIVE_ONBOARDING_OFFER_SETTINGS,
   PROGRESSIVE_ONBOARDING_SAVE_ARTWORK,
+  ProgressiveOnboardingKey,
 } from "app/store/ProgressiveOnboardingModel"
 import { CurrentRoute } from "app/utils/hooks/useCurrentRoute"
 import { act } from "react"
@@ -61,6 +65,83 @@ describe("usePopoverCoordinator", () => {
 
     expect(challenger.current.isVisible).toBe(false)
     expect(lock()).toBe(PROGRESSIVE_ONBOARDING_SAVE_ARTWORK)
+  })
+
+  it("hands the lock to a waiting popover once the holder finishes closing", async () => {
+    const { result: holder, rerender: rerenderHolder } = renderHook<
+      ReturnType<typeof usePopoverCoordinator>,
+      { isDisplayable: boolean }
+    >(
+      ({ isDisplayable }) =>
+        usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable }),
+      { wrapper, initialProps: { isDisplayable: true } }
+    )
+    await waitFor(() => expect(holder.current.isVisible).toBe(true))
+
+    // The next step of a chain: it becomes displayable in the same commit the holder is
+    // dismissed, while the holder still owns the lock and is animating out.
+    rerenderHolder({ isDisplayable: false })
+    const { result: next } = renderHook(
+      () =>
+        usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_OFFER_SETTINGS, isDisplayable: true }),
+      { wrapper }
+    )
+    expect(next.current.isVisible).toBe(false)
+    expect(lock()).toBe(PROGRESSIVE_ONBOARDING_SAVE_ARTWORK)
+
+    act(() => holder.current.onCloseComplete())
+
+    await waitFor(() => expect(next.current.isVisible).toBe(true))
+    expect(lock()).toBe(PROGRESSIVE_ONBOARDING_OFFER_SETTINGS)
+  })
+
+  describe("when the id changes while holding the lock", () => {
+    const renderWithId = () =>
+      renderHook<
+        ReturnType<typeof usePopoverCoordinator>,
+        { id: ProgressiveOnboardingKey; isDisplayable: boolean }
+      >(({ id, isDisplayable }) => usePopoverCoordinator({ id, isDisplayable }), {
+        wrapper,
+        initialProps: { id: PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1, isDisplayable: true },
+      })
+
+    it("releases the id it acquired once it finishes closing", () => {
+      const { result, rerender } = renderWithId()
+      expect(result.current.isVisible).toBe(true)
+
+      // The alert reminder: dismissing reminder 1 switches the key to reminder 2.
+      rerender({ id: PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2, isDisplayable: false })
+      expect(result.current.isVisible).toBe(false)
+      expect(lock()).toBe(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1)
+
+      act(() => result.current.onCloseComplete())
+
+      expect(lock()).toBeUndefined()
+    })
+
+    it("releases the id it acquired after the grace period", () => {
+      jest.useFakeTimers()
+
+      const { rerender } = renderWithId()
+      rerender({ id: PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2, isDisplayable: false })
+
+      act(() => {
+        jest.advanceTimersByTime(POPOVER_RELEASE_GRACE_MS)
+      })
+
+      expect(lock()).toBeUndefined()
+
+      jest.useRealTimers()
+    })
+
+    it("releases the id it acquired on unmount", () => {
+      const { rerender, unmount } = renderWithId()
+      rerender({ id: PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2, isDisplayable: false })
+
+      unmount()
+
+      expect(lock()).toBeUndefined()
+    })
   })
 
   it("releases the lock when the holder unmounts", async () => {
@@ -145,9 +226,9 @@ describe("usePopoverCoordinator", () => {
       { wrapper }
     )
 
-    // Never opens, repeatedly. The watchdog releases the lock but does not re-acquire:
-    // the acquire effect is keyed on `canShow`, which has not changed, so a popover that
-    // is genuinely broken stays down instead of remounting every few seconds forever.
+    // Never opens, repeatedly. The watchdog releases the lock and the popover gives up
+    // until it stops being showable, so one that is genuinely broken stays down instead
+    // of remounting every few seconds forever.
     for (let i = 0; i < 5; i++) {
       act(() => {
         jest.advanceTimersByTime(POPOVER_OPEN_TIMEOUT_MS)
