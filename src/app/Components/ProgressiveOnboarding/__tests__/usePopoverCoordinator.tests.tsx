@@ -214,6 +214,28 @@ describe("usePopoverCoordinator", () => {
     await waitFor(() => expect(result.current.isVisible).toBe(true))
   })
 
+  it("closes when an overlay is presented above it once open, and returns after", async () => {
+    const { result } = renderHook(
+      () => usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable: true }),
+      { wrapper }
+    )
+
+    await waitFor(() => expect(result.current.isVisible).toBe(true))
+    act(() => result.current.onOpenComplete())
+    const remountKeyBefore = result.current.remountKey
+
+    act(() => registerPresentedOverlay("some-bottom-sheet"))
+
+    expect(result.current.isVisible).toBe(false)
+    expect(result.current.remountKey).toBe(remountKeyBefore + 1)
+    expect(lock()).toBeUndefined()
+
+    act(() => unregisterPresentedOverlay("some-bottom-sheet"))
+
+    await waitFor(() => expect(result.current.isVisible).toBe(true))
+    expect(lock()).toBe(PROGRESSIVE_ONBOARDING_SAVE_ARTWORK)
+  })
+
   it("force-releases and remounts a popover that never finishes opening", () => {
     jest.useFakeTimers()
 

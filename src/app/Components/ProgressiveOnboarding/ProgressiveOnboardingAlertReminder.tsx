@@ -35,7 +35,11 @@ export const ProgressiveOnboardingAlertReminder: React.FC<
           Searching for a particular artwork?
         </Text>
       }
-      content="Create an alert and we’ll let you know when there’s a match."
+      content={
+        <Text variant="xs" color="mono0">
+          Create an alert and we’ll let you know when there’s a match.
+        </Text>
+      }
       contextScreenOwnerType={OwnerType.artist}
       contextModule={ContextModule.artistArtworksFilterHeader}
     >
