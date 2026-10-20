@@ -87,7 +87,9 @@ are navigator screens, so a screen stays "focused" while a modal covers it.
 
 Note the limit: a tag decorates events that are _already being sent_, so it gives
 attribution, not an affected-user count. The watchdog is the natural place to emit an
-explicit event if we ever want a count.
+explicit event if we ever want a count. A popover closed because a modal or bottom sheet
+was presented above it logs its own `covered by overlay` breadcrumb, not a watchdog one,
+so watchdog breadcrumbs only mean a genuinely stuck popover.
 
 ## palette-mobile / upstream
 
@@ -101,14 +103,11 @@ Verified against `node_modules`, so these are specific:
   asynchronously after the modal presents, so between `setState({ visible: true })` and
   `onShow` a second popover reads `false` and also shows. Fixing that means setting the
   flag at `setState` time, which is an **upstream PR**, not a palette change.
-- **The one palette change we need:** palette types its props as
-  `PopoverProps extends Omit<RNPopoverProps, "placement">`, where `RNPopoverProps` is
-  `Types.PopoverProps`. But `mode` lives on `PublicPopoverProps`, not on
-  `Types.PopoverProps`. At runtime `{...rest}` is spread after the explicit props so a
-  `mode` would reach the library — it simply isn't typed through. Same for `from` and
-  `testID`. Extending `Omit<PublicPopoverProps, "placement">` would unblock
-  `mode={Mode.JS_MODAL}`, which removes this entire bug class rather than guarding it
-  (at the cost of in-place rendering that ancestors can clip).
+- **`mode` is typed through since palette 24.19.0** (palette #527): `PopoverProps` now
+  extends `Omit<PublicPopoverProps, "placement">`, so `mode`, `from` and `testID` reach
+  the library with types. That makes `mode={Mode.JS_MODAL}` available, which would remove
+  this entire bug class rather than guard it, at the cost of in-place rendering that
+  ancestors can clip. We don't use it yet: the coordinator does not depend on it.
 - **Worth raising:** when the library's guard refuses to open a popover it only
   `console.warn`s. The popover silently never opens, so `onOpenComplete` and
   `onCloseComplete` never fire — which is part of why the lock used to leak.
