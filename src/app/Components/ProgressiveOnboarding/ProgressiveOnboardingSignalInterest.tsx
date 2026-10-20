@@ -1,4 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { Text } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
 import { OnboardingPopover } from "app/Components/ProgressiveOnboarding/OnboardingPopover"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -21,7 +22,11 @@ export const ProgressiveOnboardingSignalInterest: React.FC<React.PropsWithChildr
       when={!!isPartnerOfferEnabled && !!progressiveOnboardingAlerts && !!isReady && isFocused}
       delay={200}
       placement="top"
-      title={`Learn more about saves and how to\nmanage your preferences.`}
+      title={
+        <Text variant="xs" color="mono0">
+          Learn more about saves and how to{"\n"}manage your preferences.
+        </Text>
+      }
       contextScreenOwnerType={OwnerType.saves}
       contextModule={ContextModule.saves}
     >

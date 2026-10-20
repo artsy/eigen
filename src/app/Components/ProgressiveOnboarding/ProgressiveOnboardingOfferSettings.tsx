@@ -1,4 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { Text } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
 import { OnboardingPopover } from "app/Components/ProgressiveOnboarding/OnboardingPopover"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -26,7 +27,12 @@ export const ProgressiveOnboardingOfferSettings: React.FC<React.PropsWithChildre
       }
       delay={500}
       placement="top"
-      title={`Edit list settings to indicate to\ngalleries which artworks you want\nto receive offers on.`}
+      title={
+        <Text variant="xs" color="mono0">
+          Edit list settings to indicate to{"\n"}galleries which artworks you want{"\n"}to receive
+          offers on.
+        </Text>
+      }
       contextScreenOwnerType={OwnerType.saves}
       contextModule={ContextModule.saves}
     >

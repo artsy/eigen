@@ -1,4 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { Text } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
 import { OnboardingPopover } from "app/Components/ProgressiveOnboarding/OnboardingPopover"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -26,7 +27,11 @@ export const ProgressiveOnboardingAlertFilters: React.FC<React.PropsWithChildren
       }
       delay={200}
       placement="bottom"
-      title="First, select the relevant filters."
+      title={
+        <Text variant="xs" color="mono0">
+          First, select the relevant filters.
+        </Text>
+      }
       contextScreenOwnerType={OwnerType.artist}
       contextModule={ContextModule.artistArtworksFilterHeader}
       // The anchor sits over the filter header and must not swallow its taps.

@@ -128,17 +128,13 @@ export const usePopoverCoordinator = ({
   // `onOpenStart` would have made it blind to exactly that.
   const hasOpenedRef = useRef(false)
 
-  const forceRecover = useCallback(
-    (reason: string) => {
-      popoverTelemetry.watchdogFired(id, reason)
-      hasOpenedRef.current = false
-      hasGivenUpRef.current = true
-      release()
-      // Remounting is the only way to unmount a Modal the library has left showing.
-      setRemountKey((key) => key + 1)
-    },
-    [id, release]
-  )
+  const forceRecover = useCallback(() => {
+    hasOpenedRef.current = false
+    hasGivenUpRef.current = true
+    release()
+    // Remounting is the only way to unmount a Modal the library has left showing.
+    setRemountKey((key) => key + 1)
+  }, [release])
 
   useEffect(() => {
     if (!isVisible) {
@@ -149,19 +145,21 @@ export const usePopoverCoordinator = ({
         // Covers both ways this goes wrong: the library silently refusing to open a
         // second popover (it only console.warns), and a bubble that starts opening and
         // never finishes. Neither fires `onOpenComplete`.
-        forceRecover("never finished opening")
+        popoverTelemetry.watchdogFired(id, "never finished opening")
+        forceRecover()
       }
     }, POPOVER_OPEN_TIMEOUT_MS)
     return () => clearTimeout(timeout)
-  }, [forceRecover, isVisible])
+  }, [forceRecover, id, isVisible])
 
   // Something was presented above us while we were open. We cannot stay.
   useEffect(() => {
     if (!hasPresentedOverlay || !hasOpenedRef.current) {
       return
     }
-    forceRecover("overlay presented above an open popover")
-  }, [forceRecover, hasPresentedOverlay])
+    popoverTelemetry.coveredByOverlay(id)
+    forceRecover()
+  }, [forceRecover, hasPresentedOverlay, id])
 
   // Release on unmount. Without this, a popover whose host disappears (tab switch,
   // navigation, scroll) holds the lock for the rest of the session and silently kills

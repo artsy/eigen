@@ -23,6 +23,16 @@ export const popoverTelemetry = {
   },
 
   /**
+   * A modal or bottom sheet was presented above an open popover, so it was closed and
+   * remounted. Expected behaviour, kept apart from `watchdogFired` so that stays a count
+   * of genuinely stuck popovers.
+   */
+  coveredByOverlay: (id: string) => {
+    setSentryActivePopoverTag(SENTRY_TAG_NONE)
+    addBreadcrumb({ category: CATEGORY, message: `covered by overlay ${id}`, level: "info" })
+  },
+
+  /**
    * The popover held the lock but never reported itself open, so it was force-released
    * and remounted to unmount a potentially stuck Modal.
    */
