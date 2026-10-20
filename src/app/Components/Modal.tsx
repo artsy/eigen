@@ -107,6 +107,7 @@ export class Modal extends React.Component<ModalProps, ModalState> {
       this.props.closeModal()
     }
     this.setState({ modalVisible: false })
+    unregisterPresentedOverlay(this.overlayId)
   }
 
   render() {
