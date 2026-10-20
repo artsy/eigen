@@ -19,8 +19,6 @@ interface OnboardingPopoverProps {
   placement?: "top" | "bottom" | "left" | "right"
   /** Delay before showing, to let layout settle. Hiding is never delayed. */
   delay?: number
-  /** Tracked name, when it differs from `id` (e.g. the alert reminder chain). */
-  trackingName?: ProgressiveOnboardingKey
   /** Matches the tracking hook: optional, and the wider `OwnerType`. */
   contextScreenOwnerType?: OwnerType
   /**
@@ -55,7 +53,6 @@ export const OnboardingPopover: React.FC<React.PropsWithChildren<OnboardingPopov
   variant = "dark",
   placement = "top",
   delay = 0,
-  trackingName,
   contextScreenOwnerType,
   contextModule,
   onDismiss,
@@ -75,7 +72,7 @@ export const OnboardingPopover: React.FC<React.PropsWithChildren<OnboardingPopov
   })
 
   const { trackEvent } = useProgressiveOnboardingTracking({
-    name: trackingName ?? id,
+    name: id,
     contextScreenOwnerType,
     contextModule: contextModule ?? ContextModule.header,
   })
