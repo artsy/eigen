@@ -29,8 +29,11 @@ jest.mock("app/utils/hooks/useCurrentRoute", () => ({
 // The coordinator's own delay behaviour is covered in useShowDelay.tests; here we want
 // the gating logic, so the globally mocked (pass-through) useShowDelay is what we want.
 
-const lock = () =>
+const owner = () =>
   __globalStoreTestUtils__?.getCurrentState().progressiveOnboarding.sessionState.activePopover
+
+/** The key holding the lock, without the per-instance suffix. */
+const lock = () => owner()?.split("#")[0]
 
 describe("usePopoverCoordinator", () => {
   const wrapper = ({ children }: any) => <GlobalStoreProvider>{children}</GlobalStoreProvider>
@@ -93,6 +96,43 @@ describe("usePopoverCoordinator", () => {
 
     await waitFor(() => expect(next.current.isVisible).toBe(true))
     expect(lock()).toBe(PROGRESSIVE_ONBOARDING_OFFER_SETTINGS)
+  })
+
+  it("keeps the lock with the instance on top when a covered one with the same key releases", () => {
+    jest.useFakeTimers()
+
+    // Artist screen A: displayable, holds the lock.
+    const { rerender: rerenderCovered } = renderHook<
+      ReturnType<typeof usePopoverCoordinator>,
+      { isDisplayable: boolean }
+    >(
+      ({ isDisplayable }) =>
+        usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable }),
+      { wrapper, initialProps: { isDisplayable: true } }
+    )
+    const coveredOwner = owner()
+
+    // Artist screen B is pushed on top: A loses focus, B mounts with the same key.
+    rerenderCovered({ isDisplayable: false })
+    const { result: onTop } = renderHook(
+      () => usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable: true }),
+      { wrapper }
+    )
+
+    // Sharing a key does not make B the holder.
+    expect(onTop.current.isVisible).toBe(false)
+    expect(owner()).toBe(coveredOwner)
+
+    // A gives the lock back (it never opened, so the watchdog does it), and B takes it.
+    act(() => {
+      jest.advanceTimersByTime(POPOVER_OPEN_TIMEOUT_MS)
+    })
+
+    expect(onTop.current.isVisible).toBe(true)
+    expect(owner()).not.toBe(coveredOwner)
+    expect(lock()).toBe(PROGRESSIVE_ONBOARDING_SAVE_ARTWORK)
+
+    jest.useRealTimers()
   })
 
   describe("when the id changes while holding the lock", () => {
