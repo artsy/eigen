@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   Box,
   Flex,
@@ -19,7 +19,9 @@ import {
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { SCROLLVIEW_SEARCH_RESULTS_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
+import { SearchEmptyResultsArtAssistantCTA } from "app/Scenes/Search/components/SearchEmptyResultsArtAssistantCTA"
 import { extractNodes } from "app/utils/extractNodes"
+import { useEnableArtAssistant } from "app/utils/hooks/useEnableArtAssistant"
 import { NUM_COLUMNS_MASONRY, ON_END_REACHED_THRESHOLD_MASONRY } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 
@@ -46,6 +48,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
   const artworks = extractNodes(viewer.artworks)
   const artworksCount = viewer.artworks?.counts?.total ?? 0
   const { width } = useScreenDimensions()
+  const showArtAssistant = useEnableArtAssistant()
 
   const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
 
@@ -114,15 +117,19 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
           keyboardDismissMode="on-drag"
           ListEmptyComponent={
             <Box mb="80px" pt={6}>
-              <Box px={2}>
-                <Text variant="sm-display" textAlign="center">
-                  Sorry, we couldn’t find any Artworks for {quoteLeft}
-                  {keyword}.{quoteRight}
-                </Text>
-                <Text variant="sm-display" color="mono60" textAlign="center">
-                  Please try searching again with a different spelling.
-                </Text>
-              </Box>
+              {showArtAssistant ? (
+                <SearchEmptyResultsArtAssistantCTA contextModule={ContextModule.artworksTab} />
+              ) : (
+                <Box px={2}>
+                  <Text variant="sm-display" textAlign="center">
+                    Sorry, we couldn’t find any Artworks for {quoteLeft}
+                    {keyword}.{quoteRight}
+                  </Text>
+                  <Text variant="sm-display" color="mono60" textAlign="center">
+                    Please try searching again with a different spelling.
+                  </Text>
+                </Box>
+              )}
             </Box>
           }
           onEndReached={loadMore}
