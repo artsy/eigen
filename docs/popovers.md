@@ -70,7 +70,9 @@ Surfaces supply the condition and the copy. The component owns everything else:
   presentation context, and force-recovers if something is presented while it is open.
 - **Watchdogs.** If it is told to show and never reports itself open, the lock is
   force-released and the popover is remounted, which is the only way to unmount a Modal
-  the library has left showing.
+  the library has left showing. The watchdog stays armed if the popover is hidden before
+  it finished opening, since that is exactly when the library can leave its Modal up, and
+  the grace period does not release the lock while an open is still pending.
 
 ### Registering overlays
 
@@ -78,6 +80,13 @@ Anything that presents above the navigator — RN `<Modal>`s, bottom sheets, cam
 overlays — should call `registerPresentedOverlay(id)` / `unregisterPresentedOverlay(id)`
 from `popoverPresentationContext.ts`. `useIsFocused` is **not** sufficient: none of these
 are navigator screens, so a screen stays "focused" while a modal covers it.
+`usePresentedOverlay(id, isOpen)` does both from a function component; the id must be
+unique per instance.
+
+Registered today: `app/Components/Modal.tsx`, `AutomountedBottomSheetModal`,
+`ArtworkFilterNavigator` and `CityGuideCityPicker`. Other raw `react-native` `Modal`s are
+**not** registered, so a popover can still present over them; register one when it shares
+a screen with a popover.
 
 ## Observability
 
