@@ -111,13 +111,28 @@ export const usePopoverCoordinator = ({
     acquireActivePopover(id)
   }, [acquireActivePopover, activePopover, canShow, id])
 
+  // Pending from the moment we are told to show until the popover reports that it opened
+  // or closed. Deliberately not cleared when `isVisible` goes false: hiding a bubble that
+  // has not finished measuring only sets the library's `animateOutAfterShow`, and if the
+  // measurement never completes its Modal stays mounted, swallowing every touch.
+  const openWatchdogRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const clearOpenWatchdog = useCallback(() => {
+    clearTimeout(openWatchdogRef.current)
+    openWatchdogRef.current = undefined
+  }, [])
+
   // Give the lock back once we no longer want it, after a grace period so a brief flicker
-  // in `isDisplayable` doesn't hand the lock to a sibling mid-animation.
+  // in `isDisplayable` doesn't hand the lock to a sibling mid-animation. Not while an open
+  // is still pending: its Modal may be up, so the close or the watchdog releases instead.
   useEffect(() => {
     if (!heldId || (canShow && isHolder)) {
       return
     }
-    const timeout = setTimeout(release, POPOVER_RELEASE_GRACE_MS)
+    const timeout = setTimeout(() => {
+      if (!openWatchdogRef.current) {
+        release()
+      }
+    }, POPOVER_RELEASE_GRACE_MS)
     return () => clearTimeout(timeout)
   }, [canShow, heldId, isHolder, release])
 
@@ -129,27 +144,26 @@ export const usePopoverCoordinator = ({
   const hasOpenedRef = useRef(false)
 
   const forceRecover = useCallback(() => {
+    clearOpenWatchdog()
     hasOpenedRef.current = false
     hasGivenUpRef.current = true
     release()
     // Remounting is the only way to unmount a Modal the library has left showing.
     setRemountKey((key) => key + 1)
-  }, [release])
+  }, [clearOpenWatchdog, release])
 
   useEffect(() => {
-    if (!isVisible) {
+    if (!isVisible || hasOpenedRef.current || openWatchdogRef.current) {
       return
     }
-    const timeout = setTimeout(() => {
-      if (!hasOpenedRef.current) {
-        // Covers both ways this goes wrong: the library silently refusing to open a
-        // second popover (it only console.warns), and a bubble that starts opening and
-        // never finishes. Neither fires `onOpenComplete`.
-        popoverTelemetry.watchdogFired(id, "never finished opening")
-        forceRecover()
-      }
+    openWatchdogRef.current = setTimeout(() => {
+      openWatchdogRef.current = undefined
+      // Covers every way this goes wrong: the library silently refusing to open a second
+      // popover (it only console.warns), and a bubble that never finishes measuring,
+      // whether or not we have since been hidden. None of them fires a callback.
+      popoverTelemetry.watchdogFired(id, "never finished opening")
+      forceRecover()
     }, POPOVER_OPEN_TIMEOUT_MS)
-    return () => clearTimeout(timeout)
   }, [forceRecover, id, isVisible])
 
   // Something was presented above us while we were open. We cannot stay.
@@ -165,17 +179,22 @@ export const usePopoverCoordinator = ({
   // navigation, scroll) holds the lock for the rest of the session and silently kills
   // every popover that comes after it.
   useEffect(() => {
-    return () => release()
-  }, [release])
+    return () => {
+      clearOpenWatchdog()
+      release()
+    }
+  }, [clearOpenWatchdog, release])
 
   const onOpenComplete = useCallback(() => {
+    clearOpenWatchdog()
     hasOpenedRef.current = true
-  }, [])
+  }, [clearOpenWatchdog])
 
   const onCloseComplete = useCallback(() => {
+    clearOpenWatchdog()
     hasOpenedRef.current = false
     release()
-  }, [release])
+  }, [clearOpenWatchdog, release])
 
   useEffect(() => {
     if (!heldId) {

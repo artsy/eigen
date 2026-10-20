@@ -122,7 +122,9 @@ describe("usePopoverCoordinator", () => {
     it("releases the id it acquired after the grace period", () => {
       jest.useFakeTimers()
 
-      const { rerender } = renderWithId()
+      const { result, rerender } = renderWithId()
+      // Opened, so no open is pending and the grace period is what releases.
+      act(() => result.current.onOpenComplete())
       rerender({ id: PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2, isDisplayable: false })
 
       act(() => {
@@ -188,6 +190,41 @@ describe("usePopoverCoordinator", () => {
     // `onOpenComplete` is deliberately never called: this is the stuck invisible Modal.
     act(() => {
       jest.advanceTimersByTime(POPOVER_OPEN_TIMEOUT_MS)
+    })
+
+    expect(result.current.remountKey).toBe(remountKeyBefore + 1)
+    expect(lock()).toBeUndefined()
+
+    jest.useRealTimers()
+  })
+
+  it("still recovers a popover hidden before it finished opening", () => {
+    jest.useFakeTimers()
+
+    const { result, rerender } = renderHook<
+      ReturnType<typeof usePopoverCoordinator>,
+      { isDisplayable: boolean }
+    >(
+      ({ isDisplayable }) =>
+        usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable }),
+      { wrapper, initialProps: { isDisplayable: true } }
+    )
+    expect(result.current.isVisible).toBe(true)
+    const remountKeyBefore = result.current.remountKey
+
+    // City Guide fast-scroll: the anchor leaves the view mid-open. The bubble never
+    // measures, so neither `onOpenComplete` nor `onCloseComplete` ever fires.
+    rerender({ isDisplayable: false })
+    expect(result.current.isVisible).toBe(false)
+
+    // The grace period must not hand the lock on while that Modal may still be up.
+    act(() => {
+      jest.advanceTimersByTime(POPOVER_RELEASE_GRACE_MS)
+    })
+    expect(lock()).toBe(PROGRESSIVE_ONBOARDING_SAVE_ARTWORK)
+
+    act(() => {
+      jest.advanceTimersByTime(POPOVER_OPEN_TIMEOUT_MS - POPOVER_RELEASE_GRACE_MS)
     })
 
     expect(result.current.remountKey).toBe(remountKeyBefore + 1)
