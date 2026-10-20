@@ -134,9 +134,8 @@ export const HomeViewSectionCurationArea: React.FC<HomeViewSectionCurationAreaPr
 
 const COLLECTION_CARD_IMAGE_HEIGHT = 190
 
-// "Curated" area chips rendered as cards: an artwork image, the entry title, a short
-// description, and a chevron affordance. TODO: the spec stacks 3 artwork images
-// (chip.images) — rendering a single image (chip.image) for now.
+// "Curated" area chips rendered as cards: a 3-image stack (or a single image / placeholder),
+// the entry title, a short description, and a chevron affordance.
 const CollectionCardRail: React.FC<{
   chips: Chip[]
   onChipPress: (chip: Chip, index: number) => void
@@ -160,13 +159,20 @@ const CollectionCardRail: React.FC<{
   )
 }
 
-// Simple overlapping stack of up to 3 artwork thumbnails. Not the exact design fan —
-// a lightweight first pass to confirm the images render; refine the layout later.
+// Each image's height as a fraction of the stack height, by position (front → back).
+// All same width, bottom-aligned, stepping right: the front image is shortest and sits
+// lowest-left (on top); each image behind is taller and shifted right, so the back image
+// is tallest and reads as upper-right — the design's diagonal fan.
+const STACK_HEIGHT_FRACTIONS: Record<number, number[]> = {
+  1: [1],
+  2: [0.78, 1],
+  3: [0.63, 0.89, 1],
+}
+
 const CollectionImageStack: React.FC<{ urls: string[]; width: number }> = ({ urls, width }) => {
   const imageWidth = width * 0.55
-  const imageHeight = COLLECTION_CARD_IMAGE_HEIGHT - 30
   const stepX = urls.length > 1 ? (width - imageWidth) / (urls.length - 1) : 0
-  const stepY = 15
+  const fractions = STACK_HEIGHT_FRACTIONS[urls.length] ?? STACK_HEIGHT_FRACTIONS[3]
 
   return (
     <Flex width={width} height={COLLECTION_CARD_IMAGE_HEIGHT}>
@@ -176,11 +182,11 @@ const CollectionImageStack: React.FC<{ urls: string[]; width: number }> = ({ url
           testID="collection-card-stack-image"
           src={url}
           width={imageWidth}
-          height={imageHeight}
+          height={COLLECTION_CARD_IMAGE_HEIGHT * (fractions[index] ?? 1)}
           style={{
             position: "absolute",
             left: index * stepX,
-            top: (urls.length - 1 - index) * stepY,
+            bottom: 0,
             zIndex: urls.length - index,
             borderRadius: 6,
             borderWidth: 2,
