@@ -32,13 +32,14 @@ import { TimePeriodOptionsScreen } from "app/Components/ArtworkFilter/Filters/Ti
 import { ViewAsOptionsScreen } from "app/Components/ArtworkFilter/Filters/ViewAsOptions"
 import { WaysToBuyOptionsScreen } from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { YearOptionsScreen } from "app/Components/ArtworkFilter/Filters/YearOptions"
+import { usePresentedOverlay } from "app/Components/ProgressiveOnboarding/popoverPresentationContext"
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { CreateSavedSearchModal } from "app/Scenes/SavedSearchAlert/CreateSavedSearchModal"
 import { GlobalStore } from "app/store/GlobalStore"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
-import { useEffect, useState } from "react"
+import { useEffect, useId, useState } from "react"
 import { Modal, Platform, ViewProps } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -116,6 +117,10 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const insets = useSafeAreaInsets()
 
   const tracking = useTracking()
+
+  // A raw react-native Modal: onboarding popovers can't see it unless it registers.
+  usePresentedOverlay(`ArtworkFilterNavigator-${useId()}`, !!props.visible)
+
   const { id, mode, slug, name, query, shouldShowCreateAlertButton, closeModal, exitModal } = props
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
 
