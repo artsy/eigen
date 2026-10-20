@@ -1,4 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+// eslint-disable-next-line no-restricted-imports -- the one place allowed to render the palette Popover
 import { Flex, Popover, Text } from "@artsy/palette-mobile"
 import { usePopoverCoordinator } from "app/Components/ProgressiveOnboarding/usePopoverCoordinator"
 import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"

@@ -166,13 +166,6 @@ module.exports = {
   },
   overrides: [
     {
-      // The one place allowed to render the palette Popover directly.
-      files: ["src/app/Components/ProgressiveOnboarding/OnboardingPopover.tsx"],
-      rules: {
-        "no-restricted-imports": OFF,
-      },
-    },
-    {
       files: ["*.tests.ts", "*.tests.tsx"],
       rules: {
         "@typescript-eslint/no-non-null-assertion": OFF,
