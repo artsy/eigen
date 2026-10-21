@@ -15,6 +15,8 @@ import {
   Spacer,
   Text,
   useColor,
+  useScreenDimensions,
+  useSpace,
 } from "@artsy/palette-mobile"
 import {
   UserAccountHeaderQuery,
@@ -48,6 +50,9 @@ export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({
   const me = useFragment<UserAccountHeader_me$key>(userAccountHeaderFragment, meProp)
 
   const color = useColor()
+  const space = useSpace()
+
+  const { width: screenWidth } = useScreenDimensions()
 
   if (!me) {
     return ProfileErrorMessage
@@ -66,7 +71,7 @@ export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({
     >
       <AccountCardWapper showBorder={showBorder} scrollEnabled={!tappable}>
         <Join separator={<Spacer y={2} />}>
-          <Flex flexDirection="row" alignItems="center" width="100%" gap={2}>
+          <Flex flexDirection="row" alignItems="center" gap={2} width="100%" overflow="hidden">
             {/* Avatar */}
             <RouterLink to="/my-profile/edit" onPress={onAvatarPress}>
               <Flex
@@ -111,7 +116,8 @@ export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({
               </Flex>
             </RouterLink>
 
-            <Flex>
+            {/* flex={1} bounds the column to the remaining width so the information row can wrap */}
+            <Flex flex={1}>
               {/* Name */}
               <Text variant="lg-display" color="mono100">
                 {me.name}
