@@ -15,8 +15,6 @@ import {
   Spacer,
   Text,
   useColor,
-  useScreenDimensions,
-  useSpace,
 } from "@artsy/palette-mobile"
 import {
   UserAccountHeaderQuery,
@@ -50,9 +48,6 @@ export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({
   const me = useFragment<UserAccountHeader_me$key>(userAccountHeaderFragment, meProp)
 
   const color = useColor()
-  const space = useSpace()
-
-  const { width: screenWidth } = useScreenDimensions()
 
   if (!me) {
     return ProfileErrorMessage
