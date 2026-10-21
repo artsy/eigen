@@ -8,10 +8,17 @@ description: Take before/after screenshots of the UI surfaces affected by the cu
 Drive the running dev app with `.claude/skills/screenshots/scripts/sim.sh` (run it with no args for usage). Save images in the session scratchpad.
 
 1. **Find the surfaces.** List changed files (`git diff --stat`, or `git diff main...HEAD --stat` if committed) and trace each component up to a screen. Route paths in `src/app/Navigation/routes.tsx` open as deep links (`sim.sh open android artist/kaws`).
-2. **Pick platforms.** `sim.sh devices`; use what the user asked for, otherwise everything connected. If no device is booted for a requested platform, ask the user to boot one. Metro must be running; on Android also run `adb reverse tcp:8081 tcp:8081`.
+2. **Pick platforms.** `sim.sh devices`; use what the user asked for, otherwise everything connected. If no device is booted for a requested platform, ask the user to boot one. On Android also run `adb reverse tcp:8081 tcp:8081`.
+   Then run `sim.sh check <platform>` (no platform checks both). If it reports anything missing, stop and show the user the list with its install commands, and ask whether to install them. Never install anything without the user's explicit approval. Install only the items they approve, or let them install it themselves, then re-run `check`. Never start Metro yourself; ask the user to run `yarn start`.
 3. **Capture AFTER.** Deep link, then take a screenshot, Read it, tap, and repeat. Note the steps so you can replay them.
-4. **Capture BEFORE.** Save `git status --short` first. Remove the change: `git stash push -u -- <files>` if uncommitted (only the changed UI files, never `.claude/`), or `git checkout main -- <files>` if committed (delete files that don't exist on `main`). Then `sim.sh restart <platform>` and replay the steps.
-5. **Restore.** `git stash pop` or `git checkout HEAD -- <files>`, confirm `git status --short` matches what you saved, and run `sim.sh restart`.
+4. **Capture BEFORE.** Save `git status --short` and `base=$(git merge-base main HEAD)` first. Remove every change under `src/`, not just the UI files, so the tree still bundles. Never touch `.claude/`. A branch can have both kinds of change, so do both steps in this order:
+
+   - Uncommitted: `git stash push -u -- src/`. Note whether it created a stash, because it prints "No local changes to save" when it doesn't.
+   - Committed: `git checkout $base -- <files from git diff main...HEAD -- src/>`, and delete the files that don't exist at `$base`.
+
+   Then `sim.sh restart <platform>` and replay the steps.
+
+5. **Restore** in reverse order: `git checkout HEAD -- <committed files>`, then `git stash pop --index` only if step 4 created a stash (otherwise it pops an unrelated older one). Confirm `git status --short` matches what you saved, and run `sim.sh restart`.
 6. **Report.** Run `sim.sh compare before.png after.png out.png` for each pair, Read the results, and give the user absolute paths plus one line per surface on what changed.
 7. **Hand off.** Ask how they want the photos:
    - **Open the folder** (default): `open <shots dir>` shows them in Finder, ready to drag into a PR.
