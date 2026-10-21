@@ -25,15 +25,11 @@ jobs:
           stale-pr-label: stale
           stale-pr-message: >
             This PR has had no activity for 30 days and is now marked stale.
-            It will close in 14 days unless it's updated or the `stale` label is removed.
+            It will close in 10 days unless it's updated or the `stale` label is removed.
           close-pr-message: >
-            Closed after 44 days of inactivity. Feel free to reopen if it's still relevant.
+            Closed after 40 days of inactivity. Feel free to reopen if it's still relevant.
           delete-branch: false
-          exempt-draft-pr: true
           exempt-pr-labels: "in progress,in-progress"
           remove-pr-stale-when-updated: true
 
           operations-per-run: 100
-          # Dry run: logs what would be labelled/closed without changing anything.
-          # Remove once the logged output has been reviewed.
-          debug-only: true
