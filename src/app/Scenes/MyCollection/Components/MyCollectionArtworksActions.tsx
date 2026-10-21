@@ -1,6 +1,7 @@
 import { AddIcon, TagIcon } from "@artsy/icons/native"
 import { Button, Flex, Text, useSpace } from "@artsy/palette-mobile"
 import { Tab } from "app/Scenes/MyCollection/MyCollection"
+import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
 
 /**
@@ -8,6 +9,7 @@ import { RouterLink } from "app/system/navigation/RouterLink"
  */
 export const MyCollectionArtworksActions: React.FC = () => {
   const space = useSpace()
+  const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
 
   return (
     <Flex flexDirection="row" alignItems="center" gap={1}>
@@ -22,35 +24,27 @@ export const MyCollectionArtworksActions: React.FC = () => {
         </Flex>
       </RouterLink>
 
-      <RouterLink hasChildTouchable to="/sell">
-        <Button
-          variant="fillDark"
-          size="small"
-          haptic
-          icon={<TagIcon />}
-          testID="sell-button"
-          accessibilityLabel="Sell"
+      <Button
+        variant="fillDark"
+        size="small"
+        haptic
+        icon={<TagIcon />}
+        testID="sell-button"
+        accessibilityLabel="Sell"
+        onPress={() => setViewKind({ viewKind: "Sell" })}
+      >
+        <Flex flexDirection="row" alignItems="center" gap={0.5}></Flex>
+        Sell{" "}
+        <Text
+          color="white"
+          style={{ paddingHorizontal: space(0.5) }}
+          backgroundColor="blue100"
+          variant="xs"
         >
-          Sell{" "}
-          <Flex
-            backgroundColor="blue100"
-            // @ts-expect-error
-            style={{
-              paddingHorizontal: "2px",
-              paddingVertical: "2px",
-            }}
-          >
-            <Text
-              color="white"
-              style={{ paddingHorizontal: space(0.5) }}
-              backgroundColor="blue100"
-              variant="xs"
-            >
-              BETA
-            </Text>
-          </Flex>
-        </Button>
-      </RouterLink>
+          {" "}
+          BETA{" "}
+        </Text>
+      </Button>
     </Flex>
   )
 }

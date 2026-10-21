@@ -5,7 +5,7 @@ export type CollectedTab = "Artworks" | "Artists" | null
 
 type ViewPayload =
   | {
-      viewKind: "Add" | "Profile" | null
+      viewKind: "Add" | "Profile" | "Sell" | null
     }
   | {
       viewKind: "Artist"
@@ -55,6 +55,10 @@ export const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
 
       case "Profile":
         state.viewKind = "Profile"
+        break
+
+      case "Sell":
+        state.viewKind = "Sell"
         break
 
       default:
