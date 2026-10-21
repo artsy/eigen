@@ -240,7 +240,14 @@ export const GlobalSearchInputOverlay: React.FC<{
                     })
                   )
                   hideModal()
-                  navigate("/art-assistant")
+
+                  const initialPrompt = query.trim()
+
+                  if (initialPrompt) {
+                    navigate("/art-assistant", { passProps: { initialPrompt } })
+                  } else {
+                    navigate("/art-assistant")
+                  }
                 }}
               />
             )}

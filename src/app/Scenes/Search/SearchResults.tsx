@@ -5,6 +5,8 @@ import {
   AutosuggestResults,
 } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { EntitySearchResultsScreen } from "app/Scenes/Search/components/EntitySearchResults"
+import { SearchEmptyResultsArtAssistantCTA } from "app/Scenes/Search/components/SearchEmptyResultsArtAssistantCTA"
+import { useEnableArtAssistant } from "app/utils/hooks/useEnableArtAssistant"
 import { useCallback, useContext } from "react"
 import { useTracking } from "react-tracking"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
@@ -21,6 +23,7 @@ interface SearchResultsProps {
 export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, query }) => {
   const { trackEvent } = useTracking()
   const { queryRef } = useContext(SearchContext)
+  const showArtAssistant = useEnableArtAssistant()
   const isTopPillSelected = selectedPill.key === TOP_PILL.key
   const isArtworksPillSelected = selectedPill.key === ARTWORKS_PILL.key
 
@@ -49,6 +52,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
           showResultType
           showQuickNavigationButtons
           showOnRetryErrorMessage
+          ListEmptyComponent={showArtAssistant ? TopResultsEmptyMessage : undefined}
           trackResultPress={handleTrackAutosuggestResultPress}
         />
       </Flex>
@@ -63,3 +67,9 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
     <EntitySearchResultsScreen query={query} selectedPill={selectedPill} key={selectedPill.key} />
   )
 }
+
+const TopResultsEmptyMessage: React.FC<{ query: string }> = ({ query }) => (
+  <Flex pt={2}>
+    <SearchEmptyResultsArtAssistantCTA contextModule={ContextModule.topTab} query={query} />
+  </Flex>
+)
