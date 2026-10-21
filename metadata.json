@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.11.6",
+  "checkpoint_id": "01M5ER14V0MQMZFJKQWREXQS1B",
+  "strategy": "manual-commit",
+  "branch": "chore/add-entire-cli",
+  "checkpoints_count": 3,
+  "files_touched": [
+    ".husky/pre-push"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 30,
+    "cache_creation_tokens": 13087,
+    "cache_read_tokens": 1345495,
+    "output_tokens": 5578,
+    "api_call_count": 15
+  }
+}
