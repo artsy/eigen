@@ -24,7 +24,11 @@ cmd="${1:-}"
 platform="${2:-}"
 
 # idb has no default target unless a companion is connected, so every iOS command targets one explicit UDID
-ios_udid() { echo "${IOS_UDID:-$(xcrun simctl list devices booted | grep -oE '[0-9A-F-]{36}' | head -1)}"; }
+ios_udid() {
+  local udid="${IOS_UDID:-$(xcrun simctl list devices booted | grep -oE '[0-9A-F-]{36}' | head -1)}"
+  [ -n "$udid" ] || echo "no booted iOS simulator (boot one, or set IOS_UDID)" >&2
+  echo "$udid"
+}
 
 case "$cmd" in
   check)
@@ -48,12 +52,13 @@ case "$cmd" in
     ;;
   shot)
     if [ "$platform" = android ]; then adb exec-out screencap -p > "$3"
-    else xcrun simctl io "$(ios_udid)" screenshot "$3" >/dev/null 2>&1; fi
+    else xcrun simctl io "$(ios_udid)" screenshot "$3" >/dev/null; fi
     ;;
   open)
     if [ "$platform" = android ]; then
-      # am start exits 0 even when the intent fails, so check its output
-      out=$(adb shell am start -a android.intent.action.VIEW -d "artsy://${3#/}" "$ANDROID_PKG" 2>&1)
+      # am start exits 0 even when the intent fails, so check its output.
+      # adb shell re-parses the command on the device, so quote the URL again or `&` cuts it short
+      out=$(adb shell am start -a android.intent.action.VIEW -d "'artsy://${3#/}'" "$ANDROID_PKG" 2>&1)
       if echo "$out" | grep -q Error; then echo "$out" >&2; exit 1; fi
     else xcrun simctl openurl "$(ios_udid)" "artsy://${3#/}"; fi
     ;;
