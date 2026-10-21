@@ -1,0 +1,39 @@
+name: Stale PRs
+
+on:
+  schedule:
+    - cron: "0 7 * * 1-5" # weekdays, 07:00 UTC
+  workflow_dispatch:
+
+permissions:
+  pull-requests: write
+  issues: write # labels go through the issues API, even on PRs
+  actions: write # lets the action clean up its state cache
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v11
+        with:
+          # PRs only, so the issue tracker is left alone
+          days-before-issue-stale: -1
+          days-before-issue-close: -1
+
+          days-before-pr-stale: 30
+          days-before-pr-close: 10
+          stale-pr-label: stale
+          stale-pr-message: >
+            This PR has had no activity for 30 days and is now marked stale.
+            It will close in 14 days unless it's updated or the `stale` label is removed.
+          close-pr-message: >
+            Closed after 44 days of inactivity. Feel free to reopen if it's still relevant.
+          delete-branch: false
+          exempt-draft-pr: true
+          exempt-pr-labels: "in progress,in-progress"
+          remove-pr-stale-when-updated: true
+
+          operations-per-run: 100
+          # Dry run: logs what would be labelled/closed without changing anything.
+          # Remove once the logged output has been reviewed.
+          debug-only: true
