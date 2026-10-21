@@ -3,7 +3,8 @@ import { LocationAutocomplete } from "app/Components/LocationAutocomplete"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import React, { useState } from "react"
-import { Modal, ScrollView } from "react-native"
+import { Modal, Platform, ScrollView } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 interface ShippingModalProps {
   toggleVisibility: () => void
@@ -15,6 +16,7 @@ interface ShippingModalProps {
 export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
   const { location, toggleVisibility, modalIsVisible, setLocation } = props
   const color = useColor()
+  const insets = useSafeAreaInsets()
   const [locationDetails, setLocationDetails] = useState<LocationWithDetails | null>(null)
 
   return (
@@ -25,7 +27,12 @@ export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
       animationType="slide"
       transparent={false}
     >
-      <Flex flex={1} backgroundColor={color("background")}>
+      <Flex
+        flex={1}
+        backgroundColor={color("background")}
+        // Android modals are always edge-to-edge, so the sheet renders full screen under the status bar
+        style={{ paddingTop: Platform.OS === "android" ? insets.top : 0 }}
+      >
         <NavigationHeader
           leftButtonText="Cancel"
           onLeftButtonPress={() => {

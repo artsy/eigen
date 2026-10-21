@@ -1,10 +1,20 @@
 import { InfoIcon } from "@artsy/icons/native"
-import { Button, Checkbox, Flex, Message, Spacer, Text, useColor } from "@artsy/palette-mobile"
+import {
+  Button,
+  Checkbox,
+  Flex,
+  Message,
+  Spacer,
+  Text,
+  useColor,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { MyCollectionArtworkFormDeleteArtworkModalQuery } from "__generated__/MyCollectionArtworkFormDeleteArtworkModalQuery.graphql"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useState } from "react"
-import { Modal } from "react-native"
+import { Modal, Platform } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 interface MyCollectionArtworkFormDeleteArtworkModalProps {
@@ -31,6 +41,10 @@ export const MyCollectionArtworkFormDeleteArtworkModal: React.FC<MyCollectionArt
   withSuspense({
     Component: ({ visible, hideModal, deleteArtwork, artistID }) => {
       const color = useColor()
+      const space = useSpace()
+      const insets = useSafeAreaInsets()
+      // Android modals are always edge-to-edge, so the sheet renders full screen under the status bar
+      const topInset = Platform.OS === "android" ? insets.top : 0
 
       const data = useLazyLoadQuery<MyCollectionArtworkFormDeleteArtworkModalQuery>(
         myCollectionArtworkFormDeleteArtworkModalQuery,
@@ -52,7 +66,12 @@ export const MyCollectionArtworkFormDeleteArtworkModal: React.FC<MyCollectionArt
           onRequestClose={hideModal}
           animationType="slide"
         >
-          <Flex p={2} flex={1} backgroundColor={color("background")}>
+          <Flex
+            p={2}
+            flex={1}
+            backgroundColor={color("background")}
+            style={{ paddingTop: topInset + space(2) }}
+          >
             <Text variant="lg-display">Delete this artwork?</Text>
             <Spacer y={2} />
             <Text variant="sm">This artwork will be removed from My Collection.</Text>

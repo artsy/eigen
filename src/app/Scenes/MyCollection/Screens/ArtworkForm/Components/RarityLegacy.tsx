@@ -5,7 +5,8 @@ import { Select } from "app/Components/Select"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import React, { useState } from "react"
-import { Modal } from "react-native"
+import { Modal, Platform } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export type AttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION"
 
@@ -77,6 +78,8 @@ export const RarityInfoModal: React.FC<{
   visible: boolean
   onDismiss(): any
 }> = ({ title, visible, onDismiss }) => {
+  const insets = useSafeAreaInsets()
+
   return (
     <Modal
       visible={visible}
@@ -85,7 +88,12 @@ export const RarityInfoModal: React.FC<{
       presentationStyle="pageSheet"
       animationType="slide"
     >
-      <Flex flex={1} backgroundColor="background">
+      <Flex
+        flex={1}
+        backgroundColor="background"
+        // Android modals are always edge-to-edge, so the sheet renders full screen under the status bar
+        style={{ paddingTop: Platform.OS === "android" ? insets.top : 0 }}
+      >
         <NavigationHeader onLeftButtonPress={onDismiss} useXButton>
           {title}
         </NavigationHeader>
