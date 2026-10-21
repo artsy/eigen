@@ -1,6 +1,6 @@
 import { LensPhoto } from "app/Scenes/Lens/types"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
-import { StyleSheet } from "react-native"
+import { Platform, StyleSheet } from "react-native"
 import {
   Camera,
   CameraRef,
@@ -36,7 +36,10 @@ export const LensCameraPreview = forwardRef<LensCameraPreviewHandle, LensCameraP
 
     const { hasPermission, canRequestPermission, requestPermission } = useCameraPermission()
     const device = useCameraDevice("back")
-    const photoOutput = usePhotoOutput({ qualityPrioritization: "speed" })
+    // Speed freezes the camera preview in some Android versions
+    const photoOutput = usePhotoOutput({
+      qualityPrioritization: Platform.OS === "android" ? "balanced" : "speed",
+    })
     const camera = useRef<CameraRef>(null)
     // Unmount the native <Camera> on a runtime error rather than leaving it up: on Android its
     // SurfaceView keeps compositing a black surface above the JS tree even after the session has
