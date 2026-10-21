@@ -358,7 +358,8 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
                   headerShown: false,
                   cardStyle: {
                     backgroundColor: color("mono0"),
-                    paddingTop: Platform.OS === "ios" ? insets?.top : 0,
+                    // Android modals are always edge-to-edge, so they draw under the status bar too
+                    paddingTop: insets.top,
                   },
                 }}
               >
