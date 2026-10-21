@@ -30,7 +30,7 @@ jobs:
             Closed after 44 days of inactivity. Feel free to reopen if it's still relevant.
           delete-branch: false
           exempt-draft-pr: true
-          exempt-pr-labels: "Do not merge,in progress,in-progress,RFC,EPIC"
+          exempt-pr-labels: "in progress,in-progress"
           remove-pr-stale-when-updated: true
 
           operations-per-run: 100
