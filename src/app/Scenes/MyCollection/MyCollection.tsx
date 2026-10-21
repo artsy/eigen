@@ -14,6 +14,7 @@ import {
 import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
 // eslint-disable-next-line no-restricted-imports
 import { goBack, navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -37,6 +38,8 @@ export enum Tab {
 const DOT_DIAMETER = 6 * PixelRatio.getFontScale()
 
 const MyCollection: React.FC = () => {
+  const enableShowSellArtwork = useFeatureFlag("AREnableSellMyCollectionArtwork")
+
   const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
   const { setActiveNavigationTab, setIsFilterModalVisible, setViewKind } =
     MyCollectionTabsStore.useStoreActions((actions) => actions)
@@ -99,42 +102,44 @@ const MyCollection: React.FC = () => {
               setActiveNavigationTab(tab as MyCollectionNavigationTab)
             }}
             stickyTabBarComponent={
-              <Flex flexDirection="row" alignItems="center" gap={2} mr={2}>
-                {/* Filtering is only available for artworks */}
-                {activeNavigationTab === Tab.artworks && (
-                  <Touchable
-                    accessibilityRole="button"
-                    hitSlop={ICON_HIT_SLOP}
-                    onPress={() => {
-                      setIsFilterModalVisible(true)
-                    }}
-                  >
-                    {!!filtersCount && (
-                      <Flex position="absolute" right={0} top={0}>
-                        <VisualClueDot diameter={DOT_DIAMETER} />
-                      </Flex>
-                    )}
+              enableShowSellArtwork ? null : (
+                <Flex flexDirection="row" alignItems="center" gap={2} mr={2}>
+                  {/* Filtering is only available for artworks */}
+                  {activeNavigationTab === Tab.artworks && (
+                    <Touchable
+                      accessibilityRole="button"
+                      hitSlop={ICON_HIT_SLOP}
+                      onPress={() => {
+                        setIsFilterModalVisible(true)
+                      }}
+                    >
+                      {!!filtersCount && (
+                        <Flex position="absolute" right={0} top={0}>
+                          <VisualClueDot diameter={DOT_DIAMETER} />
+                        </Flex>
+                      )}
 
-                    <FilterIcon
-                      height={ACCESSIBLE_DEFAULT_ICON_SIZE}
-                      width={ACCESSIBLE_DEFAULT_ICON_SIZE}
-                    />
-                  </Touchable>
-                )}
+                      <FilterIcon
+                        height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                        width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                      />
+                    </Touchable>
+                  )}
 
-                {activeNavigationTab !== Tab.insights && (
-                  <Touchable
-                    accessibilityRole="button"
-                    hitSlop={ICON_HIT_SLOP}
-                    onPress={() => handleCreateButtonPress()}
-                  >
-                    <AddIcon
-                      height={ACCESSIBLE_DEFAULT_ICON_SIZE}
-                      width={ACCESSIBLE_DEFAULT_ICON_SIZE}
-                    />
-                  </Touchable>
-                )}
-              </Flex>
+                  {activeNavigationTab !== Tab.insights && (
+                    <Touchable
+                      accessibilityRole="button"
+                      hitSlop={ICON_HIT_SLOP}
+                      onPress={() => handleCreateButtonPress()}
+                    >
+                      <AddIcon
+                        height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                        width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                      />
+                    </Touchable>
+                  )}
+                </Flex>
+              )
             }
             variant="pills"
           >
@@ -142,9 +147,11 @@ const MyCollection: React.FC = () => {
               <MyCollectionArtworksQueryRenderer />
             </Tabs.Tab>
 
-            <Tabs.Tab name={Tab.artists} label={Tab.artists}>
-              <MyCollectionCollectedArtistsQueryRenderer />
-            </Tabs.Tab>
+            {!enableShowSellArtwork ? (
+              <Tabs.Tab name={Tab.artists} label={Tab.artists}>
+                <MyCollectionCollectedArtistsQueryRenderer />
+              </Tabs.Tab>
+            ) : null}
 
             <Tabs.Tab name={Tab.insights} label={Tab.insights}>
               <MyCollectionInsightsQR />
