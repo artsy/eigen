@@ -12,6 +12,7 @@ import { ArtistAutosuggestResultsQuery } from "__generated__/ArtistAutosuggestRe
 import { ArtistAutosuggestResults_results$data } from "__generated__/ArtistAutosuggestResults_results.graphql"
 import { ErrorView } from "app/Components/ErrorView/ErrorView"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { extractNodes } from "app/utils/extractNodes"
 import {
   ProvidePlaceholderContext,
   PlaceholderBox,
@@ -64,12 +65,7 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
   const results = useRef(latestResults)
   results.current = latestResults || results.current
 
-  const nodes: ArtistAutosuggestResult[] = useMemo(
-    () =>
-      results.current?.results?.edges?.map((e, i) => ({ ...e?.node!, key: e?.node?.href! + i })) ??
-      [],
-    [results.current]
-  )
+  const nodes = useMemo(() => extractNodes(results.current?.results), [results.current])
 
   const noResults = results.current && results.current.results?.edges?.length === 0
 
@@ -119,7 +115,6 @@ const AutoSuggestBoxContainer: React.FC<React.PropsWithChildren> = ({ children }
         borderColor: "#707070",
         borderWidth: 1,
         marginTop: 3,
-        height: 175,
         overflow: "hidden",
       }}
     >
