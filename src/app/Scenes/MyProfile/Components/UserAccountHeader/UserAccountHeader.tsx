@@ -66,88 +66,90 @@ export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({
     >
       <AccountCardWapper showBorder={showBorder} scrollEnabled={!tappable}>
         <Join separator={<Spacer y={2} />}>
-          {/* Avatar */}
-          <RouterLink to="/my-profile/edit" onPress={onAvatarPress}>
-            <Flex
-              height={PROFILE_IMAGE_SIZE}
-              width={PROFILE_IMAGE_SIZE}
-              borderRadius={PROFILE_IMAGE_SIZE / 2}
-              backgroundColor={color("mono5")}
-              borderWidth={me?.icon?.url ? undefined : 1}
-              borderColor={me?.icon?.url ? undefined : color("mono10")}
-              alignItems="center"
-              justifyContent="center"
-            >
-              {me?.icon?.url ? (
-                <Flex overflow="hidden" borderRadius={PROFILE_IMAGE_SIZE / 2}>
-                  <Image
-                    src={me.icon.url}
-                    height={PROFILE_IMAGE_SIZE}
-                    width={PROFILE_IMAGE_SIZE}
-                    performResize={false}
-                    testID="profile-image"
-                  />
-                </Flex>
-              ) : (
-                <PersonIcon width={18} height={18} />
-              )}
-              {!!me.isIdentityVerified && (
-                <Flex
-                  width={22}
-                  height={22}
-                  borderRadius={11}
-                  backgroundColor="blue100"
-                  alignItems="center"
-                  justifyContent="center"
-                  position="absolute"
-                  right={0}
-                  bottom={0}
-                  testID="identity-verified-icon"
-                >
-                  <ShieldIcon fill="mono0" />
-                </Flex>
-              )}
+          <Flex flexDirection="row" alignItems="center" width="100%" gap={2}>
+            {/* Avatar */}
+            <RouterLink to="/my-profile/edit" onPress={onAvatarPress}>
+              <Flex
+                height={PROFILE_IMAGE_SIZE}
+                width={PROFILE_IMAGE_SIZE}
+                borderRadius={PROFILE_IMAGE_SIZE / 2}
+                backgroundColor={color("mono5")}
+                borderWidth={me?.icon?.url ? undefined : 1}
+                borderColor={me?.icon?.url ? undefined : color("mono10")}
+                alignItems="center"
+                justifyContent="center"
+              >
+                {me?.icon?.url ? (
+                  <Flex overflow="hidden" borderRadius={PROFILE_IMAGE_SIZE / 2}>
+                    <Image
+                      src={me.icon.url}
+                      height={PROFILE_IMAGE_SIZE}
+                      width={PROFILE_IMAGE_SIZE}
+                      performResize={false}
+                      testID="profile-image"
+                    />
+                  </Flex>
+                ) : (
+                  <PersonIcon width={18} height={18} />
+                )}
+                {!!me.isIdentityVerified && (
+                  <Flex
+                    width={22}
+                    height={22}
+                    borderRadius={11}
+                    backgroundColor="blue100"
+                    alignItems="center"
+                    justifyContent="center"
+                    position="absolute"
+                    right={0}
+                    bottom={0}
+                    testID="identity-verified-icon"
+                  >
+                    <ShieldIcon fill="mono0" />
+                  </Flex>
+                )}
+              </Flex>
+            </RouterLink>
+
+            <Flex>
+              {/* Name */}
+              <Text variant="lg-display" color="mono100">
+                {me.name}
+              </Text>
+
+              <Spacer y={1} />
+
+              {/* Information */}
+              <Flex flexDirection="row" flexWrap="wrap">
+                <Join separator={<Spacer x={2} />}>
+                  {!!me?.location?.display && (
+                    <Flex flexDirection="row" justifyContent="center" alignItems="center">
+                      <MapPinIcon />
+                      <Text variant="xs" ml={0.5}>
+                        {me.location.display}
+                      </Text>
+                    </Flex>
+                  )}
+                  {!!me?.profession && (
+                    <Flex flexDirection="row" justifyContent="center" alignItems="center">
+                      <BriefcaseIcon />
+                      <Text variant="xs" ml={0.5}>
+                        {me.profession}
+                      </Text>
+                    </Flex>
+                  )}
+                  {!!me?.otherRelevantPositions && (
+                    <Flex flexDirection="row" justifyContent="center" alignItems="center">
+                      <InstitutionIcon />
+                      <Text variant="xs" ml={0.5}>
+                        {me.otherRelevantPositions}
+                      </Text>
+                    </Flex>
+                  )}
+                </Join>
+              </Flex>
             </Flex>
-          </RouterLink>
-
-          <>
-            {/* Name */}
-            <Text variant="lg-display" color="mono100">
-              {me.name}
-            </Text>
-
-            <Spacer y={1} />
-
-            {/* Information */}
-            <Flex flexDirection="row" flexWrap="wrap" justifyContent="center">
-              <Join separator={<Spacer x={2} />}>
-                {!!me?.location?.display && (
-                  <Flex flexDirection="row" justifyContent="center" alignItems="center">
-                    <MapPinIcon />
-                    <Text variant="xs" ml={0.5}>
-                      {me.location.display}
-                    </Text>
-                  </Flex>
-                )}
-                {!!me?.profession && (
-                  <Flex flexDirection="row" justifyContent="center" alignItems="center">
-                    <BriefcaseIcon />
-                    <Text variant="xs" ml={0.5}>
-                      {me.profession}
-                    </Text>
-                  </Flex>
-                )}
-                {!!me?.otherRelevantPositions && (
-                  <Flex flexDirection="row" justifyContent="center" alignItems="center">
-                    <InstitutionIcon />
-                    <Text variant="xs" ml={0.5}>
-                      {me.otherRelevantPositions}
-                    </Text>
-                  </Flex>
-                )}
-              </Join>
-            </Flex>
-          </>
+          </Flex>
 
           {!!showMyCollectionPreview && <MyCollectionPreview me={me} />}
 
@@ -267,22 +269,27 @@ const userAccountHeaderFragment = graphql`
 const Placeholder: React.FC<{ showBorder?: boolean }> = ({ showBorder }) => {
   return (
     <AccountCardWapper showBorder={showBorder}>
-      <SkeletonBox
-        height={PROFILE_IMAGE_SIZE}
-        width={PROFILE_IMAGE_SIZE}
-        borderRadius={PROFILE_IMAGE_SIZE / 2}
-        backgroundColor="mono5"
-        alignItems="center"
-        justifyContent="center"
-      />
+      <Flex flexDirection="row" alignItems="center" width="100%" gap={2}>
+        {/* Avatar */}
+        <SkeletonBox
+          height={PROFILE_IMAGE_SIZE}
+          width={PROFILE_IMAGE_SIZE}
+          borderRadius={PROFILE_IMAGE_SIZE / 2}
+          backgroundColor="mono5"
+          alignItems="center"
+          justifyContent="center"
+        />
 
-      <Spacer y={2} />
+        <Flex flex={1}>
+          {/* Name */}
+          <SkeletonBox height={24} width={160} />
 
-      <SkeletonBox height={24} width={160} />
+          <Spacer y={1} />
 
-      <Spacer y={2} />
-
-      <SkeletonBox height={20} width={230} />
+          {/* Information */}
+          <SkeletonBox height={20} width="100%" maxWidth={200} />
+        </Flex>
+      </Flex>
     </AccountCardWapper>
   )
 }
