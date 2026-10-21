@@ -38,7 +38,7 @@ export const SearchEmptyResultsArtAssistantCTA: React.FC<
 
       <RouterLink
         to="/art-assistant"
-        navigationProps={{ initialPrompt: query.trim() }}
+        navigationProps={{ initialPrompt: query.trim(), sendInitialPrompt: true }}
         disablePrefetch
         hasChildTouchable
         onPress={handlePress}

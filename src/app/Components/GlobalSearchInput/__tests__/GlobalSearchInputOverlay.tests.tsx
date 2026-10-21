@@ -161,6 +161,20 @@ describe("GlobalSearchInputOverlay — Art Assistant entry point", () => {
     expect(navigate).toHaveBeenCalledWith("/art-assistant")
   })
 
+  it("prefills Art Assistant with the search query", () => {
+    renderOverlay()
+
+    fireEvent.changeText(
+      screen.getByLabelText("Search artists, artworks, galleries etc."),
+      " moody seascapes "
+    )
+    fireEvent.press(screen.getByTestId("art-assistant-search-overlay-button"))
+
+    expect(navigate).toHaveBeenCalledWith("/art-assistant", {
+      passProps: { initialPrompt: "moody seascapes" },
+    })
+  })
+
   it("reports the tap against the overlay, not the search bar", () => {
     renderOverlay()
 

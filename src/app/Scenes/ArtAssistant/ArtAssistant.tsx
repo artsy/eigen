@@ -34,14 +34,19 @@ const COMPOSER_MAX_TEXT_HEIGHT = 4 * COMPOSER_LINE_HEIGHT
 
 interface ArtAssistantProps {
   initialPrompt?: string
+  sendInitialPrompt?: boolean
   onClose?: () => void
 }
 
-export const ArtAssistant: React.FC<ArtAssistantProps> = ({ initialPrompt = "", onClose = goBack }) => {
+export const ArtAssistant: React.FC<ArtAssistantProps> = ({
+  initialPrompt = "",
+  sendInitialPrompt = false,
+  onClose = goBack,
+}) => {
   const color = useColor()
   const space = useSpace()
   const { bottom } = useSafeAreaInsets()
-  const [prompt, setPrompt] = useState(initialPrompt)
+  const [prompt, setPrompt] = useState(sendInitialPrompt ? "" : initialPrompt)
   const [isComposerFocused, setIsComposerFocused] = useState(false)
   const [isNewChatDialogVisible, setIsNewChatDialogVisible] = useState(false)
   const [dismissedErrorID, setDismissedErrorID] = useState<string | null>(null)
@@ -53,6 +58,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ initialPrompt = "", 
   const pendingScrollIndex = useRef<number | null>(null)
   const anchoredTurn = useRef<{ id: string; index: number } | null>(null)
   const messageListHeight = useRef(0)
+  const didSendInitialPrompt = useRef(false)
   const composerKeyboardGap = space(1)
   const messageGap = space(2)
   const canSend = prompt.trim().length > 0 && !isResponding
@@ -121,6 +127,16 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ initialPrompt = "", 
   const handleSend = () => {
     sendPrompt(prompt, "typed")
   }
+
+  useEffect(() => {
+    if (!sendInitialPrompt || didSendInitialPrompt.current) {
+      return
+    }
+
+    didSendInitialPrompt.current = true
+    sendPrompt(initialPrompt, "typed")
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleSelectErrorAction = (action: ArtAssistantErrorAction, messageID: string) => {
     switch (action) {

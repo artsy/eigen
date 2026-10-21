@@ -51,6 +51,23 @@ describe("ArtAssistant", () => {
     expect(environment.mock.getAllOperations()).toHaveLength(0)
   })
 
+  it("sends the initial prompt as soon as the screen opens when asked to", () => {
+    const environment = createMockEnvironment()
+    renderWithHookWrappersTL(
+      <ArtAssistant initialPrompt="moody seascapes" sendInitialPrompt />,
+      environment
+    )
+
+    expect(screen.getByText("moody seascapes")).toBeOnTheScreen()
+    expect(screen.getByTestId("art-assistant-user-message")).toBeOnTheScreen()
+    expect(screen.getByText("Thinking...")).toBeOnTheScreen()
+    expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp("value", "")
+    expect(environment.mock.getAllOperations()).toHaveLength(1)
+    expect(environment.mock.getMostRecentOperation().request.variables.input).toEqual(
+      expect.objectContaining({ message: "moody seascapes" })
+    )
+  })
+
   it("sends a suggestion as soon as it is picked", () => {
     const environment = createMockEnvironment()
     renderWithHookWrappersTL(<ArtAssistant />, environment)
