@@ -36,7 +36,8 @@
 # (com.stripe:stripe-android-issuing-push-provisioning), which we don't depend on.
 -dontwarn com.stripe.android.pushProvisioning.**
 
-# Google Sign-In: R8 optimization can inline or rewrite the code that maps GoogleSignInAccount
-# into the user object handed to JS (see react-native-google-signin/google-signin#1438).
--keep class com.reactnativegooglesignin.** { *; }
--keep class com.google.android.gms.auth.api.signin.** { *; }
+# R8 optimization (proguard-android-optimize.txt) breaks the Play services token flow
+# (GoogleAuthUtil.getToken) used by @react-native-google-signin, so Google sign-in/sign-up fail
+# natively. Play services is ~2% of the app's classes, so excluding it from optimization costs little.
+-keep class com.google.android.gms.** { *; }
+-dontwarn com.google.android.gms.**
