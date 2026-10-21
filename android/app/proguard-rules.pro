@@ -35,3 +35,8 @@
 # @stripe/stripe-react-native references the optional push-provisioning SDK
 # (com.stripe:stripe-android-issuing-push-provisioning), which we don't depend on.
 -dontwarn com.stripe.android.pushProvisioning.**
+
+# Google Sign-In: R8 optimization can inline or rewrite the code that maps GoogleSignInAccount
+# into the user object handed to JS (see react-native-google-signin/google-signin#1438).
+-keep class com.reactnativegooglesignin.** { *; }
+-keep class com.google.android.gms.auth.api.signin.** { *; }

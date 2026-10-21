@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The google-services plugin generates @string/default_web_client_id, which Google Sign-In looks up
+  by NAME via Resources.getIdentifier(), so R8's optimized resource shrinking
+  (android.r8.optimizedResourceShrinking) considers it unreachable and strips it.
+  See react-native-google-signin/google-signin#1528.
+
+  NOTE: this file must NOT be named keep.xml (see braze_keep.xml for why).
+-->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@string/default_web_client_id" />
