@@ -13,7 +13,7 @@ type ViewPayload =
       interestId: string
     }
 
-export type MyCollectionNavigationTab = "Artworks" | "Artists" | "Insights"
+export type MyCollectionNavigationTab = "Artworks" | "Artists" | "Insights" | "Listings"
 export interface MyCollectionTabsStoreModel {
   activeNavigationTab: MyCollectionNavigationTab
   artistId: string | null

@@ -21,6 +21,7 @@ import { screen } from "app/utils/track/helpers"
 import { debounce } from "lodash"
 import { useEffect } from "react"
 import { MyCollectionArtworksQueryRenderer } from "./MyCollectionArtworks"
+import { MyCollectionListingsQueryRenderer } from "./MyCollectionListings"
 import {
   MyCollectionNavigationTab,
   MyCollectionTabsStore,
@@ -32,6 +33,7 @@ export enum Tab {
   artists = "Artists",
   insights = "Insights",
   collection = "My Collection",
+  listings = "Listings",
 }
 
 const MyCollection: React.FC = () => {
@@ -142,6 +144,12 @@ const MyCollection: React.FC = () => {
             <Tabs.Tab name={Tab.insights} label={Tab.insights}>
               <MyCollectionInsightsQR />
             </Tabs.Tab>
+
+            {enableShowSellArtwork ? (
+              <Tabs.Tab name={Tab.listings} label={Tab.listings}>
+                <MyCollectionListingsQueryRenderer />
+              </Tabs.Tab>
+            ) : null}
           </Tabs>
         </Screen.Body>
       </Screen>
