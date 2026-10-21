@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
-import { AddIcon, FilterIcon, MoreIcon } from "@artsy/icons/native"
-import { Flex, Screen, Tabs, Touchable, VisualClueDot } from "@artsy/palette-mobile"
+import { AddIcon, MoreIcon } from "@artsy/icons/native"
+import { Flex, Screen, Tabs, Touchable } from "@artsy/palette-mobile"
 import { ACCESSIBLE_DEFAULT_ICON_SIZE, ICON_HIT_SLOP } from "app/Components/constants"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
 import {
@@ -20,7 +20,6 @@ import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { debounce } from "lodash"
 import { useEffect } from "react"
-import { PixelRatio } from "react-native"
 import { MyCollectionArtworksQueryRenderer } from "./MyCollectionArtworks"
 import {
   MyCollectionNavigationTab,
@@ -35,17 +34,14 @@ export enum Tab {
   collection = "My Collection",
 }
 
-const DOT_DIAMETER = 6 * PixelRatio.getFontScale()
-
 const MyCollection: React.FC = () => {
   const enableShowSellArtwork = useFeatureFlag("AREnableSellMyCollectionArtwork")
 
   const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
-  const { setActiveNavigationTab, setIsFilterModalVisible, setViewKind } =
-    MyCollectionTabsStore.useStoreActions((actions) => actions)
-  const { activeNavigationTab, filtersCount } = MyCollectionTabsStore.useStoreState(
-    (state) => state
+  const { setActiveNavigationTab, setViewKind } = MyCollectionTabsStore.useStoreActions(
+    (actions) => actions
   )
+  const { activeNavigationTab } = MyCollectionTabsStore.useStoreState((state) => state)
 
   useEffect(() => {
     prefetchQuery({ query: myCollectionCollectedArtistsQuery })
@@ -104,28 +100,6 @@ const MyCollection: React.FC = () => {
             stickyTabBarComponent={
               enableShowSellArtwork ? null : (
                 <Flex flexDirection="row" alignItems="center" gap={2} mr={2}>
-                  {/* Filtering is only available for artworks */}
-                  {activeNavigationTab === Tab.artworks && (
-                    <Touchable
-                      accessibilityRole="button"
-                      hitSlop={ICON_HIT_SLOP}
-                      onPress={() => {
-                        setIsFilterModalVisible(true)
-                      }}
-                    >
-                      {!!filtersCount && (
-                        <Flex position="absolute" right={0} top={0}>
-                          <VisualClueDot diameter={DOT_DIAMETER} />
-                        </Flex>
-                      )}
-
-                      <FilterIcon
-                        height={ACCESSIBLE_DEFAULT_ICON_SIZE}
-                        width={ACCESSIBLE_DEFAULT_ICON_SIZE}
-                      />
-                    </Touchable>
-                  )}
-
                   {activeNavigationTab !== Tab.insights && (
                     <Touchable
                       accessibilityRole="button"

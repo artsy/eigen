@@ -1,4 +1,4 @@
-import { Box, Flex, Tabs, useSpace } from "@artsy/palette-mobile"
+import { Box, Flex, Tabs, Text, useSpace } from "@artsy/palette-mobile"
 import { ListRenderItem } from "@shopify/flash-list"
 import { MyCollectionArtworksQuery } from "__generated__/MyCollectionArtworksQuery.graphql"
 import { MyCollectionArtworks_me$key } from "__generated__/MyCollectionArtworks_me.graphql"
@@ -8,10 +8,12 @@ import {
   ArtworksFiltersStore,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
+import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { PAGE_SIZE } from "app/Components/constants"
+import { MyCollectionArtworksActions } from "app/Scenes/MyCollection/Components/MyCollectionArtworksActions"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyCollectionZeroState"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
@@ -96,6 +98,35 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }
     []
   )
 
+  // The total is only known for the whole collection; once a filter or keyword narrows the list,
+  // count what is actually shown.
+  const isNarrowed = filtersCount > 0 || !!query
+  const artworksCount = isNarrowed
+    ? filteredArtworks.length
+    : data.myCollectionInfo?.artworksCount ?? filteredArtworks.length
+
+  const listHeaderComponent = useMemo(
+    () => (
+      <Flex px={1}>
+        <Tabs.SubTabBar>
+          <ArtworksFilterHeader
+            onFilterPress={() => setIsFilterModalVisible(true)}
+            selectedFiltersCount={filtersCount}
+            childrenPosition="left"
+          >
+            <MyCollectionArtworksActions />
+          </ArtworksFilterHeader>
+        </Tabs.SubTabBar>
+        <Flex pt={1}>
+          <Text variant="xs" weight="medium">{`${artworksCount} Artwork${
+            artworksCount === 1 ? "" : "s"
+          }:`}</Text>
+        </Flex>
+      </Flex>
+    ),
+    [filtersCount, artworksCount, setIsFilterModalVisible]
+  )
+
   const listFooterComponent = useMemo(
     () => <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />,
     [shouldDisplaySpinner]
@@ -139,6 +170,9 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }
         renderItem={renderItem}
         onEndReached={onEndReached}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
+        // zIndex: 1 keeps the SubTabBar visible above the list content
+        ListHeaderComponentStyle={{ zIndex: 1 }}
+        ListHeaderComponent={listHeaderComponent}
         ListFooterComponent={listFooterComponent}
         refreshControl={RefreshControl}
       />
