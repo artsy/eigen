@@ -3801,6 +3801,10 @@ type ArtnetEditionSet {
 }
 
 type ArtnetImport {
+  """
+  Artnet works not yet created because their artist hasn't been assigned.
+  """
+  awaitingArtistCount: Int
   completedAt(
     format: String
 
@@ -3839,6 +3843,16 @@ type ArtnetImport {
   A type-specific ID likely used as a database ID.
   """
   internalID: ID!
+
+  """
+  Artnet works linked to an artwork the partner already had, without creating a new one.
+  """
+  linkedCount: Int
+
+  """
+  Created artworks that might duplicate an existing artwork and need the partner's review.
+  """
+  reviewCount: Int
   skippedCount: Int
   state: ArtnetImportState
   totalCount: Int
@@ -4858,6 +4872,11 @@ type ArtworkDuplicatePair {
   True when both sides of an import-scoped pair came from the same Artnet import — the 'existing' side isn't actually pre-existing inventory, just the sibling artwork the detector found second.
   """
   existingArtworkAlsoImported: Boolean!
+
+  """
+  True when the existing side of an import-scoped pair is live on Artsy, so a merge must keep it unchanged.
+  """
+  existingArtworkLive: Boolean!
 
   """
   A globally unique ID.
