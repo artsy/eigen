@@ -20,6 +20,7 @@ import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyColle
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { cleanLocalImages } from "app/utils/LocalImageStore"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { NUM_COLUMNS_MASONRY, ON_END_REACHED_THRESHOLD_MASONRY } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
@@ -41,6 +42,7 @@ interface MyCollectionArtworksProps {
 
 export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }) => {
   const space = useSpace()
+  const enableShowSellArtwork = useFeatureFlag("AREnableSellMyCollectionArtwork")
   const { setIsFilterModalVisible, setFiltersCount } = MyCollectionTabsStore.useStoreActions(
     (actions) => actions
   )
@@ -105,8 +107,12 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }
     ? filteredArtworks.length
     : data.myCollectionInfo?.artworksCount ?? filteredArtworks.length
 
-  const listHeaderComponent = useMemo(
-    () => (
+  const listHeaderComponent = useMemo(() => {
+    if (!enableShowSellArtwork) {
+      return undefined
+    }
+
+    return (
       <Flex px={1}>
         <Tabs.SubTabBar>
           <ArtworksFilterHeader
@@ -123,9 +129,8 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }
           }:`}</Text>
         </Flex>
       </Flex>
-    ),
-    [filtersCount, artworksCount, setIsFilterModalVisible]
-  )
+    )
+  }, [enableShowSellArtwork, filtersCount, artworksCount, setIsFilterModalVisible])
 
   const listFooterComponent = useMemo(
     () => <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />,
