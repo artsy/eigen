@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { AddIcon, MoreIcon } from "@artsy/icons/native"
-import { Flex, Screen, Tabs, Touchable } from "@artsy/palette-mobile"
+import { Flex, Screen, Tabs, Touchable, useColor } from "@artsy/palette-mobile"
 import { ACCESSIBLE_DEFAULT_ICON_SIZE, ICON_HIT_SLOP } from "app/Components/constants"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
 import {
@@ -35,6 +35,7 @@ export enum Tab {
 }
 
 const MyCollection: React.FC = () => {
+  const color = useColor()
   const enableShowSellArtwork = useFeatureFlag("AREnableSellMyCollectionArtwork")
 
   const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
@@ -90,6 +91,17 @@ const MyCollection: React.FC = () => {
         <Screen.Body fullwidth>
           <Tabs
             renderHeader={() => <UserAccountHeaderQueryRenderer />}
+            // Wraps the header and the sticky tab bar, so this draws a border under the tab bar
+            // that applies to every tab. Passing it replaces palette's default container style,
+            // so that is repeated here.
+            headerContainerStyle={{
+              shadowOpacity: 0,
+              shadowRadius: 0,
+              elevation: 0,
+              backgroundColor: color("background"),
+              borderBottomWidth: 1,
+              borderBottomColor: color("mono10"),
+            }}
             headerHeight={500}
             pagerProps={{
               scrollEnabled: false,
@@ -115,7 +127,7 @@ const MyCollection: React.FC = () => {
                 </Flex>
               )
             }
-            variant="pills"
+            variant={enableShowSellArtwork ? "tabs" : "pills"}
           >
             <Tabs.Tab name={Tab.artworks} label={Tab.artworks}>
               <MyCollectionArtworksQueryRenderer />
