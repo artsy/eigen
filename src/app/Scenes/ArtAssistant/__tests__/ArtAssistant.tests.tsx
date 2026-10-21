@@ -68,6 +68,27 @@ describe("ArtAssistant", () => {
     )
   })
 
+  it("does not send the initial prompt when the flag comes from a URL query param", () => {
+    const environment = createMockEnvironment()
+    renderWithHookWrappersTL(
+      // @ts-expect-error URL query params reach the screen as strings
+      <ArtAssistant initialPrompt="moody seascapes" sendInitialPrompt="true" />,
+      environment
+    )
+
+    expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp("value", "moody seascapes")
+    expect(screen.queryByTestId("art-assistant-user-message")).not.toBeOnTheScreen()
+    expect(environment.mock.getAllOperations()).toHaveLength(0)
+  })
+
+  it("renders an empty composer when the initial prompt is a bare URL query param", () => {
+    // @ts-expect-error a bare `?initialPrompt` is parsed as null
+    renderWithWrappers(<ArtAssistant initialPrompt={null} />)
+
+    expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp("value", "")
+    expect(screen.getByLabelText("Send")).toBeDisabled()
+  })
+
   it("sends a suggestion as soon as it is picked", () => {
     const environment = createMockEnvironment()
     renderWithHookWrappersTL(<ArtAssistant />, environment)

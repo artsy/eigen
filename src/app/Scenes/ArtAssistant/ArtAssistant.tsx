@@ -39,14 +39,16 @@ interface ArtAssistantProps {
 }
 
 export const ArtAssistant: React.FC<ArtAssistantProps> = ({
-  initialPrompt = "",
-  sendInitialPrompt = false,
+  initialPrompt,
+  sendInitialPrompt,
   onClose = goBack,
 }) => {
+  const initialText = typeof initialPrompt === "string" ? initialPrompt : ""
+  const shouldSendInitialPrompt = sendInitialPrompt === true
   const color = useColor()
   const space = useSpace()
   const { bottom } = useSafeAreaInsets()
-  const [prompt, setPrompt] = useState(sendInitialPrompt ? "" : initialPrompt)
+  const [prompt, setPrompt] = useState(shouldSendInitialPrompt ? "" : initialText)
   const [isComposerFocused, setIsComposerFocused] = useState(false)
   const [isNewChatDialogVisible, setIsNewChatDialogVisible] = useState(false)
   const [dismissedErrorID, setDismissedErrorID] = useState<string | null>(null)
@@ -129,12 +131,12 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
   }
 
   useEffect(() => {
-    if (!sendInitialPrompt || didSendInitialPrompt.current) {
+    if (!shouldSendInitialPrompt || didSendInitialPrompt.current) {
       return
     }
 
     didSendInitialPrompt.current = true
-    sendPrompt(initialPrompt, "typed")
+    sendPrompt(initialText, "typed")
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
