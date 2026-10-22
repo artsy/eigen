@@ -203,6 +203,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCityGuideArticlesForYou",
   },
+  AREnableSellMyCollectionArtwork: {
+    description: "Enable the new Sell My Collection Artwork experience",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
