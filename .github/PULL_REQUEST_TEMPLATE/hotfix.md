@@ -1,4 +1,6 @@
-> [!WARNING] > **Do not merge.** This PR is the record of what is live over the air for this app version —
+<!-- prettier-ignore -->
+> [!WARNING]
+> **Do not merge.** This PR is the record of what is live over the air for this app version —
 > its branch tip is the published commit. Merging it would lose that. Close it by hand once the
 > version stops receiving hotfixes.
 

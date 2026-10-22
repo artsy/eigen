@@ -51,6 +51,21 @@ Creates `hotfix-v9.21.0` (or adds to it), cherry-picks, pushes, and opens or ext
 Shipping several fixes? Pass them oldest first, or run `start-hotfix` again when the next one lands
 — [same branch either way](deploy_to_expo_updates.md#one-branch-per-app-version).
 
+**If the cherry-pick conflicts**, `start-hotfix` stops before pushing and leaves you on
+`hotfix-v9.21.0` mid-cherry-pick. Resolve it, then:
+
+```sh
+git add <resolved files>
+git cherry-pick --continue
+./scripts/deploys/expo-updates/start-hotfix 9.21.0 --continue
+```
+
+`--continue` checks that native code didn't change, pushes the branch and adds the section to the
+hotfix PR, just like a normal run. Don't re-run `start-hotfix` with the SHA instead, and don't push
+by hand: that skips the native check and leaves the fix out of the release notes. If you passed
+several fixes and a later one hadn't been applied yet, run `start-hotfix 9.21.0 <sha>...` again for
+the rest afterwards.
+
 ### 3. Wait for the canary
 
 Pushing the branch publishes a canary automatically — nothing to run. `start-hotfix` prints the run

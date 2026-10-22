@@ -23,7 +23,9 @@ echo "Initial native fingerprint: $initial_fingerprint"
 # commit always points back to the fix that was reviewed and merged on main.
 git cherry-pick -x "$commit_hash" || {
     echo "❌ Error cherry-picking commit: $commit_hash" >&2
-    echo "   Resolve the conflict, then 'git cherry-pick --continue', or 'git cherry-pick --abort'." >&2
+    echo "   Resolve the conflict, then 'git cherry-pick --continue' and, if you came from" >&2
+    echo "   start-hotfix, './scripts/deploys/expo-updates/start-hotfix <version> --continue'." >&2
+    echo "   Or give up with 'git cherry-pick --abort'." >&2
     exit 3
 }
 

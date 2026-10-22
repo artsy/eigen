@@ -36,9 +36,12 @@ We have 3 channels currently:
 - staging - the latest main changes
 - canary - for developer testing off main, and published automatically for every commit on a `hotfix-v*` branch
 
-> [!IMPORTANT] > **Publishing to `production` is gated.** It only works from a `hotfix-vX.Y.Z` branch that has a
-> hotfix PR and a successful canary of the same commit, and it always covers both platforms. There
-> is no override. To ship one, follow [Deploy a hotfix](deploy_a_hotfix.md); for the gate's rules and
+<!-- prettier-ignore -->
+> [!IMPORTANT]
+> **Publishing to `production` is gated.** It only works from a `hotfix-vX.Y.Z` branch that has a
+> hotfix PR and a successful canary of the same commit, and it always covers both platforms. The
+> gate has no override flag, but it only guards the CI workflow — see [what the gate doesn't
+> cover](#what-the-gate-doesnt-cover). To ship one, follow [Deploy a hotfix](deploy_a_hotfix.md); for the gate's rules and
 > everything around them, see [Hotfixes](#hotfixes) below.
 
 For testing your changes you want canary. Deploying to canary will make any previous deploys unavailable so drop a note in **#practice-mobile** to make sure you are not overwriting others work.
@@ -163,7 +166,7 @@ background — why the flow looks the way it does, and what to do when it doesn'
 A production Expo Update reaches users **without store review**, so it is held to the same standard
 as a store release: the code is on a hotfix branch, that branch has a hotfix PR, a canary of the
 exact same commit was QA'd first, and the publish leaves a GitHub release and a Slack message behind
-it. CI enforces this and there is no override.
+it. The CI workflow enforces this and has no override flag.
 
 ### One branch per app version
 
@@ -210,9 +213,23 @@ Before anything is published, CI checks that:
    this version
 5. a **successful canary of the same commit**, covering both platforms, exists
 
-If any fail, the publish stops before `eas update` runs. There is no override: if GitHub Actions or
-EAS is down, the fallbacks are a rollback (not gated) or a native hotfix. The gate lives in
-`scripts/deploys/expo-updates/productionGate/`.
+If any fail, the publish stops before `eas update` runs. There is no override flag: if GitHub
+Actions or EAS is down, the fallbacks are a rollback (not gated) or a native hotfix. The gate lives
+in `scripts/deploys/expo-updates/productionGate/`.
+
+#### What the gate doesn't cover
+
+The gate is a step in `deploy-expo-update.yml`, and a `workflow_dispatch` runs the copy of that file
+on the branch it's dispatched from. So it is a guardrail for the normal flow, not a hard stop:
+
+- dispatching `production` from a branch cut before the gate existed (today's `rc-v*` branches)
+  runs the old workflow, with no gate
+- a commit on a `hotfix-v*` branch can edit the gate step out, and the hotfix PR is not reviewed
+- the local `deploy-to-expo-updates` script doesn't go through the gate at all
+
+Making it binding means a GitHub Environment (e.g. `expo-production`) whose deployment branches are
+limited to `hotfix-v*` and which holds the production Expo token as an environment secret. That is
+repo-settings work and isn't set up yet.
 
 ### What a production publish leaves behind
 
