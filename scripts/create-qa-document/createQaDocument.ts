@@ -8,7 +8,7 @@ import { extractChangelogFromPrBody, extractContributorsFromChangelog } from "./
 import { QA_DESTINATION_URL, QA_TEMPLATE_URL } from "./constants"
 import { duplicateTemplate, findExistingCopy } from "./duplicateNotionTemplate"
 import { fetchWithTimeout } from "./notion"
-import { getVersionFromBranch } from "./version"
+import { getVersionFromBranch, isHotfixBranch } from "./version"
 
 // Post via the release-lookout Slack bot (chat.postMessage), same auth model as
 // release-lookout/src/release-reminders.ts. Best-effort and never fatal: the QA
@@ -55,14 +55,17 @@ const postToSlack = async (text: string, threadTs?: string): Promise<string | un
   }
 }
 
-// Triggered by the release-candidate pull request (head branch `rc-v<version>`):
+// Triggered by the release-candidate pull request (head branch `rc-v<version>` or `rc-v<version>-hotfix`):
 // duplicates the Mobile App QA Notion template with the release version and
 // today's date stamped into the title, then posts the link to Slack.
 export const createQaDocument = async (
   branch: string = process.env.RC_BRANCH ?? process.env.GITHUB_HEAD_REF ?? "",
   now: DateTime = DateTime.now()
 ): Promise<void> => {
-  const version = getVersionFromBranch(branch)
+  // Hotfix QA docs get a "-hotfix" suffix so they don't collide with the
+  // original release's doc in the idempotency check below.
+  const baseVersion = getVersionFromBranch(branch)
+  const version = isHotfixBranch(branch) ? `${baseVersion}-hotfix` : baseVersion
   const today = now.toFormat("yyyy-MM-dd")
 
   // Build numbers are read from the beta git tags by the workflow and passed in
