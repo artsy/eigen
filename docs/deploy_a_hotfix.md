@@ -44,11 +44,11 @@ We will want to checkout the tag `ios-7.2.0-2022.02.03.14-submission`:
 
 ## Create a branch for the hotfix
 
-`git branch rc-v7.2.0-hotfix`
+`git branch rc-v7.2.1-hotfix`
 
-`git checkout rc-v7.2.0-hotfix`
+`git checkout rc-v7.2.1-hotfix`
 
-> The `rc-v<version>-hotfix` name lets [`rc-release-automation.yml`](../.github/workflows/rc-release-automation.yml) build the betas and create the QA document when you open a PR from this branch (see [Deploy a beta with the hotfix](#deploy-a-beta-with-the-hotfix)). Beta tags are looked up by the version in the branch name, so for a native hotfix use the version the betas will be built as (e.g. `rc-v7.2.1-hotfix`).
+> The `rc-v<version>-hotfix` name lets [`rc-release-automation.yml`](../.github/workflows/rc-release-automation.yml) build the betas and create the QA document when you open a PR from this branch (see [Deploy a beta with the hotfix](#deploy-a-beta-with-the-hotfix)). Beta tags are looked up by the version in the branch name, so name it for the version the betas will be built as: the bumped version from [Update the version number](#update-the-version-number-of-the-app-to-match-next-release), not the release you're fixing (7.2.0).
 
 ## Apply the fix(es) using the script
 
