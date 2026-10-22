@@ -213,6 +213,12 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableNewHomeFeed: {
+    description: "Enable new home feed experience",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableNewHomeFeed",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

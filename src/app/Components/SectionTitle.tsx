@@ -2,6 +2,7 @@ import { ChevronRightIcon } from "@artsy/icons/native"
 import { Flex, FlexProps, SpacingUnit, Text, TextProps } from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 type SectionTitleVariants = "small" | "default" | "large"
 
@@ -15,7 +16,7 @@ const STATES: Record<
   },
   default: {
     titleVariant: "sm-display",
-    iconSize: 12,
+    iconSize: 18,
   },
   large: {
     titleVariant: "md",
@@ -48,18 +49,21 @@ export const SectionTitle: React.FC<
   RightButtonContent = () => <RightButton variant={variant} titleColor={titleColor} />,
   ...flexProps
 }) => {
+  const newHomeFeedEnabled = useFeatureFlag("AREnableNewHomeFeed")
   let titleText
 
   if (typeof title === "string") {
     titleText = capitalized ? toTitleCase(title) : title
   }
 
+  const subtitleVariant = newHomeFeedEnabled ? "xs" : "sm-display"
+
   return (
     <Wrapper onPress={onPress} href={href} navigationProps={navigationProps}>
       <Flex mb={2} flexDirection="row" alignItems="flex-start" {...flexProps}>
         <Flex flex={1}>
           <Text
-            variant={STATES[variant].titleVariant as TextProps["variant"]}
+            variant={STATES[variant].titleVariant}
             ellipsizeMode="tail"
             numberOfLines={1}
             testID="title"
@@ -69,7 +73,7 @@ export const SectionTitle: React.FC<
           </Text>
 
           {!!subtitle && (
-            <Text variant="sm" color="mono60" lineHeight="20px" testID="subtitle">
+            <Text variant={subtitleVariant} color="mono60" testID="subtitle">
               {subtitle}
             </Text>
           )}
@@ -115,10 +119,12 @@ const RightButton = ({
 }: {
   variant: SectionTitleVariants
   titleColor: TextProps["color"]
-}) => (
-  <Flex flexDirection="row" flex={1}>
-    <Flex my="auto">
-      <ChevronRightIcon width={STATES[variant].iconSize} fill={titleColor} ml={0.5} />
+}) => {
+  return (
+    <Flex flexDirection="row" flex={1}>
+      <Flex my="auto">
+        <ChevronRightIcon width={STATES[variant].iconSize} fill={titleColor} ml={0.5} />
+      </Flex>
     </Flex>
-  </Flex>
-)
+  )
+}
