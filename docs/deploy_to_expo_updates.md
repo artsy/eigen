@@ -208,10 +208,14 @@ Before anything is published, CI checks that:
 
 1. the publish covers **both platforms**
 2. the branch is `hotfix-v<app.json version>` and the commit is its **tip**
-3. a hotfix PR from that branch into `rc-v<version>` exists and was **never merged**
+3. a hotfix PR from that branch (opened from this repository, not a fork) into `rc-v<version>`
+   exists and was **never merged**
 4. the commit descends from the store submission **and** from every OTA hotfix already published for
    this version
 5. a **successful canary of the same commit**, covering both platforms, exists
+6. no production update for this version has been published **this hour**: tags are named after the
+   hour, so a second publish would overwrite the first one's tag and release. If the first one is
+   bad, [roll it back](#rolling-back) now and publish again next hour
 
 If any fail, the publish stops before `eas update` runs. There is no override flag: if GitHub
 Actions or EAS is down, the fallbacks are a rollback (not gated) or a native hotfix. The gate lives

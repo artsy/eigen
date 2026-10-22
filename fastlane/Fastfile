@@ -4,6 +4,7 @@ require 'yaml'
 require 'spaceship'
 require 'fileutils'
 require 'json'
+require 'shellwords'
 require 'dotenv'
 
 require_relative 'monkey_patches/supply_reader_extension'
@@ -643,7 +644,7 @@ lane :deploy_to_expo_updates do |options|
   # env vars into the bundle and force a cache clear, so opt out of the check instead.
   # NODE_OPTIONS is needed to prevent a SIGABRT, due to Metro running out of heap while it bundles
   # and source-maps both platforms in one Node process.
-  expo_command = "NODE_OPTIONS=--max-old-space-size=4096 EAS_UPDATE_SKIP_ENVIRONMENT_CHECK=1 ./bin/node_modules/.bin/eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}"
+  expo_command = "NODE_OPTIONS=--max-old-space-size=4096 EAS_UPDATE_SKIP_ENVIRONMENT_CHECK=1 ./bin/node_modules/.bin/eas update --channel #{deployment_name} --message #{Shellwords.escape(description)} --platform #{platform}"
 
   if rollout_percentage
     expo_command += " --rollout-percentage=#{rollout_percentage}"

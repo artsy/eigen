@@ -51,11 +51,55 @@ export interface GateContext {
    * a workflow run, and it can't drift if the run's name changes.
    */
   canaryTags: Record<Platform, boolean>
+  /**
+   * The hour this publish will be tagged with, as digits: YYYYMMDDHH, in the runner's local time.
+   *
+   * Fastlane names the production tag after the hour and force-moves a tag that already exists, so
+   * it has to be the same clock and the same format as `set_expo_release_values`.
+   */
+  currentHour: string
 }
 
 export interface GateResult {
   ok: boolean
   failures: string[]
+}
+
+/** A PR as `gh pr list --json number,baseRefName,state,isCrossRepository` reports it */
+export interface PullRequestCandidate {
+  number: number
+  baseRefName: string
+  state: string
+  isCrossRepository: boolean
+}
+
+/**
+ * The hotfix PR among the PRs `gh pr list --head <branch>` returned.
+ *
+ * `--head` matches on the branch name alone, so it also returns fork PRs whose head branch is
+ * called the same. eigen is public, so anyone can open one, and it would otherwise pass the gate,
+ * have its body copied into the release, and get commented on and linked from Slack. Only a PR
+ * from this repository counts. Of those, the newest wins, so a stale PR from a reused branch name
+ * doesn't.
+ */
+export const pickHotfixPullRequest = (
+  candidates: PullRequestCandidate[]
+): HotfixPullRequest | null => {
+  const pr = candidates
+    .filter((candidate) => !candidate.isCrossRepository)
+    .sort((a, b) => b.number - a.number)[0]
+  if (!pr) return null
+
+  return { number: pr.number, baseRef: pr.baseRefName, merged: pr.state === "MERGED" }
+}
+
+/**
+ * The hour a production tag was published in, as YYYYMMDDHH. Reads both tag formats: iOS ends in
+ * `2026.10.01.09`, Android in `2026100109`.
+ */
+const tagHour = (tag: string) => {
+  const match = tag.match(/(\d{4})\.?(\d{2})\.?(\d{2})\.?(\d{2})$/)
+  return match ? match.slice(1).join("") : null
 }
 
 export const hotfixBranchFor = (version: string) => `hotfix-v${version}`
@@ -167,5 +211,67 @@ export const checkProductionGate = (context: GateContext): GateResult => {
     )
   }
 
+  // 6. No production update for this version has been published in this hour. The tag name only
+  //    goes down to the hour and fastlane force-moves an existing tag, so a second publish would
+  //    take over the first one's tag: its GitHub release would stop being creatable, point at the
+  //    wrong commit, and count as one publish in the hotfix numbering.
+  for (const platform of PLATFORMS) {
+    const previous = context.previousProductionTags[platform]
+    if (previous && tagHour(previous) === context.currentHour) {
+      failures.push(
+        `A production update was already published for ${context.version} this hour ` +
+          `(${previous}). Publishing again now would reuse that tag and overwrite the record of ` +
+          `the first one. Wait until the next hour. If the first one is bad, roll it back now.`
+      )
+      break
+    }
+  }
+
   return { ok: failures.length === 0, failures }
+}
+
+/** Start of a section that `start-hotfix` wrote into the hotfix PR body */
+const SECTION_START = /^## (?=(?:Applied|Reverted) on top of )/m
+
+/**
+ * The commit a section was applied on top of, from its heading line only. Matching the heading
+ * rather than the whole section matters: a section also lists its own commits in backticks, so the
+ * tip that shipped appears in its own section's list and again in the next section's heading.
+ *
+ * Seven characters is git's minimum abbreviation, and keeps a stray short token from matching.
+ */
+const SECTION_BASE_SHA = /^## (?:Applied|Reverted) on top of `([0-9a-f]{7,40})`/
+
+/**
+ * The sections of the hotfix PR body that a production publish is shipping: everything
+ * `start-hotfix` wrote since the last publish. That is usually one section, and more whenever
+ * several fixes were applied before anyone published.
+ *
+ * Each heading records the commit its section was applied on top of. The previous production tag
+ * points at the tip of the last section that shipped, which is the base of the first one that
+ * hasn't. So the result starts at the section whose heading names that commit, or at the first
+ * section when nothing has been published for this version yet.
+ *
+ * `publishedSha` is the full SHA of the previous production tag's commit. Headings hold an
+ * abbreviation whose length depends on the clone that wrote it, so they're compared as a prefix.
+ *
+ * A heading nothing matches means the PR was hand-edited. Shipping every section is the safer way
+ * to be wrong: it over-reports rather than hiding a fix that is going out.
+ */
+export const unpublishedHotfixSections = (body: string, publishedSha: string | null): string => {
+  const sections = body
+    .split(SECTION_START)
+    .slice(1)
+    .map((section) => `## ${section.trim()}`)
+  if (sections.length === 0) return ""
+
+  const published = publishedSha?.toLowerCase()
+  const firstUnpublished = published
+    ? sections.findIndex((section) => {
+        const base = section.match(SECTION_BASE_SHA)?.[1]
+        return base !== undefined && published.startsWith(base)
+      })
+    : 0
+
+  return sections.slice(Math.max(firstUnpublished, 0)).join("\n\n")
 }

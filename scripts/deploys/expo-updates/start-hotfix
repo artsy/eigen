@@ -247,7 +247,10 @@ changelog=$(yarn --silent generate-changelog "$base_sha" "$head_sha" --plain || 
 commits=$(git log --pretty='- %s (`%h`)' "$base_sha"..HEAD)
 
 # '// empty' matters: without it jq prints the string "null" for an empty list.
-existing_pr=$(gh pr list --head "$hotfix_branch" --state all --json number --jq '.[0].number // empty' || true)
+# 'gh pr list --head' matches on the branch name alone, so it also returns fork PRs whose head branch
+# happens to be called the same; only a PR from this repository can be the hotfix PR.
+existing_pr=$(gh pr list --head "$hotfix_branch" --state all --json number,isCrossRepository \
+  --jq '[.[] | select(.isCrossRepository | not)] | .[0].number // empty' || true)
 
 if [ "$revert_mode" = true ]; then
   heading_verb="Reverted"
@@ -283,7 +286,13 @@ if [ -z "$existing_pr" ]; then
   template=".github/PULL_REQUEST_TEMPLATE/hotfix.md"
   if [ -f "$template" ]; then
     body=$(cat "$template")
-    body="${body//<!-- hotfix-sections -->/$section}"
+    # Split on the marker rather than using ${body//marker/$section}: bash 5.2 turns on
+    # patsub_replacement, which rewrites every '&' in the replacement, and quoting the replacement
+    # to stop that leaves literal quotes behind on the bash 3.2 that macOS ships.
+    marker='<!-- hotfix-sections -->'
+    if [[ "$body" == *"$marker"* ]]; then
+      body="${body%%"$marker"*}${section}${body#*"$marker"}"
+    fi
   else
     # The branch was cut from a release that predates the template.
     body="> [!WARNING]

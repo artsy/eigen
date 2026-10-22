@@ -16,9 +16,12 @@ import {
   GateContext,
   hotfixBranchFor,
   nextHotfixNumber,
+  pickHotfixPullRequest,
   Platform,
   PLATFORMS,
+  PullRequestCandidate,
   releaseBranchFor,
+  unpublishedHotfixSections,
 } from "./productionGate"
 
 const REPO_ROOT = resolve(__dirname, "../../../..")
@@ -95,22 +98,20 @@ const findHotfixPullRequest = (branch: string) => {
     "--state",
     "all",
     "--json",
-    "number,baseRefName,state",
+    "number,baseRefName,state,isCrossRepository",
     "--limit",
     "10",
   ])
   if (!output) return null
 
-  const prs = JSON.parse(output) as {
-    number: number
-    baseRefName: string
-    state: string
-  }[]
-  // Newest first, so a stale PR from a reused branch name doesn't win.
-  const pr = prs.sort((a, b) => b.number - a.number)[0]
-  if (!pr) return null
+  return pickHotfixPullRequest(JSON.parse(output) as PullRequestCandidate[])
+}
 
-  return { number: pr.number, baseRef: pr.baseRefName, merged: pr.state === "MERGED" }
+/** YYYYMMDDHH in local time: the same clock and hour fastlane tags the publish with */
+const currentHour = () => {
+  const now = new Date()
+  const pad = (value: number) => String(value).padStart(2, "0")
+  return `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}${pad(now.getHours())}`
 }
 
 /**
@@ -137,41 +138,21 @@ const writeOutput = (key: string, value: string) => {
   appendFileSync(file, `${key}<<${delimiter}\n${value}\n${delimiter}\n`)
 }
 
-const SECTION_HEADING = /^## (?=(?:Applied|Reverted) on top of )/m
-
 /**
- * The sections of the hotfix PR that this publish is actually shipping — everything start-hotfix
- * wrote since the last production publish, which is usually one section but is more whenever
- * several fixes were applied before anyone published.
+ * The release notes for this publish: the hotfix PR sections written since the last one.
  *
  * Used as the body of the GitHub release, because `gh --generate-notes` comes back nearly empty
  * for cherry-picked commits — they aren't linked to their original PRs.
- *
- * Each heading records the commit the section was applied on top of, and the previous production
- * tag points at the tip of the last section that shipped — which is the base of the first one that
- * hasn't. So the slice starts at the section naming that commit, or at the beginning when nothing
- * has been published for this version yet.
  */
-const unpublishedHotfixSections = (prNumber: number, previousProductionTag: string | null) => {
+const releaseNotesSections = (prNumber: number, previousProductionTag: string | null) => {
   const body = tryRun("gh", ["pr", "view", String(prNumber), "--json", "body", "--jq", ".body"])
   if (!body) return ""
 
-  const sections = body
-    .split(SECTION_HEADING)
-    .slice(1)
-    .map((section) => `## ${section.trim()}`)
-  if (sections.length === 0) return ""
-
   const publishedSha = previousProductionTag
-    ? tryRun("git", ["rev-parse", "--short", `${previousProductionTag}^{commit}`])
+    ? tryRun("git", ["rev-parse", `${previousProductionTag}^{commit}`])
     : null
-  const firstUnpublished = publishedSha
-    ? sections.findIndex((section) => section.includes(`\`${publishedSha}\``))
-    : 0
 
-  // A heading we can't place means the PR was hand-edited; shipping every section is the safer
-  // way to be wrong, since it over-reports rather than hiding a fix that is going out.
-  return sections.slice(firstUnpublished === -1 ? 0 : firstUnpublished).join("\n\n")
+  return unpublishedHotfixSections(body, publishedSha)
 }
 
 const main = () => {
@@ -218,6 +199,7 @@ const main = () => {
       ios: hasCanaryTag("ios", version, sha),
       android: hasCanaryTag("android", version, sha),
     },
+    currentHour: currentHour(),
   }
 
   const result = checkProductionGate(context)
@@ -248,7 +230,7 @@ const main = () => {
       pullRequest
         ? `Published from [#${pullRequest.number}](${REPO_URL}/pull/${pullRequest.number}).`
         : "",
-      pullRequest ? unpublishedHotfixSections(pullRequest.number, previousProductionTags.ios) : "",
+      pullRequest ? releaseNotesSections(pullRequest.number, previousProductionTags.ios) : "",
     ]
       .filter(Boolean)
       .join("\n\n")
