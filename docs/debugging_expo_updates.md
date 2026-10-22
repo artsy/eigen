@@ -52,6 +52,10 @@ Expected, not a bug — your branch's native code doesn't match the build the up
 
 If you're deploying from a branch that isn't based on current main — a hotfix branch cut from a release tag, say — then the default comparison against the latest beta is the wrong one. Use `--check-against-version` to compare against the shipped build for the current app version instead. `deploy-to-expo-updates-ci` does this for you on `hotfix-v*` and `*-hotfix` branches.
 
+#### Publish succeeded but Slack says the Sentry sourcemap upload failed
+
+Not a failed publish. The update is live and tagged, and the GitHub release and hotfix PR comment still happen. Only the sourcemaps are missing, so Sentry shows minified JS stack traces for that release; crashes are still reported. The message names the release (for example `ios-9.21.0-2026.10.22.13`; Android's stamp has no dots), so you can find it in Sentry.
+
 #### Code changes not auto refreshing app
 
 The QA scheme uses bundled JS. To see any changes you will need to rebuild from Xcode; even then, Expo updates tend to use the latest downloaded update and you may have to delete the app and then rebuild.

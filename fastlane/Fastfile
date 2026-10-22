@@ -664,21 +664,36 @@ lane :deploy_to_expo_updates do |options|
   # only sees that platform's bundle, not both.
   platforms_to_tag = platform == 'all' ? ['ios', 'android'] : [platform]
 
-  platforms_to_tag.each do |p|
+  release_names = platforms_to_tag.to_h do |p|
     # Android build numbers have no dots (2026100716), see eigenSentryReleaseName()
-    release_name = "#{p}-#{p == 'android' ? release_name_base.delete_suffix(dist_version) + dist_version.delete('.') : release_name_base}"
+    [p, "#{p}-#{p == 'android' ? release_name_base.delete_suffix(dist_version) + dist_version.delete('.') : release_name_base}"]
+  end
+
+  # Tag first, for every platform: the update is already live, so the tag is the receipt that
+  # the publish happened. The production gate, the hotfix number and the release notes of the
+  # next publish all read it, so a Sentry failure below must not be able to skip it.
+  unless preview
+    release_names.each do |p, release_name|
+      tag_and_push(tag: release_name)
+
+      # The tag name embeds the publish hour (see set_expo_release_values), so CI can't
+      # recompute it safely afterwards. Hand it back to the workflow instead, which uses
+      # it for the GitHub release and the Sentry release links.
+      github_output = ENV['GITHUB_OUTPUT']
+      File.write(github_output, "#{p}_expo_tag=#{release_name}\n", mode: 'a') if github_output
+    end
+  end
+
+  release_names.each do |p, release_name|
     ENV['SENTRY_RELEASE'] = release_name
     puts "🔧 Uploading sourcemaps to Sentry with release: #{release_name}"
-    sh("cd .. && npx sentry-expo-upload-sourcemaps dist/_expo/static/js/#{p}")
-    next if preview
-
-    tag_and_push(tag: release_name)
-
-    # The tag name embeds the publish hour (see set_expo_release_values), so CI can't
-    # recompute it safely afterwards. Hand it back to the workflow instead, which uses
-    # it for the GitHub release and the Sentry release links.
-    github_output = ENV['GITHUB_OUTPUT']
-    File.write(github_output, "#{p}_expo_tag=#{release_name}\n", mode: 'a') if github_output
+    begin
+      sh("cd .. && npx sentry-expo-upload-sourcemaps dist/_expo/static/js/#{p}")
+    rescue StandardError => e
+      # Same policy as the beta/store lanes (see upload_sentry_sourcemaps): the update is live and
+      # tagged, so a Sentry failure is reported but doesn't fail the publish.
+      handle_error(e, "Uploading #{p} sourcemaps to Sentry failed for #{release_name}. The update is live; JS stack traces for this release will be minified.")
+    end
   end
 
   puts "🚀 Deploying to #{deployment_name} with description '#{description}' for platform #{platform}"
