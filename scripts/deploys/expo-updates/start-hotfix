@@ -151,7 +151,11 @@ git push --quiet origin "$hotfix_branch"
 # The changelog of what this hotfix adds. Cherry-picks keep the "(#1234)" subject, so the PR
 # numbers still resolve.
 echo "Generating changelog..."
-changelog=$(yarn --silent generate-changelog "$base_sha" HEAD --plain 2>/dev/null || true)
+#
+# The compare runs against the GitHub API, which would resolve a literal HEAD to main rather than
+# this branch, so pass the resolved SHA (the branch is already pushed above).
+head_sha=$(git rev-parse HEAD)
+changelog=$(yarn --silent generate-changelog "$base_sha" "$head_sha" --plain || true)
 [ -n "$changelog" ] || changelog="_No changelog entries found — add them by hand._"
 
 commits=$(git log --pretty='- %s (`%h`)' "$base_sha"..HEAD)
