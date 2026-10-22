@@ -8,7 +8,7 @@ QA happens against the release-candidate beta, in the Mobile App QA document tha
 
 ## Ship a Final Version
 
-1. Check out the release-candidate branch for this release (eg - `rc-v9.15.0`). Everything for the release lives on that branch so the code we submit is the code we QA'd.
+1. Check out the release-candidate branch for this release (eg - `rc-v9.15.0`, or `rc-v9.15.1-hotfix` for a [native hotfix](deploy_a_hotfix.md#native-hotfix)). Everything for the release lives on that branch so the code we submit is the code we QA'd.
 1. Update [`changelogs/default.txt`](https://github.com/artsy/eigen/blob/main/fastlane/metadata/android/en-US/changelogs/default.txt) with the **user-facing** release notes for this version.
    - See [previous examples](https://github.com/artsy/eigen/commits/main/fastlane/metadata/android/en-US/changelogs/default.txt) of release notes.
    - The release notes are gathered in a #practice-mobile thread the day before code freeze; ask there for a final copy if anything is unclear.

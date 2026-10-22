@@ -50,7 +50,7 @@ set -- "${positional_args[@]}"
 if [ "$#" -lt 1 ] || [ "$#" -gt 3 ]; then
   echo "Usage: $0 <deployment> [description] [rollout_percentage] [--platform ios|android|all] [--check-against-version]"
   echo "Deployment must be either 'canary', 'staging' or 'production'."
-  echo "Rollout percentage is optional (integer from 0 to 100). Production defaults to 50 if omitted."
+  echo "Rollout percentage is optional (integer from 0 to 100). Production goes to all users if omitted."
   echo "Platform is optional ('ios', 'android' or 'all'). Defaults to 'all'."
   echo "--check-against-version checks against this version's own shipped fingerprint instead of"
   echo "the latest beta's. Defaults to true on a branch ending in '-hotfix'."
@@ -124,7 +124,7 @@ if ! git cat-file -e "origin/$branch:.github/workflows/$WORKFLOW_FILE" 2>/dev/nu
 fi
 
 # Compare fingerprint against the version's shipped build on hotfix branches
-# ('hotfix-vX.Y.Z' for OTA hotfixes, the older 'X.Y.Z-hotfix' for native ones)
+# ('hotfix-vX.Y.Z' for OTA hotfixes; '*-hotfix' covers native ones, e.g. 'rc-vX.Y.Z-hotfix')
 if [ "$check_against_version_explicit" = false ] && { [[ "$branch" == hotfix-v* ]] || [[ "$branch" == *-hotfix ]]; }; then
   check_against_version=true
   echo "Branch '$branch' looks like a hotfix branch — defaulting to --check-against-version."

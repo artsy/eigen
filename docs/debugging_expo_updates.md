@@ -50,7 +50,7 @@ The QA configuration is a release configuration, code is optimized so debugging 
 
 Expected, not a bug — your branch's native code doesn't match the build the update would land on, and publishing anyway would crash it on launch. Rebase or deploy a new beta depending on which side is stale, per [Debugging Expo Updates (Devs)](#debugging-expo-updates-devs) above.
 
-If you're deploying from a branch that isn't based on current main — a hotfix branch cut from a release tag, say — then the default comparison against the latest beta is the wrong one. Use `--check-against-version` to compare against the shipped build for the current app version instead.
+If you're deploying from a branch that isn't based on current main — a hotfix branch cut from a release tag, say — then the default comparison against the latest beta is the wrong one. Use `--check-against-version` to compare against the shipped build for the current app version instead. `deploy-to-expo-updates-ci` does this for you on `hotfix-v*` and `*-hotfix` branches.
 
 #### Code changes not auto refreshing app
 

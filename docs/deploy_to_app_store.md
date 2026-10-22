@@ -8,7 +8,7 @@ QA happens against the release-candidate beta, in the Mobile App QA document tha
 
 ## Preparing to Ship a Final Version
 
-1. Check out the release-candidate branch for this release, `rc-vX.Y.Z` — **not** a fresh branch from `main`. Everything for the release lives on that branch so the code we submit is the code we QA'd.
+1. Check out the release-candidate branch for this release, `rc-vX.Y.Z` (`rc-vX.Y.Z-hotfix` for a [native hotfix](deploy_a_hotfix.md#native-hotfix)) — **not** a fresh branch from `main`. Everything for the release lives on that branch so the code we submit is the code we QA'd.
 2. Update [`release_notes.txt`](https://github.com/artsy/eigen/blob/main/fastlane/metadata/en-US/release_notes.txt) with the **user-facing** release notes for this version.
    - See [previous examples](https://github.com/artsy/eigen/commits/main/fastlane/metadata/en-US/release_notes.txt) of release notes.
    - The release notes are gathered in a #practice-mobile thread the day before code freeze; ask there for a final copy if anything is unclear.

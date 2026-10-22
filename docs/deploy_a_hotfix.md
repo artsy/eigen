@@ -1,58 +1,56 @@
 # Deploy a hotfix
 
-A hotfix is a fix for a bug in a **live release** that can't wait for the next one. It ships outside
-the normal release cadence and carries _only_ the critical fix.
+A hotfix is a fix for a bug in a **live release** that can't wait for the next one. It carries _only_
+the critical fix.
 
-This page is the runbook. For how any of it works — the production gate, fingerprints, rollbacks —
-see [Deploy to Expo Updates](deploy_to_expo_updates.md).
-
+<!-- prettier-ignore -->
 > [!IMPORTANT]
-> Let the #product-sapphire team know before you ship anything to production users.
+> Tell #product-sapphire before you ship anything to production users.
 
-## Which kind of hotfix?
+## Which kind?
 
-**Does the fix touch native code?** (`ios/`, `android/`, `Podfile.lock`, native deps, app config)
+**Does the fix change native code?** That means `ios/`, `android/`, `Podfile.lock`, a native
+dependency, or app config like `app.json`.
 
-- **No → [Expo Updates hotfix](#expo-updates-hotfix).** Goes out over the air, no store review, users
-  get it on next launch. Use this whenever you can.
-- **Yes → [Native hotfix](#native-hotfix).** New build through app review, and users have to update.
-  A mitigation, not an immediate fix. Expedited App Store review can be requested, sparingly and
-  with no guarantee; Google Play has no expedited review but is usually faster anyway.
+- **No, it's JS only → [Expo Updates hotfix](#expo-updates-hotfix).** Goes out over the air, no
+  store review. Use this whenever you can.
+- **Yes → [Native hotfix](#native-hotfix).** Goes through app review and users have to update, so
+  it's a mitigation, not an instant fix.
+
+**Not sure?** Try the Expo Updates path. If the fix touches native code, step 1 stops with "Native
+code changed" before anything is pushed, and you switch to the native hotfix.
+
+**Both kinds start here:**
+
+1. Land the fix on `main` and note the merge commit's SHA.
+2. Find the live version with `./scripts/deploys/latest-submissions`. The examples below use `9.21.0`.
 
 ---
 
 ## Expo Updates hotfix
 
-**Setup**, once per machine:
+**One-time setup:**
 
 ```sh
 yarn setup:releases
 ./scripts/setup/install-bin
-gh auth login            # https://cli.github.com/
+gh auth login
+yarn setup:artsy && yarn install:all   # the hotfix branch is older than main
 ```
 
-The hotfix branch is older than `main`, so refresh deps or the publish will fail:
-`yarn setup:artsy && yarn install:all`.
-
-### 1. Land the fix on `main`
-
-Hotfixes are cherry-picked from `main`, so the fix must be reviewed and merged there first. Note the
-SHA of the merge/squash commit.
-
-### 2. Start the hotfix
-
-Find the live app version with `./scripts/deploys/latest-submissions`, then:
+### 1. Start it
 
 ```sh
 ./scripts/deploys/expo-updates/start-hotfix 9.21.0 <sha> [<sha>...]
 ```
 
-Creates `hotfix-v9.21.0` (or adds to it), cherry-picks, pushes, and opens or extends the hotfix PR.
-Shipping several fixes? Pass them oldest first, or run `start-hotfix` again when the next one lands
-— [same branch either way](deploy_to_expo_updates.md#one-branch-per-app-version).
+Creates `hotfix-v9.21.0` (or adds to it), cherry-picks, checks native code didn't change, pushes, and
+opens the hotfix PR. Several fixes can go on the same branch, passed together or added later.
 
-**If the cherry-pick conflicts**, `start-hotfix` stops before pushing and leaves you on
-`hotfix-v9.21.0` mid-cherry-pick. Resolve it, then:
+<details>
+<summary>The cherry-pick conflicted</summary>
+
+The script stops before pushing. Resolve the conflict, then:
 
 ```sh
 git add <resolved files>
@@ -60,76 +58,84 @@ git cherry-pick --continue
 ./scripts/deploys/expo-updates/start-hotfix 9.21.0 --continue
 ```
 
-`--continue` checks that native code didn't change, pushes the branch and adds the section to the
-hotfix PR, just like a normal run. Don't re-run `start-hotfix` with the SHA instead, and don't push
-by hand: that skips the native check and leaves the fix out of the release notes. If you passed
-several fixes and a later one hadn't been applied yet, run `start-hotfix 9.21.0 <sha>...` again for
-the rest afterwards.
+Don't push by hand, and don't re-run with the SHA. Both skip the native check, and a hand push leaves
+the fix out of the release notes. If a later fix hadn't been applied yet, run `start-hotfix` again
+with it.
 
-### 3. Wait for the canary
+</details>
 
-Pushing the branch publishes a canary automatically — nothing to run. `start-hotfix` prints the run
-link; ~10–20 minutes.
+### 2. Wait for the canary
 
-### 4. QA it
+Pushing the branch publishes a canary on its own. It takes 10–20 minutes, and the script prints the
+link.
 
-> [!IMPORTANT]
-> On a **Firebase App Tester** on **both iOS and Android**. or **Testflight for iOS** (Testflight defaults to production, so you will need to switch channels from the dev menu to get the canary — cause Testflight defaults to the production channel)
+### 3. QA the canary
 
-Download the Firebase build matching the live version — same build number as the submission tag, not
-a later beta of the same version. Dev Menu → Expo Updates → **canary** → relaunch. Check the fix _and_ that the app is generally healthy: an update replaces the whole JS bundle, not just your diff.
+Test on **iOS and Android**, using Firebase App Tester or TestFlight.
 
-### 5. Promote expo update to production
+1. Install the build with the same build number as the live submission.
+2. Dev Menu → Expo Updates → **canary** → relaunch. (TestFlight starts on production, so switch.)
+3. Check the fix, and that the app is generally healthy. An update replaces the whole JS bundle.
+
+### 4. Publish
 
 ```sh
 ./scripts/deploys/expo-updates/deploy-to-expo-updates-ci production 'hotfix description'
 ```
 
-Goes to **all users** unless you pass a rollout percentage as a third argument. The script confirms
-with you first, naming the commit and the audience.
+Goes to **all users** unless you add a rollout percentage as a third argument. **It isn't shipped
+until you see the Slack message.**
 
-The run posts to Slack on success and failure — **it isn't shipped until you see that message.**
-Raise a partial rollout later with `./scripts/deploys/expo-updates/update-rollout`.
+### 5. Monitor
 
-### 6. Monitor
+Check the Sentry and Mobile Vitals links in the Slack message and on the hotfix PR. Close that PR by
+hand once this version stops getting hotfixes (it's marked "Do not merge").
 
-The publish leaves a GitHub release, a Slack message with Sentry and Mobile Vitals links for both
-platforms, and a comment on the hotfix PR. Watch those.
-
-The hotfix PR is marked **"Do not merge"** — close it by hand once the version stops getting
-hotfixes.
-
-**If it goes wrong:** [roll back](deploy_to_expo_updates.md#rolling-back).
+If it goes wrong, [roll back](deploy_to_expo_updates.md#rolling-back). More background, including
+the production gate and FAQ, is in [Deploy to Expo Updates](deploy_to_expo_updates.md).
 
 ---
 
 ## Native hotfix
 
-Native hotfix branches follow rc-v9.20.1` naming and are not published over the air.
+The branch is named after the **new** version this hotfix will ship as, usually the live version
+plus a patch: live `9.21.0` becomes `rc-v9.21.1-hotfix`.
 
-### 1. Bump the version
+### 1. Branch from the live release
 
-The branch is a past release, so it needs a new version to be submitted. The next version is in App
-Store Connect — generally the previous release's patch incremented by 1:
+```sh
+git checkout ios-9.21.0-2026.10.07.11-submission   # the tag from latest-submissions
+git checkout -b rc-v9.21.1-hotfix
+```
+
+### 2. Apply the fix
+
+```sh
+git cherry-pick -x <sha> [<sha>...]
+```
+
+### 3. Bump the version
+
+Use the same new version as the branch name (check App Store Connect if unsure):
 
 ```sh
 ./scripts/deploys/next
-# What is the new human-readable release version? 7.2.1
+# What is the new human-readable release version? 9.21.1
 
 git add -A
 git commit -m "Update version for hotfix"
 ```
 
-### 2. Deploy a beta
+### 4. Build a beta
 
-Tell the other devs to hold off on betas until this build is submitted for review.
+Tell the other devs to hold off on betas until this build is submitted.
 
 ```sh
-./scripts/deploys/deploy-beta-both
-# or deploy-beta-ios / deploy-beta-android
+./scripts/deploys/deploy-beta-both   # or deploy-beta-ios / deploy-beta-android
 ```
 
-### 3. QA and release
+### 5. QA and release
 
-Run the QA script, and QA the bug fix itself. Then follow
-[deploy to app store](deploy_to_app_store.md) and [deploy to play store](deploy_to_play_store.md).
+QA the fix and run the QA script. Then follow [deploy to app store](deploy_to_app_store.md) and
+[deploy to play store](deploy_to_play_store.md). You can ask for an expedited App Store review, but
+sparingly and with no guarantee.
