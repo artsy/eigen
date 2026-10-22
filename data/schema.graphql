@@ -3800,7 +3800,7 @@ type ArtnetEditionSet {
   ): String
 }
 
-type ArtnetImport {
+type ArtnetImport implements Node {
   """
   Artnet works not yet created because their artist hasn't been assigned.
   """
@@ -3855,6 +3855,17 @@ type ArtnetImport {
   openReviewCount: Int
 
   """
+  The import's Artnet works that were sent to review
+  """
+  reviewArtworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    reviewState: ArtnetImportReviewState!
+  ): ArtnetImportReviewArtworkConnection
+
+  """
   Created artworks that might duplicate an existing artwork and need the partner's review.
   """
   reviewCount: Int
@@ -3862,6 +3873,90 @@ type ArtnetImport {
   state: ArtnetImportState
   totalCount: Int
   unmatchedArtistNames: [String!]!
+}
+
+"""
+The work as Artnet sent it, kept on the import even after the imported copy is merged away.
+"""
+type ArtnetImportArtnetRecord {
+  artistName: String
+  date: String
+  depth: String
+  diameter: String
+  height: String
+  imageURL: String
+  medium: String
+  metric: String
+  title: String
+  width: String
+}
+
+"""
+An Artnet work from an import that was sent to review, with its possible duplicates.
+"""
+type ArtnetImportReviewArtwork {
+  artnetArtworkID: String!
+  artnetRecord: ArtnetImportArtnetRecord!
+  duplicatePairs: [ArtworkDuplicatePair!]!
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  The artwork the import created. Null once it has been merged into an existing artwork.
+  """
+  importedArtwork: Artwork
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+}
+
+"""
+A connection to a list of items.
+"""
+type ArtnetImportReviewArtworkConnection {
+  """
+  A list of edges.
+  """
+  edges: [ArtnetImportReviewArtworkEdge]
+  pageCursors: PageCursors!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+"""
+An edge in a connection.
+"""
+type ArtnetImportReviewArtworkEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge
+  """
+  node: ArtnetImportReviewArtwork
+}
+
+enum ArtnetImportReviewState {
+  """
+  At least one possible duplicate is still waiting for review.
+  """
+  OPEN
+
+  """
+  Every possible duplicate has been merged or dismissed.
+  """
+  REVIEWED
 }
 
 enum ArtnetImportState {
@@ -4959,14 +5054,6 @@ type ArtworkDuplicatePairEdge {
   The item at the end of the edge
   """
   node: ArtworkDuplicatePair
-}
-
-enum ArtworkDuplicatePairSort {
-  """
-  Keeps each imported artwork's pairs next to each other, best match first.
-  """
-  IMPORTED_ARTWORK
-  SIMILARITY_SCORE_DESC
 }
 
 enum ArtworkDuplicatePairStatus {
@@ -29560,7 +29647,6 @@ type Partner implements Node {
     Filter by whether the pair can be merged (neither artwork is both published and listed on Artsy)
     """
     mergeable: Boolean
-    sort: ArtworkDuplicatePairSort
 
     """
     Filter by pair status
@@ -33161,7 +33247,6 @@ type Query {
     The ID of the partner
     """
     partnerId: String!
-    sort: ArtworkDuplicatePairSort
 
     """
     Filter by pair status
@@ -43257,7 +43342,6 @@ type Viewer {
     The ID of the partner
     """
     partnerId: String!
-    sort: ArtworkDuplicatePairSort
 
     """
     Filter by pair status
