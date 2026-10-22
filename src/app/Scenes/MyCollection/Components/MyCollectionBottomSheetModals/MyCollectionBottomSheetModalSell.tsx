@@ -52,7 +52,7 @@ export const MyCollectionBottomSheetModalSell: React.FC<{ isVisible: boolean }> 
 
           <Flex gap={2}>
             <Text variant="sm" color="mono60">
-              This program is in beta, so works you submit won't go up for sale right away. We’re
+              This program is in beta, so works you submit won’t go up for sale right away. We’re
               looking for collectors to work with us as part of this early initiative — they’ll
               become preferred sellers once we launch more broadly.
             </Text>

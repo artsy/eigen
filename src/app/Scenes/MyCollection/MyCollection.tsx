@@ -47,9 +47,11 @@ const MyCollection: React.FC = () => {
   const { activeNavigationTab } = MyCollectionTabsStore.useStoreState((state) => state)
 
   useEffect(() => {
-    prefetchQuery({ query: myCollectionCollectedArtistsQuery })
+    if (!enableShowSellArtwork) {
+      prefetchQuery({ query: myCollectionCollectedArtistsQuery })
+    }
     prefetchQuery({ query: MyCollectionInsightsScreenQuery })
-  }, [])
+  }, [enableShowSellArtwork])
 
   const showAddToMyCollectionBottomSheet = debounce(() => {
     setViewKind({ viewKind: "Add" })
@@ -95,15 +97,18 @@ const MyCollection: React.FC = () => {
             renderHeader={() => <UserAccountHeaderQueryRenderer />}
             // Wraps the header and the sticky tab bar, so this draws a border under the tab bar
             // that applies to every tab. Passing it replaces palette's default container style,
-            // so that is repeated here.
-            headerContainerStyle={{
-              shadowOpacity: 0,
-              shadowRadius: 0,
-              elevation: 0,
-              backgroundColor: color("background"),
-              borderBottomWidth: 1,
-              borderBottomColor: color("mono10"),
-            }}
+            // so that is repeated here. Even an undefined value would replace the default, so the
+            // prop is only passed when the flag is on.
+            {...(enableShowSellArtwork && {
+              headerContainerStyle: {
+                shadowOpacity: 0,
+                shadowRadius: 0,
+                elevation: 0,
+                backgroundColor: color("background"),
+                borderBottomWidth: 1,
+                borderBottomColor: color("mono10"),
+              },
+            })}
             headerHeight={500}
             pagerProps={{
               scrollEnabled: false,
