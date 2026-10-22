@@ -113,7 +113,11 @@ export const HomeViewSectionCurationArea: React.FC<HomeViewSectionCurationAreaPr
                 }
               />
             </>
-          ) : null}
+          ) : (
+            // No chips header (curated area) — add breathing room so the cards don't
+            // crowd the lead rail above.
+            <Spacer y={4} />
+          )}
 
           {isEditorialArea ? (
             <NewsChipRail chips={chips} onChipPress={handleChipPress} />
@@ -153,26 +157,44 @@ const CollectionCardRail: React.FC<{
       ListFooterComponent={() => <Spacer x={2} />}
       ItemSeparatorComponent={() => <Spacer x={2} />}
       renderItem={({ item, index }) => (
-        <CollectionCard chip={item} width={cardWidth} onPress={() => onChipPress(item, index)} />
+        <CollectionCard
+          chip={item}
+          width={cardWidth}
+          cardIndex={index}
+          onPress={() => onChipPress(item, index)}
+        />
       )}
     />
   )
 }
 
-// Each image's height as a fraction of the stack height, by position (front → back).
-// All same width, bottom-aligned, stepping right: the front image is shortest and sits
-// lowest-left (on top); each image behind is taller and shifted right, so the back image
-// is tallest and reads as upper-right — the design's diagonal fan.
-const STACK_HEIGHT_FRACTIONS: Record<number, number[]> = {
-  1: [1],
-  2: [0.78, 1],
-  3: [0.63, 0.89, 1],
+// Each image's height as a fraction of the stack height, ordered left → right. All variants
+// share the same geometry — same width, bottom-aligned, stepping right, leftmost on top — and
+// differ only in the height silhouette. The 3-image stack cycles these by card index so the
+// rail shows the design's varied fans (ascending / descending / tall-sides / tall-middle);
+// 1–2 image stacks use a fixed shape.
+const THREE_IMAGE_STACK_VARIANTS: number[][] = [
+  [0.63, 0.82, 1], // ascending — tall on the right
+  [1, 0.82, 0.63], // descending — tall on the left
+  [1, 0.65, 1], // bookends — tall on the sides
+  [0.65, 1, 0.65], // peak — tall in the middle
+]
+
+const stackHeightFractions = (count: number, cardIndex: number): number[] => {
+  if (count >= 3) {
+    return THREE_IMAGE_STACK_VARIANTS[cardIndex % THREE_IMAGE_STACK_VARIANTS.length]
+  }
+  return count === 2 ? [0.78, 1] : [1]
 }
 
-const CollectionImageStack: React.FC<{ urls: string[]; width: number }> = ({ urls, width }) => {
+const CollectionImageStack: React.FC<{ urls: string[]; width: number; cardIndex: number }> = ({
+  urls,
+  width,
+  cardIndex,
+}) => {
   const imageWidth = width * 0.55
   const stepX = urls.length > 1 ? (width - imageWidth) / (urls.length - 1) : 0
-  const fractions = STACK_HEIGHT_FRACTIONS[urls.length] ?? STACK_HEIGHT_FRACTIONS[3]
+  const fractions = stackHeightFractions(urls.length, cardIndex)
 
   return (
     <Flex width={width} height={COLLECTION_CARD_IMAGE_HEIGHT}>
@@ -204,8 +226,9 @@ const CollectionImageStack: React.FC<{ urls: string[]; width: number }> = ({ url
 const CollectionCard: React.FC<{
   chip: Chip
   width: number
+  cardIndex: number
   onPress: () => void
-}> = ({ chip, width, onPress }) => {
+}> = ({ chip, width, cardIndex, onPress }) => {
   const color = useColor()
   const imageURL = chip.image?.imageURL
   const stackURLs = (chip.images ?? [])
@@ -217,7 +240,7 @@ const CollectionCard: React.FC<{
     <RouterLink to={chip.href} onPress={onPress}>
       <Flex width={width}>
         {stackURLs.length > 0 ? (
-          <CollectionImageStack urls={stackURLs} width={width} />
+          <CollectionImageStack urls={stackURLs} width={width} cardIndex={cardIndex} />
         ) : imageURL ? (
           <Image
             testID="collection-card-image"
