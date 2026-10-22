@@ -44,7 +44,7 @@ on:
         type: boolean
         default: false
 
-run-name: "Deploy Expo Update to ${{ inputs.deployment || 'canary' }} on ${{ inputs.platform || 'all' }} · ${{ inputs.sha || github.sha }}"
+run-name: "Deploy Expo Update to ${{ inputs.deployment || 'canary' }} on ${{ case(inputs.platform == null || inputs.platform == "" || inputs.platform == 'all', 'both platforms', inputs.platform) }} · ${{ inputs.sha || github.sha }}"
 # example: Deploy Expo Update to production on ios · SHA
 
 # A push to a hotfix branch has no inputs, so every parameter falls back to the auto-canary
