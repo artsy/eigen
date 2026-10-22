@@ -177,22 +177,25 @@ const CollectionImageStack: React.FC<{ urls: string[]; width: number }> = ({ url
   return (
     <Flex width={width} height={COLLECTION_CARD_IMAGE_HEIGHT}>
       {urls.map((url, index) => (
-        <Image
+        // Positioning lives on this wrapper (a plain view reliably honors absolute
+        // layout); palette Image forwards `style` to its inner node, so putting
+        // position on the Image itself would leave the images in normal flow.
+        <Flex
           key={index}
-          testID="collection-card-stack-image"
-          src={url}
-          width={imageWidth}
-          height={COLLECTION_CARD_IMAGE_HEIGHT * (fractions[index] ?? 1)}
-          style={{
-            position: "absolute",
-            left: index * stepX,
-            bottom: 0,
-            zIndex: urls.length - index,
-            borderRadius: 6,
-            borderWidth: 2,
-            borderColor: "white",
-          }}
-        />
+          position="absolute"
+          borderRadius={6}
+          borderWidth={2}
+          borderColor="mono0"
+          overflow="hidden"
+          style={{ left: index * stepX, bottom: 0, zIndex: urls.length - index }}
+        >
+          <Image
+            testID="collection-card-stack-image"
+            src={url}
+            width={imageWidth}
+            height={COLLECTION_CARD_IMAGE_HEIGHT * (fractions[index] ?? 1)}
+          />
+        </Flex>
       ))}
     </Flex>
   )
