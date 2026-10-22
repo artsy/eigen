@@ -17,7 +17,7 @@ Ask `eigen beta?` on the #practice-mobile channel to get the links if you are no
 Deployment to TestFlight and Play Store is handled by the `build-deploy-*` GitHub Actions workflows. Betas get built three ways:
 
 - **Nightly**, at 05:00 UTC, automatically.
-- **Automatically, once per release:** when the release bot (or an engineer, from a branch in this repo) opens the release-candidate PR, [`rc-release-automation.yml`](../.github/workflows/rc-release-automation.yml) pushes the `rc-v<version>` branch to `beta-ios` / `beta-android` and builds the betas we QA. See [release candidate code freeze](release_candidate_code_freeze.md).
+- **Automatically, once per release:** when the release bot opens the release-candidate PR, [`rc-release-automation.yml`](../.github/workflows/rc-release-automation.yml) pushes the `rc-v<version>` branch to `beta-ios` / `beta-android` and builds the betas we QA. See [release candidate code freeze](release_candidate_code_freeze.md).
 - **On demand:** run `./scripts/deploys/deploy-beta-both` (or `./scripts/deploys/deploy-beta-ios` / `./scripts/deploys/deploy-beta-android` for individual releases) locally.
 
 When you trigger a beta yourself it runs on [Blacksmith](https://blacksmith.sh) runners and takes roughly **15–25 minutes**. Follow along in [GitHub Actions](https://github.com/artsy/eigen/actions).

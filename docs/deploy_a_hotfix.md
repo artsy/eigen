@@ -44,11 +44,9 @@ We will want to checkout the tag `ios-7.2.0-2022.02.03.14-submission`:
 
 ## Create a branch for the hotfix
 
-`git branch rc-v7.2.1-hotfix`
+`git branch 7.2.0-hotfix`
 
-`git checkout rc-v7.2.1-hotfix`
-
-> The `rc-v<version>-hotfix` name lets [`rc-release-automation.yml`](../.github/workflows/rc-release-automation.yml) build the betas and create the QA document when you open a PR from this branch (see [Deploy a beta with the hotfix](#deploy-a-beta-with-the-hotfix)). Beta tags are looked up by the version in the branch name, so name it for the version the betas will be built as: the bumped version from [Update the version number](#update-the-version-number-of-the-app-to-match-next-release), not the release you're fixing (7.2.0).
+`git checkout 7.2.0-hotfix`
 
 ## Apply the fix(es) using the script
 
@@ -174,8 +172,6 @@ Commit the version changes.
 ## Deploy a beta with the hotfix
 
 Communicate with other devs that a hotfix will be deployed and they should hold off on deploying betas until a build is submitted for review.
-
-Opening a PR from your `rc-v<version>-hotfix` branch triggers the RC release automation, which builds the betas and creates the QA document. Otherwise, deploy a beta manually:
 
 `./scripts/deploys/deploy-beta-both` (or `./scripts/deploys/deploy-beta-ios` or `./scripts/deploys/deploy-beta-android` for individual releases)
 
