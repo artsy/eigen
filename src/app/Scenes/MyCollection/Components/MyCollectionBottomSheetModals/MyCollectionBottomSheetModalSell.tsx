@@ -44,7 +44,7 @@ export const MyCollectionBottomSheetModalSell: React.FC<{ isVisible: boolean }> 
             testID="sell-beta-pill"
           >
             <Text variant="xs" color="blue100">
-              BETA
+              Beta
             </Text>
           </Flex>
 

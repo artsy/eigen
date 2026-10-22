@@ -1,14 +1,17 @@
 import { AddIcon, TagIcon } from "@artsy/icons/native"
-import { Button, Flex, Text, useSpace } from "@artsy/palette-mobile"
+import { Button, Flex, Text } from "@artsy/palette-mobile"
 import { Tab } from "app/Scenes/MyCollection/MyCollection"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { Platform } from "react-native"
+
+// We are bringing the buttom hardcoded fix from palette to handle the top offset for the button content on iOS
+const BUTTON_CONTENT_IOS_TOP_OFFSET = Platform.OS === "ios" ? 2 : 0
 
 /**
  * The "Add Work" and "Sell" buttons shown on the left of the My Collection artworks filter header.
  */
 export const MyCollectionArtworksActions: React.FC = () => {
-  const space = useSpace()
   const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
 
   return (
@@ -33,17 +36,23 @@ export const MyCollectionArtworksActions: React.FC = () => {
         accessibilityLabel="Sell"
         onPress={() => setViewKind({ viewKind: "Sell" })}
       >
-        <Flex flexDirection="row" alignItems="center" gap={0.5}></Flex>
-        Sell{" "}
-        <Text
-          color="white"
-          style={{ paddingHorizontal: space(0.5) }}
-          backgroundColor="blue100"
-          variant="xs"
-        >
-          {" "}
-          BETA{" "}
-        </Text>
+        <Flex flexDirection="row" height="100%" alignItems="center" gap={0.5}>
+          <Text variant="xs" color="mono0" style={{ top: BUTTON_CONTENT_IOS_TOP_OFFSET }}>
+            Sell
+          </Text>
+
+          <Flex
+            borderRadius={15}
+            px={1}
+            py={0.5}
+            backgroundColor="blue100"
+            style={{ top: BUTTON_CONTENT_IOS_TOP_OFFSET }}
+          >
+            <Text variant="xxs" color="white">
+              Beta
+            </Text>
+          </Flex>
+        </Flex>
       </Button>
     </Flex>
   )
