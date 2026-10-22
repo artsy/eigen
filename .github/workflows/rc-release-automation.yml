@@ -1,7 +1,8 @@
 name: RC Release Automation
 
-# When the release bot (artsyit) opens a release-candidate PR (head branch
-# `rc-v<version>`), this orchestrates the release-day automation:
+# When the release bot (artsyit) or an engineer opens a release-candidate PR
+# from a branch in this repo (head branch `rc-v<version>`), this orchestrates
+# the release-day automation:
 #   1. trigger-betas    — push the RC branch to beta-ios / beta-android, which
 #                          fires the 4 existing beta build workflows.
 #   2. wait-for-betas   — poll until all 4 beta builds complete; fail on any failure.
@@ -19,8 +20,12 @@ permissions:
 
 jobs:
   guard:
-    # Only rc-v* PRs opened by the release bot.
-    if: startsWith(github.head_ref, 'rc-v') && github.event.pull_request.user.login == 'artsyit'
+    # Only rc-v* PRs from a branch in this repo (not a fork). Only people with
+    # write access can push such a branch, so this covers the release bot and
+    # org engineers while excluding outside contributors.
+    if: >
+      startsWith(github.head_ref, 'rc-v') &&
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.version.outputs.version }}
@@ -28,9 +33,18 @@ jobs:
     steps:
       - name: Derive version from branch name
         id: version
+        env:
+          HEAD_REF: ${{ github.head_ref }}
         run: |
-          branch="${{ github.head_ref }}"
-          echo "version=${branch#rc-v}" >> "$GITHUB_OUTPUT"
+          # Must match getVersionFromBranch (scripts/create-qa-document/version.ts),
+          # so a bad name fails here instead of after the betas have shipped.
+          if [[ ! "$HEAD_REF" =~ ^rc-v[0-9]+(\.[0-9]+)*(-hotfix)?$ ]]; then
+            echo "::error::Expected rc-v<version> or rc-v<version>-hotfix (e.g. rc-v9.19.0), got: $HEAD_REF"
+            exit 1
+          fi
+          version="${HEAD_REF#rc-v}"
+          # Beta tags are keyed on the bare version, so drop the hotfix suffix.
+          echo "version=${version%-hotfix}" >> "$GITHUB_OUTPUT"
 
   trigger-betas:
     needs: guard

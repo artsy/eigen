@@ -11,7 +11,7 @@ import { extractChangelogFromPrBody, extractContributorsFromChangelog } from "..
 import { QA_DESTINATION_URL, QA_TEMPLATE_URL } from "../constants"
 import { createQaDocument } from "../createQaDocument"
 import { duplicateTemplate, findExistingCopy } from "../duplicateNotionTemplate"
-import { getVersionFromBranch } from "../version"
+import { getVersionFromBranch, isHotfixBranch } from "../version"
 
 const RC_BRANCH = "rc-v9.12.0"
 // 2026-08-13 so the title stamps a known date.
@@ -26,9 +26,19 @@ describe("getVersionFromBranch", () => {
     expect(getVersionFromBranch("rc-v10.0.1")).toEqual("10.0.1")
   })
 
+  it("strips the -hotfix suffix", () => {
+    expect(getVersionFromBranch("rc-v7.2.1-hotfix")).toEqual("7.2.1")
+  })
+
+  it("detects hotfix branches", () => {
+    expect(isHotfixBranch("rc-v7.2.1-hotfix")).toBe(true)
+    expect(isHotfixBranch("rc-v7.2.1")).toBe(false)
+  })
+
   it("throws for a non-rc branch", () => {
     expect(() => getVersionFromBranch("main")).toThrow(/rc-v<version>/)
     expect(() => getVersionFromBranch("feature/rc-v1.2.3")).toThrow()
+    expect(() => getVersionFromBranch("rc-v1.2.3-test")).toThrow()
   })
 })
 
