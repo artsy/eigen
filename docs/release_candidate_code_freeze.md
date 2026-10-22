@@ -18,7 +18,7 @@ the build we submit. Opening it also triggers
 [`rc-release-automation.yml`](../.github/workflows/rc-release-automation.yml), which builds the betas
 off the RC branch.
 
-Don't create the branch by hand unless the bot failed — the automation keys off the `rc-v` prefix.
+Don't create the branch by hand unless the bot failed. If you do, name it exactly `rc-v<version>` (e.g. `rc-v9.19.0`, digits and dots only) and open the PR from a branch in this repo, not a fork — the automation rejects any other shape.
 
 # Happy Path - No Launch Blocking Bugs Found
 

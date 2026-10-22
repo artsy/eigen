@@ -33,9 +33,16 @@ jobs:
     steps:
       - name: Derive version from branch name
         id: version
+        env:
+          HEAD_REF: ${{ github.head_ref }}
         run: |
-          branch="${{ github.head_ref }}"
-          echo "version=${branch#rc-v}" >> "$GITHUB_OUTPUT"
+          # Must match getVersionFromBranch (scripts/create-qa-document/version.ts),
+          # so a bad name fails here instead of after the betas have shipped.
+          if [[ ! "$HEAD_REF" =~ ^rc-v[0-9]+(\.[0-9]+)*$ ]]; then
+            echo "::error::Expected an rc-v<version> branch (e.g. rc-v9.19.0), got: $HEAD_REF"
+            exit 1
+          fi
+          echo "version=${HEAD_REF#rc-v}" >> "$GITHUB_OUTPUT"
 
   trigger-betas:
     needs: guard
