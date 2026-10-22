@@ -52,14 +52,14 @@ export const MyCollectionBottomSheetModalSell: React.FC<{ isVisible: boolean }> 
 
           <Flex gap={2}>
             <Text variant="sm" color="mono60">
-              This program is in beta, so works you submit won't go up for sale right away. We're
-              looking for collectors to work with us as part of this early initiative — they'll
+              This program is in beta, so works you submit won't go up for sale right away. We’re
+              looking for collectors to work with us as part of this early initiative — they’ll
               become preferred sellers once we launch more broadly.
             </Text>
 
             <Text variant="sm" color="mono60">
-              Eligible works will be supported by our Auction team, or listed on Artsy as "available
-              soon". We can then share data with you on demand for your works, such as how many
+              Eligible works will be supported by our Auction team, or listed on Artsy as “available
+              soon”. We can then share data with you on demand for your works, such as how many
               people have viewed or saved them.
             </Text>
           </Flex>
