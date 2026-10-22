@@ -4,12 +4,14 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
-import { Tab } from "app/Scenes/MyCollection/MyCollection"
+import { MyCollectionQueryRenderer, Tab } from "app/Scenes/MyCollection/MyCollection"
 import { MyCollectionContainer } from "app/Scenes/MyCollection/MyCollectionLegacy"
 import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -31,6 +33,32 @@ const mockAddListener = jest.fn((event, callback) => {
   }
   return jest.fn() // return a function to mimic the unsubscribe function
 })
+
+jest.mock("app/utils/queryPrefetching", () => ({
+  prefetchQuery: jest.fn(),
+  usePrefetch: jest.fn(() => jest.fn()),
+}))
+
+jest.mock("app/Scenes/MyCollection/MyCollectionArtworks", () => ({
+  MyCollectionArtworksQueryRenderer: () => null,
+}))
+
+jest.mock("app/Scenes/MyCollection/MyCollectionListings", () => ({
+  MyCollectionListingsQueryRenderer: () => null,
+}))
+
+jest.mock("app/Scenes/MyCollection/Components/MyCollectionCollectedArtists", () => ({
+  ...jest.requireActual("app/Scenes/MyCollection/Components/MyCollectionCollectedArtists"),
+  MyCollectionCollectedArtistsQueryRenderer: () => null,
+}))
+
+jest.mock("app/Scenes/MyCollection/Screens/Insights/MyCollectionInsights", () => ({
+  MyCollectionInsightsQR: () => null,
+}))
+
+jest.mock("app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader", () => ({
+  UserAccountHeaderQueryRenderer: () => null,
+}))
 
 describe("MyCollection", () => {
   const { renderWithRelay } = setupTestWrapper<MyCollectionTestsQuery>({
@@ -240,6 +268,38 @@ describe("MyCollection", () => {
       // await applyFilter("Medium", "Print")
       // await applyFilter("Price", "$0-1,000")
       // await applyFilter("Size", "Small (under 40cm)")
+    })
+  })
+})
+
+describe("MyCollection with AREnableSellMyCollectionArtwork", () => {
+  describe("when the flag is disabled", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSellMyCollectionArtwork: false })
+    })
+
+    it("shows the Artists tab and no Listings tab", () => {
+      renderWithWrappers(<MyCollectionQueryRenderer />)
+
+      expect(screen.getByText("Artworks")).toBeOnTheScreen()
+      expect(screen.getByText("Artists")).toBeOnTheScreen()
+      expect(screen.getByText("Insights")).toBeOnTheScreen()
+      expect(screen.queryByText("Listings")).not.toBeOnTheScreen()
+    })
+  })
+
+  describe("when the flag is enabled", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSellMyCollectionArtwork: true })
+    })
+
+    it("shows the Listings tab and no Artists tab", () => {
+      renderWithWrappers(<MyCollectionQueryRenderer />)
+
+      expect(screen.getByText("Artworks")).toBeOnTheScreen()
+      expect(screen.getByText("Insights")).toBeOnTheScreen()
+      expect(screen.getByText("Listings")).toBeOnTheScreen()
+      expect(screen.queryByText("Artists")).not.toBeOnTheScreen()
     })
   })
 })
