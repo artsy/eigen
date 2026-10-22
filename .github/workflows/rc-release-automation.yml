@@ -1,7 +1,7 @@
 name: RC Release Automation
 
-# When the release bot (artsyit) opens a release-candidate PR (head branch
-# `rc-v<version>`), this orchestrates the release-day automation:
+# When an artsy/engineering member (incl. the release bot, artsyit) opens a
+# release-candidate PR (head branch `rc-v<version>`), this orchestrates the release-day automation:
 #   1. trigger-betas    — push the RC branch to beta-ios / beta-android, which
 #                          fires the 4 existing beta build workflows.
 #   2. wait-for-betas   — poll until all 4 beta builds complete; fail on any failure.
@@ -19,13 +19,31 @@ permissions:
 
 jobs:
   guard:
-    # Only rc-v* PRs opened by the release bot.
-    if: startsWith(github.head_ref, 'rc-v') && github.event.pull_request.user.login == 'artsyit'
+    # Only rc-v* PRs opened by a member of the artsy `engineering` team, which
+    # includes the release bot (checked below; downstream jobs skip otherwise).
+    if: startsWith(github.head_ref, 'rc-v')
     runs-on: ubuntu-latest
     outputs:
+      authorized: ${{ steps.author.outputs.authorized }}
       version: ${{ steps.version.outputs.version }}
       sha: ${{ github.event.pull_request.head.sha }}
     steps:
+      - name: Check the PR author is on the engineering team (includes the release bot)
+        id: author
+        env:
+          # Team membership needs read:org, which the default GITHUB_TOKEN lacks.
+          GH_TOKEN: ${{ secrets.EIGEN_GITHUB_PAT_TOKEN }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          # 404 (not a member) or any API error fails closed.
+          state=$(gh api "orgs/artsy/teams/engineering/memberships/${AUTHOR}" --jq .state 2>/dev/null || true)
+          if [ "$state" = "active" ]; then
+            echo "authorized=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::${AUTHOR} is not on the artsy/engineering team; skipping RC automation."
+            echo "authorized=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Derive version from branch name
         id: version
         run: |
@@ -34,6 +52,7 @@ jobs:
 
   trigger-betas:
     needs: guard
+    if: needs.guard.outputs.authorized == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
