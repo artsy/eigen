@@ -258,6 +258,7 @@ import {
 } from "app/Scenes/ViewingRoom/ViewingRoomsList"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
+import { MarkdownPlayground } from "app/system/devTools/MarkdownPlayground/MarkdownPlayground"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
 import { compact } from "lodash"
 import { Platform } from "react-native"
@@ -874,6 +875,15 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       hidesBottomTabs: true,
       screenOptions: { headerShown: false, gestureEnabled: false, animation: "fade" },
+    },
+  },
+  {
+    path: "/dev/markdown-playground",
+    name: "MarkdownPlayground",
+    Component: MarkdownPlayground,
+    options: {
+      hidesBottomTabs: true,
+      screenOptions: { headerShown: false },
     },
   },
   {
