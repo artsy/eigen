@@ -101,7 +101,7 @@ describe("ItineraryScreen", () => {
   it("tracks the screen view against the guide's own id and slug", async () => {
     renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
-    await screen.findByText("Chill Vibes Only")
+    expect(await screen.findByText("Chill Vibes Only")).toBeOnTheScreen()
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: ActionType.screen,
