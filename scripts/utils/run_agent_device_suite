@@ -131,15 +131,30 @@ take_screenshot() {
   fi
 }
 
-# Flows for this platform: shared `name.ad` files plus `name.<platform>.ad` ones
+# Cheap flows that run first, in this order. A freshly booted simulator or emulator is at its slowest
+# at the start of the job, so that lands on the simplest flows rather than on the deeplinks.
+FIRST_FLOWS="login signup"
+
+# Flows for this platform: shared `name.ad` files plus `name.<platform>.ad` ones, FIRST_FLOWS first
 platform_flows() {
-  local flow base
+  local flow base name first all=""
   for flow in $(find e2e-agent-device/flows -name "*.ad" | sort); do
     base=$(basename "$flow" .ad)
     case "$base" in
       *.ios | *.android) [ "${base##*.}" = "$PLATFORM" ] || continue ;;
     esac
-    echo "$flow"
+    all="$all $flow"
+  done
+
+  for first in $FIRST_FLOWS; do
+    for flow in $all; do
+      name=$(basename "$flow" .ad)
+      [ "${name%".$PLATFORM"}" = "$first" ] && echo "$flow"
+    done
+  done
+  for flow in $all; do
+    name=$(basename "$flow" .ad)
+    [[ " $FIRST_FLOWS " == *" ${name%".$PLATFORM"} "* ]] || echo "$flow"
   done
 }
 

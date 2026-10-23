@@ -12,6 +12,7 @@
 Both workflows can also be started manually from the Actions tab.
 
 - Both download the same QA build from S3 as Maestro does, reuse `.env.maestro.<platform>` (the same test account), and run `scripts/utils/run_agent_device_suite <platform> <udid|serial>`.
+- `login` and `signup` run first, then the rest, so a freshly booted simulator's slow first minutes land on the simplest flows (`FIRST_FLOWS` in the runner). In the iOS job, the simulator also starts booting right after checkout, so it settles during setup.
 - Each flow gets up to 3 attempts. A flow that only passes on a retry is logged as flaky, with a warning on the run summary.
 - At the end, the runner prints a summary like agent-device's own reporter. That's one `✓`/`⨯` line per flow with its time, then the flaky flows and the failures, with the error of every failed attempt. In CI it's also added to the run's summary page. Flow names come from each flow's `# @title` header.
 - Failures are posted to `#mobile-alerts` with a screenshot (uploaded to S3, like Maestro's).
