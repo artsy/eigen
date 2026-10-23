@@ -6,6 +6,7 @@ import {
   SellSelectionNoteBottomSheet,
   SellSelectionWork,
 } from "app/Scenes/Sell/Components/SellSelectionNoteBottomSheet"
+import { SellStepIntro } from "app/Scenes/Sell/Components/SellStepIntro"
 import { SellStepLayout } from "app/Scenes/Sell/Components/SellStepLayout"
 import { SellWorksSummary } from "app/Scenes/Sell/Components/SellWorksSummary"
 import { SellNavigationProp, SellNavigationRoutes } from "app/Scenes/Sell/Sell"
@@ -92,8 +93,11 @@ const SelectWorksContent: React.FC<SelectWorksContentProps> = withSuspense({
             hideCreateAlertOnArtworkPreview
             disableArtworksListPrompt
             disableProgressiveOnboarding
+            // The grid pads its items, so the intro only needs half the screen gutter
+            ListHeaderComponent={<SellStepIntro stepName="SelectWorks" px={1} />}
             ListEmptyComponent={
-              <Flex px={2} pt={2}>
+              <Flex>
+                <SellStepIntro stepName="SelectWorks" />
                 <Text variant="sm" color="mono60">
                   Add works to My Collection to sell them.
                 </Text>
