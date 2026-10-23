@@ -131,14 +131,42 @@ take_screenshot() {
   fi
 }
 
+# Flows for this platform: shared `name.ad` files plus `name.<platform>.ad` ones
+platform_flows() {
+  local flow base
+  for flow in $(find e2e-agent-device/flows -name "*.ad" | sort); do
+    base=$(basename "$flow" .ad)
+    case "$base" in
+      *.ios | *.android) [ "${base##*.}" = "$PLATFORM" ] || continue ;;
+    esac
+    echo "$flow"
+  done
+}
+
+# The first `wait` of a flow has to be a selector wait for a screen the launch arguments produce,
+# because wait_until_launched relies on it on Android. A duration wait (`wait 2000`) or `wait absent`
+# would pass before the arguments were read and bring back the race on Android only.
+INVALID_FLOWS=""
+for FLOW in $(platform_flows); do
+  FIRST_WAIT=$(grep -m 1 "^wait " "$FLOW" || true)
+  if [ -z "$FIRST_WAIT" ] || [[ "$FIRST_WAIT" =~ ^wait\ +([0-9]+|absent|stable)(\ |$) ]]; then
+    echo "❌ $FLOW: the first \`wait\` must wait for a screen the launch arguments produce, e.g. wait 'id=\"search-button\"' 90000 (found: ${FIRST_WAIT:-none})"
+    INVALID_FLOWS="$INVALID_FLOWS $FLOW"
+  fi
+done
+if [ -n "$INVALID_FLOWS" ]; then
+  exit 1
+fi
+
 rm -rf "$ARTIFACTS_DIR"
 mkdir -p "$ARTIFACTS_DIR"
 
 EXIT_CODE=0
 FAILURE_FILES=()
 
-for FLOW in $(find e2e-agent-device/flows -name "*.ad" | sort); do
+for FLOW in $(platform_flows); do
   NAME=$(basename "$FLOW" .ad)
+  NAME=${NAME%".$PLATFORM"}
   # SKIP_FLOWS is a space-separated list of flow names to leave out, e.g. "deeplinks"
   if [[ " $SKIP_FLOWS " == *" $NAME "* ]]; then
     echo "Skipping test: $FLOW"
