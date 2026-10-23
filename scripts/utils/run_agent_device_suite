@@ -161,8 +161,85 @@ fi
 rm -rf "$ARTIFACTS_DIR"
 mkdir -p "$ARTIFACTS_DIR"
 
+now_ms() {
+  perl -MTime::HiRes=time -e 'printf "%d\n", time * 1000'
+}
+
+seconds() {
+  LC_ALL=C awk -v ms="$1" 'BEGIN { printf "%.1fs", ms / 1000 }'
+}
+
+# The flow's `# @title` header, like a Maestro flow's `name:`, or its file name
+flow_title() {
+  local title
+  title=$(grep -m 1 "^# @title " "$1" | sed "s/^# @title //")
+  echo "${title:-$2}"
+}
+
+# One line per attempt: attempt, passed|failed, duration in ms, first line of the error
+record_attempt() {
+  local message
+  message=$(printf '%s' "$3" | head -n 1 | tr '\t' ' ')
+  printf '%s\t%s\t%s\t%s\n' "$attempt" "$1" "$2" "$message" >> "$ARTIFACTS_DIR/$NAME/attempts.tsv"
+}
+
+# The error agent-device reported for the attempt, if any
+attempt_error() {
+  jq -r '.[0].message // empty' "$ATTEMPT_DIR/failures.json" 2> /dev/null || true
+}
+
+# Prints a summary like agent-device's own reporter: one line per flow, then flaky flows and failures
+# with every failed attempt. In CI it's also added to the run's summary page.
+print_summary() {
+  local passed=0 failed=0 total_ms=0 line name title status attempts ms
+  local lines="" flaky="" failures=""
+  while IFS=$'\t' read -r name title status attempts ms; do
+    total_ms=$((total_ms + ms))
+    if [ "$status" = passed ]; then
+      passed=$((passed + 1))
+      lines="${lines}✓ $title $(seconds "$ms")"$'\n'
+      if [ "$attempts" -gt 1 ]; then
+        flaky="$flaky  ✓ $title after $attempts attempts (passed attempt $(seconds "$(awk -F'\t' '$2 == "passed" { print $3 }' "$ARTIFACTS_DIR/$name/attempts.tsv")"), total $(seconds "$ms"))"$'\n'
+        flaky="$flaky$(LC_ALL=C awk -F'\t' '$2 == "failed" { printf "    attempt %s failed (%.1fs): %s\n", $1, $3 / 1000, $4 }' "$ARTIFACTS_DIR/$name/attempts.tsv")"$'\n'
+      fi
+    else
+      failed=$((failed + 1))
+      lines="${lines}⨯ $title $(seconds "$ms")"$'\n'
+      failures="$failures  ⨯ $title after $attempts attempts (total $(seconds "$ms"))"$'\n'
+      failures="$failures$(LC_ALL=C awk -F'\t' '{ printf "    attempt %s failed (%.1fs): %s\n", $1, $3 / 1000, $4 }' "$ARTIFACTS_DIR/$name/attempts.tsv")"$'\n'
+    fi
+  done < "$ARTIFACTS_DIR/summary.tsv"
+
+  {
+    echo
+    echo "Test summary ($PLATFORM): $passed passed, $failed failed in $(seconds "$total_ms")"
+    echo
+    printf '%s' "$lines"
+    if [ -n "$flaky" ]; then
+      echo
+      echo "Flaky tests:"
+      printf '%s' "$flaky"
+    fi
+    if [ -n "$failures" ]; then
+      echo
+      echo "Failures:"
+      printf '%s' "$failures"
+    fi
+  } | tee "$ARTIFACTS_DIR/summary.txt"
+
+  if [ -n "$GITHUB_STEP_SUMMARY" ]; then
+    {
+      echo "### agent-device $PLATFORM: $passed passed, $failed failed"
+      echo '```'
+      sed '1,3d' "$ARTIFACTS_DIR/summary.txt"
+      echo '```'
+    } >> "$GITHUB_STEP_SUMMARY"
+  fi
+}
+
 EXIT_CODE=0
 FAILURE_FILES=()
+: > "$ARTIFACTS_DIR/summary.tsv"
 
 for FLOW in $(platform_flows); do
   NAME=$(basename "$FLOW" .ad)
@@ -173,10 +250,12 @@ for FLOW in $(platform_flows); do
     continue
   fi
   PASSED=false
+  FLOW_START=$(now_ms)
 
   for ((attempt = 1; attempt <= MAX_ATTEMPTS; attempt++)); do
     echo "Running test: $FLOW (attempt $attempt/$MAX_ATTEMPTS)"
     ATTEMPT_DIR="$ARTIFACTS_DIR/$NAME/attempt-$attempt"
+    ATTEMPT_START=$(now_ms)
     mkdir -p "$ATTEMPT_DIR"
 
     # Replaces e2e/flows/signup.js. New per attempt, since a failed attempt may already have created the account.
@@ -186,11 +265,13 @@ for FLOW in $(platform_flows); do
 
     if ! launch_app "$FLOW"; then
       echo "Failed to launch $AD_VAR_APP_ID"
+      record_attempt failed $(($(now_ms) - ATTEMPT_START)) "Failed to launch $AD_VAR_APP_ID"
       continue
     fi
     if ! wait_until_launched "$FLOW" "$ATTEMPT_DIR"; then
       echo "The app didn't reach the flow's first screen after launch"
       take_screenshot "$ATTEMPT_DIR/failure-screen.png" || true
+      record_attempt failed $(($(now_ms) - ATTEMPT_START)) "The app didn't reach the flow's first screen after launch"
       continue
     fi
     if AD_FAILURES_PATH="$ATTEMPT_DIR/failures.json" agent-device test "$FLOW" \
@@ -200,10 +281,17 @@ for FLOW in $(platform_flows); do
       --reporter "junit:$ATTEMPT_DIR/junit.xml" \
       --reporter ./e2e-agent-device/reporters/failures.mjs; then
       PASSED=true
+      record_attempt passed $(($(now_ms) - ATTEMPT_START)) ""
       break
     fi
+    record_attempt failed $(($(now_ms) - ATTEMPT_START)) "$(attempt_error)"
     take_screenshot "$ATTEMPT_DIR/failure-screen.png" || true
   done
+
+  ATTEMPTS=$(wc -l < "$ARTIFACTS_DIR/$NAME/attempts.tsv" | tr -d ' ')
+  printf '%s\t%s\t%s\t%s\t%s\n' "$NAME" "$(flow_title "$FLOW" "$NAME")" \
+    "$([ "$PASSED" = true ] && echo passed || echo failed)" "$ATTEMPTS" $(($(now_ms) - FLOW_START)) \
+    >> "$ARTIFACTS_DIR/summary.tsv"
 
   if [ "$PASSED" = false ]; then
     EXIT_CODE=1
@@ -223,6 +311,8 @@ for FLOW in $(platform_flows); do
     fi
   fi
 done
+
+print_summary
 
 if [ $EXIT_CODE -ne 0 ]; then
   # Failures of the last attempt of every failed flow

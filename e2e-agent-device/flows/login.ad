@@ -1,4 +1,5 @@
 context timeout=240000
+# @title Login
 # Mirrors e2e/flows/login.yml
 # @launch useMaestroInit=true shouldSignOut=true
 open ${APP_ID}

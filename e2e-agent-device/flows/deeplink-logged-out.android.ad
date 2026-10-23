@@ -1,4 +1,5 @@
 context timeout=300000
+# @title Deeplink - Logged Out
 # Opens an artist link while logged out, as a cold start. The app keeps the link (launchURL in useDeepLinks) and opens
 # it once the user has logged in.
 # The link is opened without the app id, the same VIEW intent as Maestro's openLink, so Android resolves it: only a
