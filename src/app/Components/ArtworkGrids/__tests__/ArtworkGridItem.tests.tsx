@@ -8,6 +8,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { DateTime } from "luxon"
+import { Platform } from "react-native"
 import { graphql } from "react-relay"
 
 describe("ArtworkGridItem", () => {
@@ -63,6 +64,22 @@ describe("ArtworkGridItem", () => {
 
       expect(onPress).toHaveBeenCalledWith("cool-artwork", expect.anything(), undefined)
       expect(navigate).not.toHaveBeenCalled()
+    })
+
+    it("turns off the long-press menu when the grid selects artworks", () => {
+      const originalOS = Platform.OS
+      Platform.OS = "android"
+
+      renderWithRelay(
+        { Artwork: () => ({ title: "Some Kind of Dinosaur" }) },
+        { isSelected: false }
+      )
+      expect(screen.queryByTestId("android-context-menu-trigger")).not.toBeOnTheScreen()
+
+      renderWithRelay({ Artwork: () => ({ title: "Some Kind of Dinosaur" }) })
+      expect(screen.getByTestId("android-context-menu-trigger")).toBeOnTheScreen()
+
+      Platform.OS = originalOS
     })
 
     it("does not mark the artwork as selected by default", () => {

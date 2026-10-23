@@ -84,7 +84,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   hideCreateAlertOnArtworkPreview?: boolean
   /** fit the artwork to the frame with limited height */
   fitToFrame?: boolean
-  /** Shows a check on the image and turns off navigation. Pass it only in grids that select artworks. */
+  /** Shows a check on the image and turns off navigation and the long-press menu. Pass it only in grids that select artworks. */
   isSelected?: boolean
 }
 
@@ -215,6 +215,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     }
 
     const navigationProps = partnerOffer && !!hasEnded ? { artworkOfferExpired: true } : undefined
+    const isSelectable = isSelected !== undefined
 
     const trackArtworkTap = () => {
       // Unless you explicitly pass in a tracking function or provide a contextScreenOwnerType, we won't track
@@ -285,30 +286,35 @@ export const Artwork: React.FC<ArtworkProps> = memo(
           hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
           width={Number(height ?? 0) * (artwork.image?.aspectRatio ?? 1)}
           height={height}
+          disabled={isSelectable}
         >
           <RouterLink
             haptic
             underlayColor={color("mono0")}
             onPress={handleTap}
             // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
-            onLongPress={() => {
-              // Adroid long press is tracked inside of the ContextMenuArtwork component
-              if (contextScreenOwnerType && isIOS) {
-                tracking.trackEvent(
-                  trackLongPress.longPressedArtwork(
-                    ContextModule.artworkGrid,
-                    contextScreenOwnerType,
-                    artwork.slug
-                  )
-                )
-              }
-            }}
+            onLongPress={
+              isSelectable
+                ? undefined
+                : () => {
+                    // Adroid long press is tracked inside of the ContextMenuArtwork component
+                    if (contextScreenOwnerType && isIOS) {
+                      tracking.trackEvent(
+                        trackLongPress.longPressedArtwork(
+                          ContextModule.artworkGrid,
+                          contextScreenOwnerType,
+                          artwork.slug
+                        )
+                      )
+                    }
+                  }
+            }
             delayLongPress={400}
             navigationProps={navigationProps}
             to={artwork.href}
             testID={`artworkGridItem-${artwork.title}`}
-            disableNavigation={isSelected !== undefined}
-            accessibilityState={isSelected !== undefined ? { selected: isSelected } : undefined}
+            disableNavigation={isSelectable}
+            accessibilityState={isSelectable ? { selected: isSelected } : undefined}
           >
             <View ref={itemRef}>
               {!!isSelected && (
