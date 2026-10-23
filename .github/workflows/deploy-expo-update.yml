@@ -1,6 +1,12 @@
 name: Deploy Expo Update
 
 on:
+  # Every commit on a hotfix branch gets its own canary, so there is always a canary of the exact
+  # commit you'd publish to production — which is what the production gate requires.
+  push:
+    branches:
+      - "hotfix-v*"
+
   workflow_dispatch:
     inputs:
       sha:
@@ -38,26 +44,47 @@ on:
         type: boolean
         default: false
 
-run-name: "Deploy Expo Update to ${{ inputs.deployment }} on ${{ case(inputs.platform == 'all', 'both platforms', inputs.platform) }} · ${{ inputs.sha }}"
-# example: Deploy Expo Update to production on android · SHA
+run-name: "Deploy Expo Update to ${{ inputs.deployment || 'canary' }} on ${{ case(inputs.platform == '' || inputs.platform == 'all', 'both platforms', inputs.platform) }} · ${{ inputs.sha || github.sha }}"
+# example: Deploy Expo Update to production on ios · SHA
+
+# A push to a hotfix branch has no inputs, so every parameter falls back to the auto-canary
+# meaning. `inputs.x` is empty rather than an error on a push event.
+env:
+  DEPLOY_SHA: ${{ inputs.sha || github.sha }}
+  DEPLOY_DEPLOYMENT: ${{ inputs.deployment || 'canary' }}
+  DEPLOY_PLATFORM: ${{ inputs.platform || 'all' }}
+  # Hotfix branches are older than main, so the native fingerprint is always compared against the
+  # build that actually shipped for this version, never against main's latest beta.
+  DEPLOY_CHECK_AGAINST_VERSION: ${{ inputs.check_against_version || startsWith(github.ref_name, 'hotfix-v') }}
 
 permissions:
-  contents: write # needed for tag_and_push (fastlane/utility_fastlane.rb)
+  contents: write # needed for tag_and_push (fastlane/utility_fastlane.rb) and the GitHub release
+  pull-requests: write # production gate reads the hotfix PR; the announce job comments on it
 
 concurrency:
-  group: deploy-expo-update-${{ inputs.deployment }}
-  cancel-in-progress: false
+  group: deploy-expo-update-${{ inputs.deployment || 'canary' }}-${{ inputs.deployment == 'production' && 'all-branches' || github.ref_name }}
+  # A canary of an older commit is worthless once a newer one is pushed; a production publish is
+  # never interrupted.
+  cancel-in-progress: ${{ github.event_name == 'push' }}
 
 jobs:
   deploy:
     runs-on: macos-26
     timeout-minutes: 30
 
+    outputs:
+      ios_tag: ${{ steps.deploy.outputs.ios_expo_tag }}
+      android_tag: ${{ steps.deploy.outputs.android_expo_tag }}
+      release_title: ${{ steps.production_gate.outputs.release_title }}
+      pr_number: ${{ steps.production_gate.outputs.pr_number }}
+      release_notes: ${{ steps.production_gate.outputs.release_notes }}
+      previous_ios_tag: ${{ steps.production_gate.outputs.previous_ios_tag }}
+
     steps:
       - name: Checkout repository at the published commit
         uses: actions/checkout@v5
         with:
-          ref: ${{ inputs.sha }}
+          ref: ${{ env.DEPLOY_SHA }}
 
       - name: Setup repository environment
         uses: ./.github/actions/setup-repo-environment
@@ -83,15 +110,28 @@ jobs:
           path: .cache/metro
           key: metro-v1-${{ runner.os }}-${{ hashFiles('yarn.lock', 'babel.config.js', 'alias.js', 'metro.config.js') }}
 
+      # Production updates reach users without store review, so they have to come from a hotfix
+      # branch with a hotfix PR and a canary of the same commit. There is no override.
+      - name: Check production gate
+        id: production_gate
+        if: inputs.deployment == 'production'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          yarn tsx scripts/deploys/expo-updates/productionGate/checkProductionGate.ts \
+            --sha "$DEPLOY_SHA" \
+            --branch "${{ github.ref_name }}" \
+            --platform "$DEPLOY_PLATFORM"
+
       - name: Deploy to Expo Updates
         id: deploy
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_UPDATES_TOKEN }}
-          DEPLOYMENT: ${{ inputs.deployment }}
-          PLATFORM: ${{ inputs.platform }}
+          DEPLOYMENT: ${{ env.DEPLOY_DEPLOYMENT }}
+          PLATFORM: ${{ env.DEPLOY_PLATFORM }}
           DESCRIPTION: ${{ inputs.description }}
           ROLLOUT_PERCENTAGE: ${{ inputs.rollout_percentage }}
-          CHECK_AGAINST_VERSION: ${{ inputs.check_against_version }}
+          CHECK_AGAINST_VERSION: ${{ env.DEPLOY_CHECK_AGAINST_VERSION }}
         run: |
           args=("$DEPLOYMENT" "$DESCRIPTION" "$ROLLOUT_PERCENTAGE" --platform "$PLATFORM")
           if [ "$CHECK_AGAINST_VERSION" = "true" ]; then
@@ -99,13 +139,101 @@ jobs:
           fi
           ./scripts/deploys/expo-updates/deploy-to-expo-updates "${args[@]}"
 
-      - name: Notify Slack of production publish
-        if: success() && inputs.deployment == 'production'
-        env:
-          DESCRIPTION: ${{ inputs.description }}
-          ROLLOUT_PERCENTAGE: ${{ inputs.rollout_percentage }}
-        run: bundle exec fastlane notify_expo_update_published description:"$DESCRIPTION" rollout_percentage:"$ROLLOUT_PERCENTAGE"
-
       - name: Notify Slack of production publish failure
         if: failure() && inputs.deployment == 'production'
         run: bundle exec fastlane notify_expo_update_failed
+
+  github-release:
+    needs: deploy
+    if: inputs.deployment == 'production'
+    uses: ./.github/workflows/github-release.yml
+    with:
+      ios_tag: ${{ needs.deploy.outputs.ios_tag }}
+      android_tag: ${{ needs.deploy.outputs.android_tag }}
+      previous_tag: ${{ needs.deploy.outputs.previous_ios_tag }}
+      title: ${{ needs.deploy.outputs.release_title }}
+      extra_notes: ${{ needs.deploy.outputs.release_notes }}
+      generate_notes: false
+      make_latest: false
+
+  # Both of these run once the GitHub release exists, so they can link to it, and both run even
+  # if that release job failed — the update is already live either way, and going quiet about a
+  # live update is the one outcome we can't have.
+
+  comment-on-hotfix-pr:
+    needs: [deploy, github-release]
+    if: always() && inputs.deployment == 'production' && needs.deploy.result == 'success' && needs.deploy.outputs.pr_number != ''
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Comment on the hotfix PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ needs.deploy.outputs.pr_number }}
+          IOS_TAG: ${{ needs.deploy.outputs.ios_tag }}
+          ANDROID_TAG: ${{ needs.deploy.outputs.android_tag }}
+          RELEASE_URL: ${{ needs.github-release.result == 'success' && format('{0}/{1}/releases/tag/{2}', github.server_url, github.repository, needs.deploy.outputs.ios_tag) || '' }}
+          ROLLOUT_PERCENTAGE: ${{ inputs.rollout_percentage }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          sentry="https://artsynet.sentry.io"
+          project="project=5867225"
+          rollout="all users"
+          [ -n "$ROLLOUT_PERCENTAGE" ] && rollout="${ROLLOUT_PERCENTAGE}% of users"
+
+          gh pr comment "$PR_NUMBER" --repo "$REPO" --body "$(cat <<COMMENT
+          🚀 **Published to production** — rolling out to ${rollout}.
+
+          | | |
+          |---|---|
+          | Release | ${RELEASE_URL:-_not created, see the run_} |
+          | Run | ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} |
+          | iOS health | ${sentry}/explore/releases/${IOS_TAG}/?environment=production&${project} |
+          | Android health | ${sentry}/explore/releases/${ANDROID_TAG}/?environment=production&${project} |
+
+          Watch the crash-free rate before taking the rollout further with update-rollout.
+          COMMENT
+          )"
+
+  notify-slack:
+    needs: [deploy, github-release]
+    if: always() && inputs.deployment == 'production' && needs.deploy.result == 'success'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      # Needed for .env.shared, which carries the Slack webhook.
+      - name: Setup repository environment
+        uses: ./.github/actions/setup-repo-environment
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Setup Ruby
+        uses: ./.github/actions/setup-ruby
+
+      - name: Notify Slack of production publish
+        env:
+          DESCRIPTION: ${{ inputs.description }}
+          ROLLOUT_PERCENTAGE: ${{ inputs.rollout_percentage }}
+          IOS_TAG: ${{ needs.deploy.outputs.ios_tag }}
+          ANDROID_TAG: ${{ needs.deploy.outputs.android_tag }}
+          RELEASE_URL: ${{ needs.github-release.result == 'success' && format('{0}/{1}/releases/tag/{2}', github.server_url, github.repository, needs.deploy.outputs.ios_tag) || '' }}
+          PR_NUMBER: ${{ needs.deploy.outputs.pr_number }}
+        run: |
+          pr_url=""
+          if [ -n "$PR_NUMBER" ]; then
+            pr_url="${{ github.server_url }}/${{ github.repository }}/pull/$PR_NUMBER"
+          fi
+
+          bundle exec fastlane notify_expo_update_published \
+            description:"$DESCRIPTION" \
+            rollout_percentage:"$ROLLOUT_PERCENTAGE" \
+            ios_tag:"$IOS_TAG" \
+            android_tag:"$ANDROID_TAG" \
+            release_url:"$RELEASE_URL" \
+            pr_url:"$pr_url"

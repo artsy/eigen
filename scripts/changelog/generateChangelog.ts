@@ -154,6 +154,14 @@ async function main() {
   const argv = yargs(hideBin(process.argv)).argv as any
   let tag1 = argv._[0] as string | undefined
   let tag2 = argv._[1] as string | undefined
+  // --plain prints just the changelog entries, for scripts that embed them somewhere
+  // (start-hotfix writes them into the hotfix PR). Any two refs work, not only tags.
+  const plain = Boolean(argv.plain)
+
+  if (plain && (!tag1 || !tag2)) {
+    console.error("--plain needs both refs: generate-changelog <base> <head> --plain")
+    process.exit(1)
+  }
 
   // Interactive mode if no tags provided
   if (!tag1 || !tag2) {
@@ -193,16 +201,23 @@ async function main() {
     )
   }
 
-  console.log(chalk.bold.blue(`\n📋 Generating changelog: ${tag1} → ${tag2}\n`))
+  if (!plain) {
+    console.log(chalk.bold.blue(`\n📋 Generating changelog: ${tag1} → ${tag2}\n`))
+  }
 
   const prs = await getPrsBetweenTags(tag1, tag2)
 
   if (prs.length === 0) {
-    console.log(chalk.yellow("No PRs found between these tags."))
+    if (!plain) console.log(chalk.yellow("No PRs found between these tags."))
     return
   }
 
   const { changelog, prsWithoutChangelog, prsWithNoChangelog } = await getChangelogFromPrs(prs)
+
+  if (plain) {
+    if (changelog) process.stdout.write(changelog)
+    return
+  }
 
   console.log(chalk.bold.greenBright("\n✅ PRs with changelog entries:"))
   if (changelog) {

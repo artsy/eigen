@@ -19,6 +19,8 @@ the build we submit. Opening it also triggers
 off the RC branch.
 
 Don't create the branch by hand unless the bot failed — the automation keys off the `rc-v` prefix.
+The exception is a [native hotfix](deploy_a_hotfix.md#native-hotfix), which you branch by hand as
+`rc-v<version>-hotfix`. The automation only reacts to PRs the bot opens, so it leaves those alone.
 
 # Happy Path - No Launch Blocking Bugs Found
 
