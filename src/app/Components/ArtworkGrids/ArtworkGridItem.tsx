@@ -25,6 +25,7 @@ import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessag
 import { ContextMenuArtwork, trackLongPress } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable } from "app/Components/Disappearable"
+import { SelectionCheck } from "app/Components/SelectionCheck/SelectionCheck"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -83,6 +84,8 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   hideCreateAlertOnArtworkPreview?: boolean
   /** fit the artwork to the frame with limited height */
   fitToFrame?: boolean
+  /** Shows a check on the image and turns off navigation. Pass it only in grids that select artworks. */
+  isSelected?: boolean
 }
 
 export const Artwork: React.FC<ArtworkProps> = memo(
@@ -118,6 +121,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     updateRecentSearchesOnTap = false,
     hideCreateAlertOnArtworkPreview = false,
     fitToFrame = false,
+    isSelected,
   }) => {
     const itemRef = useRef<any>(null)
     const disappearableRef = useRef<Disappearable>(null)
@@ -303,8 +307,15 @@ export const Artwork: React.FC<ArtworkProps> = memo(
             navigationProps={navigationProps}
             to={artwork.href}
             testID={`artworkGridItem-${artwork.title}`}
+            disableNavigation={isSelected !== undefined}
+            accessibilityState={isSelected !== undefined ? { selected: isSelected } : undefined}
           >
             <View ref={itemRef}>
+              {!!isSelected && (
+                <Box position="absolute" top={1} right={1} zIndex={1}>
+                  <SelectionCheck checked />
+                </Box>
+              )}
               {!!artwork.image?.url &&
                 (fitToFrame ? (
                   <View
