@@ -1,4 +1,8 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import {
+  ImageCarouselContext,
+  useNewImageCarouselContext,
+} from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { ImageCarouselVimeoVideo } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
@@ -24,34 +28,45 @@ jest.mock("app/utils/videoHelpers", () => ({
 
 const PLAY_SCRIPT = "window.playVideo && window.playVideo(); true;"
 
-const renderVideo = () =>
-  renderWithWrappers(
-    <ImageCarouselVimeoVideo
-      width={300}
-      height={200}
-      vimeoUrl="https://player.vimeo.com/video/696646345?h=cb5e5856b6"
-    />
+const TestWrapper = ({ index }: { index: number }) => {
+  const context = useNewImageCarouselContext({ images: [] })
+
+  return (
+    <ImageCarouselContext.Provider value={context}>
+      <ImageCarouselVimeoVideo
+        index={index}
+        width={300}
+        height={200}
+        vimeoUrl="https://player.vimeo.com/video/696646345?h=cb5e5856b6"
+      />
+    </ImageCarouselContext.Provider>
   )
+}
 
 describe("ImageCarouselVimeoVideo", () => {
   afterEach(() => {
     jest.clearAllMocks()
   })
 
-  it("shows the cover without loading the player", () => {
-    renderVideo()
+  it("loads the player behind the cover when the slide is next to the current one", () => {
+    renderWithWrappers(<TestWrapper index={1} />)
 
+    expect(screen.getByTestId("vimeo-player-webview")).toBeOnTheScreen()
     expect(screen.getByLabelText("Vimeo Play Button")).toBeOnTheScreen()
+  })
+
+  it("does not load the player when the slide is far from the current one", () => {
+    renderWithWrappers(<TestWrapper index={3} />)
+
     expect(screen.queryByTestId("vimeo-player-webview")).not.toBeOnTheScreen()
   })
 
-  it("loads and starts the player on tap", () => {
-    renderVideo()
+  it("hides the cover and starts the player on tap", () => {
+    renderWithWrappers(<TestWrapper index={0} />)
 
     fireEvent.press(screen.getByLabelText("Vimeo Play Button"))
 
     expect(screen.queryByLabelText("Vimeo Play Button")).not.toBeOnTheScreen()
-    expect(screen.getByTestId("vimeo-player-webview")).toBeOnTheScreen()
     expect(mockInjectJavaScript).toHaveBeenCalledWith(PLAY_SCRIPT)
   })
 })

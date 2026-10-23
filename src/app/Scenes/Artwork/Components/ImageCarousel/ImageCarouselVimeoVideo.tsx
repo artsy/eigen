@@ -1,10 +1,12 @@
 import { Flex, Touchable } from "@artsy/palette-mobile"
 import { VimeoPlayer, VimeoPlayerRef } from "app/Components/VimeoPlayer/VimeoPlayer"
+import { ImageCarouselContext } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { extractVimeoVideoDataFromUrl, useVimeoVideoMetadata } from "app/utils/videoHelpers"
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { DimensionValue, Image } from "react-native"
 
 interface ImageCarouselVimeoVideoProps {
+  index: number
   width: number | string
   height: number | string
   maxHeight?: number | string
@@ -12,6 +14,7 @@ interface ImageCarouselVimeoVideoProps {
 }
 
 export const ImageCarouselVimeoVideo: React.FC<ImageCarouselVimeoVideoProps> = ({
+  index,
   width,
   height,
   maxHeight,
@@ -25,12 +28,20 @@ export const ImageCarouselVimeoVideo: React.FC<ImageCarouselVimeoVideoProps> = (
   const imageWidth = width as DimensionValue
   const imageHeight = containerHeight as DimensionValue
 
-  // The player mounts on tap, and starts as soon as its page has loaded
+  /*
+    Load the player once this slide is on screen or next to it, and keep it loaded after.
+    The cover hides it while it loads and buffers, so a tap only has to start playback.
+  */
+  const { imageIndex } = useContext(ImageCarouselContext)
+  imageIndex.useUpdates()
+  const isNearby = Math.abs(imageIndex.current - index) <= 1
+  const [shouldLoadPlayer, setShouldLoadPlayer] = useState(isNearby)
+
   useEffect(() => {
-    if (isPlaying) {
-      playerRef.current?.play()
+    if (isNearby) {
+      setShouldLoadPlayer(true)
     }
-  }, [isPlaying])
+  }, [isNearby])
 
   return (
     <Flex
@@ -39,23 +50,35 @@ export const ImageCarouselVimeoVideo: React.FC<ImageCarouselVimeoVideoProps> = (
       accessibilityLabel="Vimeo Video Player"
       alignContent="center"
     >
-      {!!coverImage && !isPlaying && (
-        <Touchable onPress={() => setIsPlaying(true)} accessibilityLabel="Vimeo Play Button">
-          <Image
-            source={{ uri: coverImage }}
-            style={{ width: imageWidth, height: imageHeight }}
-            resizeMode="contain"
-          />
-        </Touchable>
-      )}
-      {!!isPlaying && (
-        <Flex accessibilityLabel="Vimeo Video Player Controls" width="100%" height="100%">
+      {!!shouldLoadPlayer && (
+        <Flex flex={1} accessibilityLabel="Vimeo Video Player Controls">
           <VimeoPlayer
             ref={playerRef}
             videoId={videoId}
             hash={typeof token === "string" ? token : undefined}
             loop
+            preload
           />
+        </Flex>
+      )}
+      {!isPlaying && (
+        <Flex position="absolute" top={0} left={0} width="100%" height="100%" bg="mono0">
+          {!!coverImage && (
+            <Touchable
+              // The slide is on screen, so the player is already mounted behind the cover
+              onPress={() => {
+                setIsPlaying(true)
+                playerRef.current?.play()
+              }}
+              accessibilityLabel="Vimeo Play Button"
+            >
+              <Image
+                source={{ uri: coverImage }}
+                style={{ width: imageWidth, height: imageHeight }}
+                resizeMode="contain"
+              />
+            </Touchable>
+          )}
         </Flex>
       )}
     </Flex>

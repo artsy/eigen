@@ -120,6 +120,7 @@ export const ImageCarouselFullScreen = () => {
               if (item.__typename === "Video") {
                 return (
                   <ImageCarouselVimeoVideo
+                    index={index}
                     width={screenDimensions.width}
                     height={screenDimensions.height}
                     vimeoUrl={item.url}
