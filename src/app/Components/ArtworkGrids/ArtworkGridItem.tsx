@@ -314,6 +314,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
             to={artwork.href}
             testID={`artworkGridItem-${artwork.title}`}
             disableNavigation={isSelectable}
+            disablePrefetch={isSelectable}
             accessibilityState={isSelectable ? { selected: isSelected } : undefined}
           >
             <View ref={itemRef}>
