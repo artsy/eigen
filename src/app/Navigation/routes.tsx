@@ -1372,7 +1372,6 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       alwaysPresentModally: true,
       screenOptions: {
-        gestureEnabled: false,
         headerShown: false,
       },
     },
