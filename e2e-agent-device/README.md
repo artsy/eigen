@@ -18,7 +18,8 @@ Both workflows can also be started manually from the Actions tab.
 
 ## Layout
 
-- `flows/*.ad`: one script per scenario, shared by iOS and Android. The platform comes from the device passed to the runner.
+- `flows/<name>.ad`: one script per scenario, shared by iOS and Android. The platform comes from the device passed to the runner.
+- `flows/<name>.<ios|android>.ad`: a platform-only version, for a scenario that has to work differently on each platform. `deeplinks` is the only one. `SKIP_FLOWS` uses the name without the suffix.
 - `reporters/failures.mjs`: a test reporter that writes the failed tests to `failures.json` for `scripts/ci/report-agent-device-test-failure`.
 
 ### Launch arguments
@@ -33,12 +34,15 @@ Before each attempt, the runner (re)launches the app with those arguments: iOS p
 
 Each flow then starts with `open ${APP_ID}`, which attaches agent-device to the running app without restarting it, followed by a `wait` for the screen the launch arguments produce ("Sign up or log in" after `shouldSignOut`, `search-button` after `email`/`password`).
 
-On Android, the runner first waits for that screen before starting the flow. agent-device's `open` sends a new launch intent, and `MainActivity` (`singleTask`, calling `setIntent` in `onNewIntent`) would replace our intent extras with it. Once the screen is up, the arguments have been read. iOS process arguments can't be replaced, so iOS doesn't need this.
+On Android, the runner first waits for that screen, using the flow's first `wait`, before starting the flow. It refuses to run flows whose first `wait` doesn't wait for a selector (`wait 2000`, `wait absent`, `wait stable`), because those would pass before the arguments were read. agent-device's `open` sends a new launch intent, and `MainActivity` (`singleTask`, calling `setIntent` in `onNewIntent`) would replace our intent extras with it. Once the screen is up, the arguments have been read. iOS process arguments can't be replaced, so iOS doesn't need this.
 
 ## Running locally
 
 1. Install the pinned version used in CI: `npm install -g agent-device@0.21.31`, then `agent-device doctor`.
-2. Install a QA build on a booted simulator or emulator (see [the Maestro README](../e2e/README.md) or download `Artsy-latest.zip` / `Artsy-latest.apk` from `s3://artsy-citadel/eigen/builds/`).
+2. Get the app onto a booted device:
+   - **iOS:** install the QA build CI uses. Download `s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip`, unzip it, then run `xcrun simctl install booted ./Artsy.app`. Then run `agent-device prepare ios-runner --platform ios --udid <udid> --timeout 900000` once, to build agent-device's test runner.
+   - **Android:** run a local build with `yarn android` (the `MAESTRO_APP_ID` package is `net.artsy.app`) and keep Metro running. The QA APK on S3 is built for x86_64 only, for CI's emulator, so it won't install on Apple Silicon emulators or on physical phones (`INSTALL_FAILED_NO_MATCHING_ABIS`). Open the app once and dismiss any React Native warning overlay before running the suite.
+   - **Android deeplinks:** a debug build can't verify App Links, because artsy.net's `assetlinks.json` only lists the release signing key, so its links open in Chrome. Mark the domains as verified for the local build with `adb shell pm set-app-links --package net.artsy.app 1 all`. Don't do this in CI, where verifying the release build is the point of the test.
 3. Make sure `.env.maestro.<platform>` exists (`./scripts/setup/setup-env-for-maestro <platform>`), or export `MAESTRO_TEST_EMAIL`, `MAESTRO_TEST_PASSWORD` and optionally `MAESTRO_APP_ID`. Values in the file win over the shell.
 4. Run the suite with `./scripts/utils/run_agent_device_suite ios` (or `android`). It uses the first booted simulator or emulator; pass a UDID or serial as the second argument to choose one.
 
@@ -56,12 +60,19 @@ AD_VAR_APP_ID=net.artsy.qa AD_VAR_EMAIL=... AD_VAR_PASSWORD=... agent-device rep
 - Find selectors with `agent-device snapshot -i` on the screen you're automating. Prefer `id="..."` (React Native `testID`) or `label="..."` (`accessibilityLabel`) over visible text.
 - `press`/`click`/`fill` don't wait for their target, so add a `wait '<selector>' <ms>` before interacting with a screen that loads.
 - Use `${VAR}` for anything secret and pass it as `AD_VAR_VAR`. Never write credentials into a script.
-- Flows must work on both platforms. Check selectors with `snapshot -i` on each.
+- Flows must work on both platforms. Check selectors with `snapshot -i` on each. Only split a flow into `.ios.ad` and `.android.ad` when the platforms really have to behave differently.
 - Declare launch arguments in the `# @launch` header, not on `open`.
-- Start with `open ${APP_ID}`, then a `wait` for a screen the launch arguments produce. The runner uses that first `wait` on Android.
+- Start with `open ${APP_ID}`, then a `wait` for a screen the launch arguments produce. The runner uses that first `wait` on Android, and rejects flows whose first `wait` isn't a selector wait.
 - On iOS, `fill` can't clear a secure text field. For password fields, `press` the field and then `type`.
 - An input without an accessibility label is matched by its placeholder with `text="..."` while it's empty, not with `label=`.
 - Wait for the element you're about to use, not just a heading on its screen. A heading can appear before the field is ready, and neighbouring screens can share headings.
 - After moving to a new screen, `wait absent` for the previous screen's field before pressing anything. On slower simulators both screens are on screen during the transition, so a selector like `label="Continue"` matches twice.
 - Give the first `wait` a generous timeout (90s). The first launch on a cold CI simulator can take over a minute.
 - See `agent-device help scripting` and `agent-device help test` for the full syntax.
+
+## Deeplinks
+
+`deeplinks` covers the same three links as Maestro, cold-starting the app for each one:
+
+- **iOS** (`deeplinks.ios.ad`): `open ${APP_ID} "<url>"` runs `simctl openurl`, so iOS decides between the app and Safari.
+- **Android** (`deeplinks.android.ad`): `open "<url>"` without the app id runs `am start -a android.intent.action.VIEW -d <url>`, the same intent Maestro's `openLink` sends, so Android resolves the link. Only a verified App Link opens the app; anything else opens Chrome. After the content check, the flow waits for `net.artsy.app:id/action_bar_root`, which only exists when the Artsy app is in the foreground. The content check alone isn't enough, because the artsy.net page in Chrome shows the same text.
