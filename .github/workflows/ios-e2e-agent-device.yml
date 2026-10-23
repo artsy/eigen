@@ -49,6 +49,11 @@ jobs:
       - name: Unzip iOS App
         run: unzip Artsy.zip
 
+      # agent-device builds an XCTest runner with xcodebuild, which must match the simulator runtime
+      # from ios-config.json. The runner image's default Xcode is newer and can't target that runtime.
+      - name: Select Xcode
+        run: sudo xcode-select -s "/Applications/Xcode_$(jq -r '.xcode_version' ios-config.json).app"
+
       - name: Install agent-device
         run: |
           npm install -g "agent-device@${AGENT_DEVICE_VERSION}"
