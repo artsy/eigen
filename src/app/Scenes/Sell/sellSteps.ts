@@ -17,5 +17,7 @@ export const SELL_STEPS = [
   },
 ] as const
 
+export type SellStepName = (typeof SELL_STEPS)[number]["name"]
+
 export const WORKS_SUMMARY_DESCRIPTION =
   "We reviewed demand for these works and selected the most effective sales channels for each piece. Confirm condition, price and shipping to finish listing."

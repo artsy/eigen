@@ -3,7 +3,7 @@ import { CommonActions, NavigationContainerRefWithCurrent, Route } from "@react-
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { SellStepper } from "app/Scenes/Sell/Components/SellStepper"
 import { SellNavigationRoutes } from "app/Scenes/Sell/Sell"
-import { SELL_STEPS, WORKS_SUMMARY_DESCRIPTION } from "app/Scenes/Sell/sellSteps"
+import { SELL_STEPS } from "app/Scenes/Sell/sellSteps"
 // eslint-disable-next-line no-restricted-imports
 import { dismissModal } from "app/system/navigation/navigate"
 import { Alert } from "react-native"
@@ -21,7 +21,6 @@ export const SellHeader: React.FC<SellHeaderProps> = ({ route, navigationRef }) 
   const space = useSpace()
 
   const currentStepIndex = SELL_STEPS.findIndex((step) => step.name === route.name)
-  const currentStep = SELL_STEPS[currentStepIndex]
   const isWorksSummary =
     route.name === "SelectWorks" &&
     !!(route.params as SellNavigationRoutes["SelectWorks"])?.showWorksSummary
@@ -72,16 +71,6 @@ export const SellHeader: React.FC<SellHeaderProps> = ({ route, navigationRef }) 
       </Flex>
 
       <SellStepper currentStepIndex={currentStepIndex} />
-
-      <Flex gap={1}>
-        <Text variant="sm-display" weight="medium" color="blue100">
-          {`Step ${currentStepIndex + 1} · ${currentStep.title}`}
-        </Text>
-
-        <Text variant="sm" color="mono60">
-          {isWorksSummary ? WORKS_SUMMARY_DESCRIPTION : currentStep.description}
-        </Text>
-      </Flex>
     </Flex>
   )
 }
