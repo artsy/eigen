@@ -1,5 +1,6 @@
 import { act, fireEvent, screen } from "@testing-library/react-native"
 import { Sell } from "app/Scenes/Sell/Sell"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { dismissModal, goBack } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Alert, BackHandler } from "react-native"
@@ -8,6 +9,10 @@ import { Alert, BackHandler } from "react-native"
 jest.mock("@react-navigation/native", () => jest.requireActual("@react-navigation/native"))
 
 describe("Sell", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSellMyCollectionArtwork: true })
+  })
+
   afterEach(() => {
     jest.clearAllMocks()
   })
@@ -18,6 +23,14 @@ describe("Sell", () => {
     expect(screen.getByText("Step 1 · Decide Which Works to Sell")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 1 of 3")).toBeOnTheScreen()
     expect(screen.getByText(/Tap the works you've considered selling/)).toBeOnTheScreen()
+  })
+
+  it("closes straight away when the feature flag is off", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSellMyCollectionArtwork: false })
+    renderWithWrappers(<Sell />)
+
+    expect(screen.queryByText("Step 1 · Decide Which Works to Sell")).not.toBeOnTheScreen()
+    expect(dismissModal).toHaveBeenCalledTimes(1)
   })
 
   it("walks through every step and shows the confirmation on submit", async () => {

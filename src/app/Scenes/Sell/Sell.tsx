@@ -10,7 +10,10 @@ import { SellHeader, SellRoute } from "app/Scenes/Sell/Components/SellHeader"
 import { Condition } from "app/Scenes/Sell/Screens/Condition"
 import { LocationAndContact } from "app/Scenes/Sell/Screens/LocationAndContact"
 import { SelectWorks } from "app/Scenes/Sell/Screens/SelectWorks"
-import { useState } from "react"
+// eslint-disable-next-line no-restricted-imports
+import { dismissModal } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useEffect, useState } from "react"
 
 export type SellNavigationRoutes = {
   SelectWorks: { showWorksSummary?: boolean } | undefined
@@ -23,6 +26,23 @@ export type SellNavigationProp = StackNavigationProp<SellNavigationRoutes>
 const Stack = createStackNavigator<SellNavigationRoutes>()
 
 export const Sell: React.FC = () => {
+  const enableSell = useFeatureFlag("AREnableSellMyCollectionArtwork")
+
+  // Deep links reach this route without going through the flagged Sell button
+  useEffect(() => {
+    if (!enableSell) {
+      dismissModal()
+    }
+  }, [enableSell])
+
+  if (!enableSell) {
+    return null
+  }
+
+  return <SellNavigator />
+}
+
+const SellNavigator: React.FC = () => {
   const navigationRef = useNavigationContainerRef<SellNavigationRoutes>()
   const [currentRoute, setCurrentRoute] = useState<SellRoute>()
 
