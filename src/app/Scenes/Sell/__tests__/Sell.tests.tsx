@@ -2,12 +2,15 @@ import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { Sell } from "app/Scenes/Sell/Sell"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
+import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Alert, BackHandler } from "react-native"
 
 // setupJest stubs useNavigation, but this test drives the real stack
 jest.mock("@react-navigation/native", () => jest.requireActual("@react-navigation/native"))
+
+jest.mock("app/utils/requestPhotos", () => ({ showPhotoActionSheet: jest.fn() }))
 
 type BackPressHandler = Parameters<typeof BackHandler.addEventListener>[1]
 
@@ -48,8 +51,28 @@ const collection = {
 const { renderWithRelay } = setupTestWrapper({ Component: Sell })
 
 const renderSell = async () => {
-  renderWithRelay(collection)
+  const view = renderWithRelay(collection)
   await screen.findByTestId("artworkGridItem-Sellable Work")
+  return view
+}
+
+type SellView = Awaited<ReturnType<typeof renderSell>>
+
+// Step 2 loads the active work with its own query
+const resolveStepTwoArtwork = (
+  view: SellView,
+  artwork: { internalID: string; artistNames: string }
+) => {
+  view.mockResolveLastOperation({ Artwork: () => artwork })
+}
+
+const openAuctionConditionStep = async (view: SellView) => {
+  fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
+  fireEvent.press(screen.getByText("Verify If Sellable"))
+  fireEvent.press(await screen.findByText("Proceed to Listing"))
+  fireEvent.press(await screen.findByText("Start Submission"))
+  resolveStepTwoArtwork(view, { internalID: "id-b4", artistNames: "Artist C" })
+  await screen.findByText("Step 2 · Condition")
 }
 
 const openWorksSummary = async () => {
@@ -150,7 +173,7 @@ describe("Sell", () => {
   })
 
   it("walks through every step and shows the confirmation on submit", async () => {
-    await renderSell()
+    const view = await renderSell()
 
     await openWorksSummary()
     expect(screen.getByText("Step 1 · Decide Which Works to Sell")).toBeOnTheScreen()
@@ -158,8 +181,10 @@ describe("Sell", () => {
     expect(screen.getByText(/We reviewed demand for these works/)).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Start Listing"))
+    resolveStepTwoArtwork(view, { internalID: "id-a2", artistNames: "Artist A" })
     expect(await screen.findByText("Step 2 · Condition & Price")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 2 of 3")).toBeOnTheScreen()
+    expect(screen.getByText("Listing works aren't supported yet.")).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Continue"))
     expect(await screen.findByText("Step 3 · Shipping Options")).toBeOnTheScreen()
@@ -170,6 +195,43 @@ describe("Sell", () => {
 
     fireEvent.press(screen.getByText("Return to My Collection"))
     expect(goBack).toHaveBeenCalledTimes(1)
+  })
+
+  it("asks for the condition of an auction work before continuing", async () => {
+    const view = await renderSell()
+    await openAuctionConditionStep(view)
+
+    expect(screen.getByText("Artist C")).toBeOnTheScreen()
+    expect(screen.getAllByRole("radio")).toHaveLength(4)
+    expect(screen.getByText("Continue")).toBeDisabled()
+
+    const fair = screen.getByRole("radio", { name: /^Fair\./ })
+    fireEvent.press(fair)
+    expect(fair).toBeChecked()
+    expect(screen.getByText("Continue")).toBeEnabled()
+
+    fireEvent.changeText(screen.getByLabelText("Notes"), "Small scratch on the frame")
+    expect(screen.getByDisplayValue("Small scratch on the frame")).toBeOnTheScreen()
+
+    fireEvent.press(screen.getByText("Continue"))
+    expect(await screen.findByText("Step 3 · Shipping Options")).toBeOnTheScreen()
+  })
+
+  it("previews condition photos without uploading them", async () => {
+    jest
+      .mocked(showPhotoActionSheet)
+      .mockResolvedValue([{ path: "file:///first.jpg" }, { path: "file:///second.jpg" }] as Awaited<
+        ReturnType<typeof showPhotoActionSheet>
+      >)
+    const view = await renderSell()
+    await openAuctionConditionStep(view)
+
+    fireEvent.press(screen.getByText("Upload photos"))
+    expect(await screen.findAllByTestId("sell-condition-photo")).toHaveLength(2)
+    expect(screen.getByText("Add more photos")).toBeOnTheScreen()
+
+    fireEvent.press(screen.getByLabelText("Remove photo 1"))
+    expect(screen.getAllByTestId("sell-condition-photo")).toHaveLength(1)
   })
 
   it("goes back from the works summary to the work selection, then leaves the flow", async () => {
@@ -187,7 +249,7 @@ describe("Sell", () => {
 
   it("handles Android hardware back on the works summary and on later steps", async () => {
     const pressHardwareBack = mockHardwareBack()
-    await renderSell()
+    const view = await renderSell()
 
     await openWorksSummary()
 
@@ -197,6 +259,7 @@ describe("Sell", () => {
     fireEvent.press(screen.getByText("Verify If Sellable"))
     fireEvent.press(await screen.findByText("Proceed to Listing"))
     fireEvent.press(await screen.findByText("Start Listing"))
+    resolveStepTwoArtwork(view, { internalID: "id-a2", artistNames: "Artist A" })
     await screen.findByText("Step 2 · Condition & Price")
 
     pressHardwareBack()

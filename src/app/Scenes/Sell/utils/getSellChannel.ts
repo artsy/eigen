@@ -1,16 +1,19 @@
 export interface SellChannel {
+  kind: "AUCTION" | "LISTING"
   name: string
   status: string
   actionLabel: string
 }
 
 const AUCTION: SellChannel = {
+  kind: "AUCTION",
   name: "Artnet Auction",
   status: "To be reviewed by a specialist",
   actionLabel: "Start Submission",
 }
 
 const LISTING: SellChannel = {
+  kind: "LISTING",
   name: "Artsy Listing",
   status: "Estimated Value: US$2,800–3,600",
   actionLabel: "Start Listing",

@@ -10,6 +10,7 @@ import { SellStepIntro } from "app/Scenes/Sell/Components/SellStepIntro"
 import { SellStepLayout } from "app/Scenes/Sell/Components/SellStepLayout"
 import { SellWorksSummary } from "app/Scenes/Sell/Components/SellWorksSummary"
 import { SellNavigationProp, SellNavigationRoutes } from "app/Scenes/Sell/Sell"
+import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { isWorkSellable } from "app/Scenes/Sell/utils/isWorkSellable"
 import { extractNodes } from "app/utils/extractNodes"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
@@ -21,6 +22,7 @@ export const SelectWorks: React.FC = () => {
   const navigation = useNavigation<SellNavigationProp>()
   const { params } = useRoute<RouteProp<SellNavigationRoutes, "SelectWorks">>()
   const showWorksSummary = !!params?.showWorksSummary
+  const setActiveArtworkID = SellFlowStore.useStoreActions((actions) => actions.setActiveArtworkID)
 
   const handleHardwareBack = useCallback(() => {
     if (!showWorksSummary) {
@@ -37,7 +39,10 @@ export const SelectWorks: React.FC = () => {
     <SelectWorksContent
       showWorksSummary={showWorksSummary}
       onShowWorksSummary={() => navigation.setParams({ showWorksSummary: true })}
-      onStartWork={() => navigation.navigate("Condition")}
+      onStartWork={(internalID) => {
+        setActiveArtworkID(internalID)
+        navigation.navigate("Condition")
+      }}
     />
   )
 }
@@ -143,7 +148,6 @@ const selectWorksQuery = graphql`
             slug
             artistNames
             title
-            date
             image(includeAll: false) {
               aspectRatio
             }
@@ -151,6 +155,7 @@ const selectWorksQuery = graphql`
               url(version: "square")
             }
             ...ArtworkGridItem_artwork
+            ...SellWorkCard_artwork
           }
         }
       }

@@ -10,6 +10,7 @@ import { SellHeader, SellRoute } from "app/Scenes/Sell/Components/SellHeader"
 import { Condition } from "app/Scenes/Sell/Screens/Condition"
 import { LocationAndContact } from "app/Scenes/Sell/Screens/LocationAndContact"
 import { SelectWorks } from "app/Scenes/Sell/Screens/SelectWorks"
+import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 // eslint-disable-next-line no-restricted-imports
 import { dismissModal } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -39,7 +40,11 @@ export const Sell: React.FC = () => {
     return null
   }
 
-  return <SellNavigator />
+  return (
+    <SellFlowStore.Provider>
+      <SellNavigator />
+    </SellFlowStore.Provider>
+  )
 }
 
 const SellNavigator: React.FC = () => {
