@@ -1,11 +1,14 @@
 name: Android E2E Tests (agent-device)
 
 on:
-  workflow_run:
-    workflows: ["Build Android QA App for Maestro"]
-    types:
-      - completed
-  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+  # workflow_run:
+  #   workflows: ["Build Android QA App for Maestro"]
+  #   types:
+  #     - completed
+  # workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+  push:
+    branches:
+      - gkartalis/agent-device-e2e
 
 env:
   AGENT_DEVICE_VERSION: 0.21.31
@@ -13,7 +16,7 @@ env:
 
 jobs:
   e2e-tests:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    # if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest # Use ubuntu-latest for better Android emulator support
     timeout-minutes: 30
 
