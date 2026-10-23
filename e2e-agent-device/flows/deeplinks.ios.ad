@@ -1,5 +1,6 @@
 context timeout=360000
-# Mirrors e2e/flows/deeplinks.yml. Each deeplink is opened against a closed app to exercise cold-start link handling.
+# Mirrors e2e/flows/deeplinks.yml on iOS. Each deeplink is opened against a closed app to exercise cold-start link handling.
+# `open <app> <url>` runs `simctl openurl`, so iOS itself decides between the app and Safari, like Maestro's openLink.
 # @launch useMaestroInit=true email=${EMAIL} password=${PASSWORD}
 open ${APP_ID}
 # The first launch on a cold CI simulator can take over a minute
