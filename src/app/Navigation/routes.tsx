@@ -225,6 +225,7 @@ import {
 } from "app/Scenes/Search/Search"
 import { discoverSomethingNewQuery } from "app/Scenes/Search/components/DiscoverSomethingNew/DiscoverSomethingNew"
 import { exploreByCategoryQuery } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategory"
+import { Sell } from "app/Scenes/Sell/Sell"
 import {
   ShowMoreInfoQueryRenderer,
   ShowMoreInfoScreenQuery,
@@ -1361,6 +1362,17 @@ export const artsyDotNetRoutes = defineRoutes([
       screenOptions: {
         headerTitle: "Add Artists You Collect",
         gestureEnabled: false,
+      },
+    },
+  },
+  {
+    path: "/my-collection/sell",
+    name: "Sell",
+    Component: Sell,
+    options: {
+      alwaysPresentModally: true,
+      screenOptions: {
+        headerShown: false,
       },
     },
   },
