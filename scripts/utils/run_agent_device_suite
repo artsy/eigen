@@ -189,6 +189,10 @@ for FLOW in $(find e2e-agent-device/flows -name "*.ad" | sort); do
     FAILURE_FILES+=("$ATTEMPT_DIR/failures.with-screenshot.json")
   elif [ "$attempt" -gt 1 ]; then
     echo "⚠️ $FLOW is flaky: passed on attempt $attempt"
+    # Shows on the run summary, so a suite that only passes thanks to retries doesn't look healthy
+    if [ -n "$GITHUB_ACTIONS" ]; then
+      echo "::warning title=Flaky agent-device flow::$NAME ($PLATFORM) passed on attempt $attempt of $MAX_ATTEMPTS"
+    fi
   fi
 done
 

@@ -1,8 +1,9 @@
-context timeout=240000
+context timeout=360000
 # Mirrors e2e/flows/deeplinks.yml. Each deeplink is opened against a closed app to exercise cold-start link handling.
 # @launch useMaestroInit=true email=${EMAIL} password=${PASSWORD}
 open ${APP_ID}
-wait 'id="search-button"' 30000
+# The first launch on a cold CI simulator can take over a minute
+wait 'id="search-button"' 90000
 close
 
 # Artist
