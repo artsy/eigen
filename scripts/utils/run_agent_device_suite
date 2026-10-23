@@ -25,7 +25,7 @@ unquote() {
 
 # Reuse the Maestro env file (same test account). Maestro reads it as a picocli @argfile, so lines
 # look like `-e KEY=value`, `-e "KEY=value"` or `-e KEY="value"`; plain `KEY=value` works too.
-# Variables already set in the shell take precedence.
+# The file is per platform, so it wins over the shell (e.g. a shell MAESTRO_APP_ID set for Android).
 if [ -f "$ENV_FILE" ]; then
   LOADED_KEYS=""
   while IFS= read -r line || [ -n "$line" ]; do
@@ -38,7 +38,7 @@ if [ -f "$ENV_FILE" ]; then
     [[ "$line" =~ ^([A-Za-z_][A-Za-z0-9_]*)=(.*)$ ]] || continue
     key="${BASH_REMATCH[1]}"
     value=$(unquote "${BASH_REMATCH[2]}")
-    [ -n "${!key}" ] || export "$key=$value"
+    export "$key=$value"
     LOADED_KEYS="$LOADED_KEYS $key"
   done < "$ENV_FILE"
   echo "Loaded from $ENV_FILE:${LOADED_KEYS:- (nothing)}"
@@ -84,8 +84,10 @@ shell_quote() {
 # agent-device scripts can't pass launch arguments, so each flow declares them in a
 # `# @launch key=value ...` header and we (re)launch the app with them before the flow runs.
 # Values written as ${VAR} are read from AD_VAR_VAR. This is what useMaestroInitialization reads.
-# Flows wait for a screen the arguments produce before their first `open`: on Android, `open` sends a
-# new launch intent and MainActivity (singleTask + setIntent) would replace the extras before JS reads them.
+# On Android, agent-device's `open` sends a new launch intent and MainActivity (singleTask + setIntent)
+# replaces our extras with it. So before running a flow, wait_until_launched waits for the screen the
+# arguments produce (the flow's first `wait`), which proves they were read. iOS process arguments can't
+# be replaced, so iOS needs no wait.
 launch_app() {
   local flow=$1
   local header
@@ -111,6 +113,14 @@ launch_app() {
     adb -s "$DEVICE" shell am force-stop "$AD_VAR_APP_ID"
     adb -s "$DEVICE" shell am start -W -n "$AD_VAR_APP_ID/.MainActivity" "${android_args[@]}" > /dev/null
   fi
+}
+
+wait_until_launched() {
+  local flow=$1 dir=$2
+  [ "$PLATFORM" = "android" ] || return 0
+
+  grep -m 1 "^wait " "$flow" > "$dir/launched.ad"
+  agent-device replay "$dir/launched.ad" "$DEVICE_FLAG" "$DEVICE" > /dev/null
 }
 
 take_screenshot() {
@@ -148,6 +158,11 @@ for FLOW in $(find e2e-agent-device/flows -name "*.ad" | sort); do
 
     if ! launch_app "$FLOW"; then
       echo "Failed to launch $AD_VAR_APP_ID"
+      continue
+    fi
+    if ! wait_until_launched "$FLOW" "$ATTEMPT_DIR"; then
+      echo "The app didn't reach the flow's first screen after launch"
+      take_screenshot "$ATTEMPT_DIR/failure-screen.png" || true
       continue
     fi
     if AD_FAILURES_PATH="$ATTEMPT_DIR/failures.json" agent-device test "$FLOW" \
