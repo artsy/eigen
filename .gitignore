@@ -202,3 +202,7 @@ AWSCLIV2.pkg
 
 # Generated route-drift report (regenerate with `yarn route-drift`)
 scripts/route-drift/route-drift-report.md
+
+# agent-device e2e artifacts
+e2e-agent-device/artifacts/
+.agent-device/
