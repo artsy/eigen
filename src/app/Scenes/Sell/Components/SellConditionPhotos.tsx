@@ -10,6 +10,7 @@ export interface SellConditionPhoto {
 }
 
 const PREVIEW_SIZE = 80
+const REMOVE_TARGET_SIZE = 48
 
 interface SellConditionPhotosProps {
   photos: SellConditionPhoto[]
@@ -48,15 +49,22 @@ export const SellConditionPhotos: React.FC<SellConditionPhotosProps> = ({
                 source={{ uri: photo.path }}
                 style={{ width: PREVIEW_SIZE, height: PREVIEW_SIZE }}
               />
-              <Flex position="absolute" top={0.5} right={0.5}>
+              <Flex position="absolute" top={0} right={0}>
                 <Touchable
                   accessibilityRole="button"
                   accessibilityLabel={`Remove photo ${index + 1}`}
-                  hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                   onPress={() => onRemove(photo.path)}
                 >
-                  <Flex bg="mono0" borderRadius={10}>
-                    <CloseFillIcon fill="mono100" width={20} height={20} />
+                  {/* Android drops hitSlop outside the parent, so the target itself is 48pt */}
+                  <Flex
+                    width={REMOVE_TARGET_SIZE}
+                    height={REMOVE_TARGET_SIZE}
+                    alignItems="flex-end"
+                    p={0.5}
+                  >
+                    <Flex bg="mono0" borderRadius={10}>
+                      <CloseFillIcon fill="mono100" width={20} height={20} />
+                    </Flex>
                   </Flex>
                 </Touchable>
               </Flex>
