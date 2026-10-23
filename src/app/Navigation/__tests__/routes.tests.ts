@@ -1084,7 +1084,7 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to Sell while hiding the bottom tabs", () => {
+  it("routes to Sell in a modal", () => {
     const sellRoute = artsyDotNetRoutes.find((route) => route.name === "Sell")
 
     expect(matchRoute("/my-collection/sell")).toEqual({
@@ -1092,7 +1092,7 @@ describe("artsy.net routes", () => {
       params: {},
       type: "match",
     })
-    expect(sellRoute?.options?.hidesBottomTabs).toBe(true)
+    expect(sellRoute?.options?.alwaysPresentModally).toBe(true)
   })
 
   it("routes /conditions-of-sale to web view", () => {

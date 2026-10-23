@@ -1370,8 +1370,9 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "Sell",
     Component: Sell,
     options: {
-      hidesBottomTabs: true,
+      alwaysPresentModally: true,
       screenOptions: {
+        gestureEnabled: false,
         headerShown: false,
       },
     },

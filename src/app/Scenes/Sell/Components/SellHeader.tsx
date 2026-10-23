@@ -5,7 +5,7 @@ import { SellStepper } from "app/Scenes/Sell/Components/SellStepper"
 import { SellNavigationRoutes } from "app/Scenes/Sell/Sell"
 import { SELL_STEPS, WORKS_SUMMARY_DESCRIPTION } from "app/Scenes/Sell/sellSteps"
 // eslint-disable-next-line no-restricted-imports
-import { goBack } from "app/system/navigation/navigate"
+import { dismissModal } from "app/system/navigation/navigate"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export type SellRoute = Route<string, object | undefined>
@@ -34,7 +34,7 @@ export const SellHeader: React.FC<SellHeaderProps> = ({ route, navigationRef }) 
     } else if (navigationRef.canGoBack()) {
       navigationRef.goBack()
     } else {
-      goBack()
+      dismissModal()
     }
   }
 

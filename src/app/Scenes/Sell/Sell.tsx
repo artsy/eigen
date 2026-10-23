@@ -1,4 +1,5 @@
 import { Flex } from "@artsy/palette-mobile"
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import {
   NavigationContainer,
   NavigationIndependentTree,
@@ -34,15 +35,18 @@ export const Sell: React.FC = () => {
         onReady={updateCurrentRoute}
         onStateChange={updateCurrentRoute}
       >
-        <Flex flex={1} bg="mono0">
-          {!!currentRoute && <SellHeader route={currentRoute} navigationRef={navigationRef} />}
+        {/* The app-level sheet provider renders behind this native modal */}
+        <BottomSheetModalProvider>
+          <Flex flex={1} bg="mono0">
+            {!!currentRoute && <SellHeader route={currentRoute} navigationRef={navigationRef} />}
 
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="SelectWorks" component={SelectWorks} />
-            <Stack.Screen name="Condition" component={Condition} />
-            <Stack.Screen name="LocationAndContact" component={LocationAndContact} />
-          </Stack.Navigator>
-        </Flex>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="SelectWorks" component={SelectWorks} />
+              <Stack.Screen name="Condition" component={Condition} />
+              <Stack.Screen name="LocationAndContact" component={LocationAndContact} />
+            </Stack.Navigator>
+          </Flex>
+        </BottomSheetModalProvider>
       </NavigationContainer>
     </NavigationIndependentTree>
   )

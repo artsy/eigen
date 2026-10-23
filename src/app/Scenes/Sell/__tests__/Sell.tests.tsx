@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { Sell } from "app/Scenes/Sell/Sell"
-import { goBack, navigate } from "app/system/navigation/navigate"
+import { dismissModal } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 // setupJest stubs useNavigation, but this test drives the real stack
@@ -40,7 +40,7 @@ describe("Sell", () => {
     expect(screen.getByText("Step 3 · Shipping Options")).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Return to My Collection"))
-    expect(navigate).toHaveBeenCalledWith("/my-collection", { replaceActiveScreen: true })
+    expect(dismissModal).toHaveBeenCalledTimes(1)
   })
 
   it("goes back from the works summary to the work selection, then leaves the flow", async () => {
@@ -51,9 +51,9 @@ describe("Sell", () => {
 
     fireEvent.press(screen.getByLabelText("Go back"))
     expect(await screen.findByText("Verify If Sellable")).toBeOnTheScreen()
-    expect(goBack).not.toHaveBeenCalled()
+    expect(dismissModal).not.toHaveBeenCalled()
 
     fireEvent.press(screen.getByLabelText("Go back"))
-    expect(goBack).toHaveBeenCalledTimes(1)
+    expect(dismissModal).toHaveBeenCalledTimes(1)
   })
 })

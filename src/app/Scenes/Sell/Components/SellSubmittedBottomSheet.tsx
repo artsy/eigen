@@ -2,7 +2,7 @@ import { Button, Flex, Text, useColor, useSpace } from "@artsy/palette-mobile"
 import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 // eslint-disable-next-line no-restricted-imports
-import { navigate } from "app/system/navigation/navigate"
+import { dismissModal } from "app/system/navigation/navigate"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 interface SellSubmittedBottomSheetProps {
@@ -31,12 +31,7 @@ export const SellSubmittedBottomSheet: React.FC<SellSubmittedBottomSheetProps> =
             Submitted!
           </Text>
 
-          <Button
-            block
-            haptic
-            variant="fillDark"
-            onPress={() => navigate("/my-collection", { replaceActiveScreen: true })}
-          >
+          <Button block haptic variant="fillDark" onPress={() => dismissModal()}>
             Return to My Collection
           </Button>
         </Flex>
