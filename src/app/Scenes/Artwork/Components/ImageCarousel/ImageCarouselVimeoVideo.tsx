@@ -1,8 +1,8 @@
 import { Flex, Touchable } from "@artsy/palette-mobile"
+import { VimeoPlayer, VimeoPlayerRef } from "app/Components/VimeoPlayer/VimeoPlayer"
 import { extractVimeoVideoDataFromUrl, useVimeoVideoMetadata } from "app/utils/videoHelpers"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { DimensionValue, Image } from "react-native"
-import { Vimeo } from "react-native-vimeo-iframe"
 
 interface ImageCarouselVimeoVideoProps {
   width: number | string
@@ -20,9 +20,17 @@ export const ImageCarouselVimeoVideo: React.FC<ImageCarouselVimeoVideoProps> = (
   const [isPlaying, setIsPlaying] = useState(false)
   const { videoId, token } = extractVimeoVideoDataFromUrl(vimeoUrl)
   const { coverImage } = useVimeoVideoMetadata(videoId)
+  const playerRef = useRef<VimeoPlayerRef>(null)
   const containerHeight = maxHeight ?? height
   const imageWidth = width as DimensionValue
   const imageHeight = containerHeight as DimensionValue
+
+  // The player mounts on tap, and starts as soon as its page has loaded
+  useEffect(() => {
+    if (isPlaying) {
+      playerRef.current?.play()
+    }
+  }, [isPlaying])
 
   return (
     <Flex
@@ -42,12 +50,11 @@ export const ImageCarouselVimeoVideo: React.FC<ImageCarouselVimeoVideoProps> = (
       )}
       {!!isPlaying && (
         <Flex accessibilityLabel="Vimeo Video Player Controls" width="100%" height="100%">
-          <Vimeo
+          <VimeoPlayer
+            ref={playerRef}
             videoId={videoId}
-            params={`h=${token}&loop=true&autoplay=${
-              isPlaying ? 1 : 0
-            }&transparent=1&background=false`}
-            allowsFullscreenVideo
+            hash={typeof token === "string" ? token : undefined}
+            loop
           />
         </Flex>
       )}

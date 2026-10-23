@@ -12,9 +12,18 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-jest.mock("react-native-vimeo-iframe", () => ({
-  Vimeo: () => <></>,
-}))
+// The global mock forwards the ref to a View, which has no `injectJavaScript`
+jest.mock("react-native-webview", () => {
+  const React = require("react")
+  const { View } = require("react-native")
+
+  const MockWebView = React.forwardRef((props: any, ref: any) => {
+    React.useImperativeHandle(ref, () => ({ injectJavaScript: jest.fn() }))
+    return <View {...props} />
+  })
+
+  return { __esModule: true, default: MockWebView, WebView: MockWebView }
+})
 
 describe("ImageCarouselFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapper<ImageCarouselTestsQuery>({

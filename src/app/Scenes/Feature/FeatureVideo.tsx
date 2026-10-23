@@ -1,4 +1,5 @@
 import { Flex } from "@artsy/palette-mobile"
+import { VimeoPlayer } from "app/Components/VimeoPlayer/VimeoPlayer"
 import {
   extractVimeoVideoDataFromUrl,
   extractYouTubeId,
@@ -7,7 +8,6 @@ import {
   isYouTube,
 } from "app/utils/videoHelpers"
 import React, { useRef } from "react"
-import { Vimeo } from "react-native-vimeo-iframe"
 import YoutubePlayer from "react-native-youtube-iframe"
 
 interface FeatureVideoProps {
@@ -28,7 +28,7 @@ export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, hei
     little trouble" — the same url pasted into a browser keeps the hash and plays fine.
     Left off entirely for a public video, so its url stays exactly as it was.
   */
-  const vimeoParams = typeof token === "string" && token ? `h=${token}` : undefined
+  const vimeoHash = typeof token === "string" && token ? token : undefined
 
   if (!isValidVideoUrl(videoUrl)) {
     console.warn(`FeatureVideo: Invalid video URL domain: ${videoUrl}`)
@@ -66,12 +66,7 @@ export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, hei
         height={height}
         backgroundColor="black"
       >
-        <Vimeo
-          videoId={vimeoId}
-          params={vimeoParams}
-          allowsFullscreenVideo
-          style={{ backgroundColor: "black" }}
-        />
+        <VimeoPlayer videoId={vimeoId} hash={vimeoHash} />
       </Flex>
     )
   }
