@@ -21,10 +21,11 @@ export const CreateNewArtworkListForm: FC = () => {
       setRecentlyAddedArtworkList: actions.setRecentlyAddedArtworkList,
       addOrRemoveArtworkList: actions.addOrRemoveArtworkList,
     }))
+  const artwork = ArtworkListsStore.useStoreState((state) => state.state.artwork)
   const { dismiss } = useBottomSheetModal()
   const analytics = useAnalyticsContext()
   const { trackEvent } = useTracking()
-  const [commitMutation] = useCreateNewArtworkList()
+  const [commitMutation] = useCreateNewArtworkList(artwork?.internalID)
   const AREnableArtworkListOfferability = useFeatureFlag("AREnableArtworkListOfferability")
 
   const setRecentlyAddedArtworkList = (artworkList: ArtworkListEntity) => {
