@@ -41,6 +41,37 @@ describe("ArtworkGridItem", () => {
     })
   })
 
+  describe("selection", () => {
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("marks the artwork as selected when isSelected is true", () => {
+      renderWithRelay({ Artwork: () => ({ title: "Some Kind of Dinosaur" }) }, { isSelected: true })
+
+      expect(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur")).toBeSelected()
+    })
+
+    it("calls onPress without navigating when the grid selects artworks", () => {
+      const onPress = jest.fn()
+      renderWithRelay(
+        { Artwork: () => ({ title: "Some Kind of Dinosaur", slug: "cool-artwork" }) },
+        { isSelected: false, onPress }
+      )
+
+      fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
+
+      expect(onPress).toHaveBeenCalledWith("cool-artwork", expect.anything(), undefined)
+      expect(navigate).not.toHaveBeenCalled()
+    })
+
+    it("does not mark the artwork as selected by default", () => {
+      renderWithRelay({ Artwork: () => ({ title: "Some Kind of Dinosaur" }) })
+
+      expect(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur")).not.toBeSelected()
+    })
+  })
+
   describe("tracking", () => {
     const trackTap = jest.fn()
 
