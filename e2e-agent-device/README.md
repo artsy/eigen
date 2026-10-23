@@ -29,7 +29,9 @@ The flows need the same launch arguments as Maestro (`useMaestroInit`, `email`, 
 # @launch useMaestroInit=true email=${EMAIL} password=${PASSWORD}
 ```
 
-Before each attempt, the runner (re)launches the app with those arguments: iOS process arguments via `xcrun simctl launch`, Android intent extras via `adb shell am start --es`. The script's first `open ${APP_ID}` then attaches to the running app. `${VAR}` values come from `AD_VAR_VAR`.
+Before each attempt, the runner (re)launches the app with those arguments: iOS process arguments via `xcrun simctl launch`, Android intent extras via `adb shell am start --es`. `${VAR}` values come from `AD_VAR_VAR`.
+
+Each flow starts with a `wait` for a screen the launch arguments produce, and only then runs `open ${APP_ID}` to attach agent-device to the running app. The order matters on Android. `open` sends a new launch intent, and `MainActivity` (`singleTask`, calling `setIntent` in `onNewIntent`) would replace our intent extras with it. If that happens before the app has read them, the arguments are lost. Waiting for their effect first ("Sign up or log in" after `shouldSignOut`, `search-button` after `email`/`password`) guarantees they were read.
 
 ## Running locally
 
@@ -54,4 +56,5 @@ AD_VAR_APP_ID=net.artsy.qa AD_VAR_EMAIL=... AD_VAR_PASSWORD=... agent-device rep
 - Use `${VAR}` for anything secret and pass it as `AD_VAR_VAR`. Never write credentials into a script.
 - Flows must work on both platforms. Check selectors with `snapshot -i` on each.
 - Declare launch arguments in the `# @launch` header, not on `open`.
+- Start with a `wait` for a screen the launch arguments produce, then `open ${APP_ID}`. Never put `open` first.
 - See `agent-device help scripting` and `agent-device help test` for the full syntax.

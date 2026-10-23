@@ -1,13 +1,12 @@
 context timeout=120000
 # Mirrors e2e/flows/login.yml
 # @launch useMaestroInit=true shouldSignOut=true
-open ${APP_ID}
 wait 'label="Sign up or log in" || text="Sign up or log in"' 30000
+open ${APP_ID}
 fill 'label="Email Input"' "${EMAIL}"
 press 'label="Continue" || text="Continue"'
 wait 'id="password"' 15000
 fill 'id="password"' "${PASSWORD}"
 press 'label="Continue" || text="Continue"'
 wait 'id="search-button"' 30000
-is visible 'id="search-button"'
 close
