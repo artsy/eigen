@@ -1,5 +1,5 @@
 import { HelpIcon } from "@artsy/icons/native"
-import { Button, Flex, Separator, Text, Touchable, useColor, useSpace } from "@artsy/palette-mobile"
+import { Button, Flex, Separator, Text, Touchable, useSpace } from "@artsy/palette-mobile"
 import { SellWorkCard_artwork$key } from "__generated__/SellWorkCard_artwork.graphql"
 import { SellChannelsInfoBottomSheet } from "app/Scenes/Sell/Components/SellChannelsInfoBottomSheet"
 import { SellStepIntro } from "app/Scenes/Sell/Components/SellStepIntro"
@@ -20,13 +20,11 @@ interface SellWorksSummaryProps {
 export const SellWorksSummary: React.FC<SellWorksSummaryProps> = ({ works, onStartWork }) => {
   const { bottom } = useSafeAreaInsets()
   const space = useSpace()
-  const color = useColor()
   const [showChannelsInfo, setShowChannelsInfo] = useState(false)
 
   return (
     <>
       <ScrollView
-        style={{ backgroundColor: color("mono0") }}
         contentContainerStyle={{ paddingHorizontal: space(2), paddingBottom: bottom + space(2) }}
       >
         <SellStepIntro stepName="SelectWorks" description={WORKS_SUMMARY_DESCRIPTION} />
