@@ -1,0 +1,155 @@
+#!/bin/bash
+
+set -e
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 <platform> [device udid/serial]"
+    exit 1
+fi
+
+PLATFORM=$1
+DEVICE=$2
+MAX_ATTEMPTS=3
+
+ARTIFACTS_DIR="e2e-agent-device/artifacts/$PLATFORM"
+ENV_FILE=".env.maestro.$PLATFORM"
+
+# Reuse the Maestro env file (same test account). Lines may be `KEY=value` or
+# Maestro-style `-e KEY=value`. Variables already set in the shell take precedence.
+if [ -f "$ENV_FILE" ]; then
+  while IFS= read -r line || [ -n "$line" ]; do
+    line="${line#-e }"
+    line="${line#--env }"
+    line="${line#--env=}"
+    [[ "$line" =~ ^([A-Za-z_][A-Za-z0-9_]*)=(.*)$ ]] || continue
+    key="${BASH_REMATCH[1]}"
+    value="${BASH_REMATCH[2]}"
+    value="${value%\"}"
+    value="${value#\"}"
+    [ -n "${!key}" ] || export "$key=$value"
+  done < "$ENV_FILE"
+fi
+
+case "$PLATFORM" in
+  ios)
+    DEFAULT_APP_ID="net.artsy.qa"
+    DEVICE=${DEVICE:-$(xcrun simctl list devices booted | grep -oE "[A-F0-9-]{36}" | head -n 1)}
+    DEVICE_FLAG="--udid"
+    ;;
+  android)
+    DEFAULT_APP_ID="net.artsy.app"
+    DEVICE=${DEVICE:-$(adb devices | awk 'NR > 1 && $2 == "device" { print $1; exit }')}
+    DEVICE_FLAG="--serial"
+    ;;
+  *)
+    echo "Unsupported platform: $PLATFORM"
+    exit 1
+    ;;
+esac
+
+if [ -z "$DEVICE" ]; then
+  echo "No booted $PLATFORM device found"
+  exit 1
+fi
+
+export AD_VAR_APP_ID="${MAESTRO_APP_ID:-$DEFAULT_APP_ID}"
+export AD_VAR_EMAIL="${MAESTRO_TEST_EMAIL:?MAESTRO_TEST_EMAIL is not set}"
+export AD_VAR_PASSWORD="${MAESTRO_TEST_PASSWORD:?MAESTRO_TEST_PASSWORD is not set}"
+
+# Replaces e2e/flows/signup.js
+TIMESTAMP=$(date +%s)
+export AD_VAR_SIGNUP_EMAIL="mobileQA+agentdevice-$TIMESTAMP@qa.qa"
+export AD_VAR_SIGNUP_PASSWORD="Pwd$TIMESTAMP" # pragma: allowlist secret
+
+# Single-quotes a value for the device shell that `adb shell` hands its arguments to
+shell_quote() {
+  printf "'%s'" "$(printf '%s' "$1" | sed "s/'/'\\\\''/g")"
+}
+
+# agent-device scripts can't pass launch arguments, so each flow declares them in a
+# `# @launch key=value ...` header and we (re)launch the app with them before the flow runs.
+# Values written as ${VAR} are read from AD_VAR_VAR. This is what useMaestroInitialization reads.
+launch_app() {
+  local flow=$1
+  local header
+  header=$(grep -m 1 "^# @launch " "$flow" | sed "s/^# @launch //")
+
+  local ios_args=()
+  local android_args=()
+  local pair key value var
+  for pair in $header; do
+    key="${pair%%=*}"
+    value="${pair#*=}"
+    if [[ "$value" =~ ^\$\{([A-Za-z_][A-Za-z0-9_]*)\}$ ]]; then
+      var="AD_VAR_${BASH_REMATCH[1]}"
+      value="${!var}"
+    fi
+    ios_args+=("-$key" "$value")
+    android_args+=("--es" "$key" "$(shell_quote "$value")")
+  done
+
+  if [ "$PLATFORM" = "ios" ]; then
+    xcrun simctl launch --terminate-running-process "$DEVICE" "$AD_VAR_APP_ID" "${ios_args[@]}" > /dev/null
+  else
+    adb -s "$DEVICE" shell am force-stop "$AD_VAR_APP_ID"
+    adb -s "$DEVICE" shell am start -W -n "$AD_VAR_APP_ID/.MainActivity" "${android_args[@]}" > /dev/null
+  fi
+}
+
+rm -rf "$ARTIFACTS_DIR"
+mkdir -p "$ARTIFACTS_DIR"
+
+EXIT_CODE=0
+FAILURE_FILES=()
+
+for FLOW in $(find e2e-agent-device/flows -name "*.ad" | sort); do
+  NAME=$(basename "$FLOW" .ad)
+  PASSED=false
+
+  for ((attempt = 1; attempt <= MAX_ATTEMPTS; attempt++)); do
+    echo "Running test: $FLOW (attempt $attempt/$MAX_ATTEMPTS)"
+    ATTEMPT_DIR="$ARTIFACTS_DIR/$NAME/attempt-$attempt"
+
+    if ! launch_app "$FLOW"; then
+      echo "Failed to launch $AD_VAR_APP_ID"
+      continue
+    fi
+    if AD_FAILURES_PATH="$ATTEMPT_DIR/failures.json" agent-device test "$FLOW" \
+      "$DEVICE_FLAG" "$DEVICE" \
+      --artifacts-dir "$ATTEMPT_DIR" \
+      --reporter default \
+      --reporter "junit:$ATTEMPT_DIR/junit.xml" \
+      --reporter ./e2e-agent-device/reporters/failures.mjs; then
+      PASSED=true
+      break
+    fi
+    agent-device screenshot "$ATTEMPT_DIR/failure-screen.png" "$DEVICE_FLAG" "$DEVICE" > /dev/null || true
+  done
+
+  if [ "$PASSED" = false ]; then
+    EXIT_CODE=1
+    if [ ! -f "$ATTEMPT_DIR/failures.json" ]; then
+      mkdir -p "$ATTEMPT_DIR"
+      jq -n --arg file "$FLOW" --arg title "$NAME" \
+        '[{file: $file, title: $title, message: "No test result: the app failed to launch or agent-device crashed"}]' \
+        > "$ATTEMPT_DIR/failures.json"
+    fi
+    jq --arg screenshot "$ATTEMPT_DIR/failure-screen.png" 'map(. + {screenshot: $screenshot})' \
+      "$ATTEMPT_DIR/failures.json" > "$ATTEMPT_DIR/failures.with-screenshot.json"
+    FAILURE_FILES+=("$ATTEMPT_DIR/failures.with-screenshot.json")
+  elif [ "$attempt" -gt 1 ]; then
+    echo "⚠️ $FLOW is flaky: passed on attempt $attempt"
+  fi
+done
+
+if [ $EXIT_CODE -ne 0 ]; then
+  # Failures of the last attempt of every failed flow
+  jq -s 'add' "${FAILURE_FILES[@]}" > "$ARTIFACTS_DIR/failures.json"
+
+  if [ -n "$CI" ]; then
+    echo "At least one test failed — uploading screenshots and notifying Slack"
+    ./scripts/ci/report-agent-device-test-failure "$PLATFORM" "$ARTIFACTS_DIR/failures.json" || true
+  fi
+fi
+
+exit $EXIT_CODE

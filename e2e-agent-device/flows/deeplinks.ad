@@ -1,0 +1,21 @@
+context timeout=240000
+# Mirrors e2e/flows/deeplinks.yml. Each deeplink is opened against a closed app to exercise cold-start link handling.
+# @launch useMaestroInit=true email=${EMAIL} password=${PASSWORD}
+open ${APP_ID}
+wait 'id="search-button"' 30000
+close
+
+# Artist
+open ${APP_ID} "https://artsy.net/artist/kaws"
+wait 'label="KAWS" || text="KAWS"' 20000
+close
+
+# Auction highlights (Braze click-tracking link)
+open ${APP_ID} "https://click.artsy.net/f/a/epPWiX0dJaHHMiXAnSrzSg~~/AAQRxQA~/RgRj95QSP0SQaHR0cHM6Ly93d3cuYXJ0c3kubmV0L2NvbGxlY3Rpb24vYXVjdGlvbi1oaWdobGlnaHRzP3V0bV9zb3VyY2U9YnJhemUmdXRtX21lZGl1bT1lbWFpbCZ1dG1fY2FtcGFpZ249bnRmJnV0bV90ZXJtPTYyMTRmYjlkZWI0ZWZkN2RiNjBjZTcwNDk1NWU4NDQ1VwNzcGNCCmIFEg8VYlEJKGBSEmJyaWJlY2sxQGdtYWlsLmNvbVgEAAAAfw~~"
+wait 'label="Highlights at Auction This Week" || text="Highlights at Auction This Week"' 20000
+close
+
+# Artwork (SendGrid email link). The long timeout gives the link verification time to resolve.
+open ${APP_ID} "https://email-link.artsy.net/ls/click?upn=u001.dBTKf7Wpt9bpOMXsd3eaCr45lKQ0xlDJiMs6lLXLYmt178QxQIXDi5-2BHxXY5n-2FLMqC7dYvx3HgyrryRV9UzsHbUpjsYJWB-2Fj-2B-2BEZDJyVfqaNW9q6coA2qcmjdD59pnSUKAVLOn8un52b5D01AgtNpdPrHzkbbQy4gCbuYOk1iuPqyg70B6gkCMXGBZuCPr2m9gIBxwpLkX9-2B2zmUfDbbwsMD-2BCAPDBiKt5Ls-2FJWHjfU-3DedPI_yB8pNXz8iKogugC36vxXF9cFFK1QR-2FMY-2Bnkbr-2BVhIrrC1LcTACICLavYsLU418aDSJi-2BXuv2wM5qkMKcUtxbXoxfVcX-2F2p2Nzx7WcoGsOKCkNK2nMNcNLTf6jSh2dXh7TBjgyw8pzU9eF3TibX4i1ldfPYH29-2Bad7EtsSLoTmBEb1pUKhxXiLSxyBsbmQh3ZZjSByQPcRm5ZH0b8mO-2BCPCUqRxS9N8-2F-2BNvu8MJvCYCnJbM61aWCBBPvE3xtGCMkor7cowLOhr-2FbZrziwWGzezDguiTSGc1XbJ0YNDiMtp6IaiqS7ss082YcgDkQORNqWtSz1UpMSULK88k-2B1OHpvD2xLX5y-2FXoQF3cfjBKHiaxfW4Pun3DA-2BwS1eGAXYF3iT"
+wait 'label="Maestro Test Artwork, 2025" || text="Maestro Test Artwork, 2025"' 90000
+close
