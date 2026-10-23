@@ -35093,7 +35093,7 @@ type Query {
   ): PriceInsightConnection
 
   """
-  Find a private viewing room by slug. Returns null for an unknown/unpublished slug. Returns whether a passcode is required; artwork/gallery data is omitted until authenticated via the authenticatePrivateViewingRoom mutation.
+  Find a private viewing room by slug. Returns null for an unknown/unpublished slug. Returns whether a passcode is required; for a gated room only the gallery name and brand kit are returned, and heading, description and artworks are omitted until authenticated via the authenticatePrivateViewingRoom mutation.
   """
   privateViewingRoom(slug: String!): PrivateViewingRoom
 
@@ -44916,7 +44916,7 @@ type Viewer {
   ): PreviewSavedSearch
 
   """
-  Find a private viewing room by slug. Returns null for an unknown/unpublished slug. Returns whether a passcode is required; artwork/gallery data is omitted until authenticated via the authenticatePrivateViewingRoom mutation.
+  Find a private viewing room by slug. Returns null for an unknown/unpublished slug. Returns whether a passcode is required; for a gated room only the gallery name and brand kit are returned, and heading, description and artworks are omitted until authenticated via the authenticatePrivateViewingRoom mutation.
   """
   privateViewingRoom(slug: String!): PrivateViewingRoom
 
