@@ -131,9 +131,10 @@ take_screenshot() {
   fi
 }
 
-# Cheap flows that run first, in this order. A freshly booted simulator or emulator is at its slowest
-# at the start of the job, so that lands on the simplest flows rather than on the deeplinks.
-FIRST_FLOWS="login signup"
+# Flows that run first, in this order; the rest follow alphabetically. The cheap flows go first because
+# a freshly booted simulator or emulator is at its slowest at the start of the job. The deeplinks are
+# ordered too, to tell whether a failure belongs to a link or to being the first deeplink of the run.
+FIRST_FLOWS="login signup deeplink-email deeplink-click deeplink-artist"
 
 # Flows for this platform: shared `name.ad` files plus `name.<platform>.ad` ones, FIRST_FLOWS first
 platform_flows() {
