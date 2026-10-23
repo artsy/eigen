@@ -129,6 +129,11 @@ FAILURE_FILES=()
 
 for FLOW in $(find e2e-agent-device/flows -name "*.ad" | sort); do
   NAME=$(basename "$FLOW" .ad)
+  # SKIP_FLOWS is a space-separated list of flow names to leave out, e.g. "deeplinks"
+  if [[ " $SKIP_FLOWS " == *" $NAME "* ]]; then
+    echo "Skipping test: $FLOW"
+    continue
+  fi
   PASSED=false
 
   for ((attempt = 1; attempt <= MAX_ATTEMPTS; attempt++)); do
@@ -176,7 +181,8 @@ if [ $EXIT_CODE -ne 0 ]; then
   # Failures of the last attempt of every failed flow
   jq -s 'add' "${FAILURE_FILES[@]}" > "$ARTIFACTS_DIR/failures.json"
 
-  if [ -n "$CI" ]; then
+  # SKIP_SLACK_REPORT turns off Slack, e.g. while trying out changes on a branch
+  if [ -n "$CI" ] && [ -z "$SKIP_SLACK_REPORT" ]; then
     echo "At least one test failed — uploading screenshots and notifying Slack"
     ./scripts/ci/report-agent-device-test-failure "$PLATFORM" "$ARTIFACTS_DIR/failures.json" || true
   fi
