@@ -1,6 +1,10 @@
 import { Text, TextProps, Button } from "@artsy/palette-mobile"
 import themeGet from "@styled-system/theme-get"
 import { MarkdownText, MarkdownTextProps } from "app/Components/MarkdownText/MarkdownText"
+import {
+  registerPresentedOverlay,
+  unregisterPresentedOverlay,
+} from "app/Components/ProgressiveOnboarding/popoverPresentationContext"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { defaultRules, MarkdownRules } from "app/utils/renderMarkdown"
 import React from "react"
@@ -72,9 +76,29 @@ export class Modal extends React.Component<ModalProps, ModalState> {
     this.state = { modalVisible: props.visible || false }
   }
 
+  // Onboarding popovers are themselves full-screen native Modals; registering here stops
+  // one presenting on top of this modal.
+  private readonly overlayId = `Modal-${Math.random().toString(36).slice(2)}`
+
+  componentDidMount() {
+    if (this.state.modalVisible) {
+      registerPresentedOverlay(this.overlayId)
+    }
+  }
+
+  componentWillUnmount() {
+    unregisterPresentedOverlay(this.overlayId)
+  }
+
   componentDidUpdate(prevProps: ModalProps) {
     if (this.props.visible !== prevProps.visible) {
       this.setState({ modalVisible: this.props.visible ?? false })
+
+      if (this.props.visible) {
+        registerPresentedOverlay(this.overlayId)
+      } else {
+        unregisterPresentedOverlay(this.overlayId)
+      }
     }
   }
 
@@ -83,6 +107,7 @@ export class Modal extends React.Component<ModalProps, ModalState> {
       this.props.closeModal()
     }
     this.setState({ modalVisible: false })
+    unregisterPresentedOverlay(this.overlayId)
   }
 
   render() {

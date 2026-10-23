@@ -9,10 +9,11 @@ import {
   useColor,
   useSpace,
 } from "@artsy/palette-mobile"
+import { usePresentedOverlay } from "app/Components/ProgressiveOnboarding/popoverPresentationContext"
 import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
 import { useScreenDimensions } from "app/utils/hooks"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useId, useState } from "react"
 import { Modal, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -41,6 +42,9 @@ export const CityGuideCityPicker: React.FC<Props> = (props) => {
   const space = useSpace()
   const insets = useSafeAreaInsets()
   const { cities } = props
+
+  // A raw react-native Modal: onboarding popovers can't see it unless it registers.
+  usePresentedOverlay(`CityGuideCityPicker-${useId()}`, props.showCityPicker)
 
   const selectCity = (city: CityData) => {
     setSelectedCity(city.name)

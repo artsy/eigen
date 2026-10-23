@@ -154,6 +154,12 @@ module.exports = {
             message:
               "Please use KeyboardController from 'react-native-keyboard-controller' instead.",
           },
+          {
+            name: "@artsy/palette-mobile",
+            importNames: ["Popover"],
+            message:
+              "Please use `OnboardingPopover` from 'app/Components/ProgressiveOnboarding/OnboardingPopover' instead. Every palette `Popover` is a full-screen native <Modal>: two at once, or one left mounted, blocks all touches in the app. `OnboardingPopover` owns the shared lock and the watchdogs that recover a stuck one.",
+          },
         ],
       },
     ],
