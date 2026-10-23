@@ -152,7 +152,7 @@
     "@segment/analytics-react-native": "2.24.1",
     "@segment/analytics-react-native-plugin-braze": "0.9.0",
     "@segment/sovran-react-native": "1.1.5",
-    "@sentry/react-native": "8.13.0",
+    "@sentry/react-native": "8.25.0",
     "@shopify/flash-list": "2.2.2",
     "@stripe/stripe-react-native": "0.64.0",
     "@styled-system/theme-get": "5.1.2",
