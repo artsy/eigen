@@ -1,4 +1,4 @@
-import { act, fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { Sell } from "app/Scenes/Sell/Sell"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
@@ -32,13 +32,14 @@ const mockHardwareBack = () => {
   }
 }
 
-// isWorkSellable treats an even last hex digit as sellable
+// isWorkSellable reads the last hex digit (even is sellable), getSellChannel the one before it
 const collection = {
   Me: () => ({
     myCollectionConnection: {
       edges: [
-        { node: { internalID: "work-2", title: "Sellable Work", artistNames: "Artist A" } },
-        { node: { internalID: "work-3", title: "Unsellable Work", artistNames: "Artist B" } },
+        { node: { internalID: "id-a2", title: "Sellable Work", artistNames: "Artist A" } },
+        { node: { internalID: "id-c3", title: "Unsellable Work", artistNames: "Artist B" } },
+        { node: { internalID: "id-b4", title: "Auction Work", artistNames: "Artist C" } },
       ],
     },
   }),
@@ -55,7 +56,7 @@ const openWorksSummary = async () => {
   fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
   fireEvent.press(screen.getByText("Verify If Sellable"))
   fireEvent.press(await screen.findByText("Proceed to Listing"))
-  await screen.findByText("Start Consignment")
+  await screen.findByText("Start Listing")
 }
 
 describe("Sell", () => {
@@ -117,6 +118,37 @@ describe("Sell", () => {
     expect(screen.getByText("Proceed to Listing")).toBeDisabled()
   })
 
+  it("previews only the sellable works still ticked, each with its sales channel", async () => {
+    await renderSell()
+
+    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
+    fireEvent.press(screen.getByTestId("artworkGridItem-Unsellable Work"))
+    fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
+    fireEvent.press(screen.getByText("Verify If Sellable"))
+
+    fireEvent.press(await screen.findByRole("checkbox", { name: "Artist C, Auction Work" }))
+    fireEvent.press(screen.getByText("Proceed to Listing"))
+
+    expect(await screen.findByText("Artsy Listing")).toBeOnTheScreen()
+    expect(screen.getByText("Artist A")).toBeOnTheScreen()
+    expect(screen.getByText("Start Listing")).toBeOnTheScreen()
+    expect(screen.queryByText("Artist B")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Artist C")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Start Submission")).not.toBeOnTheScreen()
+  })
+
+  it("explains the sales channels from the works summary", async () => {
+    await renderSell()
+    await openWorksSummary()
+
+    fireEvent.press(screen.getByLabelText("About sales channels"))
+    expect(await screen.findByText("Sales channels")).toBeOnTheScreen()
+    expect(screen.getByText("Marketplace")).toBeOnTheScreen()
+
+    fireEvent.press(screen.getByText("Got it"))
+    await waitFor(() => expect(screen.queryByText("Sales channels")).not.toBeOnTheScreen())
+  })
+
   it("walks through every step and shows the confirmation on submit", async () => {
     await renderSell()
 
@@ -125,7 +157,7 @@ describe("Sell", () => {
     expect(screen.getByLabelText("Step 1 of 3")).toBeOnTheScreen()
     expect(screen.getByText(/We reviewed demand for these works/)).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Start Consignment"))
+    fireEvent.press(screen.getByText("Start Listing"))
     expect(await screen.findByText("Step 2 · Condition & Price")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 2 of 3")).toBeOnTheScreen()
 
@@ -164,11 +196,11 @@ describe("Sell", () => {
 
     fireEvent.press(screen.getByText("Verify If Sellable"))
     fireEvent.press(await screen.findByText("Proceed to Listing"))
-    fireEvent.press(await screen.findByText("Start Consignment"))
+    fireEvent.press(await screen.findByText("Start Listing"))
     await screen.findByText("Step 2 · Condition & Price")
 
     pressHardwareBack()
-    expect(await screen.findByText("Start Consignment")).toBeOnTheScreen()
+    expect(await screen.findByText("Start Listing")).toBeOnTheScreen()
     expect(dismissModal).not.toHaveBeenCalled()
   })
 

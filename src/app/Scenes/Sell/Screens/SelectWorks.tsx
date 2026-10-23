@@ -7,7 +7,9 @@ import {
   SellSelectionWork,
 } from "app/Scenes/Sell/Components/SellSelectionNoteBottomSheet"
 import { SellStepLayout } from "app/Scenes/Sell/Components/SellStepLayout"
+import { SellWorksSummary } from "app/Scenes/Sell/Components/SellWorksSummary"
 import { SellNavigationProp, SellNavigationRoutes } from "app/Scenes/Sell/Sell"
+import { isWorkSellable } from "app/Scenes/Sell/utils/isWorkSellable"
 import { extractNodes } from "app/utils/extractNodes"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -18,7 +20,6 @@ export const SelectWorks: React.FC = () => {
   const navigation = useNavigation<SellNavigationProp>()
   const { params } = useRoute<RouteProp<SellNavigationRoutes, "SelectWorks">>()
   const showWorksSummary = !!params?.showWorksSummary
-  const [selectedWorkIDs, setSelectedWorkIDs] = useState<string[]>([])
 
   const handleHardwareBack = useCallback(() => {
     if (!showWorksSummary) {
@@ -31,44 +32,45 @@ export const SelectWorks: React.FC = () => {
 
   useBackHandler(handleHardwareBack)
 
-  const toggleWork = (internalID: string) => {
-    setSelectedWorkIDs((ids) =>
-      ids.includes(internalID) ? ids.filter((id) => id !== internalID) : [...ids, internalID]
-    )
-  }
-
-  if (!showWorksSummary) {
-    return (
-      <SelectWorksGrid
-        selectedWorkIDs={selectedWorkIDs}
-        onToggleWork={toggleWork}
-        onProceed={() => navigation.setParams({ showWorksSummary: true })}
-      />
-    )
-  }
-
   return (
-    <SellStepLayout
-      buttonLabel="Start Consignment"
-      onButtonPress={() => navigation.navigate("Condition")}
+    <SelectWorksContent
+      showWorksSummary={showWorksSummary}
+      onShowWorksSummary={() => navigation.setParams({ showWorksSummary: true })}
+      onStartWork={() => navigation.navigate("Condition")}
     />
   )
 }
 
-interface SelectWorksGridProps {
-  selectedWorkIDs: string[]
-  onToggleWork: (internalID: string) => void
-  onProceed: () => void
+interface SelectWorksContentProps {
+  showWorksSummary: boolean
+  onShowWorksSummary: () => void
+  onStartWork: (internalID: string) => void
 }
 
-const SelectWorksGrid: React.FC<SelectWorksGridProps> = withSuspense({
-  Component: ({ selectedWorkIDs, onToggleWork, onProceed }) => {
+const SelectWorksContent: React.FC<SelectWorksContentProps> = withSuspense({
+  Component: ({ showWorksSummary, onShowWorksSummary, onStartWork }) => {
     const data = useLazyLoadQuery<SelectWorksQuery>(selectWorksQuery, {})
     const artworks = extractNodes(data.me?.myCollectionConnection)
+    const [selectedWorkIDs, setSelectedWorkIDs] = useState<string[]>([])
     const [reviewedWorks, setReviewedWorks] = useState<SellSelectionWork[]>()
 
-    const handleVerify = () => {
-      setReviewedWorks(artworks.filter((artwork) => selectedWorkIDs.includes(artwork.internalID)))
+    const selectedArtworks = artworks.filter((artwork) =>
+      selectedWorkIDs.includes(artwork.internalID)
+    )
+
+    const toggleWork = (internalID: string) => {
+      setSelectedWorkIDs((ids) =>
+        ids.includes(internalID) ? ids.filter((id) => id !== internalID) : [...ids, internalID]
+      )
+    }
+
+    if (showWorksSummary) {
+      return (
+        <SellWorksSummary
+          works={selectedArtworks.filter((artwork) => isWorkSellable(artwork.internalID))}
+          onStartWork={onStartWork}
+        />
+      )
     }
 
     return (
@@ -76,12 +78,12 @@ const SelectWorksGrid: React.FC<SelectWorksGridProps> = withSuspense({
         <SellStepLayout
           buttonLabel="Verify If Sellable"
           buttonDisabled={!selectedWorkIDs.length}
-          onButtonPress={handleVerify}
+          onButtonPress={() => setReviewedWorks(selectedArtworks)}
         >
           <MasonryInfiniteScrollArtworkGrid
             artworks={artworks}
             selectedArtworkIDs={selectedWorkIDs}
-            onPress={(_slug, artwork) => !!artwork && onToggleWork(artwork.internalID)}
+            onPress={(_slug, artwork) => !!artwork && toggleWork(artwork.internalID)}
             hideSaveIcon
             hideSaleInfo
             hidePartner
@@ -105,10 +107,10 @@ const SelectWorksGrid: React.FC<SelectWorksGridProps> = withSuspense({
             visible
             works={reviewedWorks}
             selectedWorkIDs={selectedWorkIDs}
-            onToggleWork={onToggleWork}
+            onToggleWork={toggleWork}
             onProceed={() => {
               setReviewedWorks(undefined)
-              onProceed()
+              onShowWorksSummary()
             }}
             onDismiss={() => setReviewedWorks(undefined)}
           />
@@ -137,6 +139,7 @@ const selectWorksQuery = graphql`
             slug
             artistNames
             title
+            date
             image(includeAll: false) {
               aspectRatio
             }
