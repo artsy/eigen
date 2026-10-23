@@ -111,18 +111,20 @@ jobs:
           echo "🚀 Bring simulator to foreground..."
           open -a simulator
 
-          # Best-effort warm-up for the deeplinks flow. openurl sometimes hangs for minutes on fresh
-          # runner simulators (this also fails Maestro's iOS runs), so cap each one and never fail on it.
-          echo "Prefetch app associations"
-          for domain in artsy.net email-link.artsy.net click.artsy.net; do
-            perl -e 'alarm shift; exec @ARGV' 30 xcrun simctl openurl booted "https://$domain/apple-app-site-association" ||
-              echo "::warning::Couldn't prefetch the $domain app site association"
-          done
+          # No app site association prefetch here, unlike the Maestro workflow: opening the files in Safari
+          # can hang for minutes and leave simctl unresponsive, which then fails the agent-device runner
+          # startup. The deeplinks flow passes without it.
 
       # Building the runner from scratch takes several minutes, so it gets a generous budget
+      # Retried once: runner startup can fail on a slow simulator, which agent-device's own error hints
+      # suggest retrying
       - name: Prepare agent-device iOS runner
         id: prepare-runner
-        run: agent-device prepare ios-runner --platform ios --udid "$SIMULATOR_UDID" --timeout 900000 --verbose --json
+        run: |
+          prepare() {
+            agent-device prepare ios-runner --platform ios --udid "$SIMULATOR_UDID" --timeout 900000 --verbose --json
+          }
+          prepare || { echo "::warning::agent-device runner startup failed, retrying once"; prepare; }
 
       # No flow has run yet, so these logs can't contain the test account
       - name: Collect simulator list
