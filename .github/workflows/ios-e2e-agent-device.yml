@@ -18,7 +18,7 @@ jobs:
   e2e-tests:
     # if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: macos-26 # iOS simulators require macOS runners
-    timeout-minutes: 45
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
@@ -61,8 +61,9 @@ jobs:
           echo "XCODE_VERSION=$(xcodebuild -version | head -n 1 | awk '{print $2}')" >> $GITHUB_ENV
           agent-device doctor --remote
 
-      - name: Cache agent-device iOS runner
-        uses: actions/cache@v4
+      - name: Restore agent-device iOS runner
+        id: runner-cache
+        uses: actions/cache/restore@v4
         with:
           path: ~/.agent-device/apple-runner/derived
           key: agent-device-runner-${{ env.AGENT_DEVICE_VERSION }}-xcode-${{ env.XCODE_VERSION }}
@@ -94,8 +95,17 @@ jobs:
           xcrun simctl openurl booted https://email-link.artsy.net/apple-app-site-association
           xcrun simctl openurl booted https://click.artsy.net/apple-app-site-association
 
+      # Building the runner from scratch takes several minutes, so it gets a generous budget
       - name: Prepare agent-device iOS runner
-        run: agent-device prepare ios-runner --platform ios --udid "$SIMULATOR_UDID" --timeout 240000 --json
+        run: agent-device prepare ios-runner --platform ios --udid "$SIMULATOR_UDID" --timeout 900000 --json
+
+      # Saved right away so a later test failure doesn't throw away the built runner
+      - name: Save agent-device iOS runner
+        if: steps.runner-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.agent-device/apple-runner/derived
+          key: agent-device-runner-${{ env.AGENT_DEVICE_VERSION }}-xcode-${{ env.XCODE_VERSION }}
 
       - name: Run agent-device E2E Tests
         run: ./scripts/utils/run_agent_device_suite ios "$SIMULATOR_UDID"
