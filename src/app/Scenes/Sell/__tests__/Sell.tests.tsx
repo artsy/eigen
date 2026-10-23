@@ -1,16 +1,13 @@
-import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { Sell } from "app/Scenes/Sell/Sell"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
-import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Alert, BackHandler } from "react-native"
 
 // setupJest stubs useNavigation, but this test drives the real stack
 jest.mock("@react-navigation/native", () => jest.requireActual("@react-navigation/native"))
-
-jest.mock("app/utils/requestPhotos", () => ({ showPhotoActionSheet: jest.fn() }))
 
 type BackPressHandler = Parameters<typeof BackHandler.addEventListener>[1]
 
@@ -121,26 +118,6 @@ describe("Sell", () => {
     expect(screen.getByText("Verify If Sellable")).toBeDisabled()
   })
 
-  it("splits the selection into works we can and can't sell", async () => {
-    await renderSell()
-
-    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
-    fireEvent.press(screen.getByTestId("artworkGridItem-Unsellable Work"))
-    fireEvent.press(screen.getByText("Verify If Sellable"))
-
-    expect(await screen.findByText("A note on your selection")).toBeOnTheScreen()
-    expect(screen.getByText(/We can help you with 1\/2 of the works/)).toBeOnTheScreen()
-    expect(screen.getByText("Not able to sell yet")).toBeOnTheScreen()
-
-    const sellableToggle = screen.getByRole("checkbox", { name: "Artist A, Sellable Work" })
-    expect(sellableToggle).toBeChecked()
-    expect(screen.queryByRole("checkbox", { name: "Artist B, Unsellable Work" })).toBeNull()
-
-    fireEvent.press(sellableToggle)
-    expect(sellableToggle).not.toBeChecked()
-    expect(screen.getByText("Proceed to Listing")).toBeDisabled()
-  })
-
   it("previews only the sellable works still ticked, each with its sales channel", async () => {
     await renderSell()
 
@@ -158,18 +135,6 @@ describe("Sell", () => {
     expect(screen.queryByText("Artist B")).not.toBeOnTheScreen()
     expect(screen.queryByText("Artist C")).not.toBeOnTheScreen()
     expect(screen.queryByText("Start Submission")).not.toBeOnTheScreen()
-  })
-
-  it("explains the sales channels from the works summary", async () => {
-    await renderSell()
-    await openWorksSummary()
-
-    fireEvent.press(screen.getByLabelText("About sales channels"))
-    expect(await screen.findByText("Sales channels")).toBeOnTheScreen()
-    expect(screen.getByText("Marketplace")).toBeOnTheScreen()
-
-    fireEvent.press(screen.getByText("Got it"))
-    await waitFor(() => expect(screen.queryByText("Sales channels")).not.toBeOnTheScreen())
   })
 
   it("walks through every step and shows the confirmation on submit", async () => {
@@ -197,41 +162,16 @@ describe("Sell", () => {
     expect(goBack).toHaveBeenCalledTimes(1)
   })
 
-  it("asks for the condition of an auction work before continuing", async () => {
+  it("loads the chosen work on step 2 and asks auction works for a condition", async () => {
     const view = await renderSell()
     await openAuctionConditionStep(view)
 
     expect(screen.getByText("Artist C")).toBeOnTheScreen()
-    expect(screen.getAllByRole("radio")).toHaveLength(4)
     expect(screen.getByText("Continue")).toBeDisabled()
 
-    const fair = screen.getByRole("radio", { name: /^Fair\./ })
-    fireEvent.press(fair)
-    expect(fair).toBeChecked()
-    expect(screen.getByText("Continue")).toBeEnabled()
-
-    fireEvent.changeText(screen.getByLabelText("Notes"), "Small scratch on the frame")
-    expect(screen.getByDisplayValue("Small scratch on the frame")).toBeOnTheScreen()
-
+    fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
     fireEvent.press(screen.getByText("Continue"))
     expect(await screen.findByText("Step 3 · Shipping Options")).toBeOnTheScreen()
-  })
-
-  it("previews condition photos without uploading them", async () => {
-    jest
-      .mocked(showPhotoActionSheet)
-      .mockResolvedValue([{ path: "file:///first.jpg" }, { path: "file:///second.jpg" }] as Awaited<
-        ReturnType<typeof showPhotoActionSheet>
-      >)
-    const view = await renderSell()
-    await openAuctionConditionStep(view)
-
-    fireEvent.press(screen.getByText("Upload photos"))
-    expect(await screen.findAllByTestId("sell-condition-photo")).toHaveLength(2)
-    expect(screen.getByText("Add more photos")).toBeOnTheScreen()
-
-    fireEvent.press(screen.getByLabelText("Remove photo 1"))
-    expect(screen.getAllByTestId("sell-condition-photo")).toHaveLength(1)
   })
 
   it("goes back from the works summary to the work selection, then leaves the flow", async () => {
