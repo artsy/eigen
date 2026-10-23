@@ -5,11 +5,10 @@ on:
   #   workflows: ["Build iOS QA App for Maestro"]
   #   types:
   #     - completed
-  # Paused until the iOS simulator on the CI runner is sorted out; manual runs only
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
-  # push:
-  #   branches:
-  #     - gkartalis/agent-device-e2e
+  push:
+    branches:
+      - gkartalis/agent-device-e2e
 
 env:
   AGENT_DEVICE_VERSION: 0.21.31
