@@ -21,7 +21,8 @@ import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useState } from "react"
 import { ScrollView } from "react-native"
-import { KeyboardStickyView } from "react-native-keyboard-controller"
+import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller"
+import Animated, { useAnimatedStyle } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -76,6 +77,15 @@ const AuctionConditionForm: React.FC<{
   const { bottom } = useSafeAreaInsets()
   const space = useSpace()
   const [stickyFooterHeight, setStickyFooterHeight] = useState(0)
+  const keyboard = useReanimatedKeyboardAnimation()
+
+  // Like KeyboardStickyView, but never below its resting place. Gboard's toolbar for hardware
+  // keyboards is shorter than the bottom inset and would push the footer under the nav bar.
+  const stickyFooterStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateY: Math.min(0, keyboard.height.get() + keyboard.progress.get() * bottom) },
+    ],
+  }))
 
   const [rating, setRating] = useState<SellConditionRating | null>(null)
   const [photos, setPhotos] = useState<SellConditionPhoto[]>([])
@@ -145,8 +155,8 @@ const AuctionConditionForm: React.FC<{
         </Flex>
       </KeyboardAwareForm>
 
-      <KeyboardStickyView
-        offset={{ opened: bottom }}
+      <Animated.View
+        style={stickyFooterStyle}
         onLayout={(event) => setStickyFooterHeight(event.nativeEvent.layout.height)}
       >
         <Box px={2} pt={2} bg="mono0" style={{ paddingBottom: bottom + space(2) }}>
@@ -154,7 +164,7 @@ const AuctionConditionForm: React.FC<{
             Continue
           </Button>
         </Box>
-      </KeyboardStickyView>
+      </Animated.View>
     </Flex>
   )
 }
