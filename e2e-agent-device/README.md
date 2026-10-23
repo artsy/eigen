@@ -31,13 +31,15 @@ The flows need the same launch arguments as Maestro (`useMaestroInit`, `email`, 
 
 Before each attempt, the runner (re)launches the app with those arguments: iOS process arguments via `xcrun simctl launch`, Android intent extras via `adb shell am start --es`. `${VAR}` values come from `AD_VAR_VAR`.
 
-Each flow starts with a `wait` for a screen the launch arguments produce, and only then runs `open ${APP_ID}` to attach agent-device to the running app. The order matters on Android. `open` sends a new launch intent, and `MainActivity` (`singleTask`, calling `setIntent` in `onNewIntent`) would replace our intent extras with it. If that happens before the app has read them, the arguments are lost. Waiting for their effect first ("Sign up or log in" after `shouldSignOut`, `search-button` after `email`/`password`) guarantees they were read.
+Each flow then starts with `open ${APP_ID}`, which attaches agent-device to the running app without restarting it, followed by a `wait` for the screen the launch arguments produce ("Sign up or log in" after `shouldSignOut`, `search-button` after `email`/`password`).
+
+On Android, the runner first waits for that screen before starting the flow. agent-device's `open` sends a new launch intent, and `MainActivity` (`singleTask`, calling `setIntent` in `onNewIntent`) would replace our intent extras with it. Once the screen is up, the arguments have been read. iOS process arguments can't be replaced, so iOS doesn't need this.
 
 ## Running locally
 
 1. Install the pinned version used in CI: `npm install -g agent-device@0.21.31`, then `agent-device doctor`.
 2. Install a QA build on a booted simulator or emulator (see [the Maestro README](../e2e/README.md) or download `Artsy-latest.zip` / `Artsy-latest.apk` from `s3://artsy-citadel/eigen/builds/`).
-3. Make sure `.env.maestro.<platform>` exists (`./scripts/setup/setup-env-for-maestro <platform>`), or export `MAESTRO_TEST_EMAIL`, `MAESTRO_TEST_PASSWORD` and optionally `MAESTRO_APP_ID`.
+3. Make sure `.env.maestro.<platform>` exists (`./scripts/setup/setup-env-for-maestro <platform>`), or export `MAESTRO_TEST_EMAIL`, `MAESTRO_TEST_PASSWORD` and optionally `MAESTRO_APP_ID`. Values in the file win over the shell.
 4. Run the suite with `./scripts/utils/run_agent_device_suite ios` (or `android`). It uses the first booted simulator or emulator; pass a UDID or serial as the second argument to choose one.
 
 Slack is only notified when `CI` is set.
@@ -56,5 +58,8 @@ AD_VAR_APP_ID=net.artsy.qa AD_VAR_EMAIL=... AD_VAR_PASSWORD=... agent-device rep
 - Use `${VAR}` for anything secret and pass it as `AD_VAR_VAR`. Never write credentials into a script.
 - Flows must work on both platforms. Check selectors with `snapshot -i` on each.
 - Declare launch arguments in the `# @launch` header, not on `open`.
-- Start with a `wait` for a screen the launch arguments produce, then `open ${APP_ID}`. Never put `open` first.
+- Start with `open ${APP_ID}`, then a `wait` for a screen the launch arguments produce. The runner uses that first `wait` on Android.
+- On iOS, `fill` can't clear a secure text field. For password fields, `press` the field and then `type`.
+- An input without an accessibility label is matched by its placeholder with `text="..."` while it's empty, not with `label=`.
+- Wait for the element you're about to use, not just a heading on its screen. A heading can appear before the field is ready, and neighbouring screens can share headings.
 - See `agent-device help scripting` and `agent-device help test` for the full syntax.
