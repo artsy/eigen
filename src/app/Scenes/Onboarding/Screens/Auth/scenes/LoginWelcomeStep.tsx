@@ -8,6 +8,7 @@ import {
   LinkText,
   Spacer,
   Text,
+  Touchable,
   useTheme,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
@@ -24,7 +25,7 @@ import { osMajorVersion } from "app/utils/platformUtil"
 import { Formik, useFormikContext } from "formik"
 import { MotiView } from "moti"
 import React, { useEffect, useRef, useState } from "react"
-import { Platform } from "react-native"
+import { PixelRatio, Platform } from "react-native"
 import { Easing } from "react-native-reanimated"
 import * as Yup from "yup"
 
@@ -296,39 +297,63 @@ const SocialLoginButtons: React.FC = () => {
 
       <Flex flexDirection="row" gap={1} justifyContent="center" width="100%">
         {Platform.OS === "ios" && osMajorVersion() >= 13 && (
-          <Button
-            variant="outline"
+          <SocialLoginButton
             onPress={handleApplePress}
             accessibilityHint="Sign in with Apple"
             accessibilityLabel="Apple"
-          >
-            <Flex alignItems="center" justifyContent="center">
-              {/* On iOS, the icons need to be nudged down to be centered in the button. */}
-              <AppleIcon width={DEFAULT_ICON_SIZE} height={DEFAULT_ICON_SIZE} />
-            </Flex>
-          </Button>
+            icon={<AppleIcon width={DEFAULT_ICON_SIZE} height={DEFAULT_ICON_SIZE} />}
+          />
         )}
-        <Button
-          variant="outline"
+        <SocialLoginButton
           onPress={handleGooglePress}
           accessibilityHint="Sign in with Google"
           accessibilityLabel="Google"
-        >
-          <Flex alignItems="center" justifyContent="center">
-            <GoogleIcon width={DEFAULT_ICON_SIZE} height={DEFAULT_ICON_SIZE} />
-          </Flex>
-        </Button>
-        <Button
-          variant="outline"
+          icon={<GoogleIcon width={DEFAULT_ICON_SIZE} height={DEFAULT_ICON_SIZE} />}
+        />
+        <SocialLoginButton
           onPress={handleFacebookPress}
           accessibilityHint="Sign in with Facebook"
           accessibilityLabel="Facebook"
-        >
-          <Flex alignItems="center" justifyContent="center">
-            <FacebookIcon width={DEFAULT_ICON_SIZE} height={DEFAULT_ICON_SIZE} />
-          </Flex>
-        </Button>
+          icon={<FacebookIcon width={DEFAULT_ICON_SIZE} height={DEFAULT_ICON_SIZE} />}
+        />
       </Flex>
     </Flex>
+  )
+}
+
+interface SocialLoginButtonProps {
+  accessibilityHint: string
+  accessibilityLabel: string
+  icon: React.ReactElement
+  onPress: () => void
+}
+
+// Palette's Button renders its children inside a Text, which clips icons taller than the line
+// height, and its `icon` prop adds a spacer that pushes icon-only content off-center.
+const SocialLoginButton: React.FC<SocialLoginButtonProps> = ({
+  accessibilityHint,
+  accessibilityLabel,
+  icon,
+  onPress,
+}) => {
+  return (
+    <Touchable
+      accessibilityRole="button"
+      accessibilityHint={accessibilityHint}
+      accessibilityLabel={accessibilityLabel}
+      onPress={onPress}
+    >
+      <Flex
+        height={50 * PixelRatio.getFontScale()}
+        px="30px"
+        borderRadius={50}
+        borderWidth={1}
+        borderColor="mono60"
+        alignItems="center"
+        justifyContent="center"
+      >
+        {icon}
+      </Flex>
+    </Touchable>
   )
 }
