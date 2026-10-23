@@ -8,12 +8,36 @@ import { Alert, BackHandler } from "react-native"
 // setupJest stubs useNavigation, but this test drives the real stack
 jest.mock("@react-navigation/native", () => jest.requireActual("@react-navigation/native"))
 
+type BackPressHandler = Parameters<typeof BackHandler.addEventListener>[1]
+
+/**
+ * BackHandler never fires in the iOS test environment, so record the live listeners and call them
+ * the way Android does: newest first, stopping at the first one that handles the press.
+ */
+const mockHardwareBack = () => {
+  const listeners: BackPressHandler[] = []
+
+  jest.spyOn(BackHandler, "addEventListener").mockImplementation((_event, handler) => {
+    listeners.push(handler)
+    return { remove: () => listeners.splice(listeners.indexOf(handler), 1) }
+  })
+
+  return () => {
+    act(() => {
+      ;[...listeners]
+        .reverse()
+        .some((listener) => listener({ type: "hardwareBackPress", timeStamp: Date.now() }))
+    })
+  }
+}
+
 describe("Sell", () => {
   beforeEach(() => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSellMyCollectionArtwork: true })
   })
 
   afterEach(() => {
+    jest.restoreAllMocks()
     jest.clearAllMocks()
   })
 
@@ -71,24 +95,22 @@ describe("Sell", () => {
     expect(dismissModal).toHaveBeenCalledTimes(1)
   })
 
-  it("returns from the works summary to the work selection on Android hardware back", async () => {
-    const addEventListener = jest.spyOn(BackHandler, "addEventListener")
+  it("handles Android hardware back on the works summary and on later steps", async () => {
+    const pressHardwareBack = mockHardwareBack()
     renderWithWrappers(<Sell />)
 
     fireEvent.press(screen.getByText("Verify If Sellable"))
     await screen.findByText("Start Consignment")
 
-    const handler = addEventListener.mock.calls
-      .filter(([event]) => event === "hardwareBackPress")
-      .at(-1)?.[1]
-
-    let handled: boolean | null | undefined
-    act(() => {
-      handled = handler?.({ type: "hardwareBackPress", timeStamp: Date.now() })
-    })
-
-    expect(handled).toBe(true)
+    pressHardwareBack()
     expect(await screen.findByText("Verify If Sellable")).toBeOnTheScreen()
+
+    fireEvent.press(screen.getByText("Verify If Sellable"))
+    fireEvent.press(await screen.findByText("Start Consignment"))
+    await screen.findByText("Step 2 · Condition & Price")
+
+    pressHardwareBack()
+    expect(await screen.findByText("Start Consignment")).toBeOnTheScreen()
     expect(dismissModal).not.toHaveBeenCalled()
   })
 
