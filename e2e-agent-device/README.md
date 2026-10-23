@@ -13,6 +13,7 @@ Both workflows can also be started manually from the Actions tab.
 
 - Both download the same QA build from S3 as Maestro does, reuse `.env.maestro.<platform>` (the same test account), and run `scripts/utils/run_agent_device_suite <platform> <udid|serial>`.
 - Each flow gets up to 3 attempts. A flow that only passes on a retry is logged as flaky, with a warning on the run summary.
+- At the end, the runner prints a summary like agent-device's own reporter. That's one `✓`/`⨯` line per flow with its time, then the flaky flows and the failures, with the error of every failed attempt. In CI it's also added to the run's summary page. Flow names come from each flow's `# @title` header.
 - Failures are posted to `#mobile-alerts` with a screenshot (uploaded to S3, like Maestro's).
 - Only `junit.xml` and `failures.json` are attached to the run as artifacts. This repo's artifacts are public, and agent-device's logs and screenshots can show the test account.
 
@@ -61,6 +62,7 @@ AD_VAR_APP_ID=net.artsy.qa AD_VAR_EMAIL=... AD_VAR_PASSWORD=... agent-device rep
 - `press`/`click`/`fill` don't wait for their target, so add a `wait '<selector>' <ms>` before interacting with a screen that loads.
 - Use `${VAR}` for anything secret and pass it as `AD_VAR_VAR`. Never write credentials into a script.
 - Flows must work on both platforms. Check selectors with `snapshot -i` on each. Only split a flow into `.ios.ad` and `.android.ad` when the platforms really have to behave differently.
+- Give the flow a `# @title` header (e.g. `# @title Deeplink - Artist`); it's the name shown in the summary.
 - Declare launch arguments in the `# @launch` header, not on `open`.
 - Start with `open ${APP_ID}`, then a `wait` for a screen the launch arguments produce. The runner uses that first `wait` on Android, and rejects flows whose first `wait` isn't a selector wait.
 - On iOS, `fill` can't clear a secure text field. For password fields, `press` the field and then `type`.

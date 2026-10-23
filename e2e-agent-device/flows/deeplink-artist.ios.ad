@@ -1,4 +1,5 @@
 context timeout=240000
+# @title Deeplink - Artist
 # Opens an artist link, as a cold start: `close ${APP_ID}` terminates the app, like Maestro's killApp, so the link launches it.
 # `open <url>` without the app id runs `simctl openurl`, the same path as tapping the link in Mail or Messages, so iOS
 # launches the app with the link, or opens Safari. `open <app> <url>` would launch the app first and send the link while
