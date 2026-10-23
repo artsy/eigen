@@ -70,10 +70,11 @@ export AD_VAR_APP_ID="${MAESTRO_APP_ID:-$DEFAULT_APP_ID}"
 export AD_VAR_EMAIL="${MAESTRO_TEST_EMAIL:?MAESTRO_TEST_EMAIL is not set}"
 export AD_VAR_PASSWORD="${MAESTRO_TEST_PASSWORD:?MAESTRO_TEST_PASSWORD is not set}"
 
-# Replaces e2e/flows/signup.js
-TIMESTAMP=$(date +%s)
-export AD_VAR_SIGNUP_EMAIL="mobileQA+agentdevice-$TIMESTAMP@qa.qa"
-export AD_VAR_SIGNUP_PASSWORD="Pwd$TIMESTAMP" # pragma: allowlist secret
+# The credentials are passed to the app as launch arguments, so keep them out of the public CI logs
+if [ -n "$GITHUB_ACTIONS" ]; then
+  echo "::add-mask::$AD_VAR_EMAIL"
+  echo "::add-mask::$AD_VAR_PASSWORD"
+fi
 
 # Single-quotes a value for the device shell that `adb shell` hands its arguments to
 shell_quote() {
@@ -83,6 +84,8 @@ shell_quote() {
 # agent-device scripts can't pass launch arguments, so each flow declares them in a
 # `# @launch key=value ...` header and we (re)launch the app with them before the flow runs.
 # Values written as ${VAR} are read from AD_VAR_VAR. This is what useMaestroInitialization reads.
+# Flows wait for a screen the arguments produce before their first `open`: on Android, `open` sends a
+# new launch intent and MainActivity (singleTask + setIntent) would replace the extras before JS reads them.
 launch_app() {
   local flow=$1
   local header
@@ -110,6 +113,14 @@ launch_app() {
   fi
 }
 
+take_screenshot() {
+  if [ "$PLATFORM" = "ios" ]; then
+    xcrun simctl io "$DEVICE" screenshot "$1" > /dev/null 2>&1
+  else
+    adb -s "$DEVICE" exec-out screencap -p > "$1"
+  fi
+}
+
 rm -rf "$ARTIFACTS_DIR"
 mkdir -p "$ARTIFACTS_DIR"
 
@@ -123,6 +134,12 @@ for FLOW in $(find e2e-agent-device/flows -name "*.ad" | sort); do
   for ((attempt = 1; attempt <= MAX_ATTEMPTS; attempt++)); do
     echo "Running test: $FLOW (attempt $attempt/$MAX_ATTEMPTS)"
     ATTEMPT_DIR="$ARTIFACTS_DIR/$NAME/attempt-$attempt"
+    mkdir -p "$ATTEMPT_DIR"
+
+    # Replaces e2e/flows/signup.js. New per attempt, since a failed attempt may already have created the account.
+    TIMESTAMP=$(date +%s)
+    export AD_VAR_SIGNUP_EMAIL="mobileQA+agentdevice-$TIMESTAMP@qa.qa"
+    export AD_VAR_SIGNUP_PASSWORD="Pwd$TIMESTAMP" # pragma: allowlist secret
 
     if ! launch_app "$FLOW"; then
       echo "Failed to launch $AD_VAR_APP_ID"
@@ -137,13 +154,12 @@ for FLOW in $(find e2e-agent-device/flows -name "*.ad" | sort); do
       PASSED=true
       break
     fi
-    agent-device screenshot "$ATTEMPT_DIR/failure-screen.png" "$DEVICE_FLAG" "$DEVICE" > /dev/null || true
+    take_screenshot "$ATTEMPT_DIR/failure-screen.png" || true
   done
 
   if [ "$PASSED" = false ]; then
     EXIT_CODE=1
     if [ ! -f "$ATTEMPT_DIR/failures.json" ]; then
-      mkdir -p "$ATTEMPT_DIR"
       jq -n --arg file "$FLOW" --arg title "$NAME" \
         '[{file: $file, title: $title, message: "No test result: the app failed to launch or agent-device crashed"}]' \
         > "$ATTEMPT_DIR/failures.json"
