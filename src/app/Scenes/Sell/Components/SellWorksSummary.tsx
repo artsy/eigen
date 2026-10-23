@@ -11,6 +11,8 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { SellChannelsInfoBottomSheet } from "app/Scenes/Sell/Components/SellChannelsInfoBottomSheet"
+import { SellStepIntro } from "app/Scenes/Sell/Components/SellStepIntro"
+import { WORKS_SUMMARY_DESCRIPTION } from "app/Scenes/Sell/sellSteps"
 import { getSellChannel } from "app/Scenes/Sell/utils/getSellChannel"
 import { useState } from "react"
 import { ScrollView } from "react-native"
@@ -43,6 +45,8 @@ export const SellWorksSummary: React.FC<SellWorksSummaryProps> = ({ works, onSta
         style={{ backgroundColor: color("mono0") }}
         contentContainerStyle={{ paddingHorizontal: space(2), paddingBottom: bottom + space(2) }}
       >
+        <SellStepIntro stepName="SelectWorks" description={WORKS_SUMMARY_DESCRIPTION} />
+
         <Flex flexDirection="row" alignItems="center" gap={0.5} mb={2}>
           <Text variant="sm">Why different sales channels?</Text>
           <Touchable
