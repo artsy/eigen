@@ -15,6 +15,7 @@ export const SellStepper: React.FC<SellStepperProps> = ({ currentStepIndex }) =>
     <Flex
       flexDirection="row"
       alignItems="center"
+      accessible
       accessibilityLabel={`Step ${currentStepIndex + 1} of ${SELL_STEPS.length}`}
     >
       {SELL_STEPS.map((step, index) => {
