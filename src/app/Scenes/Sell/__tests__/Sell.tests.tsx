@@ -1,8 +1,8 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { Sell } from "app/Scenes/Sell/Sell"
 import { dismissModal } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Alert } from "react-native"
+import { Alert, BackHandler } from "react-native"
 
 // setupJest stubs useNavigation, but this test drives the real stack
 jest.mock("@react-navigation/native", () => jest.requireActual("@react-navigation/native"))
@@ -56,6 +56,27 @@ describe("Sell", () => {
 
     fireEvent.press(screen.getByLabelText("Close"))
     expect(dismissModal).toHaveBeenCalledTimes(1)
+  })
+
+  it("returns from the works summary to the work selection on Android hardware back", async () => {
+    const addEventListener = jest.spyOn(BackHandler, "addEventListener")
+    renderWithWrappers(<Sell />)
+
+    fireEvent.press(screen.getByText("Verify If Sellable"))
+    await screen.findByText("Start Consignment")
+
+    const handler = addEventListener.mock.calls
+      .filter(([event]) => event === "hardwareBackPress")
+      .at(-1)?.[1]
+
+    let handled: boolean | null | undefined
+    act(() => {
+      handled = handler?.({ type: "hardwareBackPress", timeStamp: Date.now() })
+    })
+
+    expect(handled).toBe(true)
+    expect(await screen.findByText("Verify If Sellable")).toBeOnTheScreen()
+    expect(dismissModal).not.toHaveBeenCalled()
   })
 
   it("asks for confirmation before closing the flow past the first screen", async () => {
