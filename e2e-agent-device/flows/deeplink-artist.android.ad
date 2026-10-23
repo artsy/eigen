@@ -1,0 +1,14 @@
+context timeout=240000
+# Opens an artist link, as a cold start: `close ${APP_ID}` terminates the app, like Maestro's killApp, so the link launches it.
+# The link is opened without the app id, the same VIEW intent as Maestro's openLink, so Android resolves it: only a
+# verified App Link opens the app, anything else opens Chrome. net.artsy.app's root view then proves the app handled it,
+# since the artsy.net page in Chrome shows the same text.
+# @launch useMaestroInit=true email=${EMAIL} password=${PASSWORD}
+open ${APP_ID}
+# The first launch on a cold CI simulator can take over a minute
+wait 'id="search-button"' 90000
+close ${APP_ID}
+open "https://artsy.net/artist/kaws"
+wait 'label="KAWS" || text="KAWS"' 30000
+wait 'id="net.artsy.app:id/action_bar_root"' 5000
+close ${APP_ID}

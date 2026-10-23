@@ -1,0 +1,16 @@
+context timeout=240000
+# Opens a Braze click-tracking link, as a cold start: `close ${APP_ID}` terminates the app, like Maestro's killApp, so the link launches it.
+# The link is opened without the app id, the same VIEW intent as Maestro's openLink, so Android resolves it: only a
+# verified App Link opens the app, anything else opens Chrome. net.artsy.app's root view then proves the app handled it,
+# since the artsy.net page in Chrome shows the same text.
+# Marketing links make the app fetch the tracking URL to find the destination (useDeepLinks), so this also depends
+# on that service answering.
+# @launch useMaestroInit=true email=${EMAIL} password=${PASSWORD}
+open ${APP_ID}
+# The first launch on a cold CI simulator can take over a minute
+wait 'id="search-button"' 90000
+close ${APP_ID}
+open "https://click.artsy.net/f/a/epPWiX0dJaHHMiXAnSrzSg~~/AAQRxQA~/RgRj95QSP0SQaHR0cHM6Ly93d3cuYXJ0c3kubmV0L2NvbGxlY3Rpb24vYXVjdGlvbi1oaWdobGlnaHRzP3V0bV9zb3VyY2U9YnJhemUmdXRtX21lZGl1bT1lbWFpbCZ1dG1fY2FtcGFpZ249bnRmJnV0bV90ZXJtPTYyMTRmYjlkZWI0ZWZkN2RiNjBjZTcwNDk1NWU4NDQ1VwNzcGNCCmIFEg8VYlEJKGBSEmJyaWJlY2sxQGdtYWlsLmNvbVgEAAAAfw~~"
+wait 'label="Highlights at Auction This Week" || text="Highlights at Auction This Week"' 30000
+wait 'id="net.artsy.app:id/action_bar_root"' 5000
+close ${APP_ID}

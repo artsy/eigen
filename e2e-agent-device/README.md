@@ -19,7 +19,7 @@ Both workflows can also be started manually from the Actions tab.
 ## Layout
 
 - `flows/<name>.ad`: one script per scenario, shared by iOS and Android. The platform comes from the device passed to the runner.
-- `flows/<name>.<ios|android>.ad`: a platform-only version, for a scenario that has to work differently on each platform. `deeplinks` is the only one. `SKIP_FLOWS` uses the name without the suffix.
+- `flows/<name>.<ios|android>.ad`: a platform-only version, for a scenario that has to work differently on each platform. The `deeplink-*` flows are. `SKIP_FLOWS` uses the name without the suffix, e.g. `SKIP_FLOWS="deeplink-email deeplink-click"`.
 - `reporters/failures.mjs`: a test reporter that writes the failed tests to `failures.json` for `scripts/ci/report-agent-device-test-failure`.
 
 ### Launch arguments
@@ -72,7 +72,20 @@ AD_VAR_APP_ID=net.artsy.qa AD_VAR_EMAIL=... AD_VAR_PASSWORD=... agent-device rep
 
 ## Deeplinks
 
-`deeplinks` covers the same three links as Maestro, cold-starting the app for each one:
+Each link gets its own flow, so a failure retries only that link:
 
-- **iOS** (`deeplinks.ios.ad`): `open ${APP_ID} "<url>"` runs `simctl openurl`, so iOS decides between the app and Safari.
-- **Android** (`deeplinks.android.ad`): `open "<url>"` without the app id runs `am start -a android.intent.action.VIEW -d <url>`, the same intent Maestro's `openLink` sends, so Android resolves the link. Only a verified App Link opens the app; anything else opens Chrome. After the content check, the flow waits for `net.artsy.app:id/action_bar_root`, which only exists when the Artsy app is in the foreground. The content check alone isn't enough, because the artsy.net page in Chrome shows the same text.
+| Flow                  | Link                                  | Lands on                          |
+| --------------------- | ------------------------------------- | --------------------------------- |
+| `deeplink-artist`     | `https://artsy.net/artist/kaws`       | KAWS artist page                  |
+| `deeplink-click`      | Braze `click.artsy.net` tracking link | "Highlights at Auction This Week" |
+| `deeplink-email`      | SendGrid `email-link.artsy.net` link  | "Maestro Test Artwork, 2025"      |
+| `deeplink-logged-out` | the artist link, while logged out     | login, then the KAWS artist page  |
+
+Every link is a cold start, like Maestro's `killApp`. `close ${APP_ID}` terminates the app; a bare `close` only ends agent-device's session, and the app keeps running in the background.
+
+How the links are opened, to stay close to a user tapping a link in an email:
+
+- **iOS:** `open "<url>"` without the app id runs `simctl openurl`, so iOS launches the app with the link or opens Safari. Then `open ${APP_ID}` attaches to the running app without restarting it. Don't use `open ${APP_ID} "<url>"`: it launches the app first and sends the link while it's still starting, which drops it, so the app stays on its home screen.
+- **Android:** `open "<url>"` without the app id sends the same VIEW intent as Maestro's `openLink`, so Android resolves the link. Only a verified App Link opens the app; anything else opens a browser. After the content check, the flow waits for `net.artsy.app:id/action_bar_root`, which only exists when the Artsy app is in the foreground. The content check alone isn't enough, because the artsy.net page in a browser shows the same text.
+
+The `click` and `email` links make the app fetch the tracking URL to find the destination (`useDeepLinks`). So they also depend on Braze and SendGrid answering, and on those tracking links not expiring.

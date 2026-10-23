@@ -1,0 +1,26 @@
+context timeout=300000
+# Opens an artist link while logged out, as a cold start. The app keeps the link (launchURL in useDeepLinks) and opens
+# it once the user has logged in.
+# `open <url>` without the app id runs `simctl openurl`, the same path as tapping the link in Mail or Messages, so iOS
+# launches the app with the link, or opens Safari. `open <app> <url>` would launch the app first and send the link while
+# it's still starting, which drops it. `open ${APP_ID}` then attaches to the running app without restarting it; if
+# Safari took the link, it brings the app back on its home screen and the next wait fails.
+# @launch useMaestroInit=true shouldSignOut=true
+open ${APP_ID}
+# The first launch on a cold CI simulator can take over a minute
+wait 'label="Sign up or log in" || text="Sign up or log in"' 90000
+close ${APP_ID}
+open "https://artsy.net/artist/kaws"
+open ${APP_ID}
+wait 'label="Email Input"' 30000
+fill 'label="Email Input"' "${EMAIL}"
+press 'label="Continue" || text="Continue"'
+wait 'id="password"' 15000
+# The email screen can still be on screen during the transition, with its own Continue button
+wait absent 'label="Email Input"' 10000
+# iOS can't fill (clear and replace) a secure text field, so focus it and type into the empty field
+press 'id="password"'
+type "${PASSWORD}"
+press 'label="Continue" || text="Continue"'
+wait 'label="KAWS" || text="KAWS"' 30000
+close ${APP_ID}
