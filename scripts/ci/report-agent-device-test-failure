@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e
+
+# Reports each failed agent-device flow to Slack with a screenshot, like report-maestro-test-failure.
+# The failures file is written by scripts/utils/run_agent_device_suite.
+PLATFORM=${1:-"unknown"}
+FAILURES_PATH=${2:-"e2e-agent-device/artifacts/$PLATFORM/failures.json"}
+echo "Platform: $PLATFORM"
+
+S3_PREFIX="s3://artsy-citadel/eigen/screenshots/agent-device/${GITHUB_RUN_ID:-local}-$PLATFORM"
+# 7 days minus 1 hour (max allowed is exactly 604800 seconds)
+EXPIRES_IN=$((7 * 24 * 60 * 60 - 3600))
+
+FAILURE_COUNT=$(jq 'length' "$FAILURES_PATH")
+for ((i = 0; i < FAILURE_COUNT; i++)); do
+  FLOW_NAME=$(jq -r ".[$i].title" "$FAILURES_PATH")
+  ERROR_MESSAGE=$(jq -r ".[$i].message" "$FAILURES_PATH" | head -n 1)
+  SCREENSHOT=$(jq -r ".[$i].screenshot // empty" "$FAILURES_PATH")
+  echo "Flow: $FLOW_NAME"
+  echo "Error message: $ERROR_MESSAGE"
+
+  URL="(no screenshot)"
+  if [ -n "$SCREENSHOT" ] && [ -f "$SCREENSHOT" ]; then
+    S3_PATH="$S3_PREFIX/$FLOW_NAME.png"
+    aws s3 cp "$SCREENSHOT" "$S3_PATH"
+    URL=$(aws s3 presign "$S3_PATH" --expires-in "$EXPIRES_IN")
+  fi
+
+  bundle exec fastlane report_maestro_failure tool:"agent-device" s3_url:"$URL" error_message:"$ERROR_MESSAGE" flow_name:"$FLOW_NAME" platform:"$PLATFORM"
+done
