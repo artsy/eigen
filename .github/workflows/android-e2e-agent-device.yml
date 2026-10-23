@@ -5,15 +5,19 @@ on:
   #   workflows: ["Build Android QA App for Maestro"]
   #   types:
   #     - completed
-  # Paused while we get iOS working; manual runs only
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
-  # push:
-  #   branches:
-  #     - gkartalis/agent-device-e2e
+  push:
+    branches:
+      - gkartalis/agent-device-e2e
 
 env:
   AGENT_DEVICE_VERSION: 0.21.31
   AGENT_DEVICE_NO_UPDATE_NOTIFIER: 1
+
+# A newer run for the same branch makes the older one pointless
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   e2e-tests:
@@ -95,7 +99,7 @@ jobs:
             adb install Artsy.apk
 
             echo "🧪 Running agent-device tests..."
-            ./scripts/utils/run_agent_device_suite android emulator-5554
+            SKIP_SLACK_REPORT=1 ./scripts/utils/run_agent_device_suite android emulator-5554 # TODO: drop SKIP_SLACK_REPORT before merging
 
       - name: Upload test artifacts
         if: always()
