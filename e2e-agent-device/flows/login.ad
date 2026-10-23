@@ -1,12 +1,16 @@
 context timeout=120000
 # Mirrors e2e/flows/login.yml
 # @launch useMaestroInit=true shouldSignOut=true
-wait 'label="Sign up or log in" || text="Sign up or log in"' 30000
 open ${APP_ID}
+wait 'label="Sign up or log in" || text="Sign up or log in"' 30000
+# The heading can appear before the field is ready to edit
+wait 'label="Email Input"' 15000
 fill 'label="Email Input"' "${EMAIL}"
 press 'label="Continue" || text="Continue"'
 wait 'id="password"' 15000
-fill 'id="password"' "${PASSWORD}"
+# iOS can't fill (clear and replace) a secure text field, so focus it and type into the empty field
+press 'id="password"'
+type "${PASSWORD}"
 press 'label="Continue" || text="Continue"'
 wait 'id="search-button"' 30000
 close
