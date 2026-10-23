@@ -70,7 +70,7 @@ export const MyCollectionBottomSheetModalSell: React.FC<{ isVisible: boolean }> 
             variant="fillDark"
             onPress={() => {
               setViewKind({ viewKind: null })
-              navigate("/sell")
+              navigate("/my-collection/sell")
             }}
           >
             Continue
