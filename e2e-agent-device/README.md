@@ -12,7 +12,7 @@
 Both workflows can also be started manually from the Actions tab.
 
 - Both download the same QA build from S3 as Maestro does, reuse `.env.maestro.<platform>` (the same test account), and run `scripts/utils/run_agent_device_suite <platform> <udid|serial>`.
-- Each flow gets up to 3 attempts. A flow that only passes on a retry is logged as flaky.
+- Each flow gets up to 3 attempts. A flow that only passes on a retry is logged as flaky, with a warning on the run summary.
 - Failures are posted to `#mobile-alerts` with a screenshot (uploaded to S3, like Maestro's).
 - Only `junit.xml` and `failures.json` are attached to the run as artifacts. This repo's artifacts are public, and agent-device's logs and screenshots can show the test account.
 
@@ -62,4 +62,6 @@ AD_VAR_APP_ID=net.artsy.qa AD_VAR_EMAIL=... AD_VAR_PASSWORD=... agent-device rep
 - On iOS, `fill` can't clear a secure text field. For password fields, `press` the field and then `type`.
 - An input without an accessibility label is matched by its placeholder with `text="..."` while it's empty, not with `label=`.
 - Wait for the element you're about to use, not just a heading on its screen. A heading can appear before the field is ready, and neighbouring screens can share headings.
+- After moving to a new screen, `wait absent` for the previous screen's field before pressing anything. On slower simulators both screens are on screen during the transition, so a selector like `label="Continue"` matches twice.
+- Give the first `wait` a generous timeout (90s). The first launch on a cold CI simulator can take over a minute.
 - See `agent-device help scripting` and `agent-device help test` for the full syntax.
