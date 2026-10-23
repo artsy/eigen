@@ -14,6 +14,12 @@ env:
   AGENT_DEVICE_VERSION: 0.21.31
   AGENT_DEVICE_NO_UPDATE_NOTIFIER: 1
 
+# A newer run for the same branch makes the older one pointless, and two runs racing to save the
+# runner cache made one of them fail to save it
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   e2e-tests:
     # if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
@@ -105,14 +111,13 @@ jobs:
           echo "🚀 Bring simulator to foreground..."
           open -a simulator
 
-          # TODO: restore together with the deeplinks flow (see SKIP_FLOWS below).
           # Best-effort warm-up for the deeplinks flow. openurl sometimes hangs for minutes on fresh
           # runner simulators (this also fails Maestro's iOS runs), so cap each one and never fail on it.
-          # echo "Prefetch app associations"
-          # for domain in artsy.net email-link.artsy.net click.artsy.net; do
-          #   perl -e 'alarm shift; exec @ARGV' 30 xcrun simctl openurl booted "https://$domain/apple-app-site-association" ||
-          #     echo "::warning::Couldn't prefetch the $domain app site association"
-          # done
+          echo "Prefetch app associations"
+          for domain in artsy.net email-link.artsy.net click.artsy.net; do
+            perl -e 'alarm shift; exec @ARGV' 30 xcrun simctl openurl booted "https://$domain/apple-app-site-association" ||
+              echo "::warning::Couldn't prefetch the $domain app site association"
+          done
 
       # Building the runner from scratch takes several minutes, so it gets a generous budget
       - name: Prepare agent-device iOS runner
@@ -150,7 +155,6 @@ jobs:
         run: ./scripts/utils/run_agent_device_suite ios "$SIMULATOR_UDID"
         env:
           SKIP_SLACK_REPORT: 1 # TODO: remove before merging, only while trying this out on the PR
-          SKIP_FLOWS: deeplinks # TODO: remove before merging, only while trying this out on the PR
 
       - name: Upload test artifacts
         if: always()
