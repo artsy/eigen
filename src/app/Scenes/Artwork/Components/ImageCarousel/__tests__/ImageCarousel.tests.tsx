@@ -254,12 +254,13 @@ describe("ImageCarouselFragmentContainer", () => {
 
       await waitFor(() => {
         expect(fetchMock).toHaveBeenCalledWith(
-          'https://api.vimeo.com/videos/<mock-value-for-field-"playerUrl">',
+          'https://api.vimeo.com/videos/<mock-value-for-field-"playerUrl">?fields=pictures.sizes.link_with_play_button',
           {
             headers: {
               Accept: "application/vnd.vimeo.*+json;version=3.4",
               Authorization: "Bearer undefined",
             },
+            signal: expect.any(Object),
           }
         )
       })
@@ -267,6 +268,8 @@ describe("ImageCarouselFragmentContainer", () => {
 
     it("fetches a video thumbnail placeholder with video button", async () => {
       jest.spyOn(global, "fetch").mockResolvedValue({
+        ok: true,
+        status: 200,
         json: jest.fn().mockResolvedValue({
           pictures: {
             sizes: [

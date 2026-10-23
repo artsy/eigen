@@ -1,3 +1,4 @@
+import { act, renderHook, waitFor } from "@testing-library/react-native"
 import {
   extractVimeoVideoDataFromUrl,
   extractYouTubeId,
@@ -5,6 +6,7 @@ import {
   isValidVideoUrl,
   isVimeo,
   isYouTube,
+  useVimeoVideoMetadata,
 } from "app/utils/videoHelpers"
 
 describe("videoUtils.ts", () => {
@@ -147,5 +149,61 @@ describe("videoUtils.ts", () => {
     it("returns null for a youtube url with no video id", () => {
       expect(getYouTubeThumbnailUrl("https://www.youtube.com/channel/UCxxxxxxx")).toBe(null)
     })
+  })
+})
+
+describe("useVimeoVideoMetadata", () => {
+  const sizes = [0, 1, 2, 3, 4].map((size) => ({
+    link_with_play_button: `https://i.vimeocdn.com/${size}.jpg`,
+  }))
+
+  const vimeoResponse = (status: number) => ({
+    ok: status >= 200 && status < 300,
+    status,
+    json: () => Promise.resolve({ pictures: { sizes } }),
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
+    jest.useRealTimers()
+  })
+
+  it("requests only the cover field and returns the cover", async () => {
+    const fetchMock = jest.spyOn(global, "fetch").mockResolvedValue(vimeoResponse(200) as any)
+
+    const { result } = renderHook(() => useVimeoVideoMetadata("123"))
+
+    await waitFor(() => expect(result.current.coverImage).toEqual("https://i.vimeocdn.com/4.jpg"))
+    expect(fetchMock.mock.calls[0][0]).toEqual(
+      "https://api.vimeo.com/videos/123?fields=pictures.sizes.link_with_play_button"
+    )
+    expect(result.current.isCoverUnavailable).toBe(false)
+  })
+
+  it("returns no cover for a response that isn't OK", async () => {
+    jest.spyOn(global, "fetch").mockResolvedValue(vimeoResponse(429) as any)
+
+    const { result } = renderHook(() => useVimeoVideoMetadata("123"))
+
+    await waitFor(() => expect(result.current.isCoverUnavailable).toBe(true))
+    expect(result.current.coverImage).toBeUndefined()
+  })
+
+  it("gives up on a request that takes longer than 5 seconds", async () => {
+    jest.useFakeTimers()
+    jest.spyOn(global, "fetch").mockImplementation(
+      (_url, init) =>
+        new Promise((_resolve, reject) => {
+          init?.signal?.addEventListener("abort", () => reject(new Error("Aborted")))
+        })
+    )
+
+    const { result } = renderHook(() => useVimeoVideoMetadata("123"))
+
+    await act(async () => {
+      jest.advanceTimersByTime(5000)
+    })
+
+    expect(result.current.isCoverUnavailable).toBe(true)
   })
 })

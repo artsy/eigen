@@ -21,10 +21,16 @@ jest.mock("react-native-webview", () => {
   return { __esModule: true, default: MockWebView, WebView: MockWebView }
 })
 
+const mockUseVimeoVideoMetadata = jest.fn()
+
 jest.mock("app/utils/videoHelpers", () => ({
   ...jest.requireActual("app/utils/videoHelpers"),
-  useVimeoVideoMetadata: () => ({ coverImage: "https://i.vimeocdn.com/cover.jpg" }),
+  useVimeoVideoMetadata: () => mockUseVimeoVideoMetadata(),
 }))
+
+const withCover = { coverImage: "https://i.vimeocdn.com/cover.jpg", isCoverUnavailable: false }
+
+const withoutCover = { coverImage: undefined, isCoverUnavailable: true }
 
 const PLAY_SCRIPT = "window.playVideo && window.playVideo(); true;"
 
@@ -44,8 +50,37 @@ const TestWrapper = ({ index }: { index: number }) => {
 }
 
 describe("ImageCarouselVimeoVideo", () => {
+  beforeEach(() => {
+    mockUseVimeoVideoMetadata.mockReturnValue(withCover)
+  })
+
   afterEach(() => {
     jest.clearAllMocks()
+  })
+
+  it("shows the player without our play button while there is no cover", () => {
+    mockUseVimeoVideoMetadata.mockReturnValue({ coverImage: undefined, isCoverUnavailable: false })
+    renderWithWrappers(<TestWrapper index={0} />)
+
+    expect(screen.getByTestId("vimeo-player-webview")).toBeOnTheScreen()
+    expect(screen.queryByLabelText("Vimeo Play Button")).not.toBeOnTheScreen()
+  })
+
+  it("loads the player of a far away slide once the cover request fails", () => {
+    mockUseVimeoVideoMetadata.mockReturnValue(withoutCover)
+    renderWithWrappers(<TestWrapper index={3} />)
+
+    expect(screen.getByTestId("vimeo-player-webview")).toBeOnTheScreen()
+  })
+
+  it("hides the cover once playback starts from the player's own button", () => {
+    renderWithWrappers(<TestWrapper index={0} />)
+
+    fireEvent(screen.getByTestId("vimeo-player-webview"), "message", {
+      nativeEvent: { data: "play" },
+    })
+
+    expect(screen.queryByLabelText("Vimeo Play Button")).not.toBeOnTheScreen()
   })
 
   it("loads the player behind the cover when the slide is next to the current one", () => {
