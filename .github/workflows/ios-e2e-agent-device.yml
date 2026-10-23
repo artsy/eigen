@@ -1,0 +1,106 @@
+name: iOS E2E Tests (agent-device)
+
+on:
+  workflow_run:
+    workflows: ["Build iOS QA App for Maestro"]
+    types:
+      - completed
+  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+
+env:
+  AGENT_DEVICE_VERSION: 0.21.31
+  AGENT_DEVICE_NO_UPDATE_NOTIFIER: 1
+
+jobs:
+  e2e-tests:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: macos-26 # iOS simulators require macOS runners
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Ruby
+        uses: ./.github/actions/setup-ruby
+
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Set up env for ci
+        run: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci
+
+      - name: Set up maestro env
+        run: ./scripts/setup/setup-env-for-maestro ios
+
+      - name: Download iOS App
+        run: aws s3 cp s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip ./Artsy.zip
+
+      - name: Unzip iOS App
+        run: unzip Artsy.zip
+
+      - name: Install agent-device
+        run: |
+          npm install -g "agent-device@${AGENT_DEVICE_VERSION}"
+          echo "AGENT_DEVICE_STATE_DIR=$GITHUB_WORKSPACE/.agent-device" >> $GITHUB_ENV
+          echo "XCODE_VERSION=$(xcodebuild -version | head -n 1 | awk '{print $2}')" >> $GITHUB_ENV
+          agent-device doctor --remote
+
+      - name: Cache agent-device iOS runner
+        uses: actions/cache@v4
+        with:
+          path: ~/.agent-device/apple-runner/derived
+          key: agent-device-runner-${{ env.AGENT_DEVICE_VERSION }}-xcode-${{ env.XCODE_VERSION }}
+
+      - name: Create and boot iOS simulator
+        run: |
+          IPHONE_MODEL=$(jq -r '.iphone_model' ios-config.json)
+          IOS_VERSION=$(jq -r '.ios_version' ios-config.json)
+          SIM_DEVICE_TYPE=$(jq -r '.simulator_device_type' ios-config.json)
+          SIM_RUNTIME=$(jq -r '.simulator_runtime' ios-config.json)
+
+          echo "📱 Creating ${IPHONE_MODEL} simulator with iOS ${IOS_VERSION}..."
+          SIMULATOR_UDID=$(xcrun simctl create "${IPHONE_MODEL} Test" "${SIM_DEVICE_TYPE}" "${SIM_RUNTIME}")
+          echo "Created simulator with UDID: $SIMULATOR_UDID"
+          echo "SIMULATOR_UDID=$SIMULATOR_UDID" >> $GITHUB_ENV
+
+          echo "🚀 Booting simulator..."
+          xcrun simctl boot "$SIMULATOR_UDID"
+          xcrun simctl bootstatus "$SIMULATOR_UDID" -b
+
+          echo "📱 Installing app..."
+          ./scripts/utils/install_app_in_booted_sims.sh
+
+          echo "🚀 Bring simulator to foreground..."
+          open -a simulator
+
+          echo "Prefetch app associations"
+          xcrun simctl openurl booted https://artsy.net/apple-app-site-association
+          xcrun simctl openurl booted https://email-link.artsy.net/apple-app-site-association
+          xcrun simctl openurl booted https://click.artsy.net/apple-app-site-association
+
+      - name: Prepare agent-device iOS runner
+        run: agent-device prepare ios-runner --platform ios --udid "$SIMULATOR_UDID" --timeout 240000 --json
+
+      - name: Run agent-device E2E Tests
+        run: ./scripts/utils/run_agent_device_suite ios "$SIMULATOR_UDID"
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-device-ios-artifacts
+          # Reports only: this repo's artifacts are public, and agent-device logs and screenshots
+          # can show the test account. Failure screenshots go to S3 and Slack instead.
+          path: |
+            e2e-agent-device/artifacts/ios/**/junit.xml
+            e2e-agent-device/artifacts/ios/failures.json
+          if-no-files-found: ignore
+          retention-days: 7
