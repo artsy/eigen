@@ -53,6 +53,8 @@ interface ContextMenuArtworkProps {
   hideCreateAlertOnArtworkPreview?: boolean
   width?: number
   height?: number
+  /** Renders the children without the long-press menu, keeping the same padding */
+  disabled?: boolean
 }
 
 export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArtworkProps>> = ({
@@ -66,6 +68,7 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
   hideCreateAlertOnArtworkPreview,
   width,
   height,
+  disabled = false,
   ...restProps
 }) => {
   const artwork = useFragment(artworkFragment, restProps.artwork)
@@ -218,6 +221,10 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
   const space = useSpace()
 
   const [androidVisible, setAndroidVisible] = useState(false)
+
+  if (disabled) {
+    return <Flex p={1}>{children}</Flex>
+  }
 
   // TODO: Enable in test enrivonment and fix broken tests
   if (isIOS && !__TEST__) {
