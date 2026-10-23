@@ -6,6 +6,7 @@ import {
   useNavigationContainerRef,
 } from "@react-navigation/native"
 import { createStackNavigator, StackNavigationProp } from "@react-navigation/stack"
+import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { SellHeader, SellRoute } from "app/Scenes/Sell/Components/SellHeader"
 import { Condition } from "app/Scenes/Sell/Screens/Condition"
 import { LocationAndContact } from "app/Scenes/Sell/Screens/LocationAndContact"
@@ -49,6 +50,7 @@ export const Sell: React.FC = () => {
 
 const SellNavigator: React.FC = () => {
   const navigationRef = useNavigationContainerRef<SellNavigationRoutes>()
+  const theme = useNavigationTheme()
   const [currentRoute, setCurrentRoute] = useState<SellRoute>()
 
   const updateCurrentRoute = () => setCurrentRoute(navigationRef.getCurrentRoute())
@@ -57,6 +59,7 @@ const SellNavigator: React.FC = () => {
     <NavigationIndependentTree>
       <NavigationContainer
         ref={navigationRef}
+        theme={theme}
         onReady={updateCurrentRoute}
         onStateChange={updateCurrentRoute}
       >
