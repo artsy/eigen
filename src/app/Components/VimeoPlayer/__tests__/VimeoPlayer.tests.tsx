@@ -35,17 +35,17 @@ describe("VimeoPlayer", () => {
     )
   })
 
-  it("only loops and preloads when asked to", () => {
+  it("doesn't loop or preload by default", () => {
     renderWithWrappers(<VimeoPlayer videoId="76979871" />)
 
     expect(playerHTML()).not.toContain("loop=1")
     expect(playerHTML()).not.toContain("preload=auto")
+  })
 
+  it("loops and preloads when asked to", () => {
     renderWithWrappers(<VimeoPlayer videoId="76979871" loop preload />)
 
-    expect(screen.getAllByTestId("vimeo-player-webview")[1].props.source.html).toContain(
-      "loop=1&preload=auto"
-    )
+    expect(playerHTML()).toContain("loop=1&preload=auto")
   })
 
   it("starts playback on play()", () => {
