@@ -6,6 +6,7 @@ import { SellNavigationRoutes } from "app/Scenes/Sell/Sell"
 import { SELL_STEPS, WORKS_SUMMARY_DESCRIPTION } from "app/Scenes/Sell/sellSteps"
 // eslint-disable-next-line no-restricted-imports
 import { dismissModal } from "app/system/navigation/navigate"
+import { Alert } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export type SellRoute = Route<string, object | undefined>
@@ -24,6 +25,7 @@ export const SellHeader: React.FC<SellHeaderProps> = ({ route, navigationRef }) 
   const isWorksSummary =
     route.name === "SelectWorks" &&
     !!(route.params as SellNavigationRoutes["SelectWorks"])?.showWorksSummary
+  const isFirstScreen = !isWorksSummary && !navigationRef.canGoBack()
 
   const handleBack = () => {
     if (isWorksSummary) {
@@ -31,11 +33,16 @@ export const SellHeader: React.FC<SellHeaderProps> = ({ route, navigationRef }) 
         ...CommonActions.setParams({ showWorksSummary: false }),
         source: route.key,
       })
-    } else if (navigationRef.canGoBack()) {
-      navigationRef.goBack()
     } else {
-      dismissModal()
+      navigationRef.goBack()
     }
+  }
+
+  const handleClose = () => {
+    Alert.alert("Leave this flow?", "Your progress on this submission won't be saved.", [
+      { text: "Keep going", style: "cancel" },
+      { text: "Leave", style: "destructive", onPress: () => dismissModal() },
+    ])
   }
 
   return (
@@ -49,8 +56,18 @@ export const SellHeader: React.FC<SellHeaderProps> = ({ route, navigationRef }) 
           </Text>
         </Flex>
 
-        <Flex position="absolute" left={0}>
-          <BackButton hitSlop={ICON_HIT_SLOP} onPress={handleBack} />
+        {!isFirstScreen && (
+          <Flex position="absolute" left={0}>
+            <BackButton hitSlop={ICON_HIT_SLOP} onPress={handleBack} />
+          </Flex>
+        )}
+
+        <Flex position="absolute" right={0}>
+          <BackButton
+            showX
+            hitSlop={ICON_HIT_SLOP}
+            onPress={isFirstScreen ? () => dismissModal() : handleClose}
+          />
         </Flex>
       </Flex>
 

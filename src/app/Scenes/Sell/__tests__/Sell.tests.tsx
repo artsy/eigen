@@ -2,6 +2,7 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { Sell } from "app/Scenes/Sell/Sell"
 import { dismissModal } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { Alert } from "react-native"
 
 // setupJest stubs useNavigation, but this test drives the real stack
 jest.mock("@react-navigation/native", () => jest.requireActual("@react-navigation/native"))
@@ -53,7 +54,23 @@ describe("Sell", () => {
     expect(await screen.findByText("Verify If Sellable")).toBeOnTheScreen()
     expect(dismissModal).not.toHaveBeenCalled()
 
-    fireEvent.press(screen.getByLabelText("Go back"))
+    fireEvent.press(screen.getByLabelText("Close"))
+    expect(dismissModal).toHaveBeenCalledTimes(1)
+  })
+
+  it("asks for confirmation before closing the flow past the first screen", async () => {
+    const alertSpy = jest.spyOn(Alert, "alert")
+    renderWithWrappers(<Sell />)
+
+    fireEvent.press(screen.getByText("Verify If Sellable"))
+    await screen.findByText("Start Consignment")
+
+    fireEvent.press(screen.getByLabelText("Close"))
+    expect(alertSpy).toHaveBeenCalledWith("Leave this flow?", expect.any(String), expect.any(Array))
+    expect(dismissModal).not.toHaveBeenCalled()
+
+    const buttons = alertSpy.mock.calls[0][2]!
+    buttons.find((button) => button.text === "Leave")?.onPress?.()
     expect(dismissModal).toHaveBeenCalledTimes(1)
   })
 })
