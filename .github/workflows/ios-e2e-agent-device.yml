@@ -30,6 +30,33 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
+      # agent-device builds an XCTest runner with xcodebuild, which must match the simulator runtime
+      # from ios-config.json. The runner image's default Xcode is newer and can't target that runtime.
+      - name: Select Xcode
+        run: sudo xcode-select -s "/Applications/Xcode_$(jq -r '.xcode_version' ios-config.json).app"
+
+      # Boots the simulator that ships with the runner image for this Xcode, like React Navigation's
+      # agent-device CI does, as early as possible: the boot isn't waited for here, so the simulator
+      # settles while the rest of the setup runs. A freshly booted simulator is slow for its first minutes.
+      - name: Boot iOS simulator
+        run: |
+          IPHONE_MODEL=$(jq -r '.iphone_model' ios-config.json)
+          IOS_VERSION=$(jq -r '.ios_version' ios-config.json)
+          SIM_DEVICE_TYPE=$(jq -r '.simulator_device_type' ios-config.json)
+          SIM_RUNTIME=$(jq -r '.simulator_runtime' ios-config.json)
+
+          SIMULATOR_UDID=$(xcrun simctl list devices available --json |
+            jq -r --arg runtime "$SIM_RUNTIME" --arg name "$IPHONE_MODEL" '.devices[$runtime] // [] | map(select(.name == $name)) | first | .udid // empty')
+          if [ -z "$SIMULATOR_UDID" ]; then
+            echo "::warning::No preinstalled ${IPHONE_MODEL} on ${SIM_RUNTIME}, creating one"
+            SIMULATOR_UDID=$(xcrun simctl create "${IPHONE_MODEL} Test" "${SIM_DEVICE_TYPE}" "${SIM_RUNTIME}")
+          fi
+          echo "📱 Using ${IPHONE_MODEL} (iOS ${IOS_VERSION}): $SIMULATOR_UDID"
+          echo "SIMULATOR_UDID=$SIMULATOR_UDID" >> $GITHUB_ENV
+
+          echo "🚀 Booting simulator in the background..."
+          xcrun simctl boot "$SIMULATOR_UDID" || true
+
       - name: Setup Ruby
         uses: ./.github/actions/setup-ruby
 
@@ -55,11 +82,6 @@ jobs:
       - name: Unzip iOS App
         run: unzip Artsy.zip
 
-      # agent-device builds an XCTest runner with xcodebuild, which must match the simulator runtime
-      # from ios-config.json. The runner image's default Xcode is newer and can't target that runtime.
-      - name: Select Xcode
-        run: sudo xcode-select -s "/Applications/Xcode_$(jq -r '.xcode_version' ios-config.json).app"
-
       - name: Install agent-device
         run: |
           npm install -g "agent-device@${AGENT_DEVICE_VERSION}"
@@ -74,26 +96,9 @@ jobs:
           path: ~/.agent-device/apple-runner/derived
           key: agent-device-runner-${{ env.AGENT_DEVICE_VERSION }}-xcode-${{ env.XCODE_VERSION }}
 
-      # Boots the simulator that ships with the runner image for this Xcode, like React Navigation's
-      # agent-device CI does. A freshly created one was never usable as an xcodebuild destination.
-      - name: Boot iOS simulator
+      - name: Install app on iOS simulator
         run: |
-          IPHONE_MODEL=$(jq -r '.iphone_model' ios-config.json)
-          IOS_VERSION=$(jq -r '.ios_version' ios-config.json)
-          SIM_DEVICE_TYPE=$(jq -r '.simulator_device_type' ios-config.json)
-          SIM_RUNTIME=$(jq -r '.simulator_runtime' ios-config.json)
-
-          SIMULATOR_UDID=$(xcrun simctl list devices available --json |
-            jq -r --arg runtime "$SIM_RUNTIME" --arg name "$IPHONE_MODEL" '.devices[$runtime] // [] | map(select(.name == $name)) | first | .udid // empty')
-          if [ -z "$SIMULATOR_UDID" ]; then
-            echo "::warning::No preinstalled ${IPHONE_MODEL} on ${SIM_RUNTIME}, creating one"
-            SIMULATOR_UDID=$(xcrun simctl create "${IPHONE_MODEL} Test" "${SIM_DEVICE_TYPE}" "${SIM_RUNTIME}")
-          fi
-          echo "📱 Using ${IPHONE_MODEL} (iOS ${IOS_VERSION}): $SIMULATOR_UDID"
-          echo "SIMULATOR_UDID=$SIMULATOR_UDID" >> $GITHUB_ENV
-
-          echo "🚀 Booting simulator..."
-          xcrun simctl boot "$SIMULATOR_UDID" || true
+          echo "⏳ Waiting for the simulator booted at the start of the job..."
           WAIT_COUNT=0
           until xcrun simctl list devices | grep "$SIMULATOR_UDID" | grep -q "(Booted)"; do
             WAIT_COUNT=$((WAIT_COUNT + 1))
