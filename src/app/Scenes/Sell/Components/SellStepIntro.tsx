@@ -3,11 +3,13 @@ import { SELL_STEPS, SellStepName } from "app/Scenes/Sell/sellSteps"
 
 interface SellStepIntroProps extends FlexProps {
   stepName: SellStepName
+  title?: string
   description?: string
 }
 
 export const SellStepIntro: React.FC<SellStepIntroProps> = ({
   stepName,
+  title,
   description,
   ...flexProps
 }) => {
@@ -17,7 +19,7 @@ export const SellStepIntro: React.FC<SellStepIntroProps> = ({
   return (
     <Flex gap={1} pt={1} pb={2} {...flexProps}>
       <Text variant="sm-display" weight="medium" color="blue100">
-        {`Step ${stepIndex + 1} · ${step.title}`}
+        {`Step ${stepIndex + 1} · ${title ?? step.title}`}
       </Text>
 
       <Text variant="sm" color="mono60">

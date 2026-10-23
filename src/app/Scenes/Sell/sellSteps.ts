@@ -19,5 +19,10 @@ export const SELL_STEPS = [
 
 export type SellStepName = (typeof SELL_STEPS)[number]["name"]
 
+export const AUCTION_CONDITION_STEP = {
+  title: "Condition",
+  description: "Confirm the condition of the work.",
+}
+
 export const WORKS_SUMMARY_DESCRIPTION =
   "We reviewed demand for these works and selected the most effective sales channels for each piece. Confirm condition, price and shipping to finish listing."
