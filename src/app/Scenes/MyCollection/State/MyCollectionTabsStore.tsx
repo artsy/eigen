@@ -5,7 +5,7 @@ export type CollectedTab = "Artworks" | "Artists" | null
 
 type ViewPayload =
   | {
-      viewKind: "Add" | "Profile" | null
+      viewKind: "Add" | "Profile" | "Sell" | null
     }
   | {
       viewKind: "Artist"
@@ -13,7 +13,7 @@ type ViewPayload =
       interestId: string
     }
 
-export type MyCollectionNavigationTab = "Artworks" | "Artists" | "Insights"
+export type MyCollectionNavigationTab = "Artworks" | "Artists" | "Insights" | "Listings"
 export interface MyCollectionTabsStoreModel {
   activeNavigationTab: MyCollectionNavigationTab
   artistId: string | null
@@ -55,6 +55,10 @@ export const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
 
       case "Profile":
         state.viewKind = "Profile"
+        break
+
+      case "Sell":
+        state.viewKind = "Sell"
         break
 
       default:
