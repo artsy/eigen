@@ -8,6 +8,7 @@ import {
   Image,
   useScreenDimensions,
 } from "@artsy/palette-mobile"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import LinearGradient from "react-native-linear-gradient"
 import { CardTag, CardTagProps } from "./CardTag"
 
@@ -34,34 +35,33 @@ export const MediumCard: React.FC<MediumCardProps> = ({
   fullWidthCard,
   ...rest
 }) => {
+  const newHomeFeedEnabled = useFeatureFlag("AREnableNewHomeFeed")
   const { space } = useTheme()
   const { width: screenWidth } = useScreenDimensions()
   const imagewidth = screenWidth - space(2) * 2
   const imageHeight = (imagewidth / 3) * 4
+  const size = fullWidthCard
+    ? { width: imagewidth, height: imageHeight }
+    : { width: MEDIUM_CARD_WIDTH, height: MEDIUM_CARD_HEIGHT }
 
   return (
     <Box
-      width={fullWidthCard ? imagewidth : MEDIUM_CARD_WIDTH}
-      height={fullWidthCard ? imageHeight : MEDIUM_CARD_HEIGHT}
       flexDirection="row"
-      borderRadius={4}
+      borderRadius={newHomeFeedEnabled ? 10 : 4}
       overflow="hidden"
+      {...size}
       {...rest}
     >
       <Flex flex={2} backgroundColor="mono10">
-        <Image
-          src={image}
-          width={fullWidthCard ? imagewidth : MEDIUM_CARD_WIDTH}
-          height={fullWidthCard ? imageHeight : MEDIUM_CARD_HEIGHT}
-        />
+        <Image src={image} {...size} />
       </Flex>
       <LinearGradient
         colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
         style={{
           position: "absolute",
+          bottom: 0,
           width: "100%",
-          height: "100%",
-          opacity: 0.15,
+          height: "50%",
         }}
       />
       <Flex
