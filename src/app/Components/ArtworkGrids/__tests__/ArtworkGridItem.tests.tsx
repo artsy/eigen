@@ -47,10 +47,19 @@ describe("ArtworkGridItem", () => {
       jest.clearAllMocks()
     })
 
-    it("marks the artwork as selected when isSelected is true", () => {
+    it("shows the artwork as a checked checkbox when isSelected is true", () => {
       renderWithRelay({ Artwork: () => ({ title: "Some Kind of Dinosaur" }) }, { isSelected: true })
 
-      expect(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur")).toBeSelected()
+      expect(screen.getByRole("checkbox")).toBeChecked()
+    })
+
+    it("shows the artwork as an unchecked checkbox when isSelected is false", () => {
+      renderWithRelay(
+        { Artwork: () => ({ title: "Some Kind of Dinosaur" }) },
+        { isSelected: false }
+      )
+
+      expect(screen.getByRole("checkbox")).not.toBeChecked()
     })
 
     it("calls onPress without navigating when the grid selects artworks", () => {
@@ -82,10 +91,10 @@ describe("ArtworkGridItem", () => {
       Platform.OS = originalOS
     })
 
-    it("does not mark the artwork as selected by default", () => {
+    it("does not show the artwork as a checkbox by default", () => {
       renderWithRelay({ Artwork: () => ({ title: "Some Kind of Dinosaur" }) })
 
-      expect(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur")).not.toBeSelected()
+      expect(screen.queryByRole("checkbox")).not.toBeOnTheScreen()
     })
   })
 

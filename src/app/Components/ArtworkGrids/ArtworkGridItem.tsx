@@ -297,7 +297,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
               isSelectable
                 ? undefined
                 : () => {
-                    // Adroid long press is tracked inside of the ContextMenuArtwork component
+                    // Android long press is tracked inside of the ContextMenuArtwork component
                     if (contextScreenOwnerType && isIOS) {
                       tracking.trackEvent(
                         trackLongPress.longPressedArtwork(
@@ -315,7 +315,8 @@ export const Artwork: React.FC<ArtworkProps> = memo(
             testID={`artworkGridItem-${artwork.title}`}
             disableNavigation={isSelectable}
             disablePrefetch={isSelectable}
-            accessibilityState={isSelectable ? { selected: isSelected } : undefined}
+            accessibilityRole={isSelectable ? "checkbox" : undefined}
+            accessibilityState={isSelectable ? { checked: isSelected } : undefined}
           >
             <View ref={itemRef}>
               {!!isSelected && (
