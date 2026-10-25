@@ -1084,6 +1084,17 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes to Sell in a modal", () => {
+    const sellRoute = artsyDotNetRoutes.find((route) => route.name === "Sell")
+
+    expect(matchRoute("/my-collection/sell")).toEqual({
+      module: "Sell",
+      params: {},
+      type: "match",
+    })
+    expect(sellRoute?.options?.alwaysPresentModally).toBe(true)
+  })
+
   it("routes /conditions-of-sale to web view", () => {
     expect(matchRoute("/conditions-of-sale")).toMatchInlineSnapshot(`
       {
