@@ -8,6 +8,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { DateTime } from "luxon"
+import { Platform } from "react-native"
 import { graphql } from "react-relay"
 
 describe("ArtworkGridItem", () => {
@@ -38,6 +39,62 @@ describe("ArtworkGridItem", () => {
       fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
 
       expect(navigate).toHaveBeenCalledExactlyOnceWith('<mock-value-for-field-"href">')
+    })
+  })
+
+  describe("selection", () => {
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("shows the artwork as a checked checkbox when isSelected is true", () => {
+      renderWithRelay({ Artwork: () => ({ title: "Some Kind of Dinosaur" }) }, { isSelected: true })
+
+      expect(screen.getByRole("checkbox")).toBeChecked()
+    })
+
+    it("shows the artwork as an unchecked checkbox when isSelected is false", () => {
+      renderWithRelay(
+        { Artwork: () => ({ title: "Some Kind of Dinosaur" }) },
+        { isSelected: false }
+      )
+
+      expect(screen.getByRole("checkbox")).not.toBeChecked()
+    })
+
+    it("calls onPress without navigating when the grid selects artworks", () => {
+      const onPress = jest.fn()
+      renderWithRelay(
+        { Artwork: () => ({ title: "Some Kind of Dinosaur", slug: "cool-artwork" }) },
+        { isSelected: false, onPress }
+      )
+
+      fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
+
+      expect(onPress).toHaveBeenCalledWith("cool-artwork", expect.anything(), undefined)
+      expect(navigate).not.toHaveBeenCalled()
+    })
+
+    it("turns off the long-press menu when the grid selects artworks", () => {
+      const originalOS = Platform.OS
+      Platform.OS = "android"
+
+      renderWithRelay(
+        { Artwork: () => ({ title: "Some Kind of Dinosaur" }) },
+        { isSelected: false }
+      )
+      expect(screen.queryByTestId("android-context-menu-trigger")).not.toBeOnTheScreen()
+
+      renderWithRelay({ Artwork: () => ({ title: "Some Kind of Dinosaur" }) })
+      expect(screen.getByTestId("android-context-menu-trigger")).toBeOnTheScreen()
+
+      Platform.OS = originalOS
+    })
+
+    it("does not show the artwork as a checkbox by default", () => {
+      renderWithRelay({ Artwork: () => ({ title: "Some Kind of Dinosaur" }) })
+
+      expect(screen.queryByRole("checkbox")).not.toBeOnTheScreen()
     })
   })
 
