@@ -16,43 +16,71 @@ export const extractVimeoVideoDataFromUrl = (playerUrl: string) => {
   }
 }
 
+// Only the field we read, which also earns a higher rate limit from Vimeo
 type VimeoAPIResponse = {
   pictures: {
     sizes: Array<{
-      height: number
-      link: string
       link_with_play_button: string
-      width: number
     }>
   }
 } | null
 
+// A stuck request gives up after this, so the caller can fall back to the player's own poster
+const VIMEO_METADATA_TIMEOUT_MS = 5000
+
 export const useVimeoVideoMetadata = (videoId: string) => {
   const [videoMetadata, setVideoMetadata] = useState<VimeoAPIResponse>(null)
+  const [hasFinished, setHasFinished] = useState(false)
   const coverImage = videoMetadata?.pictures?.sizes?.[4]?.link_with_play_button
 
   useEffect(() => {
+    const controller = new AbortController()
+    let timedOut = false
+    const timeout = setTimeout(() => {
+      timedOut = true
+      controller.abort()
+    }, VIMEO_METADATA_TIMEOUT_MS)
+
     const fetchVideoMetadata = async () => {
       try {
-        const response = await fetch(`https://api.vimeo.com/videos/${videoId}`, {
-          headers: {
-            Accept: "application/vnd.vimeo.*+json;version=3.4",
-            Authorization: `Bearer ${Keys.secureFor("VIMEO_PUBLIC_TOKEN")}`,
-          },
-        })
-        const data = await response.json()
+        const response = await fetch(
+          `https://api.vimeo.com/videos/${videoId}?fields=pictures.sizes.link_with_play_button`,
+          {
+            headers: {
+              Accept: "application/vnd.vimeo.*+json;version=3.4",
+              Authorization: `Bearer ${Keys.secureFor("VIMEO_PUBLIC_TOKEN")}`,
+            },
+            signal: controller.signal,
+          }
+        )
+        const data = response.ok ? await response.json() : null
         setVideoMetadata(data)
+        setHasFinished(true)
       } catch (error) {
+        // Aborted by unmounting, so there is nothing left to update
+        if (controller.signal.aborted && !timedOut) {
+          return
+        }
+
         console.log("[ImageCarouselVimeoVideo] Error:", error)
+        setHasFinished(true)
+      } finally {
+        clearTimeout(timeout)
       }
     }
 
     fetchVideoMetadata()
-  }, [])
+
+    return () => {
+      clearTimeout(timeout)
+      controller.abort()
+    }
+  }, [videoId])
 
   return {
-    videoMetadata,
     coverImage,
+    // The request ended without a usable cover: an error, a timeout or no matching size
+    isCoverUnavailable: hasFinished && !coverImage,
   }
 }
 

@@ -55,7 +55,14 @@ export const ImageCarouselFullScreenAndroid = () => {
   const renderItem = useCallback(
     ({ item, index }: { item: ImageCarouselMedia; index: number }) => {
       if (item.__typename === "Video") {
-        return <ImageCarouselVimeoVideo width={pageWidth} height={pageHeight} vimeoUrl={item.url} />
+        return (
+          <ImageCarouselVimeoVideo
+            index={index}
+            width={pageWidth}
+            height={pageHeight}
+            vimeoUrl={item.url}
+          />
+        )
       }
 
       return (

@@ -201,6 +201,7 @@ const EmbeddedItem: React.FC<{
   if (item.__typename === "Video" && item.url) {
     return (
       <ImageCarouselVimeoVideo
+        index={index}
         width={styles.width}
         height={styles.height}
         maxHeight={embeddedCardBoundingBox.height}

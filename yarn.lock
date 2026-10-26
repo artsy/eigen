@@ -13864,7 +13864,6 @@ __metadata:
     react-native-svg: "npm:15.15.4"
     react-native-url-polyfill: "npm:2.0.0"
     react-native-view-shot: "npm:5.1.1"
-    react-native-vimeo-iframe: "npm:1.2.1"
     react-native-vision-camera: "npm:5.2.2"
     react-native-webview: "npm:13.16.1"
     react-native-worklets: "npm:0.10.1"
@@ -22413,17 +22412,6 @@ __metadata:
     react: ">=18.0.0"
     react-native: ">=0.76.0"
   checksum: 10c0/9806856d51d582e3c09da4127ad1a2876401d3e63b14ecb7e0d6ae56f92036b61d424d1f4dc0c15eac497b09ce3037e414a8b05f23a912f7572ec887417c56d3
-  languageName: node
-  linkType: hard
-
-"react-native-vimeo-iframe@npm:1.2.1":
-  version: 1.2.1
-  resolution: "react-native-vimeo-iframe@npm:1.2.1"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-    react-native-webview: "*"
-  checksum: 10c0/1ef91508bd6d94d7d85b401bf11a0a858fa2dd486600950abc29e1c07f358924926fe31665f424128687f37efafd7167ac5a8e682728eb6322b007ff29c63dbf
   languageName: node
   linkType: hard
 
