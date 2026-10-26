@@ -39,10 +39,10 @@ import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledF
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
+type ChipsGroup = HomeViewSectionGroup_section$data["chipsGroups"][number]
+
 type Chip = NonNullable<
-  NonNullable<
-    NonNullable<NonNullable<HomeViewSectionGroup_section$data["chipsConnection"]>["edges"]>[number]
-  >["node"]
+  NonNullable<NonNullable<NonNullable<ChipsGroup["cardsConnection"]>["edges"]>[number]>["node"]
 >
 
 interface HomeViewSectionGroupProps extends FlexProps {
@@ -59,10 +59,10 @@ export const HomeViewSectionGroup: React.FC<HomeViewSectionGroupProps> = ({
   const tracking = useHomeViewTracking()
 
   const contextModule = section.contextModule as ContextModule
-  const chips = extractNodes(section.chipsConnection)
 
   // Background tint is server-driven (null → untinted). The editorial area (an articles
-  // rail) still drives the chip presentation: news cards vs collection cards.
+  // rail) still drives the chip presentation: news cards vs collection cards. This is
+  // section-level for now — fine while there's one chips group per section.
   const backgroundColor = section.backgroundColor ?? undefined
   const isEditorialArea = section.rails.some(
     (rail) => rail.section?.__typename === "HomeViewSectionArticles"
@@ -91,39 +91,17 @@ export const HomeViewSectionGroup: React.FC<HomeViewSectionGroupProps> = ({
         <GroupRail key={railIndex} rail={rail} containerInternalID={section.internalID} />
       ))}
 
-      {chips.length > 0 && (
-        <>
-          {section.chipsTitle ? (
-            <>
-              <Separator my={2} />
-              <SectionTitle
-                mx={2}
-                title={section.chipsTitle}
-                href={section.chipsHref ?? undefined}
-                onPress={
-                  section.chipsHref
-                    ? () =>
-                        tracking.tappedCardGroupViewAll(
-                          contextModule,
-                          section.chipsOwnerType as ScreenOwnerType
-                        )
-                    : undefined
-                }
-              />
-            </>
-          ) : (
-            // No chips header (curated area) — add breathing room so the cards don't
-            // crowd the lead rail above.
-            <Spacer y={4} />
-          )}
-
-          {isEditorialArea ? (
-            <NewsChipRail chips={chips} onChipPress={handleChipPress} />
-          ) : (
-            <CollectionCardRail chips={chips} onChipPress={handleChipPress} />
-          )}
-        </>
-      )}
+      {section.chipsGroups.map((group, groupIndex) => (
+        <ChipGroup
+          key={groupIndex}
+          group={group}
+          isEditorial={isEditorialArea}
+          onChipPress={handleChipPress}
+          onViewAll={(ownerType) =>
+            tracking.tappedCardGroupViewAll(contextModule, ownerType as ScreenOwnerType)
+          }
+        />
+      ))}
 
       <HomeViewSectionSentinel
         contextModule={contextModule}
@@ -131,6 +109,47 @@ export const HomeViewSectionGroup: React.FC<HomeViewSectionGroupProps> = ({
         index={index}
       />
     </Flex>
+  )
+}
+
+// One chips group: an optional header (title + "view all") and a row of chip cards.
+// News cards for the editorial group, collection cards otherwise.
+const ChipGroup: React.FC<{
+  group: ChipsGroup
+  isEditorial: boolean
+  onChipPress: (chip: Chip, index: number) => void
+  onViewAll: (ownerType: string | null | undefined) => void
+}> = ({ group, isEditorial, onChipPress, onViewAll }) => {
+  const cards = extractNodes(group.cardsConnection)
+
+  if (!cards.length) {
+    return null
+  }
+
+  return (
+    <>
+      {group.title ? (
+        <>
+          <Separator my={2} />
+          <SectionTitle
+            mx={2}
+            title={group.title}
+            href={group.href ?? undefined}
+            onPress={group.href ? () => onViewAll(group.ownerType) : undefined}
+          />
+        </>
+      ) : (
+        // No group header (e.g. the Curated collection cards) — add breathing room so the
+        // cards don't crowd the rail above.
+        <Spacer y={4} />
+      )}
+
+      {isEditorial ? (
+        <NewsChipRail chips={cards} onChipPress={onChipPress} />
+      ) : (
+        <CollectionCardRail chips={cards} onChipPress={onChipPress} />
+      )}
+    </>
   )
 }
 
@@ -566,9 +585,6 @@ const fragment = graphql`
       type
       description
     }
-    chipsTitle
-    chipsHref
-    chipsOwnerType
     ownerType
     rails {
       title
@@ -650,20 +666,25 @@ const fragment = graphql`
         }
       }
     }
-    chipsConnection(first: 10) {
-      edges {
-        node {
-          title
-          subtitle
-          href
-          entityID
-          entityType
-          contextModule
-          image {
-            imageURL
-          }
-          images {
-            imageURL
+    chipsGroups {
+      title
+      href
+      ownerType
+      cardsConnection(first: 10) {
+        edges {
+          node {
+            title
+            subtitle
+            href
+            entityID
+            entityType
+            contextModule
+            image {
+              imageURL
+            }
+            images {
+              imageURL
+            }
           }
         }
       }

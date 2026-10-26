@@ -21953,6 +21953,24 @@ type HomeViewComponentBehaviorsViewAll {
 }
 
 """
+A labeled group of entry chips within a section group
+"""
+type HomeViewGroupChipGroup {
+  cardsConnection(after: String, before: String, first: Int, last: Int): HomeViewCardConnection
+
+  """
+  'View all' destination for this chips group.
+  """
+  href: String
+
+  """
+  [Analytics] `owner type` for this chips group's 'view all' tap.
+  """
+  ownerType: String
+  title: String
+}
+
+"""
 A referenced section rendered as a rail inside a section group
 """
 type HomeViewGroupRail {
@@ -22301,18 +22319,7 @@ type HomeViewSectionGroup implements HomeViewSectionGeneric & Node {
   Background tint for the whole area as a raw hex string (null → untinted).
   """
   backgroundColor: String
-  chipsConnection(after: String, before: String, first: Int, last: Int): HomeViewCardConnection
-
-  """
-  'View all' destination for the chips group.
-  """
-  chipsHref: String
-
-  """
-  [Analytics] `owner type` for the chips group's 'view all' tap.
-  """
-  chipsOwnerType: String
-  chipsTitle: String
+  chipsGroups: [HomeViewGroupChipGroup!]!
 
   """
   Component prescription for this section, for overriding or customizing presentation and behavior

@@ -57,35 +57,42 @@ const leadSection = {
   },
 }
 
-const chipsConnection = {
-  chipsConnection: {
-    edges: [
-      {
-        node: {
-          title: "Recommended Artists",
-          subtitle: "Explore a curated selection of exciting artists.",
-          href: "/recommended-artists-route",
-          entityID: "recommended-artists-id",
-          entityType: "HomeViewSection",
-          contextModule: "curationAreaRail",
-          image: { imageURL: "https://url.com/chip.jpg" },
-          images: null,
-        },
+const curatedChipsGroups = {
+  chipsGroups: [
+    {
+      title: null,
+      href: null,
+      ownerType: null,
+      cardsConnection: {
+        edges: [
+          {
+            node: {
+              title: "Recommended Artists",
+              subtitle: "Explore a curated selection of exciting artists.",
+              href: "/recommended-artists-route",
+              entityID: "recommended-artists-id",
+              entityType: "HomeViewSection",
+              contextModule: "curationAreaRail",
+              image: { imageURL: "https://url.com/chip.jpg" },
+              images: null,
+            },
+          },
+          {
+            node: {
+              title: "Trending Artists",
+              subtitle: null,
+              href: "/trending-artists-route",
+              entityID: "trending-artists-id",
+              entityType: "HomeViewSection",
+              contextModule: "curationAreaRail",
+              image: null,
+              images: null,
+            },
+          },
+        ],
       },
-      {
-        node: {
-          title: "Trending Artists",
-          subtitle: null,
-          href: "/trending-artists-route",
-          entityID: "trending-artists-id",
-          entityType: "HomeViewSection",
-          contextModule: "curationAreaRail",
-          image: null,
-          images: null,
-        },
-      },
-    ],
-  },
+    },
+  ],
 }
 
 const section = (overrides: Record<string, any> = {}) => ({
@@ -93,10 +100,8 @@ const section = (overrides: Record<string, any> = {}) => ({
   contextModule: "curationAreaRail",
   backgroundColor: "#F7F7F7",
   component: { title: "Chosen by our curators", type: "SectionGroup" },
-  chipsTitle: null,
-  chipsHref: null,
   rails: [{ title: null, section: leadSection }],
-  ...chipsConnection,
+  ...curatedChipsGroups,
   ...overrides,
 })
 
@@ -144,24 +149,28 @@ const editorialSection = (overrides: Record<string, any> = {}) => ({
     description: "Your guide to the art world",
     type: "SectionGroup",
   },
-  chipsTitle: "Art News",
-  chipsHref: "/news",
-  chipsOwnerType: "marketNews",
   rails: [{ title: "Editorial", section: editorialLeadSection }],
-  chipsConnection: {
-    edges: [
-      {
-        node: {
-          title: "News Chip 1",
-          href: "/article/news-1-slug",
-          entityID: "news-1-id",
-          entityType: "Article",
-          contextModule: "curationAreaRail",
-          image: { imageURL: "https://url.com/news-1.jpg" },
-        },
+  chipsGroups: [
+    {
+      title: "Art News",
+      href: "/news",
+      ownerType: "marketNews",
+      cardsConnection: {
+        edges: [
+          {
+            node: {
+              title: "News Chip 1",
+              href: "/article/news-1-slug",
+              entityID: "news-1-id",
+              entityType: "Article",
+              contextModule: "curationAreaRail",
+              image: { imageURL: "https://url.com/news-1.jpg" },
+            },
+          },
+        ],
       },
-    ],
-  },
+    },
+  ],
   ...overrides,
 })
 
@@ -254,26 +263,33 @@ describe("HomeViewSectionGroup", () => {
     renderWithRelay({
       HomeViewSectionGroup: () =>
         section({
-          chipsConnection: {
-            edges: [
-              {
-                node: {
-                  title: "Blue-Chip Icons",
-                  subtitle: "Legendary artists.",
-                  href: "/collection/blue-chip",
-                  entityID: "blue-chip-id",
-                  entityType: "MarketingCollection",
-                  contextModule: "curationAreaRail",
-                  image: null,
-                  images: [
-                    { imageURL: "https://url.com/1.jpg" },
-                    { imageURL: "https://url.com/2.jpg" },
-                    { imageURL: "https://url.com/3.jpg" },
-                  ],
-                },
+          chipsGroups: [
+            {
+              title: null,
+              href: null,
+              ownerType: null,
+              cardsConnection: {
+                edges: [
+                  {
+                    node: {
+                      title: "Blue-Chip Icons",
+                      subtitle: "Legendary artists.",
+                      href: "/collection/blue-chip",
+                      entityID: "blue-chip-id",
+                      entityType: "MarketingCollection",
+                      contextModule: "curationAreaRail",
+                      image: null,
+                      images: [
+                        { imageURL: "https://url.com/1.jpg" },
+                        { imageURL: "https://url.com/2.jpg" },
+                        { imageURL: "https://url.com/3.jpg" },
+                      ],
+                    },
+                  },
+                ],
               },
-            ],
-          },
+            },
+          ],
         }),
     })
 
@@ -399,9 +415,6 @@ describe("HomeViewSectionGroup", () => {
         description: "See art world events around the world",
         type: "SectionGroup",
       },
-      chipsTitle: null,
-      chipsHref: null,
-      chipsOwnerType: null,
       rails: [
         {
           title: null,
@@ -426,7 +439,7 @@ describe("HomeViewSectionGroup", () => {
           },
         },
       ],
-      chipsConnection: { edges: [] },
+      chipsGroups: [],
       ...overrides,
     })
 
