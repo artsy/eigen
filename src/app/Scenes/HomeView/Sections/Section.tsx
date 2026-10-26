@@ -8,10 +8,10 @@ import { HomeViewSectionArtworksQueryRenderer } from "app/Scenes/HomeView/Sectio
 import { HomeViewSectionAuctionResultsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults"
 import { HomeViewSectionCardQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionCard"
 import { HomeViewSectionCardsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionCards"
-import { HomeViewSectionCurationAreaQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionCurationArea"
 import { HomeViewSectionFairsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionFairs"
 import { HomeViewSectionFeaturedCollectionQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionFeaturedCollection"
 import { HomeViewSectionGeneric } from "app/Scenes/HomeView/Sections/HomeViewSectionGeneric"
+import { HomeViewSectionGroupQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionGroup"
 import { HomeViewSectionHeroUnitsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionHeroUnits"
 import { HomeViewSectionMarketingCollectionsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollections"
 import { HomeViewSectionNavigationPillsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionNavigationPills"
@@ -69,8 +69,8 @@ export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
     case "HomeViewSectionCards": {
       return <HomeViewSectionCardsQueryRenderer sectionID={section.internalID} {...rest} />
     }
-    case "HomeViewSectionCurationArea":
-      return <HomeViewSectionCurationAreaQueryRenderer sectionID={section.internalID} {...rest} />
+    case "HomeViewSectionGroup":
+      return <HomeViewSectionGroupQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionGeneric":
       return <HomeViewSectionGeneric section={section} {...rest} />
     case "HomeViewSectionArticles":

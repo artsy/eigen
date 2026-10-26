@@ -1,7 +1,7 @@
 import { act, fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
-import { HomeViewSectionCurationAreaTestsQuery } from "__generated__/HomeViewSectionCurationAreaTestsQuery.graphql"
+import { HomeViewSectionGroupTestsQuery } from "__generated__/HomeViewSectionGroupTestsQuery.graphql"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
-import { HomeViewSectionCurationArea } from "app/Scenes/HomeView/Sections/HomeViewSectionCurationArea"
+import { HomeViewSectionGroup } from "app/Scenes/HomeView/Sections/HomeViewSectionGroup"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -89,10 +89,10 @@ const chipsConnection = {
 }
 
 const section = (overrides: Record<string, any> = {}) => ({
-  internalID: "home-view-section-curation-area",
+  internalID: "home-view-section-curated-group",
   contextModule: "curationAreaRail",
   backgroundColor: "#F7F7F7",
-  component: { title: "Chosen by our curators", type: "CurationArea" },
+  component: { title: "Chosen by our curators", type: "SectionGroup" },
   chipsTitle: null,
   chipsHref: null,
   rails: [{ title: null, section: leadSection }],
@@ -136,13 +136,13 @@ const editorialLeadSection = {
 }
 
 const editorialSection = (overrides: Record<string, any> = {}) => ({
-  internalID: "home-view-section-editorial-curation-area",
+  internalID: "home-view-section-editorial-group",
   contextModule: "curationAreaRail",
   backgroundColor: "#FEF8ED",
   component: {
     title: "Artsy Editorial",
     description: "Your guide to the art world",
-    type: "CurationArea",
+    type: "SectionGroup",
   },
   chipsTitle: "Art News",
   chipsHref: "/news",
@@ -165,12 +165,12 @@ const editorialSection = (overrides: Record<string, any> = {}) => ({
   ...overrides,
 })
 
-describe("HomeViewSectionCurationArea", () => {
+describe("HomeViewSectionGroup", () => {
   beforeEach(() => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableHidingDislikedArtworks: true })
   })
 
-  const { renderWithRelay } = setupTestWrapper<HomeViewSectionCurationAreaTestsQuery>({
+  const { renderWithRelay } = setupTestWrapper<HomeViewSectionGroupTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
         return null
@@ -178,16 +178,16 @@ describe("HomeViewSectionCurationArea", () => {
 
       return (
         <HomeViewStoreProvider>
-          <HomeViewSectionCurationArea section={props.homeView.section} index={0} />
+          <HomeViewSectionGroup section={props.homeView.section} index={0} />
         </HomeViewStoreProvider>
       )
     },
     query: graphql`
-      query HomeViewSectionCurationAreaTestsQuery @relay_test_operation {
+      query HomeViewSectionGroupTestsQuery @relay_test_operation {
         homeView {
-          section(id: "home-view-section-curation-area") {
-            ... on HomeViewSectionCurationArea {
-              ...HomeViewSectionCurationArea_section @arguments(enableHidingDislikedArtworks: true)
+          section(id: "home-view-section-curated-group") {
+            ... on HomeViewSectionGroup {
+              ...HomeViewSectionGroup_section @arguments(enableHidingDislikedArtworks: true)
             }
           }
         }
@@ -196,13 +196,13 @@ describe("HomeViewSectionCurationArea", () => {
   })
 
   it("renders the container header", () => {
-    renderWithRelay({ HomeViewSectionCurationArea: () => section() })
+    renderWithRelay({ HomeViewSectionGroup: () => section() })
 
     expect(screen.getByText("Chosen by Our Curators")).toBeOnTheScreen()
   })
 
   it("renders the lead rail with its artworks and view-all", () => {
-    renderWithRelay({ HomeViewSectionCurationArea: () => section() })
+    renderWithRelay({ HomeViewSectionGroup: () => section() })
 
     expect(screen.getByText("Curators' Picks")).toBeOnTheScreen()
     expect(screen.getByText(/Artwork 1/)).toBeOnTheScreen()
@@ -220,7 +220,7 @@ describe("HomeViewSectionCurationArea", () => {
   })
 
   it("tracks and navigates when a lead artwork is tapped", () => {
-    renderWithRelay({ HomeViewSectionCurationArea: () => section() })
+    renderWithRelay({ HomeViewSectionGroup: () => section() })
 
     fireEvent.press(screen.getByText(/Artwork 2/))
 
@@ -240,7 +240,7 @@ describe("HomeViewSectionCurationArea", () => {
   })
 
   it("renders each chip as a collection card, including one without an image", () => {
-    renderWithRelay({ HomeViewSectionCurationArea: () => section() })
+    renderWithRelay({ HomeViewSectionGroup: () => section() })
 
     expect(screen.getByText("Recommended Artists")).toBeOnTheScreen()
     expect(screen.getByText("Trending Artists")).toBeOnTheScreen()
@@ -252,7 +252,7 @@ describe("HomeViewSectionCurationArea", () => {
 
   it("renders a 3-image stack for a chip that has multiple images", () => {
     renderWithRelay({
-      HomeViewSectionCurationArea: () =>
+      HomeViewSectionGroup: () =>
         section({
           chipsConnection: {
             edges: [
@@ -282,7 +282,7 @@ describe("HomeViewSectionCurationArea", () => {
   })
 
   it("tracks and navigates when a chip is tapped", () => {
-    renderWithRelay({ HomeViewSectionCurationArea: () => section() })
+    renderWithRelay({ HomeViewSectionGroup: () => section() })
 
     fireEvent.press(screen.getByText("Recommended Artists"))
 
@@ -301,7 +301,7 @@ describe("HomeViewSectionCurationArea", () => {
 
   it("renders nothing for a rail whose section is an unsupported type", () => {
     renderWithRelay({
-      HomeViewSectionCurationArea: () =>
+      HomeViewSectionGroup: () =>
         section({ rails: [{ title: null, section: { __typename: "HomeViewSectionArtists" } }] }),
     })
 
@@ -313,14 +313,14 @@ describe("HomeViewSectionCurationArea", () => {
 
   describe("editorial instance (articles lead + news chips)", () => {
     it("renders the container header with its subtitle", () => {
-      renderWithRelay({ HomeViewSectionCurationArea: () => editorialSection() })
+      renderWithRelay({ HomeViewSectionGroup: () => editorialSection() })
 
       expect(screen.getByText("Artsy Editorial")).toBeOnTheScreen()
       expect(screen.getByText("Your guide to the art world")).toBeOnTheScreen()
     })
 
     it("renders the articles rail with the rail-title override and suppresses the rail subtitle", () => {
-      renderWithRelay({ HomeViewSectionCurationArea: () => editorialSection() })
+      renderWithRelay({ HomeViewSectionGroup: () => editorialSection() })
 
       // rail.title overrides the section's own "Artsy Editorial" title.
       expect(screen.getByText("Editorial")).toBeOnTheScreen()
@@ -331,7 +331,7 @@ describe("HomeViewSectionCurationArea", () => {
     })
 
     it("tracks and navigates when an editorial article is tapped", () => {
-      renderWithRelay({ HomeViewSectionCurationArea: () => editorialSection() })
+      renderWithRelay({ HomeViewSectionGroup: () => editorialSection() })
 
       fireEvent.press(screen.getByText(/Article 1/))
 
@@ -351,7 +351,7 @@ describe("HomeViewSectionCurationArea", () => {
     })
 
     it("renders the Art News chips header and navigates to its view-all", () => {
-      renderWithRelay({ HomeViewSectionCurationArea: () => editorialSection() })
+      renderWithRelay({ HomeViewSectionGroup: () => editorialSection() })
 
       expect(screen.getByText("Art News")).toBeOnTheScreen()
       expect(screen.getByText("News Chip 1")).toBeOnTheScreen()
@@ -368,7 +368,7 @@ describe("HomeViewSectionCurationArea", () => {
     })
 
     it("renders news chips as cards and tracks/navigates on tap", () => {
-      renderWithRelay({ HomeViewSectionCurationArea: () => editorialSection() })
+      renderWithRelay({ HomeViewSectionGroup: () => editorialSection() })
 
       expect(screen.getByText("News Chip 1")).toBeOnTheScreen()
       expect(screen.getByTestId("news-chip-thumbnail")).toBeOnTheScreen()
@@ -391,13 +391,13 @@ describe("HomeViewSectionCurationArea", () => {
 
   describe("What's Happening instance (rails-only: fairs + shows, no chips)", () => {
     const whatsHappeningSection = (overrides: Record<string, any> = {}) => ({
-      internalID: "home-view-section-whats-happening-curation-area",
+      internalID: "home-view-section-whats-happening-group",
       contextModule: "curationAreaRail",
       backgroundColor: "#F7F7F7",
       component: {
         title: "What's Happening",
         description: "See art world events around the world",
-        type: "CurationArea",
+        type: "SectionGroup",
       },
       chipsTitle: null,
       chipsHref: null,
@@ -431,7 +431,7 @@ describe("HomeViewSectionCurationArea", () => {
     })
 
     it("renders the fairs rail and no chips group", () => {
-      renderWithRelay({ HomeViewSectionCurationArea: () => whatsHappeningSection() })
+      renderWithRelay({ HomeViewSectionGroup: () => whatsHappeningSection() })
 
       expect(screen.getByText("Featured Fairs")).toBeOnTheScreen()
       // No chips: rails-only area has no header and an empty chips connection.
@@ -442,7 +442,7 @@ describe("HomeViewSectionCurationArea", () => {
 
     it("renders the shows rail with the 'Shows Near You' title override", async () => {
       const { mockResolveLastOperation } = renderWithRelay({
-        HomeViewSectionCurationArea: () => whatsHappeningSection(),
+        HomeViewSectionGroup: () => whatsHappeningSection(),
       })
 
       // The shows rail self-fetches its own location-based connection.

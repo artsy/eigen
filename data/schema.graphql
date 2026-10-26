@@ -21953,9 +21953,9 @@ type HomeViewComponentBehaviorsViewAll {
 }
 
 """
-A referenced section rendered as a rail inside a curation area
+A referenced section rendered as a rail inside a section group
 """
-type HomeViewCurationAreaRail {
+type HomeViewGroupRail {
   section: HomeViewSectionGeneric
 
   """
@@ -22201,54 +22201,6 @@ type HomeViewSectionCards implements HomeViewSectionGeneric & Node {
 }
 
 """
-A curation area: an ordered set of rails and/or a group of entry chips
-"""
-type HomeViewSectionCurationArea implements HomeViewSectionGeneric & Node {
-  """
-  Background tint for the whole area as a raw hex string (null → untinted).
-  """
-  backgroundColor: String
-  chipsConnection(after: String, before: String, first: Int, last: Int): HomeViewCardConnection
-
-  """
-  'View all' destination for the chips group.
-  """
-  chipsHref: String
-
-  """
-  [Analytics] `owner type` for the chips group's 'view all' tap.
-  """
-  chipsOwnerType: String
-  chipsTitle: String
-
-  """
-  Component prescription for this section, for overriding or customizing presentation and behavior
-  """
-  component: HomeViewComponent
-
-  """
-  [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
-  """
-  contextModule: String
-
-  """
-  A globally unique ID.
-  """
-  id: ID!
-
-  """
-  A type-specific ID likely used as a database ID.
-  """
-  internalID: ID!
-
-  """
-  [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
-  """
-  ownerType: String
-  rails: [HomeViewCurationAreaRail!]!
-}
-
-"""
 A fairs section in the home view
 """
 type HomeViewSectionFairs implements HomeViewSectionGeneric & Node {
@@ -22339,6 +22291,54 @@ type HomeViewSectionGenericEdge {
   The item at the end of the edge
   """
   node: HomeViewSectionGeneric
+}
+
+"""
+A section group: an ordered set of rails and/or a group of entry chips
+"""
+type HomeViewSectionGroup implements HomeViewSectionGeneric & Node {
+  """
+  Background tint for the whole area as a raw hex string (null → untinted).
+  """
+  backgroundColor: String
+  chipsConnection(after: String, before: String, first: Int, last: Int): HomeViewCardConnection
+
+  """
+  'View all' destination for the chips group.
+  """
+  chipsHref: String
+
+  """
+  [Analytics] `owner type` for the chips group's 'view all' tap.
+  """
+  chipsOwnerType: String
+  chipsTitle: String
+
+  """
+  Component prescription for this section, for overriding or customizing presentation and behavior
+  """
+  component: HomeViewComponent
+
+  """
+  [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
+  """
+  contextModule: String
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+
+  """
+  [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
+  """
+  ownerType: String
+  rails: [HomeViewGroupRail!]!
 }
 
 """
@@ -24764,6 +24764,7 @@ type MarketingCollection implements Node {
     size: Int = 10
   ): [MarketingCollection!]!
   representativeArtworkID: String
+  representativeArtworks: [Artwork!]
   showFeaturedArtists: Boolean!
   showHeaderArtworksRail: Boolean!
   slug: String!

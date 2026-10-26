@@ -10,11 +10,11 @@ import {
   useColor,
   useScreenDimensions,
 } from "@artsy/palette-mobile"
-import { HomeViewSectionCurationAreaQuery } from "__generated__/HomeViewSectionCurationAreaQuery.graphql"
+import { HomeViewSectionGroupQuery } from "__generated__/HomeViewSectionGroupQuery.graphql"
 import {
-  HomeViewSectionCurationArea_section$data,
-  HomeViewSectionCurationArea_section$key,
-} from "__generated__/HomeViewSectionCurationArea_section.graphql"
+  HomeViewSectionGroup_section$data,
+  HomeViewSectionGroup_section$key,
+} from "__generated__/HomeViewSectionGroup_section.graphql"
 import { ArtworkRail, ArtworkRailPlaceholder } from "app/Components/ArtworkRail/ArtworkRail"
 import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -41,18 +41,16 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 type Chip = NonNullable<
   NonNullable<
-    NonNullable<
-      NonNullable<HomeViewSectionCurationArea_section$data["chipsConnection"]>["edges"]
-    >[number]
+    NonNullable<NonNullable<HomeViewSectionGroup_section$data["chipsConnection"]>["edges"]>[number]
   >["node"]
 >
 
-interface HomeViewSectionCurationAreaProps extends FlexProps {
-  section: HomeViewSectionCurationArea_section$key
+interface HomeViewSectionGroupProps extends FlexProps {
+  section: HomeViewSectionGroup_section$key
   index: number
 }
 
-export const HomeViewSectionCurationArea: React.FC<HomeViewSectionCurationAreaProps> = ({
+export const HomeViewSectionGroup: React.FC<HomeViewSectionGroupProps> = ({
   section: sectionProp,
   index,
   ...flexProps
@@ -90,7 +88,7 @@ export const HomeViewSectionCurationArea: React.FC<HomeViewSectionCurationAreaPr
       />
 
       {section.rails.map((rail, railIndex) => (
-        <CurationRail key={railIndex} rail={rail} containerInternalID={section.internalID} />
+        <GroupRail key={railIndex} rail={rail} containerInternalID={section.internalID} />
       ))}
 
       {chips.length > 0 && (
@@ -360,9 +358,9 @@ const NewsChipCard: React.FC<{
   )
 }
 
-type CurationAreaRail = HomeViewSectionCurationArea_section$data["rails"][number]
+type GroupRailData = HomeViewSectionGroup_section$data["rails"][number]
 
-// Renders one rail of a curation area as a bare rail component — NOT via the
+// Renders one rail of a section group as a bare rail component — NOT via the
 // standalone <HomeViewSection…>, whose own internalID would be absent from the
 // FlatList's viewableSections and silently break impressions (those anchor on the
 // container's internalID here). `rail.title` overrides the section's own title so
@@ -370,8 +368,8 @@ type CurationAreaRail = HomeViewSectionCurationArea_section$data["rails"][number
 // suppressed to avoid repeating the container tagline. Shows self-fetch
 // location-based data via ShowsRailContainer (same as the standalone Shows section).
 // Unsupported section types render nothing.
-const CurationRail: React.FC<{
-  rail: CurationAreaRail
+const GroupRail: React.FC<{
+  rail: GroupRailData
   containerInternalID: string
 }> = ({ rail, containerInternalID }) => {
   const tracking = useHomeViewTracking()
@@ -557,7 +555,7 @@ const CurationRail: React.FC<{
 }
 
 const fragment = graphql`
-  fragment HomeViewSectionCurationArea_section on HomeViewSectionCurationArea
+  fragment HomeViewSectionGroup_section on HomeViewSectionGroup
   @argumentDefinitions(enableHidingDislikedArtworks: { type: "Boolean", defaultValue: false }) {
     __typename
     internalID
@@ -673,23 +671,23 @@ const fragment = graphql`
   }
 `
 
-const homeViewSectionCurationAreaQuery = graphql`
-  query HomeViewSectionCurationAreaQuery($id: String!, $enableHidingDislikedArtworks: Boolean!) {
+const homeViewSectionGroupQuery = graphql`
+  query HomeViewSectionGroupQuery($id: String!, $enableHidingDislikedArtworks: Boolean!) {
     homeView {
       section(id: $id) {
-        ...HomeViewSectionCurationArea_section
+        ...HomeViewSectionGroup_section
           @arguments(enableHidingDislikedArtworks: $enableHidingDislikedArtworks)
       }
     }
   }
 `
 
-export const HomeViewSectionCurationAreaQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
+export const HomeViewSectionGroupQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
   Component: ({ sectionID, index, ...flexProps }) => {
     const enableHidingDislikedArtworks = useFeatureFlag("AREnableHidingDislikedArtworks")
 
-    const data = useLazyLoadQuery<HomeViewSectionCurationAreaQuery>(
-      homeViewSectionCurationAreaQuery,
+    const data = useLazyLoadQuery<HomeViewSectionGroupQuery>(
+      homeViewSectionGroupQuery,
       {
         id: sectionID,
         enableHidingDislikedArtworks,
@@ -703,9 +701,7 @@ export const HomeViewSectionCurationAreaQueryRenderer: React.FC<SectionSharedPro
       return null
     }
 
-    return (
-      <HomeViewSectionCurationArea section={data.homeView.section} index={index} {...flexProps} />
-    )
+    return <HomeViewSectionGroup section={data.homeView.section} index={index} {...flexProps} />
   },
   LoadingFallback: ArtworkRailPlaceholder,
   ErrorFallback: NoFallback,
