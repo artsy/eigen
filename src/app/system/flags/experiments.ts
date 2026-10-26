@@ -35,8 +35,8 @@ export const experiments = {
   },
   "onyx_home-feed-simplification": {
     description:
-      "Home feed simplification A/B/C test (reduced-content baseline + variants). Note: section composition is decided server-side in Metaphysics by userID; a dev-menu override here only affects client-side reads, not the MP-composed feed.",
-    variantSuggestions: ["control", "reduced_current", "hierarchy_breadth", "merchandising"],
+      "Home feed simplification A/B test (control vs consolidated). Note: section composition is decided server-side in Metaphysics by userID; a dev-menu override here only affects client-side reads, not the MP-composed feed. To force the MP-composed feed on staging, use the Home Feed Arm dev-menu override (x-home-feed-arm header).",
+    variantSuggestions: ["control", "consolidated"],
   },
 } satisfies { [key: string]: ExperimentDescriptor }
 

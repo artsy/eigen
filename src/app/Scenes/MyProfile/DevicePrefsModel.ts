@@ -6,13 +6,7 @@ import { Appearance, Platform, StatusBar } from "react-native"
 
 export type DarkModeOption = "on" | "off" | "system"
 
-export const HOME_FEED_ARMS = [
-  "off",
-  "control",
-  "reduced_current",
-  "hierarchy_breadth",
-  "merchandising",
-] as const
+export const HOME_FEED_ARMS = ["off", "control", "consolidated"] as const
 export type HomeFeedArm = (typeof HOME_FEED_ARMS)[number]
 
 export interface DevicePrefsModel {
