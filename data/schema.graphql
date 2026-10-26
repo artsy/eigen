@@ -793,6 +793,11 @@ type Alert {
     Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
     """
     hybridWeights: [Float!]
+
+    """
+    Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+    """
+    image: ArtworkImageSearchInput
     importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
@@ -2541,6 +2546,11 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
     """
     hybridWeights: [Float!]
+
+    """
+    Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+    """
+    image: ArtworkImageSearchInput
     importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
@@ -3209,6 +3219,11 @@ type ArtistPartnerEdge {
     Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
     """
     hybridWeights: [Float!]
+
+    """
+    Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+    """
+    image: ArtworkImageSearchInput
     importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
@@ -3476,6 +3491,11 @@ type ArtistSeries implements Node {
     Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
     """
     hybridWeights: [Float!]
+
+    """
+    Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+    """
+    image: ArtworkImageSearchInput
     importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
@@ -5222,6 +5242,11 @@ type ArtworkFilterNode {
     Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
     """
     hybridWeights: [Float!]
+
+    """
+    Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+    """
+    image: ArtworkImageSearchInput
     importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
@@ -5372,6 +5397,18 @@ type ArtworkFilterSuggestionFilters {
 }
 
 union ArtworkHighlight = Article | Show
+
+input ArtworkImageSearchInput {
+  """
+  S3 bucket of the uploaded query image.
+  """
+  s3Bucket: String!
+
+  """
+  S3 key of the uploaded query image.
+  """
+  s3Key: String!
+}
 
 type ArtworkImport implements Node {
   """
@@ -18955,6 +18992,11 @@ interface EntityWithFilterArtworksConnectionInterface {
     Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
     """
     hybridWeights: [Float!]
+
+    """
+    Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+    """
+    image: ArtworkImageSearchInput
     importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
@@ -19450,6 +19492,11 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
     """
     hybridWeights: [Float!]
+
+    """
+    Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+    """
+    image: ArtworkImageSearchInput
     importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
@@ -20286,6 +20333,11 @@ input FilterArtworksInput {
   Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
   """
   hybridWeights: [Float!]
+
+  """
+  Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+  """
+  image: ArtworkImageSearchInput
   importSources: [String]
   includeAllJSON: Boolean
   includeArtworksByFollowedArtists: Boolean
@@ -21105,6 +21157,11 @@ type Gene implements Node & Searchable {
     Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
     """
     hybridWeights: [Float!]
+
+    """
+    Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+    """
+    image: ArtworkImageSearchInput
     importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
@@ -24634,6 +24691,11 @@ type MarketingCollection implements Node {
     Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
     """
     hybridWeights: [Float!]
+
+    """
+    Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+    """
+    image: ArtworkImageSearchInput
     importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
@@ -29980,6 +30042,11 @@ type Partner implements Node {
     Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
     """
     hybridWeights: [Float!]
+
+    """
+    Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+    """
+    image: ArtworkImageSearchInput
     importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
@@ -30622,6 +30689,11 @@ type PartnerArtist {
     Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
     """
     hybridWeights: [Float!]
+
+    """
+    Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+    """
+    image: ArtworkImageSearchInput
     importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
@@ -30931,6 +31003,11 @@ type PartnerArtistEdge {
     Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
     """
     hybridWeights: [Float!]
+
+    """
+    Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+    """
+    image: ArtworkImageSearchInput
     importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
@@ -33455,6 +33532,11 @@ type Query {
     Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
     """
     hybridWeights: [Float!]
+
+    """
+    Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+    """
+    image: ArtworkImageSearchInput
     importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
@@ -34089,6 +34171,11 @@ type Query {
     Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
     """
     hybridWeights: [Float!]
+
+    """
+    Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+    """
+    image: ArtworkImageSearchInput
     importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
@@ -37982,6 +38069,11 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
     """
     hybridWeights: [Float!]
+
+    """
+    Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+    """
+    image: ArtworkImageSearchInput
     importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
@@ -38877,6 +38969,11 @@ type Tag implements Node {
     Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
     """
     hybridWeights: [Float!]
+
+    """
+    Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+    """
+    image: ArtworkImageSearchInput
     importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
@@ -43570,6 +43667,11 @@ type Viewer {
     Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
     """
     hybridWeights: [Float!]
+
+    """
+    Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+    """
+    image: ArtworkImageSearchInput
     importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
@@ -43999,6 +44101,11 @@ type Viewer {
     Hybrid only: [lexical, neural] balance when blending scores, e.g. [0.5,0.5] equal, [0.3,0.7] favors semantic.
     """
     hybridWeights: [Float!]
+
+    """
+    Search by an uploaded query image: visual similarity blended with merchandising signals. Cannot be combined with `keyword`, `variant`, or `similarToArtworkID`, and only supports the `-decayed_merch` sort. Results are capped at a fixed window (200 by default), so `counts` and `aggregations` describe that window rather than the whole catalog.
+    """
+    image: ArtworkImageSearchInput
     importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
