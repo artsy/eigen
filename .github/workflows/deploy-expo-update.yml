@@ -181,11 +181,7 @@ jobs:
           sentry="https://artsynet.sentry.io"
           project="project=5867225"
           rollout="all users"
-          alerts="A Sentry crash-rate alert is watching this release."
-          if [ -n "$ROLLOUT_PERCENTAGE" ]; then
-            rollout="${ROLLOUT_PERCENTAGE}% of users"
-            alerts="⚠️ No crash-rate alert was created — a partial rollout has too few sessions to judge a rate by. Watch the links above by hand; publishing at 100% creates one."
-          fi
+          [ -n "$ROLLOUT_PERCENTAGE" ] && rollout="${ROLLOUT_PERCENTAGE}% of users"
 
           gh pr comment "$PR_NUMBER" --repo "$REPO" --body "$(cat <<COMMENT
           🚀 **Published to production** — rolling out to ${rollout}.
@@ -197,7 +193,7 @@ jobs:
           | iOS health | ${sentry}/explore/releases/${IOS_TAG}/?environment=production&${project} |
           | Android health | ${sentry}/explore/releases/${ANDROID_TAG}/?environment=production&${project} |
 
-          ${alerts}
+          A Sentry crash-rate alert is being created for this release by the \`sentry-alerts\` job in this run — if that job failed, nothing is watching it.
 
           Watch the crash-free rate before taking the rollout further with update-rollout.
           COMMENT
@@ -246,13 +242,9 @@ jobs:
 
   sentry-alerts:
     needs: deploy
-    # Only at a full rollout: a crash-rate detector on a slice of users evaluates over too few
-    # sessions to mean much. A staged rollout is watched by hand instead — the PR comment and the
-    # Slack message both say so.
-    if: >-
-      inputs.deployment == 'production'
-      && needs.deploy.result == 'success'
-      && inputs.rollout_percentage == ''
+    # At any rollout, like a store release's phased rollout: raising it later with update-rollout
+    # runs nothing in CI, so this is the only chance to create the detector.
+    if: inputs.deployment == 'production' && needs.deploy.result == 'success'
     uses: ./.github/workflows/sentry-release-alerts.yml
     with:
       release_versions: >-

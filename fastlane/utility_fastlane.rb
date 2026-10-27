@@ -129,16 +129,10 @@ lane :notify_expo_update_published do |options|
   release_url = options[:release_url]
   pr_url = options[:pr_url]
 
-  full_rollout = rollout_percentage.nil? || rollout_percentage.to_s.empty?
-  rollout_line = full_rollout ? 'Rollout: all users' : "Rollout: #{rollout_percentage}% of users"
+  rollout_line = (rollout_percentage.nil? || rollout_percentage.to_s.empty?) ? 'Rollout: all users' : "Rollout: #{rollout_percentage}% of users"
 
-  # A crash-rate detector is only created at a full rollout - a slice of users doesn't produce
-  # enough sessions for the rate to mean anything. Say so, so nobody assumes they're covered.
-  alert_line = if full_rollout
-                 'A Sentry crash-rate alert is watching this release.'
-               else
-                 ':warning: No crash-rate alert for a partial rollout - watch the links below.'
-               end
+  # The detector is created by a later job in the same run, so this can't promise it exists.
+  alert_line = 'A Sentry crash-rate alert is being created - if the run\'s sentry-alerts job failed, nothing is watching this release.'
 
   message = <<~MSG
               :rocket: :iphone:

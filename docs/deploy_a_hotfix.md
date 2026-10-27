@@ -91,8 +91,8 @@ until you see the Slack message.**
 Check the Sentry and Mobile Vitals links in the Slack message and on the hotfix PR. Close that PR by
 hand once this version stops getting hotfixes (it's marked "Do not merge").
 
-A 100% rollout also gets a Sentry [crash-rate alert](deploy_to_expo_updates.md#crash-alerts) in
-`#mobile-alerts`; a partial one doesn't, so watch it by hand.
+The publish also creates a Sentry [crash-rate alert](deploy_to_expo_updates.md#crash-alerts) in
+`#mobile-alerts`.
 
 If it goes wrong, [roll back](deploy_to_expo_updates.md#rolling-back). More background, including
 the production gate and FAQ, is in [Deploy to Expo Updates](deploy_to_expo_updates.md).

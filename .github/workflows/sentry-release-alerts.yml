@@ -148,7 +148,9 @@ jobs:
 
           # Creating is not idempotent, so a re-run of this job would otherwise add a second
           # detector for the same release — two identical Slack alerts for every incident.
-          existing_id=$(curl --fail-with-body -s -X GET "${SENTRY_API}/projects/eigen/detectors/?per_page=100" \
+          # The list is capped at 100 per page and sorts oldest first by default, so ask for the
+          # newest first: that's where a detector for a release being published right now is.
+          existing_id=$(curl --fail-with-body -s -X GET "${SENTRY_API}/detectors/?project=eigen&sortBy=-id&per_page=100" \
             -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
             | jq -r --arg name "$detector_name" '.[] | select(.name == $name) | .id' | head -n1)
 
@@ -207,7 +209,9 @@ jobs:
           keep="Release Crashes Threshold - ${RELEASE_VERSION}"
           prefix="Release Crashes Threshold - ${RELEASE_VERSION%-*}-"
 
-          superseded=$(curl --fail-with-body -s -X GET "${SENTRY_API}/projects/eigen/detectors/?per_page=100" \
+          # Newest first, for the same reason as the find-before-create above: anything from this
+          # version's earlier hotfixes is recent.
+          superseded=$(curl --fail-with-body -s -X GET "${SENTRY_API}/detectors/?project=eigen&enabled=true&sortBy=-id&per_page=100" \
             -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
             | jq -r --arg prefix "$prefix" --arg keep "$keep" \
               '.[] | select(.name | startswith($prefix)) | select(.name != $keep)
@@ -218,10 +222,12 @@ jobs:
             exit 0
           fi
 
-          for id in $superseded; do
-            echo "Disabling superseded detector $id"
-            curl --fail-with-body -s -X PUT "${SENTRY_API}/projects/eigen/detectors/${id}/" \
-              -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
-              -H 'Content-Type: application/json' \
-              -d '{ "enabled": false }' > /dev/null
-          done
+          # The bulk endpoint, because it takes `enabled` on its own — the single-detector PUT
+          # requires the full definition. Without any `id` it would disable every detector in the
+          # org, which the empty check above rules out.
+          echo "Disabling superseded detectors:" $superseded
+          ids=$(printf 'id=%s&' $superseded)
+          curl --fail-with-body -s -X PUT "${SENTRY_API}/detectors/?${ids%&}" \
+            -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
+            -H 'Content-Type: application/json' \
+            -d '{ "enabled": false }'

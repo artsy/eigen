@@ -242,12 +242,12 @@ repo-settings work and isn't set up yet.
 - a **Slack message** carrying the same monitoring links a store release gets
 - a **comment on the hotfix PR** saying it shipped, who it went to, and where to watch it
 - a **section in the hotfix PR**, written by `start-hotfix`
-- a **Sentry crash-rate alert** on the new release, at a full rollout (see below)
+- a **Sentry crash-rate alert** on the new release (see below)
 
 ### Crash alerts
 
-A full-rollout production publish creates a Sentry crash-rate alert per platform, the same one a
-store release gets: crash-free sessions under 99.5% over two hours warns, under 99.2% is critical,
+Every production publish creates a Sentry crash-rate alert per platform, the same one a store
+release gets: crash-free sessions under 99.5% over two hours warns, under 99.2% is critical,
 and it resolves at 99.7%. It notifies `#mobile-alerts`.
 
 Each publish **disables the alert from the previous hotfix** for the same version and platform.
@@ -255,9 +255,12 @@ An Expo Update replaces the whole JS bundle, so once a new one is out nobody is 
 one, and its alert would be judging a crash rate on a handful of leftover sessions. The store
 release's own alert is left alone — users who haven't taken the update are still on that build.
 
+The alert is created at any rollout percentage, as a store release's is during its phased
+rollout. Raising the rollout later doesn't touch it.
+
 > [!NOTE]
-> A **partial rollout gets no alert** — too few sessions for a rate to mean anything. Watch the
-> release links in the Slack message by hand. Publishing at 100% creates the alert.
+> The alert comes from the run's `sentry-alerts` job, after the publish itself. If that job fails,
+> the update is live with nothing watching it — re-run the job.
 
 ### Rolling back
 
@@ -272,6 +275,11 @@ your choice as the channel's latest.
 > A rollback doesn't change the branch, so the tip still contains the rolled-back code and the gate
 > can't tell. Run `start-hotfix --revert <sha>` before the next production publish, or the next
 > hotfix will ship it again.
+
+Rolling back to an **earlier hotfix** brings back a bundle whose crash alert was disabled when the
+next hotfix shipped (see [Crash alerts](#crash-alerts)). Re-enable it in Sentry — it's the monitor
+named `Release Crashes Threshold - <that hotfix's tag>`. Rolling back to the embedded update needs
+nothing; the store release's alert is never disabled.
 
 ### Raising a rollout
 
