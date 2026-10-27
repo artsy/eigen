@@ -81,6 +81,17 @@ enum AIAgentEntityType {
 
 union AIAgentEvent = AIAgentTextDelta | AIAgentToolCall | AIAgentToolResult | AIAgentTurnComplete
 
+"""
+An image the collector attached, already uploaded to S3 by the client.
+"""
+input AIAgentImageInput {
+  """
+  Must be one of the buckets enabled for image search.
+  """
+  s3Bucket: String!
+  s3Key: String!
+}
+
 input AIAgentMessageInput {
   """
   Superseded by `displayedSections`. Equivalent to a single ARTWORK section; both may be sent, and ids common to the two are counted once.
@@ -92,6 +103,11 @@ input AIAgentMessageInput {
   The cards this message showed, by entity type and in display order, so a follow-up like "the second artist" has something to resolve against. Meaningful only on an ASSISTANT message; ignored on a USER one. At most one section is read per message today.
   """
   displayedSections: [AIAgentDisplayedSectionInput!]
+
+  """
+  The image attached to this message, replayed as it was sent. Meaningful only on a USER message; ignored on an ASSISTANT one.
+  """
+  image: AIAgentImageInput
   role: AIAgentRole!
 }
 
@@ -184,12 +200,17 @@ input AIAgentTurnInput {
   history: [AIAgentMessageInput!]
 
   """
+  An image attached to the new message, to find artworks that look like it.
+  """
+  image: AIAgentImageInput
+
+  """
   Request developer-facing tool-call details. Honored only where the server enables debug mode; ignored elsewhere.
   """
   includeDebugToolCalls: Boolean
 
   """
-  The new user message.
+  The new user message. May be empty when `image` is attached.
   """
   message: String!
 
