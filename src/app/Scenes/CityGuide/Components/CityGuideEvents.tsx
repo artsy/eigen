@@ -6,6 +6,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { CityEventRailCard } from "app/Scenes/CityGuide/Components/CityEventRailCard"
 import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { CityFairRailCard } from "app/Scenes/CityGuide/Components/CityFairRailCard"
+import { CityGuideRailSentinel } from "app/Scenes/CityGuide/Components/CityGuideRailSentinel"
 import { CityEventSectionKey } from "app/Scenes/CityGuide/utils/cityEventSectionKey"
 import { PROGRESSIVE_ONBOARDING_CITY_GUIDE_ADD_TO_ITINERARY } from "app/store/ProgressiveOnboardingModel"
 import { extractNodes } from "app/utils/extractNodes"
@@ -51,6 +52,7 @@ const EventRail = <T,>({
   title,
   href,
   onPress,
+  contextModule,
   data,
   keyExtractor,
   renderItem,
@@ -58,12 +60,15 @@ const EventRail = <T,>({
   title: string
   href: string
   onPress: () => void
+  contextModule: ContextModule
   data: readonly T[]
   keyExtractor: (item: T) => string
   renderItem: (item: T, index: number) => React.ReactElement
 }) => {
   return (
     <Flex>
+      <CityGuideRailSentinel contextModule={contextModule} />
+
       <Flex px={2}>
         <SectionTitle variant="large" title={title} href={href} onPress={onPress} />
       </Flex>
@@ -96,6 +101,7 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
       owner_slug: citySlug,
       context_module: section,
     })
+    trackCohesionEvent(tracks.tappedViewAll(citySlug, section, sectionHref(section)))
   }
 
   const fairs = extractNodes(city?.fairsConnection)
@@ -113,6 +119,7 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
           title={`Current ${cityName} Fairs`}
           href={sectionHref("fairs")}
           onPress={trackSectionTap("fairs")}
+          contextModule={SECTION_TRACKING.fairs.contextModule}
           data={fairs}
           keyExtractor={(fair) => fair.internalID}
           renderItem={(fair) => (
@@ -152,6 +159,7 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
           title={`Current ${cityName} Shows`}
           href={sectionHref("shows")}
           onPress={trackSectionTap("shows")}
+          contextModule={SECTION_TRACKING.shows.contextModule}
           data={currentShows}
           keyExtractor={(show) => show.internalID}
           renderItem={(show, index) => {
@@ -216,6 +224,7 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
           title="Opening Soon"
           href={sectionHref("opening")}
           onPress={trackSectionTap("opening")}
+          contextModule={SECTION_TRACKING.opening.contextModule}
           data={openingShows}
           keyExtractor={(show) => show.internalID}
           renderItem={(show) => (
@@ -345,7 +354,25 @@ const fragment = graphql`
   }
 `
 
+const SECTION_TRACKING: Record<
+  CityEventSectionKey,
+  { action: ActionType.tappedFairGroup | ActionType.tappedShowGroup; contextModule: ContextModule }
+> = {
+  fairs: { action: ActionType.tappedFairGroup, contextModule: ContextModule.fairRail },
+  shows: { action: ActionType.tappedShowGroup, contextModule: ContextModule.currentShowsRail },
+  opening: { action: ActionType.tappedShowGroup, contextModule: ContextModule.showsRail },
+}
+
 const tracks = {
+  tappedViewAll: (citySlug: string, section: CityEventSectionKey, destinationPath: string) => ({
+    action: SECTION_TRACKING[section].action,
+    context_module: SECTION_TRACKING[section].contextModule,
+    context_screen_owner_type: OwnerType.cityGuide,
+    context_screen_owner_slug: citySlug,
+    destination_screen_owner_type: OwnerType.cityGuideEventList,
+    destination_path: destinationPath,
+    type: "viewAll",
+  }),
   tappedFair: (citySlug: string, fairId: string, slug: string) => ({
     action: ActionType.tappedFairGroup,
     context_module: ContextModule.fairRail,

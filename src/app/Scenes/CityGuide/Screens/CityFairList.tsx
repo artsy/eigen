@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Box, Flex, Separator, Spinner, Text } from "@artsy/palette-mobile"
 import { FlashList, ListRenderItem } from "@shopify/flash-list"
 import { CityFairListPaginationQuery } from "__generated__/CityFairListPaginationQuery.graphql"
@@ -13,6 +14,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import { Schema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { useCallback, useEffect, useState } from "react"
 import { graphql, useFragment, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -33,6 +35,12 @@ const CityFairList: React.FC<Props> = ({ viewer, citySlug }) => {
 
   useEffect(() => {
     trackEvent(tracks.trackScreen(citySlug))
+    trackEvent(
+      screen({
+        context_screen_owner_type: OwnerType.cityGuideEventList,
+        context_screen_owner_slug: citySlug,
+      })
+    )
   }, [trackEvent, citySlug])
 
   const fetchData = useCallback(() => {

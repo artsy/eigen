@@ -68,7 +68,14 @@ export const CustomStopSaveControl: React.FC<Props> = ({
           is_curated_guide: isCuratedGuide,
         })
 
-        addToItinerary.open({ ...stop, citySlug, cityName })
+        addToItinerary.open({
+          ...stop,
+          citySlug,
+          cityName,
+          contextScreenOwnerType,
+          contextScreenOwnerId,
+          contextScreenOwnerSlug,
+        })
       }}
     />
   )

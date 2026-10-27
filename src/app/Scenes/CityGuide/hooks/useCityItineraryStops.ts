@@ -206,6 +206,7 @@ export const useCityItineraryStops = ({
       // Flattened across sections: a stop is on the itinerary or it is not, and which section
       // holds it does not matter for finding or removing one.
       const stops = sections.flatMap((section) => section.stops)
+      let createdItinerary = false
 
       if (!itineraryID) {
         if (!createIfMissing) return null
@@ -237,10 +238,11 @@ export const useCityItineraryStops = ({
         }
 
         sectionID = undefined
+        createdItinerary = true
       }
 
       if (!sectionID) {
-        if (!createIfMissing) return { itineraryID, sectionID: undefined, stops }
+        if (!createIfMissing) return { itineraryID, sectionID: undefined, stops, createdItinerary }
 
         const created = await mutate<useCityItineraryStopsCreateSectionMutation>(
           environment,
@@ -263,7 +265,7 @@ export const useCityItineraryStops = ({
         }
       }
 
-      return { itineraryID, sectionID, stops }
+      return { itineraryID, sectionID, stops, createdItinerary }
     },
     [environment, citySlug, cityName]
   )
@@ -292,7 +294,13 @@ export const useCityItineraryStops = ({
         // identical stops on the itinerary.
         const already = findStop(target.stops, stop)
 
-        if (already) return { itineraryID: target.itineraryID, stop: already }
+        if (already) {
+          return {
+            itineraryID: target.itineraryID,
+            stop: already,
+            createdItinerary: target.createdItinerary,
+          }
+        }
 
         const created = await mutate<useCityItineraryStopsAddMutation>(
           environment,
@@ -311,7 +319,11 @@ export const useCityItineraryStops = ({
 
         refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
 
-        return { itineraryID: target.itineraryID, stop: response.itineraryStop }
+        return {
+          itineraryID: target.itineraryID,
+          stop: response.itineraryStop,
+          createdItinerary: target.createdItinerary,
+        }
       }),
     [serialise, resolveTarget, environment, citySlug]
   )

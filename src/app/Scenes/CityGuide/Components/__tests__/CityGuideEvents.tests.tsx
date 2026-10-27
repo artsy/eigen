@@ -174,6 +174,26 @@ describe("CityGuideEvents", () => {
     expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/events/fairs")
   })
 
+  it.each([
+    ["Current London Fairs", "tappedFairGroup", "fairRail", "fairs"],
+    ["Current London Shows", "tappedShowGroup", "currentShowsRail", "shows"],
+    ["Opening Soon", "tappedShowGroup", "showsRail", "opening"],
+  ])("tracks the %s header as a View all tap", async (title, action, contextModule, section) => {
+    renderWithRelay(resolvers, props)
+
+    fireEvent.press(await screen.findByText(title))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action,
+      context_module: contextModule,
+      context_screen_owner_type: "cityGuide",
+      context_screen_owner_slug: "london-united-kingdom",
+      destination_screen_owner_type: "cityGuideEventList",
+      destination_path: `/city-guide/london-united-kingdom/events/${section}`,
+      type: "viewAll",
+    })
+  })
+
   it("tracks the tap on a fair card", async () => {
     renderWithRelay(resolvers, props)
 

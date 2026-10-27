@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Text } from "@artsy/palette-mobile"
 import { CityArticlesQuery } from "__generated__/CityArticlesQuery.graphql"
 import { CityArticles_query$key } from "__generated__/CityArticles_query.graphql"
@@ -16,6 +16,8 @@ import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { graphql, useFragment, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const PAGE_SIZE = 30
@@ -65,43 +67,51 @@ const CityArticles: React.FC<Props> = ({ citySlug }) => {
       }))
 
   return (
-    <Screen>
-      <Screen.Header onBack={goBack} />
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.cityGuideArticles,
+        context_screen_owner_slug: citySlug,
+      })}
+    >
+      <Screen>
+        <Screen.Header onBack={goBack} />
 
-      <Screen.Body fullwidth>
-        <Flex px={2} pb={2}>
-          <Text variant="lg-display">Artsy Editorial</Text>
-        </Flex>
+        <Screen.Body fullwidth>
+          <Flex px={2} pb={2}>
+            <Text variant="lg-display">Artsy Editorial</Text>
+          </Flex>
 
-        <Screen.FlatList
-          testID="city-articles-list"
-          data={items}
-          keyExtractor={(item) => item.key}
-          contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
-          ItemSeparatorComponent={() => <Flex height={20} />}
-          onEndReached={() => {
-            if (hasNext && !isLoadingNext) {
-              loadNext(PAGE_SIZE)
+          <Screen.FlatList
+            testID="city-articles-list"
+            data={items}
+            keyExtractor={(item) => item.key}
+            contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
+            ItemSeparatorComponent={() => <Flex height={20} />}
+            onEndReached={() => {
+              if (hasNext && !isLoadingNext) {
+                loadNext(PAGE_SIZE)
+              }
+            }}
+            onEndReachedThreshold={0.2}
+            ListFooterComponent={() =>
+              isLoadingNext ? (
+                <Flex my={4} flexDirection="row" justifyContent="center">
+                  <Spinner />
+                </Flex>
+              ) : null
             }
-          }}
-          onEndReachedThreshold={0.2}
-          ListFooterComponent={() =>
-            isLoadingNext ? (
-              <Flex my={4} flexDirection="row" justifyContent="center">
-                <Spinner />
-              </Flex>
-            ) : null
-          }
-          renderItem={({ item }) => (
-            <CityArticleListItem
-              article={item.article}
-              citySlug={citySlug}
-              contextModule={item.contextModule}
-            />
-          )}
-        />
-      </Screen.Body>
-    </Screen>
+            renderItem={({ item }) => (
+              <CityArticleListItem
+                article={item.article}
+                citySlug={citySlug}
+                contextModule={item.contextModule}
+                contextScreenOwnerType={OwnerType.cityGuideArticles}
+              />
+            )}
+          />
+        </Screen.Body>
+      </Screen>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 

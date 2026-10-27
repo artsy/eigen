@@ -685,6 +685,13 @@ describe("AddToItinerarySheet", () => {
           })
         )
       )
+      expect(mockTrackEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: ActionType.createdItinerary,
+          owner_id: "auto-created",
+          source: "firstSave",
+        })
+      )
       await waitFor(() =>
         expect(mockShowToast).toHaveBeenCalledWith(
           "Added to your Itinerary",
@@ -696,6 +703,146 @@ describe("AddToItinerarySheet", () => {
       expect(navigate).toHaveBeenCalledWith(
         "/city-guide/london-united-kingdom/itinerary/auto-created"
       )
+    })
+
+    it("skips createdItinerary when the first save reuses an itinerary the sheet hid", async () => {
+      const view = renderWithRelay(withItineraries([]), props)
+
+      await screen.findByText("0 selected")
+      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "useCityItineraryStopsLookupQuery"
+        )
+      )
+      view.env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, {
+          Me: () => ({
+            itinerariesConnection: { edges: [{ node: { internalID: "curated-guide" } }] },
+          }),
+        })
+      )
+
+      await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection("curated-guide"))
+      await resolveNext(view, "useCityItineraryStopsAddMutation", {
+        Mutation: () => ({
+          createItineraryStop: {
+            responseOrError: {
+              __typename: "ItineraryStopMutationSuccess",
+              itineraryStop: { internalID: "new-stop" },
+            },
+          },
+        }),
+      })
+
+      await waitFor(() =>
+        expect(mockTrackEvent).toHaveBeenCalledWith(
+          expect.objectContaining({ action: ActionType.addedStopToItinerary })
+        )
+      )
+      expect(mockTrackEvent).not.toHaveBeenCalledWith(
+        expect.objectContaining({ action: ActionType.createdItinerary })
+      )
+    })
+
+    it("tracks one closedAddToItinerary with the outcome when Done adds the stop", async () => {
+      const view = renderWithRelay(withItineraries([itinerary("a", "First")]), {
+        ...props,
+        target: { ...props.target, itemSlug: "frida-kahlo" },
+      })
+
+      fireEvent.press(await screen.findByTestId("add-to-itinerary-row"))
+      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+      await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection("a"))
+      await resolveNext(view, "useApplyItinerarySelectionAddMutation", {
+        Mutation: () => ({
+          createItineraryStop: {
+            responseOrError: {
+              __typename: "ItineraryStopMutationSuccess",
+              itineraryStop: { internalID: "new-stop" },
+            },
+          },
+        }),
+      })
+
+      await waitFor(() => expect(props.onClose).toHaveBeenCalled())
+      // The modal reports its own dismiss once Done has closed it.
+      act(() => screen.UNSAFE_getByProps({ name: "AddToItinerary" }).props.onDismiss())
+
+      const closes = mockTrackEvent.mock.calls.filter(
+        ([event]: any[]) => event.action === ActionType.closedAddToItinerary
+      )
+      expect(closes).toEqual([
+        [
+          {
+            action: ActionType.closedAddToItinerary,
+            context_owner_type: OwnerType.show,
+            context_owner_id: "show-1",
+            context_owner_slug: "frida-kahlo",
+            context_screen_owner_type: OwnerType.cityGuide,
+            context_screen_owner_slug: "london-united-kingdom",
+            had_error: false,
+            outcome: "added",
+          },
+        ],
+      ])
+    })
+
+    it("tracks removedStopFromItinerary and a removed outcome on a pure removal", async () => {
+      const view = renderWithRelay(
+        {
+          ...withItineraries([itinerary("a", "First")]),
+          ...heldBy([{ itineraryID: "a", stopIDs: ["stop-1"] }]),
+        },
+        props
+      )
+
+      await screen.findByText("First")
+
+      fireEvent.press(screen.getByTestId("add-to-itinerary-row"))
+      await screen.findByText("0 selected")
+      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+      await resolveNext(view, "useApplyItinerarySelectionRemoveMutation", {
+        Mutation: () => ({
+          deleteItineraryStop: {
+            responseOrError: { __typename: "ItineraryStopMutationSuccess" },
+          },
+        }),
+      })
+
+      await waitFor(() =>
+        expect(mockTrackEvent).toHaveBeenCalledWith(
+          expect.objectContaining({
+            action: ActionType.removedStopFromItinerary,
+            context_owner_type: OwnerType.show,
+            context_owner_id: "show-1",
+            owner_ids: ["a"],
+          })
+        )
+      )
+      expect(mockTrackEvent).toHaveBeenCalledWith(
+        expect.objectContaining({ action: ActionType.closedAddToItinerary, outcome: "removed" })
+      )
+    })
+
+    it("tracks a dismissed outcome when the sheet is closed without Done", async () => {
+      renderWithRelay(withItineraries([itinerary("a", "First")]), props)
+
+      await screen.findByText("First")
+
+      act(() => screen.UNSAFE_getByProps({ name: "AddToItinerary" }).props.onDismiss())
+
+      expect(mockTrackEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: ActionType.closedAddToItinerary,
+          had_error: false,
+          outcome: "dismissed",
+        })
+      )
+      expect(props.onClose).toHaveBeenCalled()
     })
 
     it("fires nothing when no tick changed", async () => {
@@ -713,6 +860,9 @@ describe("AddToItinerarySheet", () => {
 
       await waitFor(() => expect(props.onClose).toHaveBeenCalled())
       expect(view.env.mock.getAllOperations()).toHaveLength(0)
+      expect(mockTrackEvent).toHaveBeenCalledWith(
+        expect.objectContaining({ action: ActionType.closedAddToItinerary, outcome: "noChange" })
+      )
       expect(mockShowToast).toHaveBeenCalledWith("Changes Saved", "bottom", {
         backgroundColor: "green100",
       })
@@ -939,6 +1089,14 @@ describe("AddToItinerarySheet", () => {
 
       expect(await screen.findByText("Frieze week")).toBeOnTheScreen()
       expect(screen.getByText("1 selected")).toBeOnTheScreen()
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: ActionType.createdItinerary,
+        city_slug: "london-united-kingdom",
+        context_screen_owner_type: OwnerType.cityGuide,
+        context_screen_owner_slug: "london-united-kingdom",
+        owner_id: "new-itinerary",
+        source: "createButton",
+      })
 
       fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
 

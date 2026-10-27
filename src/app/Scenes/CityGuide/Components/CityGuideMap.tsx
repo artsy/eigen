@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, useColor, useSpace } from "@artsy/palette-mobile"
 import MapboxGL from "@rnmapbox/maps"
 import { CityGuideFair_fair$key } from "__generated__/CityGuideFair_fair.graphql"
@@ -37,7 +37,12 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
-import { ProvideScreenTracking, Schema } from "app/utils/track"
+import {
+  ProvideScreenTracking,
+  ProvideScreenTrackingWithCohesionSchema,
+  Schema,
+} from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import React, { useEffect, useMemo, useRef, useState, useTransition } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useFragment, useRefetchableFragment } from "react-relay"
@@ -202,6 +207,13 @@ export const CityGuideMap: React.FC<Props> = (props) => {
     if (actionName) {
       trackEvent(tracks.trackFilterPillTap(actionName))
     }
+    trackEvent({
+      action: ActionType.tappedNavigationTab,
+      context_module: ContextModule.cityGuideMapFilter,
+      context_screen_owner_type: OwnerType.cityGuideMap,
+      context_screen_owner_slug: props.citySlug,
+      subject: filter,
+    })
   }
 
   const trackPinTap = (actionName: string, show: any, type: string) => {
@@ -322,8 +334,23 @@ export const CityGuideMap: React.FC<Props> = (props) => {
         activeShows,
         type === "Fair" ? Schema.OwnerEntityTypes.Fair : Schema.OwnerEntityTypes.Show
       )
+      trackEvent({
+        action: ActionType.tappedMapPin,
+        context_screen_owner_type: OwnerType.cityGuideMap,
+        context_screen_owner_slug: props.citySlug,
+        is_cluster: false,
+        owner_id: show?.internalID,
+        owner_slug: show?.slug ?? undefined,
+        owner_type: type === "Fair" ? OwnerType.fair : OwnerType.show,
+      })
     } else if (shapeSourceRef.current) {
       trackPinTap(Schema.ActionNames.ClusteredMapPin, null, Schema.OwnerEntityTypes.Show)
+      trackEvent({
+        action: ActionType.tappedMapPin,
+        context_screen_owner_type: OwnerType.cityGuideMap,
+        context_screen_owner_slug: props.citySlug,
+        is_cluster: true,
+      })
 
       // Mapbox is asked which points the tapped cluster contains, so the cards always match the
       // count drawn on the cluster.
@@ -509,14 +536,21 @@ export const CityGuideMap: React.FC<Props> = (props) => {
         context_screen_owner_id: props.citySlug,
       }}
     >
-      {/* The provider is what makes the cards' add-to-itinerary plus render at all. */}
-      {enableGlobalMapList ? (
-        <AddToItineraryProvider citySlug={viewer.city?.slug} cityName={viewer.city?.name ?? ""}>
-          {content}
-        </AddToItineraryProvider>
-      ) : (
-        content
-      )}
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({
+          context_screen_owner_type: OwnerType.cityGuideMap,
+          context_screen_owner_slug: props.citySlug,
+        })}
+      >
+        {/* The provider is what makes the cards' add-to-itinerary plus render at all. */}
+        {enableGlobalMapList ? (
+          <AddToItineraryProvider citySlug={viewer.city?.slug} cityName={viewer.city?.name ?? ""}>
+            {content}
+          </AddToItineraryProvider>
+        ) : (
+          content
+        )}
+      </ProvideScreenTrackingWithCohesionSchema>
     </ProvideScreenTracking>
   )
 }
@@ -527,16 +561,12 @@ const longCoordsToLocation = (coords: { longitude: number; latitude: number }) =
 }
 
 const tracks = {
-  trackPinTap: (_: any, __: any, args: any) => {
-    const actionName = args[0]
-    const show = args[1]
-    const type = args[2]
-
+  trackPinTap: (actionName: string, show: any, type: string) => {
     return {
       action_name: actionName,
       action_type: Schema.ActionTypes.Tap,
-      owner_id: !!show ? show[0].internalID : "",
-      owner_slug: !!show ? show[0].id : "",
+      owner_id: show?.[0]?.internalID ?? "",
+      owner_slug: show?.[0]?.slug ?? "",
       owner_type: !!type ? type : "",
     } as any
   },

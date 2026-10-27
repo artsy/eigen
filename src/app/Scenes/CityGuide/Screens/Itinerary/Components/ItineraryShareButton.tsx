@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ShareIcon } from "@artsy/icons/native"
 import { Flex, Touchable } from "@artsy/palette-mobile"
 import { ItineraryShareButton_itinerary$key } from "__generated__/ItineraryShareButton_itinerary.graphql"
@@ -22,9 +23,16 @@ interface Props {
  */
 export const ItineraryShareButton: React.FC<Props> = ({ itinerary: itineraryRef }) => {
   const itinerary = useFragment(fragment, itineraryRef ?? null)
-  const { share, isSharing } = useItineraryShare(
-    itinerary ?? { internalID: "", citySlug: "", title: "", isCurated: false }
-  )
+  const { share, isSharing } = useItineraryShare({
+    ...(itinerary ?? { internalID: "", citySlug: "", title: "", isCurated: false }),
+    contextModule: ContextModule.cityGuideItineraryHeader,
+    // Only a curated guide or your own itinerary gets this button.
+    contextScreenOwnerType: itinerary?.isCurated
+      ? OwnerType.cityGuideGuide
+      : OwnerType.cityGuideItinerary,
+    contextScreenOwnerId: itinerary?.internalID,
+    contextScreenOwnerSlug: itinerary?.slug ?? undefined,
+  })
 
   // A personal itinerary reached via someone else's share link has nothing here to give out.
   if (!itinerary || (!itinerary.isCurated && !itinerary.isMine)) {

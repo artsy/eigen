@@ -183,6 +183,8 @@ const CitySavedList: React.FC<Props> = ({ me, cityName, citySlug, city }) => {
               <MapView
                 sections={mapSections}
                 citySlug={citySlug}
+                contextScreenOwnerType={OwnerType.cityGuideSavedList}
+                contextScreenOwnerSlug={citySlug}
                 selectedPlaceId={selectedPlaceId}
                 onSelectPlace={setSelectedPlaceId}
                 // This screen has no in-flow header of its own (unlike the itinerary, which

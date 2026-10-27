@@ -238,6 +238,8 @@ const CityEventList: React.FC<Props> = ({ citySlug, section: rawSection }) => {
               <MapView
                 sections={mapSections}
                 citySlug={citySlug}
+                contextScreenOwnerType={OwnerType.cityGuideEventList}
+                contextScreenOwnerSlug={citySlug}
                 selectedPlaceId={selectedPlaceId}
                 onSelectPlace={setSelectedPlaceId}
                 // The itinerary's default (60) is tuned for its own transparent, headerless

@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
 import {
   CitySectionListQuery,
@@ -16,6 +17,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import { Schema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import React, { useEffect, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -40,6 +42,12 @@ const CitySectionList: React.FC<Props> = (props) => {
 
   useEffect(() => {
     trackEvent(tracks.trackScreen(section, citySlug))
+    trackEvent(
+      screen({
+        context_screen_owner_type: OwnerType.cityGuideEventList,
+        context_screen_owner_slug: citySlug,
+      })
+    )
   }, [trackEvent, citySlug])
   const fetchData = () => {
     if (!hasNext || isLoadingNext) {

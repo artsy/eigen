@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Join, Spacer } from "@artsy/palette-mobile"
 import { CityGuideEventGuides_query$key } from "__generated__/CityGuideEventGuides_query.graphql"
 import { ProgressiveOnboardingCityGuide } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingCityGuide"
@@ -7,6 +7,7 @@ import {
   FeaturedGuideItem,
   GuideListItem,
 } from "app/Scenes/CityGuide/Components/CityGuideGuideListItem"
+import { CityGuideRailSentinel } from "app/Scenes/CityGuide/Components/CityGuideRailSentinel"
 import { toGuideRows } from "app/Scenes/CityGuide/utils/toGuideRows"
 import { PROGRESSIVE_ONBOARDING_CITY_GUIDE_CURATED_GUIDES } from "app/store/ProgressiveOnboardingModel"
 import { Schema } from "app/utils/track"
@@ -41,6 +42,8 @@ export const CityGuideEventGuides: React.FC<Props> = ({ citySlug, query: queryRe
 
   return (
     <Flex backgroundColor="mono100" py={2}>
+      <CityGuideRailSentinel contextModule={ContextModule.cityGuideGuidesRail} />
+
       <ProgressiveOnboardingCityGuide
         onboardingKey={PROGRESSIVE_ONBOARDING_CITY_GUIDE_CURATED_GUIDES}
         title="Expert-curated Guides"
@@ -56,7 +59,7 @@ export const CityGuideEventGuides: React.FC<Props> = ({ citySlug, query: queryRe
           href={hasMore ? `/city-guide/${citySlug}/curated-guides` : undefined}
           onPress={
             hasMore
-              ? () =>
+              ? () => {
                   trackEvent({
                     action_name: Schema.ActionNames.ViewAll,
                     action_type: Schema.ActionTypes.Tap,
@@ -64,6 +67,16 @@ export const CityGuideEventGuides: React.FC<Props> = ({ citySlug, query: queryRe
                     owner_slug: citySlug,
                     context_module: "cityGuideCard",
                   })
+                  trackEvent({
+                    action: ActionType.tappedExploreGroup,
+                    context_module: ContextModule.cityGuideCard,
+                    context_screen_owner_type: OwnerType.cityGuide,
+                    context_screen_owner_slug: citySlug,
+                    destination_screen_owner_type: OwnerType.cityGuideCuratedGuides,
+                    destination_path: `/city-guide/${citySlug}/curated-guides`,
+                    type: "viewAll",
+                  })
+                }
               : undefined
           }
         />

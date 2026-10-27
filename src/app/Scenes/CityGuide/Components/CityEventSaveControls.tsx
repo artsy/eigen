@@ -128,6 +128,9 @@ export const CityEventSaveControl: React.FC<Props> = ({
           myItineraries,
           sourceStopID,
           sourceShareToken: sourceShareToken ?? undefined,
+          contextScreenOwnerType,
+          contextScreenOwnerId,
+          contextScreenOwnerSlug,
         })
       }}
     />

@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { renderHook, waitFor } from "@testing-library/react-native"
 import { useItineraryShare } from "app/Scenes/CityGuide/hooks/useItineraryShare"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -14,9 +15,19 @@ describe("useItineraryShare", () => {
     <RelayEnvironmentProvider environment={env}>{children}</RelayEnvironmentProvider>
   )
 
+  const tracking = {
+    contextModule: ContextModule.cityGuideItineraryHeader,
+    contextScreenOwnerType: OwnerType.cityGuideItinerary as ScreenOwnerType,
+    contextScreenOwnerId: "itinerary-1",
+  }
+
   beforeEach(() => {
     env = createMockEnvironment()
     jest.clearAllMocks()
+    ;(RNShare.open as jest.Mock).mockResolvedValue({
+      success: true,
+      message: "com.apple.UIKit.activity.CopyToPasteboard",
+    })
   })
 
   it("shares a curated guide's own slug with no token and no mutation", async () => {
@@ -28,6 +39,8 @@ describe("useItineraryShare", () => {
           citySlug: "london-united-kingdom",
           title: "London Art Week",
           isCurated: true,
+          ...tracking,
+          contextScreenOwnerType: OwnerType.cityGuideGuide,
         }),
       { wrapper }
     )
@@ -62,6 +75,7 @@ describe("useItineraryShare", () => {
           title: "My London Trip",
           isCurated: false,
           shareToken: null,
+          ...tracking,
         }),
       { wrapper }
     )
@@ -113,6 +127,7 @@ describe("useItineraryShare", () => {
           title: "My London Trip",
           isCurated: false,
           shareToken: "existing-token",
+          ...tracking,
         }),
       { wrapper }
     )
@@ -126,5 +141,62 @@ describe("useItineraryShare", () => {
         "My London Trip on Artsy\nhttps://staging.artsy.net/city-guide/london-united-kingdom/itinerary/itinerary-1?shareToken=existing-token",
       failOnCancel: false,
     })
+  })
+
+  it("tracks the tap, then the share with the activity the user picked", async () => {
+    const { result } = renderHook(
+      () =>
+        useItineraryShare({
+          internalID: "itinerary-1",
+          slug: null,
+          citySlug: "london-united-kingdom",
+          title: "My London Trip",
+          isCurated: false,
+          shareToken: "existing-token",
+          ...tracking,
+        }),
+      { wrapper }
+    )
+
+    await result.current.share()
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedShare",
+      context_module: "cityGuideItineraryHeader",
+      context_screen_owner_type: "cityGuideItinerary",
+      context_screen_owner_id: "itinerary-1",
+      context_screen_owner_slug: undefined,
+    })
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "share",
+      context_module: "cityGuideItineraryHeader",
+      context_owner_type: "cityGuideItinerary",
+      context_owner_id: "itinerary-1",
+      context_owner_slug: undefined,
+      service: "com.apple.UIKit.activity.CopyToPasteboard",
+    })
+  })
+
+  it("does not track a share when the user closes the share sheet", async () => {
+    ;(RNShare.open as jest.Mock).mockResolvedValue({ success: false, dismissedAction: true })
+
+    const { result } = renderHook(
+      () =>
+        useItineraryShare({
+          internalID: "itinerary-1",
+          slug: null,
+          citySlug: "london-united-kingdom",
+          title: "My London Trip",
+          isCurated: false,
+          shareToken: "existing-token",
+          ...tracking,
+        }),
+      { wrapper }
+    )
+
+    await result.current.share()
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(expect.objectContaining({ action: "tappedShare" }))
+    expect(mockTrackEvent).not.toHaveBeenCalledWith(expect.objectContaining({ action: "share" }))
   })
 })

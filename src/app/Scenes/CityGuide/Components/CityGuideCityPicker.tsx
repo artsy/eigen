@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { CheckmarkStrokeIcon } from "@artsy/icons/native"
 import {
   Box,
@@ -11,7 +12,12 @@ import {
 } from "@artsy/palette-mobile"
 import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
 import { useScreenDimensions } from "app/utils/hooks"
-import { ProvideScreenTracking, Schema } from "app/utils/track"
+import {
+  ProvideScreenTracking,
+  ProvideScreenTrackingWithCohesionSchema,
+  Schema,
+} from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import React, { useEffect, useState } from "react"
 import { Modal, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -90,42 +96,49 @@ export const CityGuideCityPicker: React.FC<Props> = (props) => {
                 context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
               }}
             >
-              <ScrollView contentContainerStyle={{ padding: space(2) }}>
-                <Box>
-                  <Text variant="sm" weight="medium">
-                    Fairs and Shows by City
-                  </Text>
-                </Box>
-                <Join separator={<Separator />}>
-                  {cities.map((city, i) => (
-                    <Box key={i}>
-                      <TouchableOpacity accessibilityRole="button" onPress={() => selectCity(city)}>
-                        <Flex
-                          flexDirection="row"
-                          justifyContent="space-between"
-                          alignItems="center"
+              <ProvideScreenTrackingWithCohesionSchema
+                info={screen({ context_screen_owner_type: OwnerType.cityPicker })}
+              >
+                <ScrollView contentContainerStyle={{ padding: space(2) }}>
+                  <Box>
+                    <Text variant="sm" weight="medium">
+                      Fairs and Shows by City
+                    </Text>
+                  </Box>
+                  <Join separator={<Separator />}>
+                    {cities.map((city, i) => (
+                      <Box key={i}>
+                        <TouchableOpacity
+                          accessibilityRole="button"
+                          onPress={() => selectCity(city)}
                         >
-                          <Text
-                            selectable={false}
-                            variant={dimensions(screenHeight)[size].cityFontSize}
-                            lineHeight={`${dimensions(screenHeight)[size].lineHeight}px`}
+                          <Flex
+                            flexDirection="row"
+                            justifyContent="space-between"
+                            alignItems="center"
                           >
-                            {city.name}
-                          </Text>
-                          {selectedCity === city.name && (
-                            <Box mb={2} mt={2}>
-                              <CheckmarkStrokeIcon
-                                width={ACCESSIBLE_DEFAULT_ICON_SIZE}
-                                height={ACCESSIBLE_DEFAULT_ICON_SIZE}
-                              />
-                            </Box>
-                          )}
-                        </Flex>
-                      </TouchableOpacity>
-                    </Box>
-                  ))}
-                </Join>
-              </ScrollView>
+                            <Text
+                              selectable={false}
+                              variant={dimensions(screenHeight)[size].cityFontSize}
+                              lineHeight={`${dimensions(screenHeight)[size].lineHeight}px`}
+                            >
+                              {city.name}
+                            </Text>
+                            {selectedCity === city.name && (
+                              <Box mb={2} mt={2}>
+                                <CheckmarkStrokeIcon
+                                  width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                                  height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                                />
+                              </Box>
+                            )}
+                          </Flex>
+                        </TouchableOpacity>
+                      </Box>
+                    ))}
+                  </Join>
+                </ScrollView>
+              </ProvideScreenTrackingWithCohesionSchema>
             </ProvideScreenTracking>
           </Flex>
         </Flex>

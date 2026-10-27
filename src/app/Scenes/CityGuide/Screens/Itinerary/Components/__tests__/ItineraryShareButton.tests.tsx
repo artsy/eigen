@@ -5,7 +5,10 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import RNShare from "react-native-share"
 import { graphql } from "react-relay"
 
-jest.mock("react-native-share", () => ({ open: jest.fn() }))
+// Resolves the way the share sheet does when it is closed without sharing.
+jest.mock("react-native-share", () => ({
+  open: jest.fn().mockResolvedValue({ success: false, dismissedAction: true }),
+}))
 
 describe("ItineraryShareButton", () => {
   const { renderWithRelay } = setupTestWrapper<ItineraryShareButtonTestQuery>({

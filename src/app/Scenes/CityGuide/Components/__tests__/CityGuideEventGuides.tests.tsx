@@ -65,6 +65,15 @@ describe("CityGuideEventGuides", () => {
     expect(await screen.findByText("City Guides")).toBeOnTheScreen()
     fireEvent.press(screen.getByTestId("touchable-wrapper"))
     expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/curated-guides")
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedExploreGroup",
+      context_module: "cityGuideCard",
+      context_screen_owner_type: "cityGuide",
+      context_screen_owner_slug: "london-united-kingdom",
+      destination_screen_owner_type: "cityGuideCuratedGuides",
+      destination_path: "/city-guide/london-united-kingdom/curated-guides",
+      type: "viewAll",
+    })
   })
 
   it("leaves the section title untappable with 4 or fewer guides", async () => {

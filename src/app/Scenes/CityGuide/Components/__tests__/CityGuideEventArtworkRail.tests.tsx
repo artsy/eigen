@@ -60,7 +60,7 @@ describe("CityGuideEventArtworkRail", () => {
       expect.objectContaining({
         action: "tappedArtworkGroup",
         context_module: "otherWorksFromShowRail",
-        context_screen_owner_type: "show",
+        context_screen_owner_type: "cityGuideMap",
         context_screen_owner_id: "show-id",
         context_screen_owner_slug: "some-show",
         destination_screen_owner_id: "artwork1234",
