@@ -74,7 +74,7 @@ link.
 Test on **iOS and Android**, using Firebase App Tester or TestFlight.
 
 1. Install the build with the same build number as the live submission.
-2. Dev Menu → Expo Updates → **canary** → relaunch. (TestFlight starts on production, so switch.)
+2. Dev Menu → Expo Updates → **canary** → relaunch. (TestFlight starts on production, so switch to canary. TestFlight betas automatically download the latest bundle from Expo, but Firebase ones do not. On Firebase betas, you need to fetch the latest bundle manually.)
 3. Check the fix, and that the app is generally healthy. An update replaces the whole JS bundle.
 
 ### 4. Publish
