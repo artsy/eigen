@@ -284,7 +284,11 @@ jobs:
 
   publish:
     needs: native-status
-    if: needs.native-status.outputs.status != 'ahead'
+    # A skipped pr-fingerprint skips every job downstream of it unless the job checks status itself
+    if: >-
+      !cancelled() &&
+      needs.native-status.result == 'success' &&
+      needs.native-status.outputs.status != 'ahead'
     runs-on: macos-26
     timeout-minutes: 30
 
