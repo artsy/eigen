@@ -21,9 +21,12 @@ import { CurrentRoute } from "app/utils/hooks/useCurrentRoute"
 import { act } from "react"
 
 let mockCurrentRoute: CurrentRoute = { name: "Home", key: "Home-1" }
+// What the hook reports when it lags the navigator; undefined means it has caught up.
+let mockHookRoute: CurrentRoute | undefined
 
 jest.mock("app/utils/hooks/useCurrentRoute", () => ({
-  useCurrentRoute: () => mockCurrentRoute,
+  useCurrentRoute: () => mockHookRoute ?? mockCurrentRoute,
+  readCurrentRoute: () => mockCurrentRoute,
 }))
 
 // The coordinator's own delay behaviour is covered in useShowDelay.tests; here we want
@@ -41,6 +44,7 @@ describe("usePopoverCoordinator", () => {
   beforeEach(() => {
     __resetPresentedOverlays__()
     mockCurrentRoute = { name: "Home", key: "Home-1" }
+    mockHookRoute = undefined
   })
 
   it("shows and takes the lock when displayable", async () => {
@@ -408,6 +412,52 @@ describe("usePopoverCoordinator", () => {
 
     expect(result.current.isVisible).toBe(true)
   })
+
+  it("shows on returning to a screen when the route and isDisplayable change together", () => {
+    const { result, rerender } = renderHook<
+      ReturnType<typeof usePopoverCoordinator>,
+      { isDisplayable: boolean }
+    >(
+      ({ isDisplayable }) =>
+        usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable }),
+      { wrapper, initialProps: { isDisplayable: false } }
+    )
+
+    mockCurrentRoute = { name: "Search", key: "Search-1" }
+    rerender({ isDisplayable: false })
+
+    // Route gated callers (`currentRoute === "Home"`) read the same route update we do,
+    // so both arrive in one render.
+    mockCurrentRoute = { name: "Home", key: "Home-1" }
+    rerender({ isDisplayable: true })
+
+    expect(result.current.isVisible).toBe(true)
+  })
+
+  it("shows on returning to a screen when focus arrives before the route hook catches up", () => {
+    const { result, rerender } = renderHook<
+      ReturnType<typeof usePopoverCoordinator>,
+      { isDisplayable: boolean }
+    >(
+      ({ isDisplayable }) =>
+        usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable }),
+      { wrapper, initialProps: { isDisplayable: false } }
+    )
+
+    mockCurrentRoute = { name: "Artwork", key: "Artwork-1" }
+    rerender({ isDisplayable: false })
+
+    // `useIsFocused` re-renders synchronously, ahead of the batched route listener.
+    mockCurrentRoute = { name: "Home", key: "Home-1" }
+    mockHookRoute = { name: "Artwork", key: "Artwork-1" }
+    rerender({ isDisplayable: true })
+
+    mockHookRoute = undefined
+    rerender({ isDisplayable: true })
+
+    expect(result.current.isVisible).toBe(true)
+  })
+
   it("still shows when the navigator resolves the route after the first render", () => {
     // The ref can be empty on our first render; the real hook fills it in from a mount
     // effect. Treating that as a navigation would sink any popover displayable at launch.

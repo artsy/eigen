@@ -11,7 +11,11 @@ export interface CurrentRoute {
   key: string | undefined
 }
 
-const readCurrentRoute = (): CurrentRoute => {
+/**
+ * The route on top right now, read straight from the navigator. Only meaningful during
+ * render when paired with `useCurrentRoute`, which is what re-renders you when it moves.
+ */
+export const readCurrentRoute = (): CurrentRoute => {
   const route = internal_navigationRef.current?.getCurrentRoute()
   return { name: route?.name, key: route?.key }
 }

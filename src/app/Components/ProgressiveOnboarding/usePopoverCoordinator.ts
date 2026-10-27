@@ -3,7 +3,7 @@ import { popoverTelemetry } from "app/Components/ProgressiveOnboarding/popoverTe
 import { useShowDelay } from "app/Components/ProgressiveOnboarding/useShowDelay"
 import { GlobalStore } from "app/store/GlobalStore"
 import { ProgressiveOnboardingKey } from "app/store/ProgressiveOnboardingModel"
-import { useCurrentRoute } from "app/utils/hooks/useCurrentRoute"
+import { readCurrentRoute, useCurrentRoute } from "app/utils/hooks/useCurrentRoute"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 /**
@@ -45,7 +45,13 @@ export const usePopoverCoordinator = ({
   const { acquireActivePopover, releaseActivePopover } = GlobalStore.actions.progressiveOnboarding
 
   const hasPresentedOverlay = useHasPresentedOverlay()
-  const currentRoute = useCurrentRoute()
+  // The hook re-renders us when the route moves, but its copy can trail the navigator by
+  // a render: `useIsFocused` re-renders synchronously on the focus event, ahead of the
+  // batched "state" listener behind the hook, so a focus-gated popover can become
+  // displayable while the hook still reports the screen we came from. Anchoring to that
+  // would latch on the very next render.
+  useCurrentRoute()
+  const currentRoute = readCurrentRoute()
   const [remountKey, setRemountKey] = useState(0)
 
   // The lock is owned by this instance, not by the key: two mounted popovers can share a
@@ -76,16 +82,22 @@ export const usePopoverCoordinator = ({
   // minutes past it. Both reset when the popover stops being displayable, so a fresh
   // visit to the screen gets a fresh chance.
   const hasLeftAnchorRouteRef = useRef(false)
+  const wasDisplayableRef = useRef(false)
 
+  // Re-anchor on the render we become displayable too, not only while we are not: route
+  // gated callers (`currentRoute === "Home"`) flip `isDisplayable` in the same render the
+  // route changes, so the anchor would still hold the screen we just came back from.
+  //
   // An undefined key means "we do not know yet" — the navigator can populate after our
   // first render — so we re-anchor rather than treating the change as a navigation.
   // Latching on that would permanently sink any popover already displayable at launch.
-  if (!isDisplayable || anchorRouteRef.current.key === undefined) {
+  if (!isDisplayable || !wasDisplayableRef.current || anchorRouteRef.current.key === undefined) {
     anchorRouteRef.current = currentRoute
     hasLeftAnchorRouteRef.current = false
   } else if (currentRoute.key !== undefined && anchorRouteRef.current.key !== currentRoute.key) {
     hasLeftAnchorRouteRef.current = true
   }
+  wasDisplayableRef.current = isDisplayable
 
   // Never present on top of a modal, bottom sheet or overlay: ours would be a second
   // full-screen Modal above theirs.
