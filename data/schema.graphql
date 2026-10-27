@@ -36448,6 +36448,7 @@ type Sale implements Node {
   A registration for this sale or null
   """
   registrationStatus: Bidder
+  representativeArtworks: [Artwork!]
   requireBidderApproval: Boolean
   requireIdentityVerification: Boolean
   saleAgreement: SaleAgreement
