@@ -287,10 +287,10 @@ const Sheet: React.FC<Props> = ({
       // and its section (and refetching the rail itself).
       if (canAutoCreate) {
         // Always a membership change: `addStop` makes the one itinerary this stop now sits on.
-        const { itineraryID } = await addStop(target)
+        const { itineraryID, createdItinerary } = await addStop(target)
         addedItineraryID = itineraryID
         onSaved?.()
-        trackCreatedItinerary(itineraryID, "firstSave")
+        if (createdItinerary) trackCreatedItinerary(itineraryID, "firstSave")
         trackAddedStop([itineraryID])
         actions.outcome = "added"
       } else {

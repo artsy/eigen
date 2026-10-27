@@ -705,6 +705,47 @@ describe("AddToItinerarySheet", () => {
       )
     })
 
+    it("skips createdItinerary when the first save reuses an itinerary the sheet hid", async () => {
+      const view = renderWithRelay(withItineraries([]), props)
+
+      await screen.findByText("0 selected")
+      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "useCityItineraryStopsLookupQuery"
+        )
+      )
+      view.env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, {
+          Me: () => ({
+            itinerariesConnection: { edges: [{ node: { internalID: "curated-guide" } }] },
+          }),
+        })
+      )
+
+      await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection("curated-guide"))
+      await resolveNext(view, "useCityItineraryStopsAddMutation", {
+        Mutation: () => ({
+          createItineraryStop: {
+            responseOrError: {
+              __typename: "ItineraryStopMutationSuccess",
+              itineraryStop: { internalID: "new-stop" },
+            },
+          },
+        }),
+      })
+
+      await waitFor(() =>
+        expect(mockTrackEvent).toHaveBeenCalledWith(
+          expect.objectContaining({ action: ActionType.addedStopToItinerary })
+        )
+      )
+      expect(mockTrackEvent).not.toHaveBeenCalledWith(
+        expect.objectContaining({ action: ActionType.createdItinerary })
+      )
+    })
+
     it("tracks one closedAddToItinerary with the outcome when Done adds the stop", async () => {
       const view = renderWithRelay(withItineraries([itinerary("a", "First")]), {
         ...props,

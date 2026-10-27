@@ -109,8 +109,9 @@ export const ItineraryEditSheet: React.FC<Props> = ({
       variables: {
         input: { id: itinerary.internalID, title: name, description: notes, imageURL },
       },
-      onCompleted: (_response, errors) => {
-        if (errors?.length) {
+      onCompleted: (response, errors) => {
+        const typename = response.updateItinerary?.responseOrError?.__typename
+        if (errors?.length || typename !== "ItineraryMutationSuccess") {
           toast.show("Could not save your changes", "bottom")
           return
         }
@@ -160,8 +161,9 @@ export const ItineraryEditSheet: React.FC<Props> = ({
           ConnectionHandler.deleteNode(connection, deletedItineraryId)
         }
       },
-      onCompleted: (_response, errors) => {
-        if (errors?.length) {
+      onCompleted: (response, errors) => {
+        const typename = response.deleteItinerary?.responseOrError?.__typename
+        if (errors?.length || typename !== "ItineraryMutationSuccess") {
           toast.show("Could not delete this itinerary", "bottom")
           return
         }

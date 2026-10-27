@@ -112,6 +112,25 @@ describe("CityItineraries", () => {
     )
   })
 
+  it("tracks tappedShare against the list screen, not the itinerary", async () => {
+    renderWithRelay(
+      connection([{ ...itinerary("a", "London Oct 2026", [1]), shareToken: "abc123" }]),
+      props
+    )
+
+    fireEvent.press(await screen.findByLabelText("Share London Oct 2026"))
+
+    await waitFor(() =>
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: "tappedShare",
+        context_module: "cityGuideCard",
+        context_screen_owner_type: "cityGuideItineraries",
+        context_screen_owner_id: undefined,
+        context_screen_owner_slug: "london-united-kingdom",
+      })
+    )
+  })
+
   it("says so when the user has no itineraries here", async () => {
     renderWithRelay(connection([]), props)
 

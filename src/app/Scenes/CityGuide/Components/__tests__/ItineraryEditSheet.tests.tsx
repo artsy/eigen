@@ -276,6 +276,48 @@ describe("ItineraryEditSheet", () => {
     })
   })
 
+  it("stays open and tracks nothing when the save comes back as a failure", () => {
+    const { mockResolveLastOperation } = renderWithRelay({})
+
+    fireEvent.changeText(screen.getByTestId("itinerary-edit-name"), "London November")
+    fireEvent.press(screen.getByTestId("itinerary-edit-save"))
+    mockResolveLastOperation({
+      updateItineraryPayload: () => ({
+        responseOrError: {
+          __typename: "ItineraryMutationFailure",
+          mutationError: { message: "Nope" },
+        },
+      }),
+    })
+
+    expect(mockShowToast).toHaveBeenCalledWith("Could not save your changes", "bottom")
+    expect(onClose).not.toHaveBeenCalled()
+    expect(mockTrackEvent).not.toHaveBeenCalledWith(
+      expect.objectContaining({ action: "editedItinerary" })
+    )
+  })
+
+  it("stays open and tracks nothing when the delete comes back as a failure", () => {
+    const { mockResolveLastOperation } = renderWithRelay({})
+
+    fireEvent.press(screen.getByTestId("itinerary-edit-delete"))
+    mockResolveLastOperation({
+      deleteItineraryPayload: () => ({
+        responseOrError: {
+          __typename: "ItineraryMutationFailure",
+          mutationError: { message: "Nope" },
+        },
+      }),
+    })
+
+    expect(mockShowToast).toHaveBeenCalledWith("Could not delete this itinerary", "bottom")
+    expect(onClose).not.toHaveBeenCalled()
+    expect(onDeleted).not.toHaveBeenCalled()
+    expect(mockTrackEvent).not.toHaveBeenCalledWith(
+      expect.objectContaining({ action: "deletedItinerary" })
+    )
+  })
+
   describe("cover photo", () => {
     const photo = { path: "file:///photo.jpg", width: 1200, height: 800 }
 

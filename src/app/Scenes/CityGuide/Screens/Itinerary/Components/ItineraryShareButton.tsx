@@ -30,6 +30,8 @@ export const ItineraryShareButton: React.FC<Props> = ({ itinerary: itineraryRef 
     contextScreenOwnerType: itinerary?.isCurated
       ? OwnerType.cityGuideGuide
       : OwnerType.cityGuideItinerary,
+    contextScreenOwnerId: itinerary?.internalID,
+    contextScreenOwnerSlug: itinerary?.slug ?? undefined,
   })
 
   // A personal itinerary reached via someone else's share link has nothing here to give out.

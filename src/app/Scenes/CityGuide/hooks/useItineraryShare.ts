@@ -19,6 +19,8 @@ interface Props {
   shareToken?: string | null
   contextModule: ContextModule
   contextScreenOwnerType: ScreenOwnerType
+  contextScreenOwnerId?: string
+  contextScreenOwnerSlug?: string
 }
 
 /**
@@ -36,6 +38,8 @@ export const useItineraryShare = ({
   shareToken,
   contextModule,
   contextScreenOwnerType,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug,
 }: Props) => {
   const environment = useRelayEnvironment()
   const { trackEvent } = useTracking<Schema.Entity>()
@@ -87,8 +91,8 @@ export const useItineraryShare = ({
         action: ActionType.tappedShare,
         context_module: contextModule,
         context_screen_owner_type: contextScreenOwnerType,
-        context_screen_owner_id: internalID,
-        context_screen_owner_slug: slug ?? internalID,
+        context_screen_owner_id: contextScreenOwnerId,
+        context_screen_owner_slug: contextScreenOwnerSlug,
       })
 
       const result = await RNShare.open({
@@ -121,6 +125,8 @@ export const useItineraryShare = ({
     shareToken,
     contextModule,
     contextScreenOwnerType,
+    contextScreenOwnerId,
+    contextScreenOwnerSlug,
     trackEvent,
     trackCohesionEvent,
   ])

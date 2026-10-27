@@ -22,8 +22,6 @@ describe("CityGuideRailSentinel", () => {
     expect(mockTrackEvent).not.toHaveBeenCalled()
 
     setVisible(view, true)
-    setVisible(view, false)
-    setVisible(view, true)
 
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -31,5 +29,6 @@ describe("CityGuideRailSentinel", () => {
       context_module: "cityGuideGuidesRail",
       context_screen: "cityGuide",
     })
+    expect(view.UNSAFE_queryByType(Sentinel)).toBeNull()
   })
 })

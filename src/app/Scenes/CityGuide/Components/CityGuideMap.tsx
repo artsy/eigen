@@ -565,8 +565,8 @@ const tracks = {
     return {
       action_name: actionName,
       action_type: Schema.ActionTypes.Tap,
-      owner_id: !!show ? show[0].internalID : "",
-      owner_slug: !!show ? show[0].id : "",
+      owner_id: show?.[0]?.internalID ?? "",
+      owner_slug: show?.[0]?.slug ?? "",
       owner_type: !!type ? type : "",
     } as any
   },

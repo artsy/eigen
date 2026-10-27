@@ -49,6 +49,7 @@ const ItineraryShareTouchable: React.FC<{ item: ShareableItinerary; citySlug: st
     shareToken: item.shareToken,
     contextModule: ContextModule.cityGuideCard,
     contextScreenOwnerType: OwnerType.cityGuideItineraries,
+    contextScreenOwnerSlug: citySlug,
   })
 
   return (

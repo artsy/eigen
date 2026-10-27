@@ -18,6 +18,7 @@ describe("useItineraryShare", () => {
   const tracking = {
     contextModule: ContextModule.cityGuideItineraryHeader,
     contextScreenOwnerType: OwnerType.cityGuideItinerary as ScreenOwnerType,
+    contextScreenOwnerId: "itinerary-1",
   }
 
   beforeEach(() => {
@@ -164,7 +165,7 @@ describe("useItineraryShare", () => {
       context_module: "cityGuideItineraryHeader",
       context_screen_owner_type: "cityGuideItinerary",
       context_screen_owner_id: "itinerary-1",
-      context_screen_owner_slug: "itinerary-1",
+      context_screen_owner_slug: undefined,
     })
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "share",
