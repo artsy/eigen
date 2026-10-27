@@ -1,4 +1,9 @@
-import { checkNativeStatus, formatGithubOutputs, parseFingerprint } from "../nativeStatus"
+import {
+  checkNativeStatus,
+  formatGithubOutputs,
+  parseFingerprint,
+  touchesNativeInputs,
+} from "../nativeStatus"
 
 const A = parseFingerprint({ value: "a".repeat(40), label: "A" })
 const B = parseFingerprint({ value: "b".repeat(40), label: "B" })
@@ -49,5 +54,45 @@ describe("parseFingerprint", () => {
 describe("formatGithubOutputs", () => {
   it("writes one key=value line per entry", () => {
     expect(formatGithubOutputs({ status: "level", fp_pr: A })).toEqual(`status=level\nfp_pr=${A}\n`)
+  })
+})
+
+describe("touchesNativeInputs", () => {
+  it("is false when only src/ changed", () => {
+    expect(touchesNativeInputs(["src/app/Scenes/Sell/Sell.tsx", "src/app/utils/date.ts"])).toBe(
+      false
+    )
+  })
+
+  it("is false for src/, data/, docs/ and markdown files", () => {
+    expect(
+      touchesNativeInputs([
+        "src/app/App.tsx",
+        "data/schema.graphql",
+        "docs/testing.md",
+        "README.md",
+      ])
+    ).toBe(false)
+  })
+
+  it("is false when nothing changed", () => {
+    expect(touchesNativeInputs([])).toBe(false)
+  })
+
+  it.each([
+    "package.json",
+    "yarn.lock",
+    "app.json",
+    "react-native.config.js",
+    "ios/Artsy/AppDelegate.swift",
+    "android/app/build.gradle",
+    "patches/react-native+0.79.0.patch",
+    ".github/actions/setup-node/action.yml",
+  ])("is true when %s changed", (path) => {
+    expect(touchesNativeInputs(["src/app/App.tsx", path])).toBe(true)
+  })
+
+  it("matches whole folder names, not prefixes", () => {
+    expect(touchesNativeInputs(["srcfoo/index.js"])).toBe(true)
   })
 })

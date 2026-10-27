@@ -4,6 +4,8 @@ name: PR Preview
 #   level:  PR matches main's latest build        -> publish
 #   behind: main changed native code since the PR -> publish, and warn in the PR description
 #   ahead:  the PR changed native code            -> don't publish, ask for new betas
+# When the PR only touches paths the fingerprint never reads (src/, data/, docs/, *.md), its
+# fingerprint equals the merge base's, so the `changes` job lets it skip the PR fingerprint.
 
 on:
   pull_request:
@@ -24,11 +26,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # expo-fingerprint-check.yml caches main's fingerprints as native-fingerprint-<sha>. On a miss,
-  # this job computes the merge base's and saves it for the next push.
-  base-fingerprint:
+  changes:
     # Same-repo PRs only. Fork PRs get no secrets, so they would fail in the setup steps.
-    if: >-
+    if: &preview-requested >-
       github.event.pull_request.head.repo.full_name == github.repository &&
       github.event.pull_request.state == 'open' &&
       (
@@ -38,6 +38,33 @@ jobs:
           (contains(github.event.pull_request.labels.*.name, 'preview') || startsWith(github.event.pull_request.head.ref, 'review-app-'))
         )
       )
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      native_inputs_changed: ${{ steps.changes.outputs.native_inputs_changed }}
+
+    steps:
+      # Full history for the merge base, but no file contents, since only the names are needed
+      - name: Checkout PR head
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Setup node.js
+        uses: ./.github/actions/setup-node
+
+      - name: Check for native input changes
+        id: changes
+        run: |
+          merge_base=$(git merge-base HEAD origin/main)
+          npx --yes tsx@4.19.1 scripts/pr-preview/checkNativeStatus.ts changes --base "$merge_base"
+
+  # expo-fingerprint-check.yml caches main's fingerprints as native-fingerprint-<sha>. On a miss,
+  # this job computes the merge base's and saves it for the next push.
+  base-fingerprint:
+    if: *preview-requested
     runs-on: macos-26
     timeout-minutes: 20
     outputs:
@@ -139,16 +166,8 @@ jobs:
 
   # The setup must match expo-fingerprint-check.yml, or the hash differs.
   pr-fingerprint:
-    if: >-
-      github.event.pull_request.head.repo.full_name == github.repository &&
-      github.event.pull_request.state == 'open' &&
-      (
-        (github.event.action == 'labeled' && github.event.label.name == 'preview') ||
-        (
-          (github.event.action == 'synchronize' || github.event.action == 'opened') &&
-          (contains(github.event.pull_request.labels.*.name, 'preview') || startsWith(github.event.pull_request.head.ref, 'review-app-'))
-        )
-      )
+    needs: changes
+    if: needs.changes.outputs.native_inputs_changed == 'true'
     runs-on: macos-26
     timeout-minutes: 20
     outputs:
@@ -202,7 +221,15 @@ jobs:
         run: yarn tsx scripts/pr-preview/checkNativeStatus.ts fingerprint
 
   native-status:
-    needs: [base-fingerprint, pr-fingerprint]
+    needs: [changes, base-fingerprint, pr-fingerprint]
+    # pr-fingerprint is skipped when no native inputs changed, which would skip this job too. It is
+    # also skipped when `changes` fails, so require `changes` to succeed, or FP_PR falls back to the
+    # base fingerprint for a PR that may have changed native code.
+    if: >-
+      !cancelled() &&
+      needs.changes.result == 'success' &&
+      needs.base-fingerprint.result == 'success' &&
+      (needs.pr-fingerprint.result == 'success' || needs.pr-fingerprint.result == 'skipped')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
@@ -226,15 +253,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Setup JavaScript environment
-        uses: ./.github/actions/setup-javascript-environment
+      # The pr-preview scripts only import Node built-ins, so they skip yarn install
+      - name: Setup node.js
+        uses: ./.github/actions/setup-node
 
       - name: Compare fingerprints
         id: status
         env:
           FP_BASE: ${{ needs.base-fingerprint.outputs.fp_base }}
-          FP_PR: ${{ needs.pr-fingerprint.outputs.fp_pr }}
-        run: yarn tsx scripts/pr-preview/checkNativeStatus.ts status --base "$FP_BASE" --pr "$FP_PR"
+          FP_PR: ${{ needs.changes.outputs.native_inputs_changed == 'true' && needs.pr-fingerprint.outputs.fp_pr || needs.base-fingerprint.outputs.fp_base }}
+        run: npx --yes tsx@4.19.1 scripts/pr-preview/checkNativeStatus.ts status --base "$FP_BASE" --pr "$FP_PR"
 
       # Fingerprints skip expo.runtimeVersion, so a PR branched before a release bump still reads
       # `level`. expo-updates only loads a bundle on builds with the same runtime.
@@ -305,8 +333,8 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Setup JavaScript environment
-        uses: ./.github/actions/setup-javascript-environment
+      - name: Setup node.js
+        uses: ./.github/actions/setup-node
 
       - name: Write preview result to the PR description
         env:
@@ -322,7 +350,7 @@ jobs:
           RUNTIME_PR: ${{ needs.native-status.outputs.runtime_pr }}
           RUNTIME_MAIN: ${{ needs.native-status.outputs.runtime_main }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: yarn tsx scripts/pr-preview/updatePrDescription.ts report
+        run: npx --yes tsx@4.19.1 scripts/pr-preview/updatePrDescription.ts report
 
   cleanup-preview:
     if: >-

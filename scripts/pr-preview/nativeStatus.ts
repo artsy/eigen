@@ -41,6 +41,17 @@ export const checkNativeStatus = ({ base, pr, main }: Fingerprints): NativeStatu
   return "behind"
 }
 
+/**
+ * Paths the fingerprint never reads. It hashes node_modules, ios/, android/, app.json, eas.json,
+ * .gitignore and the autolinking config (see fingerprint.config.js), none of which live here.
+ * Anything not listed counts as native, so a new config file can't slip past the check.
+ */
+const NON_NATIVE_PATH_PATTERNS = [/^src\//, /^data\//, /^docs\//, /\.md$/]
+
+export const touchesNativeInputs = (paths: readonly string[]) => {
+  return paths.some((path) => !NON_NATIVE_PATH_PATTERNS.some((pattern) => pattern.test(path)))
+}
+
 /** Lines in the `key=value` format that $GITHUB_OUTPUT expects */
 export const formatGithubOutputs = (record: Readonly<Record<string, string>>) => {
   return Object.entries(record)
