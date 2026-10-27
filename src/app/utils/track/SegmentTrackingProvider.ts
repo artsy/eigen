@@ -1,8 +1,15 @@
-import { SegmentClient, createClient } from "@segment/analytics-react-native"
+import {
+  CountFlushPolicy,
+  SegmentClient,
+  StartupFlushPolicy,
+  TimerFlushPolicy,
+  createClient,
+} from "@segment/analytics-react-native"
 import { BrazePlugin } from "@segment/analytics-react-native-plugin-braze"
 import { addBreadcrumb } from "@sentry/react-native"
 import { AddAppNamePlugin } from "app/utils/track/AddAppNamePlugin"
 import { AddExpoUpdateIdPlugin } from "app/utils/track/AddExpoUpdateIdPlugin"
+import { AppStateFlushPolicy } from "app/utils/track/AppStateFlushPolicy"
 import { visualize } from "app/utils/visualizer"
 import { Platform } from "react-native"
 import Keys from "react-native-keys"
@@ -31,7 +38,24 @@ export const SegmentTrackingProvider: TrackingProvider = {
       return null
     }
 
-    analytics = createClient({ writeKey: writeKey })
+    analytics = createClient({
+      writeKey: writeKey,
+      // Passing flushPolicies replaces the SDK defaults, so we re-add them (20 events / 30s)
+      flushPolicies: [
+        new CountFlushPolicy(20),
+        new TimerFlushPolicy(30 * 1000),
+        // Sends events left over from previous sessions as soon as the client is ready
+        new StartupFlushPolicy(),
+        new AppStateFlushPolicy(),
+      ],
+      httpConfig: {
+        backoffConfig: {
+          // Queued events older than this are dropped before upload (SDK default: 12h).
+          // 7 days is the maximum the SDK allows.
+          maxTotalBackoffDuration: 7 * 24 * 60 * 60,
+        },
+      },
+    })
     analytics.add({ plugin: new BrazePlugin() })
     analytics.add({ plugin: new AddAppNamePlugin() })
     analytics.add({ plugin: new AddExpoUpdateIdPlugin() })
