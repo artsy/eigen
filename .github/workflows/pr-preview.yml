@@ -55,6 +55,8 @@ jobs:
 
       - name: Setup node.js
         uses: ./.github/actions/setup-node
+        with:
+          package-manager-cache: false
 
       - name: Check for native input changes
         id: changes
@@ -257,6 +259,8 @@ jobs:
       # The pr-preview scripts only import Node built-ins, so they skip yarn install
       - name: Setup node.js
         uses: ./.github/actions/setup-node
+        with:
+          package-manager-cache: false
 
       - name: Compare fingerprints
         id: status
@@ -336,6 +340,8 @@ jobs:
 
       - name: Setup node.js
         uses: ./.github/actions/setup-node
+        with:
+          package-manager-cache: false
 
       - name: Write preview result to the PR description
         env:
