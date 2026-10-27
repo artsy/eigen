@@ -45,11 +45,53 @@ export const checkNativeStatus = ({ base, pr, main }: Fingerprints): NativeStatu
  * Paths the fingerprint never reads. It hashes node_modules, ios/, android/, app.json, eas.json,
  * .gitignore and the autolinking config (see fingerprint.config.js), none of which live here.
  * Anything not listed counts as native, so a new config file can't slip past the check.
+ * scripts/setup/ and .github/actions/ copy fonts into ios/, which the fingerprint hashes, but a
+ * preview that breaks because of them is easy to recover from, so they're skipped too.
  */
-const NON_NATIVE_PATH_PATTERNS = [/^src\//, /^data\//, /^docs\//, /\.md$/]
+const NON_NATIVE_DIRS = [
+  "src/",
+  "data/",
+  "docs/",
+  "e2e/",
+  "images/",
+  "typings/",
+  "codemods/",
+  "eslint-rules/",
+  "fastlane/",
+  "bin/",
+  "scripts/",
+  ".github/",
+  ".claude/",
+  ".husky/",
+  ".vscode/",
+]
+
+const NON_NATIVE_FILES = [
+  "alias.js",
+  "babel.config.js",
+  "CHANGELOG.legacy.yml",
+  "dangerfile.ts",
+  "eslint-local-rules.js",
+  ".eslintignore",
+  ".eslintrc.js",
+  "index.js",
+  "jest.config.js",
+  "metro.config.js",
+  ".prettierignore",
+  ".prettierrc.cjs",
+  "ReactotronConfig.js",
+  "relay.config.js",
+  "renovate.json",
+  "tsconfig.json",
+]
+
+const isNonNativePath = (path: string) =>
+  path.endsWith(".md") ||
+  NON_NATIVE_FILES.includes(path) ||
+  NON_NATIVE_DIRS.some((dir) => path.startsWith(dir))
 
 export const touchesNativeInputs = (paths: readonly string[]) => {
-  return paths.some((path) => !NON_NATIVE_PATH_PATTERNS.some((pattern) => pattern.test(path)))
+  return paths.some((path) => !isNonNativePath(path))
 }
 
 /** Lines in the `key=value` format that $GITHUB_OUTPUT expects */

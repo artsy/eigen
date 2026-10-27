@@ -4,8 +4,9 @@ name: PR Preview
 #   level:  PR matches main's latest build        -> publish
 #   behind: main changed native code since the PR -> publish, and warn in the PR description
 #   ahead:  the PR changed native code            -> don't publish, ask for new betas
-# When the PR only touches paths the fingerprint never reads (src/, data/, docs/, *.md), its
-# fingerprint equals the merge base's, so the `changes` job lets it skip the PR fingerprint.
+# When the PR only touches paths the fingerprint never reads (listed in
+# scripts/pr-preview/nativeStatus.ts), its fingerprint equals the merge base's, so the `changes`
+# job lets it skip the PR fingerprint.
 
 on:
   pull_request:

@@ -80,19 +80,44 @@ describe("touchesNativeInputs", () => {
   })
 
   it.each([
+    "e2e/flows/onboarding.yml",
+    "images/OnboardingImage4AndyWarholCow.webp",
+    "fastlane/Fastfile",
+    "bin/package.json",
+    "babel.config.js",
+    "metro.config.js",
+    "tsconfig.json",
+    "dangerfile.ts",
+    "scripts/setup/download-fonts",
+    ".github/actions/setup-node/action.yml",
+    ".github/workflows/pr-preview.yml",
+  ])("is false when %s changed", (path) => {
+    expect(touchesNativeInputs(["src/app/App.tsx", path])).toBe(false)
+  })
+
+  it.each([
     "package.json",
     "yarn.lock",
+    ".yarnrc.yml",
     "app.json",
+    "eas.json",
+    "fingerprint.config.js",
     "react-native.config.js",
     "ios/Artsy/AppDelegate.swift",
     "android/app/build.gradle",
+    "expo/plugins/withSomething.js",
     "patches/react-native+0.79.0.patch",
-    ".github/actions/setup-node/action.yml",
+    "Gemfile.lock",
+    "Brewfile",
   ])("is true when %s changed", (path) => {
     expect(touchesNativeInputs(["src/app/App.tsx", path])).toBe(true)
   })
 
   it("matches whole folder names, not prefixes", () => {
     expect(touchesNativeInputs(["srcfoo/index.js"])).toBe(true)
+  })
+
+  it("matches root files only at the root", () => {
+    expect(touchesNativeInputs(["ios/babel.config.js"])).toBe(true)
   })
 })
