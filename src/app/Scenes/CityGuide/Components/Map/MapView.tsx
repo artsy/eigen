@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, Pill } from "@artsy/palette-mobile"
 import MapboxGL, { ShapeSource } from "@rnmapbox/maps"
 import { MapPins } from "app/Scenes/CityGuide/Components/Map/MapPins"
@@ -15,6 +16,7 @@ import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { useTracking } from "react-tracking"
 
 configureMapbox()
 
@@ -27,6 +29,10 @@ interface Props {
   sections: MapSection[]
   /** The city this map belongs to, threaded down to the pin-tap preview card's tracking. */
   citySlug: string
+  /** The screen showing this map, for pin, filter and card tap events. */
+  contextScreenOwnerType: ScreenOwnerType
+  contextScreenOwnerId?: string
+  contextScreenOwnerSlug?: string
   /** Owned by the caller so a list-view "Show on map" action can preselect a pin. */
   selectedPlaceId: string | null
   onSelectPlace: (placeId: string) => void
@@ -45,11 +51,20 @@ interface Props {
 export const MapView: React.FC<Props> = ({
   sections,
   citySlug,
+  contextScreenOwnerType,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug,
   selectedPlaceId,
   onSelectPlace,
   pillsTopOffset = 60,
   safeArea = false,
 }) => {
+  const { trackEvent } = useTracking()
+  const screenOwner = {
+    context_screen_owner_type: contextScreenOwnerType,
+    context_screen_owner_id: contextScreenOwnerId,
+    context_screen_owner_slug: contextScreenOwnerSlug,
+  }
   const [selectedSectionId, setSelectedSectionId] = useState(ALL_PILL_ID)
   const [isMapLoaded, setIsMapLoaded] = useState(false)
   // Only remaining use is the camera bounds' paddingTop below: how much of an overlay sits
@@ -100,11 +115,20 @@ export const MapView: React.FC<Props> = ({
     onSelectPlace(placeId)
   }
 
+  // A place carries no entity type of its own, so a single pin names no owner; the card tap
+  // that follows has the destination.
+  const handleTapPin = (placeId: string) => {
+    trackEvent({ action: ActionType.tappedMapPin, ...screenOwner, is_cluster: false })
+    handleSelectPlace(placeId)
+  }
+
   const handleSelectCluster = async (feature: any) => {
     const pointCount = feature?.properties?.point_count
     const clusterId = feature?.properties?.cluster_id
 
     if (!shapeSourceRef.current || !pointCount || clusterId == null) return
+
+    trackEvent({ action: ActionType.tappedMapPin, ...screenOwner, is_cluster: true })
 
     const requestId = ++clusterRequestIdRef.current
 
@@ -205,7 +229,7 @@ export const MapView: React.FC<Props> = ({
         <MapPins
           collection={collection}
           selectedPlaceId={selectedPlaceId}
-          onSelectPlace={handleSelectPlace}
+          onSelectPlace={handleTapPin}
           onSelectCluster={handleSelectCluster}
           shapeSourceRef={shapeSourceRef}
           activeClusterId={clusterSelection?.clusterId}
@@ -237,6 +261,12 @@ export const MapView: React.FC<Props> = ({
                     selected={isSelected}
                     color={isSelected ? "mono0" : "mono100"}
                     onPress={() => {
+                      trackEvent({
+                        action: ActionType.tappedNavigationTab,
+                        context_module: ContextModule.cityGuideMapFilter,
+                        ...screenOwner,
+                        subject: pill.title,
+                      })
                       // Filtering can drop places the rail is currently showing.
                       dismissClusterRail()
                       setSelectedSectionId(pill.id)
@@ -257,7 +287,13 @@ export const MapView: React.FC<Props> = ({
       */}
       {!!selectedPlace && !clusterSelection && (
         <Flex position="absolute" bottom={PREVIEW_BOTTOM_OFFSET} left={0} right={0}>
-          <MapPreviewCard place={selectedPlace} citySlug={citySlug} />
+          <MapPreviewCard
+            place={selectedPlace}
+            citySlug={citySlug}
+            contextScreenOwnerType={contextScreenOwnerType}
+            contextScreenOwnerId={contextScreenOwnerId}
+            contextScreenOwnerSlug={contextScreenOwnerSlug}
+          />
         </Flex>
       )}
 
@@ -271,6 +307,9 @@ export const MapView: React.FC<Props> = ({
           <MapPreviewCardRail
             places={clusterSelection.places}
             citySlug={citySlug}
+            contextScreenOwnerType={contextScreenOwnerType}
+            contextScreenOwnerId={contextScreenOwnerId}
+            contextScreenOwnerSlug={contextScreenOwnerSlug}
             onPressPlace={handleSelectPlace}
           />
         </Flex>

@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Tabs } from "@artsy/palette-mobile"
 import { TabsContainer } from "@artsy/palette-mobile/dist/elements/Tabs/TabsContainer"
 import { CityGuideAllEvents } from "app/Scenes/CityGuide/Components/CityGuideAllEvents"
@@ -52,6 +53,15 @@ export const CityGuideTabs: React.FC<CityGuideTabsProps> = () => {
   }, [])
 
   const setSelectedTab = (index: number) => {
+    // Here rather than in `trackTab`, which also fires for filter changes made from the map's
+    // pills and for the initial tab.
+    trackEvent({
+      action: ActionType.tappedNavigationTab,
+      context_module: ContextModule.cityGuideMapTabs,
+      context_screen_owner_type: OwnerType.cityGuideMap,
+      context_screen_owner_slug: citySlug,
+      subject: cityTabs[index]?.id,
+    })
     EventEmitter.dispatch("filters:change", index)
   }
 

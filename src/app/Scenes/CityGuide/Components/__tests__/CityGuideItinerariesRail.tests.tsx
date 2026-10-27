@@ -87,6 +87,15 @@ describe("CityGuideItinerariesRail", () => {
     fireEvent.press(await screen.findByText("Your Itineraries"))
 
     expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/itineraries")
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedCardGroup",
+      context_module: "cityGuideCard",
+      context_screen_owner_type: "cityGuide",
+      context_screen_owner_slug: "london-united-kingdom",
+      destination_screen_owner_type: "cityGuideItineraries",
+      destination_path: "/city-guide/london-united-kingdom/itineraries",
+      type: "viewAll",
+    })
   })
 
   // The band it replaces hid itself at a count of zero; an empty grey strip reads as broken.

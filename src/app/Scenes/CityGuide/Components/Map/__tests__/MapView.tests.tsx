@@ -1,8 +1,11 @@
+import { OwnerType } from "@artsy/cohesion"
 import { ScreenDimensionsProvider, Theme } from "@artsy/palette-mobile"
-import { render } from "@testing-library/react-native"
+import { act, fireEvent, render, screen } from "@testing-library/react-native"
+import { MapPins } from "app/Scenes/CityGuide/Components/Map/MapPins"
 import { MapView } from "app/Scenes/CityGuide/Components/Map/MapView"
 import { MapSection } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 import { BOUNDS_PADDING } from "app/Scenes/CityGuide/utils/constants"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 
 let capturedCameraProps: any = null
 
@@ -63,6 +66,7 @@ describe("MapView cameraStop bounds padding", () => {
           <MapView
             sections={sections()}
             citySlug="london-united-kingdom"
+            contextScreenOwnerType={OwnerType.cityGuideGuide}
             selectedPlaceId={null}
             onSelectPlace={() => {}}
           />
@@ -79,5 +83,66 @@ describe("MapView cameraStop bounds padding", () => {
     // No pills row is shown for a single section, so paddingTop is the shared padding plus
     // the safe-area inset only — this is the notch/Dynamic Island clearance from FIREWORKS-54.
     expect(bounds.paddingTop).toEqual(BOUNDS_PADDING + TOP_INSET)
+  })
+})
+
+describe("MapView tracking", () => {
+  const twoSections = (): MapSection[] => [
+    ...sections(),
+    {
+      id: "section-2",
+      title: "Day 2",
+      places: [{ id: "place-3", title: "Serpentine", coordinates: { lat: 51.5, lng: -0.17 } }],
+    },
+  ]
+
+  const renderMap = () =>
+    render(
+      <Theme>
+        <ScreenDimensionsProvider>
+          <MapView
+            sections={twoSections()}
+            citySlug="london-united-kingdom"
+            contextScreenOwnerType={OwnerType.cityGuideGuide}
+            contextScreenOwnerId="guide-1"
+            contextScreenOwnerSlug="chill-vibes-only"
+            selectedPlaceId={null}
+            onSelectPlace={() => {}}
+          />
+        </ScreenDimensionsProvider>
+      </Theme>
+    )
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it("tracks a single pin tap against the screen showing the map", () => {
+    renderMap()
+
+    act(() => screen.UNSAFE_getByType(MapPins).props.onSelectPlace("place-1"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedMapPin",
+      context_screen_owner_type: "cityGuideGuide",
+      context_screen_owner_id: "guide-1",
+      context_screen_owner_slug: "chill-vibes-only",
+      is_cluster: false,
+    })
+  })
+
+  it("tracks a filter pill tap with the section it picks", () => {
+    renderMap()
+
+    fireEvent.press(screen.getByText("Day 2"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedNavigationTab",
+      context_module: "cityGuideMapFilter",
+      context_screen_owner_type: "cityGuideGuide",
+      context_screen_owner_id: "guide-1",
+      context_screen_owner_slug: "chill-vibes-only",
+      subject: "Day 2",
+    })
   })
 })

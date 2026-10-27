@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ShareIcon } from "@artsy/icons/native"
 import { Flex, Screen, Spinner, Text, Touchable } from "@artsy/palette-mobile"
 import { CityItinerariesQuery } from "__generated__/CityItinerariesQuery.graphql"
@@ -11,6 +12,8 @@ import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useRefreshControl } from "app/utils/refreshHelpers"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const SHARE_ICON_SIZE = 24
@@ -44,6 +47,8 @@ const ItineraryShareTouchable: React.FC<{ item: ShareableItinerary; citySlug: st
     title: item.title,
     isCurated: !!item.isCurated,
     shareToken: item.shareToken,
+    contextModule: ContextModule.cityGuideCard,
+    contextScreenOwnerType: OwnerType.cityGuideItineraries,
   })
 
   return (
@@ -68,50 +73,57 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
   )
 
   return (
-    <Screen>
-      <Screen.Header onBack={goBack} />
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.cityGuideItineraries,
+        context_screen_owner_slug: citySlug,
+      })}
+    >
+      <Screen>
+        <Screen.Header onBack={goBack} />
 
-      <Screen.Body fullwidth>
-        {/*
+        <Screen.Body fullwidth>
+          {/*
           The title sits in the body rather than the header bar: the designs show it below the
           back chevron, at lg-display, not centred in the navigation bar.
         */}
-        <Flex px={2} pb={2}>
-          <Text variant="lg-display">Your Itineraries</Text>
-        </Flex>
+          <Flex px={2} pb={2}>
+            <Text variant="lg-display">Your Itineraries</Text>
+          </Flex>
 
-        {/*
+          {/*
           No year grouping: `Itinerary` exposes no createdAt, and publishedAt is null for a
           private one, so there's no date to group rows by.
         */}
-        <Screen.FlatList
-          data={itineraries}
-          keyExtractor={(itinerary) => itinerary.internalID}
-          contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
-          ItemSeparatorComponent={() => <Flex height={20} />}
-          onEndReached={() => {
-            if (hasNext && !isLoadingNext) loadNext(PAGE_SIZE)
-          }}
-          ListEmptyComponent={
-            <Text variant="sm" color="mono60">
-              You haven’t started an itinerary here yet.
-            </Text>
-          }
-          ListFooterComponent={isLoadingNext ? <Spinner style={{ marginVertical: 20 }} /> : null}
-          refreshControl={refreshControl}
-          renderItem={({ item }) => (
-            <ItineraryListItem
-              title={item.title}
-              stopsCount={itineraryStopsCount(item)}
-              imageUrl={item.heroImage?.url}
-              itineraryID={item.internalID}
-              href={`/city-guide/${citySlug}/itinerary/${item.slug ?? item.internalID}`}
-              rightSlot={<ItineraryShareTouchable item={item} citySlug={citySlug} />}
-            />
-          )}
-        />
-      </Screen.Body>
-    </Screen>
+          <Screen.FlatList
+            data={itineraries}
+            keyExtractor={(itinerary) => itinerary.internalID}
+            contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
+            ItemSeparatorComponent={() => <Flex height={20} />}
+            onEndReached={() => {
+              if (hasNext && !isLoadingNext) loadNext(PAGE_SIZE)
+            }}
+            ListEmptyComponent={
+              <Text variant="sm" color="mono60">
+                You haven’t started an itinerary here yet.
+              </Text>
+            }
+            ListFooterComponent={isLoadingNext ? <Spinner style={{ marginVertical: 20 }} /> : null}
+            refreshControl={refreshControl}
+            renderItem={({ item }) => (
+              <ItineraryListItem
+                title={item.title}
+                stopsCount={itineraryStopsCount(item)}
+                imageUrl={item.heroImage?.url}
+                itineraryID={item.internalID}
+                href={`/city-guide/${citySlug}/itinerary/${item.slug ?? item.internalID}`}
+                rightSlot={<ItineraryShareTouchable item={item} citySlug={citySlug} />}
+              />
+            )}
+          />
+        </Screen.Body>
+      </Screen>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 

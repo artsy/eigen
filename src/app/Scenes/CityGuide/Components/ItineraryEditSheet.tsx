@@ -1,3 +1,4 @@
+import { ActionType, EditedItineraryField, OwnerType } from "@artsy/cohesion"
 import { Button, Flex, Image, Text, Touchable } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { CityItinerariesQuery } from "__generated__/CityItinerariesQuery.graphql"
@@ -25,6 +26,7 @@ import {
   useMutation,
   useRelayEnvironment,
 } from "react-relay"
+import { useTracking } from "react-tracking"
 
 const NOTES_LIMIT = 200
 const COVER_SIZE = 60
@@ -69,6 +71,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({
   const toast = useToast()
   const environment = useRelayEnvironment()
   const { showActionSheetWithOptions } = useActionSheet()
+  const { trackEvent } = useTracking()
   const [name, setName] = useState(itinerary.name)
   const [notes, setNotes] = useState(itinerary.description ?? "")
   const [cover, setCover] = useState<PickedImage>()
@@ -114,6 +117,15 @@ export const ItineraryEditSheet: React.FC<Props> = ({
 
         if (cover) {
           storeLocalImage(itineraryCoverKey(itinerary.internalID), cover).then(onCoverSaved)
+        }
+
+        const changed: EditedItineraryField[] = []
+        if (name !== itinerary.name) changed.push("title")
+        if (notes !== (itinerary.description ?? "")) changed.push("notes")
+        if (cover) changed.push("cover")
+
+        if (changed.length) {
+          trackEvent(tracks.editedItinerary(itinerary.internalID, changed))
         }
 
         onClose()
@@ -168,6 +180,8 @@ export const ItineraryEditSheet: React.FC<Props> = ({
             { fetchPolicy: "network-only" }
           ).subscribe({})
         }
+
+        trackEvent(tracks.deletedItinerary(itinerary.internalID))
 
         onClose()
         onDeleted?.()
@@ -273,6 +287,23 @@ export const ItineraryEditSheet: React.FC<Props> = ({
       </BottomSheetKeyboardAwareScrollView>
     </AutomountedBottomSheetModal>
   )
+}
+
+// Only reachable from your own itinerary's screen.
+const tracks = {
+  editedItinerary: (itineraryID: string, changed: EditedItineraryField[]) => ({
+    action: ActionType.editedItinerary,
+    changed,
+    context_screen_owner_type: OwnerType.cityGuideItinerary,
+    context_screen_owner_id: itineraryID,
+    owner_id: itineraryID,
+  }),
+  deletedItinerary: (itineraryID: string) => ({
+    action: ActionType.deletedItinerary,
+    context_screen_owner_type: OwnerType.cityGuideItinerary,
+    context_screen_owner_id: itineraryID,
+    owner_id: itineraryID,
+  }),
 }
 
 const updateMutation = graphql`

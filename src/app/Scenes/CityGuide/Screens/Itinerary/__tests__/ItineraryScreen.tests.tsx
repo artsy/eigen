@@ -22,7 +22,10 @@ jest.mock("@artsy/palette-mobile", () => ({
   Image: require("react-native").Image,
 }))
 
-jest.mock("react-native-share", () => ({ open: jest.fn() }))
+// Resolves the way the share sheet does when it is closed without sharing.
+jest.mock("react-native-share", () => ({
+  open: jest.fn().mockResolvedValue({ success: false, dismissedAction: true }),
+}))
 
 // Drax needs more of reanimated than the stock jest mock offers, and its drag can only be
 // fired by invoking `onReorder` directly — both scoped to this file rather than setupJest.
@@ -109,6 +112,19 @@ describe("ItineraryScreen", () => {
       context_screen_owner_id: "chill-vibes-only",
       context_screen_owner_slug: "chill-vibes-only",
     })
+  })
+
+  it.each([
+    ["your own itinerary", { isMine: true }, OwnerType.cityGuideItinerary],
+    ["someone else's itinerary", { isMine: false }, OwnerType.cityGuideSharedItinerary],
+  ])("tracks %s under its own screen owner type", async (_, fields, ownerType) => {
+    renderWithRelay({ Itinerary: () => ({ ...ITINERARY, isCurated: false, ...fields }) }, props)
+
+    await screen.findByText("Chill Vibes Only")
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({ action: ActionType.screen, context_screen_owner_type: ownerType })
+    )
   })
 
   it.each(["on", "off"] as const)(
@@ -670,6 +686,13 @@ describe("ItineraryScreen", () => {
 
       expect(displayedStopTitles()).toEqual(["Stop 2", "Stop 3", "Stop 1"])
       expect(mockShowToast).not.toHaveBeenCalled()
+      expect(mockTrackEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: ActionType.reorderedItineraryStop,
+          context_screen_owner_type: OwnerType.cityGuideItinerary,
+          stop_id: "stop-1",
+        })
+      )
     })
 
     it("puts the stop back and says so when the mutation fails", async () => {

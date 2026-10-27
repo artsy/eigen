@@ -2,6 +2,7 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { CityGuideItinerariesRail_me$key } from "__generated__/CityGuideItinerariesRail_me.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { CityGuideRailSentinel } from "app/Scenes/CityGuide/Components/CityGuideRailSentinel"
 import { ItineraryListItem } from "app/Scenes/CityGuide/Components/ItineraryListItem"
 import { itineraryStopsCount } from "app/Scenes/CityGuide/utils/itineraryStopsCount"
 import { extractNodes } from "app/utils/extractNodes"
@@ -34,6 +35,8 @@ export const CityGuideItinerariesRail: React.FC<Props> = ({ citySlug, me: meRef 
 
   return (
     <Flex backgroundColor="mono5" pt={1} pb={2}>
+      <CityGuideRailSentinel contextModule={ContextModule.cityGuideItinerariesRail} />
+
       <Flex px={2}>
         {/*
           `onPress` is what makes SectionTitle tappable — without it, it renders children bare
@@ -50,6 +53,15 @@ export const CityGuideItinerariesRail: React.FC<Props> = ({ citySlug, me: meRef 
               owner_type: Schema.OwnerEntityTypes.CityGuide,
               owner_slug: citySlug,
               context_module: "itineraries",
+            })
+            trackCohesionEvent({
+              action: ActionType.tappedCardGroup,
+              context_module: ContextModule.cityGuideCard,
+              context_screen_owner_type: OwnerType.cityGuide,
+              context_screen_owner_slug: citySlug,
+              destination_screen_owner_type: OwnerType.cityGuideItineraries,
+              destination_path: `/city-guide/${citySlug}/itineraries`,
+              type: "viewAll",
             })
           }}
         />

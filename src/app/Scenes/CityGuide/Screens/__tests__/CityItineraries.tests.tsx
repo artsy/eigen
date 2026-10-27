@@ -1,12 +1,16 @@
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { CityItinerariesScreenQueryRenderer } from "app/Scenes/CityGuide/Screens/CityItineraries"
 import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { RefreshControl } from "react-native"
 import RNShare from "react-native-share"
 import { MockPayloadGenerator } from "relay-test-utils"
 
-jest.mock("react-native-share", () => ({ open: jest.fn() }))
+// Resolves the way the share sheet does when it is closed without sharing.
+jest.mock("react-native-share", () => ({
+  open: jest.fn().mockResolvedValue({ success: false, dismissedAction: true }),
+}))
 
 describe("CityItineraries", () => {
   const { renderWithRelay } = setupTestWrapper({
@@ -42,6 +46,18 @@ describe("CityItineraries", () => {
     expect(screen.getByText("London Oct 2026")).toBeOnTheScreen()
     expect(screen.getByText("16 stops")).toBeOnTheScreen()
     expect(screen.getByText("Berlin")).toBeOnTheScreen()
+  })
+
+  it("tracks the screen view", async () => {
+    renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
+
+    await screen.findByText("Your Itineraries")
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "screen",
+      context_screen_owner_type: "cityGuideItineraries",
+      context_screen_owner_slug: "london-united-kingdom",
+    })
   })
 
   it("opens an itinerary when its row is tapped", async () => {

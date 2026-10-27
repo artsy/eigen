@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { NoArtIcon } from "@artsy/icons/native"
 import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { CityGuideArticleRow_article$key } from "__generated__/CityGuideArticleRow_article.graphql"
@@ -14,7 +14,13 @@ export const CityArticleListItem: React.FC<{
   article: CityGuideArticleRow_article$key
   citySlug: string
   contextModule?: ContextModule
-}> = ({ article: articleRef, citySlug, contextModule = ContextModule.articles }) => {
+  contextScreenOwnerType?: ScreenOwnerType
+}> = ({
+  article: articleRef,
+  citySlug,
+  contextModule = ContextModule.articles,
+  contextScreenOwnerType = OwnerType.cityGuide,
+}) => {
   const { trackEvent } = useTracking()
   const article = useFragment(cityGuideArticleRowFragment, articleRef)
 
@@ -32,7 +38,13 @@ export const CityArticleListItem: React.FC<{
       to={article.href}
       onPress={() =>
         trackEvent(
-          tracks.tappedArticle(citySlug, article.internalID, article.slug ?? "", contextModule)
+          tracks.tappedArticle(
+            citySlug,
+            article.internalID,
+            article.slug ?? "",
+            contextModule,
+            contextScreenOwnerType
+          )
         )
       }
     >
@@ -85,11 +97,12 @@ const tracks = {
     citySlug: string,
     articleId: string,
     slug: string,
-    contextModule: ContextModule
+    contextModule: ContextModule,
+    contextScreenOwnerType: ScreenOwnerType
   ) => ({
     action: ActionType.tappedArticleGroup,
     context_module: contextModule,
-    context_screen_owner_type: OwnerType.cityGuide,
+    context_screen_owner_type: contextScreenOwnerType,
     context_screen_owner_slug: citySlug,
     destination_screen_owner_type: OwnerType.article,
     destination_screen_owner_id: articleId,

@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { useItineraryShareMintTokenMutation } from "__generated__/useItineraryShareMintTokenMutation.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { mutate } from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
@@ -16,6 +17,8 @@ interface Props {
   isCurated: boolean
   /** Already minted, if any — reused rather than replaced, so a link shared earlier still works. */
   shareToken?: string | null
+  contextModule: ContextModule
+  contextScreenOwnerType: ScreenOwnerType
 }
 
 /**
@@ -31,9 +34,12 @@ export const useItineraryShare = ({
   title,
   isCurated,
   shareToken,
+  contextModule,
+  contextScreenOwnerType,
 }: Props) => {
   const environment = useRelayEnvironment()
   const { trackEvent } = useTracking<Schema.Entity>()
+  const { trackEvent: trackCohesionEvent } = useTracking()
   const [isSharing, setIsSharing] = useState(false)
 
   const share = useCallback(async () => {
@@ -77,16 +83,47 @@ export const useItineraryShare = ({
         owner_id: internalID,
         owner_slug: slug ?? internalID,
       })
+      trackCohesionEvent({
+        action: ActionType.tappedShare,
+        context_module: contextModule,
+        context_screen_owner_type: contextScreenOwnerType,
+        context_screen_owner_id: internalID,
+        context_screen_owner_slug: slug ?? internalID,
+      })
 
-      await RNShare.open({
+      const result = await RNShare.open({
         title,
         message: `${title} on Artsy\n${url}`,
         failOnCancel: false,
       })
+
+      if (result.success) {
+        trackCohesionEvent({
+          action: ActionType.share,
+          context_module: contextModule,
+          context_owner_type: isCurated ? OwnerType.cityGuideGuide : OwnerType.cityGuideItinerary,
+          context_owner_id: internalID,
+          context_owner_slug: slug ?? undefined,
+          // The activity the user picked, e.g. `com.apple.UIKit.activity.CopyToPasteboard`.
+          service: result.message,
+        })
+      }
     } finally {
       setIsSharing(false)
     }
-  }, [environment, internalID, slug, citySlug, title, isCurated, shareToken, trackEvent])
+  }, [
+    environment,
+    internalID,
+    slug,
+    citySlug,
+    title,
+    isCurated,
+    shareToken,
+    contextModule,
+    contextScreenOwnerType,
+    trackEvent,
+    trackCohesionEvent,
+  ])
 
   return { share, isSharing }
 }

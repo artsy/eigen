@@ -6,6 +6,7 @@ import { ItineraryEditSheet } from "app/Scenes/CityGuide/Components/ItineraryEdi
 import { extractNodes } from "app/utils/extractNodes"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -225,6 +226,54 @@ describe("ItineraryEditSheet", () => {
       .getAllOperations()
       .find((operation) => operation.request.node.params.name === "CityGuideItinerariesRailQuery")
     expect(railQuery?.request.variables).toEqual({ citySlug: "london", first: 10 })
+  })
+
+  it("tracks which fields a save changed", () => {
+    const { mockResolveLastOperation } = renderWithRelay({})
+
+    fireEvent.changeText(screen.getByTestId("itinerary-edit-name"), "London November")
+    fireEvent.press(screen.getByTestId("itinerary-edit-save"))
+    mockResolveLastOperation({})
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "editedItinerary",
+      changed: ["title"],
+      context_screen_owner_type: "cityGuideItinerary",
+      context_screen_owner_id: "itinerary-1",
+      owner_id: "itinerary-1",
+    })
+  })
+
+  it("tracks nothing when a save changed nothing", () => {
+    const { mockResolveLastOperation } = renderWithRelay({})
+
+    fireEvent.press(screen.getByTestId("itinerary-edit-save"))
+    mockResolveLastOperation({})
+
+    expect(mockTrackEvent).not.toHaveBeenCalledWith(
+      expect.objectContaining({ action: "editedItinerary" })
+    )
+  })
+
+  it("tracks the delete once it succeeds", () => {
+    const { mockResolveLastOperation } = renderWithRelay({})
+
+    fireEvent.press(screen.getByTestId("itinerary-edit-delete"))
+    mockResolveLastOperation({
+      deleteItineraryPayload: () => ({
+        responseOrError: {
+          __typename: "ItineraryMutationSuccess",
+          itinerary: { id: "itinerary-id-1" },
+        },
+      }),
+    })
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "deletedItinerary",
+      context_screen_owner_type: "cityGuideItinerary",
+      context_screen_owner_id: "itinerary-1",
+      owner_id: "itinerary-1",
+    })
   })
 
   describe("cover photo", () => {

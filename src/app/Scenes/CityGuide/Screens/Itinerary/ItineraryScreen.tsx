@@ -53,6 +53,13 @@ const NAVBAR_HEIGHT = 50
 // that gap — and into Share's own button — so the right side is left untouched here.
 const EDIT_HIT_SLOP = { top: 20, bottom: 20, left: 20, right: 0 }
 
+/** A curated guide can be "mine" too (its editor owns it), so `isCurated` is checked first. */
+const itineraryScreenOwnerType = (itinerary: { isCurated: boolean; isMine: boolean }) => {
+  if (itinerary.isCurated) return OwnerType.cityGuideGuide
+  if (itinerary.isMine) return OwnerType.cityGuideItinerary
+  return OwnerType.cityGuideSharedItinerary
+}
+
 /**
  * Applies a section's locally-dragged stop order on top of the itinerary Relay handed back,
  * without waiting on a refetch. `stopOrder` maps a section id to the stop ids in their new
@@ -203,12 +210,19 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
       try {
         // `acts_as_list`'s `insert_at` is 1-indexed; `toIndex` here is a plain array index.
         await reorderItineraryStop(stopID, toIndex + 1)
+        trackCohesionEvent({
+          action: ActionType.reorderedItineraryStop,
+          context_screen_owner_type: OwnerType.cityGuideItinerary,
+          context_screen_owner_id: itinerary.internalID,
+          owner_id: itinerary.internalID,
+          stop_id: stopID,
+        })
       } catch {
         setStopOrder((current) => new Map(current).set(sectionID, previousOrder))
         showToast("Could not reorder that stop, try again", "bottom", { backgroundColor: "red100" })
       }
     },
-    [itinerary, stopOrder, reorderItineraryStop, showToast]
+    [itinerary, stopOrder, reorderItineraryStop, showToast, trackCohesionEvent]
   )
 
   // Android's hardware back has to agree with the on-screen one, or the two disagree
@@ -272,11 +286,12 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   */
   const showSectionHeaders = isEditorial || sections.length > 1
   const fallbackImage = itineraryFallbackImage(sections)
+  const screenOwnerType = itineraryScreenOwnerType(itinerary)
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
-        context_screen_owner_type: OwnerType.cityGuideGuide,
+        context_screen_owner_type: screenOwnerType,
         context_screen_owner_id: itinerary.internalID,
         context_screen_owner_slug: itinerary.slug ?? undefined,
       })}
@@ -374,6 +389,9 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
               <MapView
                 sections={mapSections}
                 citySlug={citySlug}
+                contextScreenOwnerType={screenOwnerType}
+                contextScreenOwnerId={itinerary.internalID}
+                contextScreenOwnerSlug={itinerary.slug ?? undefined}
                 selectedPlaceId={selectedStopId}
                 onSelectPlace={setSelectedStopId}
                 safeArea
@@ -479,7 +497,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                       trackCohesionEvent({
                         action: ActionType.tappedNavigationTab,
                         context_module: ContextModule.cityGuideMapToggle,
-                        context_screen_owner_type: OwnerType.cityGuideGuide,
+                        context_screen_owner_type: screenOwnerType,
                         context_screen_owner_id: itinerary.internalID,
                         context_screen_owner_slug: itinerary.slug ?? undefined,
                         subject: isMapView ? "list" : "map",

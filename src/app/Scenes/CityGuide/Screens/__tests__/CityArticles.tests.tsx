@@ -35,6 +35,18 @@ describe("CityArticlesScreen", () => {
     },
   })
 
+  it("tracks the screen view", async () => {
+    renderWithRelay({ City: () => ({ cityArticles: [article("Only Article", 0)] }) })
+
+    await screen.findByText("Artsy Editorial")
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "screen",
+      context_screen_owner_type: "cityGuideArticles",
+      context_screen_owner_slug: "london-united-kingdom",
+    })
+  })
+
   it("titles the screen", async () => {
     renderWithRelay({ City: () => ({ cityArticles: [article("Only Article", 0)] }) })
 

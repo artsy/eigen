@@ -102,6 +102,15 @@ describe("CityGuideEventArticles", () => {
         context_module: "articles",
       })
     )
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedArticleGroup",
+      context_module: "articles",
+      context_screen_owner_type: "cityGuide",
+      context_screen_owner_slug: "london-united-kingdom",
+      destination_screen_owner_type: "cityGuideArticles",
+      destination_path: "/city-guide/london-united-kingdom/articles",
+      type: "viewAll",
+    })
   })
 
   it("renders each article's thumbnail, title, byline and date", async () => {

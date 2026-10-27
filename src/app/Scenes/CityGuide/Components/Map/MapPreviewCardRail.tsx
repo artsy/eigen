@@ -1,3 +1,4 @@
+import { ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { MapPreviewCard } from "app/Scenes/CityGuide/Components/Map/MapPreviewCard"
 import { MapPlace } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
@@ -7,11 +8,21 @@ import { ScrollView } from "react-native"
 interface Props {
   places: MapPlace[]
   citySlug: string
+  contextScreenOwnerType?: ScreenOwnerType
+  contextScreenOwnerId?: string
+  contextScreenOwnerSlug?: string
   onPressPlace?: (placeId: string) => void
 }
 
 /** A tapped cluster's places, as a horizontal rail of preview cards. The caller positions it. */
-export const MapPreviewCardRail: React.FC<Props> = ({ places, citySlug, onPressPlace }) => {
+export const MapPreviewCardRail: React.FC<Props> = ({
+  places,
+  citySlug,
+  contextScreenOwnerType,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug,
+  onPressPlace,
+}) => {
   const { width: screenWidth } = useScreenDimensions()
   const space = useSpace()
   const width = screenWidth - 2 * space(2)
@@ -27,6 +38,9 @@ export const MapPreviewCardRail: React.FC<Props> = ({ places, citySlug, onPressP
               isLast={index === places.length - 1}
               place={place}
               citySlug={citySlug}
+              contextScreenOwnerType={contextScreenOwnerType}
+              contextScreenOwnerId={contextScreenOwnerId}
+              contextScreenOwnerSlug={contextScreenOwnerSlug}
               onPress={onPressPlace ? () => onPressPlace(place.id) : undefined}
             />
           </Flex>

@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { MapPlace } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 import { StopCard } from "app/Scenes/CityGuide/Components/StopCard"
@@ -8,6 +8,10 @@ interface Props {
   place: MapPlace
   /** The city this map belongs to, for the tap event's context. */
   citySlug: string
+  /** The screen showing the map. Defaults to the city map, identified by `citySlug`. */
+  contextScreenOwnerType?: ScreenOwnerType
+  contextScreenOwnerId?: string
+  contextScreenOwnerSlug?: string
   /**
    * Fired before StopCard's navigation. The cluster rail uses this with
    * `disableNavigation` so tapping a card selects a place instead of navigating off the map.
@@ -22,6 +26,9 @@ interface Props {
 export const MapPreviewCard: React.FC<Props> = ({
   place,
   citySlug,
+  contextScreenOwnerType = OwnerType.cityGuideMap,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug = citySlug,
   onPress,
   disableNavigation,
   isLast,
@@ -39,7 +46,16 @@ export const MapPreviewCard: React.FC<Props> = ({
     // Only counts as a tap-through when the card will actually navigate — the cluster rail
     // also uses `onPress` for select-only cards, which aren't a navigation event.
     if (place.href && !disableNavigation) {
-      trackEvent(tracks.tappedCard(citySlug, place.href))
+      trackEvent(
+        tracks.tappedCard(
+          {
+            context_screen_owner_type: contextScreenOwnerType,
+            context_screen_owner_id: contextScreenOwnerId,
+            context_screen_owner_slug: contextScreenOwnerSlug,
+          },
+          place.href
+        )
+      )
     }
   }
 
@@ -60,11 +76,17 @@ export const MapPreviewCard: React.FC<Props> = ({
 const tracks = {
   // `MapPlace` carries no entity type of its own — a stop, a fair and a plain city event all
   // arrive here alike — so the destination is the raw path rather than an owner type/id/slug.
-  tappedCard: (citySlug: string, destinationPath: string) => ({
+  tappedCard: (
+    screenOwner: {
+      context_screen_owner_type: ScreenOwnerType
+      context_screen_owner_id?: string
+      context_screen_owner_slug?: string
+    },
+    destinationPath: string
+  ) => ({
     action: ActionType.tappedCardGroup,
     context_module: ContextModule.cityGuideCard,
-    context_screen_owner_type: OwnerType.cityGuideMap,
-    context_screen_owner_slug: citySlug,
+    ...screenOwner,
     destination_path: destinationPath,
   }),
 }

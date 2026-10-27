@@ -19,35 +19,37 @@ interface CityGuideEventArtworkRailProps {
   show: CityGuideEventArtworkRail_show$key
 }
 
-export const CityGuideEventArtworkRail: React.FC<CityGuideEventArtworkRailProps> = memo(({ show: showProp }) => {
-  const show = useFragment(eventArtworkRailFragment, showProp)
-  const { trackEvent } = useTracking()
+export const CityGuideEventArtworkRail: React.FC<CityGuideEventArtworkRailProps> = memo(
+  ({ show: showProp }) => {
+    const show = useFragment(eventArtworkRailFragment, showProp)
+    const { trackEvent } = useTracking()
 
-  const artworks = extractNodes(show?.artworksConnection)
+    const artworks = extractNodes(show?.artworksConnection)
 
-  if (!artworks.length) {
-    return null
-  }
+    if (!artworks.length) {
+      return null
+    }
 
-  return (
-    <ArtworkRail
-      artworks={artworks}
-      onPress={(artwork, position) => {
-        trackEvent(
-          tracks.tappedArtwork(
-            show,
-            artwork?.internalID ?? "",
-            artwork?.slug ?? "",
-            position,
-            artwork.collectorSignals
+    return (
+      <ArtworkRail
+        artworks={artworks}
+        onPress={(artwork, position) => {
+          trackEvent(
+            tracks.tappedArtwork(
+              show,
+              artwork?.internalID ?? "",
+              artwork?.slug ?? "",
+              position,
+              artwork.collectorSignals
+            )
           )
-        )
-      }}
-      showSaveIcon
-      moreHref={show?.href ?? null}
-    />
-  )
-})
+        }}
+        showSaveIcon
+        moreHref={show?.href ?? null}
+      />
+    )
+  }
+)
 
 const eventArtworkRailFragment = graphql`
   fragment CityGuideEventArtworkRail_show on Show {
@@ -74,7 +76,9 @@ const eventArtworkRailQuery = graphql`
 
 export const CityGuideEventArtworkRailQueryRenderer: React.FC<{ showID: string }> = withSuspense({
   Component: ({ showID }) => {
-    const data = useLazyLoadQuery<CityGuideEventArtworkRailQuery>(eventArtworkRailQuery, { id: showID })
+    const data = useLazyLoadQuery<CityGuideEventArtworkRailQuery>(eventArtworkRailQuery, {
+      id: showID,
+    })
 
     if (!data.show) {
       return null
@@ -96,7 +100,8 @@ const tracks = {
   ) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.otherWorksFromShowRail,
-    context_screen_owner_type: OwnerType.show,
+    // The rail sits in a show's card in the city map's bottom sheet; id and slug name that show.
+    context_screen_owner_type: OwnerType.cityGuideMap,
     context_screen_owner_id: show.internalID,
     context_screen_owner_slug: show.slug,
     destination_screen_owner_type: OwnerType.artwork,

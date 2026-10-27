@@ -1,4 +1,10 @@
-import { ActionType, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
+import {
+  ActionType,
+  AddToItineraryOutcome,
+  CreatedItinerarySource,
+  OwnerType,
+  ScreenOwnerType,
+} from "@artsy/cohesion"
 import { AddIcon } from "@artsy/icons/native"
 import {
   Button,
@@ -85,8 +91,8 @@ export type AddToItineraryTarget = StopTarget & {
   /** For `addedStopToItinerary`'s `context_owner_slug` only — never part of `StopInput`, so it
    *  is stripped out below rather than spread into a `createItineraryStopInput`. */
   itemSlug?: string
-  /** The screen the sheet was opened from, for `tappedCreateItinerary`. Absent inside City
-   *  Guide, where the event is reported against the city guide itself. */
+  /** The screen the sheet was opened from, for the sheet's own events. Absent when nothing
+   *  names one, and the events are reported against the city guide itself. */
   contextScreenOwnerType?: ScreenOwnerType
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string
@@ -211,6 +217,8 @@ const Sheet: React.FC<Props> = ({
 
       if (!internalID) throw new Error("Could not create the itinerary")
 
+      trackCreatedItinerary(internalID, "createButton")
+
       // A brand new itinerary has no stops and no section yet — `applySelection` creates the
       // section itself when it finds none, same as it does for any other itinerary.
       // Ticked straight away, so Done adds the stop to what you just made.
@@ -235,17 +243,40 @@ const Sheet: React.FC<Props> = ({
     }
   }
 
+  const stopOwner = stopOwnerFields(target, itemSlug)
+  const screenOwner = screenOwnerFields({
+    citySlug,
+    contextScreenOwnerType,
+    contextScreenOwnerId,
+    contextScreenOwnerSlug,
+  })
+
   /** One event however many itineraries the stop landed on — ticking several rows still
    *  lands on all of them in a single Done tap, not one tap per itinerary. */
   const trackAddedStop = (ownerIDs: string[]) => {
     trackCohesionEvent({
       action: ActionType.addedStopToItinerary,
-      context_owner_type: target.itemType
-        ? STOP_OWNER_TYPE[target.itemType]
-        : OwnerType.cityGuideCustomStop,
-      context_owner_id: target.itemType ? target.itemID : undefined,
-      context_owner_slug: target.itemType ? itemSlug : undefined,
+      ...stopOwner,
       owner_ids: ownerIDs,
+    })
+  }
+
+  const trackRemovedStop = (ownerIDs: string[]) => {
+    trackCohesionEvent({
+      action: ActionType.removedStopFromItinerary,
+      ...stopOwner,
+      owner_ids: ownerIDs,
+    })
+  }
+
+  const trackCreatedItinerary = (internalID: string, source: CreatedItinerarySource) => {
+    trackCohesionEvent({
+      action: ActionType.createdItinerary,
+      // Only reachable through `canCreate`, which needs a city.
+      city_slug: citySlug ?? "",
+      ...screenOwner,
+      owner_id: internalID,
+      source,
     })
   }
 
@@ -259,9 +290,12 @@ const Sheet: React.FC<Props> = ({
         const { itineraryID } = await addStop(target)
         addedItineraryID = itineraryID
         onSaved?.()
+        trackCreatedItinerary(itineraryID, "firstSave")
         trackAddedStop([itineraryID])
+        actions.outcome = "added"
       } else {
         const changes = await applySelection({ target, initial, selected, memberships })
+        actions.outcome = doneOutcome(changes.added.length, changes.removed.length)
         if (changes.added.length === 1 && changes.removed.length === 0) {
           addedItineraryID = changes.added[0]
         }
@@ -271,6 +305,10 @@ const Sheet: React.FC<Props> = ({
 
           if (changes.added.length > 0) {
             trackAddedStop(changes.added)
+          }
+
+          if (changes.removed.length > 0) {
+            trackRemovedStop(changes.removed)
           }
 
           if (citySlug) {
@@ -296,6 +334,7 @@ const Sheet: React.FC<Props> = ({
       }
       onClose()
     } catch {
+      actions.hadError = true
       // Left open on failure: dismissing would claim the change stuck.
       toast.show("Something went wrong. Please try again.", "bottom")
     }
@@ -317,9 +356,7 @@ const Sheet: React.FC<Props> = ({
           onCreate={() => {
             trackCohesionEvent({
               action: ActionType.tappedCreateItinerary,
-              context_screen_owner_type: contextScreenOwnerType ?? OwnerType.cityGuide,
-              context_screen_owner_id: contextScreenOwnerId,
-              context_screen_owner_slug: contextScreenOwnerType ? contextScreenOwnerSlug : citySlug,
+              ...screenOwner,
             })
             setIsNaming(true)
           }}
@@ -448,6 +485,7 @@ export const AddToItinerarySheet: React.FC<{
   onSaved?: () => void
 }> = ({ target, onClose, onSaved }) => {
   const { bottom } = useSafeAreaInsets()
+  const { trackEvent } = useTracking()
   const targetKey = target ? sheetTargetKey(target) : null
   const [session, setSession] = useState<SheetSession>({
     key: targetKey,
@@ -485,6 +523,21 @@ export const AddToItinerarySheet: React.FC<{
     () => ({ selection, setSelection, actions }),
     [selection, setSelection, actions]
   )
+  // Done closes the sheet and the modal then reports a dismiss too, so only the first close of
+  // a target is tracked.
+  const close = () => {
+    if (target && !actions.closeTracked) {
+      actions.closeTracked = true
+      trackEvent({
+        action: ActionType.closedAddToItinerary,
+        ...stopOwnerFields(target, target.itemSlug),
+        ...screenOwnerFields(target),
+        had_error: !!actions.hadError,
+        outcome: actions.outcome ?? "dismissed",
+      })
+    }
+    onClose()
+  }
   const disabled =
     !selection ||
     (!selection.selected.length && !selection.initial.length && !selection.canAutoCreate)
@@ -495,7 +548,7 @@ export const AddToItinerarySheet: React.FC<{
       name="AddToItinerary"
       snapPoints={SNAP_POINTS}
       enableDynamicSizing={false}
-      onDismiss={onClose}
+      onDismiss={close}
     >
       <AddToItinerarySheetContext.Provider value={context}>
         <SheetContent>
@@ -504,7 +557,7 @@ export const AddToItinerarySheet: React.FC<{
               <SheetWithSuspense
                 key={sheetTargetKey(target)}
                 {...target}
-                onClose={onClose}
+                onClose={close}
                 onSaved={onSaved}
               />
             )}
@@ -539,6 +592,36 @@ const STOP_OWNER_TYPE: Record<"SHOW" | "FAIR" | "LOCATION", OwnerType> = {
   SHOW: OwnerType.show,
   FAIR: OwnerType.fair,
   LOCATION: OwnerType.partner,
+}
+
+const stopOwnerFields = (target: StopTarget, itemSlug: string | undefined) => ({
+  context_owner_type: target.itemType
+    ? STOP_OWNER_TYPE[target.itemType]
+    : OwnerType.cityGuideCustomStop,
+  context_owner_id: target.itemType ? target.itemID : undefined,
+  context_owner_slug: target.itemType ? itemSlug : undefined,
+})
+
+/** Inside City Guide no screen is passed, and events are reported against the city guide. */
+const screenOwnerFields = ({
+  citySlug,
+  contextScreenOwnerType,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug,
+}: Pick<
+  AddToItineraryTarget,
+  "citySlug" | "contextScreenOwnerType" | "contextScreenOwnerId" | "contextScreenOwnerSlug"
+>) => ({
+  context_screen_owner_type: contextScreenOwnerType ?? OwnerType.cityGuide,
+  context_screen_owner_id: contextScreenOwnerId,
+  context_screen_owner_slug: contextScreenOwnerType ? contextScreenOwnerSlug : citySlug,
+})
+
+const doneOutcome = (added: number, removed: number): AddToItineraryOutcome => {
+  if (added && removed) return "addedAndRemoved"
+  if (added) return "added"
+  if (removed) return "removed"
+  return "noChange"
 }
 
 const sheetTargetKey = (target: AddToItineraryTarget) =>

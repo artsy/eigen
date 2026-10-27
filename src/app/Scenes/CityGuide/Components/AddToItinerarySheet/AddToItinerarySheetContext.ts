@@ -1,3 +1,4 @@
+import { AddToItineraryOutcome } from "@artsy/cohesion"
 import { PayloadItinerary } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/utils/itineraryStopTargets"
 import { createContext, useContext } from "react"
 
@@ -12,6 +13,10 @@ export interface SheetActions {
   key: string | null
   done?: () => Promise<void>
   isSaving: boolean
+  /** What Done last did, for the one `closedAddToItinerary` sent when the sheet closes. */
+  outcome?: AddToItineraryOutcome
+  hadError?: boolean
+  closeTracked?: boolean
 }
 
 export const AddToItinerarySheetContext = createContext<{

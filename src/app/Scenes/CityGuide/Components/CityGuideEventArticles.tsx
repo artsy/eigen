@@ -1,9 +1,10 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Join, Separator } from "@artsy/palette-mobile"
 import { CityGuideArticle_articles$key } from "__generated__/CityGuideArticle_articles.graphql"
 import { CityGuideEventArticles_city$key } from "__generated__/CityGuideEventArticles_city.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { CityArticleListItem } from "app/Scenes/CityGuide/Components/CityArticleListItem"
+import { CityGuideRailSentinel } from "app/Scenes/CityGuide/Components/CityGuideRailSentinel"
 import {
   cityGuideArticleFragment,
   NO_CITY_ARTICLES,
@@ -23,6 +24,7 @@ interface Props {
 
 export const CityGuideEventArticles: React.FC<Props> = ({ citySlug, city: cityRef }) => {
   const { trackEvent } = useTracking<Schema.Entity>()
+  const { trackEvent: trackCohesionEvent } = useTracking()
   const city = useFragment(fragment, cityRef)
   const attachments = useFragment<CityGuideArticle_articles$key>(
     cityGuideArticleFragment,
@@ -62,6 +64,8 @@ export const CityGuideEventArticles: React.FC<Props> = ({ citySlug, city: cityRe
 
   return (
     <Flex testID="city-guide-event-articles" px={2}>
+      <CityGuideRailSentinel contextModule={ContextModule.articles} />
+
       <SectionTitle
         variant="large"
         title="Artsy Editorial"
@@ -75,6 +79,15 @@ export const CityGuideEventArticles: React.FC<Props> = ({ citySlug, city: cityRe
                   owner_type: Schema.OwnerEntityTypes.CityGuide,
                   owner_slug: citySlug,
                   context_module: "articles",
+                })
+                trackCohesionEvent({
+                  action: ActionType.tappedArticleGroup,
+                  context_module: ContextModule.articles,
+                  context_screen_owner_type: OwnerType.cityGuide,
+                  context_screen_owner_slug: citySlug,
+                  destination_screen_owner_type: OwnerType.cityGuideArticles,
+                  destination_path: `/city-guide/${citySlug}/articles`,
+                  type: "viewAll",
                 })
               }
             : undefined
