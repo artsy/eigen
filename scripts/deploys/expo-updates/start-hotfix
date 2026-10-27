@@ -1,0 +1,332 @@
+#!/bin/bash
+# Starts or extends an Expo Updates hotfix for a released app version.
+#
+#   start-hotfix <version> <sha>...
+#   start-hotfix <version> --revert <sha>
+#   start-hotfix <version> --continue
+#
+# Creates 'hotfix-vX.Y.Z' from 'rc-vX.Y.Z' the first time, then adds every later hotfix for that
+# version on top of it. The branch tip is always what's live in production, so a second hotfix
+# can't silently drop the first — see docs/deploy_a_hotfix.md.
+#
+# This is a local script rather than a workflow because cherry-picks onto a released branch
+# conflict often and need a person. The CI production gate enforces the rules either way.
+#
+# When a cherry-pick conflicts, resolve it, run 'git cherry-pick --continue' (or 'git revert
+# --continue'), then 'start-hotfix <version> --continue' to check, push and write up what's on
+# the branch. Fixes that came after the conflicting one are passed again in a normal run.
+set -euo pipefail
+
+usage() {
+  echo "Usage: $0 <version> <sha>..." >&2
+  echo "       $0 <version> --revert <sha>" >&2
+  echo "       $0 <version> --continue" >&2
+  echo "" >&2
+  echo "  <version>  the released app version, e.g. 9.21.0" >&2
+  echo "  <sha>      commit(s) on main to cherry-pick, oldest first" >&2
+  echo "  --revert   drop an earlier hotfix instead of adding one" >&2
+  echo "  --continue after resolving a cherry-pick conflict: check, push and write up the branch" >&2
+}
+
+if [ "$#" -lt 2 ]; then
+  usage
+  exit 1
+fi
+
+version=$1
+shift
+
+revert_mode=false
+continue_mode=false
+shas=()
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --revert) revert_mode=true ;;
+    --continue) continue_mode=true ;;
+    -h|--help) usage; exit 0 ;;
+    -*) echo "❌ Unknown option: $1" >&2; usage; exit 1 ;;
+    *) shas+=("$1") ;;
+  esac
+  shift
+done
+
+if [ "$continue_mode" = true ]; then
+  if [ "${#shas[@]}" -gt 0 ] || [ "$revert_mode" = true ]; then
+    echo "❌ --continue takes no commits and can't be combined with --revert." >&2
+    usage
+    exit 1
+  fi
+elif [ "${#shas[@]}" -eq 0 ]; then
+  echo "❌ No commits given." >&2
+  usage
+  exit 1
+fi
+
+if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+  echo "❌ '$version' is not an app version like 9.21.0." >&2
+  exit 1
+fi
+
+if ! command -v gh >/dev/null 2>&1; then
+  echo "❌ The GitHub CLI ('gh') is required to open the hotfix PR." >&2
+  echo "   Install it: https://cli.github.com/, then 'gh auth login'." >&2
+  exit 1
+fi
+
+if ! git diff-index --quiet HEAD --; then
+  echo "❌ Your working tree is dirty. Commit or stash before starting a hotfix." >&2
+  exit 1
+fi
+
+release_branch="rc-v$version"
+hotfix_branch="hotfix-v$version"
+
+echo "Fetching origin..."
+git fetch --quiet --tags origin
+
+if ! git rev-parse --verify --quiet "origin/$release_branch" >/dev/null; then
+  echo "❌ No '$release_branch' on origin. Native hotfix versions have no release branch and" >&2
+  echo "   aren't published over the air — see docs/deploy_a_hotfix.md." >&2
+  exit 1
+fi
+
+# --continue has no commits to check, and expanding the empty array would fail under set -u on
+# the bash 3.2 that macOS ships.
+if [ "$continue_mode" = false ]; then
+  for sha in "${shas[@]}"; do
+    if ! git rev-parse --verify --quiet "$sha^{commit}" >/dev/null; then
+      echo "❌ '$sha' isn't a commit in this repository." >&2
+      exit 1
+    fi
+  done
+
+  # A fix being added must already be reviewed and merged on main. A fix being reverted must not —
+  # it lives on the hotfix branch, which is checked below once that branch is checked out.
+  if [ "$revert_mode" = false ]; then
+    for sha in "${shas[@]}"; do
+      if ! git merge-base --is-ancestor "$sha" origin/main; then
+        echo "❌ ${sha:0:8} isn't on main. Land the fix on main first — the hotfix PR isn't" >&2
+        echo "   reviewed, the fix's own PR is." >&2
+        exit 1
+      fi
+    done
+  fi
+fi
+
+if [ "$continue_mode" = true ]; then
+  if [ "$(git rev-parse --abbrev-ref HEAD)" != "$hotfix_branch" ]; then
+    echo "❌ --continue runs on '$hotfix_branch', but you're on '$(git rev-parse --abbrev-ref HEAD)'." >&2
+    exit 1
+  fi
+  if [ -e "$(git rev-parse --git-path CHERRY_PICK_HEAD)" ] || [ -e "$(git rev-parse --git-path REVERT_HEAD)" ]; then
+    echo "❌ A cherry-pick or revert is still in progress. Resolve it and run" >&2
+    echo "   'git cherry-pick --continue' (or 'git revert --continue') first." >&2
+    exit 1
+  fi
+
+  # What the hotfix adds is whatever sits on the branch beyond what origin already has.
+  if git rev-parse --verify --quiet "origin/$hotfix_branch" >/dev/null; then
+    base_sha=$(git rev-parse "origin/$hotfix_branch")
+    new_branch=false
+  else
+    base_sha=$(git rev-parse "origin/$release_branch")
+    new_branch=true
+  fi
+
+  if ! git merge-base --is-ancestor "$base_sha" HEAD; then
+    echo "❌ '$hotfix_branch' has diverged from origin. Rebase it onto origin first." >&2
+    exit 1
+  fi
+  if [ "$(git rev-list --count "$base_sha..HEAD")" -eq 0 ]; then
+    echo "❌ Nothing to continue: '$hotfix_branch' has no commits beyond origin." >&2
+    exit 1
+  fi
+
+  # apply-fix does this check around its own cherry-pick, which a resolved conflict skips.
+  echo "Checking that native code didn't change..."
+  generate_fingerprint() { npx @expo/fingerprint fingerprint:generate | jq -r '.hash'; }
+  git checkout --quiet --detach "$base_sha"
+  before=$(generate_fingerprint || true)
+  git checkout --quiet "$hotfix_branch"
+  after=$(generate_fingerprint || true)
+  if [ -z "$before" ] || [ -z "$after" ]; then
+    echo "❌ Couldn't generate the native fingerprint." >&2
+    exit 1
+  fi
+  if [ "$before" != "$after" ]; then
+    echo "❌ Native code changed! You cannot use Expo Updates for this hotfix." >&2
+    echo "   Drop the commit(s) with 'git reset --hard origin/$hotfix_branch' (or '$base_sha' for a new" >&2
+    echo "   branch) and follow the native hotfix process: docs/deploy_a_hotfix.md" >&2
+    exit 1
+  fi
+
+  # Every commit being added is a revert, or none is.
+  if [ -z "$(git log --format='%s' "$base_sha..HEAD" | grep -v '^Revert "' || true)" ]; then
+    revert_mode=true
+  fi
+else
+  # Create the branch the first time; otherwise add on top of what's already live. Never re-cut
+  # it from the release branch, or every earlier hotfix for this version is dropped.
+  if git rev-parse --verify --quiet "origin/$hotfix_branch" >/dev/null; then
+    # 'checkout -B' below would throw away a conflict resolution that was never pushed.
+    if git rev-parse --verify --quiet "$hotfix_branch" >/dev/null \
+      && [ "$(git rev-list --count "origin/$hotfix_branch..$hotfix_branch")" -gt 0 ]; then
+      echo "❌ Local '$hotfix_branch' has commits that aren't on origin. If you resolved a" >&2
+      echo "   conflict, run '$0 $version --continue'. Otherwise delete the local branch." >&2
+      exit 1
+    fi
+    echo "Adding to the existing '$hotfix_branch'."
+    git checkout --quiet -B "$hotfix_branch" "origin/$hotfix_branch"
+    new_branch=false
+  else
+    if git rev-parse --verify --quiet "$hotfix_branch" >/dev/null; then
+      echo "❌ A local '$hotfix_branch' exists but isn't on origin. If you resolved a conflict," >&2
+      echo "   run '$0 $version --continue'. Otherwise delete the local branch." >&2
+      exit 1
+    fi
+    echo "Creating '$hotfix_branch' from '$release_branch'."
+    git checkout --quiet -b "$hotfix_branch" "origin/$release_branch"
+    new_branch=true
+  fi
+
+  base_sha=$(git rev-parse HEAD)
+fi
+
+# Resolves the commit to revert to its form on this branch: callers reach for the SHA they see
+# on main, but what has to be reverted is the cherry-pick of it.
+resolve_on_branch() {
+  local wanted=$1
+
+  if git merge-base --is-ancestor "$wanted" HEAD 2>/dev/null; then
+    echo "$wanted"
+    return
+  fi
+
+  local picked
+  picked=$(git log --format='%H' --grep="cherry picked from commit $wanted" "$base_sha..HEAD" | head -n1)
+  if [ -z "$picked" ]; then
+    picked=$(git log --format='%H' --grep="cherry picked from commit $wanted" | head -n1)
+  fi
+
+  if [ -z "$picked" ]; then
+    echo "❌ ${wanted:0:8} isn't on '$hotfix_branch', and nothing on it was cherry-picked from" >&2
+    echo "   that commit. Pass the SHA as it appears on the hotfix branch." >&2
+    exit 1
+  fi
+
+  echo "$picked"
+}
+
+if [ "$continue_mode" = false ]; then
+  for sha in "${shas[@]}"; do
+    if [ "$revert_mode" = true ]; then
+      target=$(resolve_on_branch "$sha")
+      [ "$target" = "$sha" ] || echo "   ${sha:0:8} was cherry-picked as ${target:0:8}"
+      echo "Reverting ${target:0:8}..."
+      git revert --no-edit "$target"
+    else
+      echo "Applying ${sha:0:8}..."
+      ./scripts/deploys/expo-updates/apply-fix "$sha"
+    fi
+  done
+fi
+
+echo "Pushing '$hotfix_branch'..."
+git push --quiet origin "$hotfix_branch"
+
+# The changelog of what this hotfix adds. Cherry-picks keep the "(#1234)" subject, so the PR
+# numbers still resolve.
+echo "Generating changelog..."
+#
+# The compare runs against the GitHub API, which would resolve a literal HEAD to main rather than
+# this branch, so pass the resolved SHA (the branch is already pushed above).
+head_sha=$(git rev-parse HEAD)
+changelog=$(yarn --silent generate-changelog "$base_sha" "$head_sha" --plain || true)
+[ -n "$changelog" ] || changelog="_No changelog entries found — add them by hand._"
+
+commits=$(git log --pretty='- %s (`%h`)' "$base_sha"..HEAD)
+
+# '// empty' matters: without it jq prints the string "null" for an empty list.
+# 'gh pr list --head' matches on the branch name alone, so it also returns fork PRs whose head branch
+# happens to be called the same; only a PR from this repository can be the hotfix PR.
+existing_pr=$(gh pr list --head "$hotfix_branch" --state all --json number,isCrossRepository \
+  --jq '[.[] | select(.isCrossRepository | not)] | .[0].number // empty' || true)
+
+if [ "$revert_mode" = true ]; then
+  heading_verb="Reverted"
+else
+  heading_verb="Applied"
+fi
+
+# The heading carries the commit this was applied on top of, which is how CI works out which
+# sections are going out in a given production publish: everything from the section whose base is
+# the last published commit onwards. It deliberately isn't a counter — several sections can be
+# applied before anyone publishes, so a counter here would disagree with the release's own
+# "hotfix N", which counts publishes.
+section=$(cat <<SECTION
+
+## $heading_verb on top of \`$(git rev-parse --short "$base_sha")\` · $(date -u +%Y-%m-%d)
+
+$commits
+
+### Changelog
+
+\`\`\`
+$changelog
+\`\`\`
+
+### QA
+
+- [ ] Sanity-checked on the $version build from Firebase App Tester, via Dev Menu → Expo Updates → canary
+SECTION
+)
+
+if [ -z "$existing_pr" ]; then
+  echo "Opening the hotfix PR..."
+  template=".github/PULL_REQUEST_TEMPLATE/hotfix.md"
+  if [ -f "$template" ]; then
+    body=$(cat "$template")
+    # Split on the marker rather than using ${body//marker/$section}: bash 5.2 turns on
+    # patsub_replacement, which rewrites every '&' in the replacement, and quoting the replacement
+    # to stop that leaves literal quotes behind on the bash 3.2 that macOS ships.
+    marker='<!-- hotfix-sections -->'
+    if [[ "$body" == *"$marker"* ]]; then
+      body="${body%%"$marker"*}${section}${body#*"$marker"}"
+    fi
+  else
+    # The branch was cut from a release that predates the template.
+    body="> [!WARNING]
+> **Do not merge.** This PR is the record of what is live over the air for v$version.
+
+#nochangelog
+$section"
+  fi
+  pr_url=$(gh pr create \
+    --base "$release_branch" \
+    --head "$hotfix_branch" \
+    --title "chore(hotfix): v$version hotfixes (Do not merge)" \
+    --body "$body")
+else
+  echo "Adding section to the existing hotfix PR..."
+  body=$(gh pr view "$existing_pr" --json body --jq '.body')
+  gh pr edit "$existing_pr" --body "$body
+$section" >/dev/null
+  pr_url=$(gh pr view "$existing_pr" --json url --jq '.url')
+fi
+
+[ "$new_branch" = true ] && echo "" && echo "ℹ️  '$hotfix_branch' is new — every later hotfix for $version goes on this same branch."
+
+cat <<NEXT
+
+✅ Your fix is on '$hotfix_branch'.
+   $pr_url
+
+A canary publish of this commit started automatically when the branch was pushed:
+  https://github.com/artsy/eigen/actions/workflows/deploy-expo-update.yml?query=branch%3A$hotfix_branch
+
+Next:
+  1. Wait for that run to go green (~10-20 min)
+  2. QA it on the $version build from Firebase App Tester
+     (Dev Menu → Expo Updates → canary → relaunch)
+  3. ./scripts/deploys/expo-updates/deploy-to-expo-updates-ci production "<description>"
+NEXT
