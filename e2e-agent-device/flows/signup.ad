@@ -22,6 +22,8 @@ wait 'text="First and last name"' 15000
 wait absent 'id="password"' 10000
 fill 'text="First and last name"' "Test McTest"
 press 'label="Accept terms and privacy policy checkbox"'
-press 'label="Continue" || text="Continue"'
+# This screen's Continue has its own accessibility label, so it can't match the password screen's
+# Continue while both are on screen during the transition
+press 'label="Continue to complete sign up"'
 wait 'label="Where are you in your art collecting journey?" || text="Where are you in your art collecting journey?"' 30000
 close
