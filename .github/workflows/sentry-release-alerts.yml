@@ -15,15 +15,6 @@ on:
         description: 'JSON array of Sentry release versions, e.g. ["ios-9.21.0-2026.10.15.09"]'
         required: true
         type: string
-      supersede_previous:
-        description: >-
-          Disable the earlier detectors for this same platform and app version once the new one
-          exists. Used by Expo Updates, where each hotfix replaces the bundle the previous one
-          shipped, so the older detector is left watching a release nobody runs. Native releases
-          leave this false: users who haven't updated are still on the older build.
-        required: false
-        default: false
-        type: boolean
     secrets:
       sentry_auth_token:
         required: true
@@ -188,46 +179,3 @@ jobs:
                 ]
               }
             }"
-
-      - name: Disable superseded detectors
-        if: inputs.supersede_previous
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.sentry_auth_token }}
-          RELEASE_VERSION: ${{ matrix.release_version }}
-        run: |
-          set -o pipefail
-
-          # An Expo Update replaces the whole JS bundle, so once this release is out nobody is
-          # running the previous one. Its detector would keep evaluating a crash rate over a
-          # shrinking handful of sessions, which gets noisy and then meaningless.
-          #
-          # Everything up to the publish timestamp, e.g. "ios-expo-production-9.21.0-". Derived
-          # from this matrix entry so it stays platform-scoped: iOS must not disable Android's
-          # detector. It is version-scoped too, so the native release's own detector survives —
-          # users who haven't taken the update are still on that build — as do other versions.
-          # The trailing "-" keeps 9.2.1 from matching 9.2.10.
-          keep="Release Crashes Threshold - ${RELEASE_VERSION}"
-          prefix="Release Crashes Threshold - ${RELEASE_VERSION%-*}-"
-
-          # Newest first, for the same reason as the find-before-create above: anything from this
-          # version's earlier hotfixes is recent.
-          superseded=$(curl --fail-with-body -s -X GET "${SENTRY_API}/detectors/?project=eigen&enabled=true&sortBy=-id&per_page=100" \
-            -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
-            | jq -r --arg prefix "$prefix" --arg keep "$keep" \
-              '.[] | select(.name | startswith($prefix)) | select(.name != $keep)
-                   | select(.enabled == true) | .id')
-
-          if [ -z "$superseded" ]; then
-            echo "Nothing to supersede for '${prefix}'."
-            exit 0
-          fi
-
-          # The bulk endpoint, because it takes `enabled` on its own — the single-detector PUT
-          # requires the full definition. Without any `id` it would disable every detector in the
-          # org, which the empty check above rules out.
-          echo "Disabling superseded detectors:" $superseded
-          ids=$(printf 'id=%s&' $superseded)
-          curl --fail-with-body -s -X PUT "${SENTRY_API}/detectors/?${ids%&}" \
-            -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
-            -H 'Content-Type: application/json' \
-            -d '{ "enabled": false }'

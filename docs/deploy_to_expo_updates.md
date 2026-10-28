@@ -250,17 +250,18 @@ Every production publish creates a Sentry crash-rate alert per platform, the sam
 release gets: crash-free sessions under 99.5% over two hours warns, under 99.2% is critical,
 and it resolves at 99.7%. It notifies `#mobile-alerts`.
 
-Each publish **disables the alert from the previous hotfix** for the same version and platform.
-An Expo Update replaces the whole JS bundle, so once a new one is out nobody is running the old
-one, and its alert would be judging a crash rate on a handful of leftover sessions. The store
-release's own alert is left alone — users who haven't taken the update are still on that build.
+Alerts are never disabled automatically. Users who haven't cold-started the app since a publish,
+or who are outside a staged rollout, are still on the previous bundle, so the previous hotfix's
+alert and the store release's alert keep watching them. Disable old alerts in Sentry by hand once
+a version is no longer in use.
 
 The alert is created at any rollout percentage, as a store release's is during its phased
 rollout. Raising the rollout later doesn't touch it.
 
 > [!NOTE]
 > The alert comes from the run's `sentry-alerts` job, after the publish itself. If that job fails,
-> the update is live with nothing watching it — re-run the job.
+> the update is live with nothing watching it — re-run the job. A re-run won't create a second
+> alert for the same release.
 
 ### Rolling back
 
@@ -275,11 +276,6 @@ your choice as the channel's latest.
 > A rollback doesn't change the branch, so the tip still contains the rolled-back code and the gate
 > can't tell. Run `start-hotfix --revert <sha>` before the next production publish, or the next
 > hotfix will ship it again.
-
-Rolling back to an **earlier hotfix** brings back a bundle whose crash alert was disabled when the
-next hotfix shipped (see [Crash alerts](#crash-alerts)). Re-enable it in Sentry — it's the monitor
-named `Release Crashes Threshold - <that hotfix's tag>`. Rolling back to the embedded update needs
-nothing; the store release's alert is never disabled.
 
 ### Raising a rollout
 
