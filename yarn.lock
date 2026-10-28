@@ -22559,7 +22559,7 @@ __metadata:
 
 "react-native@patch:react-native@npm%3A0.86.3#~/.yarn/patches/react-native-npm-0.86.3-shadow-tree-flag.patch":
   version: 0.86.3
-  resolution: "react-native@patch:react-native@npm%3A0.86.3#~/.yarn/patches/react-native-npm-0.86.3-shadow-tree-flag.patch::version=0.86.3&hash=72826e"
+  resolution: "react-native@patch:react-native@npm%3A0.86.3#~/.yarn/patches/react-native-npm-0.86.3-shadow-tree-flag.patch::version=0.86.3&hash=d774a3"
   dependencies:
     "@react-native/assets-registry": "npm:0.86.3"
     "@react-native/codegen": "npm:0.86.3"
@@ -22604,7 +22604,7 @@ __metadata:
       optional: true
   bin:
     react-native: cli.js
-  checksum: 10c0/d1d1ea13316937fec60653c73bb3d227251a9ed6386358f7eb0751abb02a5fb7e9c6076b1ff9b4aef5ca917c46c504fc2e5ab12cdcd0e4fa4324bab9e79bb794
+  checksum: 10c0/0f8bb7881e20f63d6c8598ee3b528bcbd77a619c139e9023badd5dabe73abd3a8266a9e5c34e0db7d8ff9f0e8431d2894ea7430791056c01dad84598bbd72e1e
   languageName: node
   linkType: hard
 

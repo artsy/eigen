@@ -186,6 +186,25 @@ When reanimated adopts these by default.
 
 We also patch `react-native` (`ReactNativeFeatureFlagsDefaults.h`) to flip `preventShadowTreeCommitExhaustion()` to return `true`, which is required for these flags to behave correctly.
 
+The same patch file also carries the IntersectionObserver hunk, see [IntersectionObserver native flag](#intersectionobserver-native-flag-react-native-patch--mainapplicationkt). Keep both hunks when rebuilding it.
+
+## IntersectionObserver native flag (react-native patch + MainApplication.kt)
+
+#### When can we remove this:
+
+When React Native enables `enableIntersectionObserverByDefault` in its stable release level (it's currently only on for canary/experimental). Then delete the hunk from `.yarn/patches/react-native-npm-0.86.3-shadow-tree-flag.patch`, `enableIntersectionObserver()` from `MainApplication.kt`, and the global `IntersectionObserver` types in `typings/global.d.ts`. Re-check on every RN bump.
+
+#### Explanation/Context:
+
+`Sentinel` (`src/app/utils/Sentinel.tsx`) used to poll `measure()` every second per instance to detect viewport visibility. Behind the `AREnableIntersectionObserverSentinel` feature flag it now uses RN's IntersectionObserver Web API instead, falling back to polling when the flag is off or the API is unavailable.
+
+In RN 0.86 that API is gated by the native `enableIntersectionObserverByDefault` feature flag, which controls both the JS global and the registration of the `NativeIntersectionObserverCxx` turbo module, so it has to be enabled natively on each platform:
+
+- **iOS** — the react-native patch flips `enableIntersectionObserverByDefault()` to return `true` in `ReactNativeFeatureFlagsDefaults.h`. This works because we build React Native from source on iOS.
+- **Android** — the C++ defaults header isn't used at runtime: `DefaultNewArchitectureEntryPoint.load()` installs a Kotlin flags provider (`ReactNativeFeatureFlagsOverrides_RNOSS_Stable_Android`) that C++ reads through JNI. So `MainApplication.kt` calls `ReactNativeFeatureFlags.dangerouslyForceOverride(...)` right after `loadReactNative(this)`, with the stable defaults plus this flag, and only on the stable release level.
+
+The native flag only makes the API available; the kill switch is the `AREnableIntersectionObserverSentinel` echo flag.
+
 ## react-native-webview passing constant for decelerationRate prop
 
 #### When can we remove this:

@@ -219,6 +219,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableNewHomeFeed",
   },
+  AREnableIntersectionObserverSentinel: {
+    description: "Use IntersectionObserver for viewport detection in Sentinel",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableIntersectionObserverSentinel",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

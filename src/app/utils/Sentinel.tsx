@@ -9,6 +9,7 @@
  */
 
 import { Flex } from "@artsy/palette-mobile"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { FC, ReactNode, useEffect, useRef, useState } from "react"
 import { Dimensions, View } from "react-native"
 
@@ -34,7 +35,61 @@ export interface Props {
 
 const RNView = View as any
 
-export const Sentinel: FC<Props> = ({ children, onChange, threshold = DEFAULT_THRESHOLD }) => {
+export const Sentinel: FC<Props> = (props) => {
+  const enableIntersectionObserver = useFeatureFlag("AREnableIntersectionObserverSentinel")
+
+  if (enableIntersectionObserver && typeof IntersectionObserver !== "undefined") {
+    return <IntersectionObserverSentinel {...props} />
+  }
+
+  return <PollingSentinel {...props} />
+}
+
+const IntersectionObserverSentinel: FC<Props> = ({
+  children,
+  onChange,
+  threshold = DEFAULT_THRESHOLD,
+}) => {
+  const viewRef = useRef<View>(null)
+  const onChangeRef = useRef(onChange)
+  // Without children the sentinel has zero area, which never crosses a threshold above 0
+  const effectiveThreshold = children ? threshold : 0
+
+  useEffect(() => {
+    onChangeRef.current = onChange
+  }, [onChange])
+
+  useEffect(() => {
+    const target = viewRef.current
+
+    if (!target || !IntersectionObserver) {
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[entries.length - 1]
+        if (entry) {
+          onChangeRef.current(entry.isIntersecting)
+        }
+      },
+      { threshold: effectiveThreshold }
+    )
+
+    observer.observe(target)
+
+    return () => observer.disconnect()
+  }, [effectiveThreshold])
+
+  return (
+    <View collapsable={false} ref={viewRef}>
+      {children}
+      <Flex height={0} />
+    </View>
+  )
+}
+
+const PollingSentinel: FC<Props> = ({ children, onChange, threshold = DEFAULT_THRESHOLD }) => {
   const myView: any = useRef(null)
 
   const [isVisible, setIsVisible] = useState<boolean>(false)

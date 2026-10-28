@@ -16,6 +16,8 @@ import com.facebook.react.ReactHost
 import com.facebook.react.common.ReleaseLevel
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
+import com.facebook.react.internal.featureflags.ReactNativeFeatureFlags
+import com.facebook.react.internal.featureflags.ReactNativeNewArchitectureFeatureFlagsDefaults
 import com.segment.analytics.Analytics
 import com.reactnativekeysjsi.KeysModule.getSecureFor
 
@@ -43,6 +45,7 @@ class MainApplication : Application(), ReactApplication {
         }
 
         loadReactNative(this)
+        enableIntersectionObserver()
 
         ArtsyNativeModule.didLaunch(this.getSharedPreferences("launchConfig", MODE_PRIVATE))
 
@@ -62,5 +65,24 @@ class MainApplication : Application(), ReactApplication {
     override fun onConfigurationChanged(newConfig: Configuration) {
       super.onConfigurationChanged(newConfig)
       ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig)
+    }
+
+    // IntersectionObserver is only enabled in RN's canary/experimental release levels.
+    // Turn it on for stable as well, JS decides whether to use it via the
+    // AREnableIntersectionObserverSentinel feature flag (see app/utils/Sentinel.tsx).
+    // iOS gets the same flag via .yarn/patches/react-native-npm-0.86.3-shadow-tree-flag.patch
+    private fun enableIntersectionObserver() {
+        if (DefaultNewArchitectureEntryPoint.releaseLevel != ReleaseLevel.STABLE) {
+            return
+        }
+
+        val accessedFlags = ReactNativeFeatureFlags.dangerouslyForceOverride(
+            object : ReactNativeNewArchitectureFeatureFlagsDefaults() {
+                override fun enableIntersectionObserverByDefault(): Boolean = true
+            }
+        )
+        if (accessedFlags != null) {
+            Log.w("MainApplication", "Feature flags accessed before override: $accessedFlags")
+        }
     }
 }
