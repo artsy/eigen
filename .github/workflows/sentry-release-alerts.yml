@@ -37,6 +37,9 @@ env:
 jobs:
   sentry-alert-workflow:
     runs-on: ubuntu-latest
+    # Callers wait on this job before posting to Slack, so a hung Sentry call must fail fast
+    # rather than hold their message back for GitHub's 6-hour default.
+    timeout-minutes: 5
     outputs:
       workflow_id: ${{ steps.find_or_create.outputs.workflow_id }}
 
@@ -52,7 +55,7 @@ jobs:
           # only the per-release detector (crash rate thresholds) is release-specific.
           workflow_name="Mobile Release Crash Rate"
 
-          existing_id=$(curl --fail-with-body -s -X GET "${SENTRY_API}/workflows/" \
+          existing_id=$(curl --fail-with-body --max-time 30 -s -X GET "${SENTRY_API}/workflows/" \
             -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
             | jq -r --arg name "$workflow_name" '.[] | select(.name == $name) | .id' | head -n1)
 
@@ -61,7 +64,7 @@ jobs:
             workflow_id="$existing_id"
           else
             echo "Creating alert '$workflow_name'"
-            workflow_id=$(curl --fail-with-body -X POST "${SENTRY_API}/workflows/" \
+            workflow_id=$(curl --fail-with-body --max-time 30 -X POST "${SENTRY_API}/workflows/" \
               -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
               -H 'Content-Type: application/json' \
               -d "{
@@ -120,6 +123,7 @@ jobs:
   create-sentry-alerts:
     needs: sentry-alert-workflow
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     strategy:
       # One platform failing shouldn't stop the other from getting its detector.
       fail-fast: false
@@ -127,6 +131,25 @@ jobs:
         release_version: ${{ fromJson(inputs.release_versions) }}
 
     steps:
+      - name: Make sure the Sentry release exists
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.sentry_auth_token }}
+          RELEASE_VERSION: ${{ matrix.release_version }}
+        run: |
+          # Sentry rejects a detector whose query names a release it doesn't know yet. Store builds
+          # create theirs in fastlane, but an Expo Update's release only exists once its sourcemap
+          # upload succeeds - and that upload is allowed to fail - or once a device first reports.
+          # Creating it is idempotent (an existing release comes back as 208).
+          #
+          # Best effort: if this fails, the detector POST below still succeeds whenever the release
+          # already exists, and fails loudly when it doesn't.
+          if ! curl --fail-with-body --max-time 30 -s -X POST "${SENTRY_API}/releases/" \
+            -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
+            -H 'Content-Type: application/json' \
+            -d "{ \"version\": \"${RELEASE_VERSION}\", \"projects\": [\"eigen\"] }" > /dev/null; then
+            echo "::warning::Couldn't create Sentry release ${RELEASE_VERSION}; the detector needs it to exist."
+          fi
+
       - name: Create Sentry crash rate monitor
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.sentry_auth_token }}
@@ -141,7 +164,7 @@ jobs:
           # detector for the same release — two identical Slack alerts for every incident.
           # The list is capped at 100 per page and sorts oldest first by default, so ask for the
           # newest first: that's where a detector for a release being published right now is.
-          existing_id=$(curl --fail-with-body -s -X GET "${SENTRY_API}/detectors/?project=eigen&sortBy=-id&per_page=100" \
+          existing_id=$(curl --fail-with-body --max-time 30 -s -X GET "${SENTRY_API}/detectors/?project=eigen&sortBy=-id&per_page=100" \
             -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
             | jq -r --arg name "$detector_name" '.[] | select(.name == $name) | .id' | head -n1)
 
@@ -150,7 +173,7 @@ jobs:
             exit 0
           fi
 
-          curl --fail-with-body -X POST "${SENTRY_API}/projects/eigen/detectors/" \
+          curl --fail-with-body --max-time 30 -X POST "${SENTRY_API}/projects/eigen/detectors/" \
             -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
             -H 'Content-Type: application/json' \
             -d "{

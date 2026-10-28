@@ -259,9 +259,10 @@ The alert is created at any rollout percentage, as a store release's is during i
 rollout. Raising the rollout later doesn't touch it.
 
 > [!NOTE]
-> The alert comes from the run's `sentry-alerts` job, after the publish itself. If that job fails,
-> the update is live with nothing watching it — re-run the job. A re-run won't create a second
-> alert for the same release.
+> The alert comes from the run's `sentry-alerts` job, after the publish itself. The Slack message
+> and the hotfix PR comment wait for it and say whether it worked. If it failed, the update is live
+> with nothing watching it — re-run the job. A re-run won't create a second alert, but it does post
+> the Slack message and PR comment again, marked as a re-run, with the new result.
 
 ### Rolling back
 
