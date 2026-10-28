@@ -274,7 +274,7 @@ for FLOW in $(platform_flows); do
     ATTEMPT_START=$(now_ms)
     mkdir -p "$ATTEMPT_DIR"
 
-    # Replaces e2e/flows/signup.js. New per attempt, since a failed attempt may already have created the account.
+    # New per attempt, since a failed attempt may already have created the account.
     TIMESTAMP=$(date +%s)
     export AD_VAR_SIGNUP_EMAIL="mobileQA+agentdevice-$TIMESTAMP@qa.qa"
     export AD_VAR_SIGNUP_PASSWORD="Pwd$TIMESTAMP" # pragma: allowlist secret
