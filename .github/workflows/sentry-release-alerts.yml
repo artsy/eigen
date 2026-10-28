@@ -64,57 +64,45 @@ jobs:
             workflow_id="$existing_id"
           else
             echo "Creating alert '$workflow_name'"
+
+            # One action filter per priority (75 = critical, 50 = warning), both posting to Slack.
+            payload=$(jq -n \
+              --arg name "$workflow_name" \
+              --arg owner "team:${SENTRY_OWNER_TEAM}" \
+              --arg integration_id "$SENTRY_SLACK_INTEGRATION_ID" \
+              --arg channel_id "$SENTRY_SLACK_CHANNEL_ID" '
+              def slack_filter($priority): {
+                logicType: "any",
+                conditions: [
+                  { type: "issue_priority_greater_or_equal", comparison: $priority, conditionResult: true },
+                  { type: "issue_priority_deescalating", comparison: $priority, conditionResult: true }
+                ],
+                actions: [
+                  {
+                    type: "slack",
+                    integrationId: $integration_id,
+                    config: {
+                      targetType: "specific",
+                      targetIdentifier: $channel_id,
+                      targetDisplay: "#mobile-alerts"
+                    },
+                    data: {},
+                    status: "active"
+                  }
+                ]
+              };
+              {
+                name: $name,
+                enabled: true,
+                owner: $owner,
+                triggers: { logicType: "any-short", conditions: [] },
+                action_filters: [slack_filter(75), slack_filter(50)]
+              }')
+
             workflow_id=$(curl --fail-with-body --max-time 30 -X POST "${SENTRY_API}/workflows/" \
               -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
               -H 'Content-Type: application/json' \
-              -d "{
-                \"name\": \"$workflow_name\",
-                \"enabled\": true,
-                \"owner\": \"team:${{ env.SENTRY_OWNER_TEAM }}\",
-                \"triggers\": { \"logicType\": \"any-short\", \"conditions\": [] },
-                \"action_filters\": [
-                  {
-                    \"logicType\": \"any\",
-                    \"conditions\": [
-                      { \"type\": \"issue_priority_greater_or_equal\", \"comparison\": 75, \"conditionResult\": true },
-                      { \"type\": \"issue_priority_deescalating\", \"comparison\": 75, \"conditionResult\": true }
-                    ],
-                    \"actions\": [
-                      {
-                        \"type\": \"slack\",
-                        \"integrationId\": \"${{ env.SENTRY_SLACK_INTEGRATION_ID }}\",
-                        \"config\": {
-                          \"targetType\": \"specific\",
-                          \"targetIdentifier\": \"${{ env.SENTRY_SLACK_CHANNEL_ID }}\",
-                          \"targetDisplay\": \"#mobile-alerts\"
-                        },
-                        \"data\": {},
-                        \"status\": \"active\"
-                      }
-                    ]
-                  },
-                  {
-                    \"logicType\": \"any\",
-                    \"conditions\": [
-                      { \"type\": \"issue_priority_greater_or_equal\", \"comparison\": 50, \"conditionResult\": true },
-                      { \"type\": \"issue_priority_deescalating\", \"comparison\": 50, \"conditionResult\": true }
-                    ],
-                    \"actions\": [
-                      {
-                        \"type\": \"slack\",
-                        \"integrationId\": \"${{ env.SENTRY_SLACK_INTEGRATION_ID }}\",
-                        \"config\": {
-                          \"targetType\": \"specific\",
-                          \"targetIdentifier\": \"${{ env.SENTRY_SLACK_CHANNEL_ID }}\",
-                          \"targetDisplay\": \"#mobile-alerts\"
-                        },
-                        \"data\": {},
-                        \"status\": \"active\"
-                      }
-                    ]
-                  }
-                ]
-              }" | jq -r '.id')
+              -d "$payload" | jq -r '.id')
             echo "Created alert '$workflow_name' (id: $workflow_id)"
           fi
 
@@ -143,10 +131,12 @@ jobs:
           #
           # Best effort: if this fails, the detector POST below still succeeds whenever the release
           # already exists, and fails loudly when it doesn't.
+          payload=$(jq -n --arg version "$RELEASE_VERSION" '{ version: $version, projects: ["eigen"] }')
+
           if ! curl --fail-with-body --max-time 30 -s -X POST "${SENTRY_API}/releases/" \
             -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
             -H 'Content-Type: application/json' \
-            -d "{ \"version\": \"${RELEASE_VERSION}\", \"projects\": [\"eigen\"] }" > /dev/null; then
+            -d "$payload" > /dev/null; then
             echo "::warning::Couldn't create Sentry release ${RELEASE_VERSION}; the detector needs it to exist."
           fi
 
@@ -173,32 +163,44 @@ jobs:
             exit 0
           fi
 
+          # --argjson makes jq fail loudly if the workflow ID or a threshold isn't a number, rather
+          # than sending Sentry malformed JSON.
+          payload=$(jq -n \
+            --arg name "$detector_name" \
+            --arg owner "team:${SENTRY_OWNER_TEAM}" \
+            --arg query "release:${RELEASE_VERSION}" \
+            --argjson workflow_id "$WORKFLOW_ID" \
+            --argjson critical "$SENTRY_ALERT_CRITICAL_THRESHOLD" \
+            --argjson warning "$SENTRY_ALERT_WARNING_THRESHOLD" \
+            --argjson resolve "$SENTRY_ALERT_RESOLVE_THRESHOLD" '
+            {
+              name: $name,
+              type: "metric_issue",
+              owner: $owner,
+              workflowIds: [$workflow_id],
+              dataSources: [
+                {
+                  queryType: 2,
+                  dataset: "metrics",
+                  aggregate: "percentage(sessions_crashed, sessions) AS _crash_rate_alert_aggregate",
+                  query: $query,
+                  timeWindow: 7200,
+                  environment: "production",
+                  eventTypes: []
+                }
+              ],
+              config: { detectionType: "static" },
+              conditionGroup: {
+                logicType: "any",
+                conditions: [
+                  { type: "lt", comparison: $critical, conditionResult: 75 },
+                  { type: "lt", comparison: $warning, conditionResult: 50 },
+                  { type: "gte", comparison: $resolve, conditionResult: 0 }
+                ]
+              }
+            }')
+
           curl --fail-with-body --max-time 30 -X POST "${SENTRY_API}/projects/eigen/detectors/" \
             -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
             -H 'Content-Type: application/json' \
-            -d "{
-              \"name\": \"$detector_name\",
-              \"type\": \"metric_issue\",
-              \"owner\": \"team:${{ env.SENTRY_OWNER_TEAM }}\",
-              \"workflowIds\": [${WORKFLOW_ID}],
-              \"dataSources\": [
-                {
-                  \"queryType\": 2,
-                  \"dataset\": \"metrics\",
-                  \"aggregate\": \"percentage(sessions_crashed, sessions) AS _crash_rate_alert_aggregate\",
-                  \"query\": \"release:${RELEASE_VERSION}\",
-                  \"timeWindow\": 7200,
-                  \"environment\": \"production\",
-                  \"eventTypes\": []
-                }
-              ],
-              \"config\": { \"detectionType\": \"static\" },
-              \"conditionGroup\": {
-                \"logicType\": \"any\",
-                \"conditions\": [
-                  { \"type\": \"lt\", \"comparison\": ${{ env.SENTRY_ALERT_CRITICAL_THRESHOLD }}, \"conditionResult\": 75 },
-                  { \"type\": \"lt\", \"comparison\": ${{ env.SENTRY_ALERT_WARNING_THRESHOLD }}, \"conditionResult\": 50 },
-                  { \"type\": \"gte\", \"comparison\": ${{ env.SENTRY_ALERT_RESOLVE_THRESHOLD }}, \"conditionResult\": 0 }
-                ]
-              }
-            }"
+            -d "$payload"
