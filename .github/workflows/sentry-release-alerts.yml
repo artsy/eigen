@@ -1,0 +1,228 @@
+name: Sentry release alerts
+
+# Creates a Sentry crash-rate detector per release, wired to the shared "Mobile Release Crash Rate"
+# alert so it notifies #mobile-alerts.
+#
+# Called by release.yml (native store releases) and deploy-expo-update.yml (production Expo
+# Updates). The release versions passed in must match `eigenSentryReleaseName()` exactly — the
+# detector's query is a literal string match — which is why callers pass the git tags fastlane
+# published rather than recomputing them.
+
+on:
+  workflow_call:
+    inputs:
+      release_versions:
+        description: 'JSON array of Sentry release versions, e.g. ["ios-9.21.0-2026.10.15.09"]'
+        required: true
+        type: string
+    secrets:
+      sentry_auth_token:
+        required: true
+      slack_channel_id:
+        required: true
+      slack_integration_id:
+        required: true
+      owner_team:
+        required: true
+
+env:
+  SENTRY_ALERT_CRITICAL_THRESHOLD: 99.2
+  SENTRY_ALERT_WARNING_THRESHOLD: 99.5
+  SENTRY_ALERT_RESOLVE_THRESHOLD: 99.7
+  SENTRY_API: https://sentry.io/api/0/organizations/artsynet
+  SENTRY_SLACK_CHANNEL_ID: ${{ secrets.slack_channel_id }}
+  SENTRY_SLACK_INTEGRATION_ID: ${{ secrets.slack_integration_id }}
+  SENTRY_OWNER_TEAM: ${{ secrets.owner_team }}
+
+jobs:
+  sentry-alert-workflow:
+    runs-on: ubuntu-latest
+    # Callers wait on this job before posting to Slack, so a hung Sentry call must fail fast
+    # rather than hold their message back for GitHub's 6-hour default.
+    timeout-minutes: 5
+    outputs:
+      workflow_id: ${{ steps.find_or_create.outputs.workflow_id }}
+
+    steps:
+      - name: Find or create Mobile Release Crash Rate workflow
+        id: find_or_create
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.sentry_auth_token }}
+        run: |
+          set -o pipefail
+
+          # Reuse the alert across releases so the Slack action isn't recreated every time -
+          # only the per-release detector (crash rate thresholds) is release-specific.
+          workflow_name="Mobile Release Crash Rate"
+
+          existing_id=$(curl --fail-with-body --max-time 30 -s -X GET "${SENTRY_API}/workflows/" \
+            -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
+            | jq -r --arg name "$workflow_name" '.[] | select(.name == $name) | .id' | head -n1)
+
+          if [ -n "$existing_id" ]; then
+            echo "Found existing alert '$workflow_name' (id: $existing_id)"
+            workflow_id="$existing_id"
+          else
+            echo "Creating alert '$workflow_name'"
+
+            # One action filter per priority (75 = critical, 50 = warning), both posting to Slack.
+            payload=$(jq -n \
+              --arg name "$workflow_name" \
+              --arg owner "team:${SENTRY_OWNER_TEAM}" \
+              --arg integration_id "$SENTRY_SLACK_INTEGRATION_ID" \
+              --arg channel_id "$SENTRY_SLACK_CHANNEL_ID" '
+              def slack_filter($priority): {
+                logicType: "any",
+                conditions: [
+                  { type: "issue_priority_greater_or_equal", comparison: $priority, conditionResult: true },
+                  { type: "issue_priority_deescalating", comparison: $priority, conditionResult: true }
+                ],
+                actions: [
+                  {
+                    type: "slack",
+                    integrationId: $integration_id,
+                    config: {
+                      targetType: "specific",
+                      targetIdentifier: $channel_id,
+                      targetDisplay: "#mobile-alerts"
+                    },
+                    data: {},
+                    status: "active"
+                  }
+                ]
+              };
+              {
+                name: $name,
+                enabled: true,
+                owner: $owner,
+                triggers: { logicType: "any-short", conditions: [] },
+                action_filters: [slack_filter(75), slack_filter(50)]
+              }')
+
+            workflow_id=$(curl --fail-with-body --max-time 30 -X POST "${SENTRY_API}/workflows/" \
+              -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
+              -H 'Content-Type: application/json' \
+              -d "$payload" | jq -er '.id')
+            echo "Created alert '$workflow_name' (id: $workflow_id)"
+          fi
+
+          # A 2xx without a usable id would otherwise become the string "null", and every detector
+          # built from it would be wired to no Slack action while the job reported success.
+          case "$workflow_id" in
+            ''|*[!0-9]*)
+              echo "::error::Sentry returned no usable workflow id ('$workflow_id')."
+              exit 1
+              ;;
+          esac
+
+          echo "workflow_id=$workflow_id" >> "$GITHUB_OUTPUT"
+
+  create-sentry-alerts:
+    needs: sentry-alert-workflow
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      # One platform failing shouldn't stop the other from getting its detector.
+      fail-fast: false
+      matrix:
+        release_version: ${{ fromJson(inputs.release_versions) }}
+
+    steps:
+      # An empty version would become the query `release:`, which matches everything. Callers pass
+      # only the platforms they published, so this catches a caller that forgot to filter.
+      - name: Check the release version
+        env:
+          RELEASE_VERSION: ${{ matrix.release_version }}
+        run: |
+          if [ -z "$RELEASE_VERSION" ]; then
+            echo "::error::Empty release version - callers must only pass platforms they published."
+            exit 1
+          fi
+
+      - name: Make sure the Sentry release exists
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.sentry_auth_token }}
+          RELEASE_VERSION: ${{ matrix.release_version }}
+        run: |
+          # Sentry rejects a detector whose query names a release it doesn't know yet. Store builds
+          # create theirs in fastlane, but an Expo Update's release only exists once its sourcemap
+          # upload succeeds - and that upload is allowed to fail - or once a device first reports.
+          # Creating it is idempotent (an existing release comes back as 208).
+          #
+          # Best effort: if this fails, the detector POST below still succeeds whenever the release
+          # already exists, and fails loudly when it doesn't.
+          payload=$(jq -n --arg version "$RELEASE_VERSION" '{ version: $version, projects: ["eigen"] }')
+
+          # Keep the body: it's the only clue to why this failed, e.g. a token without the
+          # project:releases scope.
+          if ! response=$(curl --fail-with-body --max-time 30 -s -X POST "${SENTRY_API}/releases/" \
+            -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
+            -H 'Content-Type: application/json' \
+            -d "$payload"); then
+            echo "::warning::Couldn't create Sentry release ${RELEASE_VERSION}; the detector needs it to exist. Sentry said: ${response}"
+          fi
+
+      - name: Create Sentry crash rate monitor
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.sentry_auth_token }}
+          RELEASE_VERSION: ${{ matrix.release_version }}
+          WORKFLOW_ID: ${{ needs.sentry-alert-workflow.outputs.workflow_id }}
+        run: |
+          set -o pipefail
+
+          detector_name="Release Crashes Threshold - ${RELEASE_VERSION}"
+
+          # Creating is not idempotent, so a re-run of this job would otherwise add a second
+          # detector for the same release — two identical Slack alerts for every incident.
+          # The list is capped at 100 per page and sorts oldest first by default, so ask for the
+          # newest first: that's where a detector for a release being published right now is.
+          existing_id=$(curl --fail-with-body --max-time 30 -s -X GET "${SENTRY_API}/detectors/?project=eigen&sortBy=-id&per_page=100" \
+            -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
+            | jq -r --arg name "$detector_name" '.[] | select(.name == $name) | .id' | head -n1)
+
+          if [ -n "$existing_id" ]; then
+            echo "Detector '$detector_name' already exists (id: $existing_id), leaving it alone."
+            exit 0
+          fi
+
+          # --argjson makes jq fail loudly if the workflow ID or a threshold isn't a number, rather
+          # than sending Sentry malformed JSON.
+          payload=$(jq -n \
+            --arg name "$detector_name" \
+            --arg owner "team:${SENTRY_OWNER_TEAM}" \
+            --arg query "release:${RELEASE_VERSION}" \
+            --argjson workflow_id "$WORKFLOW_ID" \
+            --argjson critical "$SENTRY_ALERT_CRITICAL_THRESHOLD" \
+            --argjson warning "$SENTRY_ALERT_WARNING_THRESHOLD" \
+            --argjson resolve "$SENTRY_ALERT_RESOLVE_THRESHOLD" '
+            {
+              name: $name,
+              type: "metric_issue",
+              owner: $owner,
+              workflowIds: [$workflow_id],
+              dataSources: [
+                {
+                  queryType: 2,
+                  dataset: "metrics",
+                  aggregate: "percentage(sessions_crashed, sessions) AS _crash_rate_alert_aggregate",
+                  query: $query,
+                  timeWindow: 7200,
+                  environment: "production",
+                  eventTypes: []
+                }
+              ],
+              config: { detectionType: "static" },
+              conditionGroup: {
+                logicType: "any",
+                conditions: [
+                  { type: "lt", comparison: $critical, conditionResult: 75 },
+                  { type: "lt", comparison: $warning, conditionResult: 50 },
+                  { type: "gte", comparison: $resolve, conditionResult: 0 }
+                ]
+              }
+            }')
+
+          curl --fail-with-body --max-time 30 -X POST "${SENTRY_API}/projects/eigen/detectors/" \
+            -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
+            -H 'Content-Type: application/json' \
+            -d "$payload"

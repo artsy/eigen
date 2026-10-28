@@ -242,6 +242,27 @@ repo-settings work and isn't set up yet.
 - a **Slack message** carrying the same monitoring links a store release gets
 - a **comment on the hotfix PR** saying it shipped, who it went to, and where to watch it
 - a **section in the hotfix PR**, written by `start-hotfix`
+- a **Sentry crash-rate alert** on the new release (see below)
+
+### Crash alerts
+
+Every production publish creates a Sentry crash-rate alert per platform, the same one a store
+release gets: crash-free sessions under 99.5% over two hours warns, under 99.2% is critical,
+and it resolves at 99.7%. It notifies `#mobile-alerts`.
+
+Alerts are never disabled automatically. Users who haven't cold-started the app since a publish,
+or who are outside a staged rollout, are still on the previous bundle, so the previous hotfix's
+alert and the store release's alert keep watching them. Disable old alerts in Sentry by hand once
+a version is no longer in use.
+
+The alert is created at any rollout percentage, as a store release's is during its phased
+rollout. Raising the rollout later doesn't touch it.
+
+> [!NOTE]
+> The alert comes from the run's `sentry-alerts` job, after the publish itself. The Slack message
+> and the hotfix PR comment wait for it and say whether it worked. If it failed, the update is live
+> with nothing watching it — re-run the job. A re-run won't create a second alert, but it does post
+> the Slack message and PR comment again, marked as a re-run, with the new result.
 
 ### Rolling back
 

@@ -128,21 +128,39 @@ lane :notify_expo_update_published do |options|
   android_tag = options[:android_tag]
   release_url = options[:release_url]
   pr_url = options[:pr_url]
+  alert_result = options[:alert_result]
+  notifications_rerun = options[:notifications_rerun].to_s == 'true'
+  run_attempt = options[:run_attempt].to_i
 
   rollout_line = (rollout_percentage.nil? || rollout_percentage.to_s.empty?) ? 'Rollout: all users' : "Rollout: #{rollout_percentage}% of users"
+
+  github_repo = ENV['GITHUB_REPOSITORY']
+  run_id = ENV['GITHUB_RUN_ID']
+  run_url = "https://github.com/#{github_repo}/actions/runs/#{run_id}"
+
+  alert_line = if alert_result == 'success'
+                 ':bell: A Sentry crash-rate alert is watching this release.'
+               else
+                 # One platform can succeed while the other fails (fail-fast: false), so don't
+                 # claim the release is entirely unwatched - the run says which leg failed.
+                 ":warning: *At least one platform has no Sentry crash-rate alert.* Re-run the sentry-alerts job: #{run_url}"
+               end
+
+  # Re-running a failed sentry-alerts job re-runs this lane too, so say it isn't a second publish.
+  # The workflow works out whether deploy itself ran again - run_attempt alone can't tell.
+  rerun_line = notifications_rerun ? "_Re-run of the notifications (attempt #{run_attempt}) - nothing was republished._" : nil
 
   message = <<~MSG
               :rocket: :iphone:
               An Expo Update was published to *production*.
               #{rollout_line}
               Description: #{description}
+              #{alert_line}
             MSG
-
-  github_repo = ENV['GITHUB_REPOSITORY']
-  run_id = ENV['GITHUB_RUN_ID']
+  message += rerun_line if rerun_line
 
   # Same monitoring links as a store release, so an OTA update is watched the same way.
-  payload = { 'GitHub Actions' => "https://github.com/#{github_repo}/actions/runs/#{run_id}" }
+  payload = { 'GitHub Actions' => run_url }
   payload['Release'] = release_url if release_url && !release_url.empty?
   payload['Hotfix PR'] = pr_url if pr_url && !pr_url.empty?
   payload['iOS health'] = sentry_release_url(ios_tag) if ios_tag && !ios_tag.empty?
