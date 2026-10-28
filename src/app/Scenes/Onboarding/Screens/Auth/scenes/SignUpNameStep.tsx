@@ -170,7 +170,7 @@ const SignUpNameStepForm: React.FC = () => {
         disabled={!isValid || !values.name}
         loading={isSubmitting}
         accessibilityLabel="Continue to complete sign up"
-        accessibilityHint="Continue to the next screen"
+        accessibilityHint="Creates your Artsy account"
       >
         Continue
       </Button>
