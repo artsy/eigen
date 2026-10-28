@@ -34,6 +34,9 @@ jobs:
 
       - name: Setup Node
         uses: ./.github/actions/setup-node
+        with:
+          # this job never runs `yarn install`, so there is no yarn cache to save
+          package-manager-cache: "false"
 
       - name: Enable KVM group perms
         run: |
