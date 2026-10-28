@@ -75,6 +75,11 @@ jobs:
     outputs:
       ios_tag: ${{ steps.deploy.outputs.ios_expo_tag }}
       android_tag: ${{ steps.deploy.outputs.android_expo_tag }}
+      sentry_release_versions: ${{ steps.sentry_release_versions.outputs.json }}
+      # The attempt that actually published. A re-run of only the failed jobs keeps a successful
+      # job's outputs, so this stays behind github.run_attempt exactly when the notifications are
+      # re-running on their own - which is what lets them say nothing was republished.
+      publish_attempt: ${{ github.run_attempt }}
       release_title: ${{ steps.production_gate.outputs.release_title }}
       pr_number: ${{ steps.production_gate.outputs.pr_number }}
       release_notes: ${{ steps.production_gate.outputs.release_notes }}
@@ -139,6 +144,20 @@ jobs:
           fi
           ./scripts/deploys/expo-updates/deploy-to-expo-updates "${args[@]}"
 
+      # fastlane only writes a tag for the platforms it published, so a single-platform publish
+      # leaves the other one empty. An empty version would reach Sentry as `release:`, so drop it
+      # here rather than letting the alerts workflow create a detector matching every release.
+      - name: Collect the Sentry release versions
+        id: sentry_release_versions
+        env:
+          IOS_TAG: ${{ steps.deploy.outputs.ios_expo_tag }}
+          ANDROID_TAG: ${{ steps.deploy.outputs.android_expo_tag }}
+        run: |
+          json=$(jq -cn --arg ios "$IOS_TAG" --arg android "$ANDROID_TAG" \
+            '[$ios, $android] | map(select(. != ""))')
+          echo "Sentry release versions: $json"
+          echo "json=$json" >> "$GITHUB_OUTPUT"
+
       - name: Notify Slack of production publish failure
         if: failure() && inputs.deployment == 'production'
         run: bundle exec fastlane notify_expo_update_failed
@@ -178,6 +197,8 @@ jobs:
           RELEASE_URL: ${{ needs.github-release.result == 'success' && format('{0}/{1}/releases/tag/{2}', github.server_url, github.repository, needs.deploy.outputs.ios_tag) || '' }}
           ROLLOUT_PERCENTAGE: ${{ inputs.rollout_percentage }}
           ALERT_RESULT: ${{ needs.sentry-alerts.result }}
+          # Set only when the notifications are re-running on their own, see the deploy job.
+          NOTIFICATIONS_RERUN: ${{ needs.deploy.outputs.publish_attempt != github.run_attempt }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
           REPO: ${{ github.repository }}
         run: |
@@ -192,11 +213,13 @@ jobs:
           if [ "$ALERT_RESULT" = "success" ]; then
             alert="🔔 A Sentry crash-rate alert is watching this release and notifies \`#mobile-alerts\`."
           else
-            alert="⚠️ **Creating the Sentry crash-rate alert failed, so nothing is watching this release.** Re-run the \`sentry-alerts\` job: ${run_url}"
+            # One platform can succeed while the other fails (fail-fast: false), so don't claim
+            # the release is entirely unwatched - the run says which leg failed.
+            alert="⚠️ **At least one platform has no Sentry crash-rate alert.** Re-run the \`sentry-alerts\` job: ${run_url}"
           fi
 
           rerun=""
-          [ "$RUN_ATTEMPT" -gt 1 ] && rerun=" _(re-run of the notifications, attempt ${RUN_ATTEMPT} — nothing was republished)_"
+          [ "$NOTIFICATIONS_RERUN" = "true" ] && rerun=" _(re-run of the notifications, attempt ${RUN_ATTEMPT} — nothing was republished)_"
 
           gh pr comment "$PR_NUMBER" --repo "$REPO" --body "$(cat <<COMMENT
           🚀 **Published to production** — rolling out to ${rollout}.${rerun}
@@ -242,6 +265,7 @@ jobs:
           RELEASE_URL: ${{ needs.github-release.result == 'success' && format('{0}/{1}/releases/tag/{2}', github.server_url, github.repository, needs.deploy.outputs.ios_tag) || '' }}
           PR_NUMBER: ${{ needs.deploy.outputs.pr_number }}
           ALERT_RESULT: ${{ needs.sentry-alerts.result }}
+          NOTIFICATIONS_RERUN: ${{ needs.deploy.outputs.publish_attempt != github.run_attempt }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
         run: |
           pr_url=""
@@ -257,6 +281,7 @@ jobs:
             release_url:"$RELEASE_URL" \
             pr_url:"$pr_url" \
             alert_result:"$ALERT_RESULT" \
+            notifications_rerun:"$NOTIFICATIONS_RERUN" \
             run_attempt:"$RUN_ATTEMPT"
 
   sentry-alerts:
@@ -264,11 +289,11 @@ jobs:
     # At any rollout, like a store release's phased rollout: raising it later with update-rollout
     # runs nothing in CI, so this is the only chance to create the detector. notify-slack and
     # comment-on-hotfix-pr wait for it and report its result.
-    if: inputs.deployment == 'production' && needs.deploy.result == 'success'
+    if: inputs.deployment == 'production' && needs.deploy.result == 'success' && needs.deploy.outputs.sentry_release_versions != '[]'
     uses: ./.github/workflows/sentry-release-alerts.yml
     with:
-      release_versions: >-
-        ["${{ needs.deploy.outputs.ios_tag }}", "${{ needs.deploy.outputs.android_tag }}"]
+      # Only the platforms this run published - see the deploy job's collect step.
+      release_versions: ${{ needs.deploy.outputs.sentry_release_versions }}
     secrets:
       sentry_auth_token: ${{ secrets.SENTRY_AUTH_TOKEN_ALERTS }}
       slack_channel_id: ${{ secrets.SENTRY_SLACK_CHANNEL_ID }}

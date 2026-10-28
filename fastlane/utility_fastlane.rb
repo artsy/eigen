@@ -129,6 +129,7 @@ lane :notify_expo_update_published do |options|
   release_url = options[:release_url]
   pr_url = options[:pr_url]
   alert_result = options[:alert_result]
+  notifications_rerun = options[:notifications_rerun].to_s == 'true'
   run_attempt = options[:run_attempt].to_i
 
   rollout_line = (rollout_percentage.nil? || rollout_percentage.to_s.empty?) ? 'Rollout: all users' : "Rollout: #{rollout_percentage}% of users"
@@ -140,11 +141,14 @@ lane :notify_expo_update_published do |options|
   alert_line = if alert_result == 'success'
                  ':bell: A Sentry crash-rate alert is watching this release.'
                else
-                 ":warning: *Creating the Sentry crash-rate alert failed, so nothing is watching this release.* Re-run the sentry-alerts job: #{run_url}"
+                 # One platform can succeed while the other fails (fail-fast: false), so don't
+                 # claim the release is entirely unwatched - the run says which leg failed.
+                 ":warning: *At least one platform has no Sentry crash-rate alert.* Re-run the sentry-alerts job: #{run_url}"
                end
 
   # Re-running a failed sentry-alerts job re-runs this lane too, so say it isn't a second publish.
-  rerun_line = run_attempt > 1 ? "_Re-run of the notifications (attempt #{run_attempt}) - nothing was republished._" : nil
+  # The workflow works out whether deploy itself ran again - run_attempt alone can't tell.
+  rerun_line = notifications_rerun ? "_Re-run of the notifications (attempt #{run_attempt}) - nothing was republished._" : nil
 
   message = <<~MSG
               :rocket: :iphone:

@@ -102,9 +102,18 @@ jobs:
             workflow_id=$(curl --fail-with-body --max-time 30 -X POST "${SENTRY_API}/workflows/" \
               -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
               -H 'Content-Type: application/json' \
-              -d "$payload" | jq -r '.id')
+              -d "$payload" | jq -er '.id')
             echo "Created alert '$workflow_name' (id: $workflow_id)"
           fi
+
+          # A 2xx without a usable id would otherwise become the string "null", and every detector
+          # built from it would be wired to no Slack action while the job reported success.
+          case "$workflow_id" in
+            ''|*[!0-9]*)
+              echo "::error::Sentry returned no usable workflow id ('$workflow_id')."
+              exit 1
+              ;;
+          esac
 
           echo "workflow_id=$workflow_id" >> "$GITHUB_OUTPUT"
 
@@ -119,6 +128,17 @@ jobs:
         release_version: ${{ fromJson(inputs.release_versions) }}
 
     steps:
+      # An empty version would become the query `release:`, which matches everything. Callers pass
+      # only the platforms they published, so this catches a caller that forgot to filter.
+      - name: Check the release version
+        env:
+          RELEASE_VERSION: ${{ matrix.release_version }}
+        run: |
+          if [ -z "$RELEASE_VERSION" ]; then
+            echo "::error::Empty release version - callers must only pass platforms they published."
+            exit 1
+          fi
+
       - name: Make sure the Sentry release exists
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.sentry_auth_token }}
@@ -133,11 +153,13 @@ jobs:
           # already exists, and fails loudly when it doesn't.
           payload=$(jq -n --arg version "$RELEASE_VERSION" '{ version: $version, projects: ["eigen"] }')
 
-          if ! curl --fail-with-body --max-time 30 -s -X POST "${SENTRY_API}/releases/" \
+          # Keep the body: it's the only clue to why this failed, e.g. a token without the
+          # project:releases scope.
+          if ! response=$(curl --fail-with-body --max-time 30 -s -X POST "${SENTRY_API}/releases/" \
             -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
             -H 'Content-Type: application/json' \
-            -d "$payload" > /dev/null; then
-            echo "::warning::Couldn't create Sentry release ${RELEASE_VERSION}; the detector needs it to exist."
+            -d "$payload"); then
+            echo "::warning::Couldn't create Sentry release ${RELEASE_VERSION}; the detector needs it to exist. Sentry said: ${response}"
           fi
 
       - name: Create Sentry crash rate monitor
