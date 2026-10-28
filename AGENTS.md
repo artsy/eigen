@@ -107,5 +107,6 @@ android/                 # Android native code and Gradle project
 - [Adding a New Screen](docs/add_a_new_screen.md)
 - [Routing](docs/routing.md)
 - [Analytics & Tracking](docs/analytics_and_tracking.md)
+- [Popovers](docs/popovers.md)
 - [Keyboard Management](docs/best_practices.md#keyboard-management)
 - [Build Caching](docs/build_caching.md)

@@ -1,13 +1,11 @@
 import { ActionType, ContextModule, OwnerType, TappedPopover } from "@artsy/cohesion"
-import { Flex, Popover, Text, Touchable } from "@artsy/palette-mobile"
-import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
-import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
-import { internal_navigationRef } from "app/Navigation/Navigation"
+import { Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { OnboardingPopover } from "app/Components/ProgressiveOnboarding/OnboardingPopover"
 import { GlobalStore } from "app/store/GlobalStore"
 import { PROGRESSIVE_ONBOARDING_FAVORITES_TAB } from "app/store/ProgressiveOnboardingModel"
 // eslint-disable-next-line no-restricted-imports
 import { switchTab } from "app/system/navigation/navigate"
-import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
+import { useCurrentRouteName } from "app/utils/hooks/useCurrentRouteName"
 import { useTracking } from "react-tracking"
 
 const FAVORITES_TAB_ONBOARDING_POPOVER_DELAY = 1000
@@ -21,38 +19,18 @@ export const ProgressiveOnboardingFavoritesTab: React.FC<React.PropsWithChildren
     (state) => state.infiniteDiscovery.sessionState.newUserOnboardingSavedArtworks.length
   )
   const {
-    isDismissed: isDismissedFn,
     sessionState: { isReady },
   } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
 
-  const { dismiss, setIsReady } = GlobalStore.actions.progressiveOnboarding
+  const { dismiss } = GlobalStore.actions.progressiveOnboarding
 
-  const { trackEvent } = useProgressiveOnboardingTracking({
-    name: PROGRESSIVE_ONBOARDING_FAVORITES_TAB,
-    contextScreenOwnerType: OwnerType.home,
-    contextModule: ContextModule.bottomTabs,
-  })
-
-  const currentRoute = internal_navigationRef.current?.getCurrentRoute()?.name
-
-  const isDismissed = isDismissedFn(PROGRESSIVE_ONBOARDING_FAVORITES_TAB).status
-
-  const isFavoritesTooltipDisplayable =
-    newUserOnboardingSavedArtworksCount >= 1 && !isDismissed && currentRoute === "Home" && isReady
-
-  const { isActive, clearActivePopover } = useSetActivePopover(isFavoritesTooltipDisplayable)
-
-  const debounceIsActive = useDebouncedValue({
-    value: isActive,
-    delay: FAVORITES_TAB_ONBOARDING_POPOVER_DELAY,
-  })
+  // Must be reactive: the tab bar never unmounts, so a route read during render would
+  // not re-run and would keep this eligible on whatever screen we navigate to.
+  const currentRoute = useCurrentRouteName()
 
   const handleDismiss = () => {
-    setIsReady(false)
     dismiss(PROGRESSIVE_ONBOARDING_FAVORITES_TAB)
   }
-
-  const isVisible = debounceIsActive.debouncedValue && !isDismissed
 
   const onPress = () => {
     handleDismiss()
@@ -61,14 +39,13 @@ export const ProgressiveOnboardingFavoritesTab: React.FC<React.PropsWithChildren
   }
 
   return (
-    <Popover
-      visible={isVisible}
-      onDismiss={handleDismiss}
-      onPressOutside={handleDismiss}
-      onCloseComplete={clearActivePopover}
-      onOpenComplete={trackEvent}
-      backgroundStyle={{ backgroundColor: "transparent" }}
+    <OnboardingPopover
+      id={PROGRESSIVE_ONBOARDING_FAVORITES_TAB}
+      when={newUserOnboardingSavedArtworksCount >= 1 && currentRoute === "Home" && isReady}
+      delay={FAVORITES_TAB_ONBOARDING_POPOVER_DELAY}
       placement="top"
+      backgroundStyle={{ backgroundColor: "transparent" }}
+      onDismiss={handleDismiss}
       title={
         <Touchable accessibilityRole="button" noFeedback onPress={onPress}>
           <Text variant="xs" color="mono0" fontWeight="bold">
@@ -85,9 +62,11 @@ export const ProgressiveOnboardingFavoritesTab: React.FC<React.PropsWithChildren
           </Flex>
         </Touchable>
       }
+      contextScreenOwnerType={OwnerType.home}
+      contextModule={ContextModule.bottomTabs}
     >
-      <Flex>{children}</Flex>
-    </Popover>
+      {children}
+    </OnboardingPopover>
   )
 }
 

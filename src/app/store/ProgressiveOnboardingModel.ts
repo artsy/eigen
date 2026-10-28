@@ -21,13 +21,19 @@ export interface ProgressiveOnboardingModel {
     // Right now we dispatch it from the home screen once it has focus
     isReady: boolean
     // we use this to control which popover is active, we cannot have 2 popovers
-    // active at the same time
+    // active at the same time. Claim it with `acquireActivePopover` and give it
+    // back with `releaseActivePopover` — both check ownership inside the reducer,
+    // so two popovers becoming displayable in the same commit cannot both win.
+    // Holds a per-instance owner (`<key>#<instance>`), not the bare key.
     activePopover?: string
     // Each Home tooltip must check this itself; setting it doesn't block anything on its own
     deferHomeTooltipsThisSession: boolean
   }
   setIsReady: Action<this, boolean>
-  setActivePopover: Action<this, string | undefined>
+  /** Claims the lock for `id`. No-op if another popover already holds it. */
+  acquireActivePopover: Action<this, string>
+  /** Releases the lock. No-op unless `id` is the current holder. */
+  releaseActivePopover: Action<this, string>
   setDeferHomeTooltipsThisSession: Action<this, boolean>
   __clearDissmissed: Action<this>
   reset: Action<this>
@@ -47,8 +53,9 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
       [...state.dismissed, ...keys.map((k) => ({ key: k, timestamp }))],
       (d) => d.key
     )
-    const { activePopover: _activePopover, ...rest } = state.sessionState
-    state.sessionState = rest
+    // NOTE: dismissing a key deliberately does NOT release the popover lock.
+    // The holder releases it itself once its popover has finished closing;
+    // freeing it here let a sibling mount a second native Modal mid-animation.
   }),
   isDismissed: computed(({ dismissed }) => {
     return (key) => {
@@ -68,8 +75,17 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
   setIsReady: action((state, isReady) => {
     state.sessionState.isReady = isReady
   }),
-  setActivePopover: action((state, id) => {
+  acquireActivePopover: action((state, id) => {
+    if (state.sessionState.activePopover) {
+      return
+    }
     state.sessionState.activePopover = id
+  }),
+  releaseActivePopover: action((state, id) => {
+    if (state.sessionState.activePopover !== id) {
+      return
+    }
+    state.sessionState.activePopover = undefined
   }),
   setDeferHomeTooltipsThisSession: action((state, defer) => {
     state.sessionState.deferHomeTooltipsThisSession = defer

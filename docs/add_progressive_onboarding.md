@@ -7,7 +7,9 @@ Progressive Onboarding Model is a simple store that controlls dismissed messages
 - isDimissed: function that checks if a specific onboarding string is dismissed
 - sessionState:
   - isReady: controls the feature if is ready to be used or not
-  - activePopover: sets an identifier of the current popover being displayed
+  - activePopover: the owner (`<key>#<instance>`) of the popover currently holding the
+    "one at a time" lock. You never touch it directly — `OnboardingPopover` owns it. See
+    [Popovers](./popovers.md).
 
 ## Create a Progressive Onboarding
 

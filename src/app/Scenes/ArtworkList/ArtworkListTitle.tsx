@@ -1,4 +1,5 @@
 import { HideIcon } from "@artsy/icons/native"
+// eslint-disable-next-line no-restricted-imports
 import { Flex, Popover, Text, Touchable } from "@artsy/palette-mobile"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React, { useState } from "react"
@@ -25,6 +26,12 @@ export const ArtworkListTitle: React.FC<ArtworkListTitleProps> = ({
       {!shareableWithPartners && !!isArtworkListOfferabilityEnabled ? (
         <>
           <Text variant="lg">{title}</Text>
+          {/*
+            Deliberately not an `OnboardingPopover`: this is user-initiated (it toggles on
+            tap) and has no progressive-onboarding key, so it must not be dismissible-once
+            or take the shared lock. It is still a full-screen native Modal, so it can
+            stack on an onboarding popover that is already open — the remaining known gap.
+          */}
           <Popover
             visible={isToolTipVisible}
             onDismiss={handleDismiss}

@@ -112,7 +112,13 @@ describe("ProgressiveOnboardingSaveArtwork", () => {
   })
 })
 
-const MockedPopover: React.FC<any> = ({ children, onDismiss }) => {
+const MockedPopover: React.FC<any> = ({ children, onDismiss, visible }) => {
+  // The popover is always mounted now and toggles `visible`; it used to be mounted only
+  // while shown, which is why this mock could ignore the prop.
+  if (!visible) {
+    return <>{children}</>
+  }
+
   return (
     <>
       <Text onPress={onDismiss}>Popover</Text>
