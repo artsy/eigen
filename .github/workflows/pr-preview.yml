@@ -282,40 +282,12 @@ jobs:
           echo "pr=$runtime_pr" >> "$GITHUB_OUTPUT"
           echo "main=$runtime_main" >> "$GITHUB_OUTPUT"
 
-  # On a PR's first preview, both publish jobs would try to create the channel at once, and the
-  # second create fails. Creating it here, alongside the fingerprint jobs, avoids that.
-  ensure-channel:
-    needs: changes
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    steps:
-      - name: Checkout PR head
-        uses: actions/checkout@v5
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      # eas loads the Expo config plugins (e.g. @sentry/react-native/expo), so it needs node_modules
-      - name: Setup JavaScript environment
-        uses: ./.github/actions/setup-javascript-environment
-
-      - name: Install bin modules
-        uses: ./.github/actions/setup-bin-modules
-
-      - name: Create the preview channel if it's missing
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_UPDATES_TOKEN }}
-        run: |
-          ./bin/node_modules/.bin/eas channel:view "$CHANNEL" --non-interactive > /dev/null ||
-            ./bin/node_modules/.bin/eas channel:create "$CHANNEL" --non-interactive
-
   publish:
-    needs: [native-status, ensure-channel]
+    needs: native-status
     # A skipped pr-fingerprint skips every job downstream of it unless the job checks status itself
     if: >-
       !cancelled() &&
       needs.native-status.result == 'success' &&
-      needs.ensure-channel.result == 'success' &&
       needs.native-status.outputs.status != 'ahead'
     runs-on: macos-26
     timeout-minutes: 30
