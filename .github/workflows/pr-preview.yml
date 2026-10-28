@@ -46,7 +46,6 @@ jobs:
       native_inputs_changed: ${{ steps.changes.outputs.native_inputs_changed }}
 
     steps:
-      # Full history for the merge base, but no file contents, since only the names are needed
       - name: Checkout PR head
         uses: actions/checkout@v5
         with:
