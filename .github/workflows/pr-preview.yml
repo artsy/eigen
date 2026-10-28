@@ -282,15 +282,49 @@ jobs:
           echo "pr=$runtime_pr" >> "$GITHUB_OUTPUT"
           echo "main=$runtime_main" >> "$GITHUB_OUTPUT"
 
+  # On a PR's first preview, both publish jobs would try to create the channel at once, and the
+  # second create fails. Creating it here, alongside the fingerprint jobs, avoids that.
+  ensure-channel:
+    needs: changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup node.js
+        uses: ./.github/actions/setup-node
+        with:
+          package-manager-cache: false
+
+      - name: Install bin modules
+        uses: ./.github/actions/setup-bin-modules
+
+      - name: Create the preview channel if it's missing
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_UPDATES_TOKEN }}
+        run: |
+          ./bin/node_modules/.bin/eas channel:view "$CHANNEL" --non-interactive > /dev/null ||
+            ./bin/node_modules/.bin/eas channel:create "$CHANNEL" --non-interactive
+
   publish:
-    needs: native-status
+    needs: [native-status, ensure-channel]
     # A skipped pr-fingerprint skips every job downstream of it unless the job checks status itself
     if: >-
       !cancelled() &&
       needs.native-status.result == 'success' &&
+      needs.ensure-channel.result == 'success' &&
       needs.native-status.outputs.status != 'ahead'
     runs-on: macos-26
     timeout-minutes: 30
+    strategy:
+      # Cancelling one platform could stop the other in the middle of its upload
+      fail-fast: false
+      matrix:
+        platform: [ios, android]
 
     steps:
       - name: Checkout PR head
@@ -320,7 +354,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .cache/metro
-          key: metro-v1-${{ runner.os }}-${{ hashFiles('yarn.lock', 'babel.config.js', 'alias.js', 'metro.config.js') }}
+          key: metro-v1-${{ runner.os }}-${{ matrix.platform }}-${{ hashFiles('yarn.lock', 'babel.config.js', 'alias.js', 'metro.config.js') }}
 
       # The lane puts the description inside single quotes in a shell line, so it carries only the PR
       # number and SHA, never the PR title.
@@ -328,7 +362,7 @@ jobs:
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_UPDATES_TOKEN }}
           DESCRIPTION: "PR preview #${{ github.event.pull_request.number }} at ${{ github.event.pull_request.head.sha }}"
-        run: bundle exec fastlane deploy_to_expo_updates deployment_name:"$CHANNEL" description:"$DESCRIPTION" platform:all preview:true
+        run: bundle exec fastlane deploy_to_expo_updates deployment_name:"$CHANNEL" description:"$DESCRIPTION" platform:${{ matrix.platform }} preview:true
 
   update-pr-description:
     needs: [native-status, publish]
