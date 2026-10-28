@@ -30220,7 +30220,7 @@ type Partner implements Node {
   initials(length: Int = 3): String
 
   """
-  Aggregate metrics for the partner's unanswered inquiries, composed from Impulse conversations and Gravity collector profiles. Only resolvable for a single partner (e.g. `partner(id:)` on that partner's own CMS homepage) — not selectable under any list or connection field, such as partnersConnection.
+  Aggregate metrics for the partner's inquiries, composed from Impulse conversations and Gravity collector profiles and eligibility. Only resolvable for a single partner (e.g. `partner(id:)` on that partner's own CMS homepage) — not selectable under any list or connection field, such as partnersConnection.
   """
   inquiryMetrics: PartnerInquiryMetrics
 
@@ -31609,6 +31609,16 @@ type PartnerInquiryMetrics {
   Number of confirmed buyers whose inquiries are still awaiting a response from the partner. Only scanned within the first 50 unanswered conversations returned by Impulse, so for partners with more unanswered conversations than that, this is a lower bound rather than an exact count.
   """
   confirmedBuyersWaitingCount: Int
+
+  """
+  The newest recent inquiry a personalized offer can still be sent from, or null if there is none. Powers the "Send offers" card on the partner's CMS Home page. Only the 5 most recent inquiries inside the window are checked, and checking stops at the first eligible one.
+  """
+  conversationEligibleForPersonalizedOffer(
+    """
+    Only consider inquiries started within this many days.
+    """
+    createdWithinDays: Int! = 5
+  ): Conversation
 
   """
   Number of inquiries still awaiting a response from the partner
