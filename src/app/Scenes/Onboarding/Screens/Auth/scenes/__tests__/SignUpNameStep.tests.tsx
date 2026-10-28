@@ -1,8 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import {
-  AuthContext,
-  defaultState,
-} from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
+import { AuthContext, defaultState } from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
 import { useCountryCode } from "app/Scenes/Onboarding/Screens/Auth/hooks/useCountryCode"
 import { SignUpNameStep } from "app/Scenes/Onboarding/Screens/Auth/scenes/SignUpNameStep"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -43,6 +40,19 @@ describe("SignUpNameStep", () => {
     expect(screen.getByA11yHint("Enter your full name")).toBeTruthy()
   })
 
+  // The agent-device signup flow presses this button by its accessibility label, so a rename has to
+  // fail here rather than in a QA run replayed against a prebuilt app
+  it("labels the Continue button so it can be told apart from the password step's", () => {
+    renderWithWrappers(
+      <AuthContext.Provider>
+        <SignUpNameStep />
+      </AuthContext.Provider>
+    )
+
+    // getAllBy: palette's Button puts the label on both its pressable and its inner view
+    expect(screen.getAllByLabelText("Continue to complete sign up").length).toBeGreaterThan(0)
+  })
+
   it("renders the terms and privacy policy checkbox", () => {
     renderWithWrappers(
       <AuthContext.Provider>
@@ -79,9 +89,7 @@ describe("SignUpNameStep", () => {
 
     it("does not render the email opt-in checkbox if the user is automatically subscribed", () => {
       renderWithWrappers(
-        <AuthContext.Provider
-          runtimeModel={{ ...defaultState, isAutomaticallySubscribed: true }}
-        >
+        <AuthContext.Provider runtimeModel={{ ...defaultState, isAutomaticallySubscribed: true }}>
           <SignUpNameStep />
         </AuthContext.Provider>
       )
@@ -96,9 +104,7 @@ describe("SignUpNameStep", () => {
         .mockImplementation(() => Promise.resolve())
 
       renderWithWrappers(
-        <AuthContext.Provider
-          runtimeModel={{ ...defaultState, isAutomaticallySubscribed: true }}
-        >
+        <AuthContext.Provider runtimeModel={{ ...defaultState, isAutomaticallySubscribed: true }}>
           <SignUpNameStep />
         </AuthContext.Provider>
       )
