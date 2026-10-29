@@ -72,8 +72,9 @@ const resolveActiveArtwork = (
 }
 
 const pickAddress = async () => {
-  fireEvent.changeText(screen.getByLabelText("Street address"), "401 Broad")
-  fireEvent.press(await screen.findByTestId("autocomplete-location-prediction-place-1"))
+  fireEvent.press(screen.getByTestId("sell-street-address"))
+  fireEvent.changeText(await screen.findByLabelText("Search addresses"), "401 Broad")
+  fireEvent.press(await screen.findByText(ADDRESS.name))
   await waitFor(() => expect(screen.getByLabelText("Zip code")).toHaveDisplayValue("10013"))
 }
 
