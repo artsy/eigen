@@ -6,10 +6,12 @@ import {
   useNavigationContainerRef,
 } from "@react-navigation/native"
 import { createStackNavigator, StackNavigationProp } from "@react-navigation/stack"
+import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { SellHeader, SellRoute } from "app/Scenes/Sell/Components/SellHeader"
 import { Condition } from "app/Scenes/Sell/Screens/Condition"
 import { LocationAndContact } from "app/Scenes/Sell/Screens/LocationAndContact"
 import { SelectWorks } from "app/Scenes/Sell/Screens/SelectWorks"
+import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 // eslint-disable-next-line no-restricted-imports
 import { dismissModal } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -39,11 +41,16 @@ export const Sell: React.FC = () => {
     return null
   }
 
-  return <SellNavigator />
+  return (
+    <SellFlowStore.Provider>
+      <SellNavigator />
+    </SellFlowStore.Provider>
+  )
 }
 
 const SellNavigator: React.FC = () => {
   const navigationRef = useNavigationContainerRef<SellNavigationRoutes>()
+  const theme = useNavigationTheme()
   const [currentRoute, setCurrentRoute] = useState<SellRoute>()
 
   const updateCurrentRoute = () => setCurrentRoute(navigationRef.getCurrentRoute())
@@ -52,6 +59,7 @@ const SellNavigator: React.FC = () => {
     <NavigationIndependentTree>
       <NavigationContainer
         ref={navigationRef}
+        theme={theme}
         onReady={updateCurrentRoute}
         onStateChange={updateCurrentRoute}
       >

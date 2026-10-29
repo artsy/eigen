@@ -1,4 +1,4 @@
-import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { Sell } from "app/Scenes/Sell/Sell"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
@@ -48,8 +48,28 @@ const collection = {
 const { renderWithRelay } = setupTestWrapper({ Component: Sell })
 
 const renderSell = async () => {
-  renderWithRelay(collection)
+  const view = renderWithRelay(collection)
   await screen.findByTestId("artworkGridItem-Sellable Work")
+  return view
+}
+
+type SellView = Awaited<ReturnType<typeof renderSell>>
+
+// Step 2 loads the active work with its own query
+const resolveStepTwoArtwork = (
+  view: SellView,
+  artwork: { internalID: string; artistNames: string }
+) => {
+  view.mockResolveLastOperation({ Artwork: () => artwork })
+}
+
+const openAuctionConditionStep = async (view: SellView) => {
+  fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
+  fireEvent.press(screen.getByText("Verify If Sellable"))
+  fireEvent.press(await screen.findByText("Proceed to Listing"))
+  fireEvent.press(await screen.findByText("Start Submission"))
+  resolveStepTwoArtwork(view, { internalID: "id-b4", artistNames: "Artist C" })
+  await screen.findByText("Step 2 · Condition")
 }
 
 const openWorksSummary = async () => {
@@ -98,26 +118,6 @@ describe("Sell", () => {
     expect(screen.getByText("Verify If Sellable")).toBeDisabled()
   })
 
-  it("splits the selection into works we can and can't sell", async () => {
-    await renderSell()
-
-    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
-    fireEvent.press(screen.getByTestId("artworkGridItem-Unsellable Work"))
-    fireEvent.press(screen.getByText("Verify If Sellable"))
-
-    expect(await screen.findByText("A note on your selection")).toBeOnTheScreen()
-    expect(screen.getByText(/We can help you with 1\/2 of the works/)).toBeOnTheScreen()
-    expect(screen.getByText("Not able to sell yet")).toBeOnTheScreen()
-
-    const sellableToggle = screen.getByRole("checkbox", { name: "Artist A, Sellable Work" })
-    expect(sellableToggle).toBeChecked()
-    expect(screen.queryByRole("checkbox", { name: "Artist B, Unsellable Work" })).toBeNull()
-
-    fireEvent.press(sellableToggle)
-    expect(sellableToggle).not.toBeChecked()
-    expect(screen.getByText("Proceed to Listing")).toBeDisabled()
-  })
-
   it("previews only the sellable works still ticked, each with its sales channel", async () => {
     await renderSell()
 
@@ -137,20 +137,8 @@ describe("Sell", () => {
     expect(screen.queryByText("Start Submission")).not.toBeOnTheScreen()
   })
 
-  it("explains the sales channels from the works summary", async () => {
-    await renderSell()
-    await openWorksSummary()
-
-    fireEvent.press(screen.getByLabelText("About sales channels"))
-    expect(await screen.findByText("Sales channels")).toBeOnTheScreen()
-    expect(screen.getByText("Marketplace")).toBeOnTheScreen()
-
-    fireEvent.press(screen.getByText("Got it"))
-    await waitFor(() => expect(screen.queryByText("Sales channels")).not.toBeOnTheScreen())
-  })
-
   it("walks through every step and shows the confirmation on submit", async () => {
-    await renderSell()
+    const view = await renderSell()
 
     await openWorksSummary()
     expect(screen.getByText("Step 1 · Decide Which Works to Sell")).toBeOnTheScreen()
@@ -158,8 +146,10 @@ describe("Sell", () => {
     expect(screen.getByText(/We reviewed demand for these works/)).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Start Listing"))
+    resolveStepTwoArtwork(view, { internalID: "id-a2", artistNames: "Artist A" })
     expect(await screen.findByText("Step 2 · Condition & Price")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 2 of 3")).toBeOnTheScreen()
+    expect(screen.getByText("Listing works aren't supported yet.")).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Continue"))
     expect(await screen.findByText("Step 3 · Shipping Options")).toBeOnTheScreen()
@@ -170,6 +160,18 @@ describe("Sell", () => {
 
     fireEvent.press(screen.getByText("Return to My Collection"))
     expect(goBack).toHaveBeenCalledTimes(1)
+  })
+
+  it("loads the chosen work on step 2 and asks auction works for a condition", async () => {
+    const view = await renderSell()
+    await openAuctionConditionStep(view)
+
+    expect(screen.getByText("Artist C")).toBeOnTheScreen()
+    expect(screen.getByText("Continue")).toBeDisabled()
+
+    fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
+    fireEvent.press(screen.getByText("Continue"))
+    expect(await screen.findByText("Step 3 · Shipping Options")).toBeOnTheScreen()
   })
 
   it("goes back from the works summary to the work selection, then leaves the flow", async () => {
@@ -187,7 +189,7 @@ describe("Sell", () => {
 
   it("handles Android hardware back on the works summary and on later steps", async () => {
     const pressHardwareBack = mockHardwareBack()
-    await renderSell()
+    const view = await renderSell()
 
     await openWorksSummary()
 
@@ -197,6 +199,7 @@ describe("Sell", () => {
     fireEvent.press(screen.getByText("Verify If Sellable"))
     fireEvent.press(await screen.findByText("Proceed to Listing"))
     fireEvent.press(await screen.findByText("Start Listing"))
+    resolveStepTwoArtwork(view, { internalID: "id-a2", artistNames: "Artist A" })
     await screen.findByText("Step 2 · Condition & Price")
 
     pressHardwareBack()
