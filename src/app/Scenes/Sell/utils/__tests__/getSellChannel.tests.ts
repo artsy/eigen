@@ -3,7 +3,7 @@ import { getSellChannel } from "app/Scenes/Sell/utils/getSellChannel"
 describe("getSellChannel", () => {
   it("picks an Artsy listing when the second-last hex digit is even", () => {
     expect(getSellChannel("id-a2")).toMatchObject({
-      kind: "LISTING",
+      kind: "MARKETPLACE",
       name: "Artsy Listing",
       actionLabel: "Start Listing",
     })

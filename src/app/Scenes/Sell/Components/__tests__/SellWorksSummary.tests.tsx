@@ -31,7 +31,7 @@ describe("SellWorksSummary", () => {
     `,
   })
 
-  // getSellChannel treats an even second-last hex digit as a listing, odd as an auction
+  // getSellChannel treats an even second-last hex digit as a marketplace work, odd as an auction
   const collection = {
     Me: () => ({
       myCollectionConnection: {

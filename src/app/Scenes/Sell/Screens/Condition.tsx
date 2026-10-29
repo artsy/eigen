@@ -48,7 +48,7 @@ const ConditionContent: React.FC<{ artworkID: string }> = withSuspense({
 
     const continueToShipping = () => navigation.navigate("LocationAndContact")
 
-    if (getSellChannel(artwork.internalID).kind === "LISTING") {
+    if (getSellChannel(artwork.internalID).kind === "MARKETPLACE") {
       return (
         <SellStepLayout buttonLabel="Continue" onButtonPress={continueToShipping}>
           <ScrollView>
