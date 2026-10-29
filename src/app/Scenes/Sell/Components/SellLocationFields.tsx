@@ -1,6 +1,8 @@
 import { Flex, Input, Text } from "@artsy/palette-mobile"
-import { LocationAutocomplete } from "app/Components/LocationAutocomplete"
+import { SelectButton } from "app/Components/Select/Components/SelectButton"
+import { SellAddressSearchModal } from "app/Scenes/Sell/Components/SellAddressSearchModal"
 import { LocationWithDetails } from "app/utils/googleMaps"
+import { useState } from "react"
 
 const ZIP_LENGTH = 5
 
@@ -11,7 +13,7 @@ export interface SellLocation {
 
 export const EMPTY_SELL_LOCATION: SellLocation = { address: null, zip: "" }
 
-/** Complete once an address was picked from the suggestions and the zip has five digits */
+/** Complete once an address was picked from Google's suggestions and the zip has five digits */
 export const isSellLocationComplete = ({ address, zip }: SellLocation) =>
   !!address?.id && zip.length === ZIP_LENGTH
 
@@ -21,6 +23,8 @@ interface SellLocationFieldsProps {
 }
 
 export const SellLocationFields: React.FC<SellLocationFieldsProps> = ({ value, onChange }) => {
+  const [searchVisible, setSearchVisible] = useState(false)
+
   return (
     <Flex gap={1}>
       <Text variant="sm">Where is the work located?</Text>
@@ -28,13 +32,18 @@ export const SellLocationFields: React.FC<SellLocationFieldsProps> = ({ value, o
         We use this to estimate shipping and arrange pickup.
       </Text>
 
-      <LocationAutocomplete
+      <SelectButton
         title="Street address"
-        accessibilityLabel="Street address"
-        searchOptions={{ types: "address", country: "us" }}
-        // Typed text without a picked suggestion comes back without an id, so it stays incomplete
-        allowCustomLocation
-        onChange={(address) =>
+        testID="sell-street-address"
+        value={value.address?.name}
+        modalVisible={searchVisible}
+        onPress={() => setSearchVisible(true)}
+      />
+
+      <SellAddressSearchModal
+        visible={searchVisible}
+        onDismiss={() => setSearchVisible(false)}
+        onSelect={(address) =>
           onChange((current) => ({
             address,
             zip: address.postalCode?.slice(0, ZIP_LENGTH) ?? current.zip,

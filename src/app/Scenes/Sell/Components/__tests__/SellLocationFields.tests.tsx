@@ -45,19 +45,31 @@ describe("SellLocationFields", () => {
     jest.clearAllMocks()
   })
 
-  it("searches US street addresses and fills the zip from the picked one", async () => {
+  it("searches US street addresses in a full screen modal and fills the zip", async () => {
     const onLocation = jest.fn()
     renderWithWrappers(<TestLocationFields onLocation={onLocation} />)
 
-    fireEvent.changeText(screen.getByLabelText("Street address"), "401 Broad")
-    fireEvent.press(await screen.findByTestId("autocomplete-location-prediction-place-1"))
+    fireEvent.press(screen.getByTestId("sell-street-address"))
+    fireEvent.changeText(await screen.findByLabelText("Search addresses"), "401 Broad")
+    fireEvent.press(await screen.findByText(ADDRESS.name))
 
     await waitFor(() => expect(screen.getByLabelText("Zip code")).toHaveDisplayValue("10013"))
+    expect(screen.getByText(ADDRESS.name)).toBeOnTheScreen()
     expect(getLocationPredictions).toHaveBeenCalledWith("401 Broad", {
       types: "address",
       country: "us",
     })
     expect(isSellLocationComplete(onLocation.mock.lastCall[0])).toBe(true)
+  })
+
+  it("says when no address matches", async () => {
+    ;(getLocationPredictions as jest.Mock).mockResolvedValue([])
+    renderWithWrappers(<TestLocationFields onLocation={jest.fn()} />)
+
+    fireEvent.press(screen.getByTestId("sell-street-address"))
+    fireEvent.changeText(await screen.findByLabelText("Search addresses"), "zzzz")
+
+    expect(await screen.findByText("No matching US addresses.")).toBeOnTheScreen()
   })
 
   it("keeps only digits in the zip", () => {
@@ -74,12 +86,5 @@ describe("isSellLocationComplete", () => {
     expect(isSellLocationComplete({ address: ADDRESS, zip: "10013" })).toBe(true)
     expect(isSellLocationComplete({ address: ADDRESS, zip: "1001" })).toBe(false)
     expect(isSellLocationComplete({ address: null, zip: "10013" })).toBe(false)
-  })
-
-  it("treats typed text that matched no suggestion as incomplete", () => {
-    // LocationAutocomplete reports typed text without an id when allowCustomLocation is set
-    const typedAddress = { city: "401 Broadway" } as SellLocation["address"]
-
-    expect(isSellLocationComplete({ address: typedAddress, zip: "10013" })).toBe(false)
   })
 })
