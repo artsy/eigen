@@ -181,7 +181,7 @@ export const features = {
   },
   AREnableArtAssistantImageSearch: {
     description: "Enable searching by image in Art Assistant",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableArtAssistantImageSearch",
   },
