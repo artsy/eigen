@@ -2,6 +2,7 @@ import { MapPinIcon } from "@artsy/icons/native"
 import { Flex, Input, InputComponentProps, Text, Touchable } from "@artsy/palette-mobile"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import {
+  LocationSearchOptions,
   LocationWithDetails,
   SimpleLocation,
   getLocationDetails,
@@ -21,6 +22,7 @@ interface LocationAutocompleteProps extends Omit<InputComponentProps, "onChange"
   onChange: (l: LocationWithDetails) => void
   FooterComponent?: () => React.JSX.Element
   bottomSheetInput?: boolean
+  searchOptions?: LocationSearchOptions
 }
 
 /**
@@ -46,6 +48,7 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
   allowCustomLocation = false,
   showError,
   bottomSheetInput,
+  searchOptions,
   ...restProps
 }) => {
   const [predictions, setPredictions] = useState<SimpleLocation[]>([])
@@ -75,7 +78,7 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
       setPredictions([])
     } else {
       ;(async () => {
-        const googlePredictions = await getLocationPredictions(query)
+        const googlePredictions = await getLocationPredictions(query, searchOptions)
         setPredictions(googlePredictions)
       })()
     }

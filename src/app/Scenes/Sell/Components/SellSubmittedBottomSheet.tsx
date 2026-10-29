@@ -7,11 +7,15 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 interface SellSubmittedBottomSheetProps {
   visible: boolean
+  title: string
+  message: string
   onDismiss: () => void
 }
 
 export const SellSubmittedBottomSheet: React.FC<SellSubmittedBottomSheetProps> = ({
   visible,
+  title,
+  message,
   onDismiss,
 }) => {
   const { bottom } = useSafeAreaInsets()
@@ -27,9 +31,14 @@ export const SellSubmittedBottomSheet: React.FC<SellSubmittedBottomSheetProps> =
     >
       <BottomSheetView style={{ paddingHorizontal: space(2), paddingBottom: bottom + space(2) }}>
         <Flex pt={1} gap={2}>
-          <Text variant="lg-display" textAlign="center">
-            Submitted!
-          </Text>
+          <Flex gap={1}>
+            <Text variant="lg-display" textAlign="center">
+              {title}
+            </Text>
+            <Text variant="sm" color="mono60" textAlign="center">
+              {message}
+            </Text>
+          </Flex>
 
           <Button block haptic variant="fillDark" onPress={() => goBack()}>
             Return to My Collection
