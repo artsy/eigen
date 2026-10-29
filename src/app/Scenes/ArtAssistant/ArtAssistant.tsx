@@ -400,56 +400,61 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
             pt={1}
             testID="art-assistant-composer"
           >
-            {!!enableImageSearch && (
-              <Touchable
-                accessibilityLabel="Add an image"
-                accessibilityRole="button"
-                accessibilityState={{ disabled: isResponding }}
-                disabled={isResponding}
-                hitSlop={DEFAULT_HIT_SLOP}
-                onPress={handleAddImage}
-                underlayColor="transparent"
-              >
-                <CameraStrokeIcon
-                  fill={isResponding ? "mono30" : "mono100"}
-                  height={24}
-                  width={24}
-                />
-              </Touchable>
-            )}
-
             <Flex
               flex={1}
+              flexDirection="row"
+              alignItems="flex-end"
               borderColor={isComposerFocused ? "blue100" : "mono15"}
               borderRadius={COMPOSER_COLLAPSED_HEIGHT / 2}
               borderWidth={1}
+              gap={1}
               minHeight={COMPOSER_COLLAPSED_HEIGHT}
-              justifyContent="center"
               px={2}
               py={`${COMPOSER_VERTICAL_PADDING}px`}
               testID="art-assistant-composer-input-container"
             >
-              <Input
-                accessibilityLabel="Art Assistant prompt"
-                multiline
-                onBlur={() => setIsComposerFocused(false)}
-                onChangeText={setPrompt}
-                onFocus={() => setIsComposerFocused(true)}
-                placeholder="Tell us what you'd like..."
-                placeholderTextColor={color("mono60")}
-                ref={composerInputRef}
-                style={{
-                  borderWidth: 0,
-                  height: undefined,
-                  maxHeight: COMPOSER_MAX_TEXT_HEIGHT,
-                  minHeight: COMPOSER_LINE_HEIGHT,
-                  paddingBottom: 0,
-                  paddingLeft: 0,
-                  paddingRight: 0,
-                  paddingTop: 0,
-                }}
-                value={prompt}
-              />
+              {!!enableImageSearch && (
+                <Touchable
+                  accessibilityLabel="Add an image"
+                  accessibilityRole="button"
+                  accessibilityState={{ disabled: isResponding }}
+                  disabled={isResponding}
+                  hitSlop={DEFAULT_HIT_SLOP}
+                  onPress={handleAddImage}
+                  underlayColor="transparent"
+                >
+                  {/* Sized to one text line so the collapsed bubble keeps its height. */}
+                  <CameraStrokeIcon
+                    fill={isResponding ? "mono30" : "mono100"}
+                    height={COMPOSER_LINE_HEIGHT}
+                    width={COMPOSER_LINE_HEIGHT}
+                  />
+                </Touchable>
+              )}
+
+              <Flex flex={1}>
+                <Input
+                  accessibilityLabel="Art Assistant prompt"
+                  multiline
+                  onBlur={() => setIsComposerFocused(false)}
+                  onChangeText={setPrompt}
+                  onFocus={() => setIsComposerFocused(true)}
+                  placeholder="Tell us what you'd like..."
+                  placeholderTextColor={color("mono60")}
+                  ref={composerInputRef}
+                  style={{
+                    borderWidth: 0,
+                    height: undefined,
+                    maxHeight: COMPOSER_MAX_TEXT_HEIGHT,
+                    minHeight: COMPOSER_LINE_HEIGHT,
+                    paddingBottom: 0,
+                    paddingLeft: 0,
+                    paddingRight: 0,
+                    paddingTop: 0,
+                  }}
+                  value={prompt}
+                />
+              </Flex>
             </Flex>
 
             <Touchable
