@@ -1,6 +1,6 @@
 import { computePhotoCropRect, PhotoPresentation } from "app/Scenes/Lens/utils/viewfinderGeometry"
+import { getImageSize } from "app/utils/getImageSize"
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator"
-import { Image } from "react-native"
 
 const JPEG_COMPRESS_QUALITY = 0.9
 
@@ -77,14 +77,4 @@ export function computeViewfinderCropRect(
     width: Math.round(rect.width),
     height: Math.round(rect.height),
   }
-}
-
-function getImageSize(uri: string): Promise<{ width: number; height: number }> {
-  return new Promise((resolve, reject) => {
-    Image.getSize(
-      uri,
-      (width, height) => resolve({ width, height }),
-      (error) => reject(error)
-    )
-  })
 }

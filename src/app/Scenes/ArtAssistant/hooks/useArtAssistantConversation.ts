@@ -2,6 +2,7 @@ import { ArtAssistantTurnFailed, OwnerType, SentArtAssistantMessage } from "@art
 import {
   AIAgentActivity,
   AIAgentDisplayedSectionInput,
+  AIAgentImageInput,
   AIAgentMessageInput,
   useArtAssistantConversationAgentTurnSubscription,
   useArtAssistantConversationAgentTurnSubscription$data,
@@ -9,7 +10,11 @@ import {
 } from "__generated__/useArtAssistantConversationAgentTurnSubscription.graphql"
 import { ART_ASSISTANT_SUPPORTED_SECTIONS } from "app/Scenes/ArtAssistant/Components/ArtAssistantResponseSection"
 import { useArtAssistantTracking } from "app/Scenes/ArtAssistant/hooks/useArtAssistantTracking"
-import { ArtAssistantMessage, ArtAssistantSection } from "app/Scenes/ArtAssistant/types"
+import {
+  ArtAssistantImage,
+  ArtAssistantMessage,
+  ArtAssistantSection,
+} from "app/Scenes/ArtAssistant/types"
 import {
   ART_ASSISTANT_ERRORS,
   ART_ASSISTANT_MAX_HISTORY_MESSAGES,
@@ -147,17 +152,27 @@ export const useArtAssistantConversation = () => {
   }, [abort, trackNewChat])
 
   const submit = useCallback(
-    (prompt: string, options?: { type: SentArtAssistantMessage["type"] }) => {
+    (
+      prompt: string,
+      options?: { type?: SentArtAssistantMessage["type"]; image?: ArtAssistantImage }
+    ) => {
       const text = prompt.trim()
+      const image = options?.image
 
-      if (!text || isRespondingRef.current) {
+      // An attached image is a complete question on its own, so the text may be empty.
+      if ((!text && !image) || isRespondingRef.current) {
         return
       }
 
       const startedAt = Date.now()
       const previousMessages = messagesRef.current
       const history = toHistory(previousMessages)
-      const userMessage: ArtAssistantMessage = { id: uuid(), role: "user", text }
+      const userMessage: ArtAssistantMessage = {
+        id: uuid(),
+        role: "user",
+        text,
+        ...(image ? { image } : {}),
+      }
       const assistantMessage: AssistantMessage = {
         id: uuid(),
         role: "assistant",
@@ -230,6 +245,7 @@ export const useArtAssistantConversation = () => {
       const input = {
         conversationID: conversationID.current,
         message: text,
+        ...(image ? { image: toImageInput(image) } : {}),
         history,
         supportedSections: ART_ASSISTANT_SUPPORTED_SECTIONS,
       }
@@ -399,7 +415,7 @@ export const useArtAssistantConversation = () => {
     }
 
     messagesRef.current = current.slice(0, -2)
-    submit(prompt.text)
+    submit(prompt.text, { image: prompt.image })
   }, [submit])
 
   const trackSuggestedReplyTappedInConversation = useCallback(
@@ -469,7 +485,13 @@ export const reduceActiveTurn = (turn: ActiveTurn, event: NormalizedAgentEvent):
 export const toHistory = (messages: ArtAssistantMessage[]): AIAgentMessageInput[] =>
   messages.flatMap<AIAgentMessageInput>((message) => {
     if (message.role === "user") {
-      return [{ role: "USER" as const, content: message.text }]
+      return [
+        {
+          role: "USER" as const,
+          content: message.text,
+          ...(message.image ? { image: toImageInput(message.image) } : {}),
+        },
+      ]
     }
 
     if (message.phase !== "complete" || !message.text) {
@@ -529,6 +551,12 @@ const toDisplayedSection = (section: ArtAssistantSection): AIAgentDisplayedSecti
   section.type === "artworks"
     ? { entityType: "ARTWORK", internalIDs: section.artworkIDs }
     : { entityType: "ARTIST", internalIDs: section.artistIDs }
+
+// The local `uri` is only for display, so it is left out of what Metaphysics receives.
+const toImageInput = ({ s3Bucket, s3Key }: ArtAssistantImage): AIAgentImageInput => ({
+  s3Bucket,
+  s3Key,
+})
 
 const activityCopy = (activity: AIAgentActivity) =>
   activity === "%future added value" ? ACTIVITY_COPY.THINKING : ACTIVITY_COPY[activity]

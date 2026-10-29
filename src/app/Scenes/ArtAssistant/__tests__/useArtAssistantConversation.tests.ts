@@ -210,6 +210,19 @@ describe("Art Assistant conversation reducer", () => {
     ])
   })
 
+  it("replays an attached image without its local file", () => {
+    expect(
+      toHistory([
+        {
+          id: "user",
+          role: "user",
+          text: "",
+          image: { s3Bucket: "bucket", s3Key: "key", uri: "file:///photo.jpg" },
+        },
+      ])
+    ).toEqual([{ role: "USER", content: "", image: { s3Bucket: "bucket", s3Key: "key" } }])
+  })
+
   it("omits displayed sections from a text-only answer", () => {
     expect(
       toHistory([
@@ -703,6 +716,60 @@ describe("useArtAssistantConversation tracking", () => {
       { role: "user", text: "blue painting" },
       { role: "assistant", phase: "responding" },
     ])
+  })
+
+  it("sends an attached image without text and replays it on the next turn", () => {
+    const image = { s3Bucket: "bucket", s3Key: "key", uri: "file:///photo.jpg" }
+    const { environment, result } = renderConversation()
+
+    act(() => result.current.submit("  "))
+
+    expect(environment.mock.getAllOperations()).toHaveLength(0)
+
+    act(() => result.current.submit("", { image }))
+
+    const operation = environment.mock.getMostRecentOperation()
+
+    expect(operation.request.variables.input).toMatchObject({
+      message: "",
+      image: { s3Bucket: "bucket", s3Key: "key" },
+    })
+    expect(operation.request.variables.input.image).not.toHaveProperty("uri")
+    expect(result.current.messages[0]).toEqual(expect.objectContaining({ role: "user", image }))
+
+    act(() =>
+      emit(
+        environment,
+        operation,
+        terminalEvent({ message: "Here are similar works.", sections: [], artworks: [] })
+      )
+    )
+    act(() => result.current.submit("cheaper"))
+
+    const { input } = environment.mock.getMostRecentOperation().request.variables
+
+    expect(input.image).toBeUndefined()
+    expect(input.history[0]).toEqual({
+      role: "USER",
+      content: "",
+      image: { s3Bucket: "bucket", s3Key: "key" },
+    })
+  })
+
+  it("asks the failed prompt again with the same image", () => {
+    const image = { s3Bucket: "bucket", s3Key: "key", uri: "file:///photo.jpg" }
+    const { environment, result } = renderConversation()
+
+    act(() => result.current.submit("like this", { image }))
+    act(() => environment.mock.complete(environment.mock.getMostRecentOperation()))
+
+    act(() => result.current.retry())
+
+    expect(environment.mock.getMostRecentOperation().request.variables.input).toMatchObject({
+      message: "like this",
+      image: { s3Bucket: "bucket", s3Key: "key" },
+    })
+    expect(result.current.messages[0]).toEqual(expect.objectContaining({ image }))
   })
 
   it("does not retry an answer that did not fail", () => {

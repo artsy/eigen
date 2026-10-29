@@ -1,9 +1,11 @@
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtAssistantErrorActions } from "app/Scenes/ArtAssistant/Components/ArtAssistantErrorActions"
 import { ArtAssistantResponseSection } from "app/Scenes/ArtAssistant/Components/ArtAssistantResponseSection"
 import { ArtAssistantSuggestedReplies } from "app/Scenes/ArtAssistant/Components/ArtAssistantSuggestedReplies"
 import { ArtAssistantMessage as ArtAssistantMessageType } from "app/Scenes/ArtAssistant/types"
 import { ArtAssistantErrorAction } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
+
+const ATTACHED_IMAGE_SIZE = 120
 
 interface ArtAssistantMessageProps {
   message: ArtAssistantMessageType
@@ -19,6 +21,7 @@ export const ArtAssistantMessage: React.FC<ArtAssistantMessageProps> = ({
   onSelectErrorAction,
 }) => {
   const isUser = message.role === "user"
+  const attachedImage = message.role === "user" ? message.image : undefined
   const suggestedReplies =
     message.role === "assistant" && message.phase === "complete"
       ? message.suggestedReplies ?? []
@@ -31,19 +34,36 @@ export const ArtAssistantMessage: React.FC<ArtAssistantMessageProps> = ({
 
   return (
     <Flex alignItems={isUser ? "flex-end" : "flex-start"}>
-      <Flex
-        alignSelf={isUser ? "flex-end" : "flex-start"}
-        backgroundColor={isUser ? "mono100" : "mono10"}
-        borderRadius={15}
-        maxWidth="75%"
-        px={1}
-        py={1}
-        testID={`art-assistant-${message.role}-message`}
-      >
-        <Text color={isUser ? "mono0" : "mono100"} variant="sm">
-          {message.text}
-        </Text>
-      </Flex>
+      {!!attachedImage && (
+        <Image
+          accessibilityLabel="Attached image"
+          height={ATTACHED_IMAGE_SIZE}
+          performResize={false}
+          src={attachedImage.uri}
+          style={{ borderRadius: 10 }}
+          testID="art-assistant-attached-image"
+          width={ATTACHED_IMAGE_SIZE}
+        />
+      )}
+
+      {!!attachedImage && !!message.text && <Spacer y={1} />}
+
+      {/* An image-only message has no text, and an empty bubble would read as a glitch. */}
+      {(!isUser || !!message.text) && (
+        <Flex
+          alignSelf={isUser ? "flex-end" : "flex-start"}
+          backgroundColor={isUser ? "mono100" : "mono10"}
+          borderRadius={15}
+          maxWidth="75%"
+          px={1}
+          py={1}
+          testID={`art-assistant-${message.role}-message`}
+        >
+          <Text color={isUser ? "mono0" : "mono100"} variant="sm">
+            {message.text}
+          </Text>
+        </Flex>
+      )}
 
       {message.role === "assistant" &&
         message.sections?.map((section, index) => (

@@ -179,6 +179,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtAssistant",
   },
+  AREnableArtAssistantImageSearch: {
+    description: "Enable searching by image in Art Assistant",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableArtAssistantImageSearch",
+  },
   AREnableCityGuideItineraries: {
     description: "Enable City Guide Itineraries",
     readyForRelease: true,

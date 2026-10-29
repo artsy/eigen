@@ -10,11 +10,22 @@ export type ArtAssistantSection =
   | { type: "artworks"; artworkIDs: string[] }
   | { type: "artists"; artistIDs: string[] }
 
+/**
+ * An image the collector attached, already uploaded to S3. `uri` is the local file it was
+ * uploaded from, kept only to show it in the transcript; it is never sent to Metaphysics.
+ */
+export interface ArtAssistantImage {
+  s3Bucket: string
+  s3Key: string
+  uri: string
+}
+
 export type ArtAssistantMessage =
   | {
       id: string
       role: "user"
       text: string
+      image?: ArtAssistantImage
     }
   | {
       id: string
