@@ -105,7 +105,7 @@ jobs:
             adb install Artsy.apk
 
             echo "🧪 Running agent-device tests..."
-            SKIP_SLACK_REPORT=1 ./scripts/utils/run_agent_device_suite android emulator-5554 # TODO: drop SKIP_SLACK_REPORT before merging
+            ./scripts/utils/run_agent_device_suite android emulator-5554
 
       - name: Upload test artifacts
         if: always()

@@ -21,6 +21,10 @@ press 'label="Continue" || text="Continue"'
 wait 'text="First and last name"' 15000
 wait absent 'id="password"' 10000
 fill 'text="First and last name"' "Test McTest"
+# Filling the field raises the keyboard, which covers the checkbox and Continue below it.
+# agent-device refuses to tap an element behind the keyboard ("cannot be tapped safely"),
+# unlike Maestro's tapOn, which taps the coordinates regardless.
+keyboard dismiss
 press 'label="Accept terms and privacy policy checkbox"'
 # This screen's Continue has its own accessibility label, so it can't also match the password
 # screen's Continue while both are on screen during the transition

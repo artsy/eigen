@@ -166,8 +166,6 @@ jobs:
 
       - name: Run agent-device E2E Tests
         run: ./scripts/utils/run_agent_device_suite ios "$SIMULATOR_UDID"
-        env:
-          SKIP_SLACK_REPORT: 1 # TODO: remove before merging, only while trying this out on the PR
 
       - name: Upload test artifacts
         if: always()
