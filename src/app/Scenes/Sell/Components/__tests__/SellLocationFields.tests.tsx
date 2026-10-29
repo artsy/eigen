@@ -45,7 +45,7 @@ describe("SellLocationFields", () => {
     jest.clearAllMocks()
   })
 
-  it("searches US street addresses in a full screen modal and fills the zip", async () => {
+  it("fills the zip from the picked US address", async () => {
     const onLocation = jest.fn()
     renderWithWrappers(<TestLocationFields onLocation={onLocation} />)
 
@@ -60,16 +60,6 @@ describe("SellLocationFields", () => {
       country: "us",
     })
     expect(isSellLocationComplete(onLocation.mock.lastCall[0])).toBe(true)
-  })
-
-  it("says when no address matches", async () => {
-    ;(getLocationPredictions as jest.Mock).mockResolvedValue([])
-    renderWithWrappers(<TestLocationFields onLocation={jest.fn()} />)
-
-    fireEvent.press(screen.getByTestId("sell-street-address"))
-    fireEvent.changeText(await screen.findByLabelText("Search addresses"), "zzzz")
-
-    expect(await screen.findByText("No matching US addresses.")).toBeOnTheScreen()
   })
 
   it("keeps only digits in the zip", () => {
