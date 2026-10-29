@@ -1,7 +1,10 @@
 import { Box, Button, Flex, useSpace } from "@artsy/palette-mobile"
 import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useState } from "react"
-import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller"
+import {
+  KeyboardController,
+  useReanimatedKeyboardAnimation,
+} from "react-native-keyboard-controller"
 import Animated, { useAnimatedStyle } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -45,7 +48,17 @@ export const SellFormLayout: React.FC<React.PropsWithChildren<SellFormLayoutProp
         onLayout={(event) => setStickyFooterHeight(event.nativeEvent.layout.height)}
       >
         <Box px={2} pt={2} bg="mono0" style={{ paddingBottom: bottom + space(2) }}>
-          <Button block haptic variant="fillDark" disabled={buttonDisabled} onPress={onButtonPress}>
+          <Button
+            block
+            haptic
+            variant="fillDark"
+            disabled={buttonDisabled}
+            onPress={() => {
+              // An open keyboard would cover the sheet that confirms the last step
+              KeyboardController.dismiss()
+              onButtonPress()
+            }}
+          >
             {buttonLabel}
           </Button>
         </Box>
