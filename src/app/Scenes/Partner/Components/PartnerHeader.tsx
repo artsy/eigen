@@ -42,11 +42,11 @@ const PartnerHeader: React.FC<{
           <SaveToItinerary partner={partner} locationID={locationID} />
         </Flex>
 
-        {!!stopID && <ItineraryStopNote stopID={stopID} shareToken={shareToken} mt={2} />}
-
         <Flex flexGrow={0} flexShrink={0} pt={1}>
           <FollowButton partner={partner} />
         </Flex>
+
+        {!!stopID && <ItineraryStopNote stopID={stopID} shareToken={shareToken} />}
       </Wrapper>
     )
   }
@@ -64,7 +64,7 @@ const PartnerHeader: React.FC<{
           <SaveToItinerary partner={partner} locationID={locationID} />
         </Flex>
 
-        {!!stopID && <ItineraryStopNote stopID={stopID} shareToken={shareToken} mt={2} />}
+        {!!stopID && <ItineraryStopNote stopID={stopID} shareToken={shareToken} />}
 
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center" mt={1}>
           <Stack spacing={0.5}>

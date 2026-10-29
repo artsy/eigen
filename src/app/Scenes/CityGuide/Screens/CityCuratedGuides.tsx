@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Screen, Spinner, Text, useSpace } from "@artsy/palette-mobile"
+import { Flex, Screen, Spinner, Text, Theme, useSpace } from "@artsy/palette-mobile"
 import { CityCuratedGuidesQuery } from "__generated__/CityCuratedGuidesQuery.graphql"
 import { CityCuratedGuides_query$key } from "__generated__/CityCuratedGuides_query.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
@@ -40,36 +40,40 @@ const CityCuratedGuides: React.FC<{ citySlug: string }> = ({ citySlug }) => {
         context_screen_owner_slug: citySlug,
       })}
     >
-      <Screen>
-        <Screen.Header onBack={goBack} title="City Guides" />
+      <Theme theme="v3dark">
+        <Screen>
+          <Screen.Header onBack={goBack} title="City Guides" />
 
-        <Screen.Body fullwidth backgroundColor="mono100">
-          <Screen.FlatList
-            testID="city-curated-guides-list"
-            data={guides}
-            keyExtractor={(item) => item.id}
-            contentContainerStyle={contentContainerStyle}
-            ItemSeparatorComponent={() => <Flex height={space(2)} />}
-            ListEmptyComponent={
-              <Text variant="sm" color="mono10">
-                There are no curated guides for this city yet.
-              </Text>
-            }
-            onEndReached={() => {
-              if (hasNext && !isLoadingNext) loadNext(PAGE_SIZE)
-            }}
-            onEndReachedThreshold={0.2}
-            ListFooterComponent={
-              isLoadingNext ? (
-                <Flex py={2}>
-                  <Spinner color="mono0" />
-                </Flex>
-              ) : null
-            }
-            renderItem={renderItem}
-          />
-        </Screen.Body>
-      </Screen>
+          <Screen.Body fullwidth>
+            <Theme theme="v3light">
+              <Screen.FlatList
+                testID="city-curated-guides-list"
+                data={guides}
+                keyExtractor={(item) => item.id}
+                contentContainerStyle={contentContainerStyle}
+                ItemSeparatorComponent={() => <Flex height={space(4)} />}
+                ListEmptyComponent={
+                  <Text variant="sm" color="mono10">
+                    There are no curated guides for this city yet.
+                  </Text>
+                }
+                onEndReached={() => {
+                  if (hasNext && !isLoadingNext) loadNext(PAGE_SIZE)
+                }}
+                onEndReachedThreshold={0.2}
+                ListFooterComponent={
+                  isLoadingNext ? (
+                    <Flex py={2}>
+                      <Spinner color="mono0" />
+                    </Flex>
+                  ) : null
+                }
+                renderItem={renderItem}
+              />
+            </Theme>
+          </Screen.Body>
+        </Screen>
+      </Theme>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }

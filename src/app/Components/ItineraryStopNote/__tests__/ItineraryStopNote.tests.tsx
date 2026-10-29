@@ -11,7 +11,7 @@ describe("ItineraryStopNote", () => {
       { stopID: "stop-1" }
     )
 
-    expect(await screen.findByText("What to see")).toBeOnTheScreen()
+    expect(await screen.findByText("Don't miss")).toBeOnTheScreen()
     expect(screen.getByText("Ask for the back room.")).toBeOnTheScreen()
   })
 

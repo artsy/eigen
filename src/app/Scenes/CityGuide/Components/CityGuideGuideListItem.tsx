@@ -38,7 +38,7 @@ export const GuideListItem = ({ item, citySlug }: { item: GuideRow; citySlug: st
       to={`/city-guide/${citySlug}/itinerary/${item.itineraryId}`}
       onPress={() => trackEvent(tracks.tappedGuide(citySlug, item.internalID, item.slug))}
     >
-      <Flex flexDirection="row" gap={1} alignItems="center">
+      <Flex flexDirection="row" gap={1} alignItems="flex-start">
         {item.imageUrl ? (
           <Image
             testID="event-guide-image"
@@ -61,7 +61,7 @@ export const GuideListItem = ({ item, citySlug }: { item: GuideRow; citySlug: st
         )}
 
         <Flex flex={1}>
-          <Text variant="md" color="mono0">
+          <Text variant="sm-display" color="mono0">
             {item.title}
           </Text>
           {!!item.subtitle && (

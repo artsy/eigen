@@ -1,34 +1,41 @@
-import { Flex, FlexProps, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ItineraryStopNoteQuery } from "__generated__/ItineraryStopNoteQuery.graphql"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 /** A City Guide curator's note on a stop, as the designs title it. */
-export const ItineraryStopNoteText: React.FC<{ note: string } & FlexProps> = ({
-  note,
-  ...flexProps
-}) => (
-  <Flex testID="itinerary-stop-note" {...flexProps}>
-    <Text variant="sm" weight="medium" mb={0.5}>
-      What to see
-    </Text>
-    <Text variant="sm">{note}</Text>
-  </Flex>
+export const ItineraryStopNoteText: React.FC<{ note: string }> = ({ note }) => (
+  <>
+    <Spacer y={1} />
+    <Flex
+      testID="itinerary-stop-note"
+      backgroundColor="mono5"
+      borderRadius={10}
+      mx={2}
+      p={2}
+      gap={1}
+    >
+      <Text variant="sm-display" color="blue100" fontWeight="bold">
+        Don't miss
+      </Text>
+      <Text variant="sm">{note}</Text>
+    </Flex>
+  </>
 )
 
-interface Props extends FlexProps {
+interface StopNoteProps {
   stopID: string
   /** The stop's itinerary's share token, which an unlisted itinerary's stop needs to be read. */
   shareToken?: string
 }
 
-const StopNote: React.FC<Props> = ({ stopID, shareToken, ...flexProps }) => {
+const StopNote: React.FC<StopNoteProps> = ({ stopID, shareToken }) => {
   const data = useLazyLoadQuery<ItineraryStopNoteQuery>(query, { stopID, shareToken })
   const note = data.itineraryStop?.note?.trim()
 
   if (!note) return null
 
-  return <ItineraryStopNoteText note={note} {...flexProps} />
+  return <ItineraryStopNoteText note={note} />
 }
 
 const query = graphql`
@@ -44,7 +51,7 @@ const query = graphql`
  * since the entity's page knows nothing of the stop. Renders nothing while loading or on
  * failure: the note is extra, and the page stands without it.
  */
-export const ItineraryStopNote = withSuspense<Props>({
+export const ItineraryStopNote = withSuspense<StopNoteProps>({
   Component: StopNote,
   LoadingFallback: () => null,
   ErrorFallback: NoFallback,

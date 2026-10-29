@@ -71,13 +71,13 @@ describe("Show", () => {
       mockResolveLastOperation({ ItineraryStop: () => ({ note: "Head upstairs first." }) })
     })
 
-    expect(await screen.findByText("What to see")).toBeOnTheScreen()
+    expect(await screen.findByText("Don't miss")).toBeOnTheScreen()
     expect(screen.getByText("Head upstairs first.")).toBeOnTheScreen()
   })
 
   it("asks for no stop note when not opened from a City Guide stop", () => {
     renderWithRelay()
 
-    expect(screen.queryByText("What to see")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Don't miss")).not.toBeOnTheScreen()
   })
 })
