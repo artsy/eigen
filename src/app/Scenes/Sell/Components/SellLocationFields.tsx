@@ -1,8 +1,6 @@
 import { Flex, Input, Text } from "@artsy/palette-mobile"
-import { SelectButton } from "app/Components/Select/Components/SelectButton"
-import { SellAddressSearchModal } from "app/Scenes/Sell/Components/SellAddressSearchModal"
+import { AddressAutocomplete } from "app/Components/AddressAutocomplete/AddressAutocomplete"
 import { LocationWithDetails } from "app/utils/googleMaps"
-import { useState } from "react"
 
 const ZIP_LENGTH = 5
 
@@ -23,8 +21,6 @@ interface SellLocationFieldsProps {
 }
 
 export const SellLocationFields: React.FC<SellLocationFieldsProps> = ({ value, onChange }) => {
-  const [searchVisible, setSearchVisible] = useState(false)
-
   return (
     <Flex gap={1}>
       <Text variant="sm">Where is the work located?</Text>
@@ -32,18 +28,12 @@ export const SellLocationFields: React.FC<SellLocationFieldsProps> = ({ value, o
         We use this to estimate shipping and arrange pickup.
       </Text>
 
-      <SelectButton
+      <AddressAutocomplete
         title="Street address"
         testID="sell-street-address"
-        value={value.address?.name}
-        modalVisible={searchVisible}
-        onPress={() => setSearchVisible(true)}
-      />
-
-      <SellAddressSearchModal
-        visible={searchVisible}
-        onDismiss={() => setSearchVisible(false)}
-        onSelect={(address) =>
+        country="us"
+        value={value.address}
+        onChange={(address) =>
           onChange((current) => ({
             address,
             zip: address.postalCode?.slice(0, ZIP_LENGTH) ?? current.zip,
