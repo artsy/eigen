@@ -131,6 +131,18 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
     dismissComposerKeyboard()
   }
 
+  // An uploaded image goes out with whatever is sent next, typed or tapped
+  const sendPromptWithAttachedImage = (
+    promptText: string,
+    type: SentArtAssistantMessage["type"]
+  ) => {
+    sendPrompt(promptText, type, attachedImage)
+
+    if (attachedImage) {
+      removeImage()
+    }
+  }
+
   // A suggestion is sent the moment it is picked, so it never becomes a typed prompt.
   const handleSelectSuggestion = (suggestion: string) => {
     sendPrompt(suggestion, "suggestion")
@@ -146,7 +158,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
     }
 
     trackSuggestedReplyTapped(reply, position, responseMessageID)
-    sendPrompt(reply, "suggestion")
+    sendPromptWithAttachedImage(reply, "suggestion")
   }
 
   const handleSend = () => {
@@ -154,8 +166,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
       return
     }
 
-    sendPrompt(prompt, "typed", attachedImage)
-    removeImage()
+    sendPromptWithAttachedImage(prompt, "typed")
   }
 
   useEffect(() => {
@@ -333,7 +344,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
                 width={ATTACHMENT_PREVIEW_SIZE}
               >
                 <Image
-                  accessibilityLabel="Image to send"
+                  accessibilityLabel={isUploadingImage ? "Uploading image" : "Image to send"}
                   height={ATTACHMENT_PREVIEW_SIZE}
                   // A local file, so there is nothing for Gemini to resize.
                   performResize={false}

@@ -599,6 +599,53 @@ describe("ArtAssistant", () => {
       expect(screen.getByLabelText("Send")).toBeDisabled()
     })
 
+    it("tells screen readers whether the image is still uploading", () => {
+      mockImageAttachment({ status: "uploading", uri: image.uri })
+      const { rerender } = renderWithWrappers(<ArtAssistant />)
+
+      expect(screen.getByLabelText("Uploading image")).toBeOnTheScreen()
+
+      mockImageAttachment({ status: "ready", uri: image.uri, image })
+      rerender(<ArtAssistant />)
+
+      expect(screen.getByLabelText("Image to send")).toBeOnTheScreen()
+      expect(screen.queryByLabelText("Uploading image")).not.toBeOnTheScreen()
+    })
+
+    it("sends an uploaded image with a tapped suggested reply", async () => {
+      const environment = createMockEnvironment()
+      renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+      fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "Warhol prints")
+      fireEvent.press(screen.getByLabelText("Send"))
+
+      // The collector attaches an image while the answer is on its way.
+      mockImageAttachment({ status: "ready", uri: image.uri, image })
+
+      await act(async () => {
+        environment.mock.nextValue(environment.mock.getMostRecentOperation(), {
+          data: {
+            aiAgentTurn: {
+              __typename: "AIAgentTurnComplete",
+              message: "Here are a few.",
+              stopReason: "end_turn",
+              toolCallCount: 1,
+              artworks: [],
+              suggestedReplies: [{ text: "Show me cheaper ones" }],
+            },
+          },
+        })
+      })
+
+      fireEvent.press(screen.getByText("Show me cheaper ones"))
+
+      expect(environment.mock.getMostRecentOperation().request.variables.input).toMatchObject({
+        message: "Show me cheaper ones",
+        image: { s3Bucket: "bucket", s3Key: "key" },
+      })
+      expect(mockRemoveImage).toHaveBeenCalled()
+    })
+
     it("sends an uploaded image without text and clears it from the composer", () => {
       mockImageAttachment({ status: "ready", uri: image.uri, image })
       const environment = createMockEnvironment()

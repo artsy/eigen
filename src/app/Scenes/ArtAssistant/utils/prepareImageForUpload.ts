@@ -1,5 +1,5 @@
+import { getImageSize } from "app/utils/getImageSize"
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator"
-import { Image } from "react-native"
 
 const MAX_DIMENSION = 2048
 const JPEG_COMPRESS_QUALITY = 0.8
@@ -25,16 +25,4 @@ export async function prepareImageForUpload(uri: string): Promise<string> {
   })
 
   return result.uri
-}
-
-// `Image.getSize` reports display-space dimensions, unlike the picker's, which can ignore EXIF
-// orientation.
-function getImageSize(uri: string): Promise<{ width: number; height: number }> {
-  return new Promise((resolve, reject) => {
-    Image.getSize(
-      uri,
-      (width, height) => resolve({ width, height }),
-      (error) => reject(error)
-    )
-  })
 }

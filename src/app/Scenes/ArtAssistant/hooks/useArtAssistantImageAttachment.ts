@@ -6,6 +6,8 @@ import { prepareImageForUpload } from "app/Scenes/ArtAssistant/utils/prepareImag
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { uploadImageToS3 } from "app/utils/uploadImageToS3"
 import { useCallback, useRef, useState } from "react"
+import { Alert, Linking } from "react-native"
+import { PickerErrorCode } from "react-native-image-crop-picker"
 
 export type ArtAssistantImageAttachment =
   | { status: "uploading"; uri: string }
@@ -32,8 +34,20 @@ export const useArtAssistantImageAttachment = () => {
     try {
       const [photo] = await showPhotoActionSheet(showActionSheetWithOptions, false, false)
       photoURI = photo?.path
-    } catch {
-      // The picker rejects when the collector cancels it, which needs no feedback.
+    } catch (error) {
+      const code = (error as { code?: PickerErrorCode } | undefined)?.code
+
+      if (code === "E_PICKER_CANCELLED") {
+        return
+      }
+
+      if (code === "E_NO_CAMERA_PERMISSION" || code === "E_NO_LIBRARY_PERMISSION") {
+        showPermissionAlert(code === "E_NO_CAMERA_PERMISSION" ? "camera" : "photos")
+        return
+      }
+
+      captureException(error, { tags: { source: "art_assistant_image_picker" } })
+      toast.show(ART_ASSISTANT_IMAGE_UPLOAD_ERROR, "bottom", { backgroundColor: "red100" })
       return
     }
 
@@ -68,3 +82,13 @@ export const useArtAssistantImageAttachment = () => {
 
   return { attachment, pick, remove }
 }
+
+const showPermissionAlert = (source: "camera" | "photos") =>
+  Alert.alert(
+    `Allow access to your ${source}`,
+    `To search with an image, allow Artsy to access your ${source} in Settings.`,
+    [
+      { text: "Cancel", style: "cancel" },
+      { text: "Open Settings", onPress: () => Linking.openSettings() },
+    ]
+  )

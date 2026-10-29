@@ -7,7 +7,8 @@ import {
 import { prepareImageForUpload } from "app/Scenes/ArtAssistant/utils/prepareImageForUpload"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { uploadImageToS3 } from "app/utils/uploadImageToS3"
-import { Image } from "react-native-image-crop-picker"
+import { Alert, Linking } from "react-native"
+import { Image, PickerErrorCode } from "react-native-image-crop-picker"
 
 const mockShowToast = jest.fn()
 
@@ -29,9 +30,13 @@ jest.mock("app/utils/uploadImageToS3", () => ({
 
 const photo = { path: "file:///picked.heic" } as Image
 
+const pickerError = (code: PickerErrorCode) => Object.assign(new Error(code), { code })
+
 describe("useArtAssistantImageAttachment", () => {
   beforeEach(() => {
     jest.clearAllMocks()
+    jest.spyOn(Alert, "alert").mockImplementation(() => {})
+    jest.spyOn(Linking, "openSettings").mockResolvedValue()
     jest.mocked(showPhotoActionSheet).mockResolvedValue([photo])
     jest.mocked(prepareImageForUpload).mockResolvedValue("file:///prepared.jpg")
   })
@@ -67,14 +72,46 @@ describe("useArtAssistantImageAttachment", () => {
   })
 
   it("does nothing when the picker is cancelled", async () => {
-    jest.mocked(showPhotoActionSheet).mockRejectedValue(new Error("User cancelled image selection"))
+    jest.mocked(showPhotoActionSheet).mockRejectedValue(pickerError("E_PICKER_CANCELLED"))
     const { result } = renderHook(() => useArtAssistantImageAttachment())
 
     await act(() => result.current.pick())
 
     expect(result.current.attachment).toBeNull()
     expect(mockShowToast).not.toHaveBeenCalled()
+    expect(Alert.alert).not.toHaveBeenCalled()
     expect(captureException).not.toHaveBeenCalled()
+  })
+
+  it.each<[PickerErrorCode, string]>([
+    ["E_NO_CAMERA_PERMISSION", "Allow access to your camera"],
+    ["E_NO_LIBRARY_PERMISSION", "Allow access to your photos"],
+  ])("points to Settings when the picker rejects with %s", async (code, title) => {
+    jest.mocked(showPhotoActionSheet).mockRejectedValue(pickerError(code))
+    const { result } = renderHook(() => useArtAssistantImageAttachment())
+
+    await act(() => result.current.pick())
+
+    expect(Alert.alert).toHaveBeenCalledWith(title, expect.any(String), expect.any(Array))
+    expect(captureException).not.toHaveBeenCalled()
+
+    const buttons = jest.mocked(Alert.alert).mock.calls[0][2] ?? []
+    buttons.find((button) => button.text === "Open Settings")?.onPress?.()
+
+    expect(Linking.openSettings).toHaveBeenCalled()
+  })
+
+  it("reports any other picker failure", async () => {
+    jest.mocked(showPhotoActionSheet).mockRejectedValue(new Error("Load failed"))
+    const { result } = renderHook(() => useArtAssistantImageAttachment())
+
+    await act(() => result.current.pick())
+
+    expect(result.current.attachment).toBeNull()
+    expect(captureException).toHaveBeenCalled()
+    expect(mockShowToast).toHaveBeenCalledWith(ART_ASSISTANT_IMAGE_UPLOAD_ERROR, "bottom", {
+      backgroundColor: "red100",
+    })
   })
 
   it("clears the attachment and explains when the upload fails", async () => {
