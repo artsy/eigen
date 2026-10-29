@@ -40,7 +40,7 @@ export const MyCollectionListingsEmptyState: React.FC = () => {
 }
 
 const BetaBadge: React.FC = () => (
-  <Flex bg="mono0" borderRadius={10} px={1} ml={1}>
+  <Flex bg="mono0" borderRadius={10} px={1} py={0.5} ml={1}>
     <Text variant="xxs" weight="medium">
       BETA
     </Text>
