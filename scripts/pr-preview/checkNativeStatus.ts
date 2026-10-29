@@ -5,11 +5,17 @@
  * Usage:
  *   yarn tsx scripts/pr-preview/checkNativeStatus.ts fingerprint [--out <file>]
  *   yarn tsx scripts/pr-preview/checkNativeStatus.ts status --base <hash> --pr <hash> [--main <hash>]
+ *   yarn tsx scripts/pr-preview/checkNativeStatus.ts changes --base <sha>
  */
 import { execFileSync, execSync } from "child_process"
 import { appendFileSync, existsSync, mkdirSync, writeFileSync } from "fs"
 import { dirname, join, resolve } from "path"
-import { checkNativeStatus, formatGithubOutputs, parseFingerprint } from "./nativeStatus"
+import {
+  checkNativeStatus,
+  formatGithubOutputs,
+  parseFingerprint,
+  touchesNativeInputs,
+} from "./nativeStatus"
 
 const REPO_ROOT = resolve(__dirname, "../..")
 const LATEST_FINGERPRINT_URL = "s3://mobile-cached-builds/eigen-expo-fingerprint/latest.txt"
@@ -43,7 +49,7 @@ const readMainFingerprint = () => {
   return parseFingerprint({ value: output, label: "latest.txt" })
 }
 
-const COMMANDS = ["fingerprint", "status"] as const
+const COMMANDS = ["fingerprint", "status", "changes"] as const
 type Command = (typeof COMMANDS)[number]
 
 const isCommand = (value: string | undefined): value is Command =>
@@ -103,6 +109,27 @@ const runStatus = (args: readonly string[]) => {
   writeGithubOutputs(result)
 }
 
+const runChanges = (args: readonly string[]) => {
+  const base = readFlag({ args, name: "base" })
+  if (base === undefined) {
+    throw new Error("--base is required")
+  }
+
+  // --no-renames lists both sides of a move, so moving a file out of ios/ still counts as native
+  const output = execFileSync("git", ["diff", "--name-only", "--no-renames", base, "HEAD"], {
+    cwd: REPO_ROOT,
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "inherit"],
+  })
+  const paths = output.split("\n").filter((path) => path !== "")
+  const nativeInputsChanged = touchesNativeInputs(paths)
+
+  console.log(
+    `${paths.length} changed files since ${base}, native inputs changed: ${nativeInputsChanged}`
+  )
+  writeGithubOutputs({ native_inputs_changed: String(nativeInputsChanged) })
+}
+
 const run = (argv: readonly string[]) => {
   const [command, ...args] = argv
 
@@ -115,6 +142,8 @@ const run = (argv: readonly string[]) => {
       return runFingerprint(args)
     case "status":
       return runStatus(args)
+    case "changes":
+      return runChanges(args)
     default: {
       const _exhaustive: never = command
       return _exhaustive
