@@ -18,6 +18,8 @@ const SNAP_POINTS = ["85%"]
 interface AddressSearchSheetProps {
   visible: boolean
   title: string
+  /** Fills the search box when the sheet opens, eg with the address picked before */
+  initialQuery?: string
   country?: string
   onDismiss: () => void
   onSelect: (address: LocationWithDetails) => void
@@ -26,6 +28,7 @@ interface AddressSearchSheetProps {
 export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
   visible,
   title,
+  initialQuery = "",
   country,
   onDismiss,
   onSelect,
@@ -39,10 +42,10 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
 
   useEffect(() => {
     if (visible) {
-      setQuery("")
+      setQuery(initialQuery)
       setPredictions(null)
     }
-  }, [visible])
+  }, [visible, initialQuery])
 
   useEffect(() => {
     if (debouncedQuery.trim().length < MIN_QUERY_LENGTH) {

@@ -44,6 +44,7 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
       <AddressSearchSheet
         visible={searchVisible}
         title={title}
+        initialQuery={value?.name}
         country={country}
         onDismiss={() => setSearchVisible(false)}
         onSelect={onChange}
