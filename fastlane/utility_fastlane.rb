@@ -271,6 +271,45 @@ lane :tag_and_push do |options|
   `git push http #{tag} -f --no-verify`
 end
 
+desc 'Tag a store submission on HEAD and push the tag to origin, warning loudly if it did not land'
+lane :tag_and_push_submission do |options|
+  # Only the local promote lanes use this. Unlike tag_and_push (which CI relies on and which pushes
+  # to a hardcoded https remote inside backticks, so a failure is invisible) this pushes to the
+  # release captain's own `origin` and checks the tag actually landed. The -submission tag is what
+  # triggers the GitHub release and Sentry automations, so a missing one must never go unnoticed.
+  tag = options[:tag].strip
+  sh("git tag -d #{tag} || true", log: false)
+  add_git_tag(tag: tag)
+
+  push = "git push origin refs/tags/#{tag} --no-verify"
+  landed = begin
+    sh(push)
+    # `sh` merges stderr into its output and a push can no-op without failing, so look for the ref.
+    sh("git ls-remote --tags origin refs/tags/#{tag}", log: false).include?("refs/tags/#{tag}")
+  rescue StandardError => e
+    UI.error(e.message)
+    false
+  end
+
+  if landed
+    UI.success("Tag #{tag} is on origin.")
+    nil
+  else
+    warn_tag_not_pushed(tag, push)
+    # Returned so the promote lane can repeat the warning once it is done.
+    push
+  end
+end
+
+def warn_tag_not_pushed(tag, push)
+  UI.important('----------------------------------------------------------------')
+  UI.important("Tag #{tag} did NOT reach origin.")
+  UI.important('The submission tag triggers the GitHub release and Sentry automations,')
+  UI.important('so push it manually now:')
+  UI.important("  #{push}")
+  UI.important('----------------------------------------------------------------')
+end
+
 desc 'Create a new version in app store connect'
 lane :create_next_app_version do |options|
   api_key = generate_app_store_connect_api_key
@@ -436,6 +475,20 @@ def firebase_build_already_shipped?(app_id, build_version)
   return false if latest_release.nil?
 
   latest_release[:buildVersion].to_s == build_version.to_s
+end
+
+# Promotions must run from the release-candidate branch for the version in app.json
+# (see docs/deploy_to_app_store.md). The -submission tag is created on HEAD, so running
+# from anywhere else mistags the release and breaks the generated changelog.
+def require_release_branch!
+  rc_branch = "rc-v#{$APP_JSON['version']}"
+  allowed = [rc_branch, "#{rc_branch}-hotfix"]
+  branch = `git rev-parse --abbrev-ref HEAD`.chomp
+  return if allowed.include?(branch)
+
+  UI.user_error!("You are on '#{branch}' but promotions must run from '#{rc_branch}' " \
+                 "(or '#{rc_branch}-hotfix' for a native hotfix). " \
+                 "Run: git checkout #{rc_branch} && git pull, then try again.")
 end
 
 def git_tag_commit_message(tag)

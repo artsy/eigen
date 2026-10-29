@@ -196,6 +196,8 @@ end
 
 desc 'Promote a testflight iOS beta to the app store'
 lane :promote_beta_ios do
+  require_release_branch!
+
   api_key = generate_app_store_connect_api_key
 
   # There seems to be some delta between spaceship + deliver token format
@@ -263,7 +265,8 @@ lane :promote_beta_ios do
 
   formatted_build_number = format_build_number(build_number)
 
-  tag_and_push(tag: "ios-#{next_app_store_version}-#{formatted_build_number}-submission")
+  ios_submission_tag = "ios-#{next_app_store_version}-#{formatted_build_number}-submission"
+  manual_push = tag_and_push_submission(tag: ios_submission_tag)
 
   promoted_fingerprint = resolve_promoted_fingerprint(platform: 'ios', build_number: formatted_build_number)
   if promoted_fingerprint
@@ -273,6 +276,8 @@ lane :promote_beta_ios do
   end
 
   sentry_slack_ios(build_number: formatted_build_number, version: next_app_store_version)
+
+  warn_tag_not_pushed(ios_submission_tag, manual_push) if manual_push
 
   UI.success('All done!')
 end
@@ -436,6 +441,8 @@ end
 
 desc 'Promote a play store android beta to production'
 lane :promote_beta_android do
+  require_release_branch!
+
   selected_version_code = select_android_build(skip_download: true)
 
   supply(
@@ -451,7 +458,8 @@ lane :promote_beta_android do
   )
 
   vname, vcode = set_build_version_android(version_code: selected_version_code)
-  tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
+  android_submission_tag = "android-#{vname}-#{vcode}-submission"
+  manual_push = tag_and_push_submission(tag: android_submission_tag)
 
   promoted_fingerprint = resolve_promoted_fingerprint(platform: 'android', build_number: vcode)
   if promoted_fingerprint
@@ -461,6 +469,8 @@ lane :promote_beta_android do
   end
 
   sentry_slack_android(build_number: vcode, version: vname)
+
+  warn_tag_not_pushed(android_submission_tag, manual_push) if manual_push
 end
 
 lane :create_android_apk do
