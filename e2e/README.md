@@ -1,21 +1,26 @@
-# Performance tests
+# Maestro end-to-end
 
-End-to-end UI tests live in [`e2e-agent-device/`](../e2e-agent-device/README.md). What's left here is
-the Flashlight performance suite, which still drives the app with Maestro because Flashlight runs its
-own `--testCommand`.
+Maestro is an end-to-end tool([aka UI testing tool](https://maestro.mobile.dev/)).
+It is used like other tools such as Cypress, Appium, and Detox in order to run tests over scenarios.
 
 ## Steps to run
 
-Android only; Flashlight doesn't support iOS.
+1. install maestro by following the instructions [here](https://docs.maestro.dev/maestro-cli/how-to-install-maestro-cli)
 
-1. Install [Maestro](https://docs.maestro.dev/maestro-cli/how-to-install-maestro-cli) and
-   [Flashlight](https://docs.flashlight.dev/).
+### iOS
+
+1. `CI=1 yarn pod-install && yarn maestro:ios:release:build`
+1. `yarn open-sim` open iOS simulator (after sim is booted run next step)
+1. `yarn maestro:ios:release:install`
+
+1. set the ENV vars `export MAESTRO_APP_ID=app_id` `export MAESTRO_TEST_EMAIL=email@email.com` `export MAESTRO_TEST_PASSWORD=password`
+1. run the test that you want to run `maestro test e2e/config.yml`
+
+### Android
+
 1. `yarn maestro:android:release:build`
 1. `yarn open-emulator`
 1. `yarn maestro:android:release:install`
-1. Set the env vars: `export MAESTRO_APP_ID=net.artsy.app`,
-   `export MAESTRO_TEST_EMAIL=email@email.com`, `export MAESTRO_TEST_PASSWORD=password`
-1. `./e2e/perf/run-perf-tests.sh`
 
-See [measuring performance with Flashlight](../docs/measuring_performance_with_flashlight.md) for
-what the results mean.
+1. set the ENV vars `export MAESTRO_APP_ID=app_id` `export MAESTRO_TEST_EMAIL=email@email.com` `export MAESTRO_TEST_PASSWORD=password`
+1. run the test that you want to run `maestro test e2e/flows/onboarding/signup.yml/config.yml`

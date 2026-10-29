@@ -1,0 +1,105 @@
+name: iOS E2E Tests (Maestro)
+
+on:
+  workflow_run:
+    workflows: ["Build iOS QA App for Maestro"]
+    types:
+      - completed
+  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+jobs:
+  e2e-tests:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: macos-26 # iOS simulators require macOS runners
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false # Don't cancel other jobs if one fails
+      matrix:
+        node_index: [0, 1, 2]
+        total_nodes: [3]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Ruby
+        uses: ./.github/actions/setup-ruby
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Set up env for ci
+        run: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci
+
+      - name: Set up maestro env
+        run: ./scripts/setup/setup-env-for-maestro ios
+
+      - name: Download iOS App
+        run: aws s3 cp s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip ./Artsy.zip
+
+      - name: Unzip iOS App
+        run: unzip Artsy.zip
+
+      - name: Install Maestro
+        run: export MAESTRO_VERSION=1.40.0; curl -Ls "https://get.maestro.mobile.dev" | bash
+
+      - name: Add Maestro to PATH
+        run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+
+      - name: Create and boot iOS simulator
+        run: |
+          IPHONE_MODEL=$(jq -r '.iphone_model' ios-config.json)
+          IOS_VERSION=$(jq -r '.ios_version' ios-config.json)
+          SIM_DEVICE_TYPE=$(jq -r '.simulator_device_type' ios-config.json)
+          SIM_RUNTIME=$(jq -r '.simulator_runtime' ios-config.json)
+
+          echo "📱 Creating ${IPHONE_MODEL} simulator with iOS ${IOS_VERSION}..."
+          # Create the simulator
+          SIMULATOR_UDID=$(xcrun simctl create "${IPHONE_MODEL} Test" "${SIM_DEVICE_TYPE}" "${SIM_RUNTIME}")
+          echo "Created simulator with UDID: $SIMULATOR_UDID"
+          echo "SIMULATOR_UDID=$SIMULATOR_UDID" >> $GITHUB_ENV
+
+          # Boot the simulator
+          echo "🚀 Booting simulator..."
+          xcrun simctl boot "$SIMULATOR_UDID"
+
+          # Wait for the simulator to be ready
+          echo "⏳ Waiting for simulator to be ready..."
+          WAIT_COUNT=0
+          MAX_WAIT=60  # 60 iterations * 2 seconds = 120 seconds max wait
+          while [[ $WAIT_COUNT -lt $MAX_WAIT ]]; do
+            if xcrun simctl list devices | grep "$SIMULATOR_UDID" | grep -q "Booted"; then
+              echo "✅ Simulator is booted and ready!"
+              break
+            fi
+            echo "Still waiting... (attempt $((WAIT_COUNT + 1))/$MAX_WAIT)"
+            sleep 2
+            WAIT_COUNT=$((WAIT_COUNT + 1))
+          done
+
+          if [[ $WAIT_COUNT -eq $MAX_WAIT ]]; then
+            echo "❌ Timeout: Simulator failed to boot within 120 seconds"
+            exit 1
+          fi
+
+          echo "📱 Installing app..."
+          ./scripts/utils/install_app_in_booted_sims.sh
+
+          echo "🚀 Bring simulator to foreground..."
+          open -a simulator
+
+          echo "Prefetch app associations"
+          xcrun simctl openurl booted https://artsy.net/apple-app-site-association
+          xcrun simctl openurl booted https://email-link.artsy.net/apple-app-site-association
+          xcrun simctl openurl booted https://click.artsy.net/apple-app-site-association
+
+      - name: Set Maestro driver timeout
+        run: echo "MAESTRO_DRIVER_STARTUP_TIMEOUT=120000" >> $GITHUB_ENV
+
+      - name: Run Maestro E2E Tests (Shard ${{ matrix.node_index }})
+        run: |
+          echo "🧪 Running Maestro E2E tests for shard ${{ matrix.node_index }} of ${{ matrix.total_nodes }}..."
+          ./scripts/utils/run_maestro_shard ios ${{ matrix.node_index }} ${{ matrix.total_nodes }}

@@ -2,7 +2,7 @@
 
 set -e
 
-# Reports each failed agent-device flow to Slack with a screenshot.
+# Reports each failed agent-device flow to Slack with a screenshot, like report-maestro-test-failure.
 # The failures file is written by scripts/utils/run_agent_device_suite.
 PLATFORM=${1:-"unknown"}
 FAILURES_PATH=${2:-"e2e-agent-device/artifacts/$PLATFORM/failures.json"}

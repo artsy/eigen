@@ -104,6 +104,7 @@ The following files read directly from `ios-config.json` and need NO manual upda
 - `scripts/utils/doctor.js` (reads via `fs.readFileSync` + `JSON.parse`)
 - `fastlane/Fastfile` (reads via `File.read` + `JSON.parse`)
 - `.github/actions/setup-ios-environment/action.yml` (reads via `jq`)
+- `.github/workflows/ios-e2e-maestro.yml` (reads via `jq`)
 - `.github/workflows/ios-e2e-agent-device.yml` (reads via `jq`: selects that Xcode and boots its preinstalled simulator)
 - `ios/ArtsyTests/Supporting_Files/ARTestHelper.m` (reads via `NSJSONSerialization` from test bundle)
 

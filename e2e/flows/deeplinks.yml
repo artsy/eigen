@@ -1,0 +1,82 @@
+appId: ${MAESTRO_APP_ID}
+---
+- killApp
+- launchApp:
+    clearState: false
+    arguments:
+      email: ${MAESTRO_TEST_EMAIL}
+      password: ${MAESTRO_TEST_PASSWORD}
+      useMaestroInit: "true"
+
+- assertVisible:
+    id: "search-button"
+- killApp
+
+# --- First deeplink (Artist) ---
+- repeat:
+    while:
+      notVisible: "KAWS"
+    times: 3
+    commands:
+      - openLink:
+          link: https://artsy.net/artist/kaws
+          autoVerify: true
+      # If Safari steals it, bail out and retry
+      - runFlow:
+          when:
+            visible: "Safari"
+          commands:
+            - pressKey: home
+      - waitForAnimationToEnd:
+          timeout: 2000
+
+- extendedWaitUntil:
+    visible: "KAWS"
+    timeout: 20000
+
+- killApp
+
+# --- Second deeplink (Auction Highlights) ---
+- repeat:
+    while:
+      notVisible: "Highlights at Auction This Week"
+    times: 3
+    commands:
+      - openLink:
+          link: https://click.artsy.net/f/a/epPWiX0dJaHHMiXAnSrzSg~~/AAQRxQA~/RgRj95QSP0SQaHR0cHM6Ly93d3cuYXJ0c3kubmV0L2NvbGxlY3Rpb24vYXVjdGlvbi1oaWdobGlnaHRzP3V0bV9zb3VyY2U9YnJhemUmdXRtX21lZGl1bT1lbWFpbCZ1dG1fY2FtcGFpZ249bnRmJnV0bV90ZXJtPTYyMTRmYjlkZWI0ZWZkN2RiNjBjZTcwNDk1NWU4NDQ1VwNzcGNCCmIFEg8VYlEJKGBSEmJyaWJlY2sxQGdtYWlsLmNvbVgEAAAAfw~~
+          autoVerify: true
+      - runFlow:
+          when:
+            visible: "Safari"
+          commands:
+            - pressKey: home
+      - waitForAnimationToEnd:
+          timeout: 2000
+
+- extendedWaitUntil:
+    visible: "Highlights at Auction This Week"
+    timeout: 20000
+
+- killApp
+
+# --- Third deeplink (Email link) ---
+- repeat:
+    while:
+      notVisible: "Maestro Test Artwork, 2025"
+    times: 3
+    commands:
+      - openLink:
+          link: https://email-link.artsy.net/ls/click?upn=u001.dBTKf7Wpt9bpOMXsd3eaCr45lKQ0xlDJiMs6lLXLYmt178QxQIXDi5-2BHxXY5n-2FLMqC7dYvx3HgyrryRV9UzsHbUpjsYJWB-2Fj-2B-2BEZDJyVfqaNW9q6coA2qcmjdD59pnSUKAVLOn8un52b5D01AgtNpdPrHzkbbQy4gCbuYOk1iuPqyg70B6gkCMXGBZuCPr2m9gIBxwpLkX9-2B2zmUfDbbwsMD-2BCAPDBiKt5Ls-2FJWHjfU-3DedPI_yB8pNXz8iKogugC36vxXF9cFFK1QR-2FMY-2Bnkbr-2BVhIrrC1LcTACICLavYsLU418aDSJi-2BXuv2wM5qkMKcUtxbXoxfVcX-2F2p2Nzx7WcoGsOKCkNK2nMNcNLTf6jSh2dXh7TBjgyw8pzU9eF3TibX4i1ldfPYH29-2Bad7EtsSLoTmBEb1pUKhxXiLSxyBsbmQh3ZZjSByQPcRm5ZH0b8mO-2BCPCUqRxS9N8-2F-2BNvu8MJvCYCnJbM61aWCBBPvE3xtGCMkor7cowLOhr-2FbZrziwWGzezDguiTSGc1XbJ0YNDiMtp6IaiqS7ss082YcgDkQORNqWtSz1UpMSULK88k-2B1OHpvD2xLX5y-2FXoQF3cfjBKHiaxfW4Pun3DA-2BwS1eGAXYF3iT
+          autoVerify: true
+      - runFlow:
+          when:
+            visible: "Safari"
+          commands:
+            - pressKey: home
+      - waitForAnimationToEnd:
+          timeout: 2000
+
+- scrollUntilVisible: # we do this just to give time to fetch deeplink verifications, can get rid of if we have a test run before deeplinks on same sim
+    element: "Maestro Test Artwork, 2025"
+    timeout: 90000
+    speed: 60
