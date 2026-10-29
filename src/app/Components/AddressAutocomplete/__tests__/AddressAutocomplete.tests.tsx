@@ -64,6 +64,20 @@ describe("AddressAutocomplete", () => {
     expect(screen.getByDisplayValue(ADDRESS.name)).toBeOnTheScreen()
   })
 
+  it("fills the search with the picked address when reopened", async () => {
+    renderWithWrappers(<TestAddressAutocomplete />)
+
+    await openSearch("401 Broad")
+    fireEvent.press(await screen.findByText(ADDRESS.name))
+    await screen.findByDisplayValue(ADDRESS.name)
+
+    fireEvent.press(screen.getByTestId("street-address"))
+
+    await waitFor(() =>
+      expect(screen.getByLabelText("Search addresses")).toHaveDisplayValue(ADDRESS.name)
+    )
+  })
+
   it("waits for three characters before searching", async () => {
     renderWithWrappers(<TestAddressAutocomplete />)
 

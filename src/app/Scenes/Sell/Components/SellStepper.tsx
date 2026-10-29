@@ -4,6 +4,8 @@ import { Fragment, useEffect } from "react"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 
 const DOT_SIZE = 24
+// The xs variant's 20px line height leaves the 13px digit sitting low in the dot
+const NUMBER_LINE_HEIGHT = 13
 const FILL_DURATION = 300
 
 interface SellStepperProps {
@@ -35,7 +37,11 @@ export const SellStepper: React.FC<SellStepperProps> = ({ currentStepIndex }) =>
               alignItems="center"
               justifyContent="center"
             >
-              <Text variant="xs" color={isReached ? "white" : "mono60"}>
+              <Text
+                variant="xs"
+                color={isReached ? "white" : "mono60"}
+                style={{ lineHeight: NUMBER_LINE_HEIGHT, includeFontPadding: false }}
+              >
                 {index + 1}
               </Text>
             </Flex>
