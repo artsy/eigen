@@ -11,8 +11,16 @@ context timeout=240000
 open ${APP_ID}
 # The first launch on a cold CI simulator can take over a minute
 wait 'id="search-button"' 90000
+# The link launch gets no launch arguments, so it can't sign in again (useMaestroInitialization
+# returns early without useMaestroInit) and relies on the session already being on disk. The store
+# write is throttled by 1s (trailing) plus an async AsyncStorage write, and search-button appears as
+# soon as the home screen renders, so closing right away can kill the app before the token lands.
+wait 2000
 close ${APP_ID}
 open "https://email-link.artsy.net/ls/click?upn=u001.dBTKf7Wpt9bpOMXsd3eaCr45lKQ0xlDJiMs6lLXLYmt178QxQIXDi5-2BHxXY5n-2FLMqC7dYvx3HgyrryRV9UzsHbUpjsYJWB-2Fj-2B-2BEZDJyVfqaNW9q6coA2qcmjdD59pnSUKAVLOn8un52b5D01AgtNpdPrHzkbbQy4gCbuYOk1iuPqyg70B6gkCMXGBZuCPr2m9gIBxwpLkX9-2B2zmUfDbbwsMD-2BCAPDBiKt5Ls-2FJWHjfU-3DedPI_yB8pNXz8iKogugC36vxXF9cFFK1QR-2FMY-2Bnkbr-2BVhIrrC1LcTACICLavYsLU418aDSJi-2BXuv2wM5qkMKcUtxbXoxfVcX-2F2p2Nzx7WcoGsOKCkNK2nMNcNLTf6jSh2dXh7TBjgyw8pzU9eF3TibX4i1ldfPYH29-2Bad7EtsSLoTmBEb1pUKhxXiLSxyBsbmQh3ZZjSByQPcRm5ZH0b8mO-2BCPCUqRxS9N8-2F-2BNvu8MJvCYCnJbM61aWCBBPvE3xtGCMkor7cowLOhr-2FbZrziwWGzezDguiTSGc1XbJ0YNDiMtp6IaiqS7ss082YcgDkQORNqWtSz1UpMSULK88k-2B1OHpvD2xLX5y-2FXoQF3cfjBKHiaxfW4Pun3DA-2BwS1eGAXYF3iT"
 open ${APP_ID}
+# Fail fast and clearly if the app came up signed out, instead of letting that collapse into
+# the 30s content timeout below, which can't tell it apart from a link that never resolved
+wait absent 'text="Sign up or log in"' 10000
 wait 'label="Maestro Test Artwork, 2025" || text="Maestro Test Artwork, 2025"' 30000
 close ${APP_ID}
