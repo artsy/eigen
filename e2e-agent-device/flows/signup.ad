@@ -21,10 +21,13 @@ press 'label="Continue" || text="Continue"'
 wait 'text="First and last name"' 15000
 wait absent 'id="password"' 10000
 fill 'text="First and last name"' "Test McTest"
-# Filling the field raises the keyboard, which covers the checkbox and Continue below it.
-# agent-device refuses to tap an element behind the keyboard ("cannot be tapped safely"),
-# unlike Maestro's tapOn, which taps the coordinates regardless.
-keyboard dismiss
+# Filling the field raises the keyboard, which covers the Continue below it, and agent-device
+# refuses to tap an element behind the keyboard ("cannot be tapped safely") where Maestro's tapOn
+# tapped the coordinates regardless. `keyboard dismiss` can't close it: the iOS keyboard exposes no
+# hide key, so it only succeeds when the keyboard is already down. The field's return key is "done"
+# with blurOnSubmit, so pressing it closes the keyboard. Its onSubmitEditing only submits once the
+# terms are accepted, so running this before the checkbox just highlights them, it doesn't submit.
+keyboard return
 press 'label="Accept terms and privacy policy checkbox"'
 # This screen's Continue has its own accessibility label, so it can't also match the password
 # screen's Continue while both are on screen during the transition
