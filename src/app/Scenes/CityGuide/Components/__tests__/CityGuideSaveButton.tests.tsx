@@ -2,6 +2,11 @@ import { CheckmarkFillIcon, CheckmarkIcon } from "@artsy/icons/native"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { CityGuideSaveButton } from "app/Scenes/CityGuide/Components/CityGuideSaveButton"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import Haptic from "react-native-haptic-feedback"
+
+jest.mock("react-native-haptic-feedback", () => ({
+  trigger: jest.fn(),
+}))
 
 describe("CityGuideSaveButton", () => {
   it("renders the add icon when not saved", () => {
@@ -32,6 +37,27 @@ describe("CityGuideSaveButton", () => {
     fireEvent.press(screen.getByTestId("city-guide-save-button"))
 
     expect(onPress).toHaveBeenCalledTimes(1)
+  })
+
+  it("shows the check icon while pressed", () => {
+    renderWithWrappers(<CityGuideSaveButton isSaved={false} onPress={jest.fn()} />)
+
+    fireEvent(screen.getByTestId("city-guide-save-button"), "pressIn")
+
+    expect(screen.getByTestId("city-guide-save-button-check-icon")).toBeTruthy()
+    expect(screen.queryByTestId("city-guide-save-button-add-icon")).toBeNull()
+
+    fireEvent(screen.getByTestId("city-guide-save-button"), "pressOut")
+
+    expect(screen.getByTestId("city-guide-save-button-add-icon")).toBeTruthy()
+  })
+
+  it("triggers a light haptic when tapped", () => {
+    renderWithWrappers(<CityGuideSaveButton isSaved={false} onPress={jest.fn()} />)
+
+    fireEvent.press(screen.getByTestId("city-guide-save-button"))
+
+    expect(Haptic.trigger).toHaveBeenCalledWith("impactLight")
   })
 
   it("does not call onPress while saving", () => {

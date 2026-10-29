@@ -181,11 +181,9 @@ const Stop: React.FC<Props> = ({ citySlug, itineraryId, stopId }) => {
                 )}
               </Flex>
 
-              {!!stop.description && (
-                <ItineraryStopNoteText note={stop.description} px={2} pt={1} pb={2} />
-              )}
-
               <StopAddress stop={stop} />
+
+              {!!stop.description && <ItineraryStopNoteText note={stop.description} />}
 
               {/* Leads off Artsy, so it is offered as a link rather than navigated to. */}
               {!!stop.sourceURL && (

@@ -1,5 +1,6 @@
 import { AddStrokeIcon, CheckmarkFillIcon } from "@artsy/icons/native"
 import { Button, Flex, TextProps, Touchable } from "@artsy/palette-mobile"
+import { useState } from "react"
 
 const DEFAULT_ICON_SIZE = 24
 const HIT_SLOP = { top: 10, bottom: 10, left: 10, right: 10 }
@@ -34,6 +35,8 @@ export const CityGuideSaveButton: React.FC<Props> = ({
   iconSize = DEFAULT_ICON_SIZE,
   testID = "city-guide-save-button",
 }) => {
+  const [isPressed, setIsPressed] = useState(false)
+
   if (variant === "button") {
     return (
       <Button
@@ -59,10 +62,13 @@ export const CityGuideSaveButton: React.FC<Props> = ({
       accessibilityState={{ selected: isSaved, disabled: isSaving }}
       disabled={isSaving}
       hitSlop={HIT_SLOP}
+      haptic="impactLight"
+      onPressIn={() => setIsPressed(true)}
+      onPressOut={() => setIsPressed(false)}
       onPress={onPress}
     >
       <Flex width={iconSize} height={iconSize} alignItems="center" justifyContent="center">
-        {isSaved ? (
+        {isSaved || isPressed ? (
           <CheckmarkFillIcon
             testID="city-guide-save-button-check-icon"
             fill={color}
