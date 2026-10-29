@@ -6,9 +6,11 @@ on:
   #   types:
   #     - completed
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
-  push:
-    branches:
-      - gkartalis/agent-device-e2e
+  # Temporarily off while comparing iOS runners, so pushes don't start Android runs.
+  # Restore along with the workflow_run trigger above.
+  # push:
+  #   branches:
+  #     - gkartalis/agent-device-e2e
 
 env:
   AGENT_DEVICE_NO_UPDATE_NOTIFIER: 1

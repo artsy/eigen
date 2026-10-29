@@ -22,7 +22,7 @@ concurrency:
 jobs:
   e2e-tests:
     # if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
-    runs-on: blacksmith-6vcpu-macos-26 # iOS simulators require macOS runners
+    runs-on: macos-26 # iOS simulators require macOS runners
     timeout-minutes: 60
 
     steps:
