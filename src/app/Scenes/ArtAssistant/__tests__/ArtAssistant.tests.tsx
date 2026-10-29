@@ -3,6 +3,10 @@ import { act, fireEvent, screen } from "@testing-library/react-native"
 import { ArtAssistant } from "app/Scenes/ArtAssistant/ArtAssistant"
 import { ART_ASSISTANT_SUGGESTIONS } from "app/Scenes/ArtAssistant/Components/ArtAssistantEmptyState"
 import { ART_ASSISTANT_TURN_IDLE_TIMEOUT_MS } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
+import {
+  ArtAssistantImageAttachment,
+  useArtAssistantImageAttachment,
+} from "app/Scenes/ArtAssistant/hooks/useArtAssistantImageAttachment"
 import { ART_ASSISTANT_ERRORS } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -13,10 +17,24 @@ import { createMockEnvironment } from "relay-test-utils"
 jest.mock("app/Scenes/ArtAssistant/Components/ArtAssistantArtworkRail", () => ({
   ArtAssistantArtworkRail: () => null,
 }))
+jest.mock("app/Scenes/ArtAssistant/hooks/useArtAssistantImageAttachment", () => ({
+  useArtAssistantImageAttachment: jest.fn(),
+}))
+
+const mockPickImage = jest.fn()
+const mockRemoveImage = jest.fn()
+
+const mockImageAttachment = (attachment: ArtAssistantImageAttachment | null) =>
+  jest.mocked(useArtAssistantImageAttachment).mockReturnValue({
+    attachment,
+    pick: mockPickImage,
+    remove: mockRemoveImage,
+  })
 
 describe("ArtAssistant", () => {
   beforeEach(() => {
     jest.clearAllMocks()
+    mockImageAttachment(null)
     __globalStoreTestUtils__?.injectState({
       auth: { userID: "user-id", userAccessToken: "access-token" },
     })
@@ -551,5 +569,58 @@ describe("ArtAssistant", () => {
 
     expect(screen.getByText("blue painting")).toBeOnTheScreen()
     expect(screen.getByRole("button", { name: "Start a new chat" })).toBeOnTheScreen()
+  })
+
+  describe("image attachment", () => {
+    const image = { s3Bucket: "bucket", s3Key: "key", uri: "file:///photo.jpg" }
+
+    it("hides the camera button while image input is off", () => {
+      renderWithWrappers(<ArtAssistant />)
+
+      expect(screen.queryByRole("button", { name: "Add an image" })).not.toBeOnTheScreen()
+    })
+
+    it("opens the photo picker from the camera button", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtAssistantImageSearch: true })
+      renderWithWrappers(<ArtAssistant />)
+
+      fireEvent.press(screen.getByRole("button", { name: "Add an image" }))
+
+      expect(mockPickImage).toHaveBeenCalled()
+    })
+
+    it("keeps Send disabled while the image uploads", () => {
+      mockImageAttachment({ status: "uploading", uri: image.uri })
+      renderWithWrappers(<ArtAssistant />)
+
+      fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "like this")
+
+      expect(screen.getByTestId("art-assistant-image-uploading")).toBeOnTheScreen()
+      expect(screen.getByLabelText("Send")).toBeDisabled()
+    })
+
+    it("sends an uploaded image without text and clears it from the composer", () => {
+      mockImageAttachment({ status: "ready", uri: image.uri, image })
+      const environment = createMockEnvironment()
+      renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+      fireEvent.press(screen.getByLabelText("Send"))
+
+      expect(environment.mock.getMostRecentOperation().request.variables.input).toMatchObject({
+        message: "",
+        image: { s3Bucket: "bucket", s3Key: "key" },
+      })
+      expect(screen.getByTestId("art-assistant-attached-image")).toBeOnTheScreen()
+      expect(mockRemoveImage).toHaveBeenCalled()
+    })
+
+    it("removes the image", () => {
+      mockImageAttachment({ status: "ready", uri: image.uri, image })
+      renderWithWrappers(<ArtAssistant />)
+
+      fireEvent.press(screen.getByRole("button", { name: "Remove image" }))
+
+      expect(mockRemoveImage).toHaveBeenCalled()
+    })
   })
 })

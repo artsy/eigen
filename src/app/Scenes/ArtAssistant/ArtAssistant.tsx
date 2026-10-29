@@ -1,13 +1,15 @@
 import { OwnerType, SentArtAssistantMessage } from "@artsy/cohesion"
-import { CloseIcon, EditIcon } from "@artsy/icons/native"
+import { CameraStrokeIcon, CloseIcon, EditIcon } from "@artsy/icons/native"
 import {
   Button,
   DEFAULT_HIT_SLOP,
   Dialog,
   Flex,
+  Image,
   Input,
   InputRef,
   Screen,
+  Spinner,
   Text,
   Touchable,
   useColor,
@@ -17,9 +19,14 @@ import { FlashList, FlashListRef } from "@shopify/flash-list"
 import { ArtAssistantEmptyState } from "app/Scenes/ArtAssistant/Components/ArtAssistantEmptyState"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/Components/ArtAssistantMessage"
 import { useArtAssistantConversation } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
-import { ArtAssistantMessage as ArtAssistantMessageType } from "app/Scenes/ArtAssistant/types"
+import { useArtAssistantImageAttachment } from "app/Scenes/ArtAssistant/hooks/useArtAssistantImageAttachment"
+import {
+  ArtAssistantImage,
+  ArtAssistantMessage as ArtAssistantMessageType,
+} from "app/Scenes/ArtAssistant/types"
 import { ArtAssistantErrorAction } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
 import { goBack } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -31,6 +38,7 @@ const COMPOSER_LINE_HEIGHT = 20
 const COMPOSER_COLLAPSED_HEIGHT = 50
 const COMPOSER_VERTICAL_PADDING = (COMPOSER_COLLAPSED_HEIGHT - COMPOSER_LINE_HEIGHT) / 2
 const COMPOSER_MAX_TEXT_HEIGHT = 4 * COMPOSER_LINE_HEIGHT
+const ATTACHMENT_PREVIEW_SIZE = 64
 
 interface ArtAssistantProps {
   initialPrompt?: string
@@ -61,9 +69,14 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
   const anchoredTurn = useRef<{ id: string; index: number } | null>(null)
   const messageListHeight = useRef(0)
   const didSendInitialPrompt = useRef(false)
+  const enableImageSearch = useFeatureFlag("AREnableArtAssistantImageSearch")
+  const { attachment, pick: pickImage, remove: removeImage } = useArtAssistantImageAttachment()
+  const isUploadingImage = attachment?.status === "uploading"
+  const attachedImage = attachment?.status === "ready" ? attachment.image : undefined
   const composerKeyboardGap = space(1)
   const messageGap = space(2)
-  const canSend = prompt.trim().length > 0 && !isResponding
+  const canSend =
+    (prompt.trim().length > 0 || !!attachedImage) && !isResponding && !isUploadingImage
 
   const dismissComposerKeyboard = () => {
     composerInputRef.current?.blur()
@@ -84,7 +97,13 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
     pendingScrollIndex.current = null
     anchoredTurn.current = null
     setMessageHeights({})
+    removeImage()
     startNewConversation()
+  }
+
+  const handleAddImage = () => {
+    dismissComposerKeyboard()
+    void pickImage()
   }
 
   const handleMessageLayout = useCallback((messageID: string, height: number) => {
@@ -95,15 +114,19 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
 
   const canSendPrompt = (promptText: string) => !!promptText.trim() && !isResponding
 
-  const sendPrompt = (promptText: string, type: SentArtAssistantMessage["type"]) => {
-    if (!canSendPrompt(promptText)) {
+  const sendPrompt = (
+    promptText: string,
+    type: SentArtAssistantMessage["type"],
+    image?: ArtAssistantImage
+  ) => {
+    if (isResponding || (!promptText.trim() && !image)) {
       return
     }
 
     const userMessageIndex = messages.length
 
     pendingScrollIndex.current = userMessageIndex
-    void submit(promptText.trim(), { type })
+    void submit(promptText.trim(), { type, image })
     setPrompt("")
     dismissComposerKeyboard()
   }
@@ -127,7 +150,12 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
   }
 
   const handleSend = () => {
-    sendPrompt(prompt, "typed")
+    if (!canSend) {
+      return
+    }
+
+    sendPrompt(prompt, "typed", attachedImage)
+    removeImage()
   }
 
   useEffect(() => {
@@ -294,6 +322,63 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
             </Text>
           </Flex>
 
+          {!!attachment && (
+            <Flex backgroundColor="background" flexDirection="row" px={2} pt={1}>
+              <Flex
+                backgroundColor="mono5"
+                borderRadius={10}
+                height={ATTACHMENT_PREVIEW_SIZE}
+                overflow="hidden"
+                testID="art-assistant-image-attachment"
+                width={ATTACHMENT_PREVIEW_SIZE}
+              >
+                <Image
+                  accessibilityLabel="Image to send"
+                  height={ATTACHMENT_PREVIEW_SIZE}
+                  // A local file, so there is nothing for Gemini to resize.
+                  performResize={false}
+                  src={attachment.uri}
+                  style={{ opacity: isUploadingImage ? 0.5 : 1 }}
+                  width={ATTACHMENT_PREVIEW_SIZE}
+                />
+
+                {!!isUploadingImage && (
+                  <Flex
+                    alignItems="center"
+                    bottom={0}
+                    justifyContent="center"
+                    left={0}
+                    position="absolute"
+                    right={0}
+                    testID="art-assistant-image-uploading"
+                    top={0}
+                  >
+                    <Spinner size="small" />
+                  </Flex>
+                )}
+
+                <Touchable
+                  accessibilityLabel="Remove image"
+                  accessibilityRole="button"
+                  hitSlop={DEFAULT_HIT_SLOP}
+                  onPress={removeImage}
+                  style={{ position: "absolute", top: space(0.5), right: space(0.5) }}
+                >
+                  <Flex
+                    alignItems="center"
+                    backgroundColor="mono0"
+                    borderRadius={11}
+                    height={22}
+                    justifyContent="center"
+                    width={22}
+                  >
+                    <CloseIcon fill="mono100" height={14} width={14} />
+                  </Flex>
+                </Touchable>
+              </Flex>
+            </Flex>
+          )}
+
           <Flex
             flexDirection="row"
             alignItems="center"
@@ -304,6 +389,24 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
             pt={1}
             testID="art-assistant-composer"
           >
+            {!!enableImageSearch && (
+              <Touchable
+                accessibilityLabel="Add an image"
+                accessibilityRole="button"
+                accessibilityState={{ disabled: isResponding }}
+                disabled={isResponding}
+                hitSlop={DEFAULT_HIT_SLOP}
+                onPress={handleAddImage}
+                underlayColor="transparent"
+              >
+                <CameraStrokeIcon
+                  fill={isResponding ? "mono30" : "mono100"}
+                  height={24}
+                  width={24}
+                />
+              </Touchable>
+            )}
+
             <Flex
               flex={1}
               borderColor={isComposerFocused ? "blue100" : "mono15"}

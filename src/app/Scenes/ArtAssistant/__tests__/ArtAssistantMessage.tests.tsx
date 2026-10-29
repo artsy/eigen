@@ -150,6 +150,38 @@ describe("ArtAssistantMessage", () => {
     })
   })
 
+  it("shows an attached image without an empty bubble", () => {
+    renderWithWrappers(
+      <ArtAssistantMessage
+        message={{
+          id: "user-1",
+          role: "user",
+          text: "",
+          image: { s3Bucket: "bucket", s3Key: "key", uri: "file:///photo.jpg" },
+        }}
+      />
+    )
+
+    expect(screen.getByTestId("art-assistant-attached-image")).toBeOnTheScreen()
+    expect(screen.queryByTestId("art-assistant-user-message")).not.toBeOnTheScreen()
+  })
+
+  it("shows an attached image above the text sent with it", () => {
+    renderWithWrappers(
+      <ArtAssistantMessage
+        message={{
+          id: "user-1",
+          role: "user",
+          text: "Something like this",
+          image: { s3Bucket: "bucket", s3Key: "key", uri: "file:///photo.jpg" },
+        }}
+      />
+    )
+
+    expect(screen.getByTestId("art-assistant-attached-image")).toBeOnTheScreen()
+    expect(screen.getByText("Something like this")).toBeOnTheScreen()
+  })
+
   describe("suggested replies", () => {
     const answered = {
       id: "assistant-1",
