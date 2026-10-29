@@ -1885,6 +1885,34 @@ input AppSecondFactorAttributes {
 
 union AppSecondFactorOrErrorsUnion = AppSecondFactor | Errors
 
+type ArchiveCRMContactFailure {
+  mutationError: GravityMutationError
+}
+
+input ArchiveCRMContactInput {
+  clientMutationId: String
+
+  """
+  The internal ID of the contact
+  """
+  id: String!
+}
+
+type ArchiveCRMContactPayload {
+  clientMutationId: String
+
+  """
+  On success: the archived contact
+  """
+  crmContactOrError: ArchiveCRMContactResponseOrError
+}
+
+union ArchiveCRMContactResponseOrError = ArchiveCRMContactFailure | ArchiveCRMContactSuccess
+
+type ArchiveCRMContactSuccess {
+  crmContact: CRMContact
+}
+
 type Article implements Node {
   """
   Maps to the "Primary Author" field in Positron. Ultimately this is only supposed to control the article slug
@@ -8479,6 +8507,312 @@ type BuyersPremium {
   ): String
   cents: Int
   percent: Float
+}
+
+type CRMContact {
+  archivedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
+  The partner user this contact is assigned to
+  """
+  assignedToUserID: String
+
+  """
+  Any of collector, artist, enthusiast, advisor, critic, curator, journalist, gallery, institution, museum, buyer, government
+  """
+  categories: [String!]
+  company: String
+  contactType: CRMContactType
+  createdAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
+  Computed by Gravity from the name, company or email
+  """
+  displayName: String
+  emails: [CRMContactEmail!]
+  firstName: String
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+  lastName: String
+  locations: [CRMContactLocation!]
+
+  """
+  The phone number in E.164 format. Null unless the number was entered with a `+` or `00` prefix.
+  """
+  normalizedPhone: String
+  notes: String
+  partnerID: String!
+
+  """
+  The phone number, as entered
+  """
+  phone: String
+  status: CRMContactStatus
+  updatedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+}
+
+enum CRMContactChildSort {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+}
+
+"""
+A connection to a list of items.
+"""
+type CRMContactConnection {
+  """
+  A list of edges.
+  """
+  edges: [CRMContactEdge]
+  pageCursors: PageCursors!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+"""
+An edge in a connection.
+"""
+type CRMContactEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge
+  """
+  node: CRMContact
+}
+
+type CRMContactEmail {
+  """
+  The email address, lowercased and trimmed
+  """
+  address: String!
+  bouncedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  createdAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  crmContactID: String!
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+
+  """
+  Whether this is the contact's primary email address
+  """
+  isPrimary: Boolean!
+  partnerID: String!
+  updatedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+}
+
+"""
+A connection to a list of items.
+"""
+type CRMContactEmailConnection {
+  """
+  A list of edges.
+  """
+  edges: [CRMContactEmailEdge]
+  pageCursors: PageCursors!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+"""
+An edge in a connection.
+"""
+type CRMContactEmailEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge
+  """
+  node: CRMContactEmail
+}
+
+input CRMContactEmailInput {
+  address: String!
+
+  """
+  At most one email may be primary
+  """
+  isPrimary: Boolean
+}
+
+type CRMContactLocation {
+  """
+  Null for a country-level location
+  """
+  cityName: String
+
+  """
+  ISO 3166-1 alpha-2 country code, uppercase
+  """
+  countryCode: String!
+  createdAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  crmContactID: String!
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+
+  """
+  Whether this is the contact's primary location
+  """
+  isPrimary: Boolean!
+  partnerID: String!
+  updatedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+}
+
+"""
+A connection to a list of items.
+"""
+type CRMContactLocationConnection {
+  """
+  A list of edges.
+  """
+  edges: [CRMContactLocationEdge]
+  pageCursors: PageCursors!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+"""
+An edge in a connection.
+"""
+type CRMContactLocationEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge
+  """
+  node: CRMContactLocation
+}
+
+input CRMContactLocationInput {
+  """
+  Omit for a country-level location
+  """
+  cityName: String
+
+  """
+  ISO 3166-1 alpha-2 country code
+  """
+  countryCode: String!
+
+  """
+  At most one location may be primary. The first one is primary by default.
+  """
+  isPrimary: Boolean
+}
+
+enum CRMContactSort {
+  DISPLAY_NAME_ASC
+  DISPLAY_NAME_DESC
+}
+
+enum CRMContactStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum CRMContactType {
+  ORGANIZATION
+  PERSON
 }
 
 type CalculatedCost {
@@ -15200,6 +15534,123 @@ type CreateBrandKitSuccess {
   brandKit: BrandKit
 }
 
+type CreateCRMContactEmailFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateCRMContactEmailInput {
+  address: String!
+  clientMutationId: String
+  crmContactID: String!
+
+  """
+  Makes this the primary email and demotes the previous one. A contact may have no primary email.
+  """
+  isPrimary: Boolean
+}
+
+type CreateCRMContactEmailPayload {
+  clientMutationId: String
+
+  """
+  On success: the created email
+  """
+  crmContactEmailOrError: CreateCRMContactEmailResponseOrError
+}
+
+union CreateCRMContactEmailResponseOrError =
+    CreateCRMContactEmailFailure
+  | CreateCRMContactEmailSuccess
+
+type CreateCRMContactEmailSuccess {
+  crmContactEmail: CRMContactEmail
+}
+
+type CreateCRMContactFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateCRMContactInput {
+  """
+  Must be a user who belongs to the contact's partner
+  """
+  assignedToUserID: String
+
+  """
+  Replaces the whole list on update. Unknown values are rejected.
+  """
+  categories: [String!]
+  clientMutationId: String
+  company: String
+  contactType: CRMContactType!
+  emails: [CRMContactEmailInput!]
+  firstName: String
+  lastName: String
+  locations: [CRMContactLocationInput!]
+  notes: String
+  partnerID: String!
+
+  """
+  Stored as entered. Only numbers starting with `+` or `00` get a normalized phone.
+  """
+  phone: String
+}
+
+type CreateCRMContactLocationFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateCRMContactLocationInput {
+  """
+  Leave blank for a country-level location
+  """
+  cityName: String
+  clientMutationId: String
+
+  """
+  ISO 3166-1 alpha-2 country code
+  """
+  countryCode: String!
+  crmContactID: String!
+
+  """
+  The first location is always primary. Later, true demotes the previous primary.
+  """
+  isPrimary: Boolean
+}
+
+type CreateCRMContactLocationPayload {
+  clientMutationId: String
+
+  """
+  On success: the created location
+  """
+  crmContactLocationOrError: CreateCRMContactLocationResponseOrError
+}
+
+union CreateCRMContactLocationResponseOrError =
+    CreateCRMContactLocationFailure
+  | CreateCRMContactLocationSuccess
+
+type CreateCRMContactLocationSuccess {
+  crmContactLocation: CRMContactLocation
+}
+
+type CreateCRMContactPayload {
+  clientMutationId: String
+
+  """
+  On success: the created contact
+  """
+  crmContactOrError: CreateCRMContactResponseOrError
+}
+
+union CreateCRMContactResponseOrError = CreateCRMContactFailure | CreateCRMContactSuccess
+
+type CreateCRMContactSuccess {
+  crmContact: CRMContact
+}
+
 type CreateCanonicalArtistFailure {
   mutationError: GravityMutationError
 }
@@ -17355,6 +17806,66 @@ union DeleteBrandKitResponseOrError = DeleteBrandKitFailure | DeleteBrandKitSucc
 
 type DeleteBrandKitSuccess {
   success: Boolean
+}
+
+type DeleteCRMContactEmailFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteCRMContactEmailInput {
+  clientMutationId: String
+
+  """
+  The internal ID of the email
+  """
+  id: String!
+}
+
+type DeleteCRMContactEmailPayload {
+  clientMutationId: String
+
+  """
+  On success: the removed email
+  """
+  crmContactEmailOrError: DeleteCRMContactEmailResponseOrError
+}
+
+union DeleteCRMContactEmailResponseOrError =
+    DeleteCRMContactEmailFailure
+  | DeleteCRMContactEmailSuccess
+
+type DeleteCRMContactEmailSuccess {
+  crmContactEmail: CRMContactEmail
+}
+
+type DeleteCRMContactLocationFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteCRMContactLocationInput {
+  clientMutationId: String
+
+  """
+  The internal ID of the location
+  """
+  id: String!
+}
+
+type DeleteCRMContactLocationPayload {
+  clientMutationId: String
+
+  """
+  On success: the removed location
+  """
+  crmContactLocationOrError: DeleteCRMContactLocationResponseOrError
+}
+
+union DeleteCRMContactLocationResponseOrError =
+    DeleteCRMContactLocationFailure
+  | DeleteCRMContactLocationSuccess
+
+type DeleteCRMContactLocationSuccess {
+  crmContactLocation: CRMContactLocation
 }
 
 type DeleteCareerHighlightFailure {
@@ -26473,6 +26984,11 @@ type Mutation {
   adminUpdateFeatureFlag(input: AdminUpdateFeatureFlagInput!): AdminUpdateFeatureFlagPayload
 
   """
+  Archive a CRM contact. Contacts can't be deleted, and an archived contact keeps its email addresses, so they can't be reused.
+  """
+  archiveCRMContact(input: ArchiveCRMContactInput!): ArchiveCRMContactPayload
+
+  """
   Update all artworks that belong to the partner
   """
   artsyShippingOptIn(input: ArtsyShippingOptInMutationInput!): ArtsyShippingOptInMutationPayload
@@ -26943,6 +27459,21 @@ type Mutation {
   createBuyerOffer(input: createBuyerOfferInput!): createBuyerOfferPayload
 
   """
+  Create a CRM contact. It needs at least one of firstName, lastName, company or an email. Creation is all-or-nothing: a failing email or location creates nothing.
+  """
+  createCRMContact(input: CreateCRMContactInput!): CreateCRMContactPayload
+
+  """
+  Add an email address to a CRM contact. It must be unique across all of the partner's contacts, archived ones included.
+  """
+  createCRMContactEmail(input: CreateCRMContactEmailInput!): CreateCRMContactEmailPayload
+
+  """
+  Add a location to a CRM contact
+  """
+  createCRMContactLocation(input: CreateCRMContactLocationInput!): CreateCRMContactLocationPayload
+
+  """
   Create a canonical artist
   """
   createCanonicalArtist(
@@ -27280,6 +27811,16 @@ type Mutation {
   Remove the logo from a brand kit
   """
   deleteBrandKitLogo(input: DeleteBrandKitLogoInput!): DeleteBrandKitLogoPayload
+
+  """
+  Remove an email from a CRM contact. Fails when it is the contact's last email and the contact has no name or company.
+  """
+  deleteCRMContactEmail(input: DeleteCRMContactEmailInput!): DeleteCRMContactEmailPayload
+
+  """
+  Remove a location. If it was the primary, the contact's oldest remaining location becomes primary.
+  """
+  deleteCRMContactLocation(input: DeleteCRMContactLocationInput!): DeleteCRMContactLocationPayload
 
   """
   Delete an artist career highlight
@@ -27896,6 +28437,11 @@ type Mutation {
   triggerCampaign(input: TriggerCampaignInput!): TriggerCampaignPayload
 
   """
+  Make an archived CRM contact active again
+  """
+  unarchiveCRMContact(input: UnarchiveCRMContactInput!): UnarchiveCRMContactPayload
+
+  """
   Returns a distributed partner list to private, deleting its Artsy show. Artworks stay in inventory.
   """
   undistributePartnerList(
@@ -27986,6 +28532,21 @@ type Mutation {
   updateCMSLastAccessTimestamp(
     input: UpdateCMSLastAccessTimestampMutationInput!
   ): UpdateCMSLastAccessTimestampMutationPayload
+
+  """
+  Update a CRM contact's own fields. Emails and locations have their own mutations, and a contact can't change partner.
+  """
+  updateCRMContact(input: UpdateCRMContactInput!): UpdateCRMContactPayload
+
+  """
+  Change an email's address or primary flag. An email can't be moved to another contact.
+  """
+  updateCRMContactEmail(input: UpdateCRMContactEmailInput!): UpdateCRMContactEmailPayload
+
+  """
+  Change a location. The primary can't be unset: make another location primary instead.
+  """
+  updateCRMContactLocation(input: UpdateCRMContactLocationInput!): UpdateCRMContactLocationPayload
 
   """
   Updates Artist Career Highlight.
@@ -34142,6 +34703,111 @@ type Query {
   ): CreditCard
 
   """
+  A CRM contact of a partner
+  """
+  crmContact(
+    """
+    The internal ID of the contact
+    """
+    id: String!
+  ): CRMContact
+
+  """
+  An email address of a CRM contact
+  """
+  crmContactEmail(
+    """
+    The internal ID of the email
+    """
+    id: String!
+  ): CRMContactEmail
+
+  """
+  A connection of the email addresses of a CRM contact
+  """
+  crmContactEmailsConnection(
+    after: String
+    before: String
+
+    """
+    The internal ID of the CRM contact
+    """
+    crmContactID: String!
+    first: Int
+    last: Int
+
+    """
+    Defaults to oldest first
+    """
+    sort: CRMContactChildSort
+  ): CRMContactEmailConnection
+
+  """
+  A location of a CRM contact
+  """
+  crmContactLocation(
+    """
+    The internal ID of the location
+    """
+    id: String!
+  ): CRMContactLocation
+
+  """
+  A connection of the locations of a CRM contact
+  """
+  crmContactLocationsConnection(
+    after: String
+    before: String
+
+    """
+    The internal ID of the CRM contact
+    """
+    crmContactID: String!
+    first: Int
+    last: Int
+
+    """
+    Defaults to oldest first
+    """
+    sort: CRMContactChildSort
+  ): CRMContactLocationConnection
+
+  """
+  A connection of CRM contacts for a partner
+  """
+  crmContactsConnection(
+    after: String
+    before: String
+
+    """
+    Only contacts with this category. Case-insensitive, one value only.
+    """
+    category: String
+    first: Int
+    last: Int
+
+    """
+    The partner ID to list contacts for
+    """
+    partnerID: String!
+
+    """
+    Case-insensitive substring match on the display name or any email address
+    """
+    query: String
+
+    """
+    Defaults to DISPLAY_NAME_ASC
+    """
+    sort: CRMContactSort
+
+    """
+    Defaults to ACTIVE. There is no way to list both statuses in one request.
+    """
+    status: CRMContactStatus
+  ): CRMContactConnection
+
+  """
   Curated Marketing Collections
   """
   curatedMarketingCollections(size: Int): [MarketingCollection]
@@ -39494,6 +40160,34 @@ type USBankAccount {
   last4: String!
 }
 
+type UnarchiveCRMContactFailure {
+  mutationError: GravityMutationError
+}
+
+input UnarchiveCRMContactInput {
+  clientMutationId: String
+
+  """
+  The internal ID of the contact
+  """
+  id: String!
+}
+
+type UnarchiveCRMContactPayload {
+  clientMutationId: String
+
+  """
+  On success: the unarchived contact
+  """
+  crmContactOrError: UnarchiveCRMContactResponseOrError
+}
+
+union UnarchiveCRMContactResponseOrError = UnarchiveCRMContactFailure | UnarchiveCRMContactSuccess
+
+type UnarchiveCRMContactSuccess {
+  crmContact: CRMContact
+}
+
 union UnderlyingCurrentEvent = Sale | Show
 
 type UndistributePartnerListFailure {
@@ -40278,6 +40972,133 @@ union UpdateCMSLastAccessTimestampResponseOrError =
 
 type UpdateCMSLastAccessTimestampSuccess {
   partner: Partner
+}
+
+type UpdateCRMContactEmailFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateCRMContactEmailInput {
+  address: String
+  clientMutationId: String
+
+  """
+  The internal ID of the email
+  """
+  id: String!
+
+  """
+  Makes this the primary email and demotes the previous one. A contact may have no primary email.
+  """
+  isPrimary: Boolean
+}
+
+type UpdateCRMContactEmailPayload {
+  clientMutationId: String
+
+  """
+  On success: the updated email
+  """
+  crmContactEmailOrError: UpdateCRMContactEmailResponseOrError
+}
+
+union UpdateCRMContactEmailResponseOrError =
+    UpdateCRMContactEmailFailure
+  | UpdateCRMContactEmailSuccess
+
+type UpdateCRMContactEmailSuccess {
+  crmContactEmail: CRMContactEmail
+}
+
+type UpdateCRMContactFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateCRMContactInput {
+  """
+  Must be a user who belongs to the contact's partner
+  """
+  assignedToUserID: String
+
+  """
+  Replaces the whole list on update. Unknown values are rejected.
+  """
+  categories: [String!]
+  clientMutationId: String
+  company: String
+  contactType: CRMContactType
+  firstName: String
+
+  """
+  The internal ID of the contact
+  """
+  id: String!
+  lastName: String
+  notes: String
+
+  """
+  Stored as entered. Only numbers starting with `+` or `00` get a normalized phone.
+  """
+  phone: String
+}
+
+type UpdateCRMContactLocationFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateCRMContactLocationInput {
+  """
+  Leave blank for a country-level location
+  """
+  cityName: String
+  clientMutationId: String
+
+  """
+  ISO 3166-1 alpha-2 country code
+  """
+  countryCode: String
+
+  """
+  The internal ID of the location
+  """
+  id: String!
+
+  """
+  true demotes the previous primary
+  """
+  isPrimary: Boolean
+}
+
+type UpdateCRMContactLocationPayload {
+  clientMutationId: String
+
+  """
+  On success: the updated location
+  """
+  crmContactLocationOrError: UpdateCRMContactLocationResponseOrError
+}
+
+union UpdateCRMContactLocationResponseOrError =
+    UpdateCRMContactLocationFailure
+  | UpdateCRMContactLocationSuccess
+
+type UpdateCRMContactLocationSuccess {
+  crmContactLocation: CRMContactLocation
+}
+
+type UpdateCRMContactPayload {
+  clientMutationId: String
+
+  """
+  On success: the updated contact
+  """
+  crmContactOrError: UpdateCRMContactResponseOrError
+}
+
+union UpdateCRMContactResponseOrError = UpdateCRMContactFailure | UpdateCRMContactSuccess
+
+type UpdateCRMContactSuccess {
+  crmContact: CRMContact
 }
 
 type UpdateCareerHighlightFailure {
@@ -44100,6 +44921,111 @@ type Viewer {
     """
     id: String!
   ): CreditCard
+
+  """
+  A CRM contact of a partner
+  """
+  crmContact(
+    """
+    The internal ID of the contact
+    """
+    id: String!
+  ): CRMContact
+
+  """
+  An email address of a CRM contact
+  """
+  crmContactEmail(
+    """
+    The internal ID of the email
+    """
+    id: String!
+  ): CRMContactEmail
+
+  """
+  A connection of the email addresses of a CRM contact
+  """
+  crmContactEmailsConnection(
+    after: String
+    before: String
+
+    """
+    The internal ID of the CRM contact
+    """
+    crmContactID: String!
+    first: Int
+    last: Int
+
+    """
+    Defaults to oldest first
+    """
+    sort: CRMContactChildSort
+  ): CRMContactEmailConnection
+
+  """
+  A location of a CRM contact
+  """
+  crmContactLocation(
+    """
+    The internal ID of the location
+    """
+    id: String!
+  ): CRMContactLocation
+
+  """
+  A connection of the locations of a CRM contact
+  """
+  crmContactLocationsConnection(
+    after: String
+    before: String
+
+    """
+    The internal ID of the CRM contact
+    """
+    crmContactID: String!
+    first: Int
+    last: Int
+
+    """
+    Defaults to oldest first
+    """
+    sort: CRMContactChildSort
+  ): CRMContactLocationConnection
+
+  """
+  A connection of CRM contacts for a partner
+  """
+  crmContactsConnection(
+    after: String
+    before: String
+
+    """
+    Only contacts with this category. Case-insensitive, one value only.
+    """
+    category: String
+    first: Int
+    last: Int
+
+    """
+    The partner ID to list contacts for
+    """
+    partnerID: String!
+
+    """
+    Case-insensitive substring match on the display name or any email address
+    """
+    query: String
+
+    """
+    Defaults to DISPLAY_NAME_ASC
+    """
+    sort: CRMContactSort
+
+    """
+    Defaults to ACTIVE. There is no way to list both statuses in one request.
+    """
+    status: CRMContactStatus
+  ): CRMContactConnection
 
   """
   Curated Marketing Collections
