@@ -7793,9 +7793,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@segment/analytics-react-native@npm:2.24.1":
-  version: 2.24.1
-  resolution: "@segment/analytics-react-native@npm:2.24.1"
+"@segment/analytics-react-native@npm:2.24.2":
+  version: 2.24.2
+  resolution: "@segment/analytics-react-native@npm:2.24.2"
   dependencies:
     "@segment/tsub": "npm:2.0.0"
     "@stdlib/number-float64-base-normalize": "npm:0.0.8"
@@ -7813,7 +7813,7 @@ __metadata:
       optional: true
     react-native-get-random-values:
       optional: true
-  checksum: 10c0/9a377aa76937dc40739bcd3f676faf77541b4f448d7c32ccdfbb5954bf4a29156a4f03aaeecb3276725a4de1a6aff4fdc63e715278cec63613bb642751c629e9
+  checksum: 10c0/f18750125dd7f586e831b9d6822bd6388cc22e84e08f26bb8f2f760b3976c6456a3bb9a7b4913d80566e4f80914d0dacadaacbc11f8896bb90fce5cfbf16b0da
   languageName: node
   linkType: hard
 
@@ -13721,7 +13721,7 @@ __metadata:
     "@rozenite/network-activity-plugin": "npm:2.1.0"
     "@rozenite/performance-monitor-plugin": "npm:2.1.0"
     "@rozenite/react-navigation-plugin": "npm:2.1.0"
-    "@segment/analytics-react-native": "npm:2.24.1"
+    "@segment/analytics-react-native": "npm:2.24.2"
     "@segment/analytics-react-native-plugin-braze": "npm:0.9.0"
     "@segment/sovran-react-native": "npm:1.1.5"
     "@sentry/react-native": "npm:8.25.0"
