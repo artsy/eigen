@@ -10,6 +10,7 @@ import {
 } from "app/utils/googleMaps"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { useEffect, useState } from "react"
+import { KeyboardController } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const MIN_QUERY_LENGTH = 3
@@ -65,9 +66,15 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
     }
   }, [debouncedQuery, country])
 
+  // Android keeps the keyboard open after the sheet's input goes away
+  const close = () => {
+    KeyboardController.dismiss()
+    onDismiss()
+  }
+
   const selectPrediction = async (prediction: SimpleLocation) => {
     onSelect(await getLocationDetails(prediction))
-    onDismiss()
+    close()
   }
 
   return (
@@ -79,7 +86,7 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
       keyboardBehavior="extend"
       android_keyboardInputMode="adjustResize"
       backgroundStyle={{ backgroundColor: color("mono0") }}
-      onDismiss={onDismiss}
+      onDismiss={close}
     >
       <Flex px={2} pt={1} pb={1} gap={2}>
         <Text variant="sm-display">{title}</Text>
