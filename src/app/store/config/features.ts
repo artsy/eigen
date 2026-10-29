@@ -210,8 +210,9 @@ export const features = {
   },
   AREnableEnrichedMarkdown: {
     description: "Render markdown natively with enriched-markdown (all call sites)",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableEnrichedMarkdown",
   },
   AREnableNewHomeFeed: {
     description: "Enable new home feed experience",
