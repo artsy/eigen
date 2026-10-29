@@ -646,6 +646,62 @@ describe("ArtAssistant", () => {
       expect(mockRemoveImage).toHaveBeenCalled()
     })
 
+    it("does not send a suggested reply while the image uploads", async () => {
+      const environment = createMockEnvironment()
+      renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+      fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "Warhol prints")
+      fireEvent.press(screen.getByLabelText("Send"))
+
+      mockImageAttachment({ status: "uploading", uri: image.uri })
+
+      await act(async () => {
+        environment.mock.nextValue(environment.mock.getMostRecentOperation(), {
+          data: {
+            aiAgentTurn: {
+              __typename: "AIAgentTurnComplete",
+              message: "Here are a few.",
+              stopReason: "end_turn",
+              toolCallCount: 1,
+              artworks: [],
+              suggestedReplies: [{ text: "Show me cheaper ones" }],
+            },
+          },
+        })
+      })
+
+      const operationCount = environment.mock.getAllOperations().length
+
+      fireEvent.press(screen.getByText("Show me cheaper ones"))
+
+      expect(environment.mock.getAllOperations()).toHaveLength(operationCount)
+      expect(mockRemoveImage).not.toHaveBeenCalled()
+    })
+
+    it("sends an uploaded image with a tapped empty-state suggestion", () => {
+      mockImageAttachment({ status: "ready", uri: image.uri, image })
+      const environment = createMockEnvironment()
+      renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+      fireEvent.press(screen.getByText(ART_ASSISTANT_SUGGESTIONS[0]))
+
+      expect(environment.mock.getMostRecentOperation().request.variables.input).toMatchObject({
+        message: ART_ASSISTANT_SUGGESTIONS[0],
+        image: { s3Bucket: "bucket", s3Key: "key" },
+      })
+      expect(mockRemoveImage).toHaveBeenCalled()
+    })
+
+    it("does not send an empty-state suggestion while the image uploads", () => {
+      mockImageAttachment({ status: "uploading", uri: image.uri })
+      const environment = createMockEnvironment()
+      renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+      fireEvent.press(screen.getByText(ART_ASSISTANT_SUGGESTIONS[0]))
+
+      expect(environment.mock.getAllOperations()).toHaveLength(0)
+    })
+
     it("sends an uploaded image without text and clears it from the composer", () => {
       mockImageAttachment({ status: "ready", uri: image.uri, image })
       const environment = createMockEnvironment()

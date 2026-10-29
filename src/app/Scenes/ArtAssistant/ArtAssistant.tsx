@@ -112,7 +112,8 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
     )
   }, [])
 
-  const canSendPrompt = (promptText: string) => !!promptText.trim() && !isResponding
+  const canSendPrompt = (promptText: string) =>
+    !!promptText.trim() && !isResponding && !isUploadingImage
 
   const sendPrompt = (
     promptText: string,
@@ -145,7 +146,11 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
 
   // A suggestion is sent the moment it is picked, so it never becomes a typed prompt.
   const handleSelectSuggestion = (suggestion: string) => {
-    sendPrompt(suggestion, "suggestion")
+    if (!canSendPrompt(suggestion)) {
+      return
+    }
+
+    sendPromptWithAttachedImage(suggestion, "suggestion")
   }
 
   const handleSelectSuggestedReply = (
