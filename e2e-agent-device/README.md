@@ -26,7 +26,7 @@ Both workflows can also be started manually from the Actions tab.
 
 ### Launch arguments
 
-The flows need the same launch arguments as Maestro (`useMaestroInit`, `email`, `password`, `shouldSignOut`), read by `src/app/system/devTools/useMaestroInitialization.ts`. agent-device 0.21.31 accepts `open --launch-args` on the command line but drops it inside `.ad` scripts. So each flow declares its arguments in a header comment:
+The flows need the same launch arguments as Maestro (`useMaestroInit`, `email`, `password`, `shouldSignOut`), read by `src/app/system/devTools/useMaestroInitialization.ts`. agent-device accepts `open --launch-args` on the command line but drops it inside `.ad` scripts (still true as of the pinned version). So each flow declares its arguments in a header comment:
 
 ```
 # @launch useMaestroInit=true email=${EMAIL} password=${PASSWORD}
@@ -40,7 +40,7 @@ On Android, the runner first waits for that screen, using the flow's first `wait
 
 ## Running locally
 
-1. Install the pinned version used in CI: `npm install -g agent-device@0.21.31`, then `agent-device doctor`.
+1. Install the pinned version used in CI: `npm install -g "agent-device@$(cat e2e-agent-device/agent-device-version)"` (from the repo root), then `agent-device doctor`. That file is the single source of truth for the version, read by both workflows — bump it there.
 2. Get the app onto a booted device:
    - **iOS:** install the QA build CI uses. Download `s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip`, unzip it, then run `xcrun simctl install booted ./Artsy.app`. Then run `agent-device prepare ios-runner --platform ios --udid <udid> --timeout 900000` once, to build agent-device's test runner.
    - **Android:** run a local build with `yarn android` (the `MAESTRO_APP_ID` package is `net.artsy.app`) and keep Metro running. The QA APK on S3 is built for x86_64 only, for CI's emulator, so it won't install on Apple Silicon emulators or on physical phones (`INSTALL_FAILED_NO_MATCHING_ABIS`). Open the app once and dismiss any React Native warning overlay before running the suite.
