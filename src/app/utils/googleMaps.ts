@@ -17,6 +17,14 @@ export interface LocationWithDetails extends SimpleLocation {
   postalCode?: string
   state?: string
   stateCode?: string
+  street?: string
+}
+
+export interface LocationSearchOptions {
+  /** Google place types to search, eg "(cities)" or "address" */
+  types?: string
+  /** ISO 3166-1 alpha-2 code that limits results to one country */
+  country?: string
 }
 
 /** Expected GMaps API prediction shape */
@@ -25,12 +33,16 @@ interface QueryAutocompletePrediction {
   description: string
 }
 
-export const getLocationPredictions = async (query: string): Promise<SimpleLocation[]> => {
+export const getLocationPredictions = async (
+  query: string,
+  { types = "(cities)", country }: LocationSearchOptions = {}
+): Promise<SimpleLocation[]> => {
   const queryString = stringify({
     key: API_KEY,
     language: "en",
-    types: "(cities)",
+    types,
     input: query,
+    components: country ? `country:${country}` : undefined,
   })
 
   const url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?" + queryString
@@ -77,6 +89,8 @@ export const getLocationDetails = async ({
   )
   const countryPlace = address_components.find((comp) => comp.types.includes("country"))
   const postalCodePlace = address_components.find((comp) => comp.types.includes("postal_code"))
+  const streetNumberPlace = address_components.find((comp) => comp.types.includes("street_number"))
+  const routePlace = address_components.find((comp) => comp.types.includes("route"))
   const { lat, lng } = geometry.location
 
   const city = cityPlace && cityPlace.long_name
@@ -85,6 +99,8 @@ export const getLocationDetails = async ({
   const state = statePlace && statePlace.long_name
   const stateCode = statePlace && statePlace.short_name
   const postalCode = postalCodePlace && postalCodePlace.long_name
+  const street =
+    [streetNumberPlace?.long_name, routePlace?.short_name].filter(Boolean).join(" ") || undefined
 
   return {
     city,
@@ -94,6 +110,7 @@ export const getLocationDetails = async ({
     state,
     stateCode,
     postalCode,
+    street,
     id,
     name,
   }
