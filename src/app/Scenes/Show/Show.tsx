@@ -67,7 +67,7 @@ export const Show: React.FC<ShowProps> = ({ show, stopID, shareToken }) => {
       ? [
           {
             key: "itinerary-stop-note",
-            element: <ItineraryStopNote stopID={stopID} shareToken={shareToken} mx={2} />,
+            element: <ItineraryStopNote stopID={stopID} shareToken={shareToken} />,
           },
         ]
       : []),
