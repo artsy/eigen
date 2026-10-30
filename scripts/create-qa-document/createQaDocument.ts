@@ -55,6 +55,32 @@ const postToSlack = async (text: string, threadTs?: string): Promise<string | un
   }
 }
 
+// Title fragments that identify an existing QA document as "the same QA round".
+// They mirror the stamped template title:
+//   "2026-MM-DD Mobile App QA (version A.B.C, iOS build 2026.W.X.Y.Z Android build XYZ)"
+// - "version X.Y.Z," is anchored on the trailing comma so 9.22.1 can't match
+//   9.22.10, and 9.22.0 can't match 9.22.0-hotfix.
+// - The build numbers make a new beta for the same version get a fresh doc,
+//   while a re-run for the same builds still reuses the existing one.
+// - Without any build numbers (betas not tagged) we fall back to today's date.
+export const qaDocumentMatchKeys = ({
+  version,
+  today,
+  iosBuild,
+  androidBuild,
+}: {
+  version: string
+  today: string
+  iosBuild?: string
+  androidBuild?: string
+}): string[] => {
+  const keys = [`version ${version},`]
+  if (iosBuild) keys.push(`iOS build ${iosBuild} `)
+  if (androidBuild) keys.push(`Android build ${androidBuild})`)
+  if (!iosBuild && !androidBuild) keys.push(today)
+  return keys
+}
+
 // Triggered by the release-candidate pull request (head branch `rc-v<version>` or `rc-v<version>-hotfix`):
 // duplicates the Mobile App QA Notion template with the release version and
 // today's date stamped into the title, then posts the link to Slack.
@@ -77,10 +103,13 @@ export const createQaDocument = async (
   // a missing changelog must never block QA document creation.
   const changelog = extractChangelogFromPrBody(process.env.PR_BODY ?? "") ?? undefined
 
-  // Idempotency: don't create a second doc if one for this version already
-  // exists (e.g. the RC PR was reopened or the job re-run). Either way the
-  // channel just wants the link, so we announce it with the same message.
-  const existing = await findExistingCopy(QA_DESTINATION_URL, [version])
+  // Idempotency: don't create a second doc if one for these exact builds
+  // already exists (e.g. the RC PR was reopened or the job re-run). Either way
+  // the channel just wants the link, so we announce it with the same message.
+  const existing = await findExistingCopy(
+    QA_DESTINATION_URL,
+    qaDocumentMatchKeys({ version, today, iosBuild, androidBuild })
+  )
   let url: string
   if (existing) {
     console.log(`QA document already exists: ${existing}`)

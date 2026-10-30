@@ -9,7 +9,7 @@ jest.mock("../duplicateNotionTemplate", () => ({
 
 import { extractChangelogFromPrBody, extractContributorsFromChangelog } from "../changelog"
 import { QA_DESTINATION_URL, QA_TEMPLATE_URL } from "../constants"
-import { createQaDocument } from "../createQaDocument"
+import { createQaDocument, qaDocumentMatchKeys } from "../createQaDocument"
 import { duplicateTemplate, findExistingCopy } from "../duplicateNotionTemplate"
 import { getVersionFromBranch, isHotfixBranch } from "../version"
 
@@ -169,10 +169,26 @@ describe("createQaDocument", () => {
     )
   })
 
-  it("checks idempotency by version", async () => {
+  it("checks idempotency by version + build numbers", async () => {
+    process.env.IOS_BUILD = "2026.08.13.18"
+    process.env.ANDROID_BUILD = "2026081318"
+
     await createQaDocument(RC_BRANCH, NOW)
 
-    expect(findExistingCopy).toHaveBeenCalledWith(QA_DESTINATION_URL, ["9.12.0"])
+    expect(findExistingCopy).toHaveBeenCalledWith(QA_DESTINATION_URL, [
+      "version 9.12.0,",
+      "iOS build 2026.08.13.18 ",
+      "Android build 2026081318)",
+    ])
+  })
+
+  it("falls back to version + date when there are no build numbers", async () => {
+    await createQaDocument(RC_BRANCH, NOW)
+
+    expect(findExistingCopy).toHaveBeenCalledWith(QA_DESTINATION_URL, [
+      "version 9.12.0,",
+      "2026-08-13",
+    ])
   })
 
   it("passes the beta build numbers from env through to the duplicator", async () => {
@@ -283,5 +299,44 @@ describe("createQaDocument", () => {
   it("throws for a branch that is not an rc-v branch", async () => {
     await expect(createQaDocument("main", NOW)).rejects.toThrow(/rc-v<version>/)
     expect(duplicateTemplate).not.toHaveBeenCalled()
+  })
+})
+
+describe("qaDocumentMatchKeys", () => {
+  // Real titles from the Mobile App QA page.
+  const yesterday =
+    "2026-10-29 Mobile App QA (version 9.22.0, iOS build 2026.10.29.11 Android build 2026102911)"
+  const today =
+    "2026-10-30 Mobile App QA (version 9.22.0, iOS build 2026.10.30.10 Android build 2026103010)"
+  const matches = (title: string, keys: string[]) => keys.every((k) => title.includes(k))
+
+  it("matches a doc for the same builds (re-run)", () => {
+    const keys = qaDocumentMatchKeys({
+      version: "9.22.0",
+      today: "2026-10-30",
+      iosBuild: "2026.10.30.10",
+      androidBuild: "2026103010",
+    })
+    expect(matches(today, keys)).toBe(true)
+    expect(matches(yesterday, keys)).toBe(false)
+  })
+
+  it("does not match a prefix version or the hotfix doc", () => {
+    const title = "2026-10-30 Mobile App QA (version 9.22.10, iOS build 1 Android build 2)"
+    const hotfix = "2026-10-30 Mobile App QA (version 9.22.1-hotfix, iOS build 1 Android build 2)"
+    const keys = qaDocumentMatchKeys({ version: "9.22.1", today: "2026-10-30" })
+    expect(matches(title, keys)).toBe(false)
+    expect(matches(hotfix, keys)).toBe(false)
+  })
+
+  it("matches the hotfix doc by its own version", () => {
+    const hotfix = "2026-10-30 Mobile App QA (version 9.22.1-hotfix, iOS build 1 Android build 2)"
+    const keys = qaDocumentMatchKeys({
+      version: "9.22.1-hotfix",
+      today: "2026-10-30",
+      iosBuild: "1",
+      androidBuild: "2",
+    })
+    expect(matches(hotfix, keys)).toBe(true)
   })
 })
