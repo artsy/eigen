@@ -1,0 +1,344 @@
+#!/bin/bash
+
+set -e
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 <platform> [device udid/serial]"
+    exit 1
+fi
+
+PLATFORM=$1
+DEVICE=$2
+MAX_ATTEMPTS=3
+
+ARTIFACTS_DIR="e2e-agent-device/artifacts/$PLATFORM"
+ENV_FILE=".env.maestro.$PLATFORM"
+
+# Strips one pair of matching surrounding quotes
+unquote() {
+  local value=$1
+  if [[ "$value" =~ ^\"(.*)\"$ ]] || [[ "$value" =~ ^\'(.*)\'$ ]]; then
+    value="${BASH_REMATCH[1]}"
+  fi
+  printf '%s' "$value"
+}
+
+# Reuse the Maestro env file (same test account). Maestro reads it as a picocli @argfile, so lines
+# look like `-e KEY=value`, `-e "KEY=value"` or `-e KEY="value"`; plain `KEY=value` works too.
+# The file is per platform, so it wins over the shell (e.g. a shell MAESTRO_APP_ID set for Android).
+if [ -f "$ENV_FILE" ]; then
+  LOADED_KEYS=""
+  while IFS= read -r line || [ -n "$line" ]; do
+    line="${line%$'\r'}"
+    # Trim surrounding whitespace
+    line="${line#"${line%%[![:space:]]*}"}"
+    line="${line%"${line##*[![:space:]]}"}"
+    [[ "$line" =~ ^(-e|--env)[[:space:]=]+(.*)$ ]] && line="${BASH_REMATCH[2]}"
+    line=$(unquote "$line")
+    [[ "$line" =~ ^([A-Za-z_][A-Za-z0-9_]*)=(.*)$ ]] || continue
+    key="${BASH_REMATCH[1]}"
+    value=$(unquote "${BASH_REMATCH[2]}")
+    export "$key=$value"
+    LOADED_KEYS="$LOADED_KEYS $key"
+  done < "$ENV_FILE"
+  echo "Loaded from $ENV_FILE:${LOADED_KEYS:- (nothing)}"
+fi
+
+case "$PLATFORM" in
+  ios)
+    DEFAULT_APP_ID="net.artsy.qa"
+    DEVICE=${DEVICE:-$(xcrun simctl list devices booted | grep -oE "[A-F0-9-]{36}" | head -n 1)}
+    DEVICE_FLAG="--udid"
+    ;;
+  android)
+    DEFAULT_APP_ID="net.artsy.app"
+    DEVICE=${DEVICE:-$(adb devices | awk 'NR > 1 && $2 == "device" { print $1; exit }')}
+    DEVICE_FLAG="--serial"
+    ;;
+  *)
+    echo "Unsupported platform: $PLATFORM"
+    exit 1
+    ;;
+esac
+
+if [ -z "$DEVICE" ]; then
+  echo "No booted $PLATFORM device found"
+  exit 1
+fi
+
+export AD_VAR_APP_ID="${MAESTRO_APP_ID:-$DEFAULT_APP_ID}"
+export AD_VAR_EMAIL="${MAESTRO_TEST_EMAIL:?MAESTRO_TEST_EMAIL is not set}"
+export AD_VAR_PASSWORD="${MAESTRO_TEST_PASSWORD:?MAESTRO_TEST_PASSWORD is not set}"
+
+# The credentials are passed to the app as launch arguments, so keep them out of the public CI logs
+if [ -n "$GITHUB_ACTIONS" ]; then
+  echo "::add-mask::$AD_VAR_EMAIL"
+  echo "::add-mask::$AD_VAR_PASSWORD"
+fi
+
+# Single-quotes a value for the device shell that `adb shell` hands its arguments to
+shell_quote() {
+  printf "'%s'" "$(printf '%s' "$1" | sed "s/'/'\\\\''/g")"
+}
+
+# agent-device scripts can't pass launch arguments, so each flow declares them in a
+# `# @launch key=value ...` header and we (re)launch the app with them before the flow runs.
+# Values written as ${VAR} are read from AD_VAR_VAR. This is what useMaestroInitialization reads.
+# On Android, agent-device's `open` sends a new launch intent and MainActivity (singleTask + setIntent)
+# replaces our extras with it. So before running a flow, wait_until_launched waits for the screen the
+# arguments produce (the flow's first `wait`), which proves they were read. iOS process arguments can't
+# be replaced, so iOS needs no wait.
+launch_app() {
+  local flow=$1
+  local header
+  header=$(grep -m 1 "^# @launch " "$flow" | sed "s/^# @launch //")
+
+  local ios_args=()
+  local android_args=()
+  local pair key value var
+  for pair in $header; do
+    key="${pair%%=*}"
+    value="${pair#*=}"
+    if [[ "$value" =~ ^\$\{([A-Za-z_][A-Za-z0-9_]*)\}$ ]]; then
+      var="AD_VAR_${BASH_REMATCH[1]}"
+      value="${!var}"
+    fi
+    ios_args+=("-$key" "$value")
+    android_args+=("--es" "$key" "$(shell_quote "$value")")
+  done
+
+  if [ "$PLATFORM" = "ios" ]; then
+    xcrun simctl launch --terminate-running-process "$DEVICE" "$AD_VAR_APP_ID" "${ios_args[@]}" > /dev/null
+  else
+    adb -s "$DEVICE" shell am force-stop "$AD_VAR_APP_ID"
+    adb -s "$DEVICE" shell am start -W -n "$AD_VAR_APP_ID/.MainActivity" "${android_args[@]}" > /dev/null
+  fi
+}
+
+wait_until_launched() {
+  local flow=$1 dir=$2
+  [ "$PLATFORM" = "android" ] || return 0
+
+  grep -m 1 "^wait " "$flow" > "$dir/launched.ad"
+  agent-device replay "$dir/launched.ad" "$DEVICE_FLAG" "$DEVICE" > /dev/null
+}
+
+take_screenshot() {
+  if [ "$PLATFORM" = "ios" ]; then
+    xcrun simctl io "$DEVICE" screenshot "$1" > /dev/null 2>&1
+  else
+    adb -s "$DEVICE" exec-out screencap -p > "$1"
+  fi
+}
+
+# Flows that run first, in this order; the rest follow alphabetically. The cheap flows go first because
+# a freshly booted simulator or emulator is at its slowest at the start of the job. The deeplinks are
+# ordered too, to tell whether a failure belongs to a link or to being the first deeplink of the run.
+FIRST_FLOWS="login signup deeplink-email deeplink-click deeplink-artist"
+
+# Flows for this platform: shared `name.ad` files plus `name.<platform>.ad` ones, FIRST_FLOWS first
+platform_flows() {
+  local flow base name first all=""
+  for flow in $(find e2e-agent-device/flows -name "*.ad" | sort); do
+    base=$(basename "$flow" .ad)
+    case "$base" in
+      *.ios | *.android) [ "${base##*.}" = "$PLATFORM" ] || continue ;;
+    esac
+    all="$all $flow"
+  done
+
+  for first in $FIRST_FLOWS; do
+    for flow in $all; do
+      name=$(basename "$flow" .ad)
+      [ "${name%".$PLATFORM"}" = "$first" ] && echo "$flow"
+    done
+  done
+  for flow in $all; do
+    name=$(basename "$flow" .ad)
+    [[ " $FIRST_FLOWS " == *" ${name%".$PLATFORM"} "* ]] || echo "$flow"
+  done
+}
+
+# The first `wait` of a flow has to be a selector wait for a screen the launch arguments produce,
+# because wait_until_launched relies on it on Android. A duration wait (`wait 2000`) or `wait absent`
+# would pass before the arguments were read and bring back the race on Android only.
+INVALID_FLOWS=""
+for FLOW in $(platform_flows); do
+  FIRST_WAIT=$(grep -m 1 "^wait " "$FLOW" || true)
+  if [ -z "$FIRST_WAIT" ] || [[ "$FIRST_WAIT" =~ ^wait\ +([0-9]+|absent|stable)(\ |$) ]]; then
+    echo "❌ $FLOW: the first \`wait\` must wait for a screen the launch arguments produce, e.g. wait 'id=\"search-button\"' 90000 (found: ${FIRST_WAIT:-none})"
+    INVALID_FLOWS="$INVALID_FLOWS $FLOW"
+  fi
+done
+if [ -n "$INVALID_FLOWS" ]; then
+  exit 1
+fi
+
+rm -rf "$ARTIFACTS_DIR"
+mkdir -p "$ARTIFACTS_DIR"
+
+now_ms() {
+  perl -MTime::HiRes=time -e 'printf "%d\n", time * 1000'
+}
+
+seconds() {
+  LC_ALL=C awk -v ms="$1" 'BEGIN { printf "%.1fs", ms / 1000 }'
+}
+
+# The flow's `# @title` header, like a Maestro flow's `name:`, or its file name
+flow_title() {
+  local title
+  title=$(grep -m 1 "^# @title " "$1" | sed "s/^# @title //")
+  echo "${title:-$2}"
+}
+
+# One line per attempt: attempt, passed|failed, duration in ms, first line of the error
+record_attempt() {
+  local message
+  message=$(printf '%s' "$3" | head -n 1 | tr '\t' ' ')
+  printf '%s\t%s\t%s\t%s\n' "$attempt" "$1" "$2" "$message" >> "$ARTIFACTS_DIR/$NAME/attempts.tsv"
+}
+
+# The error agent-device reported for the attempt, if any
+attempt_error() {
+  jq -r '.[0].message // empty' "$ATTEMPT_DIR/failures.json" 2> /dev/null || true
+}
+
+# Prints a summary like agent-device's own reporter: one line per flow, then flaky flows and failures
+# with every failed attempt. In CI it's also added to the run's summary page.
+print_summary() {
+  local passed=0 failed=0 total_ms=0 line name title status attempts ms
+  local lines="" flaky="" failures=""
+  while IFS=$'\t' read -r name title status attempts ms; do
+    total_ms=$((total_ms + ms))
+    if [ "$status" = passed ]; then
+      passed=$((passed + 1))
+      lines="${lines}✓ $title $(seconds "$ms")"$'\n'
+      if [ "$attempts" -gt 1 ]; then
+        flaky="$flaky  ✓ $title after $attempts attempts (passed attempt $(seconds "$(awk -F'\t' '$2 == "passed" { print $3 }' "$ARTIFACTS_DIR/$name/attempts.tsv")"), total $(seconds "$ms"))"$'\n'
+        flaky="$flaky$(LC_ALL=C awk -F'\t' '$2 == "failed" { printf "    attempt %s failed (%.1fs): %s\n", $1, $3 / 1000, $4 }' "$ARTIFACTS_DIR/$name/attempts.tsv")"$'\n'
+      fi
+    else
+      failed=$((failed + 1))
+      lines="${lines}⨯ $title $(seconds "$ms")"$'\n'
+      failures="$failures  ⨯ $title after $attempts attempts (total $(seconds "$ms"))"$'\n'
+      failures="$failures$(LC_ALL=C awk -F'\t' '{ printf "    attempt %s failed (%.1fs): %s\n", $1, $3 / 1000, $4 }' "$ARTIFACTS_DIR/$name/attempts.tsv")"$'\n'
+    fi
+  done < "$ARTIFACTS_DIR/summary.tsv"
+
+  {
+    echo
+    echo "Test summary ($PLATFORM): $passed passed, $failed failed in $(seconds "$total_ms")"
+    echo
+    printf '%s' "$lines"
+    if [ -n "$flaky" ]; then
+      echo
+      echo "Flaky tests:"
+      printf '%s' "$flaky"
+    fi
+    if [ -n "$failures" ]; then
+      echo
+      echo "Failures:"
+      printf '%s' "$failures"
+    fi
+  } | tee "$ARTIFACTS_DIR/summary.txt"
+
+  if [ -n "$GITHUB_STEP_SUMMARY" ]; then
+    {
+      echo "### agent-device $PLATFORM: $passed passed, $failed failed"
+      echo '```'
+      sed '1,3d' "$ARTIFACTS_DIR/summary.txt"
+      echo '```'
+    } >> "$GITHUB_STEP_SUMMARY"
+  fi
+}
+
+EXIT_CODE=0
+FAILURE_FILES=()
+: > "$ARTIFACTS_DIR/summary.tsv"
+
+for FLOW in $(platform_flows); do
+  NAME=$(basename "$FLOW" .ad)
+  NAME=${NAME%".$PLATFORM"}
+  # SKIP_FLOWS is a space-separated list of flow names to leave out, e.g. "deeplinks"
+  if [[ " $SKIP_FLOWS " == *" $NAME "* ]]; then
+    echo "Skipping test: $FLOW"
+    continue
+  fi
+  PASSED=false
+  FLOW_START=$(now_ms)
+
+  for ((attempt = 1; attempt <= MAX_ATTEMPTS; attempt++)); do
+    echo "Running test: $FLOW (attempt $attempt/$MAX_ATTEMPTS)"
+    ATTEMPT_DIR="$ARTIFACTS_DIR/$NAME/attempt-$attempt"
+    ATTEMPT_START=$(now_ms)
+    mkdir -p "$ATTEMPT_DIR"
+
+    # Replaces e2e/flows/signup.js. New per attempt, since a failed attempt may already have created the account.
+    TIMESTAMP=$(date +%s)
+    export AD_VAR_SIGNUP_EMAIL="mobileQA+agentdevice-$TIMESTAMP@qa.qa"
+    export AD_VAR_SIGNUP_PASSWORD="Pwd$TIMESTAMP" # pragma: allowlist secret
+
+    if ! launch_app "$FLOW"; then
+      echo "Failed to launch $AD_VAR_APP_ID"
+      record_attempt failed $(($(now_ms) - ATTEMPT_START)) "Failed to launch $AD_VAR_APP_ID"
+      continue
+    fi
+    if ! wait_until_launched "$FLOW" "$ATTEMPT_DIR"; then
+      echo "The app didn't reach the flow's first screen after launch"
+      take_screenshot "$ATTEMPT_DIR/failure-screen.png" || true
+      record_attempt failed $(($(now_ms) - ATTEMPT_START)) "The app didn't reach the flow's first screen after launch"
+      continue
+    fi
+    if AD_FAILURES_PATH="$ATTEMPT_DIR/failures.json" agent-device test "$FLOW" \
+      "$DEVICE_FLAG" "$DEVICE" \
+      --artifacts-dir "$ATTEMPT_DIR" \
+      --reporter default \
+      --reporter "junit:$ATTEMPT_DIR/junit.xml" \
+      --reporter ./e2e-agent-device/reporters/failures.mjs; then
+      PASSED=true
+      record_attempt passed $(($(now_ms) - ATTEMPT_START)) ""
+      break
+    fi
+    record_attempt failed $(($(now_ms) - ATTEMPT_START)) "$(attempt_error)"
+    take_screenshot "$ATTEMPT_DIR/failure-screen.png" || true
+  done
+
+  ATTEMPTS=$(wc -l < "$ARTIFACTS_DIR/$NAME/attempts.tsv" | tr -d ' ')
+  printf '%s\t%s\t%s\t%s\t%s\n' "$NAME" "$(flow_title "$FLOW" "$NAME")" \
+    "$([ "$PASSED" = true ] && echo passed || echo failed)" "$ATTEMPTS" $(($(now_ms) - FLOW_START)) \
+    >> "$ARTIFACTS_DIR/summary.tsv"
+
+  if [ "$PASSED" = false ]; then
+    EXIT_CODE=1
+    if [ ! -f "$ATTEMPT_DIR/failures.json" ]; then
+      jq -n --arg file "$FLOW" --arg title "$NAME" \
+        '[{file: $file, title: $title, message: "No test result: the app failed to launch or agent-device crashed"}]' \
+        > "$ATTEMPT_DIR/failures.json"
+    fi
+    jq --arg screenshot "$ATTEMPT_DIR/failure-screen.png" 'map(. + {screenshot: $screenshot})' \
+      "$ATTEMPT_DIR/failures.json" > "$ATTEMPT_DIR/failures.with-screenshot.json"
+    FAILURE_FILES+=("$ATTEMPT_DIR/failures.with-screenshot.json")
+  elif [ "$attempt" -gt 1 ]; then
+    echo "⚠️ $FLOW is flaky: passed on attempt $attempt"
+    # Shows on the run summary, so a suite that only passes thanks to retries doesn't look healthy
+    if [ -n "$GITHUB_ACTIONS" ]; then
+      echo "::warning title=Flaky agent-device flow::$NAME ($PLATFORM) passed on attempt $attempt of $MAX_ATTEMPTS"
+    fi
+  fi
+done
+
+print_summary
+
+if [ $EXIT_CODE -ne 0 ]; then
+  # Failures of the last attempt of every failed flow
+  jq -s 'add' "${FAILURE_FILES[@]}" > "$ARTIFACTS_DIR/failures.json"
+
+  # SKIP_SLACK_REPORT turns off Slack, e.g. while trying out changes on a branch
+  if [ -n "$CI" ] && [ -z "$SKIP_SLACK_REPORT" ]; then
+    echo "At least one test failed — uploading screenshots and notifying Slack"
+    ./scripts/ci/report-agent-device-test-failure "$PLATFORM" "$ARTIFACTS_DIR/failures.json" || true
+  fi
+fi
+
+exit $EXIT_CODE

@@ -1,0 +1,123 @@
+name: Android E2E Tests (agent-device)
+
+on:
+  # workflow_run:
+  #   workflows: ["Build Android QA App for Maestro"]
+  #   types:
+  #     - completed
+  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+  # Temporarily off while comparing iOS runners, so pushes don't start Android runs.
+  # Restore along with the workflow_run trigger above.
+  # push:
+  #   branches:
+  #     - gkartalis/agent-device-e2e
+
+env:
+  AGENT_DEVICE_NO_UPDATE_NOTIFIER: 1
+
+# A newer run for the same branch makes the older one pointless
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e-tests:
+    # if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest # Use ubuntu-latest for better Android emulator support
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Ruby
+        uses: ./.github/actions/setup-ruby
+
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+        with:
+          # this job never runs `yarn install`, so there is no yarn cache to save
+          package-manager-cache: "false"
+
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Set up env for ci
+        run: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci
+
+      - name: Set up maestro env
+        run: ./scripts/setup/setup-env-for-maestro android
+
+      - name: Download Android App (APK)
+        run: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
+
+      - name: Install agent-device
+        run: |
+          # Single source of truth for the pinned version, shared with the other platform's
+          # workflow and e2e-agent-device/README.md
+          AGENT_DEVICE_VERSION=$(cat e2e-agent-device/agent-device-version)
+          echo "AGENT_DEVICE_VERSION=$AGENT_DEVICE_VERSION" >> $GITHUB_ENV
+          npm install -g "agent-device@${AGENT_DEVICE_VERSION}"
+          echo "AGENT_DEVICE_STATE_DIR=$GITHUB_WORKSPACE/.agent-device" >> $GITHUB_ENV
+          agent-device doctor --remote
+
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be
+        with:
+          tool-cache: false
+          android: false
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
+      - name: Run tests with Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          ram-size: "8192M"
+          heap-size: "4096M"
+          disk-size: "8G"
+          cores: 4
+          disable-animations: false
+          disable-spellchecker: true
+          disable-linux-hw-accel: false
+          enable-hw-keyboard: true
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          script: |
+            echo "🔍 Emulator started, verifying..."
+            adb devices -l
+
+            echo "🔓 Unlocking device..."
+            adb shell input keyevent 82
+
+            echo "📱 Installing app..."
+            adb install Artsy.apk
+
+            echo "🧪 Running agent-device tests..."
+            ./scripts/utils/run_agent_device_suite android emulator-5554
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-device-android-artifacts
+          # Reports only: this repo's artifacts are public, and agent-device logs and screenshots
+          # can show the test account. Failure screenshots go to S3 and Slack instead.
+          path: |
+            e2e-agent-device/artifacts/android/**/junit.xml
+            e2e-agent-device/artifacts/android/failures.json
+          if-no-files-found: ignore
+          retention-days: 7
