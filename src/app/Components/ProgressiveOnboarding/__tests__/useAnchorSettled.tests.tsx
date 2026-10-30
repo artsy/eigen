@@ -6,7 +6,7 @@ import {
 import { View } from "react-native"
 
 // This hook is globally mocked in setupJest so that other tests don't wait on
-// measurements. Here we want the real thing.
+// measurements. Here we want the real thing
 jest.unmock("app/Components/ProgressiveOnboarding/useAnchorSettled")
 
 /** An anchor whose on-screen position is whatever `position` says at measure time. */
