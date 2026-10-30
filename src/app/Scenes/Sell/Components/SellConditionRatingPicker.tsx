@@ -61,7 +61,7 @@ export const SellConditionRatingPicker: React.FC<SellConditionRatingPickerProps>
           >
             <Flex
               width={CARD_WIDTH}
-              height="100%"
+              flexGrow={1}
               p={2}
               gap={1}
               borderWidth={checked ? 2 : 1}
