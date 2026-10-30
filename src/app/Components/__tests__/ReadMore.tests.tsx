@@ -8,143 +8,149 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text as RNText } from "react-native"
 
 describe("ReadMore", () => {
-  it("Doesn't show the 'Read more' link when the length of the text is < the number of characters allowed", () => {
-    renderWithWrappers(<ReadMore maxChars={20} content="Small text." />)
+  describe("when AREnableEnrichedMarkdown is disabled", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableEnrichedMarkdown: false })
+    })
 
-    expect(screen.getByText("Small text.")).toBeOnTheScreen()
-  })
+    it("Doesn't show the 'Read more' link when the length of the text is < the number of characters allowed", () => {
+      renderWithWrappers(<ReadMore maxChars={20} content="Small text." />)
 
-  it("Doesn't show the 'Read more' link when the length of the text is equal to the number of characters allowed", () => {
-    renderWithWrappers(<ReadMore maxChars={11} content="Small text." />)
+      expect(screen.getByText("Small text.")).toBeOnTheScreen()
+    })
 
-    expect(screen.getByText("Small text.")).toBeOnTheScreen()
-  })
+    it("Doesn't show the 'Read more' link when the length of the text is equal to the number of characters allowed", () => {
+      renderWithWrappers(<ReadMore maxChars={11} content="Small text." />)
 
-  it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
-    renderWithWrappers(<ReadMore maxChars={3} content="Small text." />)
+      expect(screen.getByText("Small text.")).toBeOnTheScreen()
+    })
 
-    expect(screen.getByText(/Sma/)).toBeTruthy()
-    expect(
-      screen.getByText(`Read${nbsp}more`, {
-        normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
-      })
-    ).toBeTruthy()
-  })
+    it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
+      renderWithWrappers(<ReadMore maxChars={3} content="Small text." />)
 
-  it("Renders markdown", () => {
-    renderWithWrappers(<ReadMore maxChars={11} content="Small [text](/artist/andy-warhol)." />)
-    expect(within(screen.getByText(/Small/)).getByText(/text/)).toBeTruthy()
-  })
+      expect(screen.getByText(/Sma/)).toBeTruthy()
+      expect(
+        screen.getByText(`Read${nbsp}more`, {
+          normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+        })
+      ).toBeTruthy()
+    })
 
-  it("Renders an em dash if the text has line breaks when not expanded", () => {
-    const { UNSAFE_queryAllByType } = renderWithWrappers(
-      <ReadMore maxChars={30} content={`Line break\n\nWhich should render an emdash`} />
-    )
+    it("Renders markdown", () => {
+      renderWithWrappers(<ReadMore maxChars={11} content="Small [text](/artist/andy-warhol)." />)
+      expect(within(screen.getByText(/Small/)).getByText(/text/)).toBeTruthy()
+    })
 
-    expect(extractText(UNSAFE_queryAllByType(RNText)[2])).toContain(` ${emdash} Which should`)
-  })
+    it("Renders an em dash if the text has line breaks when not expanded", () => {
+      const { UNSAFE_queryAllByType } = renderWithWrappers(
+        <ReadMore maxChars={30} content={`Line break\n\nWhich should render an emdash`} />
+      )
 
-  it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
-    const { UNSAFE_queryAllByType } = renderWithWrappers(
-      <ReadMore
-        maxChars={7}
-        textStyle="new"
-        content="This text is slightly longer than is allowed."
-      />
-    )
+      expect(extractText(UNSAFE_queryAllByType(RNText)[2])).toContain(` ${emdash} Which should`)
+    })
 
-    expect(extractText(UNSAFE_queryAllByType(RNText)[0])).toBe(`This te... Read${nbsp}more`)
-    expect(extractText(UNSAFE_queryAllByType(RNText)[1])).toBe(`Read${nbsp}more`)
+    it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
+      const { UNSAFE_queryAllByType } = renderWithWrappers(
+        <ReadMore
+          maxChars={7}
+          textStyle="new"
+          content="This text is slightly longer than is allowed."
+        />
+      )
 
-    // Clicking "Read more" expands the text
-    fireEvent.press(
-      screen.getByText(`Read${nbsp}more`, {
-        normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
-      })
-    )
+      expect(extractText(UNSAFE_queryAllByType(RNText)[0])).toBe(`This te... Read${nbsp}more`)
+      expect(extractText(UNSAFE_queryAllByType(RNText)[1])).toBe(`Read${nbsp}more`)
 
-    expect(screen.getByText("This text is slightly longer than is allowed.")).toBeOnTheScreen()
-  })
+      // Clicking "Read more" expands the text
+      fireEvent.press(
+        screen.getByText(`Read${nbsp}more`, {
+          normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+        })
+      )
 
-  it("truncates correctly if there are links within the text", () => {
-    const { UNSAFE_getAllByType } = renderWithWrappers(
-      <ReadMore
-        maxChars={7}
-        textStyle="new"
-        content="This [text](/artist/text) is slightly longer than is [allowed](/gene/allowed)."
-      />
-    )
+      expect(screen.getByText("This text is slightly longer than is allowed.")).toBeOnTheScreen()
+    })
 
-    expect(screen.getByText(/This te/)).toBeTruthy()
-    expect(
-      screen.getByText(`Read${nbsp}more`, {
-        normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
-      })
-    ).toBeTruthy()
-    expect(UNSAFE_getAllByType(LinkText)).toHaveLength(2) // One for the `/artist/text` link, one for "Read more"
+    it("truncates correctly if there are links within the text", () => {
+      const { UNSAFE_getAllByType } = renderWithWrappers(
+        <ReadMore
+          maxChars={7}
+          textStyle="new"
+          content="This [text](/artist/text) is slightly longer than is [allowed](/gene/allowed)."
+        />
+      )
 
-    // Clicking "Read more" expands the text
-    fireEvent.press(
-      screen.getByText(`Read${nbsp}more`, {
-        normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
-      })
-    )
+      expect(screen.getByText(/This te/)).toBeTruthy()
+      expect(
+        screen.getByText(`Read${nbsp}more`, {
+          normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+        })
+      ).toBeTruthy()
+      expect(UNSAFE_getAllByType(LinkText)).toHaveLength(2) // One for the `/artist/text` link, one for "Read more"
 
-    expect(within(screen.getByText(/This/)).getByText(/text/)).toBeTruthy()
-    expect(within(screen.getByText(/is slightly longer than is/)).getByText(/allowed/)).toBeTruthy()
-    expect(UNSAFE_getAllByType(LinkText)).toHaveLength(2) // We still have 2 links, since we expanded to view one
-  })
+      // Clicking "Read more" expands the text
+      fireEvent.press(
+        screen.getByText(`Read${nbsp}more`, {
+          normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+        })
+      )
 
-  it("opens links modally when specified", () => {
-    const { UNSAFE_getAllByType } = renderWithWrappers(
-      <ReadMore maxChars={7} content="Small [text](/artist/andy-warhol)." presentLinksModally />
-    )
+      expect(within(screen.getByText(/This/)).getByText(/text/)).toBeTruthy()
+      expect(within(screen.getByText(/is slightly longer than is/)).getByText(/allowed/)).toBeTruthy()
+      expect(UNSAFE_getAllByType(LinkText)).toHaveLength(2) // We still have 2 links, since we expanded to view one
+    })
 
-    fireEvent.press(UNSAFE_getAllByType(LinkText)[0])
+    it("opens links modally when specified", () => {
+      const { UNSAFE_getAllByType } = renderWithWrappers(
+        <ReadMore maxChars={7} content="Small [text](/artist/andy-warhol)." presentLinksModally />
+      )
 
-    expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol", { modal: true })
-  })
+      fireEvent.press(UNSAFE_getAllByType(LinkText)[0])
 
-  it("doesn't open links modally when not specified", () => {
-    const { UNSAFE_getAllByType } = renderWithWrappers(
-      <ReadMore maxChars={7} content="Small [text](/artist/andy-warhol)." />
-    )
+      expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol", { modal: true })
+    })
 
-    fireEvent.press(UNSAFE_getAllByType(LinkText)[0])
+    it("doesn't open links modally when not specified", () => {
+      const { UNSAFE_getAllByType } = renderWithWrappers(
+        <ReadMore maxChars={7} content="Small [text](/artist/andy-warhol)." />
+      )
 
-    expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
-  })
+      fireEvent.press(UNSAFE_getAllByType(LinkText)[0])
 
-  it("renders ordered list numbering, including a custom start number", () => {
-    const content = "42. An item\n42. Another item\n42. Yet another item\n"
+      expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
+    })
 
-    renderWithWrappers(<ReadMore maxChars={10000} content={content} />)
+    it("renders ordered list numbering, including a custom start number", () => {
+      const content = "42. An item\n42. Another item\n42. Yet another item\n"
 
-    expect(screen.getByText("42.")).toBeTruthy()
-    expect(screen.getByText("43.")).toBeTruthy()
-    expect(screen.getByText("44.")).toBeTruthy()
-    expect(screen.getByText("An item")).toBeTruthy()
-    expect(screen.getByText("Another item")).toBeTruthy()
-    expect(screen.getByText("Yet another item")).toBeTruthy()
-  })
+      renderWithWrappers(<ReadMore maxChars={10000} content={content} />)
 
-  it("doesn't break when it gets a text with dashes and special characters", () => {
-    const text = "- first \n- second \n- third \n * star \n & another one \n ' whatarethose"
+      expect(screen.getByText("42.")).toBeTruthy()
+      expect(screen.getByText("43.")).toBeTruthy()
+      expect(screen.getByText("44.")).toBeTruthy()
+      expect(screen.getByText("An item")).toBeTruthy()
+      expect(screen.getByText("Another item")).toBeTruthy()
+      expect(screen.getByText("Yet another item")).toBeTruthy()
+    })
 
-    renderWithWrappers(<ReadMore maxChars={7} content={text} />)
+    it("doesn't break when it gets a text with dashes and special characters", () => {
+      const text = "- first \n- second \n- third \n * star \n & another one \n ' whatarethose"
 
-    // this parses as a real markdown list, so the bullet and the truncated item content
-    // render as separate text nodes rather than one combined string
-    expect(screen.queryByText(text)).toBeFalsy()
-    expect(screen.getByText("• ")).toBeTruthy()
-    expect(screen.getByText(/first/)).toBeTruthy()
+      renderWithWrappers(<ReadMore maxChars={7} content={text} />)
 
-    fireEvent.press(screen.getByText(/Read more/))
+      // this parses as a real markdown list, so the bullet and the truncated item content
+      // render as separate text nodes rather than one combined string
+      expect(screen.queryByText(text)).toBeFalsy()
+      expect(screen.getByText("• ")).toBeTruthy()
+      expect(screen.getByText(/first/)).toBeTruthy()
 
-    // after pressing read more, read more goes away and the rest of the list items are displayed
-    expect(screen.getByText(/second/)).toBeTruthy()
-    expect(screen.getByText(/whatarethose/)).toBeTruthy()
-    expect(screen.queryByText(/Read more/)).toBeFalsy()
+      fireEvent.press(screen.getByText(/Read more/))
+
+      // after pressing read more, read more goes away and the rest of the list items are displayed
+      expect(screen.getByText(/second/)).toBeTruthy()
+      expect(screen.getByText(/whatarethose/)).toBeTruthy()
+      expect(screen.queryByText(/Read more/)).toBeFalsy()
+    })
   })
 
   describe("when AREnableEnrichedMarkdown is enabled", () => {
@@ -157,6 +163,38 @@ describe("ReadMore", () => {
 
       expect(screen.getByTestId("read-more-content")).toBeOnTheScreen()
       expect(screen.getAllByText("Small text.").length).toBeGreaterThan(0)
+    })
+
+    it("expands the content when the clamped text overflows and 'Read more' is pressed", () => {
+      const onExpand = jest.fn()
+      renderWithWrappers(
+        <ReadMore maxChars={7} content="This text is slightly longer than is allowed." onExpand={onExpand} />
+      )
+
+      const layout = (height: number) => ({
+        nativeEvent: { layout: { height, width: 300, x: 0, y: 0 } },
+      })
+      fireEvent(
+        screen.getByTestId("read-more-measure", { includeHiddenElements: true }),
+        "layout",
+        layout(200)
+      )
+      fireEvent(screen.getByTestId("read-more-content"), "layout", layout(40))
+
+      fireEvent.press(screen.getByText("Read more"))
+
+      expect(onExpand).toHaveBeenCalledWith(true)
+      expect(screen.queryByText("Read more")).not.toBeOnTheScreen()
+    })
+
+    it("passes presentLinksModally through to the markdown renderer", () => {
+      renderWithWrappers(
+        <ReadMore maxChars={100} content="Small [text](/artist/andy-warhol)." presentLinksModally />
+      )
+
+      fireEvent.press(screen.getAllByText("text")[0])
+
+      expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol", { modal: true })
     })
   })
 })

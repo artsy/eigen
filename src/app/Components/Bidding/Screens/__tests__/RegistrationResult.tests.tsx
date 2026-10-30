@@ -5,6 +5,7 @@ import {
   RegistrationResult,
   RegistrationStatus,
 } from "app/Components/Bidding/Screens/RegistrationResult"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -12,6 +13,10 @@ import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/re
 import { Linking } from "react-native"
 
 describe("Registration result component", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableEnrichedMarkdown: false })
+  })
+
   it("renders registration pending properly", () => {
     const view = renderWithWrappersLEGACY(
       <RegistrationResult

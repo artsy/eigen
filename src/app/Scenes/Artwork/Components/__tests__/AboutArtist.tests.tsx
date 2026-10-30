@@ -1,10 +1,15 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { AboutArtistFragmentContainer } from "app/Scenes/Artwork/Components/AboutArtist"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 describe("AboutArtist", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableEnrichedMarkdown: false })
+  })
+
   const { renderWithRelay } = setupTestWrapper({
     Component: AboutArtistFragmentContainer,
     query: graphql`

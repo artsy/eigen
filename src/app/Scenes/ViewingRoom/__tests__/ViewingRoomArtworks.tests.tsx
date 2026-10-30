@@ -1,6 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworksTestsQuery.graphql"
 import { tracks, ViewingRoomArtworksContainer } from "app/Scenes/ViewingRoom/ViewingRoomArtworks"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
@@ -10,6 +11,10 @@ import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 describe("ViewingRoom", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableEnrichedMarkdown: false })
+  })
+
   const { renderWithRelay } = setupTestWrapper<ViewingRoomArtworksTestsQuery>({
     Component: (props) => <ViewingRoomArtworksContainer viewingRoom={props.viewingRoom!} />,
     query: graphql`
