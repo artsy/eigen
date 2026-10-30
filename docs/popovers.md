@@ -43,6 +43,12 @@ were dismissed, and handles the rest:
 - **One at a time.** Only one popover can show. The others wait and show once it closes,
   which is how chained popovers appear one after another.
 - **Delay.** The condition is checked again when the delay ends, not just when it starts.
+- **Anchor at rest.** It waits until the anchor is on screen and has stopped moving, both
+  before taking its turn and again after the delay. The library measures the anchor only
+  once, as it opens, so opening mid-scroll puts the popover in the wrong place. There is no
+  timeout: an anchor that never stops moving (an autoplaying carousel, say) never gets its
+  popover. Keep `isInView` in `when` where you have it, but don't rely on it alone:
+  `Sentinel` doesn't report the anchor leaving the screen.
 - **Right screen only.** If the user leaves the screen before the popover shows, it won't
   show, even if they come back. The next visit gets a new chance.
 - **Never over an overlay.** It waits while a registered overlay is open. If one opens
@@ -71,6 +77,8 @@ not registered yet. Register one when it can appear on the same screen as a popo
 - The `active_popover` Sentry tag shows which popover holds the lock.
 - `popover` breadcrumbs log acquire/release, `watchdog` (a stuck popover) and
   `covered by overlay`.
+- A popover waiting for its anchor to settle leaves no breadcrumb. If one never shows on a
+  scrolling surface, check that its anchor ends up still and on screen.
 - **Dev Menu → Clear Progressive Onboarding progress** resets dismissed popovers. The
   `DTHideAllOnboardingPopovers` toggle hides all popovers, so keep it off when testing.
 
