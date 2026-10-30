@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
+source ./scripts/deploys/utils/ensure-release-branch.sh
+
 
 source ./scripts/ci/ci-setup-export-vars
 

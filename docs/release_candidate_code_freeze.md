@@ -31,7 +31,7 @@ Submit the exact betas that were QA'd, from the release candidate branch:
 ./scripts/deploys/promote-beta-to-submission-android
 ```
 
-Fastlane creates and pushes the submission tags as part of these lanes.
+Fastlane creates and pushes the submission tags as part of these lanes. The scripts refuse to run unless you are on an `rc-v<version>` or `rc-v<version>-hotfix` branch that matches `origin`, and fail at the end if the submission tag didn't reach GitHub.
 
 # Unhappy Path - Launch Blockers found during QA
 

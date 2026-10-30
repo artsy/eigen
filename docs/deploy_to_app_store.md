@@ -15,6 +15,7 @@ QA happens against the release-candidate beta, in the Mobile App QA document tha
    - Commit and push to `rc-vX.Y.Z`.
 3. Run `./scripts/deploys/promote-beta-to-submission-ios`. This lists the last 20 TestFlight builds and prompts you to pick one — choose the iOS build number recorded in the QA document for this release, then confirm.
    - Fastlane tags the submission (`ios-<version>-<build>-submission`) and pushes the tag as part of this lane.
+   - The script refuses to run unless you are on an `rc-v<version>` or `rc-v<version>-hotfix` branch that matches `origin`, and fails at the end if the tag didn't reach GitHub (push it manually with the command it prints).
    - Once the release has shipped, open a PR from `rc-vX.Y.Z` into `main` so the release-notes change (and any fixes authored on the RC branch) make it back.
 
 Our App Store releases are set to release automatically once Apple approves the app. You can check the status of the build in app store connect, a message will also be sent to mobile [at] artsymail [dot] com once the app is approved.

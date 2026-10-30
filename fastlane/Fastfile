@@ -263,7 +263,8 @@ lane :promote_beta_ios do
 
   formatted_build_number = format_build_number(build_number)
 
-  tag_and_push(tag: "ios-#{next_app_store_version}-#{formatted_build_number}-submission")
+  submission_tag = "ios-#{next_app_store_version}-#{formatted_build_number}-submission"
+  tag_and_push(tag: submission_tag)
 
   promoted_fingerprint = resolve_promoted_fingerprint(platform: 'ios', build_number: formatted_build_number)
   if promoted_fingerprint
@@ -273,6 +274,8 @@ lane :promote_beta_ios do
   end
 
   sentry_slack_ios(build_number: formatted_build_number, version: next_app_store_version)
+
+  ensure_tag_pushed!(submission_tag) unless is_ci
 
   UI.success('All done!')
 end
@@ -451,7 +454,8 @@ lane :promote_beta_android do
   )
 
   vname, vcode = set_build_version_android(version_code: selected_version_code)
-  tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
+  submission_tag = "android-#{vname}-#{vcode}-submission"
+  tag_and_push(tag: submission_tag)
 
   promoted_fingerprint = resolve_promoted_fingerprint(platform: 'android', build_number: vcode)
   if promoted_fingerprint
@@ -461,6 +465,8 @@ lane :promote_beta_android do
   end
 
   sentry_slack_android(build_number: vcode, version: vname)
+
+  ensure_tag_pushed!(submission_tag) unless is_ci
 end
 
 lane :create_android_apk do

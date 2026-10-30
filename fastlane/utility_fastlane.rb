@@ -444,6 +444,26 @@ def git_tag_commit_message(tag)
   msg.empty? ? nil : msg
 end
 
+def remote_tag_exists?(tag)
+  !`git ls-remote --tags origin "refs/tags/#{tag}"`.strip.empty?
+end
+
+def ensure_tag_pushed!(tag)
+  # tag_and_push ignores push failures (it pushes through the `http` remote, which often has no
+  # credentials locally). The submission tag triggers release.yml, so make sure it actually landed.
+  return if remote_tag_exists?(tag)
+
+  UI.important("Tag #{tag} is not on GitHub, retrying the push via origin.")
+  begin
+    sh("git push origin #{tag} --no-verify")
+  rescue => e
+    UI.error(e.message)
+  end
+  return if remote_tag_exists?(tag)
+
+  UI.user_error!("The submission went through, but tag #{tag} could not be pushed, so the GitHub release won't be created. Push it manually: git push origin #{tag}")
+end
+
 def current_expo_fingerprint
   output = sh("bash -c \
               \"pushd ../ > /dev/null && \
