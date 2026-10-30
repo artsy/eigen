@@ -125,4 +125,59 @@ describe("useAnchorSettled", () => {
     expect(result.current).toBe(false)
     expect(measureInWindow).not.toHaveBeenCalled()
   })
+
+  it("starts over when the reset key changes", () => {
+    const { ref, measureInWindow } = makeAnchor({ x: 0, y: 200 })
+    const { result, rerender } = renderHook(
+      ({ resetKey }: { resetKey: number }) => useAnchorSettled(ref, true, { resetKey }),
+      { initialProps: { resetKey: 0 } }
+    )
+
+    act(() => {
+      jest.advanceTimersByTime(ANCHOR_SETTLE_INTERVAL_MS)
+    })
+    expect(result.current).toBe(true)
+
+    measureInWindow.mockClear()
+    rerender({ resetKey: 1 })
+    expect(result.current).toBe(false)
+    expect(measureInWindow).toHaveBeenCalledTimes(1)
+
+    act(() => {
+      jest.advanceTimersByTime(ANCHOR_SETTLE_INTERVAL_MS)
+    })
+    expect(result.current).toBe(true)
+  })
+
+  it("stops and reports an anchor off screen when asked to", () => {
+    const { ref, measureInWindow } = makeAnchor({ x: 0, y: -600 })
+    const onOffScreen = jest.fn()
+    const { result } = renderHook(() => useAnchorSettled(ref, true, { onOffScreen }))
+
+    act(() => {
+      jest.advanceTimersByTime(ANCHOR_SETTLE_INTERVAL_MS * 5)
+    })
+
+    expect(result.current).toBe(false)
+    expect(onOffScreen).toHaveBeenCalledTimes(1)
+    expect(measureInWindow).toHaveBeenCalledTimes(1)
+  })
+
+  it("keeps waiting on a moving anchor that is on screen, even when asked to report off screen", () => {
+    const position = { x: 0, y: 400 }
+    const { ref } = makeAnchor(position)
+    const onOffScreen = jest.fn()
+    const { result } = renderHook(() => useAnchorSettled(ref, true, { onOffScreen }))
+
+    position.y -= 50
+    act(() => {
+      jest.advanceTimersByTime(ANCHOR_SETTLE_INTERVAL_MS)
+    })
+    act(() => {
+      jest.advanceTimersByTime(ANCHOR_SETTLE_INTERVAL_MS)
+    })
+
+    expect(result.current).toBe(true)
+    expect(onOffScreen).not.toHaveBeenCalled()
+  })
 })

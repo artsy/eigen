@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useState } from "react"
+import { RefObject, useEffect, useRef, useState } from "react"
 import { Dimensions, View } from "react-native"
 
 /** How often the anchor is re-measured while we wait for it to stop moving. */
@@ -23,16 +23,24 @@ export const ANCHOR_SETTLE_INTERVAL_MS = 100
  * whose anchor has been scrolled away opens pinned to the screen edge, pointing at nothing.
  *
  * Hiding is never delayed.
+ *
+ * `resetKey` starts the wait over: changing it reports "not settled" until the anchor has
+ * settled again. With `onOffScreen`, the wait stops and calls it instead of polling an anchor
+ * that has left the screen, so the caller can give up whatever it holds while it waits.
  */
 export const useAnchorSettled = (
   anchorRef: RefObject<View | null> | undefined,
-  isRequested: boolean
+  isRequested: boolean,
+  { resetKey = 0, onOffScreen }: { resetKey?: number; onOffScreen?: () => void } = {}
 ) => {
-  const [isSettled, setIsSettled] = useState(false)
+  // The key we settled for, so a new key reads as "not settled" from its very first render.
+  const [settledKey, setSettledKey] = useState<number | undefined>(undefined)
+  const onOffScreenRef = useRef(onOffScreen)
+  onOffScreenRef.current = onOffScreen
 
   useEffect(() => {
     if (!isRequested) {
-      setIsSettled(false)
+      setSettledKey(undefined)
       return
     }
 
@@ -44,7 +52,7 @@ export const useAnchorSettled = (
       const anchor = anchorRef?.current
       if (!anchor) {
         // Nothing to wait for: the library has its own wait for the anchor to mount.
-        setIsSettled(true)
+        setSettledKey(resetKey)
         return
       }
 
@@ -60,7 +68,11 @@ export const useAnchorSettled = (
         // exclude the navigation bar, so a tab bar anchor never fits inside it entirely.
         const isOnScreen = y + height > 0 && y < window.height && x + width > 0 && x < window.width
         if (hasStopped && isOnScreen) {
-          setIsSettled(true)
+          setSettledKey(resetKey)
+          return
+        }
+        if (!isOnScreen && onOffScreenRef.current) {
+          onOffScreenRef.current()
           return
         }
 
@@ -75,7 +87,7 @@ export const useAnchorSettled = (
       isCancelled = true
       clearTimeout(timeout)
     }
-  }, [anchorRef, isRequested])
+  }, [anchorRef, isRequested, resetKey])
 
-  return isRequested && isSettled
+  return isRequested && settledKey === resetKey
 }

@@ -110,7 +110,12 @@ export const usePopoverCoordinator = ({
   // Don't queue for the lock until the anchor is on screen and still. A popover whose anchor
   // has been scrolled away would otherwise hold the lock while it waits, and keep a sibling
   // whose anchor is in plain view from showing.
-  const isAnchorReady = useAnchorSettled(anchorRef, wantsToShow)
+  //
+  // Bumped when the anchor leaves the screen after this has settled (see the check after the
+  // delay below): `isInView` conditions can't be trusted to notice (`Sentinel` never reports
+  // leaving), so this is what drops `canShow` and gives the lock back.
+  const [anchorResetKey, setAnchorResetKey] = useState(0)
+  const isAnchorReady = useAnchorSettled(anchorRef, wantsToShow, { resetKey: anchorResetKey })
   const canShow = wantsToShow && isAnchorReady
 
   const release = useCallback(() => {
@@ -168,8 +173,10 @@ export const usePopoverCoordinator = ({
 
   const isDelayed = useShowDelay(() => canShow && isHolder, delay)
   // Checked again after the delay: the anchor can move while we wait. Before `isVisible`,
-  // so the wait never eats into the watchdog.
-  const isVisible = useAnchorSettled(anchorRef, isDelayed)
+  // so the wait never eats into the watchdog. If it has left the screen, waiting here would
+  // hold the lock with no watchdog running, so start over from the check above instead.
+  const handleAnchorOffScreen = useCallback(() => setAnchorResetKey((key) => key + 1), [])
+  const isVisible = useAnchorSettled(anchorRef, isDelayed, { onOffScreen: handleAnchorOffScreen })
 
   // Open *completion*, not open start. The stuck case we are guarding against is a
   // popover that begins opening and never finishes measuring, so keying the watchdog off
