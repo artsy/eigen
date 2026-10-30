@@ -5,8 +5,8 @@ import { usePopoverCoordinator } from "app/Components/ProgressiveOnboarding/useP
 import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { ProgressiveOnboardingKey } from "app/store/ProgressiveOnboardingModel"
-import React from "react"
-import { StyleProp, ViewProps, ViewStyle } from "react-native"
+import React, { useRef } from "react"
+import { StyleProp, View, ViewProps, ViewStyle } from "react-native"
 
 interface OnboardingPopoverProps {
   /** Doubles as the popover lock's owner id, so the lock is readable in Sentry. */
@@ -66,10 +66,13 @@ export const OnboardingPopover: React.FC<React.PropsWithChildren<OnboardingPopov
 
   const isDisplayable = when && !isDismissed(id).status
 
+  const anchorRef = useRef<View>(null)
+
   const { isVisible, remountKey, onOpenComplete, onCloseComplete } = usePopoverCoordinator({
     id,
     isDisplayable,
     delay,
+    anchorRef,
   })
 
   const { trackEvent } = useProgressiveOnboardingTracking({
@@ -99,39 +102,46 @@ export const OnboardingPopover: React.FC<React.PropsWithChildren<OnboardingPopov
     dismiss(id)
   }
 
+  // The anchor is rendered here, not passed as children: palette hands children to the
+  // library as `from`, which overwrites any ref on them, and we need ours to measure it.
   return (
-    <Popover
-      key={remountKey}
-      visible={isVisible}
-      onDismiss={handleDismiss}
-      onPressOutside={handleDismiss}
-      onOpenComplete={handleOpenComplete}
-      onCloseComplete={onCloseComplete}
-      variant={variant}
-      placement={placement}
-      backgroundStyle={backgroundStyle}
-      title={
-        typeof title === "string" ? (
-          <Text variant="xs" color={titleColor} weight="medium">
-            {title}
-          </Text>
-        ) : (
-          title
-        )
-      }
-      content={
-        typeof content === "string" ? (
-          <Flex maxWidth={250}>
-            <Text variant="xs" color={titleColor}>
-              {content}
+    <>
+      <Flex ref={anchorRef} pointerEvents={pointerEvents}>
+        {children}
+      </Flex>
+      <Popover
+        key={remountKey}
+        // The library types `from` without React 19's nullable `current`.
+        from={anchorRef as React.RefObject<View>}
+        visible={isVisible}
+        onDismiss={handleDismiss}
+        onPressOutside={handleDismiss}
+        onOpenComplete={handleOpenComplete}
+        onCloseComplete={onCloseComplete}
+        variant={variant}
+        placement={placement}
+        backgroundStyle={backgroundStyle}
+        title={
+          typeof title === "string" ? (
+            <Text variant="xs" color={titleColor} weight="medium">
+              {title}
             </Text>
-          </Flex>
-        ) : (
-          content
-        )
-      }
-    >
-      <Flex pointerEvents={pointerEvents}>{children}</Flex>
-    </Popover>
+          ) : (
+            title
+          )
+        }
+        content={
+          typeof content === "string" ? (
+            <Flex maxWidth={250}>
+              <Text variant="xs" color={titleColor}>
+                {content}
+              </Text>
+            </Flex>
+          ) : (
+            content
+          )
+        }
+      />
+    </>
   )
 }

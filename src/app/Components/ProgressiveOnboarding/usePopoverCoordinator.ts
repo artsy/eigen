@@ -1,10 +1,12 @@
 import { useHasPresentedOverlay } from "app/Components/ProgressiveOnboarding/popoverPresentationContext"
 import { popoverTelemetry } from "app/Components/ProgressiveOnboarding/popoverTelemetry"
+import { useAnchorSettled } from "app/Components/ProgressiveOnboarding/useAnchorSettled"
 import { useShowDelay } from "app/Components/ProgressiveOnboarding/useShowDelay"
 import { GlobalStore } from "app/store/GlobalStore"
 import { ProgressiveOnboardingKey } from "app/store/ProgressiveOnboardingModel"
 import { readCurrentRoute, useCurrentRoute } from "app/utils/hooks/useCurrentRoute"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { RefObject, useCallback, useEffect, useRef, useState } from "react"
+import { View } from "react-native"
 
 /**
  * How long a popover may hold the lock after being told to show without reporting that
@@ -24,6 +26,8 @@ interface UsePopoverCoordinatorArgs {
   isDisplayable: boolean
   /** Delay before showing. Hiding is never delayed. */
   delay?: number
+  /** The popover's anchor. Showing waits for it to stop moving (see `useAnchorSettled`). */
+  anchorRef?: RefObject<View | null>
 }
 
 /**
@@ -38,6 +42,7 @@ export const usePopoverCoordinator = ({
   id,
   isDisplayable,
   delay = 0,
+  anchorRef,
 }: UsePopoverCoordinatorArgs) => {
   const {
     sessionState: { activePopover },
@@ -101,7 +106,12 @@ export const usePopoverCoordinator = ({
 
   // Never present on top of a modal, bottom sheet or overlay: ours would be a second
   // full-screen Modal above theirs.
-  const canShow = isDisplayable && !hasPresentedOverlay && !hasLeftAnchorRouteRef.current
+  const wantsToShow = isDisplayable && !hasPresentedOverlay && !hasLeftAnchorRouteRef.current
+  // Don't queue for the lock until the anchor is on screen and still. A popover whose anchor
+  // has been scrolled away would otherwise hold the lock while it waits, and keep a sibling
+  // whose anchor is in plain view from showing.
+  const isAnchorReady = useAnchorSettled(anchorRef, wantsToShow)
+  const canShow = wantsToShow && isAnchorReady
 
   const release = useCallback(() => {
     const held = heldRef.current
@@ -156,7 +166,10 @@ export const usePopoverCoordinator = ({
     return () => clearTimeout(timeout)
   }, [canShow, heldId, isHolder, release])
 
-  const isVisible = useShowDelay(() => canShow && isHolder, delay)
+  const isDelayed = useShowDelay(() => canShow && isHolder, delay)
+  // Checked again after the delay: the anchor can move while we wait. Before `isVisible`,
+  // so the wait never eats into the watchdog.
+  const isVisible = useAnchorSettled(anchorRef, isDelayed)
 
   // Open *completion*, not open start. The stuck case we are guarding against is a
   // popover that begins opening and never finishes measuring, so keying the watchdog off
