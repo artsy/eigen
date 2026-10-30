@@ -480,6 +480,12 @@ jest.mock("app/Components/ProgressiveOnboarding/useShowDelay", () => ({
   useShowDelay: (predicate: () => boolean) => predicate(),
 }))
 
+// Host views never answer `measureInWindow` under Jest, so the real hook would hold every
+// popover back. Tests that exercise the settling itself unmock this.
+jest.mock("app/Components/ProgressiveOnboarding/useAnchorSettled", () => ({
+  useAnchorSettled: (_anchorRef: unknown, isRequested: boolean) => isRequested,
+}))
+
 jest.mock("@notifee/react-native", () => ({
   displayNotification: jest.fn(),
   getNotificationSettings: jest.fn(),
