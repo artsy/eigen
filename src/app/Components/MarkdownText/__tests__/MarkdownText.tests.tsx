@@ -55,6 +55,14 @@ describe(sanitizeMarkdown, () => {
   it("leaves links untouched", () => {
     expect(sanitizeMarkdown("[link](/artist/andy-warhol)")).toEqual("[link](/artist/andy-warhol)")
   })
+
+  it("drops strikethrough tildes but keeps the text, like simple-markdown did", () => {
+    expect(sanitizeMarkdown("keep ~~this~~ and ~~that~~ too")).toEqual("keep this and that too")
+  })
+
+  it("leaves a single tilde alone", () => {
+    expect(sanitizeMarkdown("about ~1,000 works")).toEqual("about ~1,000 works")
+  })
 })
 
 describe(buildMarkdownStyle, () => {
@@ -91,17 +99,17 @@ describe(buildMarkdownStyle, () => {
     })
   })
 
-  it("uses palette font faces for strong and emphasis", () => {
+  it("uses the Unica family with bold/italic traits so nested bold + italic resolves", () => {
     const style = buildMarkdownStyle(theme, {})
 
     expect(style.strong).toEqual({
-      fontFamily: "Unica77LL-Medium",
-      fontWeight: "normal",
+      fontFamily: "Unica77 LL",
+      fontWeight: "bold",
       color: "color:onBackgroundHigh",
     })
     expect(style.em).toEqual({
-      fontFamily: "Unica77LL-Italic",
-      fontStyle: "normal",
+      fontFamily: "Unica77 LL",
+      fontStyle: "italic",
       color: "color:onBackgroundHigh",
     })
   })
