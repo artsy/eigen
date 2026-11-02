@@ -63,6 +63,11 @@ describe(sanitizeMarkdown, () => {
   it("leaves a single tilde alone", () => {
     expect(sanitizeMarkdown("about ~1,000 works")).toEqual("about ~1,000 works")
   })
+
+  it("leaves tilde-fenced code blocks intact", () => {
+    const fenced = "~~~\nconst a = 1\n~~~"
+    expect(sanitizeMarkdown(fenced)).toEqual(fenced)
+  })
 })
 
 describe(buildMarkdownStyle, () => {

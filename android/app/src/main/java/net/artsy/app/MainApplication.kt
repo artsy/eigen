@@ -48,6 +48,11 @@ class MainApplication : Application(), ReactApplication {
      *
      * The FontFamily API is Android 10+. Older devices get the Regular face registered under the same
      * name, so text still renders in Unica with synthesised bold / italic.
+     *
+     * If the font files are missing (assets/fonts is gitignored, so a checkout that skipped
+     * download-fonts / setup-oss-fonts has none), registration is skipped and the system font is used.
+     *
+     * Keep the family name in sync with UNICA_FAMILY in src/app/Components/MarkdownText/MarkdownText.tsx.
      */
     private fun registerUnicaFontFamily() {
         val family = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -70,7 +75,12 @@ class MainApplication : Application(), ReactApplication {
             null
         }
 
-        val typeface = family ?: Typeface.createFromAsset(assets, "fonts/Unica77LL-Regular.otf")
+        val typeface = family ?: try {
+            Typeface.createFromAsset(assets, "fonts/Unica77LL-Regular.otf")
+        } catch (e: RuntimeException) {
+            Log.w("MainApplication", "Unica77 LL fonts missing from assets/fonts, skipping registration", e)
+            return
+        }
         ReactFontManager.getInstance().addCustomFont("Unica77 LL", typeface)
     }
 

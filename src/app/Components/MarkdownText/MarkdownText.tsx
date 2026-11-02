@@ -35,7 +35,8 @@ const IMAGE_REGEX = /!\[[^\]]*\]\([^)]*\)/g
 // flavor="github", which swaps in a native component that ignores numberOfLines. simple-markdown
 // never drew a strike line either (its `del` rule just output the content), so keep that
 // behaviour by dropping the tildes and leaving the text.
-const STRIKETHROUGH_REGEX = /~~([^~]+)~~/g
+// Single-line only, so a tilde-fenced code block (~~~ ... ~~~) is left intact.
+const STRIKETHROUGH_REGEX = /~~([^~\n]+)~~/g
 
 // - hardSoftBreaks: simple-markdown rendered single newlines as line breaks, keep that behaviour
 // - latexMath: content like "$1,000 - $2,000" must not be parsed as inline math
