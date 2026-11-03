@@ -260,7 +260,7 @@ FAILURE_FILES=()
 for FLOW in $(platform_flows); do
   NAME=$(basename "$FLOW" .ad)
   NAME=${NAME%".$PLATFORM"}
-  # SKIP_FLOWS is a space-separated list of flow names to leave out, e.g. "deeplinks"
+  # SKIP_FLOWS is a space-separated list of flow names to leave out, e.g. "deeplink-email deeplink-click"
   if [[ " $SKIP_FLOWS " == *" $NAME "* ]]; then
     echo "Skipping test: $FLOW"
     continue
