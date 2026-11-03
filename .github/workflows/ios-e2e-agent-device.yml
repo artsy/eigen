@@ -1,11 +1,12 @@
 name: iOS E2E Tests (agent-device)
 
 on:
-  # workflow_run:
-  #   workflows: ["Build iOS QA App for Maestro"]
-  #   types:
-  #     - completed
+  workflow_run:
+    workflows: ["Build iOS QA App for Maestro"]
+    types:
+      - completed
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+  # TODO: remove before merging. Runs the suite on pushes to this branch so the results show up on the PR.
   push:
     branches:
       - gkartalis/agent-device-e2e
@@ -21,8 +22,10 @@ concurrency:
 
 jobs:
   e2e-tests:
-    # if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
-    runs-on: blacksmith-6vcpu-macos-26 # iOS simulators require macOS runners
+    # Only after a successful QA build; manual (and, for now, push) runs always go ahead
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    # Blacksmith rather than GitHub-hosted macos-26, where simulator launches were slow enough to crash the XCTest runner
+    runs-on: blacksmith-6vcpu-macos-26
     timeout-minutes: 60
 
     steps:
