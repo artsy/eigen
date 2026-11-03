@@ -12,7 +12,7 @@ export interface S3ImageUpload {
 /**
  * Uploads a local image (e.g. a photo taken with Lens's camera, or picked from the library) to S3
  * via Gemini/Convection credentials — the same credential flow MyCollection's photo upload uses —
- * and returns the resulting S3 `bucket`/`key`, ready to pass into `artworksByImageConnection`.
+ * and returns the resulting S3 `bucket`/`key`, ready to pass into `artworksConnection(image:)`.
  */
 export async function uploadImageToS3(imagePath: string): Promise<S3ImageUpload> {
   const convectionKey = await getConvectionGeminiKey()
