@@ -1,11 +1,14 @@
 name: iOS E2E Tests (agent-device)
 
 on:
-  workflow_run:
-    workflows: ["Build iOS QA App for Maestro"]
-    types:
-      - completed
-  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+  # Called by nightly-qa.yml once the iOS QA build has succeeded, independently of the Maestro suite
+  workflow_call:
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab, on the latest QA build
   # TODO: remove before merging. Runs the suite on pushes to this branch so the results show up on the PR.
   push:
     branches:
@@ -14,16 +17,16 @@ on:
 env:
   AGENT_DEVICE_NO_UPDATE_NOTIFIER: 1
 
-# A newer run for the same branch makes the older one pointless, and two runs racing to save the
-# runner cache made one of them fail to save it
+# Two runs racing to save the runner cache made one of them fail to save it, so runs on a branch take
+# turns. The group is spelled out because inside a called workflow `github.workflow` is the caller's
+# name, which the Android suite would share. On a branch a newer run makes the older one pointless; on
+# main a newer run waits instead, so it doesn't cancel the nightly's.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: e2e-agent-device-ios-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   e2e-tests:
-    # Only after a successful QA build; manual (and, for now, push) runs always go ahead
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     # Blacksmith rather than GitHub-hosted macos-26, where simulator launches were slow enough to crash the XCTest runner
     runs-on: blacksmith-6vcpu-macos-26
     timeout-minutes: 60

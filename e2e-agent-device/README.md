@@ -4,12 +4,12 @@
 
 ## How it runs in CI
 
-| Platform | Workflow                                         | Triggered by                                          |
-| -------- | ------------------------------------------------ | ----------------------------------------------------- |
-| iOS      | `.github/workflows/ios-e2e-agent-device.yml`     | `Build iOS QA App for Maestro` succeeding (daily)     |
-| Android  | `.github/workflows/android-e2e-agent-device.yml` | `Build Android QA App for Maestro` succeeding (daily) |
+| Platform | Workflow                                         | Called by `nightly-qa.yml` after |
+| -------- | ------------------------------------------------ | -------------------------------- |
+| iOS      | `.github/workflows/ios-e2e-agent-device.yml`     | the iOS QA build succeeds        |
+| Android  | `.github/workflows/android-e2e-agent-device.yml` | the Android QA build succeeds    |
 
-Both workflows can also be started manually from the Actions tab.
+`nightly-qa.yml` runs on weekday mornings and skips the builds when `main` hasn't changed since the last build. Each suite only depends on its platform's build, so agent-device and Maestro run side by side, and a failure in one doesn't stop the other. Both workflows can also be started manually from the Actions tab, on the latest QA build in S3.
 
 - Both download the same QA build from S3 as Maestro does, reuse `.env.maestro.<platform>` (the same test account), and run `scripts/utils/run_agent_device_suite <platform> <udid|serial>`.
 - Flows run in a fixed order, set by `FIRST_FLOWS` in the runner. `login` and `signup` go first, so a freshly booted simulator's slow first minutes land on the simplest flows. Then come `deeplink-email`, `deeplink-click` and `deeplink-artist`, in that order, so a failure can be told apart from being the first deeplink of the run. Any other flow follows, alphabetically. In the iOS job, the simulator also starts booting right after checkout, so it settles during setup.

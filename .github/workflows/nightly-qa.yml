@@ -1,11 +1,15 @@
 # Builds the QA apps from main on weekday mornings and runs the e2e tests on them:
 #
-#   has-main-changed ─┬─▶ build-ios ─────▶ e2e-ios-maestro
-#                     └─▶ build-android ─▶ e2e-android-maestro
+#   has-main-changed ─┬─▶ build-ios ─────┬─▶ e2e-ios-maestro
+#                     │                  └─▶ e2e-ios-agent-device
+#                     └─▶ build-android ─┬─▶ e2e-android-maestro
+#                                        └─▶ e2e-android-agent-device
 #
 # A scheduled run skips both builds when main hasn't changed since the last run that built it, and the
-# e2e jobs only follow a build that succeeded, so they never re-test the previous build. Starting this
-# workflow manually always builds. The build and e2e workflows can also be started on their own.
+# e2e jobs only follow a build that succeeded, so they never re-test the previous build. Each e2e suite
+# only depends on its platform's build, so Maestro and agent-device run side by side and a failure in
+# one doesn't stop the other. Starting this workflow manually always builds. The build and e2e
+# workflows can also be started on their own.
 name: Nightly QA build and e2e
 
 on:
@@ -60,6 +64,20 @@ jobs:
   e2e-android-maestro:
     needs: build-android
     uses: ./.github/workflows/android-e2e-maestro.yml
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  e2e-ios-agent-device:
+    needs: build-ios
+    uses: ./.github/workflows/ios-e2e-agent-device.yml
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  e2e-android-agent-device:
+    needs: build-android
+    uses: ./.github/workflows/android-e2e-agent-device.yml
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
