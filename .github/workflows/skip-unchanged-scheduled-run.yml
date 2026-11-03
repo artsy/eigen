@@ -52,8 +52,15 @@ jobs:
           # In a called workflow, GITHUB_WORKFLOW_REF and GITHUB_RUN_ID are the caller's, e.g.
           # artsy/eigen/.github/workflows/build-maestro-ios.yml@refs/heads/main
           CALLER_WORKFLOW=$(basename "${GITHUB_WORKFLOW_REF%@*}")
-          LAST_RUN_SHA=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "$CALLER_WORKFLOW" \
-            --branch "$GITHUB_REF_NAME" --status success --limit 1 --json headSha --jq '.[0].headSha // empty')
+          # A failed lookup (rate limit, 5xx, token problem) must not cost the day its build, so it falls
+          # back to an empty SHA, which never matches. Without the `if`, `bash -e` would fail this step.
+          # A failed cancel below is left to fail the job: carrying on would skip the build but let the run
+          # conclude as "success", starting the e2e workflows against the previous build.
+          if ! LAST_RUN_SHA=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "$CALLER_WORKFLOW" \
+            --branch "$GITHUB_REF_NAME" --status success --limit 1 --json headSha --jq '.[0].headSha // empty'); then
+            echo "::warning::Couldn't look up the last successful run of $CALLER_WORKFLOW, building anyway"
+            LAST_RUN_SHA=""
+          fi
           echo "$CALLER_WORKFLOW on $GITHUB_REF_NAME: $GITHUB_SHA, last successful run: ${LAST_RUN_SHA:-none}"
 
           if [ "$LAST_RUN_SHA" = "$GITHUB_SHA" ]; then
