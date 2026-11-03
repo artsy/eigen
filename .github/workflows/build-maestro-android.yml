@@ -2,12 +2,20 @@ name: Build Android QA App for Maestro
 
 on:
   schedule:
-    - cron: "0 6 * * *" # Runs daily at 6:00 AM UTC
+    - cron: "0 6 * * 1-5" # Runs at 6:00 AM UTC on weekdays
   workflow_dispatch: # Allows manual trigger
 
 jobs:
-  build-android-qa:
+  # Skips the scheduled build when main hasn't changed since the last successful one
+  has-main-changed:
     if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/skip-unchanged-scheduled-run.yml
+    permissions:
+      actions: write # to cancel the run
+
+  build-android-qa:
+    needs: has-main-changed
+    if: needs.has-main-changed.outputs.changed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 90
 

@@ -1,0 +1,65 @@
+# Cancels a scheduled run of the calling workflow when its branch hasn't changed since that workflow's
+# last successful run, so a nightly build doesn't rebuild the same commit. Runs started any other way
+# (e.g. manually) always go ahead.
+#
+# The run is cancelled rather than having its jobs skipped, because a run whose jobs are all skipped
+# still concludes as "success", which would start any workflow that triggers on this one succeeding
+# (e.g. the e2e workflows after the QA builds).
+#
+# Usage:
+#
+#   jobs:
+#     has-main-changed:
+#       if: github.ref == 'refs/heads/main'
+#       uses: ./.github/workflows/skip-unchanged-scheduled-run.yml
+#       permissions:
+#         actions: write # to cancel the run
+#
+#     build:
+#       needs: has-main-changed
+#       if: needs.has-main-changed.outputs.changed == 'true'
+name: Skip unchanged scheduled run
+
+on:
+  workflow_call:
+    outputs:
+      # Also 'true' for runs that weren't scheduled (e.g. manual ones), even on an unchanged commit,
+      # because those always go ahead
+      changed:
+        description: "'true' unless this is a scheduled run on a commit that already ran successfully"
+        value: ${{ jobs.check.outputs.changed }}
+
+jobs:
+  check:
+    name: Check for new commits
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write # to cancel the run
+    outputs:
+      changed: ${{ steps.check.outputs.changed }}
+    steps:
+      - name: Check for new commits since the last successful run
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" != "schedule" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # In a called workflow, GITHUB_WORKFLOW_REF and GITHUB_RUN_ID are the caller's, e.g.
+          # artsy/eigen/.github/workflows/build-maestro-ios.yml@refs/heads/main
+          CALLER_WORKFLOW=$(basename "${GITHUB_WORKFLOW_REF%@*}")
+          LAST_RUN_SHA=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "$CALLER_WORKFLOW" \
+            --branch "$GITHUB_REF_NAME" --status success --limit 1 --json headSha --jq '.[0].headSha // empty')
+          echo "$CALLER_WORKFLOW on $GITHUB_REF_NAME: $GITHUB_SHA, last successful run: ${LAST_RUN_SHA:-none}"
+
+          if [ "$LAST_RUN_SHA" = "$GITHUB_SHA" ]; then
+            echo "No new commits since the last successful run, cancelling this run"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            gh run cancel "$GITHUB_RUN_ID" --repo "$GITHUB_REPOSITORY"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
