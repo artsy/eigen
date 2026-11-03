@@ -1,0 +1,115 @@
+# Tells a scheduled workflow whether its branch has changed since the last run that built it, so a
+# nightly build can skip rebuilding the same commit. Runs started any other way (e.g. manually) always
+# report a change, so they go ahead.
+#
+# By default "built" means the whole last successful run. With `build_jobs`, it means the last run in
+# which those jobs all succeeded, whatever the other jobs did. Use that when the run also has e2e jobs:
+# a failed test shouldn't make the next day rebuild an unchanged commit.
+#
+# To force a rebuild of an unchanged commit, start the workflow manually (workflow_dispatch). Re-running
+# a scheduled run that skipped doesn't work: a re-run is still a "schedule" event on the same commit.
+#
+# Jobs that should only follow a new build, like the e2e tests after the QA builds, should `needs:` the
+# build job itself. A skipped build then skips them too. See nightly-qa.yml.
+#
+# Usage:
+#
+#   jobs:
+#     has-main-changed:
+#       if: github.ref == 'refs/heads/main'
+#       uses: ./.github/workflows/check-for-new-commits.yml
+#       permissions:
+#         actions: read # to look up previous runs
+#       with:
+#         build_jobs: |
+#           build-ios / build-ios-qa
+#           build-android / build-android-qa
+#
+#     build:
+#       needs: has-main-changed
+#       if: needs.has-main-changed.outputs.changed == 'true'
+name: Check for new commits
+
+on:
+  workflow_call:
+    inputs:
+      build_jobs:
+        description: "Job names (one per line, as the Actions UI shows them) that must all have succeeded in a previous run for it to count as having built the commit. Empty: the whole run must have succeeded."
+        required: false
+        type: string
+        default: ""
+    outputs:
+      # Also 'true' for runs that weren't scheduled (e.g. manual ones), even on an unchanged commit,
+      # because those always go ahead
+      changed:
+        description: "'true' unless this is a scheduled run on a commit that a previous run already built"
+        value: ${{ jobs.check.outputs.changed }}
+
+jobs:
+  check:
+    name: Check for new commits
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: read # to look up previous runs
+    outputs:
+      changed: ${{ steps.check.outputs.changed }}
+    steps:
+      - name: Check for new commits since the last build
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_JOBS: ${{ inputs.build_jobs }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" != "schedule" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # In a called workflow, GITHUB_WORKFLOW_REF is the caller's, e.g.
+          # artsy/eigen/.github/workflows/nightly-qa.yml@refs/heads/main
+          CALLER_WORKFLOW=$(basename "${GITHUB_WORKFLOW_REF%@*}")
+
+          # The commit the last build ran on, or empty. Lookups can fail (rate limit, 5xx, token
+          # problem); that must not cost the day its build, so every failure leaves the SHA empty, which
+          # never matches. Without the `if`s, `bash -e` would fail this step.
+          LAST_BUILT_SHA=""
+          if [ -z "$BUILD_JOBS" ]; then
+            if ! LAST_BUILT_SHA=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "$CALLER_WORKFLOW" \
+              --branch "$GITHUB_REF_NAME" --status success --limit 1 --json headSha --jq '.[0].headSha // empty'); then
+              echo "::warning::Couldn't look up the last successful run of $CALLER_WORKFLOW, building anyway"
+              LAST_BUILT_SHA=""
+            fi
+          else
+            # Newest first, skipping this run. A run whose build jobs were skipped or failed doesn't count,
+            # so the comparison is against the last commit that actually got built.
+            WANTED=$(printf '%s\n' "$BUILD_JOBS" | sed '/^[[:space:]]*$/d' | jq -R . | jq -s .)
+            if ! RUNS=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "$CALLER_WORKFLOW" \
+              --branch "$GITHUB_REF_NAME" --limit 20 --json databaseId,headSha \
+              --jq ".[] | select(.databaseId != $GITHUB_RUN_ID) | \"\(.databaseId) \(.headSha)\""); then
+              echo "::warning::Couldn't list the previous runs of $CALLER_WORKFLOW, building anyway"
+              RUNS=""
+            fi
+            while read -r run_id sha; do
+              [ -n "$run_id" ] || continue
+              if ! BUILT=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run_id/jobs?per_page=100" |
+                jq --argjson wanted "$WANTED" \
+                  '[.jobs[] | select(.name as $n | $wanted | index($n)) | select(.conclusion == "success") | .name] | unique | length == ($wanted | length)'); then
+                echo "::warning::Couldn't read the jobs of run $run_id, building anyway"
+                break
+              fi
+              if [ "$BUILT" = "true" ]; then
+                LAST_BUILT_SHA=$sha
+                echo "Last run that built: $run_id"
+                break
+              fi
+            done <<< "$RUNS"
+          fi
+          echo "$CALLER_WORKFLOW on $GITHUB_REF_NAME: $GITHUB_SHA, last built: ${LAST_BUILT_SHA:-none}"
+
+          if [ "$LAST_BUILT_SHA" = "$GITHUB_SHA" ]; then
+            echo "No new commits since the last build, skipping. To build anyway, start the workflow manually."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
