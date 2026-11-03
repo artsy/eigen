@@ -1,21 +1,22 @@
 name: Build Android QA App for Maestro
 
 on:
-  schedule:
-    - cron: "0 6 * * 1-5" # Runs at 6:00 AM UTC on weekdays
-  workflow_dispatch: # Allows manual trigger
+  # Called by nightly-qa.yml, which also runs the e2e tests on the build
+  workflow_call:
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+      ANDROID_KEYSTORE_PASSWORD:
+        required: true
+      ANDROID_KEY_PASSWORD:
+        required: true
+  workflow_dispatch: # Builds and uploads to S3 without running the e2e tests
 
 jobs:
-  # Skips the scheduled build when main hasn't changed since the last successful one
-  has-main-changed:
-    if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/skip-unchanged-scheduled-run.yml
-    permissions:
-      actions: write # to cancel the run
-
   build-android-qa:
-    needs: has-main-changed
-    if: needs.has-main-changed.outputs.changed == 'true'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 90
 

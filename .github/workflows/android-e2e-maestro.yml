@@ -1,15 +1,17 @@
 name: Android E2E Tests (Maestro)
 
 on:
-  workflow_run:
-    workflows: ["Build Android QA App for Maestro"]
-    types:
-      - completed
-  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+  # Called by nightly-qa.yml once the QA build has succeeded
+  workflow_call:
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab, on the latest QA build
 
 jobs:
   e2e-tests:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest # Use ubuntu-latest for better Android emulator support
     timeout-minutes: 30
     strategy:

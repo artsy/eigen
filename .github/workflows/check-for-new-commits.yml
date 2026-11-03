@@ -1,28 +1,26 @@
-# Cancels a scheduled run of the calling workflow when its branch hasn't changed since that workflow's
-# last successful run, so a nightly build doesn't rebuild the same commit. Runs started any other way
-# (e.g. manually) always go ahead.
+# Tells a scheduled workflow whether its branch has changed since that workflow's last successful run,
+# so a nightly build can skip rebuilding the same commit. Runs started any other way (e.g. manually)
+# always report a change, so they go ahead.
 #
 # To force a rebuild of an unchanged commit, start the workflow manually (workflow_dispatch). Re-running
-# a cancelled scheduled run doesn't work: a re-run is still a "schedule" event on the same commit, so it
-# gets cancelled again.
+# a scheduled run doesn't work: a re-run is still a "schedule" event on the same commit.
 #
-# The run is cancelled rather than having its jobs skipped, because a run whose jobs are all skipped
-# still concludes as "success", which would start any workflow that triggers on this one succeeding
-# (e.g. the e2e workflows after the QA builds).
+# Jobs that should only follow a new build, like the e2e tests after the QA builds, should `needs:` the
+# build job itself. A skipped build then skips them too. See nightly-qa.yml.
 #
 # Usage:
 #
 #   jobs:
 #     has-main-changed:
 #       if: github.ref == 'refs/heads/main'
-#       uses: ./.github/workflows/skip-unchanged-scheduled-run.yml
+#       uses: ./.github/workflows/check-for-new-commits.yml
 #       permissions:
-#         actions: write # to cancel the run
+#         actions: read # to look up the last successful run
 #
 #     build:
 #       needs: has-main-changed
 #       if: needs.has-main-changed.outputs.changed == 'true'
-name: Skip unchanged scheduled run
+name: Check for new commits
 
 on:
   workflow_call:
@@ -39,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
-      actions: write # to cancel the run
+      actions: read # to look up the last successful run
     outputs:
       changed: ${{ steps.check.outputs.changed }}
     steps:
@@ -53,13 +51,11 @@ jobs:
             exit 0
           fi
 
-          # In a called workflow, GITHUB_WORKFLOW_REF and GITHUB_RUN_ID are the caller's, e.g.
-          # artsy/eigen/.github/workflows/build-maestro-ios.yml@refs/heads/main
+          # In a called workflow, GITHUB_WORKFLOW_REF is the caller's, e.g.
+          # artsy/eigen/.github/workflows/nightly-qa.yml@refs/heads/main
           CALLER_WORKFLOW=$(basename "${GITHUB_WORKFLOW_REF%@*}")
           # A failed lookup (rate limit, 5xx, token problem) must not cost the day its build, so it falls
           # back to an empty SHA, which never matches. Without the `if`, `bash -e` would fail this step.
-          # A failed cancel below is left to fail the job: carrying on would skip the build but let the run
-          # conclude as "success", starting the e2e workflows against the previous build.
           if ! LAST_RUN_SHA=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "$CALLER_WORKFLOW" \
             --branch "$GITHUB_REF_NAME" --status success --limit 1 --json headSha --jq '.[0].headSha // empty'); then
             echo "::warning::Couldn't look up the last successful run of $CALLER_WORKFLOW, building anyway"
@@ -68,9 +64,8 @@ jobs:
           echo "$CALLER_WORKFLOW on $GITHUB_REF_NAME: $GITHUB_SHA, last successful run: ${LAST_RUN_SHA:-none}"
 
           if [ "$LAST_RUN_SHA" = "$GITHUB_SHA" ]; then
-            echo "No new commits since the last successful run, cancelling this run"
+            echo "No new commits since the last successful run, skipping. To build anyway, start the workflow manually."
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            gh run cancel "$GITHUB_RUN_ID" --repo "$GITHUB_REPOSITORY"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
