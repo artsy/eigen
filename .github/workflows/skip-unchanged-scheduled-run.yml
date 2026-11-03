@@ -2,6 +2,10 @@
 # last successful run, so a nightly build doesn't rebuild the same commit. Runs started any other way
 # (e.g. manually) always go ahead.
 #
+# To force a rebuild of an unchanged commit, start the workflow manually (workflow_dispatch). Re-running
+# a cancelled scheduled run doesn't work: a re-run is still a "schedule" event on the same commit, so it
+# gets cancelled again.
+#
 # The run is cancelled rather than having its jobs skipped, because a run whose jobs are all skipped
 # still concludes as "success", which would start any workflow that triggers on this one succeeding
 # (e.g. the e2e workflows after the QA builds).
