@@ -31,11 +31,24 @@ export interface MarkdownTextProps extends Pick<ViewProps, "testID" | "accessibi
 // return null for images), so strip them before handing the content to the native renderer.
 const IMAGE_REGEX = /!\[[^\]]*\]\([^)]*\)/g
 
+// Strikethrough is a GitHub-flavour extension that enriched-markdown only parses with
+// flavor="github", which swaps in a native component that ignores numberOfLines. simple-markdown
+// never drew a strike line either (its `del` rule just output the content), so keep that
+// behaviour by dropping the tildes and leaving the text.
+// Single-line only, so a tilde-fenced code block (~~~ ... ~~~) is left intact.
+const STRIKETHROUGH_REGEX = /~~([^~\n]+)~~/g
+
 // - hardSoftBreaks: simple-markdown rendered single newlines as line breaks, keep that behaviour
 // - latexMath: content like "$1,000 - $2,000" must not be parsed as inline math
 const MD4C_FLAGS: Md4cFlags = { hardSoftBreaks: true, latexMath: false }
 
-export const sanitizeMarkdown = (markdown: string) => markdown.replace(IMAGE_REGEX, "")
+// Family name (not a single face like `fonts.sans.medium`) so nested bold + italic resolves to
+// Unica77LL-MediumItalic: a face name would replace the whole font and drop the other trait.
+// iOS reads it from the font files, Android builds the family from assets/fonts in MainApplication.kt.
+const UNICA_FAMILY = "Unica77 LL"
+
+export const sanitizeMarkdown = (markdown: string) =>
+  markdown.replace(IMAGE_REGEX, "").replace(STRIKETHROUGH_REGEX, "$1")
 
 export const buildMarkdownStyle = (
   { theme, color: colorFn, space }: Theme,
@@ -102,8 +115,8 @@ export const buildMarkdownStyle = (
       color: colorFn(linkColor),
       underline: true,
     },
-    strong: { fontFamily: fonts.sans.medium, fontWeight: "normal", color: accentColor },
-    em: { fontFamily: fonts.sans.italic, fontStyle: "normal", color: accentColor },
+    strong: { fontFamily: UNICA_FAMILY, fontWeight: "bold", color: accentColor },
+    em: { fontFamily: UNICA_FAMILY, fontStyle: "italic", color: accentColor },
     code: {
       fontFamily: fonts.sans.regular,
       fontSize: body.fontSize,
