@@ -121,7 +121,7 @@
     "@artsy/cohesion": "4.419.0",
     "@artsy/icons": "3.82.0",
     "@artsy/palette-mobile": "24.21.0",
-    "@artsy/to-title-case": "1.2.0",
+    "@artsy/to-title-case": "1.2.1",
     "@braze/react-native-sdk": "23.1.0",
     "@d11/react-native-fast-image": "patch:@d11/react-native-fast-image@npm%3A8.13.0#~/.yarn/patches/@d11-react-native-fast-image-npm-8.13.0-1ba5757ff5.patch",
     "@expo/react-native-action-sheet": "4.1.1",
