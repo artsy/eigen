@@ -81,6 +81,11 @@ enum AIAgentEntityType {
 
 union AIAgentEvent = AIAgentTextDelta | AIAgentToolCall | AIAgentToolResult | AIAgentTurnComplete
 
+enum AIAgentFeedbackRating {
+  THUMBS_DOWN
+  THUMBS_UP
+}
+
 """
 An image the collector attached, already uploaded to S3 by the client.
 """
@@ -173,6 +178,11 @@ type AIAgentTurnComplete {
   Artworks referenced in the answer, for rendering as cards. Superseded by `sections`, which also carries other entity types; always the same works as the artworks section, for clients that predate it.
   """
   artworks: [Artwork!]
+
+  """
+  Opaque handle for rating this turn with `createAIAgentFeedback`. Null when feedback isn't being collected.
+  """
+  feedbackID: String
   message: String
 
   """
@@ -14942,6 +14952,30 @@ enum ConversationsInputMode {
   USER
 }
 
+input CreateAIAgentFeedbackInput {
+  clientMutationId: String
+
+  """
+  Optional free text, up to 2000 characters.
+  """
+  comment: String
+
+  """
+  The `feedbackID` of the AIAgentTurnComplete being rated.
+  """
+  feedbackID: String!
+  rating: AIAgentFeedbackRating!
+}
+
+type CreateAIAgentFeedbackPayload {
+  clientMutationId: String
+
+  """
+  False when the feedback could not be recorded; safe to ignore.
+  """
+  success: Boolean!
+}
+
 type CreateAccountRequestMutationFailure {
   mutationError: GravityMutationError
 }
@@ -27374,6 +27408,11 @@ type Mutation {
   Copy an itinerary into the caller's account. `shareToken` is needed for an unlisted source.
   """
   copyItinerary(input: copyItineraryInput!): copyItineraryPayload
+
+  """
+  Rates one answer from the AI agent. Voting again on the same answer replaces the earlier vote.
+  """
+  createAIAgentFeedback(input: CreateAIAgentFeedbackInput!): CreateAIAgentFeedbackPayload
 
   """
   Create an account request
