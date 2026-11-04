@@ -309,7 +309,7 @@ jobs:
       #       ./scripts/deploys/expo-updates/deploy-to-expo-updates staging
 
   test-js:
-    parallelism: 16
+    parallelism: 6
     executor:
       name: node/default
       tag: << pipeline.parameters.node_version >>
@@ -328,12 +328,35 @@ jobs:
             not: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
           steps:
             - update-echo
+      # Jest's transform cache is content-addressed, so stale entries are harmless. The key is
+      # per shard because each shard transforms a different subset of files. CircleCI caches are
+      # immutable, so the cache is written once per js_transform manifest (lockfile/babel/jest config)
+      # and falls back to an older manifest's cache, which still covers most of node_modules.
+      - restore_cache:
+          keys:
+            - << pipeline.parameters.jest_cache_key >>-{{ checksum ".manifests/js_transform" }}-{{ .Environment.CIRCLE_NODE_INDEX }}
+            - << pipeline.parameters.jest_cache_key >>-{{ checksum ".manifests/js_transform" }}-
+            - << pipeline.parameters.jest_cache_key >>-
       - run:
-          command: yarn jest --ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
           name: Run Jest tests
+          command: |
+            # `git ls-files` matches jest's testMatch exactly (src/ and scripts/).
+            TESTS=$(git ls-files '*.tests.ts' '*.tests.tsx' '*.tests.js' | circleci tests split --split-by=timings)
+            echo "Running $(echo "$TESTS" | wc -l) test files on shard $CIRCLE_NODE_INDEX/$CIRCLE_NODE_TOTAL"
+            yarn jest --ci --forceExit --logHeapUsage \
+              --maxWorkers=3 --workerIdleMemoryLimit=1.5G \
+              --reporters=default --reporters=jest-junit \
+              --runTestsByPath $TESTS
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
             JEST_JUNIT_UNIQUE_OUTPUT_NAME: true
+            # `file` attribute is what `circleci tests split --split-by=timings` reads.
+            JEST_JUNIT_ADD_FILE_ATTRIBUTE: true
+      - save_cache:
+          when: always
+          key: << pipeline.parameters.jest_cache_key >>-{{ checksum ".manifests/js_transform" }}-{{ .Environment.CIRCLE_NODE_INDEX }}
+          paths:
+            - .cache/jest
       - store_test_results:
           path: ./reports/junit/
 
@@ -506,6 +529,9 @@ parameters:
   node_modules_cache_key:
     type: string
     default: v32-node_modules-{{ checksum ".manifests/node_modules" }}
+  jest_cache_key:
+    type: string
+    default: v1-jest-cache
   gems_cache_key:
     type: string
     default: v17-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
