@@ -8,9 +8,11 @@ import {
   useArtAssistantConversationAgentTurnSubscription$data,
   useArtAssistantConversationAgentTurnSubscription$variables,
 } from "__generated__/useArtAssistantConversationAgentTurnSubscription.graphql"
+import { useArtAssistantConversationFeedbackMutation } from "__generated__/useArtAssistantConversationFeedbackMutation.graphql"
 import { ART_ASSISTANT_SUPPORTED_SECTIONS } from "app/Scenes/ArtAssistant/Components/ArtAssistantResponseSection"
 import { useArtAssistantTracking } from "app/Scenes/ArtAssistant/hooks/useArtAssistantTracking"
 import {
+  ArtAssistantFeedbackRating,
   ArtAssistantImage,
   ArtAssistantMessage,
   ArtAssistantSection,
@@ -27,7 +29,7 @@ import {
 import { GlobalStore } from "app/store/GlobalStore"
 import { metaphysicsSubscriptionErrorStatus } from "app/system/relay/helpers/metaphysicsSubscriptionError"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { graphql, requestSubscription, useRelayEnvironment } from "react-relay"
+import { graphql, requestSubscription, useMutation, useRelayEnvironment } from "react-relay"
 import { v4 as uuid } from "uuid"
 
 type AssistantMessage = Extract<ArtAssistantMessage, { role: "assistant" }>
@@ -98,13 +100,24 @@ const agentTurnSubscription = graphql`
         suggestedReplies {
           text
         }
+        feedbackID
       }
+    }
+  }
+`
+
+const feedbackMutation = graphql`
+  mutation useArtAssistantConversationFeedbackMutation($input: CreateAIAgentFeedbackInput!) {
+    createAIAgentFeedback(input: $input) {
+      success
     }
   }
 `
 
 export const useArtAssistantConversation = () => {
   const environment = useRelayEnvironment()
+  const [commitFeedback] =
+    useMutation<useArtAssistantConversationFeedbackMutation>(feedbackMutation)
   const {
     trackMessageSent,
     trackNewChat,
@@ -429,9 +442,59 @@ export const useArtAssistantConversation = () => {
     [trackSuggestedReplyTapped]
   )
 
+  const setFeedbackRating = useCallback(
+    (messageID: string, rating: ArtAssistantFeedbackRating | undefined) => {
+      setMessages((current) =>
+        current.map((message) =>
+          message.id === messageID && message.role === "assistant"
+            ? { ...message, feedbackRating: rating }
+            : message
+        )
+      )
+    },
+    []
+  )
+
+  // Optimistic; reverted on failure unless a later vote has already replaced it.
+  const rateMessage = useCallback(
+    (messageID: string, rating: ArtAssistantFeedbackRating) => {
+      const message = messagesRef.current.find(({ id }) => id === messageID)
+
+      if (
+        message?.role !== "assistant" ||
+        !message.feedbackID ||
+        message.feedbackRating === rating
+      ) {
+        return
+      }
+
+      const previousRating = message.feedbackRating
+      const revert = () => {
+        const current = messagesRef.current.find(({ id }) => id === messageID)
+
+        if (current?.role === "assistant" && current.feedbackRating === rating) {
+          setFeedbackRating(messageID, previousRating)
+        }
+      }
+
+      setFeedbackRating(messageID, rating)
+      commitFeedback({
+        variables: { input: { feedbackID: message.feedbackID, rating } },
+        onCompleted: (response, errors) => {
+          if (errors?.length || !response.createAIAgentFeedback?.success) {
+            revert()
+          }
+        },
+        onError: revert,
+      })
+    },
+    [commitFeedback, setFeedbackRating]
+  )
+
   return {
     isResponding,
     messages,
+    rateMessage,
     retry,
     startNewConversation,
     submit,
@@ -474,6 +537,7 @@ export const reduceActiveTurn = (turn: ActiveTurn, event: NormalizedAgentEvent):
           activity: undefined,
           sections: sections.length > 0 ? sections : undefined,
           suggestedReplies: (event.suggestedReplies ?? []).map((reply) => reply.text),
+          feedbackID: event.feedbackID ?? undefined,
         },
       }
     }

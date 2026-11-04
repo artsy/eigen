@@ -5,6 +5,29 @@ import { ART_ASSISTANT_ERRORS } from "app/Scenes/ArtAssistant/utils/artAssistant
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("ArtAssistantMessage", () => {
+  it("asks for feedback on a completed answer and reports the vote", () => {
+    const onRate = jest.fn()
+
+    renderWithWrappers(
+      <ArtAssistantMessage
+        message={{
+          id: "assistant-1",
+          role: "assistant",
+          text: "I found a few works.",
+          phase: "complete",
+          feedbackID: "fb-1",
+        }}
+        onRate={onRate}
+      />
+    )
+
+    expect(screen.getByText("Was this helpful?")).toBeOnTheScreen()
+
+    fireEvent.press(screen.getByLabelText("Bad response"))
+
+    expect(onRate).toHaveBeenCalledWith("assistant-1", "THUMBS_DOWN")
+  })
+
   it("renders user messages like Inbox", () => {
     renderWithWrappers(
       <ArtAssistantMessage message={{ id: "user-1", role: "user", text: "Blue painting" }} />

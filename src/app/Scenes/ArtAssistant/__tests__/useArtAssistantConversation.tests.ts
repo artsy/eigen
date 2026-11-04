@@ -313,6 +313,63 @@ describe("useArtAssistantConversation", () => {
     // No `environment.mock.complete(operation)`: the stream is still open.
     expect(result.current.isResponding).toBe(false)
   })
+
+  describe("feedback", () => {
+    const answerWithFeedback = () => {
+      const { environment, result } = renderConversation()
+
+      act(() => result.current.submit("blue painting"))
+      act(() =>
+        emit(
+          environment,
+          environment.mock.getMostRecentOperation(),
+          terminalEvent({ message: "Two works.", sections: [], artworks: [], feedbackID: "fb-1" })
+        )
+      )
+
+      const answerID = result.current.messages.at(-1)!.id
+
+      return { environment, result, answerID }
+    }
+
+    it("sends the rating and lets a later vote replace it", () => {
+      const { environment, result, answerID } = answerWithFeedback()
+
+      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_UP" })
+      const operation = environment.mock.getMostRecentOperation()
+      expect(operation.request.variables.input).toEqual({
+        feedbackID: "fb-1",
+        rating: "THUMBS_UP",
+      })
+      act(() =>
+        environment.mock.resolve(operation, {
+          data: { createAIAgentFeedback: { success: true } },
+        })
+      )
+
+      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_DOWN" })
+      expect(environment.mock.getMostRecentOperation().request.variables.input).toMatchObject({
+        rating: "THUMBS_DOWN",
+      })
+    })
+
+    it("reverts the rating when Metaphysics does not record it", () => {
+      const { environment, result, answerID } = answerWithFeedback()
+
+      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+      act(() =>
+        environment.mock.resolve(environment.mock.getMostRecentOperation(), {
+          data: { createAIAgentFeedback: { success: false } },
+        })
+      )
+
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: undefined })
+    })
+  })
 })
 
 const renderConversation = () => {
@@ -342,12 +399,13 @@ type TerminalEvent = Extract<NormalizedEvent, { __typename: "AIAgentTurnComplete
 
 const terminalEvent = (
   event: Pick<TerminalEvent, "message" | "sections" | "artworks"> &
-    Partial<Pick<TerminalEvent, "suggestedReplies">>
+    Partial<Pick<TerminalEvent, "suggestedReplies" | "feedbackID">>
 ): TerminalEvent => ({
   __typename: "AIAgentTurnComplete",
   stopReason: "end_turn",
   toolCallCount: 1,
   suggestedReplies: [],
+  feedbackID: null,
   ...event,
 })
 
