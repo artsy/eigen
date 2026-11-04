@@ -393,57 +393,6 @@ jobs:
           name: Check flags
           command: ./scripts/check-flags/biweekly-flag-check.sh
 
-  build-test-js:
-    executor:
-      name: node/default
-      tag: << pipeline.parameters.node_version >>
-    resource_class: large
-    steps:
-      - checkout
-      - generate-checksums
-      - setup-awscli
-      - setup-env-file
-      - install-node-modules
-      - run-relay-compiler
-      - generate-query-map
-      - run:
-          name: Check generated folder
-          command: |
-            if test "$(git diff -- src/__generated__)"
-            then
-              echo 'You forgot to run `yarn relay` before comitting'
-              exit 1
-            fi
-      - store_artifacts:
-          path: .manifests
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .manifests
-            - dist
-
-  build-echo-test-js:
-    executor:
-      name: node/default
-      tag: << pipeline.parameters.node_version >>
-    resource_class: medium
-    steps:
-      - checkout
-      - generate-checksums
-      - setup-awscli
-      - setup-env-file
-      - install-node-modules
-      - run-relay-compiler
-      - generate-query-map
-      - run:
-          name: Check generated folder
-          command: |
-            if test "$(git diff -- src/__generated__)"
-            then
-              echo 'You forgot to run `yarn relay` before comitting'
-              exit 1
-            fi
-
   build-test-app-ios:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
@@ -556,7 +505,6 @@ workflows:
   build-run-tests-for-echo:
     when: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
     jobs:
-      - build-echo-test-js
       - test-js
 
   test-build-deploy:
@@ -577,9 +525,6 @@ workflows:
           <<: *main_only
 
       - test-js:
-          <<: *ignore_beta_branches
-
-      - build-test-js:
           <<: *ignore_beta_branches
 
       - build-test-app-ios:
