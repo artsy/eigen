@@ -1,4 +1,4 @@
-import { ArtAssistantTurnFailed, OwnerType, SentArtAssistantMessage } from "@artsy/cohesion"
+import { ArtAssistantTurnFailed, SentArtAssistantMessage } from "@artsy/cohesion"
 import {
   AIAgentActivity,
   AIAgentDisplayedSectionInput,
@@ -24,6 +24,7 @@ import {
   artAssistantErrorKindForStreamError,
   reportArtAssistantTurnFailure,
 } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
+import { getArtAssistantItems } from "app/Scenes/ArtAssistant/utils/artAssistantItems"
 import { GlobalStore } from "app/store/GlobalStore"
 import { metaphysicsSubscriptionErrorStatus } from "app/system/relay/helpers/metaphysicsSubscriptionError"
 import { useCallback, useEffect, useRef, useState } from "react"
@@ -338,13 +339,12 @@ export const useArtAssistantConversation = () => {
                 if (nextTurn.message.phase === "error") {
                   reportFailure({ outcome: "stopped_without_answer", stopReason: event.stopReason })
                 } else {
-                  const artworks = event.artworks ?? []
-
+                  // The reduced message already holds every entity type the answer showed, so
+                  // the tracked items cannot drift from what is on screen.
                   trackResponseReceived({
                     conversationID: input.conversationID,
                     durationMs: Date.now() - startedAt,
-                    itemIDs: artworks.map((artwork) => artwork.internalID),
-                    itemType: artworks.length > 0 ? OwnerType.artwork : undefined,
+                    ...getArtAssistantItems(nextTurn.message.sections),
                     messageID: assistantMessage.id,
                     promptMessageID: userMessage.id,
                     response: nextTurn.message.text,
