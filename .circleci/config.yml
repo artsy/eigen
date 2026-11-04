@@ -58,9 +58,31 @@ commands:
           command: scripts/setup/setup-awscli
   install-node-modules:
     steps:
+      # The orb only caches yarn's zip archives, so every job still spends ~20s in yarn's link step
+      # writing node_modules. Cache the linked node_modules too, keyed exactly on the lockfile,
+      # patches and package.json (no fallback: a stale node_modules would need relinking anyway).
+      - restore_cache:
+          name: Restore linked node_modules
+          keys:
+            - << pipeline.parameters.linked_node_modules_cache_key >>
       - node/install-packages:
           pkg-manager: yarn-berry
           cache-version: << pipeline.parameters.node_modules_cache_key >>
+          override-ci-command: |
+            if [ -f node_modules/.yarn-state.yml ] && [ -f .yarn/install-state.gz ]; then
+              echo "Linked node_modules restored from cache, skipping yarn install"
+              # `yarn install` would also run our root postinstall (metaflags.json, echo), so keep that.
+              yarn run postinstall
+            else
+              yarn install --immutable
+            fi
+      # A no-op when the key already exists, which is every run except the first per lockfile.
+      - save_cache:
+          name: Save linked node_modules
+          key: << pipeline.parameters.linked_node_modules_cache_key >>
+          paths:
+            - node_modules
+            - .yarn/install-state.gz
   run-relay-compiler:
     steps:
       - run:
@@ -539,6 +561,9 @@ parameters:
   node_modules_cache_key:
     type: string
     default: v32-node_modules-{{ checksum ".manifests/node_modules" }}
+  linked_node_modules_cache_key:
+    type: string
+    default: v1-linked-node_modules-{{ arch }}-{{ checksum ".manifests/node_modules" }}
   jest_cache_key:
     type: string
     default: v1-jest-cache
