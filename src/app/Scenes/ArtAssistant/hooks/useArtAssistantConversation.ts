@@ -135,8 +135,11 @@ export const useArtAssistantConversation = () => {
   const activeSubscription = useRef<ReturnType<typeof requestSubscription> | null>(null)
   const responseTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
   const messagesRef = useRef(messages)
-  const latestFeedbackRequest = useRef<Record<string, number>>({})
-  const savedFeedbackRating = useRef<Record<string, ArtAssistantFeedbackRating>>({})
+  // Per message: the latest vote still in flight, and the newest vote that saved.
+  const pendingFeedback = useRef<Record<string, number>>({})
+  const savedFeedback = useRef<
+    Record<string, { request: number; rating: ArtAssistantFeedbackRating }>
+  >({})
   const feedbackRequestCount = useRef(0)
 
   messagesRef.current = messages
@@ -162,6 +165,8 @@ export const useArtAssistantConversation = () => {
 
     abort()
     conversationID.current = uuid()
+    pendingFeedback.current = {}
+    savedFeedback.current = {}
     messagesRef.current = []
     isRespondingRef.current = false
     setMessages([])
@@ -459,7 +464,7 @@ export const useArtAssistantConversation = () => {
     []
   )
 
-  // Optimistic: shows the latest unsettled vote, otherwise the last saved one.
+  // Optimistic: shows the latest vote in flight, otherwise the newest one that saved.
   const rateMessage = useCallback(
     (messageID: string, rating: ArtAssistantFeedbackRating) => {
       const message = messagesRef.current.find(({ id }) => id === messageID)
@@ -476,39 +481,40 @@ export const useArtAssistantConversation = () => {
       // Read now: "New chat" may replace it before the vote settles.
       const ratedConversationID = conversationID.current
       const request = ++feedbackRequestCount.current
-      latestFeedbackRequest.current[messageID] = request
+      pendingFeedback.current[messageID] = request
 
-      const settle = (savedRating?: ArtAssistantFeedbackRating) => {
-        if (savedRating) {
-          savedFeedbackRating.current[messageID] = savedRating
+      // Once nothing newer is in flight, show the newest vote that saved.
+      const settle = () => {
+        if (pendingFeedback.current[messageID] === request) {
+          delete pendingFeedback.current[messageID]
         }
-        if (latestFeedbackRequest.current[messageID] === request) {
-          delete latestFeedbackRequest.current[messageID]
-        }
-        if (latestFeedbackRequest.current[messageID] === undefined) {
-          setFeedbackRating(messageID, savedFeedbackRating.current[messageID])
+        if (pendingFeedback.current[messageID] === undefined) {
+          setFeedbackRating(messageID, savedFeedback.current[messageID]?.rating)
         }
       }
-      const revert = () => settle()
 
       setFeedbackRating(messageID, rating)
       commitFeedback({
         variables: { input: { feedbackID, rating } },
         onCompleted: (response, errors) => {
-          if (errors?.length || !response.createAIAgentFeedback?.success) {
-            revert()
-            return
+          const saved = savedFeedback.current[messageID]
+          // An older vote answering late doesn't replace a newer saved one.
+          if (
+            !errors?.length &&
+            response.createAIAgentFeedback?.success &&
+            (!saved || saved.request < request)
+          ) {
+            savedFeedback.current[messageID] = { request, rating }
+            trackFeedbackTapped({
+              conversationID: ratedConversationID,
+              feedbackID,
+              rating,
+              responseMessageID: messageID,
+            })
           }
-
-          settle(rating)
-          trackFeedbackTapped({
-            conversationID: ratedConversationID,
-            feedbackID,
-            rating,
-            responseMessageID: messageID,
-          })
+          settle()
         },
-        onError: revert,
+        onError: settle,
       })
     },
     [commitFeedback, setFeedbackRating, trackFeedbackTapped]

@@ -423,6 +423,24 @@ describe("useArtAssistantConversation", () => {
       expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_UP" })
     })
 
+    it("keeps the newer vote when both save but answer out of order", () => {
+      const { environment, result, answerID } = answerWithFeedback()
+      const saved = { data: { createAIAgentFeedback: { success: true } } }
+
+      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      const thumbsUp = environment.mock.getMostRecentOperation()
+      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+      const thumbsDown = environment.mock.getMostRecentOperation()
+
+      act(() => environment.mock.resolve(thumbsDown, saved))
+      act(() => environment.mock.resolve(thumbsUp, saved))
+
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_DOWN" })
+      expect(trackedEventsOfType("tappedArtAssistantFeedback")).toEqual([
+        expect.objectContaining({ rating: "thumbs_down" }),
+      ])
+    })
+
     it("tracks a vote under the conversation it was cast in", () => {
       const { environment, result, answerID } = answerWithFeedback()
       const ratedConversationID = trackedEventsOfType("sentArtAssistantMessage")[0].conversation_id
