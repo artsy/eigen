@@ -11,8 +11,8 @@ export const limitWithCount = (list: string[] | null, limit: number) => {
   if (!limit || list.length <= limit) {
     return list
   }
-  const remainCount = list.length - limit
-  const limited = list.slice(0, limit)
-  limited.push(`+${remainCount} more`)
-  return limited
+  const remainCount = list.length - limit - 1
+  list.splice(limit)
+  list.push(`+${remainCount} more`)
+  return list
 }
