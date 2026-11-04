@@ -42,6 +42,7 @@ export enum FilterModalMode {
   Search = "Search",
   Custom = "Custom",
   Collect = "Collect",
+  SearchByImage = "SearchByImage",
 }
 
 export const ArtworkFilterOptionsScreen: React.FC<
@@ -236,19 +237,25 @@ export const getStaticFilterOptionsByMode = (
     case FilterModalMode.Custom:
       return customFilterOptions || []
 
+    // Image search only supports the default sort
+    case FilterModalMode.SearchByImage:
+      return getDefaultStaticFilterOptions().filter((option) => option.filterType !== "sort")
+
     default:
-      return [
-        filterOptionToDisplayConfigMap.attributionClass,
-        filterOptionToDisplayConfigMap.availability,
-        filterOptionToDisplayConfigMap.colors,
-        filterOptionToDisplayConfigMap.framed,
-        filterOptionToDisplayConfigMap.priceRange,
-        filterOptionToDisplayConfigMap.sort,
-        filterOptionToDisplayConfigMap.sizes,
-        filterOptionToDisplayConfigMap.waysToBuy,
-      ]
+      return getDefaultStaticFilterOptions()
   }
 }
+
+const getDefaultStaticFilterOptions = () => [
+  filterOptionToDisplayConfigMap.attributionClass,
+  filterOptionToDisplayConfigMap.availability,
+  filterOptionToDisplayConfigMap.colors,
+  filterOptionToDisplayConfigMap.framed,
+  filterOptionToDisplayConfigMap.priceRange,
+  filterOptionToDisplayConfigMap.sort,
+  filterOptionToDisplayConfigMap.sizes,
+  filterOptionToDisplayConfigMap.waysToBuy,
+]
 
 export const getFilterScreenSortByMode =
   (mode: FilterModalMode, localFilterOptions: ArtworkFiltersModel["filterOptions"]) =>
@@ -298,6 +305,9 @@ export const getFilterScreenSortByMode =
         break
       case FilterModalMode.Collect:
         sortOrder = CollectFiltersSorted
+        break
+      case FilterModalMode.SearchByImage:
+        sortOrder = SearchByImageFiltersSorted
         break
       default:
         assertNever(mode)
@@ -690,3 +700,7 @@ const CollectFiltersSorted: FilterScreen[] = [
   "partnerIDs",
   "framed",
 ]
+
+const SearchByImageFiltersSorted: FilterScreen[] = CollectFiltersSorted.filter(
+  (filter) => filter !== "sort"
+)
