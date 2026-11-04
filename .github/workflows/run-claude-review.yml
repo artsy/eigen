@@ -10,3 +10,4 @@ jobs:
     secrets:
       anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
       review-app-private-key: ${{ secrets.REVIEW_APP_PRIVATE_KEY }}
+      openai-api-key: ${{ secrets.OPENAI_API_KEY }}
