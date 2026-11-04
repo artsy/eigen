@@ -13,7 +13,13 @@ interface ThumbIconProps extends SvgProps {
   color?: Color
 }
 
-export const ThumbIcon = ({ direction, filled, color, style, ...props }: ThumbIconProps) => {
+export const ThumbIcon: React.FC<ThumbIconProps> = ({
+  direction,
+  filled,
+  color,
+  style,
+  ...props
+}) => {
   const colorFn = useColor()
 
   return (

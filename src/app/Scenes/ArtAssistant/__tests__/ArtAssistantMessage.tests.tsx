@@ -28,6 +28,20 @@ describe("ArtAssistantMessage", () => {
     expect(onRate).toHaveBeenCalledWith("assistant-1", "THUMBS_DOWN")
   })
 
+  it.each([
+    ["the answer has no feedbackID", { phase: "complete" as const }],
+    ["the answer is still coming in", { phase: "responding" as const, feedbackID: "fb-1" }],
+  ])("doesn't ask for feedback when %s", (_, message) => {
+    renderWithWrappers(
+      <ArtAssistantMessage
+        message={{ id: "assistant-1", role: "assistant", text: "I found a few works.", ...message }}
+        onRate={jest.fn()}
+      />
+    )
+
+    expect(screen.queryByTestId("art-assistant-feedback")).not.toBeOnTheScreen()
+  })
+
   it("renders user messages like Inbox", () => {
     renderWithWrappers(
       <ArtAssistantMessage message={{ id: "user-1", role: "user", text: "Blue painting" }} />

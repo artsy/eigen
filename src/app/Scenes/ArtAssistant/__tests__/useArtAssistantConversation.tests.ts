@@ -343,11 +343,21 @@ describe("useArtAssistantConversation", () => {
         feedbackID: "fb-1",
         rating: "THUMBS_UP",
       })
+      expect(trackedEventsOfType("tappedArtAssistantFeedback")).toEqual([])
       act(() =>
         environment.mock.resolve(operation, {
           data: { createAIAgentFeedback: { success: true } },
         })
       )
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: "tappedArtAssistantFeedback",
+        context_module: "artAssistantFeedback",
+        context_screen_owner_type: "artAssistant",
+        conversation_id: expect.any(String),
+        feedback_id: "fb-1",
+        rating: "thumbs_up",
+        response_message_id: answerID,
+      })
 
       act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
 
@@ -368,6 +378,21 @@ describe("useArtAssistantConversation", () => {
       )
 
       expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: undefined })
+      expect(trackedEventsOfType("tappedArtAssistantFeedback")).toEqual([])
+    })
+
+    it("reverts to the last saved rating, not an unsaved one", () => {
+      const { environment, result, answerID } = answerWithFeedback()
+
+      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      const thumbsUp = environment.mock.getMostRecentOperation()
+      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+      const thumbsDown = environment.mock.getMostRecentOperation()
+
+      act(() => environment.mock.reject(thumbsUp, new Error("offline")))
+      act(() => environment.mock.reject(thumbsDown, new Error("offline")))
+
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: undefined })
     })
 
     it("keeps a newer vote when an earlier one fails", () => {
@@ -380,6 +405,38 @@ describe("useArtAssistantConversation", () => {
       act(() => environment.mock.reject(thumbsUp, new Error("network")))
 
       expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_DOWN" })
+    })
+
+    it("shows an earlier vote that saves after a newer one failed", () => {
+      const { environment, result, answerID } = answerWithFeedback()
+
+      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      const thumbsUp = environment.mock.getMostRecentOperation()
+      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+      const thumbsDown = environment.mock.getMostRecentOperation()
+
+      act(() => environment.mock.reject(thumbsDown, new Error("network")))
+      act(() =>
+        environment.mock.resolve(thumbsUp, { data: { createAIAgentFeedback: { success: true } } })
+      )
+
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_UP" })
+    })
+
+    it("tracks a vote under the conversation it was cast in", () => {
+      const { environment, result, answerID } = answerWithFeedback()
+      const ratedConversationID = trackedEventsOfType("sentArtAssistantMessage")[0].conversation_id
+
+      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      const operation = environment.mock.getMostRecentOperation()
+      act(() => result.current.startNewConversation())
+      act(() =>
+        environment.mock.resolve(operation, { data: { createAIAgentFeedback: { success: true } } })
+      )
+
+      expect(trackedEventsOfType("tappedArtAssistantFeedback")).toEqual([
+        expect.objectContaining({ conversation_id: ratedConversationID }),
+      ])
     })
   })
 })

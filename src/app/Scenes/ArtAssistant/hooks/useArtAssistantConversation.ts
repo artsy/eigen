@@ -119,6 +119,7 @@ export const useArtAssistantConversation = () => {
   const [commitFeedback] =
     useMutation<useArtAssistantConversationFeedbackMutation>(feedbackMutation)
   const {
+    trackFeedbackTapped,
     trackMessageSent,
     trackNewChat,
     trackResponseReceived,
@@ -135,6 +136,7 @@ export const useArtAssistantConversation = () => {
   const responseTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
   const messagesRef = useRef(messages)
   const latestFeedbackRequest = useRef<Record<string, number>>({})
+  const savedFeedbackRating = useRef<Record<string, ArtAssistantFeedbackRating>>({})
   const feedbackRequestCount = useRef(0)
 
   messagesRef.current = messages
@@ -457,7 +459,7 @@ export const useArtAssistantConversation = () => {
     []
   )
 
-  // Optimistic; a failure reverts only if no later vote was sent for this message.
+  // Optimistic: shows the latest unsettled vote, otherwise the last saved one.
   const rateMessage = useCallback(
     (messageID: string, rating: ArtAssistantFeedbackRating) => {
       const message = messagesRef.current.find(({ id }) => id === messageID)
@@ -470,27 +472,46 @@ export const useArtAssistantConversation = () => {
         return
       }
 
-      const previousRating = message.feedbackRating
+      const { feedbackID } = message
+      // Read now: "New chat" may replace it before the vote settles.
+      const ratedConversationID = conversationID.current
       const request = ++feedbackRequestCount.current
       latestFeedbackRequest.current[messageID] = request
-      const revert = () => {
+
+      const settle = (savedRating?: ArtAssistantFeedbackRating) => {
+        if (savedRating) {
+          savedFeedbackRating.current[messageID] = savedRating
+        }
         if (latestFeedbackRequest.current[messageID] === request) {
-          setFeedbackRating(messageID, previousRating)
+          delete latestFeedbackRequest.current[messageID]
+        }
+        if (latestFeedbackRequest.current[messageID] === undefined) {
+          setFeedbackRating(messageID, savedFeedbackRating.current[messageID])
         }
       }
+      const revert = () => settle()
 
       setFeedbackRating(messageID, rating)
       commitFeedback({
-        variables: { input: { feedbackID: message.feedbackID, rating } },
+        variables: { input: { feedbackID, rating } },
         onCompleted: (response, errors) => {
           if (errors?.length || !response.createAIAgentFeedback?.success) {
             revert()
+            return
           }
+
+          settle(rating)
+          trackFeedbackTapped({
+            conversationID: ratedConversationID,
+            feedbackID,
+            rating,
+            responseMessageID: messageID,
+          })
         },
         onError: revert,
       })
     },
-    [commitFeedback, setFeedbackRating]
+    [commitFeedback, setFeedbackRating, trackFeedbackTapped]
   )
 
   return {

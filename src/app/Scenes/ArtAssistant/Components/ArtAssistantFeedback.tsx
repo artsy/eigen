@@ -1,8 +1,10 @@
 import { DEFAULT_HIT_SLOP, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { ThumbIcon } from "app/Components/Icons/ThumbIcon"
 import { ArtAssistantFeedbackRating } from "app/Scenes/ArtAssistant/types"
+import { AccessibilityInfo, Platform } from "react-native"
 
 const FEEDBACK_ICON_SIZE = 16
+const THANKS = "Thanks for the feedback"
 
 const OPTIONS = [
   { rating: "THUMBS_UP", direction: "up", label: "Good response" },
@@ -17,7 +19,7 @@ interface ArtAssistantFeedbackProps {
 export const ArtAssistantFeedback: React.FC<ArtAssistantFeedbackProps> = ({ rating, onRate }) => (
   <Flex flexDirection="row" alignItems="center" gap={2} mt={1} testID="art-assistant-feedback">
     <Text variant="xs" color="mono60" accessibilityLiveRegion="polite">
-      {rating ? "Thanks for the feedback" : "Was this helpful?"}
+      {rating ? THANKS : "Was this helpful?"}
     </Text>
 
     {OPTIONS.map((option) => {
@@ -30,7 +32,13 @@ export const ArtAssistantFeedback: React.FC<ArtAssistantFeedbackProps> = ({ rati
           accessibilityRole="button"
           accessibilityState={{ selected: isSelected }}
           hitSlop={DEFAULT_HIT_SLOP}
-          onPress={() => onRate(option.rating)}
+          onPress={() => {
+            // Android reads the text's live region; iOS needs an explicit announcement.
+            if (Platform.OS === "ios") {
+              AccessibilityInfo.announceForAccessibility(THANKS)
+            }
+            onRate(option.rating)
+          }}
           underlayColor="transparent"
         >
           <ThumbIcon
