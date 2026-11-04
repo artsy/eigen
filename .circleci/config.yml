@@ -356,9 +356,11 @@ jobs:
               --runTestsByPath $TESTS
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
-            JEST_JUNIT_UNIQUE_OUTPUT_NAME: true
+            # jest-junit compares these against the string "true"; quoted so YAML doesn't turn them
+            # into booleans, which CircleCI doesn't pass through as "true".
+            JEST_JUNIT_UNIQUE_OUTPUT_NAME: "true"
             # `file` attribute is what `circleci tests split --split-by=timings` reads.
-            JEST_JUNIT_ADD_FILE_ATTRIBUTE: true
+            JEST_JUNIT_ADD_FILE_ATTRIBUTE: "true"
       # All shards race to save the same key; the first one wins and the rest skip.
       - save_cache:
           when: always
