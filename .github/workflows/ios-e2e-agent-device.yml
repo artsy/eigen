@@ -9,10 +9,6 @@ on:
       AWS_SECRET_ACCESS_KEY:
         required: true
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab, on the latest QA build
-  # TODO: remove before merging. Runs the suite on pushes to this branch so the results show up on the PR.
-  push:
-    branches:
-      - gkartalis/agent-device-e2e
 
 env:
   AGENT_DEVICE_NO_UPDATE_NOTIFIER: 1
