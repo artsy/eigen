@@ -396,15 +396,18 @@ jobs:
     executor:
       name: node/default
       tag: << pipeline.parameters.node_version >>
-    resource_class: large
+    # Usage export (Oct 10 – Nov 3): median CPU 37%, peak RAM p99 42% of large (~3.4 GB)
+    resource_class: medium
     steps:
       - checkout
       - generate-checksums
       - install-node-modules
       - run-relay-compiler
       - update-echo
+      # `yarn type-check` is `yarn relay; yarn tsc`, and Relay already ran above
       - run:
-          command: yarn type-check
+          name: Type check
+          command: yarn tsc
       - run:
           name: Check Branch and Exit Early if Ignored
           command: |
