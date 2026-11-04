@@ -13,7 +13,7 @@ interface ThumbIconProps extends SvgProps {
   color?: Color
 }
 
-export const ThumbIcon = ({ direction, filled, color, ...props }: ThumbIconProps) => {
+export const ThumbIcon = ({ direction, filled, color, style, ...props }: ThumbIconProps) => {
   const colorFn = useColor()
 
   return (
@@ -21,7 +21,7 @@ export const ThumbIcon = ({ direction, filled, color, ...props }: ThumbIconProps
       width={18}
       height={18}
       viewBox="0 0 24 24"
-      style={direction === "down" ? { transform: [{ rotate: "180deg" }] } : undefined}
+      style={[direction === "down" && { transform: [{ rotate: "180deg" }] }, style]}
       {...props}
     >
       <Path d={filled ? THUMB_UP_FILLED : THUMB_UP_STROKE} fill={colorFn(color || "mono100")} />

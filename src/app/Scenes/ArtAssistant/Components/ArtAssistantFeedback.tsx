@@ -16,7 +16,7 @@ interface ArtAssistantFeedbackProps {
 
 export const ArtAssistantFeedback: React.FC<ArtAssistantFeedbackProps> = ({ rating, onRate }) => (
   <Flex flexDirection="row" alignItems="center" gap={2} mt={1} testID="art-assistant-feedback">
-    <Text variant="xs" color="mono60">
+    <Text variant="xs" color="mono60" accessibilityLiveRegion="polite">
       {rating ? "Thanks for the feedback" : "Was this helpful?"}
     </Text>
 

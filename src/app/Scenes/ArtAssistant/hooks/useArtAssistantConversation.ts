@@ -134,6 +134,8 @@ export const useArtAssistantConversation = () => {
   const activeSubscription = useRef<ReturnType<typeof requestSubscription> | null>(null)
   const responseTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
   const messagesRef = useRef(messages)
+  const latestFeedbackRequest = useRef<Record<string, number>>({})
+  const feedbackRequestCount = useRef(0)
 
   messagesRef.current = messages
 
@@ -455,7 +457,7 @@ export const useArtAssistantConversation = () => {
     []
   )
 
-  // Optimistic; reverted on failure unless a later vote has already replaced it.
+  // Optimistic; a failure reverts only if no later vote was sent for this message.
   const rateMessage = useCallback(
     (messageID: string, rating: ArtAssistantFeedbackRating) => {
       const message = messagesRef.current.find(({ id }) => id === messageID)
@@ -469,10 +471,10 @@ export const useArtAssistantConversation = () => {
       }
 
       const previousRating = message.feedbackRating
+      const request = ++feedbackRequestCount.current
+      latestFeedbackRequest.current[messageID] = request
       const revert = () => {
-        const current = messagesRef.current.find(({ id }) => id === messageID)
-
-        if (current?.role === "assistant" && current.feedbackRating === rating) {
+        if (latestFeedbackRequest.current[messageID] === request) {
           setFeedbackRating(messageID, previousRating)
         }
       }

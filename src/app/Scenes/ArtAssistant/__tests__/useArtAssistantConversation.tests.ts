@@ -369,6 +369,18 @@ describe("useArtAssistantConversation", () => {
 
       expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: undefined })
     })
+
+    it("keeps a newer vote when an earlier one fails", () => {
+      const { environment, result, answerID } = answerWithFeedback()
+
+      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      const thumbsUp = environment.mock.getMostRecentOperation()
+      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+
+      act(() => environment.mock.reject(thumbsUp, new Error("network")))
+
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_DOWN" })
+    })
   })
 })
 
