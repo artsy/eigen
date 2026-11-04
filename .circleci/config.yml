@@ -328,23 +328,30 @@ jobs:
             not: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
           steps:
             - update-echo
-      # Jest's transform cache is content-addressed, so stale entries are harmless. The key is
-      # per shard because each shard transforms a different subset of files. CircleCI caches are
-      # immutable, so the cache is written once per js_transform manifest (lockfile/babel/jest config)
-      # and falls back to an older manifest's cache, which still covers most of node_modules.
+      # Without a warm transform cache, the first component test on every shard spends ~100-160s
+      # Babel-transforming the shared import graph (RN, palette, app code) and peaks at ~3GB RSS.
+      # The cache (~180MB) is the same for every shard and content-addressed, so stale entries are
+      # harmless. CircleCI caches are immutable: it's written once per js_transform manifest
+      # (lockfile/babel/jest config) and falls back to the most recent older one.
       - restore_cache:
           keys:
-            - << pipeline.parameters.jest_cache_key >>-{{ checksum ".manifests/js_transform" }}-{{ .Environment.CIRCLE_NODE_INDEX }}
-            - << pipeline.parameters.jest_cache_key >>-{{ checksum ".manifests/js_transform" }}-
+            - << pipeline.parameters.jest_cache_key >>-{{ checksum ".manifests/js_transform" }}
             - << pipeline.parameters.jest_cache_key >>-
       - run:
           name: Run Jest tests
           command: |
             # `git ls-files` matches jest's testMatch exactly (src/ and scripts/).
             TESTS=$(git ls-files '*.tests.ts' '*.tests.tsx' '*.tests.js' | circleci tests split --split-by=timings)
-            echo "Running $(echo "$TESTS" | wc -l) test files on shard $CIRCLE_NODE_INDEX/$CIRCLE_NODE_TOTAL"
+            # Warm workers use ~1.1GB each, so 3 fit in `large` (8GB). Cold workers peak at ~3GB
+            # while transforming, so fall back to 2 to avoid the OOM killer.
+            WORKERS=3
+            if [ ! -d .cache/jest ]; then
+              echo "No Jest transform cache restored, using 2 workers"
+              WORKERS=2
+            fi
+            echo "Running $(echo "$TESTS" | wc -l) test files with $WORKERS workers on shard $CIRCLE_NODE_INDEX/$CIRCLE_NODE_TOTAL"
             yarn jest --ci --forceExit --logHeapUsage \
-              --maxWorkers=3 --workerIdleMemoryLimit=1.5G \
+              --maxWorkers=$WORKERS --workerIdleMemoryLimit=1.5G \
               --reporters=default --reporters=jest-junit \
               --runTestsByPath $TESTS
           environment:
@@ -352,9 +359,10 @@ jobs:
             JEST_JUNIT_UNIQUE_OUTPUT_NAME: true
             # `file` attribute is what `circleci tests split --split-by=timings` reads.
             JEST_JUNIT_ADD_FILE_ATTRIBUTE: true
+      # All shards race to save the same key; the first one wins and the rest skip.
       - save_cache:
           when: always
-          key: << pipeline.parameters.jest_cache_key >>-{{ checksum ".manifests/js_transform" }}-{{ .Environment.CIRCLE_NODE_INDEX }}
+          key: << pipeline.parameters.jest_cache_key >>-{{ checksum ".manifests/js_transform" }}
           paths:
             - .cache/jest
       - store_test_results:
