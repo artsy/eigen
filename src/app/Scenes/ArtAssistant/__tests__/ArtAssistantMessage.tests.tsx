@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react-native"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/Components/ArtAssistantMessage"
 import { ART_ASSISTANT_ERRORS } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { AccessibilityInfo } from "react-native"
 
 describe("ArtAssistantMessage", () => {
   it("asks for feedback on a completed answer and reports the vote", () => {
@@ -26,6 +27,33 @@ describe("ArtAssistantMessage", () => {
     fireEvent.press(screen.getByLabelText("Bad response"))
 
     expect(onRate).toHaveBeenCalledWith("assistant-1", "THUMBS_DOWN")
+  })
+
+  it("announces the prompt when the vote changes, not on first render", () => {
+    const announce = jest.spyOn(AccessibilityInfo, "announceForAccessibility")
+    const answer = (feedbackRating?: "THUMBS_UP") => (
+      <ArtAssistantMessage
+        message={{
+          id: "assistant-1",
+          role: "assistant",
+          text: "I found a few works.",
+          phase: "complete",
+          feedbackID: "fb-1",
+          feedbackRating,
+        }}
+        onRate={jest.fn()}
+      />
+    )
+
+    const { rerender } = render(answer(), { wrapper: Theme })
+    expect(announce).not.toHaveBeenCalled()
+
+    rerender(answer("THUMBS_UP"))
+    expect(announce).toHaveBeenLastCalledWith("Thanks for the feedback")
+
+    // A failed vote reverts, and that is announced too.
+    rerender(answer())
+    expect(announce).toHaveBeenLastCalledWith("Was this helpful?")
   })
 
   it.each([
