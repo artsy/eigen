@@ -1,0 +1,26 @@
+context timeout=300000
+# @title Deeplink - Logged Out
+# Opens an artist link while logged out, as a cold start. The app keeps the link (launchURL in useDeepLinks) and opens
+# it once the user has logged in.
+# The link is opened without the app id, the same VIEW intent as Maestro's openLink, so Android resolves it: only a
+# verified App Link opens the app, anything else opens Chrome. net.artsy.app's root view then proves the app handled it,
+# since the artsy.net page in Chrome shows the same text.
+# @launch useMaestroInit=true shouldSignOut=true
+open ${APP_ID}
+# The first launch on a cold CI simulator can take over a minute
+wait 'label="Sign up or log in" || text="Sign up or log in"' 90000
+close ${APP_ID}
+open "https://artsy.net/artist/kaws"
+wait 'label="Email Input"' 30000
+wait 'id="net.artsy.app:id/action_bar_root"' 5000
+fill 'label="Email Input"' "${EMAIL}"
+press 'label="Continue" || text="Continue"'
+wait 'id="password"' 15000
+# The email screen can still be on screen during the transition, with its own Continue button
+wait absent 'label="Email Input"' 10000
+# iOS can't fill (clear and replace) a secure text field, so focus it and type into the empty field
+press 'id="password"'
+type "${PASSWORD}"
+press 'label="Continue" || text="Continue"'
+wait 'label="KAWS" || text="KAWS"' 30000
+close ${APP_ID}
