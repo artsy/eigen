@@ -340,8 +340,6 @@ jobs:
       - run:
           name: Run Jest tests
           command: |
-            # `git ls-files` matches jest's testMatch exactly (src/ and scripts/).
-            TESTS=$(git ls-files '*.tests.ts' '*.tests.tsx' '*.tests.js' | circleci tests split --split-by=timings)
             # Warm workers use ~1.1GB each, so 3 fit in `large` (8GB). Cold workers peak at ~3GB
             # while transforming, so fall back to 2 to avoid the OOM killer.
             WORKERS=3
@@ -349,18 +347,20 @@ jobs:
               echo "No Jest transform cache restored, using 2 workers"
               WORKERS=2
             fi
-            echo "Running $(echo "$TESTS" | wc -l) test files with $WORKERS workers on shard $CIRCLE_NODE_INDEX/$CIRCLE_NODE_TOTAL"
+            SHARD=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
+            echo "Running shard $SHARD with $WORKERS workers"
+            # Jest's own --shard instead of `circleci tests split --split-by=timings`: junit testcase
+            # times leave out per-file module load/transform (most of the cost here), so timing-based
+            # splitting balanced no better, and --shard keeps jest's testMatch as the only test list.
             yarn jest --ci --forceExit --logHeapUsage \
               --maxWorkers=$WORKERS --workerIdleMemoryLimit=1.5G \
               --reporters=default --reporters=jest-junit \
-              --runTestsByPath $TESTS
+              --shard=$SHARD
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
-            # jest-junit compares these against the string "true"; quoted so YAML doesn't turn them
-            # into booleans, which CircleCI doesn't pass through as "true".
+            # jest-junit compares this against the string "true"; quoted so YAML doesn't turn it
+            # into a boolean, which CircleCI doesn't pass through as "true".
             JEST_JUNIT_UNIQUE_OUTPUT_NAME: "true"
-            # `file` attribute is what `circleci tests split --split-by=timings` reads.
-            JEST_JUNIT_ADD_FILE_ATTRIBUTE: "true"
       # All shards race to save the same key; the first one wins and the rest skip.
       - save_cache:
           when: always
