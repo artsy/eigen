@@ -423,6 +423,84 @@ describe("useArtAssistantConversation tracking", () => {
     expect(received.duration_ms).toEqual(expect.any(Number))
   })
 
+  describe("tracked items", () => {
+    const artworksSection = {
+      __typename: "AIAgentArtworksSection",
+      artworks: [{ internalID: "artwork-1" }, { internalID: "artwork-2" }],
+    }
+    const artistsSection = {
+      __typename: "AIAgentArtistsSection",
+      artists: [{ internalID: "artist-1" }, { internalID: "artist-2" }, { internalID: "artist-3" }],
+    }
+
+    it.each([
+      {
+        name: "artworks only",
+        sections: [artworksSection],
+        artworks: [{ internalID: "artwork-1" }, { internalID: "artwork-2" }],
+        expected: { item_count: 2, item_ids: ["artwork-1", "artwork-2"], item_type: "artwork" },
+      },
+      {
+        name: "artists only",
+        sections: [artistsSection],
+        artworks: [],
+        expected: {
+          item_count: 3,
+          item_ids: ["artist-1", "artist-2", "artist-3"],
+          item_type: "artist",
+        },
+      },
+      {
+        name: "artworks and artists",
+        sections: [artworksSection, artistsSection],
+        artworks: [{ internalID: "artwork-1" }, { internalID: "artwork-2" }],
+        // A mixed answer has no single type to report.
+        expected: {
+          item_count: 5,
+          item_ids: ["artwork-1", "artwork-2", "artist-1", "artist-2", "artist-3"],
+          item_type: undefined,
+        },
+      },
+      {
+        name: "legacy artworks without sections",
+        sections: [],
+        artworks: [{ internalID: "artwork-1" }, { internalID: "artwork-2" }],
+        expected: { item_count: 2, item_ids: ["artwork-1", "artwork-2"], item_type: "artwork" },
+      },
+      {
+        name: "nothing",
+        sections: [],
+        artworks: [],
+        expected: { item_count: 0, item_ids: [], item_type: undefined },
+      },
+    ])("counts $name", ({ sections, artworks, expected }) => {
+      const { environment, result } = renderConversation()
+
+      act(() => result.current.submit("who should I look at"))
+
+      const operation = environment.mock.getMostRecentOperation()
+
+      act(() => {
+        emit(environment, operation, {
+          __typename: "AIAgentTurnComplete",
+          message: "Here is what I found.",
+          stopReason: "end_turn",
+          toolCallCount: 1,
+          sections,
+          artworks,
+        })
+      })
+
+      const [received] = trackedEvents(["receivedArtAssistantResponse"])
+
+      expect(received).toMatchObject({
+        item_count: expected.item_count,
+        item_ids: expected.item_ids,
+      })
+      expect(received.item_type).toBe(expected.item_type)
+    })
+  })
+
   it("keeps the message and the answer out of Segment while the content experiment is off", () => {
     const { environment, result } = renderConversation()
 
