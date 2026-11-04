@@ -404,7 +404,6 @@ jobs:
       - install-node-modules
       - run-relay-compiler
       - update-echo
-      # `yarn type-check` is `yarn relay; yarn tsc`, and Relay already ran above
       - run:
           name: Type check
           command: yarn tsc
