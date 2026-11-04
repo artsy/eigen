@@ -330,22 +330,25 @@ jobs:
             - update-echo
       # Without a warm transform cache, the first component test on every shard spends ~100-160s
       # Babel-transforming the shared import graph (RN, palette, app code) and peaks at ~3GB RSS.
-      # The cache (~180MB) is the same for every shard and content-addressed, so stale entries are
-      # harmless. CircleCI caches are immutable: it's written once per js_transform manifest
-      # (lockfile/babel/jest config) and falls back to the most recent older one.
+      # The cache is keyed on the Node version (babel-jest hashes `process.version` into every entry)
+      # and the js_transform manifest (lockfile/babel/relay/jest config). Exact match only: babel-jest's
+      # keys don't include Babel/preset versions, so restoring an older cache after a dependency bump
+      # could serve stale transforms. CircleCI caches are immutable, so it's written once per key.
       - restore_cache:
           keys:
-            - << pipeline.parameters.jest_cache_key >>-{{ checksum ".manifests/js_transform" }}
-            - << pipeline.parameters.jest_cache_key >>-
+            - << pipeline.parameters.jest_cache_key >>-<< pipeline.parameters.node_version >>-{{ checksum ".manifests/js_transform" }}
       - run:
           name: Run Jest tests
           command: |
             # Warm workers use ~1.1GB each, so 3 fit in `large` (8GB). Cold workers peak at ~3GB
-            # while transforming, so fall back to 2 to avoid the OOM killer.
-            WORKERS=3
-            if [ ! -d .cache/jest ]; then
-              echo "No Jest transform cache restored, using 2 workers"
-              WORKERS=2
+            # while transforming, so use 2 unless the restored cache was written for exactly this
+            # Node version and manifest (a directory alone may hold entries that all miss).
+            CACHE_ID="$(node --version)-$(sha256sum .manifests/js_transform | cut -d' ' -f1)"
+            WORKERS=2
+            if [ "$(cat .cache/jest/.cache-id 2>/dev/null)" = "$CACHE_ID" ]; then
+              WORKERS=3
+            else
+              echo "No warm Jest transform cache for $CACHE_ID, using 2 workers"
             fi
             SHARD=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
             echo "Running shard $SHARD with $WORKERS workers"
@@ -356,15 +359,17 @@ jobs:
               --maxWorkers=$WORKERS --workerIdleMemoryLimit=1.5G \
               --reporters=default --reporters=jest-junit \
               --shard=$SHARD
+            # Only reached if Jest passed; marks the cache as warm for this exact key.
+            mkdir -p .cache/jest && echo "$CACHE_ID" > .cache/jest/.cache-id
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
             # jest-junit compares this against the string "true"; quoted so YAML doesn't turn it
             # into a boolean, which CircleCI doesn't pass through as "true".
             JEST_JUNIT_UNIQUE_OUTPUT_NAME: "true"
-      # All shards race to save the same key; the first one wins and the rest skip.
+      # All shards race to save the same key; the first one wins and the rest skip. Only shards
+      # whose tests passed save, so a crashed shard can't lock in a partial cache.
       - save_cache:
-          when: always
-          key: << pipeline.parameters.jest_cache_key >>-{{ checksum ".manifests/js_transform" }}
+          key: << pipeline.parameters.jest_cache_key >>-<< pipeline.parameters.node_version >>-{{ checksum ".manifests/js_transform" }}
           paths:
             - .cache/jest
       - store_test_results:
