@@ -331,12 +331,14 @@ jobs:
       # Without a warm transform cache, the first component test on every shard spends ~100-160s
       # Babel-transforming the shared import graph (RN, palette, app code) and peaks at ~3GB RSS.
       # The cache is keyed on the Node version (babel-jest hashes `process.version` into every entry)
-      # and the js_transform manifest (lockfile/babel/relay/jest config). Exact match only: babel-jest's
-      # keys don't include Babel/preset versions, so restoring an older cache after a dependency bump
-      # could serve stale transforms. CircleCI caches are immutable, so it's written once per key.
+      # and the js_transform manifest (lockfile/babel/relay/jest config). When the manifest changes it
+      # falls back to the newest cache for the same Node version: most entries still hit, and the
+      # marker check below keeps that run at 2 workers. CircleCI caches are immutable, so it's
+      # written once per key.
       - restore_cache:
           keys:
             - << pipeline.parameters.jest_cache_key >>-<< pipeline.parameters.node_version >>-{{ checksum ".manifests/js_transform" }}
+            - << pipeline.parameters.jest_cache_key >>-<< pipeline.parameters.node_version >>-
       - run:
           name: Run Jest tests
           command: |
