@@ -5,7 +5,7 @@ on:
     branches:
       - beta-android
   schedule:
-    - cron: "0 5 * * *" # Runs daily at 5:00 AM UTC
+    - cron: "0 5 * * 1-5" # Runs at 5:00 AM UTC on weekdays
   workflow_dispatch: # Allows manual trigger
 
 jobs:

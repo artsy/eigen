@@ -7473,6 +7473,49 @@ type AuthorSocialsX {
   url: String!
 }
 
+type AuthorizeEmailAccountFailure {
+  mutationError: GravityMutationError
+}
+
+input AuthorizeEmailAccountInput {
+  clientMutationId: String
+
+  """
+  The partner ID to associate the account with
+  """
+  partnerId: String!
+
+  """
+  The email provider to connect
+  """
+  provider: EmailAccountProvider!
+
+  """
+  The OAuth redirect URI (host must be on artsy.net)
+  """
+  redirectUri: String!
+}
+
+type AuthorizeEmailAccountPayload {
+  clientMutationId: String
+
+  """
+  On success: the OAuth authorization URL
+  """
+  emailAccountOrError: AuthorizeEmailAccountResponseOrError
+}
+
+union AuthorizeEmailAccountResponseOrError =
+    AuthorizeEmailAccountFailure
+  | AuthorizeEmailAccountSuccess
+
+type AuthorizeEmailAccountSuccess {
+  """
+  The OAuth authorization URL to redirect the user to
+  """
+  authorizationUrl: String!
+}
+
 type AuthorizeInstagramAccountFailure {
   mutationError: GravityMutationError
 }
@@ -12593,6 +12636,44 @@ type CommerceUpdateImpulseConversationIdPayload {
 
 type CommerceUser {
   id: String!
+}
+
+type CompleteEmailOAuthFailure {
+  mutationError: GravityMutationError
+}
+
+input CompleteEmailOAuthInput {
+  clientMutationId: String
+
+  """
+  The OAuth authorization code returned by the email provider
+  """
+  code: String!
+
+  """
+  The OAuth redirect URI (must match the one used during initiation)
+  """
+  redirectUri: String!
+
+  """
+  The OAuth state parameter returned by the email provider
+  """
+  state: String!
+}
+
+type CompleteEmailOAuthPayload {
+  clientMutationId: String
+
+  """
+  On success: the connected email account
+  """
+  emailAccountOrError: CompleteEmailOAuthResponseOrError
+}
+
+union CompleteEmailOAuthResponseOrError = CompleteEmailOAuthFailure | CompleteEmailOAuthSuccess
+
+type CompleteEmailOAuthSuccess {
+  emailAccount: EmailAccount
 }
 
 type CompleteInstagramOAuthFailure {
@@ -18037,6 +18118,34 @@ type DeleteCreditCardPayload {
   me: Me
 }
 
+type DeleteEmailAccountFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteEmailAccountInput {
+  clientMutationId: String
+
+  """
+  The internal ID of the email account to disconnect
+  """
+  id: String!
+}
+
+type DeleteEmailAccountPayload {
+  clientMutationId: String
+
+  """
+  On success: a boolean indicating the account was disconnected
+  """
+  emailAccountOrError: DeleteEmailAccountResponseOrError
+}
+
+union DeleteEmailAccountResponseOrError = DeleteEmailAccountFailure | DeleteEmailAccountSuccess
+
+type DeleteEmailAccountSuccess {
+  success: Boolean
+}
+
 type DeleteFeatureFailure {
   mutationError: GravityMutationError
 }
@@ -19490,6 +19599,97 @@ type EditionSetInventory {
 
 enum EditionSetSorts {
   PRICE_ASC
+}
+
+type EmailAccount {
+  """
+  Whether mail sent from this mailbox is also stored
+  """
+  captureSentMail: Boolean
+  connectedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  createdAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  emailAddress: String
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+  lapsedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
+  Why the connection last stopped working, if it did
+  """
+  lastError: String
+  lastSyncedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  partnerId: String!
+  provider: EmailAccountProvider
+  providerAccountId: String
+
+  """
+  The permissions granted by the user to this mailbox
+  """
+  scopes: [String!]
+
+  """
+  Whether colleagues at the partner can read message content
+  """
+  shareContentWithPartner: Boolean
+  status: EmailAccountStatus
+  syncEnabled: Boolean
+  updatedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  userId: String!
+}
+
+enum EmailAccountProvider {
+  GMAIL
+  OUTLOOK
+}
+
+enum EmailAccountStatus {
+  ACTIVE
+  DISCONNECTED
+  ERROR
+  EXPIRED
 }
 
 input EnableSecondFactorInput {
@@ -25824,6 +26024,16 @@ type Me implements Node {
   email: String
 
   """
+  A list of email accounts connected by the current user
+  """
+  emailAccounts(
+    """
+    The partner ID to filter accounts by
+    """
+    partnerId: String!
+  ): [EmailAccount!]
+
+  """
   User has confirmed their email address
   """
   emailConfirmed: Boolean!
@@ -27049,6 +27259,11 @@ type Mutation {
   ): AuthenticatePrivateViewingRoomMutationPayload
 
   """
+  Initiate the email OAuth flow and return the authorization URL
+  """
+  authorizeEmailAccount(input: AuthorizeEmailAccountInput!): AuthorizeEmailAccountPayload
+
+  """
   Initiate the Instagram OAuth flow and return the authorization URL
   """
   authorizeInstagramAccount(
@@ -27382,6 +27597,11 @@ type Mutation {
     """
     input: CommerceUpdateImpulseConversationIdInput!
   ): CommerceUpdateImpulseConversationIdPayload
+
+  """
+  Complete the email OAuth flow by exchanging the authorization code for an account
+  """
+  completeEmailOAuth(input: CompleteEmailOAuthInput!): CompleteEmailOAuthPayload
 
   """
   Complete the Instagram OAuth flow by exchanging the authorization code for an account
@@ -27906,6 +28126,11 @@ type Mutation {
   deleteCreditCard(input: DeleteCreditCardInput!): DeleteCreditCardPayload
 
   """
+  Disconnect an email account from a partner
+  """
+  deleteEmailAccount(input: DeleteEmailAccountInput!): DeleteEmailAccountPayload
+
+  """
   deletes a feature.
   """
   deleteFeature(input: DeleteFeatureMutationInput!): DeleteFeatureMutationPayload
@@ -28272,6 +28497,11 @@ type Mutation {
   Record a guided tour event for the logged-in user and return the refreshed state.
   """
   recordGuidedTourEvent(input: RecordGuidedTourEventInput!): RecordGuidedTourEventPayload
+
+  """
+  Renew the change notifications of a connected email account
+  """
+  refreshEmailAccountWatch(input: RefreshEmailAccountWatchInput!): RefreshEmailAccountWatchPayload
 
   """
   Refresh the access token for a connected Instagram account
@@ -28646,6 +28876,11 @@ type Mutation {
   updateConversationMessageTemplate(
     input: UpdateConversationMessageTemplateInput!
   ): UpdateConversationMessageTemplatePayload
+
+  """
+  Update the settings of a connected email account
+  """
+  updateEmailAccount(input: UpdateEmailAccountInput!): UpdateEmailAccountPayload
 
   """
   updates a feature.
@@ -36655,6 +36890,36 @@ type RecordGuidedTourEventSuccess {
   me: Me!
 }
 
+type RefreshEmailAccountWatchFailure {
+  mutationError: GravityMutationError
+}
+
+input RefreshEmailAccountWatchInput {
+  clientMutationId: String
+
+  """
+  The internal ID of the email account
+  """
+  id: String!
+}
+
+type RefreshEmailAccountWatchPayload {
+  clientMutationId: String
+
+  """
+  On success: the email account
+  """
+  emailAccountOrError: RefreshEmailAccountWatchResponseOrError
+}
+
+union RefreshEmailAccountWatchResponseOrError =
+    RefreshEmailAccountWatchFailure
+  | RefreshEmailAccountWatchSuccess
+
+type RefreshEmailAccountWatchSuccess {
+  emailAccount: EmailAccount
+}
+
 type RefreshInstagramAccountFailure {
   mutationError: GravityMutationError
 }
@@ -41473,6 +41738,48 @@ input UpdateConversationMutationInput {
 type UpdateConversationMutationPayload {
   clientMutationId: String
   conversation: Conversation
+}
+
+type UpdateEmailAccountFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateEmailAccountInput {
+  """
+  Also store mail sent from this mailbox
+  """
+  captureSentMail: Boolean
+  clientMutationId: String
+
+  """
+  The internal ID of the email account to update
+  """
+  id: String!
+
+  """
+  Let colleagues at the partner read message content
+  """
+  shareContentWithPartner: Boolean
+
+  """
+  Pause or resume syncing without disconnecting
+  """
+  syncEnabled: Boolean
+}
+
+type UpdateEmailAccountPayload {
+  clientMutationId: String
+
+  """
+  On success: the updated email account
+  """
+  emailAccountOrError: UpdateEmailAccountResponseOrError
+}
+
+union UpdateEmailAccountResponseOrError = UpdateEmailAccountFailure | UpdateEmailAccountSuccess
+
+type UpdateEmailAccountSuccess {
+  emailAccount: EmailAccount
 }
 
 type UpdateFeatureFailure {

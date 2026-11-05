@@ -115,6 +115,7 @@ export enum PageNames {
   PartnerPage = "PartnerPage",
   SavesAndFollows = "SavesAndFollows",
   Search = "Search",
+  SearchByImage = "SearchByImage",
   ViewingRoom = "ViewingRoom",
   ViewingRoomArtworkPage = "ViewingRoomArtworkPage",
   ViewingRoomArtworks = "ViewingRoomArtworks",

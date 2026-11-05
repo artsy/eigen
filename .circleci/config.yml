@@ -309,7 +309,7 @@ jobs:
       #       ./scripts/deploys/expo-updates/deploy-to-expo-updates staging
 
   test-js:
-    parallelism: 16
+    parallelism: 6
     executor:
       name: node/default
       tag: << pipeline.parameters.node_version >>
@@ -328,12 +328,52 @@ jobs:
             not: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
           steps:
             - update-echo
+      # Without a warm transform cache, the first component test on every shard spends ~100-160s
+      # Babel-transforming the shared import graph (RN, palette, app code) and peaks at ~3GB RSS.
+      # The cache is keyed on the Node version (babel-jest hashes `process.version` into every entry)
+      # and the js_transform manifest (lockfile/babel/relay/jest config). When the manifest changes it
+      # falls back to the newest cache for the same Node version: most entries still hit, and the
+      # marker check below keeps that run at 2 workers. CircleCI caches are immutable, so it's
+      # written once per key.
+      - restore_cache:
+          keys:
+            - << pipeline.parameters.jest_cache_key >>-<< pipeline.parameters.node_version >>-{{ checksum ".manifests/js_transform" }}
+            - << pipeline.parameters.jest_cache_key >>-<< pipeline.parameters.node_version >>-
       - run:
-          command: yarn jest --ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
           name: Run Jest tests
+          command: |
+            # Warm workers use ~1.1GB each, so 3 fit in `large` (8GB). Cold workers peak at ~3GB
+            # while transforming, so use 2 unless the restored cache was written for exactly this
+            # Node version and manifest (a directory alone may hold entries that all miss).
+            CACHE_ID="$(node --version)-$(sha256sum .manifests/js_transform | cut -d' ' -f1)"
+            WORKERS=2
+            if [ "$(cat .cache/jest/.cache-id 2>/dev/null)" = "$CACHE_ID" ]; then
+              WORKERS=3
+            else
+              echo "No warm Jest transform cache for $CACHE_ID, using 2 workers"
+            fi
+            SHARD=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
+            echo "Running shard $SHARD with $WORKERS workers"
+            # Jest's own --shard instead of `circleci tests split --split-by=timings`: junit testcase
+            # times leave out per-file module load/transform (most of the cost here), so timing-based
+            # splitting balanced no better, and --shard keeps jest's testMatch as the only test list.
+            yarn jest --ci --forceExit --logHeapUsage \
+              --maxWorkers=$WORKERS --workerIdleMemoryLimit=1.5G \
+              --reporters=default --reporters=jest-junit \
+              --shard=$SHARD
+            # Only reached if Jest passed; marks the cache as warm for this exact key.
+            mkdir -p .cache/jest && echo "$CACHE_ID" > .cache/jest/.cache-id
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
-            JEST_JUNIT_UNIQUE_OUTPUT_NAME: true
+            # jest-junit compares this against the string "true"; quoted so YAML doesn't turn it
+            # into a boolean, which CircleCI doesn't pass through as "true".
+            JEST_JUNIT_UNIQUE_OUTPUT_NAME: "true"
+      # All shards race to save the same key; the first one wins and the rest skip. Only shards
+      # whose tests passed save, so a crashed shard can't lock in a partial cache.
+      - save_cache:
+          key: << pipeline.parameters.jest_cache_key >>-<< pipeline.parameters.node_version >>-{{ checksum ".manifests/js_transform" }}
+          paths:
+            - .cache/jest
       - store_test_results:
           path: ./reports/junit/
 
@@ -392,57 +432,6 @@ jobs:
       - run:
           name: Check flags
           command: ./scripts/check-flags/biweekly-flag-check.sh
-
-  build-test-js:
-    executor:
-      name: node/default
-      tag: << pipeline.parameters.node_version >>
-    resource_class: large
-    steps:
-      - checkout
-      - generate-checksums
-      - setup-awscli
-      - setup-env-file
-      - install-node-modules
-      - run-relay-compiler
-      - generate-query-map
-      - run:
-          name: Check generated folder
-          command: |
-            if test "$(git diff -- src/__generated__)"
-            then
-              echo 'You forgot to run `yarn relay` before comitting'
-              exit 1
-            fi
-      - store_artifacts:
-          path: .manifests
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .manifests
-            - dist
-
-  build-echo-test-js:
-    executor:
-      name: node/default
-      tag: << pipeline.parameters.node_version >>
-    resource_class: medium
-    steps:
-      - checkout
-      - generate-checksums
-      - setup-awscli
-      - setup-env-file
-      - install-node-modules
-      - run-relay-compiler
-      - generate-query-map
-      - run:
-          name: Check generated folder
-          command: |
-            if test "$(git diff -- src/__generated__)"
-            then
-              echo 'You forgot to run `yarn relay` before comitting'
-              exit 1
-            fi
 
   build-test-app-ios:
     environment:
@@ -506,6 +495,9 @@ parameters:
   node_modules_cache_key:
     type: string
     default: v32-node_modules-{{ checksum ".manifests/node_modules" }}
+  jest_cache_key:
+    type: string
+    default: v1-jest-cache
   gems_cache_key:
     type: string
     default: v17-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
@@ -556,7 +548,6 @@ workflows:
   build-run-tests-for-echo:
     when: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
     jobs:
-      - build-echo-test-js
       - test-js
 
   test-build-deploy:
@@ -577,9 +568,6 @@ workflows:
           <<: *main_only
 
       - test-js:
-          <<: *ignore_beta_branches
-
-      - build-test-js:
           <<: *ignore_beta_branches
 
       - build-test-app-ios:

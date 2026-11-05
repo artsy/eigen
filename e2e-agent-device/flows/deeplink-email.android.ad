@@ -1,0 +1,17 @@
+context timeout=240000
+# @title Deeplink - SendGrid Email Link
+# Opens a SendGrid email link, as a cold start: `close ${APP_ID}` terminates the app, like Maestro's killApp, so the link launches it.
+# The link is opened without the app id, the same VIEW intent as Maestro's openLink, so Android resolves it: only a
+# verified App Link opens the app, anything else opens Chrome. net.artsy.app's root view then proves the app handled it,
+# since the artsy.net page in Chrome shows the same text.
+# Marketing links make the app fetch the tracking URL to find the destination (useDeepLinks), so this also depends
+# on that service answering.
+# @launch useMaestroInit=true email=${EMAIL} password=${PASSWORD}
+open ${APP_ID}
+# The first launch on a cold CI simulator can take over a minute
+wait 'id="search-button"' 90000
+close ${APP_ID}
+open "https://email-link.artsy.net/ls/click?upn=u001.dBTKf7Wpt9bpOMXsd3eaCr45lKQ0xlDJiMs6lLXLYmt178QxQIXDi5-2BHxXY5n-2FLMqC7dYvx3HgyrryRV9UzsHbUpjsYJWB-2Fj-2B-2BEZDJyVfqaNW9q6coA2qcmjdD59pnSUKAVLOn8un52b5D01AgtNpdPrHzkbbQy4gCbuYOk1iuPqyg70B6gkCMXGBZuCPr2m9gIBxwpLkX9-2B2zmUfDbbwsMD-2BCAPDBiKt5Ls-2FJWHjfU-3DedPI_yB8pNXz8iKogugC36vxXF9cFFK1QR-2FMY-2Bnkbr-2BVhIrrC1LcTACICLavYsLU418aDSJi-2BXuv2wM5qkMKcUtxbXoxfVcX-2F2p2Nzx7WcoGsOKCkNK2nMNcNLTf6jSh2dXh7TBjgyw8pzU9eF3TibX4i1ldfPYH29-2Bad7EtsSLoTmBEb1pUKhxXiLSxyBsbmQh3ZZjSByQPcRm5ZH0b8mO-2BCPCUqRxS9N8-2F-2BNvu8MJvCYCnJbM61aWCBBPvE3xtGCMkor7cowLOhr-2FbZrziwWGzezDguiTSGc1XbJ0YNDiMtp6IaiqS7ss082YcgDkQORNqWtSz1UpMSULK88k-2B1OHpvD2xLX5y-2FXoQF3cfjBKHiaxfW4Pun3DA-2BwS1eGAXYF3iT"
+wait 'label="Maestro Test Artwork, 2025" || text="Maestro Test Artwork, 2025"' 30000
+wait 'id="net.artsy.app:id/action_bar_root"' 5000
+close ${APP_ID}
