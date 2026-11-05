@@ -46,4 +46,24 @@ allprojects {
     }
 }
 
+// CI verification builds pass -PcmakeJobs=N (scripts/ci/build-for-tests-android) to cap parallel
+// C++ compiles per native module. Without it ninja runs nproc + 2 jobs per module: 38 on CircleCI
+// xlarge, which reports the host's 36 CPUs but only has 16 CPUs / 16 GB, so a few modules
+// compiling at once run the container out of memory.
+if (project.hasProperty("cmakeJobs")) {
+    def cmakeJobs = project.property("cmakeJobs").toString()
+    subprojects {
+        ["com.android.application", "com.android.library"].each { pluginId ->
+            plugins.withId(pluginId) {
+                extensions.getByName("androidComponents").finalizeDsl { android ->
+                    android.defaultConfig.externalNativeBuild.cmake.arguments.addAll([
+                        "-DCMAKE_JOB_POOLS=compile=${cmakeJobs}".toString(),
+                        "-DCMAKE_JOB_POOL_COMPILE=compile",
+                    ])
+                }
+            }
+        }
+    }
+}
+
 apply plugin: "com.facebook.react.rootproject"
