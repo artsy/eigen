@@ -149,9 +149,15 @@ describe("Sell", () => {
     resolveStepTwoArtwork(view, { internalID: "id-a2", artistNames: "Artist A" })
     expect(await screen.findByText("Step 2 · Condition & Price")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 2 of 3")).toBeOnTheScreen()
-    expect(screen.getByText("Listing works aren't supported yet.")).toBeOnTheScreen()
+    expect(screen.getByText("Confirm Listing Price")).toBeDisabled()
 
-    fireEvent.press(screen.getByText("Continue"))
+    fireEvent.press(screen.getByRole("radio", { name: /^Excellent\./ }))
+    expect(screen.getByText("Confirm Listing Price")).toBeDisabled()
+
+    fireEvent.changeText(screen.getByLabelText("Asking price"), "3200")
+    expect(screen.getByText("US$2,720")).toBeOnTheScreen()
+
+    fireEvent.press(screen.getByText("Confirm Listing Price"))
     expect(await screen.findByText("Step 3 · Shipping Options")).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Submit for Review"))

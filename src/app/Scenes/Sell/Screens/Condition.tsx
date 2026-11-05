@@ -1,26 +1,21 @@
-import { Box, Button, Flex, Input, Text, useSpace } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Text, useSpace } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { ConditionQuery } from "__generated__/ConditionQuery.graphql"
-import { SellWorkCard_artwork$key } from "__generated__/SellWorkCard_artwork.graphql"
 import {
-  SellConditionPhoto,
-  SellConditionPhotos,
-} from "app/Scenes/Sell/Components/SellConditionPhotos"
-import {
-  SellConditionRating,
-  SellConditionRatingPicker,
-} from "app/Scenes/Sell/Components/SellConditionRatingPicker"
+  EMPTY_SELL_CONDITION,
+  SellConditionSection,
+  SellConditionValue,
+} from "app/Scenes/Sell/Components/SellConditionSection"
+import { SellPriceSection } from "app/Scenes/Sell/Components/SellPriceSection"
 import { SellStepIntro } from "app/Scenes/Sell/Components/SellStepIntro"
-import { SellStepLayout } from "app/Scenes/Sell/Components/SellStepLayout"
 import { SellWorkCard } from "app/Scenes/Sell/Components/SellWorkCard"
 import { SellNavigationProp } from "app/Scenes/Sell/Sell"
 import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { AUCTION_CONDITION_STEP } from "app/Scenes/Sell/sellSteps"
-import { getSellChannel } from "app/Scenes/Sell/utils/getSellChannel"
+import { SellChannel, getSellChannel } from "app/Scenes/Sell/utils/getSellChannel"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useState } from "react"
-import { ScrollView } from "react-native"
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller"
 import Animated, { useAnimatedStyle } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -46,34 +41,23 @@ const ConditionContent: React.FC<{ artworkID: string }> = withSuspense({
       return <ConditionError />
     }
 
-    const continueToShipping = () => navigation.navigate("LocationAndContact")
-
-    if (getSellChannel(artwork.internalID).kind === "MARKETPLACE") {
-      return (
-        <SellStepLayout buttonLabel="Continue" onButtonPress={continueToShipping}>
-          <ScrollView>
-            <SellStepIntro stepName="Condition" px={2} />
-            <Flex px={2} gap={2}>
-              <SellWorkCard artwork={artwork} />
-              <Text variant="sm" color="mono60">
-                Listing works aren't supported yet.
-              </Text>
-            </Flex>
-          </ScrollView>
-        </SellStepLayout>
-      )
-    }
-
-    return <AuctionConditionForm artwork={artwork} onContinue={continueToShipping} />
+    return (
+      <ConditionForm
+        artwork={artwork}
+        channelKind={getSellChannel(artwork.internalID).kind}
+        onContinue={() => navigation.navigate("LocationAndContact")}
+      />
+    )
   },
   LoadingFallback: SpinnerFallback,
   ErrorFallback: () => <ConditionError />,
 })
 
-const AuctionConditionForm: React.FC<{
-  artwork: SellWorkCard_artwork$key
+const ConditionForm: React.FC<{
+  artwork: NonNullable<ConditionQuery["response"]["artwork"]>
+  channelKind: SellChannel["kind"]
   onContinue: () => void
-}> = ({ artwork, onContinue }) => {
+}> = ({ artwork, channelKind, onContinue }) => {
   const { bottom } = useSafeAreaInsets()
   const space = useSpace()
   const [stickyFooterHeight, setStickyFooterHeight] = useState(0)
@@ -87,16 +71,11 @@ const AuctionConditionForm: React.FC<{
     ],
   }))
 
-  const [rating, setRating] = useState<SellConditionRating | null>(null)
-  const [photos, setPhotos] = useState<SellConditionPhoto[]>([])
-  const [notes, setNotes] = useState("")
+  const [condition, setCondition] = useState<SellConditionValue>(EMPTY_SELL_CONDITION)
+  const [askingPrice, setAskingPrice] = useState("")
 
-  const addPhotos = (newPhotos: SellConditionPhoto[]) => {
-    setPhotos((current) => [
-      ...current,
-      ...newPhotos.filter((photo) => !current.some(({ path }) => path === photo.path)),
-    ])
-  }
+  const isMarketplace = channelKind === "MARKETPLACE"
+  const canContinue = !!condition.rating && (!isMarketplace || !!askingPrice)
 
   return (
     <Flex flex={1} bg="mono0">
@@ -105,54 +84,33 @@ const AuctionConditionForm: React.FC<{
         bottomOffset={stickyFooterHeight}
         contentContainerStyle={{ paddingBottom: space(2) }}
       >
-        <SellStepIntro
-          stepName="Condition"
-          title={AUCTION_CONDITION_STEP.title}
-          description={AUCTION_CONDITION_STEP.description}
-          px={2}
-        />
+        {isMarketplace ? (
+          <SellStepIntro stepName="Condition" px={2} />
+        ) : (
+          <SellStepIntro
+            stepName="Condition"
+            title={AUCTION_CONDITION_STEP.title}
+            description={AUCTION_CONDITION_STEP.description}
+            px={2}
+          />
+        )}
 
-        <Flex px={2} gap={4} pb={2}>
+        <Flex px={2} pb={4}>
           <SellWorkCard artwork={artwork} />
-
-          <Flex gap={1}>
-            <Text variant="md">Condition</Text>
-            <Text variant="sm">How would you describe the work's condition?</Text>
-          </Flex>
         </Flex>
 
-        <SellConditionRatingPicker value={rating} onChange={setRating} />
+        <SellConditionSection value={condition} onChange={setCondition} />
 
-        <Flex px={2} pt={4} gap={4}>
-          <Flex gap={1}>
-            <Text variant="sm">Add photos of the condition</Text>
-            <Text variant="xs" color="mono60">
-              Show any wear, damage or restoration so buyers know what to expect.
-            </Text>
-            <SellConditionPhotos
-              photos={photos}
-              onAdd={addPhotos}
-              onRemove={(path) =>
-                setPhotos((current) => current.filter((photo) => photo.path !== path))
-              }
+        {!!isMarketplace && (
+          <Flex px={2} pt={4}>
+            <SellPriceSection
+              artistNames={artwork.artistNames}
+              askingPrice={askingPrice}
+              onAskingPriceChange={setAskingPrice}
+              disabled={!condition.rating}
             />
           </Flex>
-
-          <Flex gap={1}>
-            <Text variant="sm">Anything else we should know?</Text>
-            <Text variant="xs" color="mono60">
-              Any notes on the work's condition, history, provenance, or anything else that our
-              specialists may want to know.
-            </Text>
-            <Input
-              multiline
-              placeholder="Notes"
-              accessibilityLabel="Notes"
-              value={notes}
-              onChangeText={setNotes}
-            />
-          </Flex>
-        </Flex>
+        )}
       </KeyboardAwareForm>
 
       <Animated.View
@@ -160,8 +118,8 @@ const AuctionConditionForm: React.FC<{
         onLayout={(event) => setStickyFooterHeight(event.nativeEvent.layout.height)}
       >
         <Box px={2} pt={2} bg="mono0" style={{ paddingBottom: bottom + space(2) }}>
-          <Button block haptic variant="fillDark" disabled={!rating} onPress={onContinue}>
-            Continue
+          <Button block haptic variant="fillDark" disabled={!canContinue} onPress={onContinue}>
+            {isMarketplace ? "Confirm Listing Price" : "Continue"}
           </Button>
         </Box>
       </Animated.View>
@@ -181,6 +139,7 @@ const conditionQuery = graphql`
   query ConditionQuery($artworkID: String!) {
     artwork(id: $artworkID) {
       internalID
+      artistNames
       ...SellWorkCard_artwork
     }
   }
