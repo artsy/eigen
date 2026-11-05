@@ -46,6 +46,18 @@ allprojects {
     }
 }
 
+// Build every module's C++ with our NDK. Modules that don't set ndkVersion (e.g. expo-updates)
+// otherwise fall back to AGP's default NDK, which is a second ~1 GB NDK download.
+subprojects {
+    ["com.android.application", "com.android.library"].each { pluginId ->
+        plugins.withId(pluginId) {
+            extensions.getByName("androidComponents").finalizeDsl { android ->
+                android.ndkVersion = rootProject.ext.ndkVersion
+            }
+        }
+    }
+}
+
 // CI verification builds pass -PcmakeJobs=N (scripts/ci/build-for-tests-android) to cap parallel
 // C++ compiles per native module. Without it ninja runs nproc + 2 jobs per module: 38 on CircleCI
 // xlarge, which reports the host's 36 CPUs but only has 16 CPUs / 16 GB, so a few modules
