@@ -26,7 +26,7 @@ type Artwork = ExtractNodeType<ArtAssistantArtworkGridQuery["response"]["artwork
 const useColumnWidth = () => {
   const { width: screenWidth } = useScreenDimensions()
   const space = useSpace()
-  return (screenWidth - space(2) * 2 - space(1) * (NUM_COLUMNS - 1)) / NUM_COLUMNS
+  return (screenWidth - space(1) * 2 - space(1) * (NUM_COLUMNS - 1)) / NUM_COLUMNS
 }
 
 const ArtworkGridLoading: React.FC = () => {
@@ -34,7 +34,7 @@ const ArtworkGridLoading: React.FC = () => {
 
   return (
     <Skeleton>
-      <Flex flexDirection="row" px={2} testID="art-assistant-artwork-grid-loading">
+      <Flex flexDirection="row" px={1} testID="art-assistant-artwork-grid-loading">
         {Array.from({ length: NUM_COLUMNS }).map((_, columnIndex) => (
           <Flex key={columnIndex} width={columnWidth} ml={columnIndex === 0 ? 0 : 1}>
             {[columnIndex, columnIndex + NUM_COLUMNS].map((seed) => (
@@ -104,6 +104,8 @@ const ArtAssistantArtworkGridQueryRenderer: React.FC<ArtAssistantArtworkGridProp
 
 const ReadyArtworkGrid: React.FC<{ artworks: Artwork[] }> = ({ artworks }) => {
   const columnWidth = useColumnWidth()
+  const space = useSpace()
+  const imageWidth = columnWidth - space(1) * 2
 
   const columns = useMemo(() => {
     const result: Artwork[][] = Array.from({ length: NUM_COLUMNS }, () => [])
@@ -116,7 +118,7 @@ const ReadyArtworkGrid: React.FC<{ artworks: Artwork[] }> = ({ artworks }) => {
       {columns.map((column, columnIndex) => (
         <Flex key={columnIndex} width={columnWidth} ml={columnIndex === 0 ? 0 : 1}>
           {column.map((artwork, rowIndex) => {
-            const height = columnWidth / (artwork.image?.aspectRatio ?? 1)
+            const height = imageWidth / (artwork.image?.aspectRatio ?? 1)
             return (
               <Flex key={artwork.internalID} mb={1}>
                 <ArtworkGridItem
