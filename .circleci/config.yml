@@ -45,7 +45,6 @@ commands:
             scripts/ci/generate-manifest.js .manifests/cocoapods '^ios/Podfile' '^Gemfile'
             scripts/ci/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^ios/Podfile' '^Gemfile' '^dist/' '^ios/Artsy' '^patches/react-native' '^\.env\.example'
             scripts/ci/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example'
-            scripts/ci/generate-manifest.js .manifests/app_build '^\.manifests/native_code' '^dist/'
   setup-env-file:
     steps:
       - run:
@@ -152,15 +151,9 @@ commands:
         type: string
         default: "debug"
     steps:
-      - restore_cache:
-          key: << pipeline.parameters.app_build_ios_cache_key >>
       - run:
           name: Build App
           command: ./scripts/ci/ci-ios << parameters.build_type >>
-      - save_cache:
-          key: << pipeline.parameters.app_build_ios_cache_key >>
-          paths:
-            - derived_data
   prep-android-env:
     steps:
       - android/change_java_version:
@@ -198,19 +191,12 @@ commands:
         default: "release"
     steps:
       - android/restore_gradle_cache
-      - restore_cache:
-          key: << pipeline.parameters.app_build_android_cache_key >>
       - generate-query-map
       - run:
           name: Build App
           no_output_timeout: 30m
           command: ./scripts/ci/ci-android << parameters.build_type >>
       - android/save_gradle_cache
-      - save_cache:
-          key: << pipeline.parameters.app_build_android_cache_key >>
-          paths:
-            - android/build
-            - android/app/build
 jobs:
   detect-secrets:
     docker:
@@ -504,12 +490,6 @@ parameters:
   cocoapods_cache_key:
     type: string
     default: v35-pods-{{ checksum ".manifests/cocoapods" }}
-  app_build_ios_cache_key:
-    type: string
-    default: v34-app_build_ios-{{ checksum ".manifests/app_build" }}
-  app_build_android_cache_key:
-    type: string
-    default: v19-app_build_android-{{ checksum ".manifests/app_build" }}
   ios_native_code_cache_prefix:
     type: string
     default: v22-test-success
