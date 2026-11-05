@@ -1,6 +1,6 @@
 import { AIAgentSectionType } from "__generated__/useArtAssistantConversationAgentTurnSubscription.graphql"
 import { ArtAssistantArtistRail } from "app/Scenes/ArtAssistant/Components/ArtAssistantArtistRail"
-import { ArtAssistantArtworkRail } from "app/Scenes/ArtAssistant/Components/ArtAssistantArtworkRail"
+import { ArtAssistantArtworkGrid } from "app/Scenes/ArtAssistant/Components/ArtAssistantArtworkGrid"
 import { ArtAssistantSection } from "app/Scenes/ArtAssistant/types"
 
 interface ArtAssistantResponseSectionProps {
@@ -32,7 +32,7 @@ export const ArtAssistantResponseSection: React.FC<ArtAssistantResponseSectionPr
 }) => {
   switch (section.type) {
     case "artworks":
-      return <ArtAssistantArtworkRail artworkIDs={section.artworkIDs} />
+      return <ArtAssistantArtworkGrid artworkIDs={section.artworkIDs} />
     case "artists":
       return <ArtAssistantArtistRail artistIDs={section.artistIDs} />
     default:
