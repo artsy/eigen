@@ -177,7 +177,6 @@ commands:
       - install-node-modules
       - run-relay-compiler
       - update-echo
-      - install-gems
       - run:
           name: Download fonts from s3
           command: ./scripts/setup/download-fonts
@@ -498,7 +497,7 @@ parameters:
     default: v22-test-success-{{ checksum ".manifests/android_native" }}
   android_docker_image:
     type: string
-    default: "cimg/android:2026.02.1-node"
+    default: "cimg/android:2026.10.1-node"
 
 workflows:
   nightly:
