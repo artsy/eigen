@@ -1,5 +1,10 @@
+import {
+  ThumbsDownFillIcon,
+  ThumbsDownStrokeIcon,
+  ThumbsUpFillIcon,
+  ThumbsUpStrokeIcon,
+} from "@artsy/icons/native"
 import { DEFAULT_HIT_SLOP, Flex, Text, Touchable } from "@artsy/palette-mobile"
-import { ThumbIcon } from "app/Components/Icons/ThumbIcon"
 import { ArtAssistantFeedbackRating } from "app/Scenes/ArtAssistant/types"
 import { useEffect, useRef } from "react"
 import { AccessibilityInfo, Platform } from "react-native"
@@ -7,8 +12,18 @@ import { AccessibilityInfo, Platform } from "react-native"
 const FEEDBACK_ICON_SIZE = 16
 
 const OPTIONS = [
-  { rating: "THUMBS_UP", direction: "up", label: "Good response" },
-  { rating: "THUMBS_DOWN", direction: "down", label: "Bad response" },
+  {
+    rating: "THUMBS_UP",
+    label: "Good response",
+    FillIcon: ThumbsUpFillIcon,
+    StrokeIcon: ThumbsUpStrokeIcon,
+  },
+  {
+    rating: "THUMBS_DOWN",
+    label: "Bad response",
+    FillIcon: ThumbsDownFillIcon,
+    StrokeIcon: ThumbsDownStrokeIcon,
+  },
 ] as const
 
 interface ArtAssistantFeedbackProps {
@@ -36,6 +51,7 @@ export const ArtAssistantFeedback: React.FC<ArtAssistantFeedbackProps> = ({ rati
 
       {OPTIONS.map((option) => {
         const isSelected = rating === option.rating
+        const Icon = isSelected ? option.FillIcon : option.StrokeIcon
 
         return (
           <Touchable
@@ -47,10 +63,8 @@ export const ArtAssistantFeedback: React.FC<ArtAssistantFeedbackProps> = ({ rati
             onPress={() => onRate(option.rating)}
             underlayColor="transparent"
           >
-            <ThumbIcon
-              direction={option.direction}
-              filled={isSelected}
-              color={isSelected ? "mono100" : "mono60"}
+            <Icon
+              fill={isSelected ? "mono100" : "mono60"}
               width={FEEDBACK_ICON_SIZE}
               height={FEEDBACK_ICON_SIZE}
             />
