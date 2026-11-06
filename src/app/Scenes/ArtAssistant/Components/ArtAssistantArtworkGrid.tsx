@@ -8,10 +8,11 @@ import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { memo, useMemo } from "react"
+import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 const MAX_ARTWORK_COUNT = 8
-const NUM_COLUMNS = 2
+const NUM_COLUMNS = isTablet() ? 3 : 2
 
 interface ArtAssistantArtworkGridProps {
   /** `internalID`s from the answer's artworks section, in the order it chose. */
