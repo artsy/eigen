@@ -14,8 +14,8 @@ import { renderWithHookWrappersTL, renderWithWrappers } from "app/utils/tests/re
 import { KeyboardController } from "react-native-keyboard-controller"
 import { createMockEnvironment } from "relay-test-utils"
 
-jest.mock("app/Scenes/ArtAssistant/Components/ArtAssistantArtworkRail", () => ({
-  ArtAssistantArtworkRail: () => null,
+jest.mock("app/Scenes/ArtAssistant/Components/ArtAssistantArtworkGrid", () => ({
+  ArtAssistantArtworkGrid: () => null,
 }))
 jest.mock("app/Scenes/ArtAssistant/hooks/useArtAssistantImageAttachment", () => ({
   useArtAssistantImageAttachment: jest.fn(),

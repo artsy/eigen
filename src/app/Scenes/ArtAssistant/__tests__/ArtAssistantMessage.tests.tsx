@@ -153,7 +153,7 @@ describe("ArtAssistantMessage", () => {
     expect(screen.getByText("Thinking...")).toHaveStyle({ color: "#C2C2C2" })
   })
 
-  it("renders a rail per section, dispatching on the section type", () => {
+  it("renders a grid/rail per section, dispatching on the section type", () => {
     renderWithWrappers(
       <ArtAssistantMessage
         message={{
@@ -169,7 +169,7 @@ describe("ArtAssistantMessage", () => {
       />
     )
 
-    expect(screen.getByTestId("art-assistant-artwork-rail-loading")).toBeOnTheScreen()
+    expect(screen.getByTestId("art-assistant-artwork-grid-loading")).toBeOnTheScreen()
     expect(screen.getByTestId("art-assistant-artist-rail-loading")).toBeOnTheScreen()
   })
 
@@ -185,7 +185,7 @@ describe("ArtAssistantMessage", () => {
       />
     )
 
-    expect(screen.queryByTestId("art-assistant-artwork-rail-loading")).not.toBeOnTheScreen()
+    expect(screen.queryByTestId("art-assistant-artwork-grid-loading")).not.toBeOnTheScreen()
     expect(screen.queryByTestId("art-assistant-artist-rail-loading")).not.toBeOnTheScreen()
   })
 
