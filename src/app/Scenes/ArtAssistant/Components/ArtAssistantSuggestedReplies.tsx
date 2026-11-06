@@ -47,8 +47,7 @@ export const ArtAssistantSuggestedReplies: React.FC<ArtAssistantSuggestedReplies
             justifyContent="center"
             minHeight={44}
             px={2}
-            // The font sits low in its line box, so 1pt more below looks centred.
-            style={{ paddingBottom: 11, paddingTop: 9 }}
+            py={1}
           >
             <Text variant="sm">{reply}</Text>
           </Flex>

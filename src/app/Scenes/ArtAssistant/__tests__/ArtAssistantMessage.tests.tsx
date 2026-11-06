@@ -31,10 +31,10 @@ describe("ArtAssistantMessage", () => {
 
   it("announces the prompt when the vote changes, not on first render", () => {
     const announce = jest.spyOn(AccessibilityInfo, "announceForAccessibility")
-    const answer = (feedbackRating?: "THUMBS_UP") => (
+    const answer = (feedbackRating?: "THUMBS_UP", id = "assistant-1") => (
       <ArtAssistantMessage
         message={{
-          id: "assistant-1",
+          id,
           role: "assistant",
           text: "I found a few works.",
           phase: "complete",
@@ -54,6 +54,11 @@ describe("ArtAssistantMessage", () => {
     // A failed vote reverts, and that is announced too.
     rerender(answer())
     expect(announce).toHaveBeenLastCalledWith("Was this helpful?")
+
+    // A recycled list cell showing another, rated answer is not a vote.
+    announce.mockClear()
+    rerender(answer("THUMBS_UP", "assistant-2"))
+    expect(announce).not.toHaveBeenCalled()
   })
 
   it.each([

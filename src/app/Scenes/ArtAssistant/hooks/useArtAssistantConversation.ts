@@ -115,6 +115,17 @@ const feedbackMutation = graphql`
   }
 `
 
+interface FeedbackVote {
+  rating: ArtAssistantFeedbackRating
+  conversationID: string
+}
+
+interface FeedbackState {
+  saved?: ArtAssistantFeedbackRating
+  saving: boolean
+  next?: FeedbackVote
+}
+
 export const useArtAssistantConversation = () => {
   const environment = useRelayEnvironment()
   const [commitFeedback] =
@@ -136,12 +147,8 @@ export const useArtAssistantConversation = () => {
   const activeSubscription = useRef<ReturnType<typeof requestSubscription> | null>(null)
   const responseTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
   const messagesRef = useRef(messages)
-  // Per message: the latest vote still in flight, and the newest vote that saved.
-  const pendingFeedback = useRef<Record<string, number>>({})
-  const savedFeedback = useRef<
-    Record<string, { request: number; rating: ArtAssistantFeedbackRating }>
-  >({})
-  const feedbackRequestCount = useRef(0)
+  // Per message: the vote that saved, whether one is saving, and the latest tap waiting for it.
+  const feedback = useRef<Record<string, FeedbackState>>({})
 
   messagesRef.current = messages
 
@@ -166,8 +173,7 @@ export const useArtAssistantConversation = () => {
 
     abort()
     conversationID.current = uuid()
-    pendingFeedback.current = {}
-    savedFeedback.current = {}
+    feedback.current = {}
     messagesRef.current = []
     isRespondingRef.current = false
     setMessages([])
@@ -464,7 +470,8 @@ export const useArtAssistantConversation = () => {
     []
   )
 
-  // Optimistic: shows the latest vote in flight, otherwise the newest one that saved.
+  // Optimistic: shows the latest tap at once, but sends one vote per message at a time, so
+  // Phoenix saves the votes in the order they were tapped. Falls back to the vote that saved.
   const rateMessage = useCallback(
     (messageID: string, rating: ArtAssistantFeedbackRating) => {
       const message = messagesRef.current.find(({ id }) => id === messageID)
@@ -478,44 +485,50 @@ export const useArtAssistantConversation = () => {
       }
 
       const { feedbackID } = message
-      // Read now: "New chat" may replace it before the vote settles.
-      const ratedConversationID = conversationID.current
-      const request = ++feedbackRequestCount.current
-      pendingFeedback.current[messageID] = request
+      const state = (feedback.current[messageID] ??= { saving: false })
 
-      // Once nothing newer is in flight, show the newest vote that saved.
-      const settle = () => {
-        if (pendingFeedback.current[messageID] === request) {
-          delete pendingFeedback.current[messageID]
+      const send = (vote: FeedbackVote) => {
+        state.saving = true
+
+        const settle = () => {
+          const next = state.next
+          state.saving = false
+          state.next = undefined
+
+          if (next && next.rating !== state.saved) {
+            send(next)
+          } else {
+            setFeedbackRating(messageID, state.saved)
+          }
         }
-        if (pendingFeedback.current[messageID] === undefined) {
-          setFeedbackRating(messageID, savedFeedback.current[messageID]?.rating)
-        }
+
+        commitFeedback({
+          variables: { input: { feedbackID, rating: vote.rating } },
+          onCompleted: (response, errors) => {
+            if (!errors?.length && response.createAIAgentFeedback?.success) {
+              state.saved = vote.rating
+              trackFeedbackTapped({
+                conversationID: vote.conversationID,
+                feedbackID,
+                rating: vote.rating,
+                responseMessageID: messageID,
+              })
+            }
+            settle()
+          },
+          onError: settle,
+        })
       }
 
+      // Read the conversation now: "New chat" may replace it before the vote saves.
+      const vote = { rating, conversationID: conversationID.current }
+
       setFeedbackRating(messageID, rating)
-      commitFeedback({
-        variables: { input: { feedbackID, rating } },
-        onCompleted: (response, errors) => {
-          const saved = savedFeedback.current[messageID]
-          // An older vote answering late doesn't replace a newer saved one.
-          if (
-            !errors?.length &&
-            response.createAIAgentFeedback?.success &&
-            (!saved || saved.request < request)
-          ) {
-            savedFeedback.current[messageID] = { request, rating }
-            trackFeedbackTapped({
-              conversationID: ratedConversationID,
-              feedbackID,
-              rating,
-              responseMessageID: messageID,
-            })
-          }
-          settle()
-        },
-        onError: settle,
-      })
+      if (state.saving) {
+        state.next = vote
+      } else {
+        send(vote)
+      }
     },
     [commitFeedback, setFeedbackRating, trackFeedbackTapped]
   )

@@ -83,6 +83,8 @@ export const ArtAssistantMessage: React.FC<ArtAssistantMessageProps> = ({
         !!message.feedbackID &&
         !!onRate && (
           <ArtAssistantFeedback
+            // FlashList reuses cells, so remount per message to not announce another answer's vote.
+            key={message.id}
             rating={message.feedbackRating}
             onRate={(rating) => onRate(message.id, rating)}
           />

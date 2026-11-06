@@ -315,6 +315,8 @@ describe("useArtAssistantConversation", () => {
   })
 
   describe("feedback", () => {
+    const SAVED = { createAIAgentFeedback: { success: true } }
+
     const answerWithFeedback = () => {
       const { environment, result } = renderConversation()
 
@@ -381,64 +383,60 @@ describe("useArtAssistantConversation", () => {
       expect(trackedEventsOfType("tappedArtAssistantFeedback")).toEqual([])
     })
 
+    it("holds a vote tapped while another is saving, then sends it", () => {
+      const { environment, result, answerID } = answerWithFeedback()
+
+      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_DOWN" })
+      expect(environment.mock.getAllOperations()).toHaveLength(1)
+
+      act(() => environment.mock.resolveMostRecentOperation({ data: SAVED }))
+      const thumbsDown = environment.mock.getMostRecentOperation()
+      expect(thumbsDown.request.variables.input).toMatchObject({ rating: "THUMBS_DOWN" })
+      act(() => environment.mock.resolve(thumbsDown, { data: SAVED }))
+
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_DOWN" })
+      expect(trackedEventsOfType("tappedArtAssistantFeedback")).toEqual([
+        expect.objectContaining({ rating: "thumbs_up" }),
+        expect.objectContaining({ rating: "thumbs_down" }),
+      ])
+    })
+
+    it("sends the held vote when the earlier one fails", () => {
+      const { environment, result, answerID } = answerWithFeedback()
+
+      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+      act(() => environment.mock.rejectMostRecentOperation(new Error("network")))
+      act(() => environment.mock.resolveMostRecentOperation({ data: SAVED }))
+
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_DOWN" })
+    })
+
     it("reverts to the last saved rating, not an unsaved one", () => {
       const { environment, result, answerID } = answerWithFeedback()
 
       act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
-      const thumbsUp = environment.mock.getMostRecentOperation()
       act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
-      const thumbsDown = environment.mock.getMostRecentOperation()
-
-      act(() => environment.mock.reject(thumbsUp, new Error("offline")))
-      act(() => environment.mock.reject(thumbsDown, new Error("offline")))
-
-      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: undefined })
-    })
-
-    it("keeps a newer vote when an earlier one fails", () => {
-      const { environment, result, answerID } = answerWithFeedback()
-
-      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
-      const thumbsUp = environment.mock.getMostRecentOperation()
-      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
-
-      act(() => environment.mock.reject(thumbsUp, new Error("network")))
-
-      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_DOWN" })
-    })
-
-    it("shows an earlier vote that saves after a newer one failed", () => {
-      const { environment, result, answerID } = answerWithFeedback()
-
-      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
-      const thumbsUp = environment.mock.getMostRecentOperation()
-      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
-      const thumbsDown = environment.mock.getMostRecentOperation()
-
-      act(() => environment.mock.reject(thumbsDown, new Error("network")))
-      act(() =>
-        environment.mock.resolve(thumbsUp, { data: { createAIAgentFeedback: { success: true } } })
-      )
+      act(() => environment.mock.resolveMostRecentOperation({ data: SAVED }))
+      act(() => environment.mock.rejectMostRecentOperation(new Error("network")))
 
       expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_UP" })
     })
 
-    it("keeps the newer vote when both save but answer out of order", () => {
+    it("doesn't resend a held vote that matches the one that saved", () => {
       const { environment, result, answerID } = answerWithFeedback()
-      const saved = { data: { createAIAgentFeedback: { success: true } } }
 
       act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
-      const thumbsUp = environment.mock.getMostRecentOperation()
       act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
-      const thumbsDown = environment.mock.getMostRecentOperation()
+      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      act(() => environment.mock.resolveMostRecentOperation({ data: SAVED }))
 
-      act(() => environment.mock.resolve(thumbsDown, saved))
-      act(() => environment.mock.resolve(thumbsUp, saved))
-
-      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_DOWN" })
-      expect(trackedEventsOfType("tappedArtAssistantFeedback")).toEqual([
-        expect.objectContaining({ rating: "thumbs_down" }),
-      ])
+      expect(environment.mock.getAllOperations()).toHaveLength(0)
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_UP" })
+      expect(trackedEventsOfType("tappedArtAssistantFeedback")).toHaveLength(1)
     })
 
     it("tracks a vote under the conversation it was cast in", () => {
