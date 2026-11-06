@@ -7966,6 +7966,85 @@ type BuyersPremium {
   percent: Float
 }
 
+type CRMActivity {
+  createdAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  crmContactID: String!
+
+  """
+  Null for activities that are not emails
+  """
+  emailMessage: EmailMessage
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+  kind: CRMActivityKind
+  occurredAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  partnerID: String!
+}
+
+"""
+A connection to a list of items.
+"""
+type CRMActivityConnection {
+  """
+  A list of edges.
+  """
+  edges: [CRMActivityEdge]
+  pageCursors: PageCursors!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+"""
+An edge in a connection.
+"""
+type CRMActivityEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge
+  """
+  node: CRMActivity
+}
+
+enum CRMActivityKind {
+  EMAIL
+  NOTE
+}
+
+enum CRMActivitySort {
+  OCCURRED_AT_ASC
+  OCCURRED_AT_DESC
+}
+
 type CRMContact {
   archivedAt(
     format: String
@@ -17288,6 +17367,91 @@ enum EmailAccountStatus {
   EXPIRED
 }
 
+type EmailMessage {
+  """
+  Whether the viewer may read the subject and snippet. True for the mailbox owner, and for colleagues once the owner shares content with the partner.
+  """
+  contentVisible: Boolean!
+  direction: EmailMessageDirection
+  fromAddress: String
+  fromName: String
+  hasAttachments: Boolean
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+
+  """
+  Bcc participants are only included when the viewer may read the message
+  """
+  participants: [EmailParticipant!]
+  receivedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  sentAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
+  Null unless `contentVisible` is true
+  """
+  snippet: String
+
+  """
+  Null unless `contentVisible` is true
+  """
+  subject: String
+}
+
+enum EmailMessageDirection {
+  INBOUND
+  OUTBOUND
+}
+
+type EmailParticipant {
+  address: String!
+
+  """
+  Set when the address belongs to a CRM contact
+  """
+  crmContactID: String
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+  name: String
+  role: EmailParticipantRole
+}
+
+enum EmailParticipantRole {
+  BCC
+  CC
+  FROM
+  TO
+}
+
 input EnableSecondFactorInput {
   clientMutationId: String
   code: String!
@@ -26231,6 +26395,11 @@ type Mutation {
   ): SyncCatalogToArtworkMutationPayload
 
   """
+  Queue a background sync of the new mail of a connected email account. Temporary manual trigger until syncs start automatically.
+  """
+  syncEmailAccount(input: SyncEmailAccountInput!): SyncEmailAccountPayload
+
+  """
   Transfers My Collection artworks from one user to another.
   """
   transferMyCollection(input: TransferMyCollectionInput!): TransferMyCollectionPayload
@@ -32409,6 +32578,31 @@ type Query {
   ): CreditCard
 
   """
+  A connection of the timeline activities of a CRM contact
+  """
+  crmActivitiesConnection(
+    after: String
+    before: String
+
+    """
+    The internal ID of the CRM contact
+    """
+    crmContactID: String!
+    first: Int
+
+    """
+    Only activities of this kind
+    """
+    kind: CRMActivityKind
+    last: Int
+
+    """
+    Defaults to OCCURRED_AT_DESC (newest first)
+    """
+    sort: CRMActivitySort
+  ): CRMActivityConnection
+
+  """
   A CRM contact of a partner
   """
   crmContact(
@@ -37224,6 +37418,34 @@ type SyncCatalogToArtworkSuccess {
   artwork: Artwork
   syncErrors: [String]
   syncedFields: [String]
+}
+
+type SyncEmailAccountFailure {
+  mutationError: GravityMutationError
+}
+
+input SyncEmailAccountInput {
+  clientMutationId: String
+
+  """
+  The internal ID of the email account
+  """
+  id: String!
+}
+
+type SyncEmailAccountPayload {
+  clientMutationId: String
+
+  """
+  On success: the email account
+  """
+  emailAccountOrError: SyncEmailAccountResponseOrError
+}
+
+union SyncEmailAccountResponseOrError = SyncEmailAccountFailure | SyncEmailAccountSuccess
+
+type SyncEmailAccountSuccess {
+  emailAccount: EmailAccount
 }
 
 type System {
@@ -42482,6 +42704,31 @@ type Viewer {
     """
     id: String!
   ): CreditCard
+
+  """
+  A connection of the timeline activities of a CRM contact
+  """
+  crmActivitiesConnection(
+    after: String
+    before: String
+
+    """
+    The internal ID of the CRM contact
+    """
+    crmContactID: String!
+    first: Int
+
+    """
+    Only activities of this kind
+    """
+    kind: CRMActivityKind
+    last: Int
+
+    """
+    Defaults to OCCURRED_AT_DESC (newest first)
+    """
+    sort: CRMActivitySort
+  ): CRMActivityConnection
 
   """
   A CRM contact of a partner
