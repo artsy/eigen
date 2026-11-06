@@ -56,7 +56,8 @@ sha256_of_files() {
 
 # Everything that can change a platform's native build:
 # - the Expo fingerprint (native dirs, native code in node_modules, app.json, autolinking config)
-# - .env.example (react-native-keys reads it at build time; the fingerprint ignores it)
+# - keys.example.json (the key names react-native-keys generates native code from; CI builds with
+#   keys.shared.json from S3, which isn't in the repo)
 # - react-native-keys' yarn.lock entry (fingerprint.config.js ignores the module, but it has native code)
 # - the CI scripts and settings that build that platform
 native_key() {
@@ -64,7 +65,7 @@ native_key() {
 	{
 		echo "salt $KEY_SALT"
 		echo "fingerprint $fingerprint"
-		sha256_of_files .env.example
+		sha256_of_files keys.example.json
 		grep -A4 '^"react-native-keys@' yarn.lock
 		if [ "$platform" = ios ]; then
 			sha256_of_files Gemfile.lock scripts/ci/ci-ios scripts/ci/ci-test-ios scripts/ci/build-for-tests-ios scripts/ci/test-ios scripts/ci/ci-setup-export-vars
