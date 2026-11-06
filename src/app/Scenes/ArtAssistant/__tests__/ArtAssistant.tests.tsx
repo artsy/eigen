@@ -575,6 +575,7 @@ describe("ArtAssistant", () => {
     const image = { s3Bucket: "bucket", s3Key: "key", uri: "file:///photo.jpg" }
 
     it("hides the camera button while image input is off", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtAssistantImageSearch: false })
       renderWithWrappers(<ArtAssistant />)
 
       expect(screen.queryByRole("button", { name: "Add an image" })).not.toBeOnTheScreen()
