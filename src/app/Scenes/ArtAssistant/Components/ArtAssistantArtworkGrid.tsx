@@ -63,7 +63,6 @@ const ArtworkGridError: React.FC = () => (
 
 export const ArtAssistantArtworkGrid: React.FC<ArtAssistantArtworkGridProps> = memo(
   ({ artworkIDs }) => {
-    // Stable reference so Relay doesn't treat each re-render as new query variables.
     const cappedIDs = useMemo(() => artworkIDs.slice(0, MAX_ARTWORK_COUNT), [artworkIDs])
 
     if (cappedIDs.length === 0) {
