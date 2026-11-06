@@ -5,10 +5,12 @@ import {
   OwnerType,
   ReceivedArtAssistantResponse,
   SentArtAssistantMessage,
+  TappedArtAssistantFeedback,
   TappedArtAssistantNewChat,
   TappedArtAssistantSuggestedReply,
   TappedArtAssistantSuggestion,
 } from "@artsy/cohesion"
+import { ArtAssistantFeedbackRating } from "app/Scenes/ArtAssistant/types"
 import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { useCallback } from "react"
 import { useTracking } from "react-tracking"
@@ -37,6 +39,13 @@ interface SuggestedReplyTapped {
   conversationID: string
   position: number
   reply: string
+  responseMessageID: string
+}
+
+interface FeedbackTapped {
+  conversationID: string
+  feedbackID: string
+  rating: ArtAssistantFeedbackRating
   responseMessageID: string
 }
 
@@ -92,6 +101,23 @@ export const useArtAssistantTracking = () => {
       trackEvent(payload)
     },
     [canTrackMessageContent, trackEvent]
+  )
+
+  const trackFeedbackTapped = useCallback(
+    ({ conversationID, feedbackID, rating, responseMessageID }: FeedbackTapped) => {
+      const payload: TappedArtAssistantFeedback = {
+        action: ActionType.tappedArtAssistantFeedback,
+        context_module: ContextModule.artAssistantFeedback,
+        context_screen_owner_type: OwnerType.artAssistant,
+        conversation_id: conversationID,
+        feedback_id: feedbackID,
+        rating: rating === "THUMBS_UP" ? "thumbs_up" : "thumbs_down",
+        response_message_id: responseMessageID,
+      }
+
+      trackEvent(payload)
+    },
+    [trackEvent]
   )
 
   const trackNewChat = useCallback(
@@ -190,6 +216,7 @@ export const useArtAssistantTracking = () => {
   )
 
   return {
+    trackFeedbackTapped,
     trackMessageSent,
     trackNewChat,
     trackResponseReceived,

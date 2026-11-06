@@ -1,4 +1,7 @@
+import { AIAgentFeedbackRating } from "__generated__/useArtAssistantConversationFeedbackMutation.graphql"
 import { ArtAssistantErrorKind } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
+
+export type ArtAssistantFeedbackRating = Exclude<AIAgentFeedbackRating, "%future added value">
 
 /**
  * What an answer showed alongside its prose, reduced to the entity type and the IDs in display
@@ -36,4 +39,7 @@ export type ArtAssistantMessage =
       error?: ArtAssistantErrorKind
       sections?: ArtAssistantSection[]
       suggestedReplies?: string[]
+      /** Present once the turn finished and Metaphysics can accept a rating for it. */
+      feedbackID?: string
+      feedbackRating?: ArtAssistantFeedbackRating
     }

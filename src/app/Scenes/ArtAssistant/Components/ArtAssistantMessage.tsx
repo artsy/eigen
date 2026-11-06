@@ -1,8 +1,12 @@
 import { Flex, Image, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtAssistantErrorActions } from "app/Scenes/ArtAssistant/Components/ArtAssistantErrorActions"
+import { ArtAssistantFeedback } from "app/Scenes/ArtAssistant/Components/ArtAssistantFeedback"
 import { ArtAssistantResponseSection } from "app/Scenes/ArtAssistant/Components/ArtAssistantResponseSection"
 import { ArtAssistantSuggestedReplies } from "app/Scenes/ArtAssistant/Components/ArtAssistantSuggestedReplies"
-import { ArtAssistantMessage as ArtAssistantMessageType } from "app/Scenes/ArtAssistant/types"
+import {
+  ArtAssistantFeedbackRating,
+  ArtAssistantMessage as ArtAssistantMessageType,
+} from "app/Scenes/ArtAssistant/types"
 import { ArtAssistantErrorAction } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
 
 const ATTACHED_IMAGE_SIZE = 120
@@ -13,12 +17,14 @@ interface ArtAssistantMessageProps {
   onSelectSuggestedReply?: (reply: string, position: number, responseMessageID: string) => void
   /** Only passed for the latest answer, since acting on an older failure makes no sense */
   onSelectErrorAction?: (action: ArtAssistantErrorAction) => void
+  onRate?: (messageID: string, rating: ArtAssistantFeedbackRating) => void
 }
 
 export const ArtAssistantMessage: React.FC<ArtAssistantMessageProps> = ({
   message,
   onSelectSuggestedReply,
   onSelectErrorAction,
+  onRate,
 }) => {
   const isUser = message.role === "user"
   const attachedImage = message.role === "user" ? message.image : undefined
@@ -71,6 +77,18 @@ export const ArtAssistantMessage: React.FC<ArtAssistantMessageProps> = ({
             <ArtAssistantResponseSection section={section} />
           </Flex>
         ))}
+
+      {message.role === "assistant" &&
+        message.phase === "complete" &&
+        !!message.feedbackID &&
+        !!onRate && (
+          <ArtAssistantFeedback
+            // FlashList reuses cells, so remount per message to not announce another answer's vote.
+            key={message.id}
+            rating={message.feedbackRating}
+            onRate={(rating) => onRate(message.id, rating)}
+          />
+        )}
 
       {!!hasAssistantSuggestedReplies && (
         <ArtAssistantSuggestedReplies
