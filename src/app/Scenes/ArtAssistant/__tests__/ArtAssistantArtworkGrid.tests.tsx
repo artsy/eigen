@@ -3,8 +3,9 @@ import { ArtAssistantArtworkGridQuery } from "__generated__/ArtAssistantArtworkG
 import { ArtAssistantArtworkGrid } from "app/Scenes/ArtAssistant/Components/ArtAssistantArtworkGrid"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { renderWithHookWrappersTL, renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { createMockEnvironment } from "relay-test-utils"
 
 describe("ArtAssistantArtworkGrid", () => {
   beforeEach(() => {
@@ -52,6 +53,7 @@ describe("ArtAssistantArtworkGrid", () => {
         destination_screen_owner_type: "artwork",
         destination_screen_owner_id: ARTWORK_IDS[1],
         destination_screen_owner_slug: "basquiat-artwork",
+        position: 1,
         type: "thumbnail",
       })
     )
@@ -83,12 +85,15 @@ describe("ArtAssistantArtworkGrid", () => {
     expect(screen.getByText("No matching artworks found.")).toBeOnTheScreen()
   })
 
-  it("caps displayed artworks at 8 even when more IDs are provided", () => {
+  it("caps the query at 8 IDs even when more are provided", () => {
     const manyIDs = Array.from({ length: 12 }, (_, i) => `artwork-id-${i}`)
-    renderWithWrappers(<ArtAssistantArtworkGrid artworkIDs={manyIDs} />)
+    const environment = createMockEnvironment()
 
-    // The query renderer receives at most 8 IDs — loading state confirms it mounted
-    expect(screen.getByTestId("art-assistant-artwork-grid-loading")).toBeOnTheScreen()
+    renderWithHookWrappersTL(<ArtAssistantArtworkGrid artworkIDs={manyIDs} />, environment)
+
+    const { variables } = environment.mock.getMostRecentOperation().request
+    expect(variables.artworkIDs).toEqual(manyIDs.slice(0, 8))
+    expect(variables.first).toBe(8)
   })
 })
 
