@@ -4,12 +4,12 @@ import {
   ThumbsUpFillIcon,
   ThumbsUpStrokeIcon,
 } from "@artsy/icons/native"
-import { DEFAULT_HIT_SLOP, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { DEFAULT_HIT_SLOP, Flex, Separator, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtAssistantFeedbackRating } from "app/Scenes/ArtAssistant/types"
 import { useEffect, useRef } from "react"
 import { AccessibilityInfo, Platform } from "react-native"
 
-const FEEDBACK_ICON_SIZE = 16
+const FEEDBACK_ICON_SIZE = 24
 
 const OPTIONS = [
   {
@@ -44,33 +44,37 @@ export const ArtAssistantFeedback: React.FC<ArtAssistantFeedbackProps> = ({ rati
   }, [prompt])
 
   return (
-    <Flex flexDirection="row" alignItems="center" gap={2} mt={1} testID="art-assistant-feedback">
-      <Text variant="xs" color="mono60" accessibilityLiveRegion="polite">
-        {prompt}
-      </Text>
+    <Flex alignSelf="stretch" mt={2} testID="art-assistant-feedback">
+      <Separator />
 
-      {OPTIONS.map((option) => {
-        const isSelected = rating === option.rating
-        const Icon = isSelected ? option.FillIcon : option.StrokeIcon
+      <Flex flexDirection="row" alignItems="center" gap={2} mt={1}>
+        <Text variant="xs" color="mono60" accessibilityLiveRegion="polite">
+          {prompt}
+        </Text>
 
-        return (
-          <Touchable
-            key={option.rating}
-            accessibilityLabel={option.label}
-            accessibilityRole="button"
-            accessibilityState={{ selected: isSelected }}
-            hitSlop={DEFAULT_HIT_SLOP}
-            onPress={() => onRate(option.rating)}
-            underlayColor="transparent"
-          >
-            <Icon
-              fill={isSelected ? "mono100" : "mono60"}
-              width={FEEDBACK_ICON_SIZE}
-              height={FEEDBACK_ICON_SIZE}
-            />
-          </Touchable>
-        )
-      })}
+        {OPTIONS.map((option) => {
+          const isSelected = rating === option.rating
+          const Icon = isSelected ? option.FillIcon : option.StrokeIcon
+
+          return (
+            <Touchable
+              key={option.rating}
+              accessibilityLabel={option.label}
+              accessibilityRole="button"
+              accessibilityState={{ selected: isSelected }}
+              hitSlop={DEFAULT_HIT_SLOP}
+              onPress={() => onRate(option.rating)}
+              underlayColor="transparent"
+            >
+              <Icon
+                fill={isSelected ? "mono100" : "mono60"}
+                width={FEEDBACK_ICON_SIZE}
+                height={FEEDBACK_ICON_SIZE}
+              />
+            </Touchable>
+          )
+        })}
+      </Flex>
     </Flex>
   )
 }

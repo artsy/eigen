@@ -16,7 +16,7 @@ export const ArtAssistantSuggestedReplies: React.FC<ArtAssistantSuggestedReplies
     alignItems="flex-start"
     alignSelf="stretch"
     gap={1}
-    mt={2}
+    mt={4}
     testID="art-assistant-suggested-replies"
   >
     <Flex flexDirection="row" alignItems="center">
@@ -30,7 +30,7 @@ export const ArtAssistantSuggestedReplies: React.FC<ArtAssistantSuggestedReplies
       </Text>
     </Flex>
 
-    <Flex flexDirection="row" flexWrap="wrap" gap={1}>
+    <Flex alignSelf="stretch" gap={1}>
       {replies.map((reply, index) => (
         <Touchable
           accessibilityHint="Sends this as your next message"
@@ -38,9 +38,18 @@ export const ArtAssistantSuggestedReplies: React.FC<ArtAssistantSuggestedReplies
           key={`${index}-${reply}`}
           onPress={() => onSelect(reply, index)}
           underlayColor="mono5"
-          style={{ borderRadius: 25, maxWidth: "85%", overflow: "hidden" }}
+          style={{ borderRadius: 8, overflow: "hidden" }}
         >
-          <Flex borderColor="mono100" borderRadius={25} borderWidth={1} px={2} py={1}>
+          <Flex
+            borderColor="mono15"
+            borderRadius={8}
+            borderWidth={1}
+            justifyContent="center"
+            minHeight={44}
+            px={2}
+            // The font sits low in its line box, so 1pt more below looks centred.
+            style={{ paddingBottom: 11, paddingTop: 9 }}
+          >
             <Text variant="sm">{reply}</Text>
           </Flex>
         </Touchable>
