@@ -12232,6 +12232,16 @@ type ConsignmentInquiryMutationSuccess {
   consignmentInquiry: ConsignmentInquiry
 }
 
+"""
+Deprecated: consignment submissions are no longer supported.
+"""
+type ConsignmentSubmission {
+  artist: Artist
+  id: ID!
+  internalID: ID
+  title: String
+}
+
 type Contact {
   canContact: Boolean
   email: String
@@ -33919,6 +33929,8 @@ type Query {
     """
     id: String
   ): StaticContent
+  submission(externalId: ID, id: ID, sessionID: String): ConsignmentSubmission
+    @deprecated(reason: "Consignment submissions are no longer supported.")
 
   """
   Fields related to internal systems.
@@ -43956,6 +43968,8 @@ type Viewer {
     """
     id: String
   ): StaticContent
+  submission(externalId: ID, id: ID, sessionID: String): ConsignmentSubmission
+    @deprecated(reason: "Consignment submissions are no longer supported.")
 
   """
   Fields related to internal systems.
