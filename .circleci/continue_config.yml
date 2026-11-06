@@ -1,0 +1,610 @@
+version: 2.1
+
+# Continuation config: .circleci/config.yml (the setup config) runs detect-native-changes first and
+# continues here with the pipeline parameters it computed.
+
+defaults: &beta_branches_only
+  filters:
+    branches:
+      only:
+        - beta-ios
+        - beta-android
+
+defaults_ignore_beta: &ignore_beta_branches
+  filters:
+    branches:
+      ignore:
+        - beta-ios
+        - beta-android
+
+defaults_main: &main_only
+  filters:
+    branches:
+      only:
+        - main
+
+defaults_ignore_main: &ignore_main_branches
+  filters:
+    branches:
+      ignore:
+        - main
+
+orbs:
+  node: circleci/node@7.2.1
+  horizon: artsy/release@0.0.1
+  macos: circleci/macos@3.0.0
+  android: circleci/android@3.2.0
+
+commands:
+  generate-checksums:
+    steps:
+      - run:
+          name: "Generate initial checksum manifests"
+          command: |
+            mkdir .manifests
+            scripts/ci/generate-manifest.js .manifests/node_modules '^yarn\.lock$' '^patches/' '^package\.json$'
+            scripts/ci/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
+            scripts/ci/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__mocks__|__fixtures__))'
+            scripts/ci/generate-manifest.js .manifests/cocoapods '^ios/Podfile' '^Gemfile'
+  setup-env-file:
+    steps:
+      - run:
+          name: "Set up .env file"
+          command: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci
+  setup-awscli:
+    steps:
+      - run:
+          name: "Set up aws cli not installed"
+          command: scripts/setup/setup-awscli
+  install-node-modules:
+    steps:
+      - node/install-packages:
+          pkg-manager: yarn-berry
+          cache-version: << pipeline.parameters.node_modules_cache_key >>
+  run-relay-compiler:
+    steps:
+      - run:
+          name: Run Relay compiler
+          command: yarn relay
+  update-echo:
+    steps:
+      - run:
+          name: Update echo
+          command: ./scripts/setup/update-echo
+  update-staging-echo:
+    steps:
+      - run:
+          name: Update staging echo
+          command: ./scripts/setup/update-staging-echo
+  generate-query-map:
+    steps:
+      - run:
+          name: Compile query map
+          command: yarn relay
+  install-gems:
+    steps:
+      - restore_cache:
+          key: << pipeline.parameters.gems_cache_key >>
+      - run:
+          name: Bundle install
+          command: bundle check || bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
+      - save_cache:
+          key: << pipeline.parameters.gems_cache_key >>
+          paths:
+            - .vendor
+  install-cocoapods:
+    steps:
+      - restore_cache:
+          key: << pipeline.parameters.cocoapods_cache_key >>
+      - run:
+          name: Install Pods
+          command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec npx pod-install; cd ..;
+      - save_cache:
+          key: << pipeline.parameters.cocoapods_cache_key >>
+          paths:
+            - ios/Pods
+            # this changes after pod install because we don't install dev tools on CI
+            # so we save it to the cache to avoid comparison errors with Pods/Manifest.lock
+            - ios/Podfile.lock
+  prep-ios-env:
+    steps:
+      - checkout
+      - generate-checksums
+      - setup-awscli
+      - setup-env-file
+      - run:
+          name: Download fonts from s3
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download ios assets
+          command: ./scripts/setup/download-assets-ios
+      - install-node-modules
+      - run-relay-compiler
+      - update-echo
+      - install-gems
+      - install-cocoapods
+  build-app-ios:
+    parameters:
+      build_type:
+        type: string
+        default: "debug"
+    steps:
+      - run:
+          name: Build App
+          command: ./scripts/ci/ci-ios << parameters.build_type >>
+  # Records that this native state passed, so detect-native-changes skips it next time.
+  mark-native-passed:
+    parameters:
+      platform:
+        type: string
+      key:
+        type: string
+    steps:
+      - run:
+          name: Mark native build as passed
+          command: |
+            if [ -z "<< parameters.key >>" ]; then
+              echo "No native key (detect-native-changes didn't compute one), nothing to record"
+              exit 0
+            fi
+            # Non-fatal: the build already passed. Without the marker, the next pipeline builds again.
+            if ! echo "passed $CIRCLE_BUILD_URL" | aws s3 cp - "s3://artsy-citadel/eigen/ci-native-passed/<< parameters.platform >>/<< parameters.key >>"; then
+              echo "Warning: couldn't write the native marker, the next pipeline will build again"
+            fi
+  prep-android-env:
+    steps:
+      - android/change_java_version:
+          java_version: 17
+      - run:
+          name: Install ninja
+          command: sudo apt-get install ninja-build
+      - checkout
+      - generate-checksums
+      - setup-awscli
+      - setup-env-file
+      - install-node-modules
+      - run-relay-compiler
+      - update-echo
+      - run:
+          name: Download fonts from s3
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download android assets
+          command: ./scripts/setup/download-assets-android
+  build-app-android:
+    parameters:
+      build_type:
+        type: string
+        default: "release"
+    steps:
+      - android/restore_gradle_cache
+      - generate-query-map
+      - run:
+          name: Build App
+          no_output_timeout: 30m
+          command: ./scripts/ci/ci-android << parameters.build_type >>
+      - android/save_gradle_cache
+jobs:
+  detect-secrets:
+    docker:
+      - image: artsy/detect-secrets:ci # pragma: allowlist secret
+    resource_class: small
+    working_directory: /usr/src/app
+    steps:
+      - checkout
+      - run: ./scripts/detect-secrets/secrets-check-all
+
+  run-nightly-tasks:
+    environment:
+      BUNDLE_PATH: .vendor
+
+    macos:
+      xcode: << pipeline.parameters.xcode_version >>
+      resource_class: << pipeline.parameters.default_mac_runner >>
+
+    steps:
+      - checkout
+      - generate-checksums
+      - setup-awscli
+      - setup-env-file
+      - install-gems
+      - run:
+          name: Download android assets
+          command: ./scripts/setup/download-assets-android
+      - run:
+          name: Update rollout if needed
+          command: ./scripts/deploys/update-android-rollout-if-needed
+
+  run-native-tests-android:
+    docker:
+      - image: << pipeline.parameters.android_docker_image >>
+    resource_class: xlarge
+    steps:
+      - prep-android-env
+      - android/restore_gradle_cache
+      - run:
+          name: Run Android unit tests
+          command: yarn android:test:ci
+      - android/save_gradle_cache
+      - store_test_results:
+          path: android/app/build/test-results
+
+  nightly-create-next-version:
+    environment:
+      BUNDLE_PATH: .vendor
+
+    macos:
+      xcode: << pipeline.parameters.xcode_version >>
+      resource_class: << pipeline.parameters.default_mac_runner >>
+
+    steps:
+      - checkout
+      - generate-checksums
+      - setup-awscli
+      - setup-env-file
+      - install-gems
+      - run:
+          name: Create next version if needed
+          command: ./scripts/deploys/create-next-version-if-needed
+
+  check-and-deploy:
+    environment:
+      BUNDLE_PATH: .vendor
+
+    macos:
+      xcode: << pipeline.parameters.xcode_version >>
+      resource_class: << pipeline.parameters.default_mac_runner >>
+
+    steps:
+      - checkout
+      - generate-checksums
+      - install-gems
+      - setup-awscli
+      - install-node-modules
+      - run:
+          name: Determine Deployment Type
+          command: |
+            DEPLOYMENT_TYPE=$(./scripts/deploys/expo-updates/determine-deployment-type)
+            echo "export DEPLOYMENT_TYPE=$DEPLOYMENT_TYPE" >> $BASH_ENV
+      - run:
+          name: Handle Deployment for beta
+          command: |
+            if [ "$DEPLOYMENT_TYPE" == "beta" ]; then
+              echo "Native code changed, new beta needed!"
+              ./scripts/deploys/expo-updates/maybe-notify-beta-needed
+              circleci-agent step halt
+            fi
+      # - run-relay-compiler
+      # - run:
+      #     name: Handle Deployment for expo updates
+      #     command: |
+      #       echo "Triggering Expo updates deployment..."
+      #       ./scripts/deploys/expo-updates/deploy-to-expo-updates staging
+
+  test-js:
+    parallelism: 6
+    executor:
+      name: node/default
+      tag: << pipeline.parameters.node_version >>
+    resource_class: large
+    steps:
+      - checkout
+      - generate-checksums
+      - install-node-modules
+      - run-relay-compiler
+      - when:
+          condition: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
+          steps:
+            - update-staging-echo
+      - when:
+          condition:
+            not: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
+          steps:
+            - update-echo
+      # Without a warm transform cache, the first component test on every shard spends ~100-160s
+      # Babel-transforming the shared import graph (RN, palette, app code) and peaks at ~3GB RSS.
+      # The cache is keyed on the Node version (babel-jest hashes `process.version` into every entry)
+      # and the js_transform manifest (lockfile/babel/relay/jest config). When the manifest changes it
+      # falls back to the newest cache for the same Node version: most entries still hit, and the
+      # marker check below keeps that run at 2 workers. CircleCI caches are immutable, so it's
+      # written once per key.
+      - restore_cache:
+          keys:
+            - << pipeline.parameters.jest_cache_key >>-<< pipeline.parameters.node_version >>-{{ checksum ".manifests/js_transform" }}
+            - << pipeline.parameters.jest_cache_key >>-<< pipeline.parameters.node_version >>-
+      - run:
+          name: Run Jest tests
+          command: |
+            # Warm workers use ~1.1GB each, so 3 fit in `large` (8GB). Cold workers peak at ~3GB
+            # while transforming, so use 2 unless the restored cache was written for exactly this
+            # Node version and manifest (a directory alone may hold entries that all miss).
+            CACHE_ID="$(node --version)-$(sha256sum .manifests/js_transform | cut -d' ' -f1)"
+            WORKERS=2
+            if [ "$(cat .cache/jest/.cache-id 2>/dev/null)" = "$CACHE_ID" ]; then
+              WORKERS=3
+            else
+              echo "No warm Jest transform cache for $CACHE_ID, using 2 workers"
+            fi
+            SHARD=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
+            echo "Running shard $SHARD with $WORKERS workers"
+            # Jest's own --shard instead of `circleci tests split --split-by=timings`: junit testcase
+            # times leave out per-file module load/transform (most of the cost here), so timing-based
+            # splitting balanced no better, and --shard keeps jest's testMatch as the only test list.
+            yarn jest --ci --forceExit --logHeapUsage \
+              --maxWorkers=$WORKERS --workerIdleMemoryLimit=1.5G \
+              --reporters=default --reporters=jest-junit \
+              --shard=$SHARD
+            # Only reached if Jest passed; marks the cache as warm for this exact key.
+            mkdir -p .cache/jest && echo "$CACHE_ID" > .cache/jest/.cache-id
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+            # jest-junit compares this against the string "true"; quoted so YAML doesn't turn it
+            # into a boolean, which CircleCI doesn't pass through as "true".
+            JEST_JUNIT_UNIQUE_OUTPUT_NAME: "true"
+      # All shards race to save the same key; the first one wins and the rest skip. Only shards
+      # whose tests passed save, so a crashed shard can't lock in a partial cache.
+      - save_cache:
+          key: << pipeline.parameters.jest_cache_key >>-<< pipeline.parameters.node_version >>-{{ checksum ".manifests/js_transform" }}
+          paths:
+            - .cache/jest
+      - store_test_results:
+          path: ./reports/junit/
+
+  update-metaphysics:
+    executor:
+      name: node/default
+      tag: << pipeline.parameters.node_version >>
+    resource_class: medium
+    steps:
+      - checkout
+      - generate-checksums
+      - install-node-modules
+      - run-relay-compiler
+      - generate-query-map
+      - run:
+          name: Update metaphysics
+          command: yarn update-metaphysics
+
+  check-code:
+    executor:
+      name: node/default
+      tag: << pipeline.parameters.node_version >>
+    resource_class: large
+    steps:
+      - checkout
+      - generate-checksums
+      - install-node-modules
+      - run-relay-compiler
+      - update-echo
+      - run:
+          command: yarn type-check
+      - run:
+          name: Check Branch and Exit Early if Ignored
+          command: |
+            if [[ "$CIRCLE_BRANCH" == "main" || "$CIRCLE_BRANCH" == "beta-ios" || "$CIRCLE_BRANCH" == "beta-android" ]]; then
+              echo "On ignored branch ($CIRCLE_BRANCH). Exiting early."
+              circleci-agent step halt
+            fi
+      - run:
+          name: Danger
+          command: yarn danger ci --verbose
+
+  check-flags:
+    environment:
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
+
+    macos:
+      xcode: << pipeline.parameters.xcode_version >>
+      resource_class: << pipeline.parameters.default_mac_runner >>
+
+    steps:
+      - checkout
+      - generate-checksums
+      - install-node-modules
+      - install-gems
+      - run:
+          name: Check flags
+          command: ./scripts/check-flags/biweekly-flag-check.sh
+
+  # Changing the steps of build-test-app-ios / build-test-app-android (or prep-ios-env,
+  # prep-android-env and the caches they use) isn't part of the native key: bump KEY_SALT in
+  # scripts/ci/detect-native-changes so the next pipeline builds both instead of skipping.
+  build-test-app-ios:
+    environment:
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
+
+    macos:
+      xcode: << pipeline.parameters.xcode_version >>
+      resource_class: << pipeline.parameters.default_mac_runner >>
+
+    steps:
+      - prep-ios-env
+      - macos/preboot-simulator:
+          version: << pipeline.parameters.simulator_version >>
+          platform: "iOS"
+          device: "iPhone 17 Pro"
+      - build-app-ios
+      - run:
+          name: Run tests
+          command: ./scripts/ci/ci-test-ios
+      - mark-native-passed:
+          platform: ios
+          key: << pipeline.parameters.ios_native_key >>
+
+  build-test-app-android:
+    docker:
+      - image: << pipeline.parameters.android_docker_image >>
+    resource_class: xlarge
+    steps:
+      - prep-android-env
+      - build-app-android
+      - mark-native-passed:
+          platform: android
+          key: << pipeline.parameters.android_native_key >>
+
+  # Stands in for build-test-app-ios / build-test-app-android (same name, so the same required
+  # status check) when detect-native-changes found nothing to build.
+  native-skipped:
+    parameters:
+      platform:
+        type: string
+      key:
+        type: string
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Skipped (<< pipeline.parameters.native_skip_reason >>)
+          command: |
+            echo "Skipping the << parameters.platform >> native build: << pipeline.parameters.native_skip_reason >>"
+            echo "Native key: << parameters.key >>"
+
+parameters:
+  xcode_version:
+    type: string
+    default: "26.4.1"
+  node_version:
+    type: string
+    default: "24.6.0"
+  simulator_version:
+    type: string
+    default: "26.4"
+  default_mac_runner:
+    type: string
+    default: "m4pro.medium"
+  run_workflow_build-run-tests-for-echo:
+    type: boolean
+    default: false
+  run_workflow_test-build-deploy:
+    type: boolean
+    default: true
+  # Update Manually these versions below in order to hard overwrite the caches
+  node_modules_cache_key:
+    type: string
+    default: v32-node_modules-{{ checksum ".manifests/node_modules" }}
+  jest_cache_key:
+    type: string
+    default: v1-jest-cache
+  gems_cache_key:
+    type: string
+    default: v17-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+  cocoapods_cache_key:
+    type: string
+    default: v35-pods-{{ checksum ".manifests/cocoapods" }}
+  # Set by the setup config (.circleci/config.yml, scripts/ci/detect-native-changes). The defaults
+  # build everything, so a pipeline without them never skips a native job.
+  run_ios_native:
+    type: boolean
+    default: true
+  run_android_native:
+    type: boolean
+    default: true
+  ios_native_key:
+    type: string
+    default: ""
+  android_native_key:
+    type: string
+    default: ""
+  native_skip_reason:
+    type: string
+    default: ""
+  # Set by the CircleCI scheduled pipelines (project settings), which replace the legacy
+  # `triggers: schedule` that dynamic config doesn't support.
+  run_workflow_nightly:
+    type: boolean
+    default: false
+  run_workflow_flag_check:
+    type: boolean
+    default: false
+  android_docker_image:
+    type: string
+    default: "cimg/android:2026.10.1-node"
+
+workflows:
+  nightly:
+    when: << pipeline.parameters.run_workflow_nightly >>
+    jobs:
+      - nightly-create-next-version
+      - run-nightly-tasks
+      - run-native-tests-android
+
+  flag-check:
+    when: << pipeline.parameters.run_workflow_flag_check >>
+    jobs:
+      - check-flags
+
+  build-run-tests-for-echo:
+    when: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
+    jobs:
+      - test-js
+
+  test-build-deploy:
+    when: << pipeline.parameters.run_workflow_test-build-deploy >>
+    jobs:
+      - detect-secrets:
+          <<: *ignore_main_branches
+
+      - check-code:
+          context: danger-github-oss
+
+      - horizon/block:
+          <<: *beta_branches_only
+          context: horizon
+          project_id: 37
+
+      - check-and-deploy:
+          <<: *main_only
+
+      - test-js:
+          <<: *ignore_beta_branches
+
+      - update-metaphysics:
+          <<: *beta_branches_only
+
+  # The native jobs run only when detect-native-changes found something to build. Otherwise a
+  # stand-in with the same name reports the same required status check.
+  native-ios:
+    when:
+      and:
+        - << pipeline.parameters.run_workflow_test-build-deploy >>
+        - << pipeline.parameters.run_ios_native >>
+    jobs:
+      - build-test-app-ios:
+          <<: *ignore_beta_branches
+
+  native-ios-skipped:
+    when:
+      and:
+        - << pipeline.parameters.run_workflow_test-build-deploy >>
+        - not: << pipeline.parameters.run_ios_native >>
+    jobs:
+      - native-skipped:
+          <<: *ignore_beta_branches
+          name: build-test-app-ios
+          platform: ios
+          key: << pipeline.parameters.ios_native_key >>
+
+  native-android:
+    when:
+      and:
+        - << pipeline.parameters.run_workflow_test-build-deploy >>
+        - << pipeline.parameters.run_android_native >>
+    jobs:
+      - build-test-app-android:
+          <<: *ignore_beta_branches
+
+  native-android-skipped:
+    when:
+      and:
+        - << pipeline.parameters.run_workflow_test-build-deploy >>
+        - not: << pipeline.parameters.run_android_native >>
+    jobs:
+      - native-skipped:
+          <<: *ignore_beta_branches
+          name: build-test-app-android
+          platform: android
+          key: << pipeline.parameters.android_native_key >>

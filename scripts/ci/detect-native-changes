@@ -1,0 +1,148 @@
+#!/usr/bin/env bash
+# Decides whether the native CI jobs (build-test-app-ios, build-test-app-android) need to run, and
+# writes the pipeline parameters for the continuation config (.circleci/continue_config.yml).
+#
+# A platform is skipped when the PR is a draft, or when a "passed" marker exists in S3 for its key.
+# The key covers everything that can change the native build (see native_key below). Real native
+# jobs write the marker after they pass.
+#
+# Fails closed: anything unexpected builds both platforms. The script itself never exits non-zero
+# after writing the parameters, so a broken lookup can't hide the native checks.
+#
+# Usage: detect-native-changes <output json path>
+# Env: PIPELINE_PARAMETERS (JSON of the setup pipeline's own parameters),
+#      CIRCLE_PULL_REQUEST, DANGER_GITHUB_API_TOKEN (optional)
+set -uo pipefail
+
+OUT=${1:?output path}
+MARKER_PREFIX="s3://artsy-citadel/eigen/ci-native-passed"
+# Bump to force every native job to rebuild once (e.g. after changing the native job steps).
+KEY_SALT="v1"
+CONTINUE_CONFIG=".circleci/continue_config.yml"
+
+run_ios=true
+run_android=true
+ios_key=""
+android_key=""
+reason="native inputs changed or never built"
+
+write_params() {
+	local params=${PIPELINE_PARAMETERS:-}
+	[ -n "$params" ] || params='{}'
+	echo "$params" | jq \
+		--argjson run_ios "$run_ios" --argjson run_android "$run_android" \
+		--arg ios_key "$ios_key" --arg android_key "$android_key" --arg reason "$reason" \
+		'. + {
+			run_ios_native: $run_ios,
+			run_android_native: $run_android,
+			ios_native_key: $ios_key,
+			android_native_key: $android_key,
+			native_skip_reason: $reason
+		}' >"$OUT"
+	echo "Continuation parameters:"
+	cat "$OUT"
+}
+
+# Value of a pipeline parameter's `default:` in the continuation config
+param_default() {
+	awk -v name="  $1:" '$0 == name {found = 1; next} found && /default:/ {print; exit}' "$CONTINUE_CONFIG"
+}
+
+sha256_of_files() {
+	for file in "$@"; do
+		echo "$file $(sha256sum "$file" | cut -d' ' -f1)"
+	done
+}
+
+# Everything that can change a platform's native build:
+# - the Expo fingerprint (native dirs, native code in node_modules, app.json, autolinking config)
+# - keys.example.json (the key names react-native-keys generates native code from; CI builds with
+#   keys.shared.json from S3, which isn't in the repo)
+# - react-native-keys' yarn.lock entry (fingerprint.config.js ignores the module, but it has native code)
+# - the CI scripts and settings that build that platform
+native_key() {
+	local platform=$1 fingerprint=$2
+	{
+		echo "salt $KEY_SALT"
+		echo "fingerprint $fingerprint"
+		sha256_of_files keys.example.json
+		grep -A4 '^"react-native-keys@' yarn.lock
+		if [ "$platform" = ios ]; then
+			sha256_of_files Gemfile.lock scripts/ci/ci-ios scripts/ci/ci-test-ios scripts/ci/build-for-tests-ios scripts/ci/test-ios scripts/ci/ci-setup-export-vars
+			param_default xcode_version
+			param_default simulator_version
+		else
+			sha256_of_files scripts/ci/ci-android scripts/ci/build-for-tests-android scripts/ci/ci-setup-export-vars
+			param_default android_docker_image
+		fi
+	} | sha256sum | cut -d' ' -f1
+}
+
+marker_exists() {
+	aws s3api head-object --bucket artsy-citadel --key "eigen/ci-native-passed/$1/$2" >/dev/null 2>&1
+}
+
+# Any failure (no PR, rate limit, network) counts as "not a draft", so the native jobs run.
+is_draft_pr() {
+	[ -n "${CIRCLE_PULL_REQUEST:-}" ] || return 1
+	local number=${CIRCLE_PULL_REQUEST##*/}
+	local auth=()
+	if [ -n "${DANGER_GITHUB_API_TOKEN:-}" ]; then
+		auth=(-H "Authorization: Bearer $DANGER_GITHUB_API_TOKEN")
+	fi
+	curl -fsS ${auth[@]+"${auth[@]}"} -H "Accept: application/vnd.github+json" \
+		"https://api.github.com/repos/artsy/eigen/pulls/$number" | jq -e '.draft == true' >/dev/null
+}
+
+main() {
+	# Read from the JSON: CircleCI doesn't pass an unquoted YAML boolean in `environment:` as "true".
+	local run_test_build_deploy
+	run_test_build_deploy=$(echo "${PIPELINE_PARAMETERS:-}" | jq -r '."run_workflow_test-build-deploy" | if . == null then true else . end' 2>/dev/null || echo true)
+	if [ "$run_test_build_deploy" = "false" ]; then
+		# Echo and scheduled pipelines: the native workflows are gated off anyway.
+		reason="test-build-deploy workflow not requested"
+		return
+	fi
+
+	case "${CIRCLE_BRANCH:-}" in
+	beta-ios | beta-android)
+		# The native workflows ignore the beta branches, and the setup job skips yarn install here.
+		reason="beta branch (no native checks)"
+		return
+		;;
+	esac
+
+	if is_draft_pr; then
+		run_ios=false
+		run_android=false
+		reason="draft PR (runs when marked ready for review)"
+		return
+	fi
+
+	local fingerprint
+	fingerprint=$(yarn tsx scripts/pr-preview/checkNativeStatus.ts fingerprint | tail -n 1)
+	if ! [[ "$fingerprint" =~ ^[0-9a-f]{40}$ ]]; then
+		echo "Fingerprint failed (got \"$fingerprint\"), building both platforms"
+		return
+	fi
+	echo "Fingerprint: $fingerprint"
+
+	ios_key=$(native_key ios "$fingerprint")
+	android_key=$(native_key android "$fingerprint")
+	echo "iOS key: $ios_key"
+	echo "Android key: $android_key"
+
+	if marker_exists ios "$ios_key"; then
+		run_ios=false
+		reason="no native changes since a passing build"
+		echo "iOS already passed for this key ($MARKER_PREFIX/ios/$ios_key)"
+	fi
+	if marker_exists android "$android_key"; then
+		run_android=false
+		reason="no native changes since a passing build"
+		echo "Android already passed for this key ($MARKER_PREFIX/android/$android_key)"
+	fi
+}
+
+main
+write_params
