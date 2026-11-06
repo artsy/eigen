@@ -10,16 +10,22 @@ import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearch
 import { tappedArtAssistant } from "app/Components/GlobalSearchInput/artAssistantTracks"
 import { ProgressiveOnboardingArtAssistant } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingArtAssistant"
 import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
+import { SearchArtAssistantProvider } from "app/Scenes/Search/SearchArtAssistantContext"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { DiscoverSomethingNew } from "app/Scenes/Search/components/DiscoverSomethingNew/DiscoverSomethingNew"
 import { ExploreByCategory } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategory"
 import { FindInspirationDifferently } from "app/Scenes/Search/components/FindInspirationDifferently"
+import {
+  SEARCH_ART_ASSISTANT_SHEET_COLLAPSED_HEIGHT,
+  SearchArtAssistantSheet,
+} from "app/Scenes/Search/components/SearchArtAssistantSheet"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useEnableArtAssistant } from "app/utils/hooks/useEnableArtAssistant"
+import { useEnableArtAssistantSearchSheet } from "app/utils/hooks/useEnableArtAssistantSearchSheet"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { Schema } from "app/utils/track"
 import { memo, RefObject, Suspense, useRef, useState } from "react"
@@ -55,6 +61,7 @@ export const Search: React.FC = () => {
   const [isSearchOverlayVisible, setIsSearchOverlayVisible] = useState(false)
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
   const showArtAssistant = useEnableArtAssistant()
+  const showArtAssistantSheet = useEnableArtAssistantSearchSheet()
 
   const scrollYOffset = useRef(0)
   const { trackEvent } = useTracking()
@@ -156,6 +163,10 @@ export const Search: React.FC = () => {
             <FindInspirationDifferently />
 
             <Spacer y={4} />
+
+            {!!showArtAssistantSheet && (
+              <Flex height={SEARCH_ART_ASSISTANT_SHEET_COLLAPSED_HEIGHT} />
+            )}
           </ScrollView>
         )}
       </Flex>
@@ -174,8 +185,10 @@ export const SearchScreenQuery = graphql`
 type SearchScreenProps = StackScreenProps<any>
 
 const SearchScreenInner: React.FC<SearchScreenProps> = () => {
+  const showArtAssistantSheet = useEnableArtAssistantSearchSheet()
+
   return (
-    <>
+    <SearchArtAssistantProvider>
       <Screen>
         <Suspense fallback={<SearchPlaceholder />}>
           <Sentry.TimeToInitialDisplay record>
@@ -184,7 +197,8 @@ const SearchScreenInner: React.FC<SearchScreenProps> = () => {
         </Suspense>
       </Screen>
       <PortalHost name={`${OwnerType.search}-SearchOverlay`} />
-    </>
+      {!!showArtAssistantSheet && <SearchArtAssistantSheet />}
+    </SearchArtAssistantProvider>
   )
 }
 
