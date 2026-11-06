@@ -6664,81 +6664,6 @@ type AuctionResultsAggregationType {
   slice: AuctionResultsAggregation
 }
 
-"""
-An auction lot result
-"""
-type AuctionResultsByArtists {
-  artistId: String
-  boughtIn: Boolean!
-  categoryText: String
-  currency: String
-  date: ISO8601DateTime
-  dateText: String
-  depthCm: Int
-  description: String
-  diameterCm: Int
-  dimensionText: String
-  externalUrl: String
-  hammerPriceCents: BigInt
-  hammerPriceCentsUsd: BigInt
-  heightCm: Int
-  highEstimateCents: BigInt
-  highEstimateCentsUsd: BigInt
-  id: ID!
-  location: String
-  lotNumber: String
-  lowEstimateCents: BigInt
-  lowEstimateCentsUsd: BigInt
-  mediumText: String
-  organization: String
-  priceRealizedCents: BigInt
-  priceRealizedCentsUsd: BigInt
-  saleDate: String
-  saleDateText: String
-  saleOverEstimatePercentage: Float
-  saleTitle: String
-  title: String
-  widthCm: Int
-}
-
-"""
-The connection type for AuctionResultsByArtists.
-"""
-type AuctionResultsByArtistsConnection {
-  """
-  A list of edges.
-  """
-  edges: [AuctionResultsByArtistsEdge]
-
-  """
-  A list of nodes.
-  """
-  nodes: [AuctionResultsByArtists]
-  pageCursors: PageCursors
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-  totalCount: Int
-  totalPages: Int
-}
-
-"""
-An edge in a connection.
-"""
-type AuctionResultsByArtistsEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: String!
-
-  """
-  The item at the end of the edge.
-  """
-  node: AuctionResultsByArtists
-}
-
 enum AuctionResultsState {
   ALL
   PAST
@@ -28444,32 +28369,24 @@ type PageConnection {
 }
 
 type PageCursor {
-  """
-  first cursor on the page
-  """
   cursor: String!
-
-  """
-  is this the current page?
-  """
   isCurrent: Boolean!
-
-  """
-  page number out of totalPages
-  """
   page: Int!
 }
 
 type PageCursors {
+  """
+  Always includes current page
+  """
   around: [PageCursor!]!
 
   """
-  optional, may be included in field around
+  Optional, may be included in `around` (if current page is near the beginning).
   """
   first: PageCursor
 
   """
-  optional, may be included in field around
+  Optional, may be included in `around` (if current page is near the end).
   """
   last: PageCursor
   previous: PageCursor
@@ -32641,28 +32558,6 @@ type Query {
     """
     id: String!
   ): AuctionResult
-
-  """
-  Auction lot results
-  """
-  auctionResultsByArtistsConnection(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-    artistIds: [ID!]!
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): AuctionResultsByArtistsConnection
 
   """
   If user is logged out; status is `LOGGED_OUT`. If user is logged in; status is `LOGGED_IN`. If user is logged in with invalid authentication (401); 'Promise' resolves to 'Status.Invalid'. All other status codes will resolve to `LOGGED_IN` because we don't know whether or not the authentication is valid (error could be something else).
