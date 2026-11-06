@@ -10,7 +10,7 @@
 # after writing the parameters, so a broken lookup can't hide the native checks.
 #
 # Usage: detect-native-changes <output json path>
-# Env: RUN_TEST_BUILD_DEPLOY, PIPELINE_PARAMETERS (JSON of the setup pipeline's own parameters),
+# Env: PIPELINE_PARAMETERS (JSON of the setup pipeline's own parameters),
 #      CIRCLE_PULL_REQUEST, DANGER_GITHUB_API_TOKEN (optional)
 set -uo pipefail
 
@@ -94,7 +94,10 @@ is_draft_pr() {
 }
 
 main() {
-	if [ "${RUN_TEST_BUILD_DEPLOY:-true}" != "true" ]; then
+	# Read from the JSON: CircleCI doesn't pass an unquoted YAML boolean in `environment:` as "true".
+	local run_test_build_deploy
+	run_test_build_deploy=$(echo "${PIPELINE_PARAMETERS:-}" | jq -r '."run_workflow_test-build-deploy" | if . == null then true else . end' 2>/dev/null || echo true)
+	if [ "$run_test_build_deploy" = "false" ]; then
 		# Echo and scheduled pipelines: the native workflows are gated off anyway.
 		reason="test-build-deploy workflow not requested"
 		return

@@ -58,7 +58,6 @@ jobs:
       - run:
           name: Detect native changes
           environment:
-            RUN_TEST_BUILD_DEPLOY: << pipeline.parameters.run_workflow_test-build-deploy >>
             PIPELINE_PARAMETERS: >-
               {"run_workflow_build-run-tests-for-echo": << pipeline.parameters.run_workflow_build-run-tests-for-echo >>,
               "run_workflow_test-build-deploy": << pipeline.parameters.run_workflow_test-build-deploy >>,
