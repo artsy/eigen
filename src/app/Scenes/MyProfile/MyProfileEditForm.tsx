@@ -228,7 +228,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
                 alignItems="center"
               >
                 {!!localImagePath || values.photo ? (
-                  <Avatar src={localImagePath || values.photo} size="md" />
+                  <Avatar src={localImagePath || values.photo} size="md" performResize={false} />
                 ) : (
                   <Image source={require("images/profile_placeholder_avatar.webp")} />
                 )}
