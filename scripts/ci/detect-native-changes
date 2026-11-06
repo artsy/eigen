@@ -103,6 +103,14 @@ main() {
 		return
 	fi
 
+	case "${CIRCLE_BRANCH:-}" in
+	beta-ios | beta-android)
+		# The native workflows ignore the beta branches, and the setup job skips yarn install here.
+		reason="beta branch (no native checks)"
+		return
+		;;
+	esac
+
 	if is_draft_pr; then
 		run_ios=false
 		run_android=false

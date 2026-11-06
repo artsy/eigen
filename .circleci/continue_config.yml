@@ -150,7 +150,10 @@ commands:
               echo "No native key (detect-native-changes didn't compute one), nothing to record"
               exit 0
             fi
-            echo "passed $CIRCLE_BUILD_URL" | aws s3 cp - "s3://artsy-citadel/eigen/ci-native-passed/<< parameters.platform >>/<< parameters.key >>"
+            # Non-fatal: the build already passed. Without the marker, the next pipeline builds again.
+            if ! echo "passed $CIRCLE_BUILD_URL" | aws s3 cp - "s3://artsy-citadel/eigen/ci-native-passed/<< parameters.platform >>/<< parameters.key >>"; then
+              echo "Warning: couldn't write the native marker, the next pipeline will build again"
+            fi
   prep-android-env:
     steps:
       - android/change_java_version:
@@ -406,6 +409,9 @@ jobs:
           name: Check flags
           command: ./scripts/check-flags/biweekly-flag-check.sh
 
+  # Changing the steps of build-test-app-ios / build-test-app-android (or prep-ios-env,
+  # prep-android-env and the caches they use) isn't part of the native key: bump KEY_SALT in
+  # scripts/ci/detect-native-changes so the next pipeline builds both instead of skipping.
   build-test-app-ios:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching

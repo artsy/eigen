@@ -41,8 +41,16 @@ jobs:
     resource_class: medium
     steps:
       - checkout
+      # detect-native-changes needs node_modules and the aws cli only when it can skip something:
+      # not for echo/scheduled pipelines, and not on the beta branches (no native checks there).
       - when:
-          condition: << pipeline.parameters.run_workflow_test-build-deploy >>
+          condition:
+            and:
+              - << pipeline.parameters.run_workflow_test-build-deploy >>
+              - not:
+                  matches:
+                    pattern: "^beta-(ios|android)$"
+                    value: << pipeline.git.branch >>
           steps:
             - run:
                 name: Generate node_modules manifest
@@ -52,6 +60,9 @@ jobs:
             - node/install-packages:
                 pkg-manager: yarn-berry
                 cache-version: << pipeline.parameters.node_modules_cache_key >>
+                # Only the fingerprint runs here: skip the dependencies' build scripts and the root
+                # postinstall (echo download, prettier). Yarn patches still apply.
+                override-ci-command: yarn install --immutable --mode=skip-build
             - run:
                 name: Set up aws cli
                 command: scripts/setup/setup-awscli
