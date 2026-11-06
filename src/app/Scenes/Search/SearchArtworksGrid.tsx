@@ -19,6 +19,7 @@ import {
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { SCROLLVIEW_SEARCH_RESULTS_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
+import { useSearchArtAssistantContext } from "app/Scenes/Search/SearchArtAssistantContext"
 import { SearchEmptyResultsArtAssistantCTA } from "app/Scenes/Search/components/SearchEmptyResultsArtAssistantCTA"
 import { extractNodes } from "app/utils/extractNodes"
 import { useEnableArtAssistant } from "app/utils/hooks/useEnableArtAssistant"
@@ -70,6 +71,16 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
   }, [relay.hasMore(), relay.isLoading()])
 
   const appliedFiltersCount = useSelectedFiltersCount()
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const { setFilters: setArtAssistantFilters } = useSearchArtAssistantContext()
+
+  useEffect(() => {
+    setArtAssistantFilters(appliedFilters)
+  }, [appliedFilters, setArtAssistantFilters])
+
+  useEffect(() => {
+    return () => setArtAssistantFilters([])
+  }, [setArtAssistantFilters])
 
   useArtworkFilters({
     relay,

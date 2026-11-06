@@ -21,6 +21,7 @@ import { tappedSearchByImage } from "app/Components/SearchByPhotoButton/tracks"
 import { DEFAULT_SCREEN_ANIMATION_DURATION } from "app/Components/constants"
 import { RecentSearches } from "app/Scenes/Search/RecentSearches"
 import { SEARCH_INPUT_PLACEHOLDER, shouldStartSearching } from "app/Scenes/Search/Search"
+import { useSearchArtAssistantContext } from "app/Scenes/Search/SearchArtAssistantContext"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { useRecentSearches } from "app/Scenes/Search/SearchModel"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
@@ -131,6 +132,11 @@ export const GlobalSearchInputOverlay: React.FC<{
   const enableArtsyLens = useEnableArtsyLens()
   const showArtAssistant = useEnableArtAssistant()
   const tracking = useTracking()
+  const { setQuery: setArtAssistantQuery } = useSearchArtAssistantContext()
+
+  useEffect(() => {
+    setArtAssistantQuery(query)
+  }, [query, setArtAssistantQuery])
 
   useBackHandler(() => {
     if (!!canGoBack()) {
