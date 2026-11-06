@@ -1,10 +1,15 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { BiographyTestsQuery } from "__generated__/BiographyTestsQuery.graphql"
 import { Biography, MAX_CHARS } from "app/Components/Artist/Biography"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 describe("Biography", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableEnrichedMarkdown: false })
+  })
+
   const { renderWithRelay } = setupTestWrapper<BiographyTestsQuery>({
     Component: ({ artist }) => <Biography artist={artist!} />,
     query: graphql`
@@ -204,6 +209,45 @@ describe("Biography", () => {
           },
         }),
       })
+
+      expect(screen.getByLabelText("Read More")).toBeOnTheScreen()
+    })
+  })
+  describe("when AREnableEnrichedMarkdown is enabled", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableEnrichedMarkdown: true })
+    })
+
+    const layout = (height: number) => ({
+      nativeEvent: { layout: { height, width: 300, x: 0, y: 0 } },
+    })
+
+    it("renders the biography with the native markdown renderer", () => {
+      renderWithRelay({
+        Artist: () => ({
+          biographyBlurb: { text: "Some **bio**", credit: null },
+        }),
+      })
+
+      expect(screen.getByTestId("read-more-content")).toBeOnTheScreen()
+      expect(screen.getAllByText("Some **bio**").length).toBeGreaterThan(0)
+    })
+
+    it("shows Read More once the clamped content is measured as overflowing", () => {
+      renderWithRelay({
+        Artist: () => ({
+          biographyBlurb: { text: "a".repeat(MAX_CHARS + 20), credit: null },
+        }),
+      })
+
+      expect(screen.queryByLabelText("Read More")).toBeNull()
+
+      fireEvent(
+        screen.getByTestId("read-more-measure", { includeHiddenElements: true }),
+        "layout",
+        layout(200)
+      )
+      fireEvent(screen.getByTestId("read-more-content"), "layout", layout(40))
 
       expect(screen.getByLabelText("Read More")).toBeOnTheScreen()
     })

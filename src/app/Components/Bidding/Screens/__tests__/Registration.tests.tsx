@@ -9,6 +9,7 @@ import { RegistrationStatus } from "app/Components/Bidding/Screens/RegistrationR
 import { Address } from "app/Components/Bidding/types"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableWithoutFeedback } from "react-native"
@@ -150,6 +151,10 @@ describe("when the sale requires identity verification", () => {
 })
 
 describe("when pressing register button", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableEnrichedMarkdown: false })
+  })
+
   it("when a credit card needs to be added, it commits two mutations on button press", async () => {
     relay.commitMutation = commitMutationMock()
       .mockImplementationOnce((_, { onCompleted }) => {
