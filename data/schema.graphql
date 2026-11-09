@@ -11297,10 +11297,6 @@ type CommerceOrderEdge {
   node: CommerceOrder
 }
 
-type CommerceOrderError {
-  requestError: RequestError
-}
-
 """
 Represents either a state change or new offer
 """
@@ -11369,8 +11365,6 @@ type CommerceOrderRequiresAction {
   """
   actionData: CommerceOrderActionData!
 }
-
-union CommerceOrderResult = CommerceBuyOrder | CommerceOfferOrder | CommerceOrderError
 
 enum CommerceOrderSourceEnum {
   """
@@ -25095,16 +25089,6 @@ type Mutation {
   ): CommerceBuyerRejectOfferPayload
 
   """
-  Confirms the fulfillment of an order
-  """
-  commerceConfirmFulfillment(
-    """
-    Parameters for ConfirmFulfillment
-    """
-    input: CommerceConfirmFulfillmentInput!
-  ): CommerceConfirmFulfillmentPayload
-
-  """
   Confirms the pickup of an order
   """
   commerceConfirmPickup(
@@ -25123,26 +25107,6 @@ type Mutation {
     """
     input: CommerceCreateBankDebitSetupForOrderInput!
   ): CommerceCreateBankDebitSetupForOrderPayload
-
-  """
-  Creates an offer Order with inquiry as source.
-  """
-  commerceCreateInquiryOfferOrderWithArtwork(
-    """
-    Parameters for CreateInquiryOfferOrderWithArtwork
-    """
-    input: CommerceCreateInquiryOfferOrderWithArtworkInput!
-  ): CommerceCreateInquiryOfferOrderWithArtworkPayload
-
-  """
-  Creates a buy Order with inquiry as source.
-  """
-  commerceCreateInquiryOrderWithArtwork(
-    """
-    Parameters for CreateInquiryOrderWithArtwork
-    """
-    input: CommerceCreateInquiryOrderWithArtworkInput!
-  ): CommerceCreateInquiryOrderWithArtworkPayload
 
   """
   Creates an offer Order with artwork_page as source.
@@ -25298,16 +25262,6 @@ type Mutation {
   ): CommerceSubmitOrderPayload
 
   """
-  Submits an order with an offer.
-  """
-  commerceSubmitOrderWithOffer(
-    """
-    Parameters for SubmitOrderWithOffer
-    """
-    input: CommerceSubmitOrderWithOfferInput!
-  ): CommerceSubmitOrderWithOfferPayload
-
-  """
   Submits a pending offer.
   """
   commerceSubmitPendingOffer(
@@ -25316,16 +25270,6 @@ type Mutation {
     """
     input: CommerceSubmitPendingOfferInput!
   ): CommerceSubmitPendingOfferPayload
-
-  """
-  Updates the value of impulse_conversation_id on an order
-  """
-  commerceUpdateImpulseConversationId(
-    """
-    Parameters for UpdateImpulseConversationId
-    """
-    input: CommerceUpdateImpulseConversationIdInput!
-  ): CommerceUpdateImpulseConversationIdPayload
 
   """
   Complete the email OAuth flow by exchanging the authorization code for an account
@@ -32374,39 +32318,6 @@ type Query {
   ): CollectorProfileTypeConnection
 
   """
-  Find list of abandoned orders
-  """
-  commerceAbandonedOrders(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-    artworkId: ID!
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Ignored for the time being, future iterations will support this.
-    """
-    excludeFailedPayments: Boolean
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-    from: CommerceDateTime!
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-    sellerId: String!
-  ): CommerceOrderConnectionWithTotalCount
-
-  """
   Find balance of an account associated with a setup intent
   """
   commerceBankAccountBalance(bankAccountId: ID, setupIntentId: ID): CommerceBankAccountBalance
@@ -32415,56 +32326,6 @@ type Query {
   Buyer Activity Data for Collector Resume
   """
   commerceBuyerActivity(buyerId: String!, sellerId: String): CommerceBuyerActivity
-
-  """
-  Find list of competing orders
-  """
-  commerceCompetingOrders(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-    orderId: ID!
-  ): CommerceOrderConnectionWithTotalCount
-  commerceLineItems(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-    artworkId: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-    editionSetId: String
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-    orderStates: [CommerceOrderStateEnum!]
-  ): CommerceLineItemConnection
 
   """
   Return my orders
@@ -32500,7 +32361,6 @@ type Query {
   Find an order by ID
   """
   commerceOrder(code: String, id: ID): CommerceOrder
-  commerceOrderResult(code: String, id: String): CommerceOrderResult
 
   """
   Find list of orders
