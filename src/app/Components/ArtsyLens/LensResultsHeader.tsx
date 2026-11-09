@@ -15,7 +15,8 @@ const THUMBNAIL_SIZE = 44
 
 interface LensResultsHeaderProps {
   onBack: () => void
-  photoUri: string
+  /** Local file URI (Lens photo) or remote URL (an artwork's image). */
+  imageUri?: string | null
   title?: string
   /** Shows a Filter button at the end of the row when provided. */
   onFilterPress?: () => void
@@ -24,7 +25,7 @@ interface LensResultsHeaderProps {
 
 export const LensResultsHeader: React.FC<LensResultsHeaderProps> = ({
   onBack,
-  photoUri,
+  imageUri,
   title,
   onFilterPress,
   selectedFiltersCount = 0,
@@ -44,14 +45,16 @@ export const LensResultsHeader: React.FC<LensResultsHeaderProps> = ({
         </Touchable>
 
         <Flex ml={1} width={THUMBNAIL_SIZE} height={THUMBNAIL_SIZE} bg="mono10" overflow="hidden">
-          <Image
-            testID="lensResultsPhotoThumbnail"
-            src={photoUri}
-            width={THUMBNAIL_SIZE}
-            height={THUMBNAIL_SIZE}
-            resizeMode="cover"
-            performResize={false}
-          />
+          {!!imageUri && (
+            <Image
+              testID="lensResultsPhotoThumbnail"
+              src={imageUri}
+              width={THUMBNAIL_SIZE}
+              height={THUMBNAIL_SIZE}
+              resizeMode="cover"
+              performResize={false}
+            />
+          )}
         </Flex>
 
         {!!title && (

@@ -1,13 +1,20 @@
-import { ShareIcon, ShowIcon } from "@artsy/icons/native"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { MagicMagnifyingGlassIcon, ShareIcon, ShowIcon } from "@artsy/icons/native"
 import { Flex, Text, useSpace, Join, Spacer, Touchable } from "@artsy/palette-mobile"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
+import {
+  findSimilarArtworksPath,
+  tappedFindSimilarArtworks,
+} from "app/Components/ArtsyLens/findSimilarArtworksTracks"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ArtworkSaveButton } from "app/Scenes/Artwork/Components/ArtworkSaveButton"
 import { isOpenOrUpcomingSale } from "app/Scenes/Artwork/utils/isOpenOrUpcomingSale"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { cm2in } from "app/utils/conversions"
 import { useEchoMessage } from "app/utils/hooks/useEchoMessage"
+import { useEnableArtsyLens } from "app/utils/hooks/useEnableArtsyLens"
 import { Schema } from "app/utils/track"
 import { take } from "lodash"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -45,6 +52,7 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
   const { trackEvent } = useTracking()
   const space = useSpace()
   const virVideoURL = useEchoMessage("ARVIRVideo") ?? ""
+  const enableFindSimilarArtworks = useEnableArtsyLens()
 
   const openOrUpcomingSale = isOpenOrUpcomingSale(sale)
 
@@ -109,6 +117,34 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
             <Text variant="sm">Share</Text>
           </UtilButton>
         </Touchable>
+        {!!enableFindSimilarArtworks && (
+          <RouterLink
+            to={findSimilarArtworksPath(slug)}
+            disablePrefetch
+            accessibilityRole="button"
+            accessibilityLabel="Find similar artworks"
+            hitSlop={{
+              top: space(1),
+              bottom: space(1),
+              right: space(1),
+            }}
+            haptic
+            onPress={() => {
+              trackEvent(
+                tappedFindSimilarArtworks({
+                  contextModule: ContextModule.artworkActions,
+                  contextScreenOwnerType: OwnerType.artwork,
+                })
+              )
+            }}
+            testID="artwork-find-similar-button"
+          >
+            <UtilButton>
+              <MagicMagnifyingGlassIcon mr={0.5} />
+              <Text variant="sm">Find similar</Text>
+            </UtilButton>
+          </RouterLink>
+        )}
       </Join>
     </Flex>
   )
