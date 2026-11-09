@@ -111,7 +111,7 @@ export const SharedArtworkList: FC<SharedArtworkListScreenProps> = ({ collection
   const artworks = extractNodes(data?.collection?.artworks)
 
   const artworkListEntity: HeaderMenuArtworkListEntity | null =
-    isOwner && collection
+    isOwner && collection && !collection.default
       ? {
           title: collection.name,
           internalID: collection.internalID,
@@ -185,6 +185,7 @@ export const SharedArtworkListScreenQuery = graphql`
     $sort: CollectionArtworkSorts
   ) {
     collection(id: $collectionID, userID: $userID) {
+      default
       name
       internalID
       slug
