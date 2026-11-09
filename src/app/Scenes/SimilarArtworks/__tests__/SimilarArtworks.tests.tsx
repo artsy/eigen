@@ -1,5 +1,5 @@
 import FastImage from "@d11/react-native-fast-image"
-import { act, fireEvent, screen, within } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor, within } from "@testing-library/react-native"
 import { SimilarArtworksScreen } from "app/Scenes/SimilarArtworks/SimilarArtworks"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -99,7 +99,7 @@ describe("SimilarArtworks", () => {
     expect(await screen.findByTestId("artworkGridItem-Artwork 2")).toBeOnTheScreen()
   })
 
-  it("shows the empty state instead of crashing when the search fails", async () => {
+  it("shows a retryable error instead of crashing when the search fails", async () => {
     const env = getMockRelayEnvironment()
 
     renderWithWrappers(<SimilarArtworksScreen artworkID="source-artwork" />)
@@ -107,12 +107,18 @@ describe("SimilarArtworks", () => {
     expect(screen.getByText("Searching for similar works…")).toBeOnTheScreen()
 
     act(() => {
-      env.mock.rejectMostRecentOperation(new Error("Unknown argument artworkID"))
+      env.mock.rejectMostRecentOperation(new Error("Network request failed"))
     })
 
-    expect(
-      await screen.findByText("We couldn't find similar works for this artwork yet.")
-    ).toBeOnTheScreen()
+    expect(await screen.findByText("Unable to load")).toBeOnTheScreen()
     expect(screen.getByLabelText("Back")).toBeOnTheScreen()
+
+    fireEvent.press(screen.getByLabelText("Retry"))
+
+    await waitFor(() =>
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "SimilarArtworksQuery"
+      )
+    )
   })
 })

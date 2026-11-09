@@ -44,8 +44,8 @@ export const LensResultsHeader: React.FC<LensResultsHeaderProps> = ({
           <ChevronLeftIcon fill="mono100" />
         </Touchable>
 
-        <Flex ml={1} width={THUMBNAIL_SIZE} height={THUMBNAIL_SIZE} bg="mono10" overflow="hidden">
-          {!!imageUri && (
+        {!!imageUri && (
+          <Flex ml={1} width={THUMBNAIL_SIZE} height={THUMBNAIL_SIZE} bg="mono10" overflow="hidden">
             <Image
               testID="lensResultsPhotoThumbnail"
               src={imageUri}
@@ -54,8 +54,8 @@ export const LensResultsHeader: React.FC<LensResultsHeaderProps> = ({
               resizeMode="cover"
               performResize={false}
             />
-          )}
-        </Flex>
+          </Flex>
+        )}
 
         {!!title && (
           <Flex flex={1} ml={1}>

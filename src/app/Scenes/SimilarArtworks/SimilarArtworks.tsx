@@ -5,12 +5,14 @@ import { SimilarArtworks_artworks$key } from "__generated__/SimilarArtworks_artw
 import { LensResultsHeader } from "app/Components/ArtsyLens/LensResultsHeader"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
+import { useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const SEARCHING_TITLE = "Searching for similar works…"
@@ -21,11 +23,18 @@ interface SimilarArtworksProps {
   artworkID: string
 }
 
-const SimilarArtworks: React.FC<SimilarArtworksProps> = ({ artworkID }) => {
-  const queryData = useLazyLoadQuery<SimilarArtworksQuery>(similarArtworksQuery, {
-    artworkID,
-    count: PAGE_SIZE,
-  })
+interface SimilarArtworksWithRetryProps extends SimilarArtworksProps {
+  fetchKey: number
+  onRetry: () => void
+}
+
+const SimilarArtworks: React.FC<SimilarArtworksWithRetryProps> = ({ artworkID, fetchKey }) => {
+  const queryData = useLazyLoadQuery<SimilarArtworksQuery>(
+    similarArtworksQuery,
+    { artworkID, count: PAGE_SIZE },
+    // Relay caches the failed request, so a retry needs a new key to fetch again
+    { fetchKey }
+  )
 
   const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment<
     SimilarArtworksQuery,
@@ -113,28 +122,31 @@ const SimilarArtworksPlaceholder: React.FC = () => {
   )
 }
 
-/**
- * Shown when the query fails (e.g. the API doesn't support searching by artwork yet). Keeps the
- * header so the user can always navigate back.
- */
-const SimilarArtworksError: React.FC = () => {
-  return (
-    <Screen>
-      <LensResultsHeader onBack={goBack} title={MATCHES_TITLE} />
-      <Screen.Body fullwidth pt={1}>
-        <EmptyState />
-      </Screen.Body>
-    </Screen>
-  )
-}
-
-const SimilarArtworksWithSuspense = withSuspense<SimilarArtworksProps>({
+const SimilarArtworksWithSuspense = withSuspense<SimilarArtworksWithRetryProps>({
   Component: SimilarArtworks,
   LoadingFallback: SimilarArtworksPlaceholder,
-  ErrorFallback: () => <SimilarArtworksError />,
+  // Keeps a way back on screen and lets the user retry, instead of the route-level error screen
+  ErrorFallback: ({ error, resetErrorBoundary }, { onRetry }) => (
+    <Screen>
+      <LensResultsHeader onBack={goBack} />
+      <Screen.Body fullwidth>
+        <LoadFailureView
+          error={error}
+          onRetry={() => {
+            onRetry()
+            resetErrorBoundary()
+          }}
+          useSafeArea={false}
+          trackErrorBoundary={false}
+        />
+      </Screen.Body>
+    </Screen>
+  ),
 })
 
 export const SimilarArtworksScreen: React.FC<SimilarArtworksProps> = ({ artworkID }) => {
+  const [fetchKey, setFetchKey] = useState(0)
+
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
@@ -142,7 +154,11 @@ export const SimilarArtworksScreen: React.FC<SimilarArtworksProps> = ({ artworkI
         context_screen_owner_slug: artworkID,
       })}
     >
-      <SimilarArtworksWithSuspense artworkID={artworkID} />
+      <SimilarArtworksWithSuspense
+        artworkID={artworkID}
+        fetchKey={fetchKey}
+        onRetry={() => setFetchKey((key) => key + 1)}
+      />
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
