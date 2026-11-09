@@ -679,7 +679,7 @@ export const artsyDotNetRoutes = defineRoutes([
   },
   {
     // Alias for artwork URLs with a trailing segment. Must stay below the more specific
-    // /artwork/:artworkID/medium and /browse-similar-works routes (first match wins).
+    // /artwork/:artworkID/medium, /browse-similar-works and /similar routes (first match wins).
     path: "/artwork/:artworkID/:optional",
     name: "Artwork",
     Component: ArtworkScreen,

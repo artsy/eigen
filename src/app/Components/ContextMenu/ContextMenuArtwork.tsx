@@ -14,7 +14,7 @@ import { ContextMenuArtwork_artwork$key } from "__generated__/ContextMenuArtwork
 import {
   findSimilarArtworksPath,
   tappedFindSimilarArtworks,
-} from "app/Components/ArtsyLens/findSimilarArtworksTracks"
+} from "app/Components/ArtsyLens/findSimilarArtworks"
 import { ArtworkRailCardProps } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { ContextMenuArtworkPreviewCard } from "app/Components/ContextMenu/ContextMenuArtworkPreviewCard"
@@ -180,14 +180,12 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
         systemIcon: "sparkle.magnifyingglass",
         onPress: () => {
           InteractionManager.runAfterInteractions(() => {
-            if (contextScreenOwnerType) {
-              trackEvent(
-                tappedFindSimilarArtworks({
-                  contextModule: ContextModule.longPressContextMenu,
-                  contextScreenOwnerType,
-                })
-              )
-            }
+            trackEvent(
+              tappedFindSimilarArtworks({
+                contextModule: ContextModule.longPressContextMenu,
+                contextScreenOwnerType: contextScreenOwnerType ?? ("unknown" as ScreenOwnerType),
+              })
+            )
 
             navigate(findSimilarArtworksPath(slug))
           })

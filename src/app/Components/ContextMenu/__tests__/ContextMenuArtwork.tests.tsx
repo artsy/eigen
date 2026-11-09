@@ -4,6 +4,7 @@ import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Platform } from "react-native"
 import { graphql } from "react-relay"
@@ -87,6 +88,13 @@ describe("ContextMenuArtwork", () => {
         await waitFor(() => {
           expect(navigate).toHaveBeenCalledWith("/artwork/the-artwork-slug/similar")
         })
+        expect(mockTrackEvent).toHaveBeenCalledWith(
+          expect.objectContaining({
+            action: "tappedSearchByImage",
+            context_module: "longPressContextMenu",
+            type: "find_similar",
+          })
+        )
       })
     })
   })

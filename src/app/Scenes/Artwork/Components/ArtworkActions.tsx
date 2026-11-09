@@ -1,12 +1,12 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { MagicMagnifyingGlassIcon, ShareIcon, ShowIcon } from "@artsy/icons/native"
-import { Flex, Text, useSpace, Join, Spacer, Touchable } from "@artsy/palette-mobile"
+import { Flex, Text, useSpace, Touchable } from "@artsy/palette-mobile"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import {
   findSimilarArtworksPath,
   tappedFindSimilarArtworks,
-} from "app/Components/ArtsyLens/findSimilarArtworksTracks"
+} from "app/Components/ArtsyLens/findSimilarArtworks"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ArtworkSaveButton } from "app/Scenes/Artwork/Components/ArtworkSaveButton"
 import { isOpenOrUpcomingSale } from "app/Scenes/Artwork/utils/isOpenOrUpcomingSale"
@@ -83,69 +83,74 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
   }
 
   return (
-    <Flex justifyContent="center" flexDirection="row" width="100%">
-      <Join separator={<Spacer x={2} />}>
-        <ArtworkSaveButton artwork={artwork} saveToDefaultCollectionOnly={openOrUpcomingSale} />
-        {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable) && (
-          <Touchable
-            accessibilityRole="button"
-            hitSlop={{
-              top: space(1),
-              bottom: space(1),
-            }}
-            haptic
-            onPress={() => openViewInRoom()}
-          >
-            <UtilButton>
-              <ShowIcon mr={0.5} />
-              <Text variant="sm">View in Room</Text>
-            </UtilButton>
-          </Touchable>
-        )}
+    // Wraps onto a second line when the actions don't fit (e.g. 375pt screens with View in Room)
+    <Flex
+      justifyContent="center"
+      flexDirection="row"
+      flexWrap="wrap"
+      width="100%"
+      style={{ columnGap: space(2), rowGap: space(2) }}
+    >
+      <ArtworkSaveButton artwork={artwork} saveToDefaultCollectionOnly={openOrUpcomingSale} />
+      {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable) && (
         <Touchable
           accessibilityRole="button"
+          hitSlop={{
+            top: space(1),
+            bottom: space(1),
+          }}
+          haptic
+          onPress={() => openViewInRoom()}
+        >
+          <UtilButton>
+            <ShowIcon mr={0.5} />
+            <Text variant="sm">View in Room</Text>
+          </UtilButton>
+        </Touchable>
+      )}
+      <Touchable
+        accessibilityRole="button"
+        hitSlop={{
+          top: space(1),
+          bottom: space(1),
+          right: space(1),
+        }}
+        haptic
+        onPress={() => shareOnPress()}
+      >
+        <UtilButton>
+          <ShareIcon mr={0.5} />
+          <Text variant="sm">Share</Text>
+        </UtilButton>
+      </Touchable>
+      {!!enableFindSimilarArtworks && (
+        <RouterLink
+          to={findSimilarArtworksPath(slug)}
+          disablePrefetch
+          accessibilityRole="button"
+          accessibilityLabel="Find similar artworks"
           hitSlop={{
             top: space(1),
             bottom: space(1),
             right: space(1),
           }}
           haptic
-          onPress={() => shareOnPress()}
+          onPress={() => {
+            trackEvent(
+              tappedFindSimilarArtworks({
+                contextModule: ContextModule.artworkActions,
+                contextScreenOwnerType: OwnerType.artwork,
+              })
+            )
+          }}
+          testID="artwork-find-similar-button"
         >
           <UtilButton>
-            <ShareIcon mr={0.5} />
-            <Text variant="sm">Share</Text>
+            <MagicMagnifyingGlassIcon mr={0.5} />
+            <Text variant="sm">Find similar</Text>
           </UtilButton>
-        </Touchable>
-        {!!enableFindSimilarArtworks && (
-          <RouterLink
-            to={findSimilarArtworksPath(slug)}
-            disablePrefetch
-            accessibilityRole="button"
-            accessibilityLabel="Find similar artworks"
-            hitSlop={{
-              top: space(1),
-              bottom: space(1),
-              right: space(1),
-            }}
-            haptic
-            onPress={() => {
-              trackEvent(
-                tappedFindSimilarArtworks({
-                  contextModule: ContextModule.artworkActions,
-                  contextScreenOwnerType: OwnerType.artwork,
-                })
-              )
-            }}
-            testID="artwork-find-similar-button"
-          >
-            <UtilButton>
-              <MagicMagnifyingGlassIcon mr={0.5} />
-              <Text variant="sm">Find similar</Text>
-            </UtilButton>
-          </RouterLink>
-        )}
-      </Join>
+        </RouterLink>
+      )}
     </Flex>
   )
 }
