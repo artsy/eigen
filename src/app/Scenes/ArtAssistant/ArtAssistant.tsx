@@ -18,8 +18,10 @@ import {
 import { FlashList, FlashListRef } from "@shopify/flash-list"
 import { ArtAssistantEmptyState } from "app/Scenes/ArtAssistant/Components/ArtAssistantEmptyState"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/Components/ArtAssistantMessage"
+import { ArtAssistantVoiceInputButton } from "app/Scenes/ArtAssistant/Components/ArtAssistantVoiceInputButton"
 import { useArtAssistantConversation } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
 import { useArtAssistantImageAttachment } from "app/Scenes/ArtAssistant/hooks/useArtAssistantImageAttachment"
+import { useArtAssistantVoiceInput } from "app/Scenes/ArtAssistant/hooks/useArtAssistantVoiceInput"
 import {
   ArtAssistantImage,
   ArtAssistantMessage as ArtAssistantMessageType,
@@ -73,6 +75,15 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
   const { attachment, pick: pickImage, remove: removeImage } = useArtAssistantImageAttachment()
   const isUploadingImage = attachment?.status === "uploading"
   const attachedImage = attachment?.status === "ready" ? attachment.image : undefined
+  const enableVoiceInput = useFeatureFlag("AREnableArtAssistantVoiceInput")
+  const voiceInput = useArtAssistantVoiceInput(setPrompt)
+  const isListening = voiceInput.status !== "idle"
+  // The microphone takes the Send button's place until there is something to send. It stays while
+  // listening, as the stop button, even though the transcript is already filling the composer.
+  const showVoiceInputButton =
+    enableVoiceInput &&
+    voiceInput.isAvailable &&
+    (isListening || (!prompt.trim().length && !attachment))
   const composerKeyboardGap = space(1)
   const messageGap = space(2)
   const canSend =
@@ -89,6 +100,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
 
   const handleOpenNewChatDialog = () => {
     dismissComposerKeyboard()
+    voiceInput.cancel()
     setIsNewChatDialogVisible(true)
   }
 
@@ -98,12 +110,19 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
     anchoredTurn.current = null
     setMessageHeights({})
     removeImage()
+    voiceInput.cancel()
     startNewConversation()
   }
 
   const handleAddImage = () => {
     dismissComposerKeyboard()
+    voiceInput.cancel()
     void pickImage()
+  }
+
+  const handleStartVoiceInput = () => {
+    dismissComposerKeyboard()
+    void voiceInput.start()
   }
 
   const handleMessageLayout = useCallback((messageID: string, height: number) => {
@@ -128,6 +147,9 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
 
     pendingScrollIndex.current = userMessageIndex
     void submit(promptText.trim(), { type, image })
+    // A suggestion can be tapped mid-dictation; the rest of the transcript must not refill the
+    // composer that was just cleared.
+    voiceInput.cancel()
     setPrompt("")
     dismissComposerKeyboard()
   }
@@ -409,7 +431,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
               flex={1}
               flexDirection="row"
               alignItems="flex-end"
-              borderColor={isComposerFocused ? "blue100" : "mono15"}
+              borderColor={isComposerFocused || isListening ? "blue100" : "mono15"}
               borderRadius={COMPOSER_COLLAPSED_HEIGHT / 2}
               borderWidth={1}
               gap={1}
@@ -440,11 +462,13 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
               <Flex flex={1}>
                 <Input
                   accessibilityLabel="Art Assistant prompt"
+                  // The transcript owns the text while listening, so typing would be overwritten.
+                  editable={!isListening}
                   multiline
                   onBlur={() => setIsComposerFocused(false)}
                   onChangeText={setPrompt}
                   onFocus={() => setIsComposerFocused(true)}
-                  placeholder="Tell us what you'd like..."
+                  placeholder={isListening ? "Listening..." : "Tell us what you'd like..."}
                   placeholderTextColor={color("mono60")}
                   ref={composerInputRef}
                   style={{
@@ -462,27 +486,36 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
               </Flex>
             </Flex>
 
-            <Touchable
-              accessibilityLabel="Send"
-              accessibilityRole="button"
-              accessibilityState={{ disabled: !canSend }}
-              disabled={!canSend}
-              onPress={handleSend}
-              style={{ borderRadius: 50, overflow: "hidden" }}
-            >
-              <Flex
-                alignItems="center"
-                backgroundColor={canSend ? "blue100" : "mono30"}
-                borderRadius={50}
-                height={50}
-                justifyContent="center"
-                px={2}
+            {showVoiceInputButton ? (
+              <ArtAssistantVoiceInputButton
+                isHearing={voiceInput.status === "listening"}
+                isListening={isListening}
+                onPress={isListening ? voiceInput.stop : handleStartVoiceInput}
+                volume={voiceInput.volume}
+              />
+            ) : (
+              <Touchable
+                accessibilityLabel="Send"
+                accessibilityRole="button"
+                accessibilityState={{ disabled: !canSend }}
+                disabled={!canSend}
+                onPress={handleSend}
+                style={{ borderRadius: 50, overflow: "hidden" }}
               >
-                <Text variant="sm" color="mono0">
-                  Send
-                </Text>
-              </Flex>
-            </Touchable>
+                <Flex
+                  alignItems="center"
+                  backgroundColor={canSend ? "blue100" : "mono30"}
+                  borderRadius={50}
+                  height={50}
+                  justifyContent="center"
+                  px={2}
+                >
+                  <Text variant="sm" color="mono0">
+                    Send
+                  </Text>
+                </Flex>
+              </Touchable>
+            )}
           </Flex>
         </KeyboardAvoidingContainer>
 

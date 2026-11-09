@@ -185,6 +185,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtAssistantImageSearch",
   },
+  AREnableArtAssistantVoiceInput: {
+    description: "Enable dictating prompts in Art Assistant",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
   AREnableCityGuideItineraries: {
     description: "Enable City Guide Itineraries",
     readyForRelease: true,
