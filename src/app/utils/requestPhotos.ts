@@ -38,15 +38,22 @@ export async function showPhotoActionSheet(
           if (buttonIndex === 0) {
             photos = await requestPhotos(allowMultiple)
             resolve(photos)
-          }
-          if (buttonIndex === 1) {
+          } else if (buttonIndex === 1) {
             const photo = await ImagePicker.openCamera({
               mediaType: "photo",
             })
             photos = [photo]
             resolve(photos)
+          } else {
+            // Cancel button or the action sheet was dismissed
+            resolve([])
           }
         } catch (error) {
+          // Backing out of the picker or camera is not an error, treat it as no selection
+          if ((error as { code?: string } | undefined)?.code === "E_PICKER_CANCELLED") {
+            resolve([])
+            return
+          }
           reject(error)
         }
       }
