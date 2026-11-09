@@ -13728,6 +13728,7 @@ __metadata:
     expo-file-system: "npm:57.0.6"
     expo-image-manipulator: "npm:57.0.16"
     expo-navigation-bar: "npm:57.0.2"
+    expo-speech-recognition: "npm:57.1.1"
     expo-updates: "patch:expo-updates@npm%3A57.0.21#~/.yarn/patches/expo-updates-npm-57.0.21-63a9a567f4.patch"
     formik: "npm:2.2.9"
     graphql: "npm:16.8.1"
@@ -15227,6 +15228,17 @@ __metadata:
   version: 57.0.3
   resolution: "expo-server@npm:57.0.3"
   checksum: 10c0/541d9b319ba513df718868c87a8d57e30161c3879b7d5b43f308923290ce5ee349a1b3469901c2f382984b6595f4cf6beaee9d870f5eb874c45ddc0a42a13e56
+  languageName: node
+  linkType: hard
+
+"expo-speech-recognition@npm:57.1.1":
+  version: 57.1.1
+  resolution: "expo-speech-recognition@npm:57.1.1"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/716c60c2201777ad9cd58c0444222f65bc5fca9ab6d4482bfee60c19ab750a90e5dddd8366791bebf3362cc3b6df8ed8a217bfe9b07ce3fe495d76f989df05d9
   languageName: node
   linkType: hard
 
