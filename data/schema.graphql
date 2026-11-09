@@ -3720,6 +3720,15 @@ type ArtistsWithAlertCountsEdge {
 Artnet record of an artwork.
 """
 type ArtnetArtwork {
+  """
+  Medium names beyond the primary, in Gravity's order.
+  """
+  additionalMediums: [String]
+
+  """
+  Artnet's own artist ID, as last pushed or imported. Null means Gravity has never asserted one, which is what keeps the artwork unpublishable on Artnet.
+  """
+  artnetArtistId: String
   artnetEditionSets: [ArtnetEditionSet]
   artnetId: String
 
@@ -3747,12 +3756,22 @@ type ArtnetArtwork {
   internalID: ID!
 
   """
-  Medium names + materials for this artwork, e.g. Paintings, Oil.
+  Free-text materials (e.g. "oil on canvas"), distinct from the medium vocabulary.
   """
-  mediums: [String]
+  materials: String
+
+  """
+  Every medium name, primary first.
+  """
+  mediums: [String] @deprecated(reason: "Use primaryMedium and additionalMediums")
   priceCurrency: String
   priceFrom: Money
   priceTo: Money
+
+  """
+  The medium Art OS shows as this artwork's primary; Artnet itself holds a flat list.
+  """
+  primaryMedium: String
 
   """
   Whether the artwork is published on Artnet.
@@ -3981,6 +4000,34 @@ enum ArtnetImportState {
   FINALIZING
   PENDING
   PROCESSING
+}
+
+"""
+A field the push could not send but did not refuse to push over, because Artnet's own limits leave it no form to send it in.
+"""
+type ArtnetPushSkip {
+  """
+  The field left out of the push, e.g. "price" or "editions".
+  """
+  field: String
+
+  """
+  Why Artnet could not be sent this field.
+  """
+  reason: String
+}
+
+"""
+Artnet's own sale-status vocabulary for an edition. Setting one of the statuses no Gravity availability maps to (Not Available, Price on Request, Contact Gallery) is only possible here.
+"""
+enum ArtnetSaleStatus {
+  CONTACT_GALLERY
+  FOR_SALE
+  NOT_AVAILABLE
+  NOT_FOR_SALE
+  PRICE_ON_REQUEST
+  RESERVED
+  SOLD
 }
 
 type ArtsyShippingOptInMutationFailure {
@@ -12987,11 +13034,6 @@ type CreateArtnetArtworkFailure {
 
 input CreateArtnetArtworkMutationInput {
   """
-  Artnet's own ID for the artist (Gravity has no mapping to it).
-  """
-  artnetArtistID: Int
-
-  """
   The ID of the artwork to distribute to Artnet.
   """
   artworkID: String!
@@ -13015,6 +13057,11 @@ union CreateArtnetArtworkResponseOrError = CreateArtnetArtworkFailure | CreateAr
 
 type CreateArtnetArtworkSuccess {
   artnetArtwork: ArtnetArtwork
+
+  """
+  Fields the push left out because Artnet cannot express them, which is why Artnet may show less than Gravity holds. Not a failure: the rest of the push went through.
+  """
+  skipped: [ArtnetPushSkip]
 }
 
 type CreateArtnetImportArtistAssignmentFailure {
@@ -25323,7 +25370,7 @@ type Mutation {
   createArtist(input: CreateArtistMutationInput!): CreateArtistMutationPayload
 
   """
-  Creates an ArtnetArtwork from an existing artwork and its catalog artwork, and pushes the create to Artnet. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
+  Creates an ArtnetArtwork from an existing artwork and its catalog artwork, and pushes the create to Artnet. Gravity resolves the Artnet artist itself and refuses a create it cannot match, so correcting the artist in Gravity is what makes a retry succeed. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
   """
   createArtnetArtwork(input: CreateArtnetArtworkMutationInput!): CreateArtnetArtworkMutationPayload
 
@@ -26414,9 +26461,16 @@ type Mutation {
   updateArtistSocials(input: UpdateArtistSocialsMutationInput!): UpdateArtistSocialsMutationPayload
 
   """
-  Updates an ArtnetArtwork and pushes the supported changes to Artnet. At least one of `published`, `availability` or `syncOn` is required. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
+  Updates an ArtnetArtwork and pushes the supported changes to Artnet. At least one of `published`, `availability`, `materials`, `priceToMinor` or `syncOn` is required. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
   """
   updateArtnetArtwork(input: UpdateArtnetArtworkMutationInput!): UpdateArtnetArtworkMutationPayload
+
+  """
+  Sets an Artnet edition's own price or sale status and pushes the artwork's whole edition set to Artnet, since Artnet replaces the set rather than patching one edition of it. At least one of `priceMinor`, `priceCurrency` or `saleStatus` is required. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
+  """
+  updateArtnetEditionSet(
+    input: UpdateArtnetEditionSetMutationInput!
+  ): UpdateArtnetEditionSetMutationPayload
 
   """
   Updates an artwork.
@@ -38091,12 +38145,22 @@ input UpdateArtnetArtworkMutationInput {
   id: String!
 
   """
+  Free-text materials ("oil on canvas"). Omit to leave it unchanged; cannot be cleared, since Gravity clears on an empty string, which is indistinguishable from null by the time a request reaches it from here.
+  """
+  materials: String
+
+  """
+  Ceiling of Artnet's price range, in minor units. The floor is the catalog artwork's price. Pass null to clear it; omit to leave it unchanged.
+  """
+  priceToMinor: Long
+
+  """
   Publish or unpublish the artwork on Artnet.
   """
   published: Boolean
 
   """
-  Also push the artwork-sourced fields (title, dimensions), making Gravity the source of truth for them. Set when the edit came from an inventory row rather than the Artnet row.
+  Also push the artwork-sourced fields (title, artist, dimensions, description, medium, materials, editions), making Gravity the source of truth for them. The artist is resolved to Artnet's own artist record by best match. Set when the edit came from an inventory row rather than the Artnet row.
   """
   syncOn: Boolean
 }
@@ -38113,6 +38177,55 @@ union UpdateArtnetArtworkResponseOrError = UpdateArtnetArtworkFailure | UpdateAr
 
 type UpdateArtnetArtworkSuccess {
   artnetArtwork: ArtnetArtwork
+
+  """
+  Fields the push left out because Artnet cannot express them, which is why Artnet may show less than Gravity holds. Not a failure: the rest of the push went through.
+  """
+  skipped: [ArtnetPushSkip]
+}
+
+type UpdateArtnetEditionSetFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtnetEditionSetMutationInput {
+  clientMutationId: String
+
+  """
+  The ID of the ArtnetEditionSet.
+  """
+  id: String!
+
+  """
+  ISO currency for this edition's price, stored as Artnet's own code (CNY becomes RMB).
+  """
+  priceCurrency: String
+
+  """
+  Floor of this edition's price on Artnet, in minor units. A price and its currency travel together: pass both to set one, and both as null to hand the field back, after which the edition takes the inventory row's price again. Omit to leave it unchanged.
+  """
+  priceMinor: Long
+
+  """
+  Artnet's own sale status for this edition.
+  """
+  saleStatus: ArtnetSaleStatus
+}
+
+type UpdateArtnetEditionSetMutationPayload {
+  """
+  On success: the updated ArtnetEditionSet. On error: the error that occurred.
+  """
+  artnetEditionSetOrError: UpdateArtnetEditionSetResponseOrError
+  clientMutationId: String
+}
+
+union UpdateArtnetEditionSetResponseOrError =
+    UpdateArtnetEditionSetFailure
+  | UpdateArtnetEditionSetSuccess
+
+type UpdateArtnetEditionSetSuccess {
+  artnetEditionSet: ArtnetEditionSet
 }
 
 input UpdateArtworkEditionSetInput {
