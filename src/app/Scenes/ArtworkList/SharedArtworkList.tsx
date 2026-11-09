@@ -110,16 +110,16 @@ export const SharedArtworkList: FC<SharedArtworkListScreenProps> = ({ collection
   const artworksCount = data?.collection?.artworks?.totalCount ?? 0
   const artworks = extractNodes(data?.collection?.artworks)
 
-  const artworkListEntity: HeaderMenuArtworkListEntity | null =
-    isOwner && collection && !collection.default
-      ? {
-          title: collection.name,
-          internalID: collection.internalID,
-          shareableWithPartners: collection.shareableWithPartners,
-          slug: collection.slug ?? null,
-          private: collection.private,
-        }
-      : null
+  const artworkListEntity: HeaderMenuArtworkListEntity | null = isOwner
+    ? {
+        title: collection.name,
+        internalID: collection.internalID,
+        shareableWithPartners: collection.shareableWithPartners,
+        slug: collection.slug ?? null,
+        private: collection.private,
+        default: collection.default,
+      }
+    : null
 
   return (
     <>

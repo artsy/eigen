@@ -4,4 +4,5 @@ export type HeaderMenuArtworkListEntity = {
   shareableWithPartners: boolean
   slug: string | null
   private: boolean
+  default: boolean
 }

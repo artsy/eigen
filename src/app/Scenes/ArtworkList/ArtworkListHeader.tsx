@@ -16,13 +16,14 @@ export const ArtworkListHeader: FC<ArtworkListHeaderProps> = ({ me }) => {
   const data = useFragment(Fragment, me)
   let artworkListEntity: HeaderMenuArtworkListEntity | null = null
 
-  if (data?.artworkList && !data.artworkList.default) {
+  if (data?.artworkList) {
     artworkListEntity = {
       title: data.artworkList.name,
       internalID: data.artworkList.internalID,
       shareableWithPartners: data.artworkList.shareableWithPartners,
       slug: data.artworkList.slug ?? null,
       private: data.artworkList.private,
+      default: data.artworkList.default,
     }
   }
 

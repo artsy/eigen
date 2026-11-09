@@ -69,8 +69,12 @@ export const ManageArtworkListView: FC<ManageArtworkListViewProps> = ({
             </>
 
             <ManageArtworkListMenuItem label="Share List" onPress={openShareView} />
-            <ManageArtworkListMenuItem label="Edit List" onPress={openEditView} />
-            <ManageArtworkListMenuItem label="Delete List" onPress={openDeleteView} />
+            {!artworkListEntity.default && (
+              <ManageArtworkListMenuItem label="Edit List" onPress={openEditView} />
+            )}
+            {!artworkListEntity.default && (
+              <ManageArtworkListMenuItem label="Delete List" onPress={openDeleteView} />
+            )}
           </Join>
         </Flex>
       </AutoHeightBottomSheet>
