@@ -21,6 +21,8 @@ export const ArtworkListHeader: FC<ArtworkListHeaderProps> = ({ me }) => {
       title: data.artworkList.name,
       internalID: data.artworkList.internalID,
       shareableWithPartners: data.artworkList.shareableWithPartners,
+      slug: data.artworkList.slug ?? null,
+      private: data.artworkList.private,
     }
   }
 
@@ -72,6 +74,8 @@ const Fragment = graphql`
       name
       internalID
       shareableWithPartners
+      slug
+      private
     }
   }
 `
