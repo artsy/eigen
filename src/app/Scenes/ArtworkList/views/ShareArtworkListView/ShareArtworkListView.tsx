@@ -119,7 +119,7 @@ export const ShareArtworkListView: FC<ShareArtworkListViewProps> = ({
 
         <Spacer y={2} />
 
-        <Button block variant="outline" disabled={!isShared} onPress={handleCopyLink}>
+        <Button block variant="outline" disabled={!isShared || isLoading} onPress={handleCopyLink}>
           Copy link
         </Button>
 
