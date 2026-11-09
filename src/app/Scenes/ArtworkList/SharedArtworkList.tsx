@@ -7,6 +7,7 @@ import {
   Separator,
   SkeletonBox,
   SkeletonText,
+  Text,
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
@@ -92,6 +93,20 @@ export const SharedArtworkList: FC<SharedArtworkListScreenProps> = ({ collection
   }, [])
 
   const collection = queryData.collection
+
+  if (!collection) {
+    return (
+      <>
+        <NavigationHeader onLeftButtonPress={goBack} hideBottomDivider />
+        <Flex flex={1} justifyContent="center" alignItems="center" mx={2}>
+          <Text variant="sm" color="mono60" textAlign="center">
+            This list is private or no longer available.
+          </Text>
+        </Flex>
+      </>
+    )
+  }
+
   const artworksCount = data?.collection?.artworks?.totalCount ?? 0
   const artworks = extractNodes(data?.collection?.artworks)
 
