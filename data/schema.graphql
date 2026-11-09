@@ -4,33 +4,6 @@ directive @optionalField on FIELD
 
 directive @principalField on FIELD
 
-type AI {
-  prompt(
-    """
-    The ID of the AI prompt template
-    """
-    id: String
-  ): AIPromptTemplate
-  promptConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-
-    """
-    Filter by model (e.g., claude, gpt)
-    """
-    model: String
-
-    """
-    Filter by template name
-    """
-    name: String
-    page: Int
-    size: Int
-  ): AIPromptTemplateConnection
-}
-
 """
 A stable, client-safe description of what the agent is currently doing.
 """
@@ -228,54 +201,6 @@ input AIAgentTurnInput {
   The section types this client can render. Defaults to `[ARTWORKS]` when omitted, so a client that predates `sections` keeps working off the legacy `artworks` field. Declare a type only once you render it: the answer's prose is written on the assumption that the cards it asked for will appear, so a section you drop reads as a broken answer rather than a missing rail. Keep the set constant for a build rather than varying it per turn.
   """
   supportedSections: [AIAgentSectionType!]
-}
-
-type AIPromptTemplate {
-  """
-  A globally unique ID.
-  """
-  id: ID!
-
-  """
-  A type-specific ID.
-  """
-  internalID: ID!
-  model: String!
-  name: String!
-  systemPrompt: String
-  userPrompt: String
-}
-
-"""
-A connection to a list of items.
-"""
-type AIPromptTemplateConnection {
-  """
-  A list of edges.
-  """
-  edges: [AIPromptTemplateEdge]
-  pageCursors: PageCursors!
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-  totalCount: Int
-}
-
-"""
-An edge in a connection.
-"""
-type AIPromptTemplateEdge {
-  """
-  A cursor for use in pagination
-  """
-  cursor: String!
-
-  """
-  The item at the end of the edge
-  """
-  node: AIPromptTemplate
 }
 
 type ARImage {
@@ -31792,7 +31717,6 @@ type Query {
     """
     id: ID!
   ): Agreement
-  ai: AI
 
   """
   Get the year sparklines for the current artist.
@@ -42093,7 +42017,6 @@ type Viewer {
     """
     id: ID!
   ): Agreement
-  ai: AI
 
   """
   An Article
