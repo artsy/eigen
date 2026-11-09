@@ -100,6 +100,12 @@ class LiveAuctionViewController: UIViewController {
         staticDataFetcher.fetchStaticData().subscribe { [weak self] result in
             switch result {
             case .success(let (sale, jwt, bidderCredentials)):
+                // The lot carousel can't render a sale without lots, it would loop forever looking for one
+                guard !(sale.saleArtworks ?? []).isEmpty else {
+                    print("Sale \(String(describing: self?.saleSlugOrID)) has no lots")
+                    self?.showOfflineView()
+                    return
+                }
                 self?.setupWithSale(sale, jwt: jwt, bidderCredentials: bidderCredentials)
 
             case .error(let error):
