@@ -7,6 +7,7 @@ import {
 } from "@segment/analytics-react-native"
 import { BrazePlugin } from "@segment/analytics-react-native-plugin-braze"
 import { addBreadcrumb } from "@sentry/react-native"
+import { assertNever } from "app/utils/assertNever"
 import { AddAppNamePlugin } from "app/utils/track/AddAppNamePlugin"
 import { AddExpoUpdateIdPlugin } from "app/utils/track/AddExpoUpdateIdPlugin"
 import { AppStateFlushPolicy } from "app/utils/track/AppStateFlushPolicy"

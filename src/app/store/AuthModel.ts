@@ -8,6 +8,7 @@ import * as Sentry from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { clearNavState } from "app/system/navigation/useReloadedDevNavigationState"
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
+import { assertNever } from "app/utils/assertNever"
 import {
   handleClassicFacebookAuth,
   handleClassicFacebookAuth2,

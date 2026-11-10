@@ -3,6 +3,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { NativeEvent } from "app/store/NativeModel"
 // eslint-disable-next-line no-restricted-imports
 import { navigate, navigationEvents } from "app/system/navigation/navigate"
+import { assertNever } from "app/utils/assertNever"
 import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
 
 export function listenToNativeEvents(cb: (event: NativeEvent) => void) {

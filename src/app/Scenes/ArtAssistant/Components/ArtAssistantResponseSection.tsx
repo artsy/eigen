@@ -2,6 +2,7 @@ import { AIAgentSectionType } from "__generated__/useArtAssistantConversationAge
 import { ArtAssistantArtistRail } from "app/Scenes/ArtAssistant/Components/ArtAssistantArtistRail"
 import { ArtAssistantArtworkGrid } from "app/Scenes/ArtAssistant/Components/ArtAssistantArtworkGrid"
 import { ArtAssistantSection } from "app/Scenes/ArtAssistant/types"
+import { assertNever } from "app/utils/assertNever"
 
 interface ArtAssistantResponseSectionProps {
   section: ArtAssistantSection

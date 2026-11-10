@@ -1015,12 +1015,15 @@ describe("Artwork", () => {
 
       fireEvent.press(screen.getByTestId("test-partner-button"))
 
-      expect(mockTrackEvent).toBeCalledWith({
-        context_module: "artworkDetails",
-        subject: "Gallery Name",
-        type: "Link",
-        flow: "Exclusive access",
-      })
+      expect(mockTrackEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: "tappedLink",
+          context_module: "artworkDetails",
+          context_screen_owner_type: "artwork",
+          destination_screen_owner_type: "partner",
+          destination_path: expect.stringMatching(/^\/partner\//),
+        })
+      )
     })
   })
 
