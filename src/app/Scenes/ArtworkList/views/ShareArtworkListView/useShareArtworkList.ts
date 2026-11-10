@@ -13,10 +13,6 @@ export const useShareArtworkList = (): Response => {
       ...config,
       onCompleted: (data, errors) => {
         const response = data.updateCollection?.responseOrError
-
-        // Anything that isn't an explicit success is a failure: top-level GraphQL errors pass
-        // through principalFieldErrorHandlerMiddleware and would otherwise leave the toggle in a
-        // state the server never actually committed.
         if (response?.__typename !== "UpdateCollectionSuccess") {
           const message =
             response?.__typename === "UpdateCollectionFailure"
