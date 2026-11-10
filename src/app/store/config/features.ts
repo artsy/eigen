@@ -226,6 +226,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableNewHomeFeed",
   },
+  AREnableShareShowPartnerFeature: {
+    description: "Show a share button on show, partner and feature screens",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableShareShowPartnerFeature",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

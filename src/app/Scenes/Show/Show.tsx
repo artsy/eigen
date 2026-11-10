@@ -8,6 +8,7 @@ import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "a
 import { ItineraryStopNote } from "app/Components/ItineraryStopNote/ItineraryStopNote"
 import { ShareHeaderButton } from "app/Components/ShareSheet/ShareHeaderButton"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -49,8 +50,11 @@ export const Show: React.FC<ShowProps> = ({ show, stopID, shareToken }) => {
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
 
   const navigation = useNavigation()
+  const enableShare = useFeatureFlag("AREnableShareShowPartnerFeature")
 
   useEffect(() => {
+    if (!enableShare) return
+
     navigation.setOptions({
       headerRight: () => (
         <ShareHeaderButton
@@ -61,7 +65,7 @@ export const Show: React.FC<ShowProps> = ({ show, stopID, shareToken }) => {
         />
       ),
     })
-  }, [navigation, show.slug, show.name])
+  }, [enableShare, navigation, show.slug, show.name])
 
   const openeFilterArtworksModal = () => {
     setVisible(true)

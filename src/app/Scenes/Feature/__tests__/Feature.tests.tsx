@@ -15,6 +15,7 @@ describe(FeatureQueryRenderer, () => {
   it("renders without failing", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({
       AREnableRedirectForVideoFeatureType: false,
+      AREnableShareShowPartnerFeature: true,
     })
 
     renderWithWrappers(<FeatureQueryRenderer slug="anything" />)

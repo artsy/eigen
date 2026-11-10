@@ -1,6 +1,7 @@
 import { act, screen } from "@testing-library/react-native"
 import { ShowTestsQuery } from "__generated__/ShowTestsQuery.graphql"
 import { Show, ShowFragmentContainer } from "app/Scenes/Show/Show"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -83,6 +84,7 @@ describe("Show", () => {
   })
 
   it("puts a share button in the navigation header", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableShareShowPartnerFeature: true })
     const setOptions = jest.fn()
     jest
       .spyOn(jest.requireMock("@react-navigation/native"), "useNavigation")
@@ -94,5 +96,17 @@ describe("Show", () => {
     renderWithWrappers(headerRight())
 
     expect(screen.getByLabelText("Share Show")).toBeOnTheScreen()
+  })
+
+  it("leaves the navigation header alone when sharing is off", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableShareShowPartnerFeature: false })
+    const setOptions = jest.fn()
+    jest
+      .spyOn(jest.requireMock("@react-navigation/native"), "useNavigation")
+      .mockReturnValue({ setOptions, navigate: jest.fn(), addListener: jest.fn() })
+
+    renderWithRelay()
+
+    expect(setOptions).not.toHaveBeenCalled()
   })
 })

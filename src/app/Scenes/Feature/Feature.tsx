@@ -49,19 +49,20 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
   const videoHeight = Math.max(screenHeight * 0.5 - navHeight, MAX_VIDEO_HEIGHT)
 
   const enableFeatureVideoPhase2 = useFeatureFlag("AREnableFeatureVideoPhase2Type")
+  const enableShare = useFeatureFlag("AREnableShareShowPartnerFeature")
 
   if (!feature) {
     return <NotFoundFailureView title="Feature not found" />
   }
 
-  const shareButton = (
+  const shareButton = enableShare ? (
     <ShareHeaderButton
       href={`/feature/${feature.slug}`}
       name={feature.name ?? ""}
       utmContent="feature-share"
       accessibilityLabel="Share Feature"
     />
-  )
+  ) : undefined
 
   let containsVideo = !!feature.video?.url
   const sets = extractNodes(feature.sets)
