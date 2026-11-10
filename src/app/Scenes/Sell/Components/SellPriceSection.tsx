@@ -6,7 +6,7 @@ import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { useState } from "react"
 import { Alert } from "react-native"
 
-// Placeholder until price insights reach the sell flow
+// Placeholder: the recommended range will come from the backend
 const RECOMMENDED_PRICE_RANGE = "US$3,000–3,400"
 // Under US$1B, and well inside what Number holds exactly
 const MAX_PRICE_LENGTH = "999,999,999".length

@@ -60,7 +60,7 @@ export const MoneyInput = forwardRef<
         setValidationErrorMessage("")
         return
       }
-      const isValid = Number(amount) > -0.0000000001
+      const isValid = Number(format ? deformatMoney(amount) : amount) > -0.0000000001
       if (shouldDisplayLocalError) {
         setValidationErrorMessage(isValid ? "" : "Please enter a valid amount.")
       }

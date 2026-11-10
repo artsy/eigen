@@ -44,6 +44,16 @@ describe("MoneyInput", () => {
     )
   })
 
+  it("accepts amounts that already show a thousands separator", () => {
+    renderWithWrappers(<MoneyInput onChange={onChange} />)
+
+    act(() => screen.UNSAFE_getAllByType(Input)[0].props.onChangeText("3,200"))
+    act(() => screen.UNSAFE_getAllByType(Input)[0].props.onChangeText("3,2000"))
+
+    expect(screen.UNSAFE_getAllByType(Input)[0].props.value).toBe("32,000")
+    expect(screen.queryByText("Please enter a valid amount.")).not.toBeOnTheScreen()
+  })
+
   it("renders an input with the amount pre-filled", () => {
     renderWithWrappers(<MoneyInput initialValues={{ amount: "2000" }} onChange={onChange} />)
     const inputs = screen.UNSAFE_getAllByType(Input)
