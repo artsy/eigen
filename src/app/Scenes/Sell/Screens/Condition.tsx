@@ -87,7 +87,7 @@ const ConditionForm: React.FC<{
 const ConditionError: React.FC = () => (
   <Flex px={2} pt={2}>
     <Text variant="sm" color="mono60">
-      We couldn't load this work.
+      We couldn’t load this work.
     </Text>
   </Flex>
 )

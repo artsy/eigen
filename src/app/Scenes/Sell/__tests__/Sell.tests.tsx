@@ -210,7 +210,7 @@ describe("Sell", () => {
     fireEvent.press(screen.getByRole("radio", { name: /^Courier needs to collect\./ }))
     fireEvent.press(screen.getByText("List Artwork"))
     expect(await screen.findByText("Your listing is live!")).toBeOnTheScreen()
-    expect(screen.getByText("Artist A's Work A has been submitted for sale.")).toBeOnTheScreen()
+    expect(screen.getByText("Artist A’s Work A has been submitted for sale.")).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Return to My Collection"))
     expect(goBack).toHaveBeenCalledTimes(1)

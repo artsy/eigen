@@ -79,7 +79,7 @@ const marketplaceConfirmation = ({ artistNames, title }: Artwork) => ({
   title: "Your listing is live!",
   message:
     artistNames && title
-      ? `${artistNames}'s ${title} has been submitted for sale.`
+      ? `${artistNames}’s ${title} has been submitted for sale.`
       : "Your work has been submitted for sale.",
 })
 
@@ -110,7 +110,7 @@ const AuctionLocationForm: React.FC<FormProps> = ({ artwork, onSubmit }) => {
 
         <Flex gap={1}>
           <Text variant="md">Contact</Text>
-          <Text variant="sm">What's the best mobile number to reach you on?</Text>
+          <Text variant="sm">What’s the best mobile number to reach you on?</Text>
           <Text variant="xs" color="mono60">
             A specialist will contact you directly to discuss next steps.
           </Text>
@@ -159,7 +159,7 @@ const MarketplaceShippingForm: React.FC<FormProps> = ({ artwork, onSubmit }) => 
 const LocationAndContactError: React.FC = () => (
   <Flex px={2} pt={2}>
     <Text variant="sm" color="mono60">
-      We couldn't load this work.
+      We couldn’t load this work.
     </Text>
   </Flex>
 )

@@ -30,7 +30,7 @@ const PACKAGING_OPTIONS: SellOption<SellPackaging>[] = [
 ]
 
 const PACKER_OPTIONS: SellOption<SellPacker>[] = [
-  { value: "SELLER", title: "I'll pack it", description: "You pack the work securely." },
+  { value: "SELLER", title: "I’ll pack it", description: "You pack the work securely." },
   {
     value: "COURIER",
     title: "Courier packs",
@@ -42,7 +42,7 @@ const PACKER_OPTIONS: SellOption<SellPacker>[] = [
 const DELIVERY_OPTIONS: SellOption<SellDelivery>[] = [
   {
     value: "DROP_OFF",
-    title: "I'll drop off to courier",
+    title: "I’ll drop off to courier",
     description: "Bring the packed work to a courier.",
   },
   {
