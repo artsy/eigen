@@ -1,10 +1,44 @@
-import { Flex, Input, Text } from "@artsy/palette-mobile"
-import { AddressAutocomplete } from "app/Components/AddressAutocomplete/AddressAutocomplete"
-import { SellLocationStore, US_ZIP_LENGTH } from "app/Scenes/Sell/State/SellLocationStore"
+import { Flex, Text } from "@artsy/palette-mobile"
+import { SellLocationFields_me$key } from "__generated__/SellLocationFields_me.graphql"
+import { SellAddAddressSheet } from "app/Scenes/Sell/Components/SellAddAddressSheet"
+import { SellSavedAddresses } from "app/Scenes/Sell/Components/SellSavedAddresses"
+import { SellLocationStore, isSellableAddress } from "app/Scenes/Sell/State/SellLocationStore"
+import { extractNodes } from "app/utils/extractNodes"
+import { sortBy } from "lodash"
+import { useEffect, useMemo, useState } from "react"
+import { graphql, useFragment } from "react-relay"
 
-export const SellLocationFields: React.FC = () => {
-  const { address, postalCode } = SellLocationStore.useStoreState((state) => state)
-  const { setAddress, setPostalCode } = SellLocationStore.useStoreActions((actions) => actions)
+interface SellLocationFieldsProps {
+  me: SellLocationFields_me$key
+}
+
+export const SellLocationFields: React.FC<SellLocationFieldsProps> = ({ me }) => {
+  const data = useFragment(sellLocationFieldsFragment, me)
+  const value = SellLocationStore.useStoreState((state) => state.address)
+  const onChange = SellLocationStore.useStoreActions((actions) => actions.setAddress)
+  const addresses = useMemo(
+    () =>
+      sortBy(extractNodes(data.addressConnection), [
+        (address) => !isSellableAddress(address),
+        (address) => !address.isDefault,
+      ]),
+    [data.addressConnection]
+  )
+  const [adding, setAdding] = useState(false)
+  const [savedAddressID, setSavedAddressID] = useState<string | null>(null)
+
+  // Selects the default address on load, and a new address once it's back from the save
+  useEffect(() => {
+    const saved = addresses.find((address) => address.internalID === savedAddressID)
+    const next = saved ?? (value ? null : addresses.find(isSellableAddress))
+
+    if (saved) {
+      setSavedAddressID(null)
+    }
+    if (next && next.internalID !== value?.internalID) {
+      onChange(next)
+    }
+  }, [addresses, savedAddressID, value, onChange])
 
   return (
     <Flex gap={1}>
@@ -13,24 +47,41 @@ export const SellLocationFields: React.FC = () => {
         We use this to estimate shipping and arrange pickup.
       </Text>
 
-      <AddressAutocomplete
-        title="Street address"
-        testID="sell-street-address"
-        country="us"
-        value={address}
-        onChange={setAddress}
+      <SellSavedAddresses
+        addresses={addresses}
+        value={value}
+        onChange={onChange}
+        onAddNew={() => setAdding(true)}
       />
 
-      <Input
-        title="Zip code"
-        accessibilityLabel="Zip code"
-        keyboardType="number-pad"
-        autoComplete="postal-code"
-        textContentType="postalCode"
-        maxLength={US_ZIP_LENGTH}
-        value={postalCode}
-        onChangeText={(text) => setPostalCode(text.replace(/\D/g, ""))}
+      <SellAddAddressSheet
+        visible={adding}
+        name={data.name}
+        onDismiss={() => setAdding(false)}
+        onSaved={setSavedAddressID}
       />
     </Flex>
   )
 }
+
+const sellLocationFieldsFragment = graphql`
+  fragment SellLocationFields_me on Me {
+    name
+    addressConnection(first: 20) {
+      edges {
+        node {
+          internalID
+          name
+          addressLine1
+          addressLine2
+          city
+          region
+          postalCode
+          country
+          isDefault
+          phoneNumber
+        }
+      }
+    }
+  }
+`

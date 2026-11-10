@@ -14,6 +14,7 @@ import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 type Artwork = NonNullable<LocationAndContactQuery["response"]["artwork"]>
+type Me = NonNullable<LocationAndContactQuery["response"]["me"]>
 
 export const LocationAndContact: React.FC = () => {
   const artworkID = SellFlowStore.useStoreState((state) => state.activeArtworkID)
@@ -35,9 +36,9 @@ const LocationAndContactContent: React.FC<{ artworkID: string }> = withSuspense(
       artworkID,
     })
     const [submitted, setSubmitted] = useState(false)
-    const artwork = data.artwork
+    const { artwork, me } = data
 
-    if (!artwork) {
+    if (!artwork || !me) {
       return <LocationAndContactError />
     }
 
@@ -46,9 +47,9 @@ const LocationAndContactContent: React.FC<{ artworkID: string }> = withSuspense(
     return (
       <>
         {isAuction ? (
-          <AuctionLocationForm artwork={artwork} onSubmit={() => setSubmitted(true)} />
+          <AuctionLocationForm artwork={artwork} me={me} onSubmit={() => setSubmitted(true)} />
         ) : (
-          <MarketplaceShippingForm artwork={artwork} onSubmit={() => setSubmitted(true)} />
+          <MarketplaceShippingForm artwork={artwork} me={me} onSubmit={() => setSubmitted(true)} />
         )}
 
         {!!submitted && (
@@ -80,10 +81,11 @@ const marketplaceConfirmation = ({ artistNames, title }: Artwork) => ({
 
 interface FormProps {
   artwork: Artwork
+  me: Me
   onSubmit: () => void
 }
 
-const AuctionLocationForm: React.FC<FormProps> = ({ artwork, onSubmit }) => {
+const AuctionLocationForm: React.FC<FormProps> = ({ artwork, me, onSubmit }) => {
   const { locationComplete, phoneNumber } = SellLocationStore.useStoreState((state) => state)
   const setPhoneNumber = SellLocationStore.useStoreActions((actions) => actions.setPhoneNumber)
 
@@ -100,7 +102,7 @@ const AuctionLocationForm: React.FC<FormProps> = ({ artwork, onSubmit }) => {
 
         <Flex gap={2}>
           <Text variant="md">Location</Text>
-          <SellLocationFields />
+          <SellLocationFields me={me} />
         </Flex>
 
         <Flex gap={1}>
@@ -124,7 +126,7 @@ const AuctionLocationForm: React.FC<FormProps> = ({ artwork, onSubmit }) => {
   )
 }
 
-const MarketplaceShippingForm: React.FC<FormProps> = ({ artwork, onSubmit }) => {
+const MarketplaceShippingForm: React.FC<FormProps> = ({ artwork, me, onSubmit }) => {
   const { locationComplete, shippingComplete } = SellLocationStore.useStoreState((state) => state)
 
   return (
@@ -140,7 +142,7 @@ const MarketplaceShippingForm: React.FC<FormProps> = ({ artwork, onSubmit }) => 
 
         <Flex gap={2}>
           <Text variant="md">Shipping</Text>
-          <SellLocationFields />
+          <SellLocationFields me={me} />
         </Flex>
       </Flex>
 
@@ -164,6 +166,9 @@ const locationAndContactQuery = graphql`
       artistNames
       title
       ...SellWorkCard_artwork
+    }
+    me {
+      ...SellLocationFields_me
     }
   }
 `
