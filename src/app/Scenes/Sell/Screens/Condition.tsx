@@ -1,8 +1,6 @@
 import { Box, Button, Flex, Text, useSpace } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { ConditionQuery } from "__generated__/ConditionQuery.graphql"
-import { SellConditionPhoto } from "app/Scenes/Sell/Components/SellConditionPhotos"
-import { SellConditionRating } from "app/Scenes/Sell/Components/SellConditionRatingPicker"
 import { SellConditionSection } from "app/Scenes/Sell/Components/SellConditionSection"
 import { SellPriceSection } from "app/Scenes/Sell/Components/SellPriceSection"
 import { SellStepIntro } from "app/Scenes/Sell/Components/SellStepIntro"
@@ -69,10 +67,7 @@ const ConditionForm: React.FC<{
     ],
   }))
 
-  const [rating, setRating] = useState<SellConditionRating | null>(null)
-  const [photos, setPhotos] = useState<SellConditionPhoto[]>([])
-  const [notes, setNotes] = useState("")
-  const [askingPrice, setAskingPrice] = useState("")
+  const { rating, askingPrice } = SellFlowStore.useStoreState((state) => state.conditionStep)
 
   const isMarketplace = channelKind === "MARKETPLACE"
   const canContinue = !!rating && (!isMarketplace || !!askingPrice)
@@ -99,23 +94,11 @@ const ConditionForm: React.FC<{
           <SellWorkCard artwork={artwork} />
         </Flex>
 
-        <SellConditionSection
-          rating={rating}
-          onRatingChange={setRating}
-          photos={photos}
-          onPhotosChange={setPhotos}
-          notes={notes}
-          onNotesChange={setNotes}
-        />
+        <SellConditionSection />
 
         {!!isMarketplace && (
           <Flex px={2} pt={4}>
-            <SellPriceSection
-              artistNames={artwork.artistNames}
-              askingPrice={askingPrice}
-              onAskingPriceChange={setAskingPrice}
-              disabled={!rating}
-            />
+            <SellPriceSection artistNames={artwork.artistNames} />
           </Flex>
         )}
       </KeyboardAwareForm>

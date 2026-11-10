@@ -2,6 +2,7 @@ import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { MoneyInput } from "app/Components/Input/MoneyInput/MoneyInput"
 import { SellFeeInfoBottomSheet } from "app/Scenes/Sell/Components/SellFeeInfoBottomSheet"
 import { SellPayoutBreakdown } from "app/Scenes/Sell/Components/SellPayoutBreakdown"
+import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { useState } from "react"
 import { Alert } from "react-native"
 
@@ -14,19 +15,14 @@ const UNIT_WIDTH = 70
 
 interface SellPriceSectionProps {
   artistNames: string | null | undefined
-  /** Whole US dollars as digits, or "" when nothing is entered */
-  askingPrice: string
-  onAskingPriceChange: (askingPrice: string) => void
-  disabled: boolean
 }
 
-export const SellPriceSection: React.FC<SellPriceSectionProps> = ({
-  artistNames,
-  askingPrice,
-  onAskingPriceChange,
-  disabled,
-}) => {
+export const SellPriceSection: React.FC<SellPriceSectionProps> = ({ artistNames }) => {
+  const { rating, askingPrice } = SellFlowStore.useStoreState((state) => state.conditionStep)
+  const setAskingPrice = SellFlowStore.useStoreActions((actions) => actions.setAskingPrice)
   const [showFeeInfo, setShowFeeInfo] = useState(false)
+  // The price depends on the condition, so it waits for a rating
+  const disabled = !rating
 
   return (
     <Flex gap={2}>
@@ -79,7 +75,7 @@ export const SellPriceSection: React.FC<SellPriceSectionProps> = ({
             disabled={disabled}
             initialValues={{ amount: askingPrice }}
             maxLength={MAX_PRICE_LENGTH}
-            onChange={({ amount }) => onAskingPriceChange(amount?.replace(/^0+/, "") ?? "")}
+            onChange={({ amount }) => setAskingPrice(amount?.replace(/^0+/, "") ?? "")}
           />
         </Flex>
 

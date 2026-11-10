@@ -3,30 +3,15 @@ import {
   SellConditionPhoto,
   SellConditionPhotos,
 } from "app/Scenes/Sell/Components/SellConditionPhotos"
-import {
-  SellConditionRating,
-  SellConditionRatingPicker,
-} from "app/Scenes/Sell/Components/SellConditionRatingPicker"
+import { SellConditionRatingPicker } from "app/Scenes/Sell/Components/SellConditionRatingPicker"
+import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 
-interface SellConditionSectionProps {
-  rating: SellConditionRating | null
-  onRatingChange: (rating: SellConditionRating) => void
-  photos: SellConditionPhoto[]
-  onPhotosChange: (photos: SellConditionPhoto[]) => void
-  notes: string
-  onNotesChange: (notes: string) => void
-}
+export const SellConditionSection: React.FC = () => {
+  const { rating, photos, notes } = SellFlowStore.useStoreState((state) => state.conditionStep)
+  const { setRating, setPhotos, setNotes } = SellFlowStore.useStoreActions((actions) => actions)
 
-export const SellConditionSection: React.FC<SellConditionSectionProps> = ({
-  rating,
-  onRatingChange,
-  photos,
-  onPhotosChange,
-  notes,
-  onNotesChange,
-}) => {
   const addPhotos = (newPhotos: SellConditionPhoto[]) => {
-    onPhotosChange([
+    setPhotos([
       ...photos,
       ...newPhotos.filter((photo) => !photos.some(({ path }) => path === photo.path)),
     ])
@@ -39,7 +24,7 @@ export const SellConditionSection: React.FC<SellConditionSectionProps> = ({
         <Text variant="sm">How would you describe the work’s condition?</Text>
       </Flex>
 
-      <SellConditionRatingPicker value={rating} onChange={onRatingChange} />
+      <SellConditionRatingPicker value={rating} onChange={setRating} />
 
       <Flex px={2} pt={4} gap={4}>
         <Flex gap={1}>
@@ -50,7 +35,7 @@ export const SellConditionSection: React.FC<SellConditionSectionProps> = ({
           <SellConditionPhotos
             photos={photos}
             onAdd={addPhotos}
-            onRemove={(path) => onPhotosChange(photos.filter((photo) => photo.path !== path))}
+            onRemove={(path) => setPhotos(photos.filter((photo) => photo.path !== path))}
           />
         </Flex>
 
@@ -65,7 +50,7 @@ export const SellConditionSection: React.FC<SellConditionSectionProps> = ({
             placeholder="Notes"
             accessibilityLabel="Notes"
             value={notes}
-            onChangeText={onNotesChange}
+            onChangeText={setNotes}
           />
         </Flex>
       </Flex>

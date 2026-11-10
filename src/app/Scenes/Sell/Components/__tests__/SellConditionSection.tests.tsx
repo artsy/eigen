@@ -1,26 +1,13 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { SellConditionPhoto } from "app/Scenes/Sell/Components/SellConditionPhotos"
-import { SellConditionRating } from "app/Scenes/Sell/Components/SellConditionRatingPicker"
 import { SellConditionSection } from "app/Scenes/Sell/Components/SellConditionSection"
+import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { useState } from "react"
 
-const TestConditionSection: React.FC = () => {
-  const [rating, setRating] = useState<SellConditionRating | null>(null)
-  const [photos, setPhotos] = useState<SellConditionPhoto[]>([])
-  const [notes, setNotes] = useState("")
-
-  return (
-    <SellConditionSection
-      rating={rating}
-      onRatingChange={setRating}
-      photos={photos}
-      onPhotosChange={setPhotos}
-      notes={notes}
-      onNotesChange={setNotes}
-    />
-  )
-}
+const TestConditionSection: React.FC = () => (
+  <SellFlowStore.Provider>
+    <SellConditionSection />
+  </SellFlowStore.Provider>
+)
 
 describe("SellConditionSection", () => {
   it("keeps the rating and notes the user enters", () => {

@@ -1,22 +1,26 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { SellFeeInfoBottomSheet } from "app/Scenes/Sell/Components/SellFeeInfoBottomSheet"
 import { SellPriceSection } from "app/Scenes/Sell/Components/SellPriceSection"
+import {
+  SellConditionStep,
+  SellFlowStore,
+  sellFlowStoreModel,
+} from "app/Scenes/Sell/State/SellFlowStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { useState } from "react"
 import { Alert } from "react-native"
 
-const TestPriceSection: React.FC<{ disabled?: boolean }> = ({ disabled = false }) => {
-  const [askingPrice, setAskingPrice] = useState("")
-
-  return (
-    <SellPriceSection
-      artistNames="Theo Bardsley"
-      askingPrice={askingPrice}
-      onAskingPriceChange={setAskingPrice}
-      disabled={disabled}
-    />
-  )
-}
+const TestPriceSection: React.FC<{ rating?: SellConditionStep["rating"] }> = ({
+  rating = "FAIR",
+}) => (
+  <SellFlowStore.Provider
+    runtimeModel={{
+      ...sellFlowStoreModel,
+      conditionStep: { rating, photos: [], notes: "", askingPrice: "" },
+    }}
+  >
+    <SellPriceSection artistNames="Theo Bardsley" />
+  </SellFlowStore.Provider>
+)
 
 describe("SellPriceSection", () => {
   afterEach(() => {
@@ -54,8 +58,8 @@ describe("SellPriceSection", () => {
     expect(screen.getByLabelText("Asking price")).toHaveProp("maxLength", "999,999,999".length)
   })
 
-  it("says why the price is locked while disabled", () => {
-    renderWithWrappers(<TestPriceSection disabled />)
+  it("locks the price until a condition is picked, and says why", () => {
+    renderWithWrappers(<TestPriceSection rating={null} />)
 
     expect(screen.getByLabelText("Asking price")).toHaveProp("editable", false)
     expect(screen.getByText("Pick a condition to set your price.")).toBeOnTheScreen()
