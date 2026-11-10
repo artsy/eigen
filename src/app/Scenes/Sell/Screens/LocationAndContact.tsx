@@ -1,22 +1,13 @@
 import { Flex, Input, Text } from "@artsy/palette-mobile"
 import { LocationAndContactQuery } from "__generated__/LocationAndContactQuery.graphql"
 import { SellFormLayout } from "app/Scenes/Sell/Components/SellFormLayout"
-import {
-  EMPTY_SELL_LOCATION,
-  SellLocation,
-  SellLocationFields,
-  isSellLocationComplete,
-} from "app/Scenes/Sell/Components/SellLocationFields"
-import {
-  EMPTY_SELL_SHIPPING,
-  SellShippingAnswers,
-  SellShippingQuestions,
-  areSellShippingAnswersComplete,
-} from "app/Scenes/Sell/Components/SellShippingQuestions"
+import { SellLocationFields } from "app/Scenes/Sell/Components/SellLocationFields"
+import { SellShippingQuestions } from "app/Scenes/Sell/Components/SellShippingQuestions"
 import { SellStepIntro } from "app/Scenes/Sell/Components/SellStepIntro"
 import { SellSubmittedBottomSheet } from "app/Scenes/Sell/Components/SellSubmittedBottomSheet"
 import { SellWorkCard } from "app/Scenes/Sell/Components/SellWorkCard"
 import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
+import { SellLocationStore } from "app/Scenes/Sell/State/SellLocationStore"
 import { getSellChannel } from "app/Scenes/Sell/utils/getSellChannel"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useState } from "react"
@@ -31,7 +22,11 @@ export const LocationAndContact: React.FC = () => {
     return null
   }
 
-  return <LocationAndContactContent artworkID={artworkID} />
+  return (
+    <SellLocationStore.Provider>
+      <LocationAndContactContent artworkID={artworkID} />
+    </SellLocationStore.Provider>
+  )
 }
 
 const LocationAndContactContent: React.FC<{ artworkID: string }> = withSuspense({
@@ -89,13 +84,13 @@ interface FormProps {
 }
 
 const AuctionLocationForm: React.FC<FormProps> = ({ artwork, onSubmit }) => {
-  const [location, setLocation] = useState<SellLocation>(EMPTY_SELL_LOCATION)
-  const [phoneNumber, setPhoneNumber] = useState("")
+  const { locationComplete, phoneNumber } = SellLocationStore.useStoreState((state) => state)
+  const setPhoneNumber = SellLocationStore.useStoreActions((actions) => actions.setPhoneNumber)
 
   return (
     <SellFormLayout
       buttonLabel="Submit for Review"
-      buttonDisabled={!isSellLocationComplete(location) || !phoneNumber.trim()}
+      buttonDisabled={!locationComplete || !phoneNumber.trim()}
       onButtonPress={onSubmit}
     >
       <SellStepIntro stepName="LocationAndContact" channelKind="AUCTION" px={2} />
@@ -105,7 +100,7 @@ const AuctionLocationForm: React.FC<FormProps> = ({ artwork, onSubmit }) => {
 
         <Flex gap={2}>
           <Text variant="md">Location</Text>
-          <SellLocationFields value={location} onChange={setLocation} />
+          <SellLocationFields />
         </Flex>
 
         <Flex gap={1}>
@@ -130,14 +125,12 @@ const AuctionLocationForm: React.FC<FormProps> = ({ artwork, onSubmit }) => {
 }
 
 const MarketplaceShippingForm: React.FC<FormProps> = ({ artwork, onSubmit }) => {
-  const [location, setLocation] = useState<SellLocation>(EMPTY_SELL_LOCATION)
-  const [shipping, setShipping] = useState<SellShippingAnswers>(EMPTY_SELL_SHIPPING)
-  const locationComplete = isSellLocationComplete(location)
+  const { locationComplete, shippingComplete } = SellLocationStore.useStoreState((state) => state)
 
   return (
     <SellFormLayout
       buttonLabel="List Artwork"
-      buttonDisabled={!locationComplete || !areSellShippingAnswersComplete(shipping)}
+      buttonDisabled={!locationComplete || !shippingComplete}
       onButtonPress={onSubmit}
     >
       <SellStepIntro stepName="LocationAndContact" channelKind="MARKETPLACE" px={2} />
@@ -147,11 +140,11 @@ const MarketplaceShippingForm: React.FC<FormProps> = ({ artwork, onSubmit }) => 
 
         <Flex gap={2}>
           <Text variant="md">Shipping</Text>
-          <SellLocationFields value={location} onChange={setLocation} />
+          <SellLocationFields />
         </Flex>
       </Flex>
 
-      <SellShippingQuestions value={shipping} onChange={setShipping} disabled={!locationComplete} />
+      <SellShippingQuestions />
     </SellFormLayout>
   )
 }

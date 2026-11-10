@@ -1,21 +1,11 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { SellOption, SellOptionCards } from "app/Scenes/Sell/Components/SellOptionCards"
-
-export type SellPackaging = "FRAMED" | "ROLLED" | "EITHER"
-export type SellPacker = "SELLER" | "COURIER" | "EITHER"
-export type SellDelivery = "DROP_OFF" | "COLLECTION" | "EITHER"
-
-export interface SellShippingAnswers {
-  packaging: SellPackaging | null
-  packer: SellPacker | null
-  delivery: SellDelivery | null
-}
-
-export const EMPTY_SELL_SHIPPING: SellShippingAnswers = {
-  packaging: null,
-  packer: null,
-  delivery: null,
-}
+import {
+  SellDelivery,
+  SellLocationStore,
+  SellPackaging,
+  SellPacker,
+} from "app/Scenes/Sell/State/SellLocationStore"
 
 const EITHER_DESCRIPTION = "Either option works for you."
 
@@ -53,44 +43,38 @@ const DELIVERY_OPTIONS: SellOption<SellDelivery>[] = [
   { value: "EITHER", title: "Open to both", description: EITHER_DESCRIPTION },
 ]
 
-interface SellShippingQuestionsProps {
-  value: SellShippingAnswers
-  onChange: React.Dispatch<React.SetStateAction<SellShippingAnswers>>
-  /** The first question unlocks once the location is complete */
-  disabled: boolean
-}
-
-/** Each question stays locked until the one before it is answered */
-export const SellShippingQuestions: React.FC<SellShippingQuestionsProps> = ({
-  value,
-  onChange,
-  disabled,
-}) => {
-  const update = (answer: Partial<SellShippingAnswers>) =>
-    onChange((current) => ({ ...current, ...answer }))
+/** Locked until the location is complete, then each question waits for the one before it */
+export const SellShippingQuestions: React.FC = () => {
+  const { locationComplete, packaging, packer, delivery } = SellLocationStore.useStoreState(
+    (state) => state
+  )
+  const { setPackaging, setPacker, setDelivery } = SellLocationStore.useStoreActions(
+    (actions) => actions
+  )
+  const disabled = !locationComplete
 
   return (
     <Flex gap={4}>
       <SellShippingQuestion
         question="How will this be packed?"
         options={PACKAGING_OPTIONS}
-        value={value.packaging}
-        onChange={(packaging) => update({ packaging })}
+        value={packaging}
+        onChange={setPackaging}
         disabled={disabled}
       />
       <SellShippingQuestion
         question="Who will be packing the work?"
         options={PACKER_OPTIONS}
-        value={value.packer}
-        onChange={(packer) => update({ packer })}
-        disabled={disabled || !value.packaging}
+        value={packer}
+        onChange={setPacker}
+        disabled={disabled || !packaging}
       />
       <SellShippingQuestion
         question="How will the work get to its buyer?"
         options={DELIVERY_OPTIONS}
-        value={value.delivery}
-        onChange={(delivery) => update({ delivery })}
-        disabled={disabled || !value.packaging || !value.packer}
+        value={delivery}
+        onChange={setDelivery}
+        disabled={disabled || !packaging || !packer}
       />
     </Flex>
   )
@@ -118,9 +102,3 @@ const SellShippingQuestion = <T extends string>({
     <SellOptionCards options={options} value={value} onChange={onChange} disabled={disabled} />
   </Flex>
 )
-
-export const areSellShippingAnswersComplete = ({
-  packaging,
-  packer,
-  delivery,
-}: SellShippingAnswers) => !!packaging && !!packer && !!delivery

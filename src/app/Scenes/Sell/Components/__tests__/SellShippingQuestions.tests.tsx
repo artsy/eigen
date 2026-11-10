@@ -1,21 +1,26 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import {
-  EMPTY_SELL_SHIPPING,
-  SellShippingQuestions,
-  areSellShippingAnswersComplete,
-} from "app/Scenes/Sell/Components/SellShippingQuestions"
+import { SellShippingQuestions } from "app/Scenes/Sell/Components/SellShippingQuestions"
+import { SellLocationStore, sellLocationStoreModel } from "app/Scenes/Sell/State/SellLocationStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { useState } from "react"
 
-const TestShippingQuestions: React.FC<{ disabled?: boolean }> = ({ disabled = false }) => {
-  const [answers, setAnswers] = useState(EMPTY_SELL_SHIPPING)
+const ADDRESS = { id: "place-1", name: "401 Broadway, New York, NY, USA" }
 
-  return <SellShippingQuestions value={answers} onChange={setAnswers} disabled={disabled} />
-}
+const TestShippingQuestions: React.FC<{ locationComplete?: boolean }> = ({
+  locationComplete = true,
+}) => (
+  <SellLocationStore.Provider
+    runtimeModel={{
+      ...sellLocationStoreModel,
+      ...(locationComplete && { address: ADDRESS, zip: "10013" }),
+    }}
+  >
+    <SellShippingQuestions />
+  </SellLocationStore.Provider>
+)
 
 describe("SellShippingQuestions", () => {
   it("locks every question until the location is complete", () => {
-    renderWithWrappers(<TestShippingQuestions disabled />)
+    renderWithWrappers(<TestShippingQuestions locationComplete={false} />)
 
     expect(screen.getByRole("radio", { name: /^Framed\./ })).toBeDisabled()
   })
@@ -31,20 +36,5 @@ describe("SellShippingQuestions", () => {
 
     fireEvent.press(screen.getByRole("radio", { name: /^Courier packs\./ }))
     expect(screen.getByRole("radio", { name: /^Courier needs to collect\./ })).toBeEnabled()
-  })
-})
-
-describe("areSellShippingAnswersComplete", () => {
-  it("needs all three answers", () => {
-    expect(
-      areSellShippingAnswersComplete({ packaging: "FRAMED", packer: "COURIER", delivery: null })
-    ).toBe(false)
-    expect(
-      areSellShippingAnswersComplete({
-        packaging: "FRAMED",
-        packer: "COURIER",
-        delivery: "EITHER",
-      })
-    ).toBe(true)
   })
 })

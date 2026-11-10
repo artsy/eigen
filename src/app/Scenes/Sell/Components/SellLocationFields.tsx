@@ -1,26 +1,11 @@
 import { Flex, Input, Text } from "@artsy/palette-mobile"
 import { AddressAutocomplete } from "app/Components/AddressAutocomplete/AddressAutocomplete"
-import { LocationWithDetails } from "app/utils/googleMaps"
+import { SellLocationStore, US_ZIP_LENGTH } from "app/Scenes/Sell/State/SellLocationStore"
 
-const ZIP_LENGTH = 5
+export const SellLocationFields: React.FC = () => {
+  const { address, zip } = SellLocationStore.useStoreState((state) => state)
+  const { setAddress, setZip } = SellLocationStore.useStoreActions((actions) => actions)
 
-export interface SellLocation {
-  address: LocationWithDetails | null
-  zip: string
-}
-
-export const EMPTY_SELL_LOCATION: SellLocation = { address: null, zip: "" }
-
-/** Complete once an address was picked from Google's suggestions and the zip has five digits */
-export const isSellLocationComplete = ({ address, zip }: SellLocation) =>
-  !!address?.id && zip.length === ZIP_LENGTH
-
-interface SellLocationFieldsProps {
-  value: SellLocation
-  onChange: React.Dispatch<React.SetStateAction<SellLocation>>
-}
-
-export const SellLocationFields: React.FC<SellLocationFieldsProps> = ({ value, onChange }) => {
   return (
     <Flex gap={1}>
       <Text variant="sm">Where is the work located?</Text>
@@ -32,13 +17,8 @@ export const SellLocationFields: React.FC<SellLocationFieldsProps> = ({ value, o
         title="Street address"
         testID="sell-street-address"
         country="us"
-        value={value.address}
-        onChange={(address) =>
-          onChange((current) => ({
-            address,
-            zip: address.postalCode?.slice(0, ZIP_LENGTH) ?? current.zip,
-          }))
-        }
+        value={address}
+        onChange={setAddress}
       />
 
       <Input
@@ -47,11 +27,9 @@ export const SellLocationFields: React.FC<SellLocationFieldsProps> = ({ value, o
         keyboardType="number-pad"
         autoComplete="postal-code"
         textContentType="postalCode"
-        maxLength={ZIP_LENGTH}
-        value={value.zip}
-        onChangeText={(text) =>
-          onChange((current) => ({ ...current, zip: text.replace(/\D/g, "") }))
-        }
+        maxLength={US_ZIP_LENGTH}
+        value={zip}
+        onChangeText={(text) => setZip(text.replace(/\D/g, ""))}
       />
     </Flex>
   )
