@@ -1,0 +1,40 @@
+appId: ${MAESTRO_APP_ID}
+---
+- killApp
+- launchApp:
+    clearState: false
+    arguments:
+      email: ${MAESTRO_TEST_EMAIL}
+      password: ${MAESTRO_TEST_PASSWORD}
+      useMaestroInit: "true"
+      enableFeatureFlags: "AREnableShareShowPartnerFeature"
+
+- extendedWaitUntil:
+    visible:
+      id: "search-button"
+    timeout: 20000
+
+# --- Show ---
+- openLink: artsy://show/gagosian-jordan-wolfson
+- extendedWaitUntil:
+    visible: "Share Show"
+    timeout: 20000
+
+# --- Partner ---
+- openLink: artsy://partner/gagosian
+- extendedWaitUntil:
+    visible: "Share Partner"
+    timeout: 20000
+
+# --- Feature ---
+- openLink: artsy://feature/the-artsy-vanguard-2027
+- extendedWaitUntil:
+    visible: "Share Feature"
+    timeout: 20000
+
+# The native share sheet covers the page once it opens.
+- tapOn: "Share Feature"
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: "Share Feature"
+- killApp
