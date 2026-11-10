@@ -125,6 +125,10 @@ export const SegmentTrackingProvider: TrackingProvider = {
     // unknown shape is possible at runtime. Dropping an analytics event must never crash the app.
     const unhandledEvent: never = info
     console.warn("oh wow, we are not tracking this event!! we should!", { info: unhandledEvent })
-    captureMessage(`Untracked analytics event: ${JSON.stringify(unhandledEvent)}`, "warning")
+    // Fixed message so Sentry groups these into one issue; the payload goes in `extra`
+    captureMessage("Untracked analytics event", {
+      level: "warning",
+      extra: { event: unhandledEvent },
+    })
   },
 }

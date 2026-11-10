@@ -16,9 +16,9 @@ describe("SegmentTrackingProvider.postEvent", () => {
     const legacyPayload = { context_module: "artworkDetails", subject: "Gallery Name" }
 
     expect(() => SegmentTrackingProvider.postEvent(legacyPayload as any)).not.toThrow()
-    expect(captureMessage).toHaveBeenCalledWith(
-      `Untracked analytics event: ${JSON.stringify(legacyPayload)}`,
-      "warning"
-    )
+    expect(captureMessage).toHaveBeenCalledWith("Untracked analytics event", {
+      level: "warning",
+      extra: { event: legacyPayload },
+    })
   })
 })
