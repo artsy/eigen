@@ -1,20 +1,9 @@
-import { captureMessage } from "@sentry/react-native"
-
 /**
- * Compile-time exhaustiveness check for switch/if chains over a union.
- *
- * At runtime we can still get values TypeScript didn't predict (server data, native events,
- * untyped tracking payloads). Throw in dev so we notice, but never crash production users —
- * report to Sentry instead so the unhandled case can be fixed.
+ * Exhaustiveness check for switch/if chains over a union. TypeScript errors if a case is
+ * unhandled; at runtime it throws so a value the types missed never silently falls through.
  */
-export function assertNever(value: never): void {
-  const message = `assertNever: unexpected value ${safeStringify(value)}`
-
-  if (__DEV__) {
-    throw new Error(message)
-  }
-
-  captureMessage(message, "warning")
+export function assertNever(value: never): never {
+  throw new Error(`assertNever: unexpected value ${safeStringify(value)}`)
 }
 
 const safeStringify = (value: unknown) => {
