@@ -2370,6 +2370,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     """
     size: Int = 5
   ): [Show]
+  featuredStory: ArtistStory
 
   """
   Artworks Elastic Search results
@@ -3245,6 +3246,11 @@ type ArtistPartnerEdge {
   """
   showsConnection(after: String, before: String, first: Int, last: Int): ShowConnection
   sortableID: String
+
+  """
+  This partner artist's Story
+  """
+  story: ArtistStory
 }
 
 enum ArtistRecommendationSource {
@@ -3556,6 +3562,59 @@ type ArtistStatuses {
     minShowCount: Int = 15
   ): Boolean
   shows: Boolean
+}
+
+type ArtistStory {
+  about: ArtistStoryAbout
+  headerImage: ArtistStoryImage
+  headerVideo: Video
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID.
+  """
+  internalID: ID!
+  motionVideos: [ArtistStoryVideo!]!
+  processVideo: Video
+  pullQuote: ArtistStoryQuote
+}
+
+type ArtistStoryAbout {
+  body(format: Format): String
+  portrait: ArtistStoryImage
+  tagline: String
+}
+
+type ArtistStoryImage {
+  altText: String!
+  credit: String
+  image: Image!
+}
+
+type ArtistStoryQuote {
+  attribution: String
+  text: String!
+}
+
+type ArtistStoryVideo {
+  caption: String
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID.
+  """
+  internalID: ID!
+  position: Int!
+  quote: ArtistStoryQuote
+  video: Video!
 }
 
 type ArtistTargetSupply {
