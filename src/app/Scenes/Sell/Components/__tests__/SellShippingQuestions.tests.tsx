@@ -1,9 +1,24 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { SellShippingQuestions } from "app/Scenes/Sell/Components/SellShippingQuestions"
-import { SellLocationStore, sellLocationStoreModel } from "app/Scenes/Sell/State/SellLocationStore"
+import {
+  SellLocationStore,
+  SellSavedAddress,
+  sellLocationStoreModel,
+} from "app/Scenes/Sell/State/SellLocationStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-const ADDRESS = { id: "place-1", name: "401 Broadway, New York, NY, USA" }
+const ADDRESS: SellSavedAddress = {
+  internalID: "address-1",
+  name: "Collector",
+  addressLine1: "401 Broadway",
+  addressLine2: null,
+  city: "New York",
+  region: "NY",
+  postalCode: "10013",
+  country: "US",
+  isDefault: true,
+  phoneNumber: null,
+}
 
 const TestShippingQuestions: React.FC<{ locationComplete?: boolean }> = ({
   locationComplete = true,
@@ -11,7 +26,7 @@ const TestShippingQuestions: React.FC<{ locationComplete?: boolean }> = ({
   <SellLocationStore.Provider
     runtimeModel={{
       ...sellLocationStoreModel,
-      ...(locationComplete && { address: ADDRESS, postalCode: "10013" }),
+      ...(locationComplete && { address: ADDRESS }),
     }}
   >
     <SellShippingQuestions />
