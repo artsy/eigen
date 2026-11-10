@@ -1,31 +1,37 @@
-import { sellLocationStoreModel } from "app/Scenes/Sell/State/SellLocationStore"
+import { SellSavedAddress, sellLocationStoreModel } from "app/Scenes/Sell/State/SellLocationStore"
 import { createStore } from "easy-peasy"
 
-const ADDRESS = { id: "place-1", name: "401 Broadway, New York, NY, USA" }
+const ADDRESS: SellSavedAddress = {
+  internalID: "address-1",
+  name: "Collector",
+  addressLine1: "401 Broadway",
+  addressLine2: null,
+  city: "New York",
+  region: "NY",
+  postalCode: "10013",
+  country: "US",
+  isDefault: true,
+  phoneNumber: "555 0100",
+}
 
 describe("SellLocationStore", () => {
-  it("fills the postal code from the picked address, and keeps a typed one when Google has none", () => {
+  it("fills an empty phone number from the address, but keeps one already typed", () => {
     const store = createStore(sellLocationStoreModel)
 
-    store.getActions().setPostalCode("10001")
     store.getActions().setAddress(ADDRESS)
-    expect(store.getState().postalCode).toBe("10001")
+    expect(store.getState().phoneNumber).toBe("555 0100")
 
-    store.getActions().setAddress({ ...ADDRESS, postalCode: "10013-1234" })
-    expect(store.getState().postalCode).toBe("10013")
+    store.getActions().setPhoneNumber("555 0199")
+    store.getActions().setAddress({ ...ADDRESS, phoneNumber: "555 0123" })
+    expect(store.getState().phoneNumber).toBe("555 0199")
   })
 
-  it("needs a picked address and a five digit postal code for the location", () => {
+  it("needs an address for the location", () => {
     const store = createStore(sellLocationStoreModel)
-
-    store.getActions().setPostalCode("10013")
     expect(store.getState().locationComplete).toBe(false)
 
     store.getActions().setAddress(ADDRESS)
     expect(store.getState().locationComplete).toBe(true)
-
-    store.getActions().setPostalCode("1001")
-    expect(store.getState().locationComplete).toBe(false)
   })
 
   it("needs all three shipping answers", () => {
