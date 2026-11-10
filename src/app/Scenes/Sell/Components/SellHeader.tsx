@@ -38,7 +38,7 @@ export const SellHeader: React.FC<SellHeaderProps> = ({ route, navigationRef }) 
   }
 
   const handleClose = () => {
-    Alert.alert("Leave this flow?", "Your progress on this submission won't be saved.", [
+    Alert.alert("Leave this flow?", "Your progress on this submission won’t be saved.", [
       { text: "Keep going", style: "cancel" },
       { text: "Leave", style: "destructive", onPress: () => dismissModal() },
     ])

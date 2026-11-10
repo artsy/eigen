@@ -94,7 +94,7 @@ describe("Sell", () => {
 
     expect(screen.getByText("Step 1 · Decide Which Works to Sell")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 1 of 3")).toBeOnTheScreen()
-    expect(screen.getByText(/Tap the works you've considered selling/)).toBeOnTheScreen()
+    expect(screen.getByText(/Tap the works you’ve considered selling/)).toBeOnTheScreen()
   })
 
   it("closes straight away when the feature flag is off", () => {

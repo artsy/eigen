@@ -33,11 +33,11 @@ export const SellPayoutBreakdown: React.FC<SellPayoutBreakdownProps> = ({
       <Flex flexDirection="row" justifyContent="space-between">
         <Flex flexDirection="row" alignItems="center" gap={0.5}>
           <Text variant="sm" color="mono60">
-            Artsy's fee
+            Artsy’s fee
           </Text>
           <Touchable
             accessibilityRole="button"
-            accessibilityLabel="About Artsy's fee"
+            accessibilityLabel="About Artsy’s fee"
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             onPress={onFeeInfoPress}
           >
@@ -51,7 +51,7 @@ export const SellPayoutBreakdown: React.FC<SellPayoutBreakdownProps> = ({
 
       <Flex flexDirection="row" justifyContent="space-between">
         <Text variant="sm-display" fontWeight="bold" color="green100">
-          You'll receive
+          You’ll receive
         </Text>
         <Text variant="sm-display" fontWeight="bold" color="green100">
           {payout ? formatUSD(payout.payout) : EMPTY_VALUE}

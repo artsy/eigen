@@ -1,4 +1,5 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { SellFeeInfoBottomSheet } from "app/Scenes/Sell/Components/SellFeeInfoBottomSheet"
 import { SellPriceSection } from "app/Scenes/Sell/Components/SellPriceSection"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useState } from "react"
@@ -39,13 +40,30 @@ describe("SellPriceSection", () => {
     expect(screen.getByText("US$2,720")).toBeOnTheScreen()
   })
 
-  it("doesn't take a price while disabled", () => {
+  it("drops the cents from a pasted price", () => {
+    renderWithWrappers(<TestPriceSection />)
+
+    fireEvent.changeText(screen.getByLabelText("Asking price"), "3,200.50")
+
+    expect(screen.getByLabelText("Asking price")).toHaveDisplayValue("3,200")
+  })
+
+  it("keeps the price under a billion dollars", () => {
+    renderWithWrappers(<TestPriceSection />)
+
+    fireEvent.changeText(screen.getByLabelText("Asking price"), "12345678901")
+
+    expect(screen.getByLabelText("Asking price")).toHaveDisplayValue("123,456,789")
+  })
+
+  it("says why the price is locked while disabled", () => {
     renderWithWrappers(<TestPriceSection disabled />)
 
     expect(screen.getByLabelText("Asking price")).toHaveProp("editable", false)
+    expect(screen.getByText("Pick a condition to set your price.")).toBeOnTheScreen()
   })
 
-  it("says the insights link isn't built yet", () => {
+  it("says the insights link isn’t built yet", () => {
     const alertSpy = jest.spyOn(Alert, "alert")
     renderWithWrappers(<TestPriceSection />)
 
@@ -54,13 +72,16 @@ describe("SellPriceSection", () => {
     expect(alertSpy).toHaveBeenCalledWith("See more Insights", "Not yet implemented.")
   })
 
-  it("explains Artsy's fee", async () => {
+  it("explains Artsy’s fee", async () => {
     renderWithWrappers(<TestPriceSection />)
 
-    fireEvent.press(screen.getByLabelText("About Artsy's fee"))
+    fireEvent.press(screen.getByLabelText("About Artsy’s fee"))
     expect(await screen.findByText(/flat 15% fee/)).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Got it"))
-    await waitFor(() => expect(screen.queryByText(/flat 15% fee/)).not.toBeOnTheScreen())
+    // The bottom sheet mock keeps its children rendered, so check what the sheet was told
+    await waitFor(() =>
+      expect(screen.UNSAFE_getByType(SellFeeInfoBottomSheet).props.visible).toBe(false)
+    )
   })
 })

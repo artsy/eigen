@@ -1,15 +1,25 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import {
-  EMPTY_SELL_CONDITION,
-  SellConditionSection,
-} from "app/Scenes/Sell/Components/SellConditionSection"
+import { SellConditionPhoto } from "app/Scenes/Sell/Components/SellConditionPhotos"
+import { SellConditionRating } from "app/Scenes/Sell/Components/SellConditionRatingPicker"
+import { SellConditionSection } from "app/Scenes/Sell/Components/SellConditionSection"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useState } from "react"
 
 const TestConditionSection: React.FC = () => {
-  const [value, setValue] = useState(EMPTY_SELL_CONDITION)
+  const [rating, setRating] = useState<SellConditionRating | null>(null)
+  const [photos, setPhotos] = useState<SellConditionPhoto[]>([])
+  const [notes, setNotes] = useState("")
 
-  return <SellConditionSection value={value} onChange={setValue} />
+  return (
+    <SellConditionSection
+      rating={rating}
+      onRatingChange={setRating}
+      photos={photos}
+      onPhotosChange={setPhotos}
+      notes={notes}
+      onNotesChange={setNotes}
+    />
+  )
 }
 
 describe("SellConditionSection", () => {

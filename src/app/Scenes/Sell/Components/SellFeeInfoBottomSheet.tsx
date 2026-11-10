@@ -25,11 +25,11 @@ export const SellFeeInfoBottomSheet: React.FC<SellFeeInfoBottomSheetProps> = ({
     >
       <BottomSheetView style={{ paddingHorizontal: space(2), paddingBottom: bottom + space(2) }}>
         <Flex pt={1} gap={2}>
-          <Text variant="md">Artsy's fee</Text>
+          <Text variant="md">Artsy’s fee</Text>
           <Text variant="sm" color="mono60">
             Artsy charges a flat 15% fee on the sale price. This covers listing your work on Artsy,
-            payment processing, buyer support, and fraud protection, so you don't have to manage any
-            of it yourself. It's deducted automatically from your sale price; there are no upfront
+            payment processing, buyer support, and fraud protection, so you don’t have to manage any
+            of it yourself. It’s deducted automatically from your sale price; there are no upfront
             or hidden costs.
           </Text>
 

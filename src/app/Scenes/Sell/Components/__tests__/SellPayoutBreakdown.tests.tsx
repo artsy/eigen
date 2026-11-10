@@ -3,7 +3,7 @@ import { SellPayoutBreakdown } from "app/Scenes/Sell/Components/SellPayoutBreakd
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("SellPayoutBreakdown", () => {
-  it("shows dashes until there's an asking price", () => {
+  it("shows dashes until there’s an asking price", () => {
     renderWithWrappers(<SellPayoutBreakdown askingPrice={null} onFeeInfoPress={jest.fn()} />)
 
     expect(screen.getAllByText("—")).toHaveLength(3)
@@ -21,7 +21,7 @@ describe("SellPayoutBreakdown", () => {
     const onFeeInfoPress = jest.fn()
     renderWithWrappers(<SellPayoutBreakdown askingPrice={null} onFeeInfoPress={onFeeInfoPress} />)
 
-    fireEvent.press(screen.getByLabelText("About Artsy's fee"))
+    fireEvent.press(screen.getByLabelText("About Artsy’s fee"))
 
     expect(onFeeInfoPress).toHaveBeenCalledTimes(1)
   })

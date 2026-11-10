@@ -8,43 +8,38 @@ import {
   SellConditionRatingPicker,
 } from "app/Scenes/Sell/Components/SellConditionRatingPicker"
 
-export interface SellConditionValue {
-  rating: SellConditionRating | null
-  photos: SellConditionPhoto[]
-  notes: string
-}
-
-export const EMPTY_SELL_CONDITION: SellConditionValue = { rating: null, photos: [], notes: "" }
-
 interface SellConditionSectionProps {
-  value: SellConditionValue
-  onChange: React.Dispatch<React.SetStateAction<SellConditionValue>>
+  rating: SellConditionRating | null
+  onRatingChange: (rating: SellConditionRating) => void
+  photos: SellConditionPhoto[]
+  onPhotosChange: (photos: SellConditionPhoto[]) => void
+  notes: string
+  onNotesChange: (notes: string) => void
 }
 
-export const SellConditionSection: React.FC<SellConditionSectionProps> = ({ value, onChange }) => {
-  const { rating, photos, notes } = value
-
+export const SellConditionSection: React.FC<SellConditionSectionProps> = ({
+  rating,
+  onRatingChange,
+  photos,
+  onPhotosChange,
+  notes,
+  onNotesChange,
+}) => {
   const addPhotos = (newPhotos: SellConditionPhoto[]) => {
-    onChange((current) => ({
-      ...current,
-      photos: [
-        ...current.photos,
-        ...newPhotos.filter((photo) => !current.photos.some(({ path }) => path === photo.path)),
-      ],
-    }))
+    onPhotosChange([
+      ...photos,
+      ...newPhotos.filter((photo) => !photos.some(({ path }) => path === photo.path)),
+    ])
   }
 
   return (
     <Flex>
       <Flex px={2} pb={2} gap={1}>
         <Text variant="md">Condition</Text>
-        <Text variant="sm">How would you describe the work's condition?</Text>
+        <Text variant="sm">How would you describe the work’s condition?</Text>
       </Flex>
 
-      <SellConditionRatingPicker
-        value={rating}
-        onChange={(newRating) => onChange((current) => ({ ...current, rating: newRating }))}
-      />
+      <SellConditionRatingPicker value={rating} onChange={onRatingChange} />
 
       <Flex px={2} pt={4} gap={4}>
         <Flex gap={1}>
@@ -55,19 +50,14 @@ export const SellConditionSection: React.FC<SellConditionSectionProps> = ({ valu
           <SellConditionPhotos
             photos={photos}
             onAdd={addPhotos}
-            onRemove={(path) =>
-              onChange((current) => ({
-                ...current,
-                photos: current.photos.filter((photo) => photo.path !== path),
-              }))
-            }
+            onRemove={(path) => onPhotosChange(photos.filter((photo) => photo.path !== path))}
           />
         </Flex>
 
         <Flex gap={1}>
           <Text variant="sm">Anything else we should know?</Text>
           <Text variant="xs" color="mono60">
-            Any notes on the work's condition, history, provenance, or anything else that our
+            Any notes on the work’s condition, history, provenance, or anything else that our
             specialists may want to know.
           </Text>
           <Input
@@ -75,7 +65,7 @@ export const SellConditionSection: React.FC<SellConditionSectionProps> = ({ valu
             placeholder="Notes"
             accessibilityLabel="Notes"
             value={notes}
-            onChangeText={(newNotes) => onChange((current) => ({ ...current, notes: newNotes }))}
+            onChangeText={onNotesChange}
           />
         </Flex>
       </Flex>

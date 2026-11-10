@@ -1,11 +1,9 @@
 import { Box, Button, Flex, Text, useSpace } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { ConditionQuery } from "__generated__/ConditionQuery.graphql"
-import {
-  EMPTY_SELL_CONDITION,
-  SellConditionSection,
-  SellConditionValue,
-} from "app/Scenes/Sell/Components/SellConditionSection"
+import { SellConditionPhoto } from "app/Scenes/Sell/Components/SellConditionPhotos"
+import { SellConditionRating } from "app/Scenes/Sell/Components/SellConditionRatingPicker"
+import { SellConditionSection } from "app/Scenes/Sell/Components/SellConditionSection"
 import { SellPriceSection } from "app/Scenes/Sell/Components/SellPriceSection"
 import { SellStepIntro } from "app/Scenes/Sell/Components/SellStepIntro"
 import { SellWorkCard } from "app/Scenes/Sell/Components/SellWorkCard"
@@ -71,11 +69,13 @@ const ConditionForm: React.FC<{
     ],
   }))
 
-  const [condition, setCondition] = useState<SellConditionValue>(EMPTY_SELL_CONDITION)
+  const [rating, setRating] = useState<SellConditionRating | null>(null)
+  const [photos, setPhotos] = useState<SellConditionPhoto[]>([])
+  const [notes, setNotes] = useState("")
   const [askingPrice, setAskingPrice] = useState("")
 
   const isMarketplace = channelKind === "MARKETPLACE"
-  const canContinue = !!condition.rating && (!isMarketplace || !!askingPrice)
+  const canContinue = !!rating && (!isMarketplace || !!askingPrice)
 
   return (
     <Flex flex={1} bg="mono0">
@@ -99,7 +99,14 @@ const ConditionForm: React.FC<{
           <SellWorkCard artwork={artwork} />
         </Flex>
 
-        <SellConditionSection value={condition} onChange={setCondition} />
+        <SellConditionSection
+          rating={rating}
+          onRatingChange={setRating}
+          photos={photos}
+          onPhotosChange={setPhotos}
+          notes={notes}
+          onNotesChange={setNotes}
+        />
 
         {!!isMarketplace && (
           <Flex px={2} pt={4}>
@@ -107,7 +114,7 @@ const ConditionForm: React.FC<{
               artistNames={artwork.artistNames}
               askingPrice={askingPrice}
               onAskingPriceChange={setAskingPrice}
-              disabled={!condition.rating}
+              disabled={!rating}
             />
           </Flex>
         )}
@@ -130,7 +137,7 @@ const ConditionForm: React.FC<{
 const ConditionError: React.FC = () => (
   <Flex px={2} pt={2}>
     <Text variant="sm" color="mono60">
-      We couldn't load this work.
+      We couldn’t load this work.
     </Text>
   </Flex>
 )
