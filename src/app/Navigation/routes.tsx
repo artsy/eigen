@@ -61,6 +61,10 @@ import {
   ArtworkListScreenQuery,
   artworkListVariables,
 } from "app/Scenes/ArtworkList/ArtworkList"
+import {
+  SharedArtworkListScreen,
+  SharedArtworkListScreenQuery,
+} from "app/Scenes/ArtworkList/SharedArtworkList"
 import { artworkListsQuery } from "app/Scenes/ArtworkLists/ArtworkLists"
 import {
   ARTWORK_MEDIUM_QUERY,
@@ -1783,6 +1787,20 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+  },
+  {
+    path: "/user/:userID/collection/:collectionID",
+    name: "SharedArtworkList",
+    Component: SharedArtworkListScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [SharedArtworkListScreenQuery],
+    prepareVariables: [
+      ({ userID, collectionID }) => ({ userID, collectionID, ...artworkListVariables }),
+    ],
   },
   {
     path: "/show/:showID",

@@ -118,12 +118,18 @@ describe("ArtworkList", () => {
   })
 
   describe("Contextual menu button", () => {
-    it("should NOT be displayed for default artwork list", async () => {
+    it("should be displayed for default artwork list, but only offers Share List", async () => {
       const { mockResolveLastOperation } = renderWithRelay()
 
       mockResolveLastOperation({ Me: () => me })
 
-      expect(screen.queryByLabelText(CONTEXTUAL_MENU_LABEL)).not.toBeOnTheScreen()
+      expect(screen.getByLabelText(CONTEXTUAL_MENU_LABEL)).toBeOnTheScreen()
+
+      fireEvent.press(screen.getByTestId("fancy-modal-header-right-button"))
+
+      expect(screen.getByText("Share List")).toBeOnTheScreen()
+      expect(screen.queryByText("Edit List")).not.toBeOnTheScreen()
+      expect(screen.queryByText("Delete List")).not.toBeOnTheScreen()
     })
 
     it("should be displayed custom artwork list", async () => {

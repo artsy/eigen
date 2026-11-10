@@ -9,47 +9,36 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
-import { ArtworkListQuery, CollectionArtworkSorts } from "__generated__/ArtworkListQuery.graphql"
+import { ArtworkListQuery } from "__generated__/ArtworkListQuery.graphql"
 import { ArtworkList_artworksConnection$key } from "__generated__/ArtworkList_artworksConnection.graphql"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { ArtworkListProvider } from "app/Components/ArtworkLists/ArtworkListContext"
-import { SortByModal, SortOption } from "app/Components/SortByModal/SortByModal"
+import { SortByModal } from "app/Components/SortByModal/SortByModal"
 import { PAGE_SIZE } from "app/Components/constants"
 import { ArtworkListArtworksGridHeader } from "app/Scenes/ArtworkList/ArtworkListArtworksGridHeader"
 import { ArtworkListEmptyState } from "app/Scenes/ArtworkList/ArtworkListEmptyState"
 import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
+import {
+  DEFAULT_SORT_OPTION,
+  SORT_OPTIONS,
+  useArtworkListSort,
+} from "app/Scenes/ArtworkList/useArtworkListSort"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { FC, Suspense, useRef, useState } from "react"
+import { FC, Suspense } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface ArtworkListScreenProps {
   listID: string
 }
 
-const SORT_OPTIONS: SortOption[] = [
-  { value: "SAVED_AT_DESC", text: "Recently Added" },
-  { value: "SAVED_AT_ASC", text: "First Added" },
-]
-
-const DEFAULT_SORT_OPTION = SORT_OPTIONS[0].value as CollectionArtworkSorts
-
 export const artworkListVariables = { count: PAGE_SIZE, sort: DEFAULT_SORT_OPTION }
 
 export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
-  const [sortModalVisible, setSortModalVisible] = useState(false)
-  const [selectedSortValue, setSelectedSortValue] = useState(DEFAULT_SORT_OPTION)
-  // The sort modal reports its dismissal asynchronously, once its closing animation has finished,
-  // so `handleSortByModalClosed` cannot rely on the `selectedSortValue` state closure: by then it
-  // may be reading a value from a stale render. These refs track the sort the user actually picked
-  // and the one we last fetched, so we always compare and refetch the current values.
-  const selectedSortValueRef = useRef(DEFAULT_SORT_OPTION)
-  const lastFetchedSortValueRef = useRef(DEFAULT_SORT_OPTION)
-
   const queryData = useLazyLoadQuery<ArtworkListQuery>(
     ArtworkListScreenQuery,
     {
@@ -64,40 +53,15 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
     ArtworkList_artworksConnection$key
   >(artworkListFragment, queryData.me)
 
+  const {
+    sortModalVisible,
+    selectedSortValue,
+    openSortModal,
+    handleSortByModalClosed,
+    handleSelectOption,
+  } = useArtworkListSort(refetch)
+
   const RefreshControl = useRefreshControl(refetch, { sort: selectedSortValue })
-
-  const handleSortByModalClosed = () => {
-    setSortModalVisible(false)
-
-    const newSortValue = selectedSortValueRef.current
-
-    if (newSortValue === lastFetchedSortValueRef.current) {
-      return
-    }
-
-    lastFetchedSortValueRef.current = newSortValue
-
-    refetch(
-      { sort: newSortValue },
-      {
-        fetchPolicy: "store-and-network",
-      }
-    )
-  }
-
-  const closeSortModal = () => {
-    setSortModalVisible(false)
-  }
-
-  const handleSelectOption = (option: SortOption) => {
-    selectedSortValueRef.current = option.value as CollectionArtworkSorts
-    setSelectedSortValue(option.value as CollectionArtworkSorts)
-    closeSortModal()
-  }
-
-  const openSortModal = () => {
-    setSortModalVisible(true)
-  }
 
   const artworkList = data?.artworkList
   const artworksCount = artworkList?.artworks?.totalCount ?? 0
