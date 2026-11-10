@@ -1,6 +1,7 @@
 import { act, screen } from "@testing-library/react-native"
 import { ShowTestsQuery } from "__generated__/ShowTestsQuery.graphql"
 import { Show, ShowFragmentContainer } from "app/Scenes/Show/Show"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -79,5 +80,19 @@ describe("Show", () => {
     renderWithRelay()
 
     expect(screen.queryByText("Don't miss")).not.toBeOnTheScreen()
+  })
+
+  it("puts a share button in the navigation header", () => {
+    const setOptions = jest.fn()
+    jest
+      .spyOn(jest.requireMock("@react-navigation/native"), "useNavigation")
+      .mockReturnValue({ setOptions, navigate: jest.fn(), addListener: jest.fn() })
+
+    renderWithRelay({ Show: () => ({ name: "The big show", slug: "the-big-show" }) })
+
+    const { headerRight } = setOptions.mock.calls[setOptions.mock.calls.length - 1][0]
+    renderWithWrappers(headerRight())
+
+    expect(screen.getByLabelText("Share Show")).toBeOnTheScreen()
   })
 })

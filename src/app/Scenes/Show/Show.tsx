@@ -1,16 +1,18 @@
 import { Box, Flex, Separator, Spacer } from "@artsy/palette-mobile"
+import { useNavigation } from "@react-navigation/native"
 import { ShowQuery } from "__generated__/ShowQuery.graphql"
 import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { ItineraryStopNote } from "app/Components/ItineraryStopNote/ItineraryStopNote"
+import { ShareHeaderButton } from "app/Components/ShareSheet/ShareHeaderButton"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { times } from "lodash"
-import React, { Suspense, useRef, useState } from "react"
+import React, { Suspense, useEffect, useRef, useState } from "react"
 import { Animated } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ShowArtworksWithNavigation as ShowArtworks } from "./Components/ShowArtworks"
@@ -45,6 +47,21 @@ export const Show: React.FC<ShowProps> = ({ show, stopID, shareToken }) => {
   const filterComponentAnimationValue = new Animated.Value(0)
 
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
+
+  const navigation = useNavigation()
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <ShareHeaderButton
+          href={`/show/${show.slug}`}
+          name={show.name ?? ""}
+          utmContent="show-share"
+          accessibilityLabel="Share Show"
+        />
+      ),
+    })
+  }, [navigation, show.slug, show.name])
 
   const openeFilterArtworksModal = () => {
     setVisible(true)
@@ -152,6 +169,7 @@ export const ShowFragmentContainer = createFragmentContainer(Show, {
     fragment Show_show on Show {
       internalID
       slug
+      name
       isActive
       ...ShowHeader_show
       ...ShowInstallShots_show

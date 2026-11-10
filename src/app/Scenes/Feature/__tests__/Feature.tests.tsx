@@ -112,5 +112,6 @@ describe(FeatureQueryRenderer, () => {
     expect(screen.getByText("set 1 name")).toBeTruthy()
 
     expect(screen.getByTestId("FeatureVideo")).toBeTruthy()
+    expect(screen.getByLabelText("Share Feature")).toBeOnTheScreen()
   })
 })

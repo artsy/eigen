@@ -6,6 +6,7 @@ import { ArtsyWebView } from "app/Components/ArtsyWebView"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { NotFoundFailureView } from "app/Components/NotFoundFailureView"
 import { ReadMore } from "app/Components/ReadMore"
+import { ShareHeaderButton } from "app/Components/ShareSheet/ShareHeaderButton"
 import { Stack } from "app/Components/Stack"
 import { FeatureVideo } from "app/Scenes/Feature/FeatureVideo"
 import { goBack } from "app/system/navigation/navigate"
@@ -52,6 +53,15 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
   if (!feature) {
     return <NotFoundFailureView title="Feature not found" />
   }
+
+  const shareButton = (
+    <ShareHeaderButton
+      href={`/feature/${feature.slug}`}
+      name={feature.name ?? ""}
+      utmContent="feature-share"
+      accessibilityLabel="Share Feature"
+    />
+  )
 
   let containsVideo = !!feature.video?.url
   const sets = extractNodes(feature.sets)
@@ -212,7 +222,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
     const featurePath = "/feature/" + feature.slug
     return (
       <Screen>
-        <Screen.AnimatedHeader onBack={goBack} />
+        <Screen.AnimatedHeader onBack={goBack} rightElements={shareButton} />
         <ArtsyWebView url={featurePath} />
       </Screen>
     )
@@ -220,7 +230,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
 
   return (
     <Screen>
-      <Screen.AnimatedHeader onBack={goBack} />
+      <Screen.AnimatedHeader onBack={goBack} rightElements={shareButton} />
       <AboveTheFoldFlatList<FlatListSection>
         initialNumToRender={__TEST__ ? 100 : 6}
         data={[header, ...allSections]}
@@ -239,6 +249,7 @@ const FeatureFragmentContainer = createFragmentContainer(FeatureApp, {
       description
       callout
       slug
+      name
       video {
         url
       }
