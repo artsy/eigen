@@ -4,11 +4,13 @@ import {
   SellConditionPhotos,
 } from "app/Scenes/Sell/Components/SellConditionPhotos"
 import { SellConditionRatingPicker } from "app/Scenes/Sell/Components/SellConditionRatingPicker"
-import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
+import { SellConditionStore } from "app/Scenes/Sell/State/SellConditionStore"
 
 export const SellConditionSection: React.FC = () => {
-  const { rating, photos, notes } = SellFlowStore.useStoreState((state) => state.conditionStep)
-  const { setRating, setPhotos, setNotes } = SellFlowStore.useStoreActions((actions) => actions)
+  const { rating, photos, notes } = SellConditionStore.useStoreState((state) => state)
+  const { setRating, setPhotos, setNotes } = SellConditionStore.useStoreActions(
+    (actions) => actions
+  )
 
   const addPhotos = (newPhotos: SellConditionPhoto[]) => {
     setPhotos([

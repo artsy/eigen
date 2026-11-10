@@ -1,12 +1,12 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { SellConditionSection } from "app/Scenes/Sell/Components/SellConditionSection"
-import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
+import { SellConditionStore } from "app/Scenes/Sell/State/SellConditionStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 const TestConditionSection: React.FC = () => (
-  <SellFlowStore.Provider>
+  <SellConditionStore.Provider>
     <SellConditionSection />
-  </SellFlowStore.Provider>
+  </SellConditionStore.Provider>
 )
 
 describe("SellConditionSection", () => {

@@ -6,7 +6,9 @@ import { SellPriceSection } from "app/Scenes/Sell/Components/SellPriceSection"
 import { SellStepIntro } from "app/Scenes/Sell/Components/SellStepIntro"
 import { SellWorkCard } from "app/Scenes/Sell/Components/SellWorkCard"
 import { SellNavigationProp } from "app/Scenes/Sell/Sell"
+import { SellConditionStore } from "app/Scenes/Sell/State/SellConditionStore"
 import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
+import { useConfirmLeavingConditionStep } from "app/Scenes/Sell/hooks/useConfirmLeavingConditionStep"
 import { AUCTION_CONDITION_STEP } from "app/Scenes/Sell/sellSteps"
 import { SellChannel, getSellChannel } from "app/Scenes/Sell/utils/getSellChannel"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -24,7 +26,11 @@ export const Condition: React.FC = () => {
     return null
   }
 
-  return <ConditionContent artworkID={artworkID} />
+  return (
+    <SellConditionStore.Provider>
+      <ConditionContent artworkID={artworkID} />
+    </SellConditionStore.Provider>
+  )
 }
 
 const ConditionContent: React.FC<{ artworkID: string }> = withSuspense({
@@ -67,7 +73,8 @@ const ConditionForm: React.FC<{
     ],
   }))
 
-  const { rating, askingPrice } = SellFlowStore.useStoreState((state) => state.conditionStep)
+  const { rating, askingPrice } = SellConditionStore.useStoreState((state) => state)
+  useConfirmLeavingConditionStep()
 
   const isMarketplace = channelKind === "MARKETPLACE"
   const canContinue = !!rating && (!isMarketplace || !!askingPrice)

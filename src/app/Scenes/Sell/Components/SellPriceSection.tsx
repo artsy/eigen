@@ -2,7 +2,7 @@ import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { MoneyInput } from "app/Components/Input/MoneyInput/MoneyInput"
 import { SellFeeInfoBottomSheet } from "app/Scenes/Sell/Components/SellFeeInfoBottomSheet"
 import { SellPayoutBreakdown } from "app/Scenes/Sell/Components/SellPayoutBreakdown"
-import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
+import { SellConditionStore } from "app/Scenes/Sell/State/SellConditionStore"
 import { useState } from "react"
 import { Alert } from "react-native"
 
@@ -18,8 +18,8 @@ interface SellPriceSectionProps {
 }
 
 export const SellPriceSection: React.FC<SellPriceSectionProps> = ({ artistNames }) => {
-  const { rating, askingPrice } = SellFlowStore.useStoreState((state) => state.conditionStep)
-  const setAskingPrice = SellFlowStore.useStoreActions((actions) => actions.setAskingPrice)
+  const { rating, askingPrice } = SellConditionStore.useStoreState((state) => state)
+  const setAskingPrice = SellConditionStore.useStoreActions((actions) => actions.setAskingPrice)
   const [showFeeInfo, setShowFeeInfo] = useState(false)
   // The price depends on the condition, so it waits for a rating
   const disabled = !rating

@@ -2,24 +2,19 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { SellFeeInfoBottomSheet } from "app/Scenes/Sell/Components/SellFeeInfoBottomSheet"
 import { SellPriceSection } from "app/Scenes/Sell/Components/SellPriceSection"
 import {
-  SellConditionStep,
-  SellFlowStore,
-  sellFlowStoreModel,
-} from "app/Scenes/Sell/State/SellFlowStore"
+  SellConditionStore,
+  SellConditionStoreModel,
+  sellConditionStoreModel,
+} from "app/Scenes/Sell/State/SellConditionStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Alert } from "react-native"
 
-const TestPriceSection: React.FC<{ rating?: SellConditionStep["rating"] }> = ({
+const TestPriceSection: React.FC<{ rating?: SellConditionStoreModel["rating"] }> = ({
   rating = "FAIR",
 }) => (
-  <SellFlowStore.Provider
-    runtimeModel={{
-      ...sellFlowStoreModel,
-      conditionStep: { rating, photos: [], notes: "", askingPrice: "" },
-    }}
-  >
+  <SellConditionStore.Provider runtimeModel={{ ...sellConditionStoreModel, rating }}>
     <SellPriceSection artistNames="Theo Bardsley" />
-  </SellFlowStore.Provider>
+  </SellConditionStore.Provider>
 )
 
 describe("SellPriceSection", () => {
