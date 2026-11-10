@@ -68,7 +68,7 @@ export const SharedArtworkList: FC<SharedArtworkListScreenProps> = ({ collection
     setIsManageViewVisible(false)
   }, [])
 
-  const collection = queryData.collection
+  const collection = data?.collection
 
   if (!collection) {
     return (
@@ -83,8 +83,8 @@ export const SharedArtworkList: FC<SharedArtworkListScreenProps> = ({ collection
     )
   }
 
-  const artworksCount = data?.collection?.artworks?.totalCount ?? 0
-  const artworks = extractNodes(data?.collection?.artworks)
+  const artworksCount = collection.artworks?.totalCount ?? 0
+  const artworks = extractNodes(collection.artworks)
 
   const artworkListEntity: HeaderMenuArtworkListEntity | null = isOwner
     ? {
@@ -127,9 +127,10 @@ export const SharedArtworkList: FC<SharedArtworkListScreenProps> = ({ collection
         ListHeaderComponent={
           <Box mx={-1}>
             <ArtworkListArtworksGridHeader
-              title={collection?.name ?? ""}
+              title={collection.name}
               artworksCount={artworksCount}
-              shareableWithPartners={collection?.shareableWithPartners ?? false}
+              // The HideIcon tooltip is owner-only messaging; non-owners should never see it
+              shareableWithPartners={isOwner ? collection.shareableWithPartners : true}
               onSortButtonPress={openSortModal}
             />
           </Box>
@@ -160,14 +161,6 @@ export const SharedArtworkListScreenQuery = graphql`
     $after: String
     $sort: CollectionArtworkSorts
   ) {
-    collection(id: $collectionID, userID: $userID) {
-      default
-      name
-      internalID
-      slug
-      private
-      shareableWithPartners
-    }
     ...SharedArtworkList_query
       @arguments(
         collectionID: $collectionID
@@ -190,6 +183,13 @@ const sharedArtworkListFragment = graphql`
     sort: { type: "CollectionArtworkSorts" }
   ) {
     collection(id: $collectionID, userID: $userID) {
+      default
+      name
+      internalID
+      slug
+      private
+      shareableWithPartners
+
       artworks: artworksConnection(first: $count, after: $after, sort: $sort)
         @connection(key: "SharedArtworkList_artworks") {
         totalCount

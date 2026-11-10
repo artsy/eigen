@@ -9,6 +9,7 @@ import {
   AutoHeightBottomSheet,
   AutoHeightBottomSheetProps,
 } from "app/Components/BottomSheet/AutoHeightBottomSheet"
+import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
 import { HeaderMenuArtworkListEntity } from "app/Scenes/ArtworkList/types"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -36,9 +37,7 @@ export const ShareArtworkListView: FC<ShareArtworkListViewProps> = ({
   const [commit, isLoading] = useShareArtworkList()
   const userId = GlobalStore.useAppState((state) => state.auth.userID)
 
-  const url = `https://www.artsy.net/user/${userId}/collection/${
-    slug ?? artworkListEntity.internalID
-  }`
+  const url = getShareURL(`/user/${userId}/collection/${slug ?? artworkListEntity.internalID}`)
 
   const closeView = () => {
     dismiss(NAME)
@@ -106,7 +105,7 @@ export const ShareArtworkListView: FC<ShareArtworkListViewProps> = ({
           <Switch
             accessibilityRole="switch"
             accessibilityLabel="Enable sharing"
-            accessibilityState={{ selected: isShared }}
+            accessibilityState={{ checked: isShared, disabled: isLoading }}
             onValueChange={handleToggle}
             value={isShared}
             disabled={isLoading}

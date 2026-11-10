@@ -1,5 +1,6 @@
 import Clipboard from "@react-native-clipboard/clipboard"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { HeaderMenuArtworkListEntity } from "app/Scenes/ArtworkList/types"
 import { ShareArtworkListView } from "app/Scenes/ArtworkList/views/ShareArtworkListView/ShareArtworkListView"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -102,7 +103,7 @@ describe("ShareArtworkListView", () => {
       await waitFor(() => {
         expect(
           screen.getByDisplayValue(
-            `https://www.artsy.net/user/${CURRENT_USER_ID}/collection/server-assigned-slug`
+            getShareURL(`/user/${CURRENT_USER_ID}/collection/server-assigned-slug`)
           )
         ).toBeOnTheScreen()
       })
@@ -116,7 +117,7 @@ describe("ShareArtworkListView", () => {
       fireEvent.press(screen.getByText("Copy link"))
 
       expect(Clipboard.setString).toHaveBeenCalledWith(
-        `https://www.artsy.net/user/${CURRENT_USER_ID}/collection/my-list`
+        getShareURL(`/user/${CURRENT_USER_ID}/collection/my-list`)
       )
     })
 
@@ -126,7 +127,7 @@ describe("ShareArtworkListView", () => {
       fireEvent.press(screen.getByText("Copy link"))
 
       expect(Clipboard.setString).toHaveBeenCalledWith(
-        `https://www.artsy.net/user/${CURRENT_USER_ID}/collection/coll-internalID`
+        getShareURL(`/user/${CURRENT_USER_ID}/collection/coll-internalID`)
       )
     })
   })
