@@ -20,6 +20,7 @@ class AppDelegate: ExpoAppDelegate, UNUserNotificationCenterDelegate {
       didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
       helper?.setup(launchOptions: launchOptions)
+      configureImageMemoryCache()
 
       // Set the UNUserNotificationCenter delegate to enable notification tap handling
       UNUserNotificationCenter.current().delegate = self
@@ -41,6 +42,14 @@ class AppDelegate: ExpoAppDelegate, UNUserNotificationCenterDelegate {
   #endif
 
       return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+    }
+
+    // SDWebImage (used by FastImage) keeps every decoded image in memory by default and only
+    // evicts under system pressure. Long scrolls through artwork grids, especially on iPad,
+    // grew the app past the iOS memory limit and caused OOM crashes. Cap the in-memory cache;
+    // evicted images are re-decoded from the disk cache, not re-downloaded.
+    private func configureImageMemoryCache() {
+        SDImageCache.shared.config.maxMemoryCost = 250 * 1024 * 1024 // bytes of decoded pixels
     }
 
     // Forward applicationDidBecomeActive to helper
