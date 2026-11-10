@@ -114,7 +114,7 @@ export const ShareArtworkListView: FC<ShareArtworkListViewProps> = ({
 
         <Spacer y={2} />
 
-        <Input value={url} editable={false} disabled={!isShared} />
+        <Input title="Shareable link" value={url} editable={false} disabled={!isShared} />
 
         <Spacer y={2} />
 

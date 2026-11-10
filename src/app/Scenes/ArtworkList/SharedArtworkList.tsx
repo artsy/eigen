@@ -119,32 +119,42 @@ export const SharedArtworkList: FC<SharedArtworkListScreenProps> = ({ collection
         hideBottomDivider
       />
 
-      <MasonryInfiniteScrollArtworkGrid
-        artworks={artworks}
-        loadMore={(pageSize) => loadNext(pageSize)}
-        hasMore={hasNext}
-        isLoading={isLoadingNext}
-        ListHeaderComponent={
-          <Box mx={-1}>
-            <ArtworkListArtworksGridHeader
-              title={collection.name}
-              artworksCount={artworksCount}
-              // The HideIcon tooltip is owner-only messaging; non-owners should never see it
-              shareableWithPartners={isOwner ? collection.shareableWithPartners : true}
-              onSortButtonPress={openSortModal}
-            />
-          </Box>
-        }
-        refreshControl={RefreshControl}
-      />
+      {artworksCount === 0 ? (
+        <Flex flex={1} justifyContent="center" alignItems="center" mx={2}>
+          <Text variant="sm" color="mono60" textAlign="center">
+            This list has no artworks yet.
+          </Text>
+        </Flex>
+      ) : (
+        <>
+          <MasonryInfiniteScrollArtworkGrid
+            artworks={artworks}
+            loadMore={(pageSize) => loadNext(pageSize)}
+            hasMore={hasNext}
+            isLoading={isLoadingNext}
+            ListHeaderComponent={
+              <Box mx={-1}>
+                <ArtworkListArtworksGridHeader
+                  title={collection.name}
+                  artworksCount={artworksCount}
+                  // The HideIcon tooltip is owner-only messaging; non-owners should never see it
+                  shareableWithPartners={isOwner ? collection.shareableWithPartners : true}
+                  onSortButtonPress={openSortModal}
+                />
+              </Box>
+            }
+            refreshControl={RefreshControl}
+          />
 
-      <SortByModal
-        visible={sortModalVisible}
-        options={SORT_OPTIONS}
-        selectedValue={selectedSortValue}
-        onSelectOption={handleSelectOption}
-        onModalFinishedClosing={handleSortByModalClosed}
-      />
+          <SortByModal
+            visible={sortModalVisible}
+            options={SORT_OPTIONS}
+            selectedValue={selectedSortValue}
+            onSelectOption={handleSelectOption}
+            onModalFinishedClosing={handleSortByModalClosed}
+          />
+        </>
+      )}
 
       {!!(isManageViewVisible && artworkListEntity) && (
         <ManageArtworkListView artworkListEntity={artworkListEntity} onDismiss={closeManageView} />

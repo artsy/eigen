@@ -13,6 +13,7 @@ const collection = {
   private: false,
   default: false,
   shareableWithPartners: false,
+  artworks: { totalCount: 2 },
 }
 
 describe("SharedArtworkList", () => {
@@ -26,6 +27,16 @@ describe("SharedArtworkList", () => {
 
       await waitFor(() => {
         expect(screen.getByText("This list is private or no longer available.")).toBeOnTheScreen()
+      })
+    })
+  })
+
+  describe("empty list", () => {
+    it("shows an empty state message", async () => {
+      renderWithRelay({ Collection: () => ({ ...collection, artworks: { totalCount: 0 } }) })
+
+      await waitFor(() => {
+        expect(screen.getByText("This list has no artworks yet.")).toBeOnTheScreen()
       })
     })
   })
@@ -63,9 +74,11 @@ describe("SharedArtworkList", () => {
     it("hides the contextual menu button", async () => {
       renderWithRelay({ Collection: () => collection })
 
-      await waitFor(() => {
-        expect(screen.queryByLabelText("Contextual Menu Button")).not.toBeOnTheScreen()
-      })
+      // Wait for the list to render before asserting absence, otherwise the negative check
+      // passes trivially while the Suspense placeholder is still showing.
+      await screen.findByText("My Shared List")
+
+      expect(screen.queryByLabelText("Contextual Menu Button")).not.toBeOnTheScreen()
     })
   })
 })

@@ -79,6 +79,26 @@ describe("ShareArtworkListView", () => {
       })
     })
 
+    it("reverts the toggle on a top-level GraphQL error (updateCollection null)", async () => {
+      jest.spyOn(console, "error").mockImplementation(() => {})
+      mountComponent(mockEntity)
+      const relayEnv = getMockRelayEnvironment()
+
+      const toggle = screen.getByLabelText("Enable sharing")
+      expect(toggle.props.value).toBe(false)
+
+      fireEvent(toggle, "onValueChange", true)
+      expect(toggle.props.value).toBe(true)
+
+      resolveMostRecentRelayOperation(relayEnv, {
+        Mutation: () => ({ updateCollection: null }),
+      })
+
+      await waitFor(() => {
+        expect(toggle.props.value).toBe(false)
+      })
+    })
+
     it("uses the slug from the UpdateCollectionSuccess response in the URL", async () => {
       mountComponent(mockEntity)
       const relayEnv = getMockRelayEnvironment()
