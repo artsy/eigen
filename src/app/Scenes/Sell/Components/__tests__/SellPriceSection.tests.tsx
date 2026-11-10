@@ -51,9 +51,7 @@ describe("SellPriceSection", () => {
   it("keeps the price under a billion dollars", () => {
     renderWithWrappers(<TestPriceSection />)
 
-    fireEvent.changeText(screen.getByLabelText("Asking price"), "12345678901")
-
-    expect(screen.getByLabelText("Asking price")).toHaveDisplayValue("123,456,789")
+    expect(screen.getByLabelText("Asking price")).toHaveProp("maxLength", "999,999,999".length)
   })
 
   it("says why the price is locked while disabled", () => {

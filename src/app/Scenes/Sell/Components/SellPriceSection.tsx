@@ -1,5 +1,5 @@
-import { Flex, Input, Text, Touchable } from "@artsy/palette-mobile"
-import { formatMoney } from "app/Components/Input/MoneyInput/moneyInputHelpers"
+import { Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { MoneyInput } from "app/Components/Input/MoneyInput/MoneyInput"
 import { SellFeeInfoBottomSheet } from "app/Scenes/Sell/Components/SellFeeInfoBottomSheet"
 import { SellPayoutBreakdown } from "app/Scenes/Sell/Components/SellPayoutBreakdown"
 import { useState } from "react"
@@ -8,7 +8,7 @@ import { Alert } from "react-native"
 // Placeholder until price insights reach the sell flow
 const RECOMMENDED_PRICE_RANGE = "US$3,000–3,400"
 // Under US$1B, and well inside what Number holds exactly
-const MAX_PRICE_DIGITS = 9
+const MAX_PRICE_LENGTH = "999,999,999".length
 // Palette's default unit slot fits one or two characters and wraps "US$"
 const UNIT_WIDTH = 70
 
@@ -70,20 +70,16 @@ export const SellPriceSection: React.FC<SellPriceSectionProps> = ({
 
         <Flex gap={1}>
           <Text variant="sm">What’s your asking price?</Text>
-          <Input
+          <MoneyInput
+            currency="USD"
+            allowCents={false}
             unit="US$"
             leftComponentWidth={UNIT_WIDTH}
             accessibilityLabel="Asking price"
-            keyboardType="number-pad"
             disabled={disabled}
-            value={formatMoney(askingPrice) ?? ""}
-            maxLength={formatMoney("9".repeat(MAX_PRICE_DIGITS))?.length}
-            // Drops cents, so a pasted "3,200.50" stays US$3,200
-            onChangeText={(text) =>
-              onAskingPriceChange(
-                text.split(".")[0].replace(/\D/g, "").replace(/^0+/, "").slice(0, MAX_PRICE_DIGITS)
-              )
-            }
+            initialValues={{ amount: askingPrice }}
+            maxLength={MAX_PRICE_LENGTH}
+            onChange={({ amount }) => onAskingPriceChange(amount?.replace(/^0+/, "") ?? "")}
           />
         </Flex>
 

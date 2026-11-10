@@ -24,6 +24,26 @@ describe("MoneyInput", () => {
     // defaults to USD
     expect(screen.getByText("USD")).toBeDefined()
   })
+  it("shows a fixed currency as a unit instead of a picker", () => {
+    renderWithWrappers(<MoneyInput currency="USD" unit="US$" onChange={onChange} />)
+
+    expect(screen.getByText("US$")).toBeOnTheScreen()
+    expect(screen.queryByRole("button", { name: "USD" })).not.toBeOnTheScreen()
+  })
+
+  it("drops cents when they aren't allowed", async () => {
+    renderWithWrappers(<MoneyInput allowCents={false} onChange={onChange} />)
+    const input = screen.UNSAFE_getAllByType(Input)[0]
+
+    act(() => input.props.onChangeText("3,200.50"))
+
+    expect(input.props.keyboardType).toBe("number-pad")
+    expect(input.props.value).toBe("3,200")
+    await waitFor(() =>
+      expect(onChange).toHaveBeenLastCalledWith({ currency: "USD", amount: "3200" })
+    )
+  })
+
   it("renders an input with the amount pre-filled", () => {
     renderWithWrappers(<MoneyInput initialValues={{ amount: "2000" }} onChange={onChange} />)
     const inputs = screen.UNSAFE_getAllByType(Input)
