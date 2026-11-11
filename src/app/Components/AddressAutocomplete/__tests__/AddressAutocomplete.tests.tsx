@@ -1,7 +1,9 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { AddressAutocomplete } from "app/Components/AddressAutocomplete/AddressAutocomplete"
+import { getCurrentLocation } from "app/utils/getCurrentLocation"
 import {
   LocationWithDetails,
+  getAddressFromCoordinates,
   getLocationDetails,
   getLocationPredictions,
 } from "app/utils/googleMaps"
@@ -11,6 +13,11 @@ import { useState } from "react"
 jest.mock("app/utils/googleMaps", () => ({
   getLocationPredictions: jest.fn(),
   getLocationDetails: jest.fn(),
+  getAddressFromCoordinates: jest.fn(),
+}))
+
+jest.mock("app/utils/getCurrentLocation", () => ({
+  getCurrentLocation: jest.fn(),
 }))
 
 const ADDRESS = { id: "place-1", name: "401 Broadway, New York, NY, USA" }
@@ -94,5 +101,66 @@ describe("AddressAutocomplete", () => {
     await openSearch("zzzz")
 
     expect(await screen.findByText("No matching addresses.")).toBeOnTheScreen()
+  })
+
+  describe("current location", () => {
+    const HERE = { id: "place-2", name: "1 Main St, Brooklyn, NY, USA", countryCode: "US" }
+
+    beforeEach(() => {
+      ;(getCurrentLocation as jest.Mock).mockResolvedValue({ lat: 40.7, lng: -73.99 })
+    })
+
+    it("fills the search with the device's address, without picking it", async () => {
+      ;(getAddressFromCoordinates as jest.Mock).mockResolvedValue(HERE)
+      const onChange = jest.fn()
+      renderWithWrappers(<TestAddressAutocomplete onChange={onChange} />)
+
+      fireEvent.press(screen.getByTestId("street-address"))
+      fireEvent.press(await screen.findByText("Use Current Location"))
+
+      await waitFor(() =>
+        expect(screen.getByLabelText("Search addresses")).toHaveDisplayValue(HERE.name)
+      )
+      expect(getAddressFromCoordinates).toHaveBeenCalledWith({ lat: 40.7, lng: -73.99 })
+      expect(onChange).not.toHaveBeenCalled()
+    })
+
+    it("hides the option once the user types", async () => {
+      renderWithWrappers(<TestAddressAutocomplete />)
+
+      await openSearch("401 Broad")
+
+      await waitFor(() => expect(screen.queryByText("Use Current Location")).not.toBeOnTheScreen())
+    })
+
+    it("says so when the location is outside the country", async () => {
+      ;(getAddressFromCoordinates as jest.Mock).mockResolvedValue({ ...HERE, countryCode: "FR" })
+      const onChange = jest.fn()
+      renderWithWrappers(<TestAddressAutocomplete onChange={onChange} />)
+
+      fireEvent.press(screen.getByTestId("street-address"))
+      fireEvent.press(await screen.findByText("Use Current Location"))
+
+      expect(
+        await screen.findByText(
+          "It looks like you’re not in the US. We only accept US addresses for now."
+        )
+      ).toBeOnTheScreen()
+      expect(screen.getByLabelText("Search addresses")).toHaveDisplayValue("")
+      expect(onChange).not.toHaveBeenCalled()
+    })
+
+    it("says so when location access is denied", async () => {
+      ;(getCurrentLocation as jest.Mock).mockResolvedValue(null)
+      renderWithWrappers(<TestAddressAutocomplete />)
+
+      fireEvent.press(screen.getByTestId("street-address"))
+      fireEvent.press(await screen.findByText("Use Current Location"))
+
+      expect(
+        await screen.findByText("We couldn’t find an address for your current location.")
+      ).toBeOnTheScreen()
+      expect(getAddressFromCoordinates).not.toHaveBeenCalled()
+    })
   })
 })
