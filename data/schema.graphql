@@ -2186,6 +2186,7 @@ type ArticleUnpublishedArtworkPartner {
 }
 
 type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Searchable {
+  accentColorOptions: [ArtistStoryAccentColor!]
   alternateNames: [String]
   articlesConnection(
     after: String
@@ -3602,6 +3603,7 @@ type ArtistStatuses {
 
 type ArtistStory {
   about: ArtistStoryAbout
+  accentColor: ArtistStoryAccentColor
   headerImage: ArtistStoryImage
   headerVideo: Video
 
@@ -3625,6 +3627,11 @@ type ArtistStoryAbout {
   tagline: String
 }
 
+type ArtistStoryAccentColor {
+  hex: String!
+  textColor: ArtistStoryTextColor!
+}
+
 type ArtistStoryImage {
   altText: String!
   credit: String
@@ -3634,6 +3641,11 @@ type ArtistStoryImage {
 type ArtistStoryQuote {
   attribution: String
   text: String!
+}
+
+enum ArtistStoryTextColor {
+  BLACK
+  WHITE
 }
 
 type ArtistStoryVideo {
@@ -26331,6 +26343,13 @@ type Mutation {
   recordGuidedTourEvent(input: RecordGuidedTourEventInput!): RecordGuidedTourEventPayload
 
   """
+  Rebuild the accent color options of an artist
+  """
+  refreshArtistAccentColorOptions(
+    input: RefreshArtistAccentColorOptionsMutationInput!
+  ): RefreshArtistAccentColorOptionsMutationPayload
+
+  """
   Renew the change notifications of a connected email account
   """
   refreshEmailAccountWatch(input: RefreshEmailAccountWatchInput!): RefreshEmailAccountWatchPayload
@@ -34514,6 +34533,28 @@ union RecordGuidedTourEventResponseOrError =
 type RecordGuidedTourEventSuccess {
   guidedTour: GuidedTourStateView!
   me: Me!
+}
+
+type RefreshArtistAccentColorOptionsFailure {
+  mutationError: GravityMutationError
+}
+
+input RefreshArtistAccentColorOptionsMutationInput {
+  artistID: String!
+  clientMutationId: String
+}
+
+type RefreshArtistAccentColorOptionsMutationPayload {
+  clientMutationId: String
+  responseOrError: RefreshArtistAccentColorOptionsResponseOrError
+}
+
+union RefreshArtistAccentColorOptionsResponseOrError =
+    RefreshArtistAccentColorOptionsFailure
+  | RefreshArtistAccentColorOptionsSuccess
+
+type RefreshArtistAccentColorOptionsSuccess {
+  accentColorOptions: [ArtistStoryAccentColor!]!
 }
 
 type RefreshEmailAccountWatchFailure {
