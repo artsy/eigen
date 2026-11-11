@@ -29,6 +29,7 @@ describe("ArtAssistantVoiceInputButton", () => {
         isHearing={false}
         isListening={false}
         onPress={onPress}
+        size={20}
         volume={loudVolume}
       />
     )
@@ -45,6 +46,7 @@ describe("ArtAssistantVoiceInputButton", () => {
         isHearing={false}
         isListening
         onPress={jest.fn()}
+        size={20}
         volume={loudVolume}
       />
     )
@@ -55,18 +57,30 @@ describe("ArtAssistantVoiceInputButton", () => {
 
   it("spreads the rings with the volume", () => {
     renderWithWrappers(
-      <ArtAssistantVoiceInputButton isHearing isListening onPress={jest.fn()} volume={loudVolume} />
+      <ArtAssistantVoiceInputButton
+        isHearing
+        isListening
+        onPress={jest.fn()}
+        size={20}
+        volume={loudVolume}
+      />
     )
 
-    expect(ringScales()).toEqual([1.35, 1.6])
+    expect(ringScales()).toEqual([1.45, 1.8])
   })
 
   it("keeps the rings still with Reduce Motion on", () => {
     jest.mocked(useReducedMotion).mockReturnValue(true)
     renderWithWrappers(
-      <ArtAssistantVoiceInputButton isHearing isListening onPress={jest.fn()} volume={loudVolume} />
+      <ArtAssistantVoiceInputButton
+        isHearing
+        isListening
+        onPress={jest.fn()}
+        size={20}
+        volume={loudVolume}
+      />
     )
 
-    expect(ringScales()).toEqual([1.12, 1.12])
+    expect(ringScales()).toEqual([1.15, 1.15])
   })
 })
