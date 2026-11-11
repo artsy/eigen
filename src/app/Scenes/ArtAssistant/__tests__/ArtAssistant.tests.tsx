@@ -15,8 +15,8 @@ import { ExpoSpeechRecognitionModule } from "expo-speech-recognition"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { createMockEnvironment } from "relay-test-utils"
 
-jest.mock("app/Scenes/ArtAssistant/Components/ArtAssistantArtworkRail", () => ({
-  ArtAssistantArtworkRail: () => null,
+jest.mock("app/Scenes/ArtAssistant/Components/ArtAssistantArtworkGrid", () => ({
+  ArtAssistantArtworkGrid: () => null,
 }))
 jest.mock("react-native-reanimated", () => ({
   ...require("react-native-reanimated/mock"),
@@ -580,6 +580,7 @@ describe("ArtAssistant", () => {
     const image = { s3Bucket: "bucket", s3Key: "key", uri: "file:///photo.jpg" }
 
     it("hides the camera button while image input is off", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtAssistantImageSearch: false })
       renderWithWrappers(<ArtAssistant />)
 
       expect(screen.queryByRole("button", { name: "Add an image" })).not.toBeOnTheScreen()

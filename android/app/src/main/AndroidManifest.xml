@@ -145,6 +145,7 @@
         <data android:pathPrefix="/terms"/>
         <data android:pathPrefix="/user/conversations"/>
         <data android:pathPrefix="/user/purchases"/>
+        <data android:pathPattern="/user/.*/collection/.*"/>
         <data android:pathPrefix="/upcoming-auction-results"/>
         <data android:pathPrefix="/viewing-room"/>
         <data android:pathPrefix="/viewing-rooms"/>

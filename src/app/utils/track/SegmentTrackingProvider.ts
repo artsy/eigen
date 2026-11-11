@@ -6,7 +6,7 @@ import {
   createClient,
 } from "@segment/analytics-react-native"
 import { BrazePlugin } from "@segment/analytics-react-native-plugin-braze"
-import { addBreadcrumb } from "@sentry/react-native"
+import { addBreadcrumb, captureMessage } from "@sentry/react-native"
 import { AddAppNamePlugin } from "app/utils/track/AddAppNamePlugin"
 import { AddExpoUpdateIdPlugin } from "app/utils/track/AddExpoUpdateIdPlugin"
 import { AppStateFlushPolicy } from "app/utils/track/AppStateFlushPolicy"
@@ -121,7 +121,14 @@ export const SegmentTrackingProvider: TrackingProvider = {
       return
     }
 
-    console.warn("oh wow, we are not tracking this event!! we should!", { info })
-    assertNever(info)
+    // Payloads reach here untyped (postEventToProviders takes `any`, native events), so an
+    // unknown shape is possible at runtime. Dropping an analytics event must never crash the app.
+    const unhandledEvent: never = info
+    console.warn("oh wow, we are not tracking this event!! we should!", { info: unhandledEvent })
+    // Fixed message so Sentry groups these into one issue; the payload goes in `extra`
+    captureMessage("Untracked analytics event", {
+      level: "warning",
+      extra: { event: unhandledEvent },
+    })
   },
 }

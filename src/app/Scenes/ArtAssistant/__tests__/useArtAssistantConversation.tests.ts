@@ -313,6 +313,148 @@ describe("useArtAssistantConversation", () => {
     // No `environment.mock.complete(operation)`: the stream is still open.
     expect(result.current.isResponding).toBe(false)
   })
+
+  describe("feedback", () => {
+    const SAVED = { createAIAgentFeedback: { success: true } }
+
+    const answerWithFeedback = () => {
+      const { environment, result } = renderConversation()
+
+      act(() => result.current.submit("blue painting"))
+      act(() =>
+        emit(
+          environment,
+          environment.mock.getMostRecentOperation(),
+          terminalEvent({ message: "Two works.", sections: [], artworks: [], feedbackID: "fb-1" })
+        )
+      )
+
+      const answerID = result.current.messages.at(-1)!.id
+
+      return { environment, result, answerID }
+    }
+
+    it("sends the rating and lets a later vote replace it", () => {
+      const { environment, result, answerID } = answerWithFeedback()
+
+      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_UP" })
+      const operation = environment.mock.getMostRecentOperation()
+      expect(operation.request.variables.input).toEqual({
+        feedbackID: "fb-1",
+        rating: "THUMBS_UP",
+      })
+      expect(trackedEventsOfType("tappedArtAssistantFeedback")).toEqual([])
+      act(() =>
+        environment.mock.resolve(operation, {
+          data: { createAIAgentFeedback: { success: true } },
+        })
+      )
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: "tappedArtAssistantFeedback",
+        context_module: "artAssistantFeedback",
+        context_screen_owner_type: "artAssistant",
+        conversation_id: expect.any(String),
+        feedback_id: "fb-1",
+        rating: "thumbs_up",
+        response_message_id: answerID,
+      })
+
+      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_DOWN" })
+      expect(environment.mock.getMostRecentOperation().request.variables.input).toMatchObject({
+        rating: "THUMBS_DOWN",
+      })
+    })
+
+    it("reverts the rating when Metaphysics does not record it", () => {
+      const { environment, result, answerID } = answerWithFeedback()
+
+      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+      act(() =>
+        environment.mock.resolve(environment.mock.getMostRecentOperation(), {
+          data: { createAIAgentFeedback: { success: false } },
+        })
+      )
+
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: undefined })
+      expect(trackedEventsOfType("tappedArtAssistantFeedback")).toEqual([])
+    })
+
+    it("holds a vote tapped while another is saving, then sends it", () => {
+      const { environment, result, answerID } = answerWithFeedback()
+
+      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_DOWN" })
+      expect(environment.mock.getAllOperations()).toHaveLength(1)
+
+      act(() => environment.mock.resolveMostRecentOperation({ data: SAVED }))
+      const thumbsDown = environment.mock.getMostRecentOperation()
+      expect(thumbsDown.request.variables.input).toMatchObject({ rating: "THUMBS_DOWN" })
+      act(() => environment.mock.resolve(thumbsDown, { data: SAVED }))
+
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_DOWN" })
+      expect(trackedEventsOfType("tappedArtAssistantFeedback")).toEqual([
+        expect.objectContaining({ rating: "thumbs_up" }),
+        expect.objectContaining({ rating: "thumbs_down" }),
+      ])
+    })
+
+    it("sends the held vote when the earlier one fails", () => {
+      const { environment, result, answerID } = answerWithFeedback()
+
+      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+      act(() => environment.mock.rejectMostRecentOperation(new Error("network")))
+      act(() => environment.mock.resolveMostRecentOperation({ data: SAVED }))
+
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_DOWN" })
+    })
+
+    it("reverts to the last saved rating, not an unsaved one", () => {
+      const { environment, result, answerID } = answerWithFeedback()
+
+      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+      act(() => environment.mock.resolveMostRecentOperation({ data: SAVED }))
+      act(() => environment.mock.rejectMostRecentOperation(new Error("network")))
+
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_UP" })
+    })
+
+    it("doesn't resend a held vote that matches the one that saved", () => {
+      const { environment, result, answerID } = answerWithFeedback()
+
+      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      act(() => environment.mock.resolveMostRecentOperation({ data: SAVED }))
+
+      expect(environment.mock.getAllOperations()).toHaveLength(0)
+      expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_UP" })
+      expect(trackedEventsOfType("tappedArtAssistantFeedback")).toHaveLength(1)
+    })
+
+    it("tracks a vote under the conversation it was cast in", () => {
+      const { environment, result, answerID } = answerWithFeedback()
+      const ratedConversationID = trackedEventsOfType("sentArtAssistantMessage")[0].conversation_id
+
+      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      const operation = environment.mock.getMostRecentOperation()
+      act(() => result.current.startNewConversation())
+      act(() =>
+        environment.mock.resolve(operation, { data: { createAIAgentFeedback: { success: true } } })
+      )
+
+      expect(trackedEventsOfType("tappedArtAssistantFeedback")).toEqual([
+        expect.objectContaining({ conversation_id: ratedConversationID }),
+      ])
+    })
+  })
 })
 
 const renderConversation = () => {
@@ -342,12 +484,13 @@ type TerminalEvent = Extract<NormalizedEvent, { __typename: "AIAgentTurnComplete
 
 const terminalEvent = (
   event: Pick<TerminalEvent, "message" | "sections" | "artworks"> &
-    Partial<Pick<TerminalEvent, "suggestedReplies">>
+    Partial<Pick<TerminalEvent, "suggestedReplies" | "feedbackID">>
 ): TerminalEvent => ({
   __typename: "AIAgentTurnComplete",
   stopReason: "end_turn",
   toolCallCount: 1,
   suggestedReplies: [],
+  feedbackID: null,
   ...event,
 })
 

@@ -15,6 +15,7 @@ import {
   ArtworksFiltersStore,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { GlobalStore } from "app/store/GlobalStore"
+import { assertNever } from "app/utils/assertNever"
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { compact } from "lodash"

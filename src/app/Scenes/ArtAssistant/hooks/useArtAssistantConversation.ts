@@ -8,9 +8,11 @@ import {
   useArtAssistantConversationAgentTurnSubscription$data,
   useArtAssistantConversationAgentTurnSubscription$variables,
 } from "__generated__/useArtAssistantConversationAgentTurnSubscription.graphql"
+import { useArtAssistantConversationFeedbackMutation } from "__generated__/useArtAssistantConversationFeedbackMutation.graphql"
 import { ART_ASSISTANT_SUPPORTED_SECTIONS } from "app/Scenes/ArtAssistant/Components/ArtAssistantResponseSection"
 import { useArtAssistantTracking } from "app/Scenes/ArtAssistant/hooks/useArtAssistantTracking"
 import {
+  ArtAssistantFeedbackRating,
   ArtAssistantImage,
   ArtAssistantMessage,
   ArtAssistantSection,
@@ -28,7 +30,7 @@ import { getArtAssistantItems } from "app/Scenes/ArtAssistant/utils/artAssistant
 import { GlobalStore } from "app/store/GlobalStore"
 import { metaphysicsSubscriptionErrorStatus } from "app/system/relay/helpers/metaphysicsSubscriptionError"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { graphql, requestSubscription, useRelayEnvironment } from "react-relay"
+import { graphql, requestSubscription, useMutation, useRelayEnvironment } from "react-relay"
 import { v4 as uuid } from "uuid"
 
 type AssistantMessage = Extract<ArtAssistantMessage, { role: "assistant" }>
@@ -99,14 +101,37 @@ const agentTurnSubscription = graphql`
         suggestedReplies {
           text
         }
+        feedbackID
       }
     }
   }
 `
 
+const feedbackMutation = graphql`
+  mutation useArtAssistantConversationFeedbackMutation($input: CreateAIAgentFeedbackInput!) {
+    createAIAgentFeedback(input: $input) {
+      success
+    }
+  }
+`
+
+interface FeedbackVote {
+  rating: ArtAssistantFeedbackRating
+  conversationID: string
+}
+
+interface FeedbackState {
+  saved?: ArtAssistantFeedbackRating
+  saving: boolean
+  next?: FeedbackVote
+}
+
 export const useArtAssistantConversation = () => {
   const environment = useRelayEnvironment()
+  const [commitFeedback] =
+    useMutation<useArtAssistantConversationFeedbackMutation>(feedbackMutation)
   const {
+    trackFeedbackTapped,
     trackMessageSent,
     trackNewChat,
     trackResponseReceived,
@@ -122,6 +147,8 @@ export const useArtAssistantConversation = () => {
   const activeSubscription = useRef<ReturnType<typeof requestSubscription> | null>(null)
   const responseTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
   const messagesRef = useRef(messages)
+  // Per message: the vote that saved, whether one is saving, and the latest tap waiting for it.
+  const feedback = useRef<Record<string, FeedbackState>>({})
 
   messagesRef.current = messages
 
@@ -146,6 +173,7 @@ export const useArtAssistantConversation = () => {
 
     abort()
     conversationID.current = uuid()
+    feedback.current = {}
     messagesRef.current = []
     isRespondingRef.current = false
     setMessages([])
@@ -429,9 +457,86 @@ export const useArtAssistantConversation = () => {
     [trackSuggestedReplyTapped]
   )
 
+  const setFeedbackRating = useCallback(
+    (messageID: string, rating: ArtAssistantFeedbackRating | undefined) => {
+      setMessages((current) =>
+        current.map((message) =>
+          message.id === messageID && message.role === "assistant"
+            ? { ...message, feedbackRating: rating }
+            : message
+        )
+      )
+    },
+    []
+  )
+
+  // Optimistic: shows the latest tap at once, but sends one vote per message at a time, so
+  // Phoenix saves the votes in the order they were tapped. Falls back to the vote that saved.
+  const rateMessage = useCallback(
+    (messageID: string, rating: ArtAssistantFeedbackRating) => {
+      const message = messagesRef.current.find(({ id }) => id === messageID)
+
+      if (
+        message?.role !== "assistant" ||
+        !message.feedbackID ||
+        message.feedbackRating === rating
+      ) {
+        return
+      }
+
+      const { feedbackID } = message
+      const state = (feedback.current[messageID] ??= { saving: false })
+
+      const send = (vote: FeedbackVote) => {
+        state.saving = true
+
+        const settle = () => {
+          const next = state.next
+          state.saving = false
+          state.next = undefined
+
+          if (next && next.rating !== state.saved) {
+            send(next)
+          } else {
+            setFeedbackRating(messageID, state.saved)
+          }
+        }
+
+        commitFeedback({
+          variables: { input: { feedbackID, rating: vote.rating } },
+          onCompleted: (response, errors) => {
+            if (!errors?.length && response.createAIAgentFeedback?.success) {
+              state.saved = vote.rating
+              trackFeedbackTapped({
+                conversationID: vote.conversationID,
+                feedbackID,
+                rating: vote.rating,
+                responseMessageID: messageID,
+              })
+            }
+            settle()
+          },
+          onError: settle,
+        })
+      }
+
+      // Read the conversation now: "New chat" may replace it before the vote saves.
+      const vote = { rating, conversationID: conversationID.current }
+
+      setFeedbackRating(messageID, rating)
+      if (state.saving) {
+        state.next = vote
+      } else {
+        send(vote)
+      }
+    },
+    [commitFeedback, setFeedbackRating, trackFeedbackTapped]
+  )
+
   return {
     isResponding,
     messages,
+    rateMessage,
     retry,
     startNewConversation,
     submit,
@@ -474,6 +579,7 @@ export const reduceActiveTurn = (turn: ActiveTurn, event: NormalizedAgentEvent):
           activity: undefined,
           sections: sections.length > 0 ? sections : undefined,
           suggestedReplies: (event.suggestedReplies ?? []).map((reply) => reply.text),
+          feedbackID: event.feedbackID ?? undefined,
         },
       }
     }

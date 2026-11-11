@@ -6,6 +6,7 @@ import {
 import { ImageCarouselVimeoVideo } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
 import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import { useScreenDimensions } from "app/utils/hooks"
+import { clamp } from "lodash"
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react"
 import {
   Animated,
@@ -37,12 +38,17 @@ export const ImageCarouselFullScreen = () => {
   // update the imageIndex on scroll
   const onScroll = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const nextImageIndex = Math.round(e.nativeEvent.contentOffset.x / screenDimensions.width)
+      // iOS lets the list bounce past either end, so the raw index can be -1 or media.length
+      const nextImageIndex = clamp(
+        Math.round(e.nativeEvent.contentOffset.x / screenDimensions.width),
+        0,
+        media.length - 1
+      )
       if (fullScreenState.current === "entered" && nextImageIndex !== imageIndex.current) {
         dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex })
       }
     },
-    [screenDimensions]
+    [screenDimensions, media.length]
   )
 
   const zoomViewRefs: Array<ImageZoomView | null> = useMemo(() => [], [])

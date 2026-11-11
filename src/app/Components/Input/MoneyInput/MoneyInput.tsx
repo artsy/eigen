@@ -17,6 +17,10 @@ import { forwardRef, useEffect, useRef, useState } from "react"
 export const MoneyInput = forwardRef<
   InputRef,
   {
+    /** Fixes the currency and shows it as a unit in place of the picker */
+    currency?: SupportedCurrencies
+    /** Whole amounts only: drops anything after the decimal point and shows a number pad */
+    allowCents?: boolean
     currencyTextVariant?: TextVariant
     initialValues?: { currency?: SupportedCurrencies; amount?: string }
     format?: boolean
@@ -28,6 +32,8 @@ export const MoneyInput = forwardRef<
 >(
   (
     {
+      currency: fixedCurrency,
+      allowCents = true,
       initialValues,
       format = true,
       currencyTextVariant,
@@ -41,7 +47,7 @@ export const MoneyInput = forwardRef<
   ) => {
     const color = useColor()
     const [currency, setCurrency] = useState<SupportedCurrencies>(
-      initialValues?.currency ?? currencyOptions[0].value
+      fixedCurrency ?? initialValues?.currency ?? currencyOptions[0].value
     )
     const initialAmount = format
       ? formatMoney(initialValues?.amount ?? undefined)
@@ -54,7 +60,7 @@ export const MoneyInput = forwardRef<
         setValidationErrorMessage("")
         return
       }
-      const isValid = Number(amount) > -0.0000000001
+      const isValid = Number(format ? deformatMoney(amount) : amount) > -0.0000000001
       if (shouldDisplayLocalError) {
         setValidationErrorMessage(isValid ? "" : "Please enter a valid amount.")
       }
@@ -69,7 +75,7 @@ export const MoneyInput = forwardRef<
       // Because the value could have been bubbled up before display formatting in INTERNALSelectAndInputCombinationBase,
       // we need to ensure we are not inadvertently sending values with 3 decimal floats
       const [digits, cents] = amountValue?.split(".") ?? ["", ""]
-      const amt = format ? concatDigitsAndCents(digits, cents) : amountValue
+      const amt = !allowCents ? digits : format ? concatDigitsAndCents(digits, cents) : amountValue
       setCurrency(currencyValue)
       setAmount(amt)
     }
@@ -83,6 +89,8 @@ export const MoneyInput = forwardRef<
       onChange?.({ currency, amount: deformatMoney(amount) })
     }, [amount, currency])
 
+    const formatAmount = (value?: string) => formatMoney(allowCents ? value : value?.split(".")[0])
+
     const error =
       shouldDisplayLocalError && validationErrorMessage ? validationErrorMessage : rest.error
 
@@ -91,9 +99,10 @@ export const MoneyInput = forwardRef<
         // Props for Input
         {...rest}
         ref={ref}
-        formatInputValue={format ? formatMoney : undefined}
+        formatInputValue={format ? formatAmount : undefined}
         value={amount}
-        keyboardType="numeric"
+        keyboardType={allowCents ? "numeric" : "number-pad"}
+        unit={rest.unit ?? fixedCurrency}
         onValueChange={onValueChange}
         validate={handleValidation}
         //

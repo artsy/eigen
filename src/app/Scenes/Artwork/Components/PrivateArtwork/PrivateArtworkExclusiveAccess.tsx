@@ -1,5 +1,7 @@
+import { ActionType, ContextModule, OwnerType, TappedLink } from "@artsy/cohesion"
 import { Flex, LinkText, Text } from "@artsy/palette-mobile"
 import { PrivateArtworkExclusiveAccess_artwork$key } from "__generated__/PrivateArtworkExclusiveAccess_artwork.graphql"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import React from "react"
 import { graphql, useFragment } from "react-relay"
@@ -15,6 +17,8 @@ export const PrivateArtworkExclusiveAccess: React.FC<PrivateArtworkExclusiveAcce
   const data = useFragment(
     graphql`
       fragment PrivateArtworkExclusiveAccess_artwork on Artwork {
+        internalID
+        slug
         partner(shallow: true) {
           name
           profile {
@@ -36,8 +40,15 @@ export const PrivateArtworkExclusiveAccess: React.FC<PrivateArtworkExclusiveAcce
   }
 
   const handleLinkPress = () => {
-    tracking.trackEvent(tracks.tappedGalleryName())
-    navigate(`/partner/${data.partner?.slug}`)
+    const partnerPath = `/partner/${data.partner?.slug}`
+    tracking.trackEvent(
+      tracks.tappedGalleryName({
+        artworkID: data.internalID,
+        artworkSlug: data.slug,
+        partnerPath,
+      })
+    )
+    navigate(partnerPath)
   }
 
   return (
@@ -67,10 +78,21 @@ export const PrivateArtworkExclusiveAccess: React.FC<PrivateArtworkExclusiveAcce
 }
 
 const tracks = {
-  tappedGalleryName: () => ({
-    context_module: "artworkDetails",
-    subject: "Gallery Name",
-    type: "Link",
-    flow: "Exclusive access",
+  tappedGalleryName: ({
+    artworkID,
+    artworkSlug,
+    partnerPath,
+  }: {
+    artworkID: string
+    artworkSlug: string
+    partnerPath: string
+  }): TappedLink => ({
+    action: ActionType.tappedLink,
+    context_module: ContextModule.artworkDetails,
+    context_screen_owner_type: OwnerType.artwork,
+    context_screen_owner_id: artworkID,
+    context_screen_owner_slug: artworkSlug,
+    destination_path: partnerPath,
+    destination_screen_owner_type: OwnerType.partner,
   }),
 }

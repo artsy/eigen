@@ -817,6 +817,19 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes to SharedArtworkList via /user/:userID/collection/:collectionID", () => {
+    expect(matchRoute("/user/abc123/collection/xyz")).toMatchInlineSnapshot(`
+      {
+        "module": "SharedArtworkList",
+        "params": {
+          "collectionID": "xyz",
+          "userID": "abc123",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
   it("routes to Conversation via /user/conversations", () => {
     expect(matchRoute("/user/conversations/1234")).toMatchInlineSnapshot(`
       {

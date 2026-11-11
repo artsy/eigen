@@ -61,6 +61,10 @@ import {
   ArtworkListScreenQuery,
   artworkListVariables,
 } from "app/Scenes/ArtworkList/ArtworkList"
+import {
+  SharedArtworkListScreen,
+  SharedArtworkListScreenQuery,
+} from "app/Scenes/ArtworkList/SharedArtworkList"
 import { artworkListsQuery } from "app/Scenes/ArtworkLists/ArtworkLists"
 import {
   ARTWORK_MEDIUM_QUERY,
@@ -232,6 +236,7 @@ import {
 } from "app/Scenes/Show/Screens/ShowMoreInfo"
 import { ShowQueryRenderer, ShowScreenQuery } from "app/Scenes/Show/Show"
 import { ShowsForYouScreen } from "app/Scenes/Shows/ShowsForYou"
+import { SimilarArtworksScreen } from "app/Scenes/SimilarArtworks/SimilarArtworks"
 import {
   SimilarToRecentlyViewedScreen,
   SimilarToRecentlyViewedScreenQuery,
@@ -666,8 +671,19 @@ export const artsyDotNetRoutes = defineRoutes([
     queries: [BrowseSimilarWorksScreenQuery],
   },
   {
+    path: "/artwork/:artworkID/similar",
+    name: "SimilarArtworks",
+    Component: SimilarArtworksScreen,
+    options: {
+      hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  },
+  {
     // Alias for artwork URLs with a trailing segment. Must stay below the more specific
-    // /artwork/:artworkID/medium and /browse-similar-works routes (first match wins).
+    // /artwork/:artworkID/medium, /browse-similar-works and /similar routes (first match wins).
     path: "/artwork/:artworkID/:optional",
     name: "Artwork",
     Component: ArtworkScreen,
@@ -1783,6 +1799,20 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+  },
+  {
+    path: "/user/:userID/collection/:collectionID",
+    name: "SharedArtworkList",
+    Component: SharedArtworkListScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [SharedArtworkListScreenQuery],
+    prepareVariables: [
+      ({ userID, collectionID }) => ({ userID, collectionID, ...artworkListVariables }),
+    ],
   },
   {
     path: "/show/:showID",

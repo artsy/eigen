@@ -221,14 +221,21 @@ export const features = {
   },
   AREnableEnrichedMarkdown: {
     description: "Render markdown natively with enriched-markdown (all call sites)",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableEnrichedMarkdown",
   },
   AREnableNewHomeFeed: {
     description: "Enable new home feed experience",
     readyForRelease: false,
     showInDevMenu: true,
     echoFlagKey: "AREnableNewHomeFeed",
+  },
+  AREnableShareShowPartnerFeature: {
+    description: "Show a share button on show, partner and feature screens",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableShareShowPartnerFeature",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

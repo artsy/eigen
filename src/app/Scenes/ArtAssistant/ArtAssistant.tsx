@@ -62,8 +62,15 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
   const [isComposerFocused, setIsComposerFocused] = useState(false)
   const [isNewChatDialogVisible, setIsNewChatDialogVisible] = useState(false)
   const [dismissedErrorID, setDismissedErrorID] = useState<string | null>(null)
-  const { isResponding, messages, retry, startNewConversation, submit, trackSuggestedReplyTapped } =
-    useArtAssistantConversation()
+  const {
+    isResponding,
+    messages,
+    rateMessage,
+    retry,
+    startNewConversation,
+    submit,
+    trackSuggestedReplyTapped,
+  } = useArtAssistantConversation()
   const [messageHeights, setMessageHeights] = useState<Record<string, number>>({})
   const composerInputRef = useRef<InputRef>(null)
   const messageListRef = useRef<FlashListRef<ArtAssistantMessageType>>(null)
@@ -342,6 +349,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
               >
                 <ArtAssistantMessage
                   message={item}
+                  onRate={rateMessage}
                   onSelectSuggestedReply={
                     index === messages.length - 1 ? handleSelectSuggestedReply : undefined
                   }

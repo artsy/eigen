@@ -76,6 +76,7 @@
 #import <FLKAutoLayout/FLKAutoLayout.h>
 #import <MARKRangeSlider/MARKRangeSlider.h>
 #import <ORStackView/ORStackScrollView.h>
+#import <SDWebImage/SDImageCache.h>
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import "AREmission.h"
 #import "ARNotificationView.h"

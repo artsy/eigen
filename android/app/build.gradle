@@ -38,6 +38,13 @@ react {
     //   skip the bundling of the JS bundle and the assets. By default is just 'debug'.
     //   If you add flavors like lite, prod, etc. you'll have to list your debuggableVariants.
     // debuggableVariants = ["liteDebug", "prodDebug"]
+    //   CI verification builds pass -PskipJsBundle (scripts/ci/build-for-tests-android): they only
+    //   check that native code compiles, so release is treated as debuggable there. That skips the
+    //   JS bundle and the expo-updates embedded manifest (two Metro runs, ~6.5 min on CircleCI).
+    //   The resulting APK has no JS bundle and is never run.
+    if (project.hasProperty("skipJsBundle")) {
+        debuggableVariants = ["debug", "release"]
+    }
 
     /* Bundling */
     //   A list containing the node command and its flags. Default is just 'node'.

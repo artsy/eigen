@@ -148,7 +148,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
           const hasSwipedCards = _activeIndex.value > 0
 
           if (hasSwipedCards) {
-            const lastSwipedCardKey = cards[_activeIndex.value - 1].internalID
+            const lastSwipedCardKey = cards[_activeIndex.value - 1]?.internalID
             swipedCardX.value = withTiming(
               0,
               { duration: 400, easing: Easing.out(Easing.cubic) },
@@ -187,9 +187,15 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
         }
 
         const swipedCardIndex = _activeIndex.value
-        const swipedCardKey = cards[swipedCardIndex].internalID
+        // cards can be empty, e.g. when the discoverArtworks query fails or returns no artworks
+        const swipedCardKey = cards[swipedCardIndex]?.internalID
 
-        if (isSwipeLeft && !isLastCard && swipedCardKey) {
+        if (!swipedCardKey) {
+          dragCardBackToTheDeck()
+          return
+        }
+
+        if (isSwipeLeft && !isLastCard) {
           swipeLeft(swipedCardKey, swipedCardIndex)
           return
         }

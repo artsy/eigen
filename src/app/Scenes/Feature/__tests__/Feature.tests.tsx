@@ -15,6 +15,7 @@ describe(FeatureQueryRenderer, () => {
   it("renders without failing", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({
       AREnableRedirectForVideoFeatureType: false,
+      AREnableShareShowPartnerFeature: true,
     })
 
     renderWithWrappers(<FeatureQueryRenderer slug="anything" />)
@@ -112,5 +113,6 @@ describe(FeatureQueryRenderer, () => {
     expect(screen.getByText("set 1 name")).toBeTruthy()
 
     expect(screen.getByTestId("FeatureVideo")).toBeTruthy()
+    expect(screen.getByLabelText("Share Feature")).toBeOnTheScreen()
   })
 })

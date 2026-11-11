@@ -25,7 +25,7 @@ const renderSheet = (props: Partial<React.ComponentProps<typeof SellSelectionNot
   )
 
 describe("SellSelectionNoteBottomSheet", () => {
-  it("splits the works into ones we can and can't sell", () => {
+  it("splits the works into ones we can and can’t sell", () => {
     renderSheet({})
 
     expect(screen.getByText(/We can help you with 1\/2 of the works/)).toBeOnTheScreen()

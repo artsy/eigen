@@ -54,6 +54,9 @@ Never commit code that fails these checks. The repo uses `lint-staged` via a hus
 
 @docs/best_practices.md
 
+- Use `MoneyInput` (`app/Components/Input/MoneyInput`) for money amounts rather than a plain `Input`. Pass `currency` to fix the currency and `allowCents={false}` for whole amounts
+- Use typographic quotes in user-facing copy: curly apostrophes and single quotes (`‘` and `’`), and curly double quotes (`“` and `”`). Write “Artsy’s fee”, not "Artsy's fee". This applies when you write or update copy, and to tests that match that copy
+
 ## File Organization
 
 ```
@@ -84,6 +87,8 @@ android/                 # Android native code and Gradle project
 ## Workflow
 
 - When opening a pull request, always use the template at `docs/pull_request_template.md`
+- Put new user-facing behaviour (a new screen, flow, or change to an existing one) behind a feature flag, so it can ship unfinished and be turned off remotely. Bug fixes and copy tweaks don't need one. See [Developing a Feature](docs/developing_a_feature.md)
+  - Write tests with the flag both on and off. Tests that only cover one state tend to break when the flag flips
 - Do not import components/hooks/functions directly from a different Scene — extract shared code to `src/app/Components/` or `src/app/utils/`
 - When adding a screen with a corresponding artsy.net page, match the route path and enable deep linking (add to `AndroidManifest.xml` for Android)
 - Use independent `NavigationContainer` stacks for context-specific flows (multi-step forms, modal sequences) rather than adding global routes

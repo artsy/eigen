@@ -25,11 +25,17 @@ describe("SaleInfo", () => {
   describe("description", () => {
     const description = "About the sale:\n\n- First lot\n- Second lot\n\n[Contact us](/contact)"
 
-    it("renders a description containing a list", () => {
-      renderWithRelay({ Sale: () => ({ ...mockSale, description }) })
+    describe("when AREnableEnrichedMarkdown is disabled", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableEnrichedMarkdown: false })
+      })
 
-      expect(screen.getByText(/First lot/)).toBeOnTheScreen()
-      expect(screen.getByText(/Second lot/)).toBeOnTheScreen()
+      it("renders a description containing a list", () => {
+        renderWithRelay({ Sale: () => ({ ...mockSale, description }) })
+
+        expect(screen.getByText(/First lot/)).toBeOnTheScreen()
+        expect(screen.getByText(/Second lot/)).toBeOnTheScreen()
+      })
     })
 
     describe("when AREnableEnrichedMarkdown is enabled", () => {
