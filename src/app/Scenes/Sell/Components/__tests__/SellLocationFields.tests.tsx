@@ -134,12 +134,14 @@ describe("SellLocationFields", () => {
     expect(screen.queryAllByRole("radio")).toHaveLength(0)
 
     fireEvent.press(screen.getByLabelText("Add new address"))
-    expect(screen.getByText("Save Address")).toBeDisabled()
+    await waitFor(() => expect(screen.getByText("Save Address")).toBeDisabled())
 
     fireEvent.press(screen.getByTestId("sell-street-address"))
     fireEvent.changeText(await screen.findByLabelText("Search addresses"), "401 Broad")
     fireEvent.press(await screen.findByText(PLACE.name))
-    await waitFor(() => expect(screen.getByLabelText("Zip code")).toHaveDisplayValue("10013"))
+    await waitFor(() =>
+      expect(screen.getByLabelText("ZIP/Postal code")).toHaveDisplayValue("10013")
+    )
     expect(getLocationPredictions).toHaveBeenCalledWith("401 Broad", {
       types: "address",
       country: "us",
@@ -152,6 +154,7 @@ describe("SellLocationFields", () => {
         attributes: {
           name: "Collector",
           addressLine1: "401 Broadway",
+          addressLine2: null,
           city: "New York",
           region: "NY",
           postalCode: "10013",
@@ -168,7 +171,9 @@ describe("SellLocationFields", () => {
       }),
     })
 
-    expect(await screen.findByRole("radio", { name: /^Collector new-1/ })).toBeChecked()
+    await waitFor(() =>
+      expect(screen.getByRole("radio", { name: /^Collector new-1/ })).toBeChecked()
+    )
     expect(onAddress).toHaveBeenLastCalledWith(expect.objectContaining({ internalID: "new-1" }))
   })
 
@@ -198,14 +203,5 @@ describe("SellLocationFields", () => {
 
     expect(await screen.findByText("Name is required")).toBeOnTheScreen()
     expect(screen.getByRole("radio", { name: /^Collector 1/ })).toBeChecked()
-  })
-
-  it("keeps only digits in the postal code", () => {
-    renderWithRelay({ Me: () => ({ addressConnection: addressConnection([]) }) })
-
-    fireEvent.press(screen.getByLabelText("Add new address"))
-    fireEvent.changeText(screen.getByLabelText("Zip code"), "10a01")
-
-    expect(screen.getByLabelText("Zip code")).toHaveDisplayValue("1001")
   })
 })

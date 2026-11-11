@@ -38,12 +38,17 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
   const space = useSpace()
   const { bottom } = useSafeAreaInsets()
   const [query, setQuery] = useState("")
+  // The input stays uncontrolled, since a controlled one lags and jitters while typing
+  const [inputText, setInputText] = useState("")
+  const [inputKey, setInputKey] = useState(0)
   const [predictions, setPredictions] = useState<SimpleLocation[] | null>(null)
   const { debouncedValue: debouncedQuery } = useDebouncedValue({ value: query, delay: 300 })
 
   useEffect(() => {
     if (visible) {
       setQuery(initialQuery)
+      setInputText(initialQuery)
+      setInputKey((key) => key + 1)
       setPredictions(null)
     }
   }, [visible, initialQuery])
@@ -91,12 +96,13 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
       <Flex px={2} pt={1} pb={1} gap={2}>
         <Text variant="sm-display">{title}</Text>
         <BottomSheetInput
+          key={inputKey}
           autoFocus
           placeholder="Start typing an address"
           accessibilityLabel="Search addresses"
           autoComplete="street-address"
           textContentType="fullStreetAddress"
-          value={query}
+          defaultValue={inputText}
           onChangeText={setQuery}
         />
       </Flex>

@@ -1,6 +1,6 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { SellLocationFields_me$key } from "__generated__/SellLocationFields_me.graphql"
-import { SellAddAddressSheet } from "app/Scenes/Sell/Components/SellAddAddressSheet"
+import { SellAddAddressModal } from "app/Scenes/Sell/Components/SellAddAddressModal"
 import { SellSavedAddresses } from "app/Scenes/Sell/Components/SellSavedAddresses"
 import { SellLocationStore, isSellableAddress } from "app/Scenes/Sell/State/SellLocationStore"
 import { extractNodes } from "app/utils/extractNodes"
@@ -54,7 +54,7 @@ export const SellLocationFields: React.FC<SellLocationFieldsProps> = ({ me }) =>
         onAddNew={() => setAdding(true)}
       />
 
-      <SellAddAddressSheet
+      <SellAddAddressModal
         visible={adding}
         name={data.name}
         onDismiss={() => setAdding(false)}

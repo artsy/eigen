@@ -11,12 +11,14 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 interface SellFormLayoutProps {
   buttonLabel: string
   buttonDisabled: boolean
+  buttonLoading?: boolean
   onButtonPress: () => void
 }
 
 export const SellFormLayout: React.FC<React.PropsWithChildren<SellFormLayoutProps>> = ({
   buttonLabel,
   buttonDisabled,
+  buttonLoading,
   onButtonPress,
   children,
 }) => {
@@ -53,6 +55,7 @@ export const SellFormLayout: React.FC<React.PropsWithChildren<SellFormLayoutProp
             haptic
             variant="fillDark"
             disabled={buttonDisabled}
+            loading={buttonLoading}
             onPress={() => {
               // An open keyboard would cover the sheet that confirms the last step
               KeyboardController.dismiss()
