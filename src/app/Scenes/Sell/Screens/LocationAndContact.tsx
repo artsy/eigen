@@ -1,5 +1,6 @@
-import { Flex, Input, Text } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { LocationAndContactQuery } from "__generated__/LocationAndContactQuery.graphql"
+import { SellContactFields } from "app/Scenes/Sell/Components/SellContactFields"
 import { SellFormLayout } from "app/Scenes/Sell/Components/SellFormLayout"
 import { SellLocationFields } from "app/Scenes/Sell/Components/SellLocationFields"
 import { SellShippingQuestions } from "app/Scenes/Sell/Components/SellShippingQuestions"
@@ -87,7 +88,6 @@ interface FormProps {
 
 const AuctionLocationForm: React.FC<FormProps> = ({ artwork, me, onSubmit }) => {
   const { locationComplete, phoneNumber } = SellLocationStore.useStoreState((state) => state)
-  const setPhoneNumber = SellLocationStore.useStoreActions((actions) => actions.setPhoneNumber)
 
   return (
     <SellFormLayout
@@ -105,34 +105,21 @@ const AuctionLocationForm: React.FC<FormProps> = ({ artwork, me, onSubmit }) => 
           <SellLocationFields me={me} />
         </Flex>
 
-        <Flex gap={1}>
-          <Text variant="md">Contact</Text>
-          <Text variant="sm">What’s the best mobile number to reach you on?</Text>
-          <Text variant="xs" color="mono60">
-            A specialist will contact you directly to discuss next steps.
-          </Text>
-          <Input
-            title="Mobile number"
-            accessibilityLabel="Mobile number"
-            keyboardType="phone-pad"
-            autoComplete="tel"
-            textContentType="telephoneNumber"
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
-          />
-        </Flex>
+        <SellContactFields />
       </Flex>
     </SellFormLayout>
   )
 }
 
 const MarketplaceShippingForm: React.FC<FormProps> = ({ artwork, me, onSubmit }) => {
-  const { locationComplete, shippingComplete } = SellLocationStore.useStoreState((state) => state)
+  const { locationComplete, shippingComplete, phoneNumber } = SellLocationStore.useStoreState(
+    (state) => state
+  )
 
   return (
     <SellFormLayout
       buttonLabel="List Artwork"
-      buttonDisabled={!locationComplete || !shippingComplete}
+      buttonDisabled={!locationComplete || !shippingComplete || !phoneNumber.trim()}
       onButtonPress={onSubmit}
     >
       <SellStepIntro stepName="LocationAndContact" channelKind="MARKETPLACE" px={2} />
@@ -147,6 +134,10 @@ const MarketplaceShippingForm: React.FC<FormProps> = ({ artwork, me, onSubmit })
       </Flex>
 
       <SellShippingQuestions />
+
+      <Flex px={2} pt={4}>
+        <SellContactFields />
+      </Flex>
     </SellFormLayout>
   )
 }

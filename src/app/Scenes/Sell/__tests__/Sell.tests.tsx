@@ -2,12 +2,18 @@ import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { Sell } from "app/Scenes/Sell/Sell"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
+import { getLocationDetails, getLocationPredictions } from "app/utils/googleMaps"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Alert, BackHandler } from "react-native"
 
 // setupJest stubs useNavigation, but this test drives the real stack
 jest.mock("@react-navigation/native", () => jest.requireActual("@react-navigation/native"))
+
+jest.mock("app/utils/googleMaps", () => ({
+  getLocationPredictions: jest.fn(),
+  getLocationDetails: jest.fn(),
+}))
 
 const SAVED_ADDRESS = {
   internalID: "address-1",
@@ -19,6 +25,18 @@ const SAVED_ADDRESS = {
   country: "US",
   isDefault: true,
   phoneNumber: "555 0100",
+}
+
+const NEW_PLACE = { id: "place-2", name: "1 Main St, Brooklyn, NY, USA" }
+
+const NEW_ADDRESS = {
+  ...SAVED_ADDRESS,
+  internalID: "address-2",
+  addressLine1: "1 Main St",
+  city: "Brooklyn",
+  postalCode: "11201",
+  isDefault: false,
+  phoneNumber: null,
 }
 
 type BackPressHandler = Parameters<typeof BackHandler.addEventListener>[1]
@@ -100,7 +118,8 @@ const resolveActiveArtwork = (view: SellView, artwork: ActiveArtwork) => {
 const resolveLocationStep = (view: SellView, artwork: ActiveArtwork) => {
   view.mockResolveLastOperation({
     Artwork: () => ({ id: artwork.internalID, ...artwork }),
-    Me: () => ({ addressConnection: { edges: [{ node: SAVED_ADDRESS }] } }),
+    // A fixed id lets a saved address update this list
+    Me: () => ({ id: "me", addressConnection: { edges: [{ node: SAVED_ADDRESS }] } }),
   })
 }
 
@@ -210,6 +229,13 @@ describe("Sell", () => {
     expect(screen.getByText("List Artwork")).toBeDisabled()
 
     fireEvent.press(screen.getByRole("radio", { name: /^Courier needs to collect\./ }))
+    await waitFor(() =>
+      expect(screen.getByLabelText("Mobile number")).toHaveDisplayValue("555 0100")
+    )
+    fireEvent.changeText(screen.getByLabelText("Mobile number"), "")
+    expect(screen.getByText("List Artwork")).toBeDisabled()
+
+    fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
     fireEvent.press(screen.getByText("List Artwork"))
     expect(await screen.findByText("Your listing is live!")).toBeOnTheScreen()
     expect(screen.getByText("Artist A’s Work A has been submitted for sale.")).toBeOnTheScreen()
@@ -237,12 +263,72 @@ describe("Sell", () => {
     )
 
     fireEvent.changeText(screen.getByLabelText("Mobile number"), "")
+    fireEvent(screen.getByLabelText("Mobile number"), "blur")
     expect(screen.getByText("Submit for Review")).toBeDisabled()
+    expect(await screen.findByText("Phone number is required")).toBeOnTheScreen()
 
     fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
     fireEvent.press(screen.getByText("Submit for Review"))
     expect(await screen.findByText("Submitted!")).toBeOnTheScreen()
     expect(screen.getByText(/One of our specialists will reach out/)).toBeOnTheScreen()
+  })
+
+  it("adds an address from step 3 and selects it there", async () => {
+    ;(getLocationPredictions as jest.Mock).mockResolvedValue([NEW_PLACE])
+    ;(getLocationDetails as jest.Mock).mockResolvedValue({
+      ...NEW_PLACE,
+      street: "1 Main St",
+      city: "Brooklyn",
+      stateCode: "NY",
+      countryCode: "US",
+      postalCode: "11201",
+    })
+    const view = await renderSell()
+    await openAuctionConditionStep(view)
+    fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
+    fireEvent.press(screen.getByText("Continue"))
+    resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
+    await screen.findByText("Step 3 · Location & Contact")
+    fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
+
+    fireEvent.press(screen.getByLabelText("Add new address"))
+    expect(await screen.findByText("Add address")).toBeOnTheScreen()
+    // The step header has its own close button, so take the modal’s, which renders last
+    fireEvent.press(screen.getAllByLabelText("Close").at(-1)!)
+    await waitFor(() => expect(screen.queryByText("Add address")).not.toBeOnTheScreen())
+    expect(screen.getByLabelText("Mobile number")).toHaveDisplayValue("555 0199")
+
+    fireEvent.press(screen.getByLabelText("Add new address"))
+    await screen.findByText("Add address")
+    fireEvent.changeText(screen.getByLabelText("Full name"), "Collector")
+    fireEvent.press(screen.getByTestId("sell-street-address"))
+    fireEvent.changeText(await screen.findByLabelText("Search addresses"), "1 Main")
+    fireEvent.press(await screen.findByText(NEW_PLACE.name))
+    await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
+    fireEvent.press(screen.getByText("Save Address"))
+
+    await waitFor(() =>
+      expect(view.env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "useCreateUserAddressMutation"
+      )
+    )
+    view.mockResolveLastOperation({
+      CreateUserAddressPayload: () => ({
+        me: {
+          id: "me",
+          addressConnection: {
+            edges: [{ node: SAVED_ADDRESS }, { node: NEW_ADDRESS }],
+          },
+        },
+        userAddressOrErrors: { __typename: "UserAddress", internalID: NEW_ADDRESS.internalID },
+      }),
+    })
+
+    await waitFor(() =>
+      expect(screen.getByRole("radio", { name: /^Collector, 1 Main St/ })).toBeChecked()
+    )
+    expect(screen.queryByText("Add address")).not.toBeOnTheScreen()
+    expect(screen.getByLabelText("Mobile number")).toHaveDisplayValue("555 0199")
   })
 
   it("goes back from the works summary to the work selection, then leaves the flow", async () => {
