@@ -55,7 +55,7 @@ Never commit code that fails these checks. The repo uses `lint-staged` via a hus
 @docs/best_practices.md
 
 - Use `MoneyInput` (`app/Components/Input/MoneyInput`) for money amounts rather than a plain `Input`. Pass `currency` to fix the currency and `allowCents={false}` for whole amounts
-- Use typographic apostrophes (`’`) in user-facing copy: "Artsy’s fee", not "Artsy's fee". Tests that match the copy need the same character
+- Use typographic quotes in user-facing copy: curly apostrophes and single quotes (`‘` and `’`), and curly double quotes (`“` and `”`). Write “Artsy’s fee”, not "Artsy's fee". This applies when you write or update copy, and to tests that match that copy
 
 ## File Organization
 

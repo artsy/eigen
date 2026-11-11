@@ -22,7 +22,7 @@ describe("SellPriceSection", () => {
     jest.restoreAllMocks()
   })
 
-  it("shows the recommended range for the artist", () => {
+  it("shows the recommended range for the artwork", () => {
     renderWithWrappers(<TestPriceSection />)
 
     expect(screen.getByText("US$3,000–3,400")).toBeOnTheScreen()
