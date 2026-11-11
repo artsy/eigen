@@ -26850,7 +26850,7 @@ type Mutation {
   updateArtistStoryVideo(input: updateArtistStoryVideoInput!): updateArtistStoryVideoPayload
 
   """
-  Updates an ArtnetArtwork and pushes the supported changes to Artnet. At least one of `published`, `availability`, `materials`, `priceToMinor` or `syncOn` is required. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
+  Updates an ArtnetArtwork and pushes the supported changes to Artnet. At least one of `published`, `availability`, `primaryMedium`, `additionalMediums`, `materials`, `priceToMinor` or `syncOn` is required. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
   """
   updateArtnetArtwork(input: UpdateArtnetArtworkMutationInput!): UpdateArtnetArtworkMutationPayload
 
@@ -38733,6 +38733,11 @@ type UpdateArtnetArtworkFailure {
 
 input UpdateArtnetArtworkMutationInput {
   """
+  The artwork's other mediums on Artnet, from Artnet's accepted mediums. Replaces them: what is missing is removed, and an empty list removes them all. Omit to leave them unchanged.
+  """
+  additionalMediums: [String!]
+
+  """
   Gravity availability (e.g. `for sale`, `sold`), normalized to an Artnet sale status.
   """
   availability: String
@@ -38752,6 +38757,11 @@ input UpdateArtnetArtworkMutationInput {
   Ceiling of Artnet's price range, in minor units. The floor is the catalog artwork's price. Pass null to clear it; omit to leave it unchanged.
   """
   priceToMinor: Long
+
+  """
+  The artwork's primary medium on Artnet, from Artnet's accepted mediums. Replaces the current primary, which is removed from Artnet; the additional mediums are kept. Omit to leave it unchanged.
+  """
+  primaryMedium: String
 
   """
   Publish or unpublish the artwork on Artnet.
