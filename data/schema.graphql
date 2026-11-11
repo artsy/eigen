@@ -20878,6 +20878,60 @@ type HomeViewCardEdge {
 }
 
 """
+A card linking to a city's City Guide, or to the City Guide for the city nearest the user
+"""
+type HomeViewCityGuideCard {
+  """
+  Count chips in display order, e.g. ["6 Curated Guides", "100+ Shows"]. Counts that are zero or failed to load are left out, so this can be empty
+  """
+  chips: [String!]!
+
+  """
+  The city's slug, or `null` for the "Explore city near me" card, where the app picks the city
+  """
+  citySlug: String
+  href: String!
+
+  """
+  The card's image. The rail has no background image of its own: clients use a blurred version of the current card's image
+  """
+  image: Image
+  title: String!
+}
+
+"""
+A connection to a list of items.
+"""
+type HomeViewCityGuideCardConnection {
+  """
+  A list of edges.
+  """
+  edges: [HomeViewCityGuideCardEdge]
+  pageCursors: PageCursors!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+"""
+An edge in a connection.
+"""
+type HomeViewCityGuideCardEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge
+  """
+  node: HomeViewCityGuideCard
+}
+
+"""
 A component specification, to allow for customization of presentation and behavior
 """
 type HomeViewComponent {
@@ -21181,6 +21235,43 @@ type HomeViewSectionCards implements HomeViewSectionGeneric & Node {
   """
   ownerType: String
   trackItemImpressions: Boolean!
+}
+
+"""
+A rail of cards linking to City Guides
+"""
+type HomeViewSectionCityGuides implements HomeViewSectionGeneric & Node {
+  cardsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): HomeViewCityGuideCardConnection
+
+  """
+  Component prescription for this section, for overriding or customizing presentation and behavior
+  """
+  component: HomeViewComponent
+
+  """
+  [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
+  """
+  contextModule: String
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+
+  """
+  [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
+  """
+  ownerType: String
 }
 
 """
