@@ -13768,7 +13768,7 @@ __metadata:
     react-native-bootsplash: "npm:7.1.0"
     react-native-collapsible-tab-view: "patch:react-native-collapsible-tab-view@npm%3A9.0.0-rc.0#~/.yarn/patches/react-native-collapsible-tab-view-npm-9.0.0-rc.0-5363b327de.patch"
     react-native-device-info: "npm:14.0.0"
-    react-native-drax: "npm:^1.1.0"
+    react-native-drax: "patch:react-native-drax@npm%3A1.1.0#~/.yarn/patches/react-native-drax-npm-1.1.0-91a11e0fed.patch"
     react-native-enriched-markdown: "npm:1.1.1"
     react-native-fbsdk-next: "npm:13.4.1"
     react-native-gesture-handler: "npm:2.32.0"
@@ -21883,7 +21883,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-drax@npm:^1.1.0":
+"react-native-drax@npm:1.1.0":
   version: 1.1.0
   resolution: "react-native-drax@npm:1.1.0"
   peerDependencies:
@@ -21892,6 +21892,18 @@ __metadata:
     react-native-gesture-handler: ">=2.0.0"
     react-native-reanimated: ^4.0.0
   checksum: 10c0/1c4269157c69a82b2febf09b70f1008413fcbe351655aa6452d4b4de621e829fb6e28faa0a19b42b9ed02454587a5b2543249bdd1e73e86bff285bee289ebc11
+  languageName: node
+  linkType: hard
+
+"react-native-drax@patch:react-native-drax@npm%3A1.1.0#~/.yarn/patches/react-native-drax-npm-1.1.0-91a11e0fed.patch":
+  version: 1.1.0
+  resolution: "react-native-drax@patch:react-native-drax@npm%3A1.1.0#~/.yarn/patches/react-native-drax-npm-1.1.0-91a11e0fed.patch::version=1.1.0&hash=5968a6"
+  peerDependencies:
+    react: ">=18.0.0"
+    react-native: ">=0.68.0"
+    react-native-gesture-handler: ">=2.0.0"
+    react-native-reanimated: ^4.0.0
+  checksum: 10c0/7a653798383af7664dead90ce5a9e156b30c33a05f044fd1329d000802e0b1668465212eaeff1bb607376fb22adfc1f76e7a846d86d8e7b11c459c7d9bf291c0
   languageName: node
   linkType: hard
 
