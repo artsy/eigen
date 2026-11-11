@@ -37,9 +37,30 @@ const collection = {
   Me: () => ({
     myCollectionConnection: {
       edges: [
-        { node: { internalID: "id-a2", title: "Sellable Work", artistNames: "Artist A" } },
-        { node: { internalID: "id-c3", title: "Unsellable Work", artistNames: "Artist B" } },
-        { node: { internalID: "id-b4", title: "Auction Work", artistNames: "Artist C" } },
+        {
+          node: {
+            id: "id-a2",
+            internalID: "id-a2",
+            title: "Sellable Work",
+            artistNames: "Artist A",
+          },
+        },
+        {
+          node: {
+            id: "id-c3",
+            internalID: "id-c3",
+            title: "Unsellable Work",
+            artistNames: "Artist B",
+          },
+        },
+        {
+          node: {
+            id: "id-b4",
+            internalID: "id-b4",
+            title: "Auction Work",
+            artistNames: "Artist C",
+          },
+        },
       ],
     },
   }),
@@ -55,12 +76,13 @@ const renderSell = async () => {
 
 type SellView = Awaited<ReturnType<typeof renderSell>>
 
-// Step 2 loads the active work with its own query
+// Step 2 loads the active work with its own query. The shared id keeps a generated one from
+// overwriting another work in the step 1 list.
 const resolveStepTwoArtwork = (
   view: SellView,
   artwork: { internalID: string; artistNames: string }
 ) => {
-  view.mockResolveLastOperation({ Artwork: () => artwork })
+  view.mockResolveLastOperation({ Artwork: () => ({ id: artwork.internalID, ...artwork }) })
 }
 
 const openAuctionConditionStep = async (view: SellView) => {
@@ -94,7 +116,7 @@ describe("Sell", () => {
 
     expect(screen.getByText("Step 1 · Decide Which Works to Sell")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 1 of 3")).toBeOnTheScreen()
-    expect(screen.getByText(/Tap the works you've considered selling/)).toBeOnTheScreen()
+    expect(screen.getByText(/Tap the works you’ve considered selling/)).toBeOnTheScreen()
   })
 
   it("closes straight away when the feature flag is off", () => {
@@ -149,9 +171,15 @@ describe("Sell", () => {
     resolveStepTwoArtwork(view, { internalID: "id-a2", artistNames: "Artist A" })
     expect(await screen.findByText("Step 2 · Condition & Price")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 2 of 3")).toBeOnTheScreen()
-    expect(screen.getByText("Listing works aren't supported yet.")).toBeOnTheScreen()
+    expect(screen.getByText("Confirm Listing Price")).toBeDisabled()
 
-    fireEvent.press(screen.getByText("Continue"))
+    fireEvent.press(screen.getByRole("radio", { name: /^Excellent\./ }))
+    expect(screen.getByText("Confirm Listing Price")).toBeDisabled()
+
+    fireEvent.changeText(screen.getByLabelText("Asking price"), "3200")
+    expect(screen.getByText("US$2,720")).toBeOnTheScreen()
+
+    fireEvent.press(screen.getByText("Confirm Listing Price"))
     expect(await screen.findByText("Step 3 · Shipping Options")).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Submit for Review"))
@@ -205,6 +233,37 @@ describe("Sell", () => {
     pressHardwareBack()
     expect(await screen.findByText("Start Listing")).toBeOnTheScreen()
     expect(dismissModal).not.toHaveBeenCalled()
+  })
+
+  it("asks before going back from step 2 with answers, then clears them", async () => {
+    const alertSpy = jest.spyOn(Alert, "alert")
+    const pressHardwareBack = mockHardwareBack()
+    const view = await renderSell()
+    await openAuctionConditionStep(view)
+
+    fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
+    fireEvent.press(screen.getByLabelText("Go back"))
+
+    expect(alertSpy).toHaveBeenCalledWith(
+      "Go back to step 1?",
+      expect.any(String),
+      expect.any(Array)
+    )
+    const buttons = alertSpy.mock.calls[0][2]!
+
+    act(() => buttons.find((button) => button.text === "Stay")?.onPress?.())
+    expect(screen.getByRole("radio", { name: /^Fair\./ })).toBeChecked()
+
+    act(() => pressHardwareBack())
+    expect(alertSpy).toHaveBeenCalledTimes(2)
+    expect(alertSpy.mock.calls[1][0]).toBe("Go back to step 1?")
+    expect(screen.getByRole("radio", { name: /^Fair\./ })).toBeChecked()
+
+    act(() => buttons.find((button) => button.text === "Go back")?.onPress?.())
+    // The work is already in the Relay store, so step 2 opens without a new query
+    fireEvent.press(await screen.findByText("Start Submission"))
+
+    expect(await screen.findByRole("radio", { name: /^Fair\./ })).not.toBeChecked()
   })
 
   it("asks for confirmation before closing the flow past the first screen", async () => {

@@ -9,7 +9,7 @@ const CHANNELS = [
     description:
       "Your work is offered at auction, where competitive bidding sets the price. Best for works with strong collector demand.",
     journey:
-      "we only need the work's condition and location. A specialist will then contact you directly to discuss next steps.",
+      "we only need the work’s condition and location. A specialist will then contact you directly to discuss next steps.",
   },
   {
     title: "Marketplace",

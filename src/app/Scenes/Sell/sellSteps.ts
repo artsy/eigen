@@ -3,7 +3,7 @@ export const SELL_STEPS = [
     name: "SelectWorks",
     title: "Decide Which Works to Sell",
     description:
-      "Tap the works you've considered selling. We'll review demand for each and let you know if we can help today.",
+      "Tap the works you’ve considered selling. We’ll review demand for each and let you know if we can help today.",
   },
   {
     name: "Condition",

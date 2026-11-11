@@ -98,7 +98,7 @@ export const SellSelectionNoteBottomSheet: React.FC<SellSelectionNoteBottomSheet
             <Flex gap={1}>
               <SectionTitle>Not able to sell yet</SectionTitle>
               <Text variant="sm" color="mono60">
-                Unfortunately, we cannot help today with the following, but we're working towards
+                Unfortunately, we cannot help today with the following, but we’re working towards
                 supporting these.
               </Text>
 
