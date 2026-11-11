@@ -52,6 +52,7 @@ const ACTIVITY_COPY: Record<Exclude<AIAgentActivity, "%future added value">, str
   SEARCHING_FAIRS: "Searching fairs...",
   FINDING_RECOMMENDATIONS: "Finding recommendations...",
   LOADING_ARTWORK_DETAILS: "Loading artwork details...",
+  LOOKING_AT_IMAGE: "Looking at image...",
   SEARCHING_ARTSY: "Searching Artsy...",
 }
 
