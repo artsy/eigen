@@ -11,14 +11,22 @@ import {
 } from "@artsy/palette-mobile"
 import { ContextMenuArtworkPreviewCard_artwork$key } from "__generated__/ContextMenuArtworkPreviewCard_artwork.graphql"
 import { ContextMenuArtwork_artwork$key } from "__generated__/ContextMenuArtwork_artwork.graphql"
+import {
+  findSimilarArtworksPath,
+  tappedFindSimilarArtworks,
+} from "app/Components/ArtsyLens/findSimilarArtworks"
 import { ArtworkRailCardProps } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { ContextMenuArtworkPreviewCard } from "app/Components/ContextMenu/ContextMenuArtworkPreviewCard"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
+// Context menu actions are plain callbacks, so RouterLink can't be used here
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { cm2in } from "app/utils/conversions"
 import { useEchoMessage } from "app/utils/hooks/useEchoMessage"
+import { useEnableArtsyLens } from "app/utils/hooks/useEnableArtsyLens"
 import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
 import { useDislikeArtwork } from "app/utils/mutations/useDislikeArtwork"
 import { Schema } from "app/utils/track"
@@ -86,6 +94,7 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
   const enableCreateAlerts = !!artwork.artists?.length
   const enableViewInRoom = LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable
   const enableSupressArtwork = isDislikeArtworksEnabledFor(contextModule)
+  const enableFindSimilarArtworks = useEnableArtsyLens()
 
   const virVideoURL = useEchoMessage("ARVIRVideo") ?? ""
 
@@ -160,6 +169,25 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
         onPress: () => {
           InteractionManager.runAfterInteractions(() => {
             openViewInRoom()
+          })
+        },
+      })
+    }
+
+    if (enableFindSimilarArtworks) {
+      contextMenuActions.push({
+        title: "Find similar",
+        systemIcon: "sparkle.magnifyingglass",
+        onPress: () => {
+          InteractionManager.runAfterInteractions(() => {
+            trackEvent(
+              tappedFindSimilarArtworks({
+                contextModule: ContextModule.longPressContextMenu,
+                contextScreenOwnerType: contextScreenOwnerType ?? ("unknown" as ScreenOwnerType),
+              })
+            )
+
+            navigate(findSimilarArtworksPath(slug))
           })
         },
       })

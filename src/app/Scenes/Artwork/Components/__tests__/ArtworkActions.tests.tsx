@@ -7,11 +7,17 @@ import {
   shareContent,
 } from "app/Scenes/Artwork/Components/ArtworkActions"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
+import { useEnableArtsyLens } from "app/utils/hooks/useEnableArtsyLens"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 jest.unmock("app/NativeModules/LegacyNativeModules")
+
+jest.mock("app/utils/hooks/useEnableArtsyLens", () => ({
+  useEnableArtsyLens: jest.fn(() => false),
+}))
 
 describe("ArtworkActions", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkActionsTestQuery>({
@@ -187,6 +193,37 @@ describe("ArtworkActions", () => {
           },
         ]
       `)
+    })
+  })
+
+  describe("Find similar button", () => {
+    const mockUseEnableArtsyLens = useEnableArtsyLens as jest.Mock
+
+    afterEach(() => {
+      mockUseEnableArtsyLens.mockReturnValue(false)
+    })
+
+    it("is hidden when the feature is off", () => {
+      renderWithRelay({ Artwork: () => artworkActionsArtwork })
+
+      expect(screen.queryByText("Find similar")).not.toBeOnTheScreen()
+    })
+
+    it("navigates to similar artworks and tracks the tap when the feature is on", () => {
+      mockUseEnableArtsyLens.mockReturnValue(true)
+
+      renderWithRelay({ Artwork: () => artworkActionsArtwork })
+
+      fireEvent.press(screen.getByText("Find similar"))
+
+      expect(navigate).toHaveBeenCalledWith("/artwork/andreas-rod-prinzknecht/similar")
+      expect(mockTrackEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          context_module: "artworkActions",
+          context_screen_owner_type: "artwork",
+          type: "find_similar",
+        })
+      )
     })
   })
 })

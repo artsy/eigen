@@ -13,6 +13,7 @@ import {
   LensResults_artworks$data,
   LensResults_artworks$key,
 } from "__generated__/LensResults_artworks.graphql"
+import { LensResultsHeader } from "app/Components/ArtsyLens/LensResultsHeader"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import {
   filterArtworksParams,
@@ -31,7 +32,6 @@ import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/Ma
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { SearchByPhotoButton } from "app/Components/SearchByPhotoButton/SearchByPhotoButton"
 import { PAGE_SIZE } from "app/Components/constants"
-import { LensResultsHeader } from "app/Scenes/Lens/Components/LensResultsHeader"
 import { LensNavigationStack } from "app/Scenes/Lens/types"
 import { discardTempPhotos } from "app/Scenes/Lens/utils/discardTempPhotos"
 import { goBack } from "app/system/navigation/navigate"
@@ -116,7 +116,7 @@ const LensResults: React.FC<Props> = ({ route, navigation }) => {
     <Screen>
       <LensResultsHeader
         onBack={goBack}
-        photoUri={photoUri}
+        imageUri={photoUri}
         title={hasNoMatches ? NO_MATCHES_TITLE : MATCHES_TITLE}
         // Nothing to filter when the photo itself has no matches
         onFilterPress={hasNoMatches ? undefined : () => setIsFilterModalVisible(true)}
@@ -319,7 +319,7 @@ const LensResultsWithSuspense = withSuspense<Props>({
   // Keeps the photo and a way back on screen, instead of the route-level error screen
   ErrorFallback: ({ error, resetErrorBoundary }, { route }) => (
     <Screen>
-      <LensResultsHeader onBack={goBack} photoUri={route.params.photoUri} />
+      <LensResultsHeader onBack={goBack} imageUri={route.params.photoUri} />
       <Screen.Body fullwidth>
         <LoadFailureView
           error={error}
@@ -335,7 +335,7 @@ const LensResultsWithSuspense = withSuspense<Props>({
 const Placeholder: React.FC<{ photoUri: string }> = ({ photoUri }) => {
   return (
     <Screen>
-      <LensResultsHeader onBack={goBack} photoUri={photoUri} title={SEARCHING_TITLE} />
+      <LensResultsHeader onBack={goBack} imageUri={photoUri} title={SEARCHING_TITLE} />
       <Screen.Body fullwidth pt={1}>
         <PlaceholderGrid />
       </Screen.Body>
