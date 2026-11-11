@@ -3605,7 +3605,7 @@ type ArtistStory {
   about: ArtistStoryAbout
   accentColor: ArtistStoryAccentColor
   headerImage: ArtistStoryImage
-  headerVideo: Video
+  headerVideo: ArtistStoryVideo
 
   """
   A globally unique ID.
@@ -3617,7 +3617,7 @@ type ArtistStory {
   """
   internalID: ID!
   motionVideos: [ArtistStoryVideo!]!
-  processVideo: Video
+  processVideo: ArtistStoryVideo
   pullQuote: ArtistStoryQuote
 }
 
@@ -3636,6 +3636,16 @@ type ArtistStoryImage {
   altText: String!
   credit: String
   image: Image!
+}
+
+type ArtistStoryMutationFailure {
+  mutationError: GravityMutationError
+}
+
+union ArtistStoryMutationResponseOrError = ArtistStoryMutationFailure | ArtistStoryMutationSuccess
+
+type ArtistStoryMutationSuccess {
+  artistStory: ArtistStory
 }
 
 type ArtistStoryQuote {
@@ -3662,7 +3672,42 @@ type ArtistStoryVideo {
   internalID: ID!
   position: Int!
   quote: ArtistStoryQuote
+  role: ArtistStoryVideoRole!
   video: Video!
+}
+
+type ArtistStoryVideoMutationFailure {
+  mutationError: GravityMutationError
+}
+
+union ArtistStoryVideoMutationResponseOrError =
+    ArtistStoryVideoMutationFailure
+  | ArtistStoryVideoMutationSuccess
+
+type ArtistStoryVideoMutationSuccess {
+  artistStoryID: String!
+
+  """
+  The Story's videos of every role, header first, then motion, then process, each in order.
+  """
+  videos: [ArtistStoryVideo!]!
+}
+
+enum ArtistStoryVideoRole {
+  """
+  Silent background loop behind the page header. Vimeo only.
+  """
+  HEADER
+
+  """
+  Silent loop with a caption and quote. Vimeo only.
+  """
+  MOTION
+
+  """
+  The artist's process film. Vimeo or YouTube.
+  """
+  PROCESS
 }
 
 type ArtistTargetSupply {
@@ -15506,6 +15551,12 @@ type DeleteArtistPayload {
   clientMutationId: String
 }
 
+union DeleteArtistStoryResponseOrError = ArtistStoryMutationFailure | DeleteArtistStorySuccess
+
+type DeleteArtistStorySuccess {
+  artistStoryID: String!
+}
+
 type DeleteArtistSuccess {
   artist: Artist
 }
@@ -25516,6 +25567,12 @@ type Mutation {
   Create an artist, used for MyCollection. use CreateCanonicalArtistMutation for all other cases
   """
   createArtist(input: CreateArtistMutationInput!): CreateArtistMutationPayload
+  createArtistStory(input: createArtistStoryInput!): createArtistStoryPayload
+
+  """
+  Place a video on an Artist Story, at the end of its role's list
+  """
+  createArtistStoryVideo(input: createArtistStoryVideoInput!): createArtistStoryVideoPayload
 
   """
   Creates an ArtnetArtwork from an existing artwork and its catalog artwork, and pushes the create to Artnet. Gravity resolves the Artnet artist itself and refuses a create it cannot match, so correcting the artist in Gravity is what makes a retry succeed. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
@@ -25879,6 +25936,12 @@ type Mutation {
   Delete an artist
   """
   deleteArtist(input: DeleteArtistInput!): DeleteArtistPayload
+
+  """
+  Delete an Artist Story, its videos and its images
+  """
+  deleteArtistStory(input: deleteArtistStoryInput!): deleteArtistStoryPayload
+  deleteArtistStoryVideo(input: deleteArtistStoryVideoInput!): deleteArtistStoryVideoPayload
 
   """
   Deletes an artwork.
@@ -26629,6 +26692,12 @@ type Mutation {
   Update an artist's social handles.
   """
   updateArtistSocials(input: UpdateArtistSocialsMutationInput!): UpdateArtistSocialsMutationPayload
+  updateArtistStory(input: updateArtistStoryInput!): updateArtistStoryPayload
+
+  """
+  Change a video's role, position, caption or quote on an Artist Story
+  """
+  updateArtistStoryVideo(input: updateArtistStoryVideoInput!): updateArtistStoryVideoPayload
 
   """
   Updates an ArtnetArtwork and pushes the supported changes to Artnet. At least one of `published`, `availability`, `materials`, `priceToMinor` or `syncOn` is required. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
@@ -45074,6 +45143,79 @@ type createAlertPayload {
   responseOrError: CreateAlertResponseOrError
 }
 
+input createArtistStoryInput {
+  """
+  Markdown.
+  """
+  aboutBody: String
+
+  """
+  Hex string. Must be one of the artist's accent color options when it changes.
+  """
+  accentColor: String
+  clientMutationId: String
+
+  """
+  Required while a Header Image is set.
+  """
+  headerImageAltText: String
+  headerImageCredit: String
+  headerImageS3Bucket: String
+  headerImageS3Key: String
+  partnerArtistID: String!
+
+  """
+  Required while a Portrait is set.
+  """
+  portraitAltText: String
+  portraitCredit: String
+  portraitImageS3Bucket: String
+  portraitImageS3Key: String
+
+  """
+  Plain text, max 250.
+  """
+  pullQuote: String
+  pullQuoteAttribution: String
+
+  """
+  Plain text, max 250.
+  """
+  tagline: String
+}
+
+type createArtistStoryPayload {
+  clientMutationId: String
+  responseOrError: ArtistStoryMutationResponseOrError
+}
+
+input createArtistStoryVideoInput {
+  artistStoryID: String!
+
+  """
+  Motion videos only.
+  """
+  caption: String
+  clientMutationId: String
+
+  """
+  Motion videos only. Plain text, max 250.
+  """
+  quote: String
+
+  """
+  Motion videos only, and only with a quote.
+  """
+  quoteAttribution: String
+  role: ArtistStoryVideoRole!
+  videoID: String!
+}
+
+type createArtistStoryVideoPayload {
+  clientMutationId: String
+  responseOrError: ArtistStoryVideoMutationResponseOrError
+}
+
 input createBuyerOfferInput {
   """
   Offer amount in minor units (cents).
@@ -45372,6 +45514,30 @@ input deleteAlertInput {
 type deleteAlertPayload {
   clientMutationId: String
   responseOrError: DeleteAlertResponseOrError
+}
+
+input deleteArtistStoryInput {
+  clientMutationId: String
+  id: String!
+}
+
+type deleteArtistStoryPayload {
+  clientMutationId: String
+  responseOrError: DeleteArtistStoryResponseOrError
+}
+
+input deleteArtistStoryVideoInput {
+  clientMutationId: String
+
+  """
+  The placement's id (not the video's).
+  """
+  id: String!
+}
+
+type deleteArtistStoryVideoPayload {
+  clientMutationId: String
+  responseOrError: ArtistStoryVideoMutationResponseOrError
 }
 
 input deleteCityArticleInput {
@@ -45836,6 +46002,86 @@ input updateAlertInput {
 type updateAlertPayload {
   clientMutationId: String
   responseOrError: UpdateAlertResponseOrError
+}
+
+input updateArtistStoryInput {
+  """
+  Markdown.
+  """
+  aboutBody: String
+
+  """
+  Hex string. Must be one of the artist's accent color options when it changes.
+  """
+  accentColor: String
+  clientMutationId: String
+
+  """
+  Required while a Header Image is set.
+  """
+  headerImageAltText: String
+  headerImageCredit: String
+  headerImageS3Bucket: String
+  headerImageS3Key: String
+  id: String!
+
+  """
+  Required while a Portrait is set.
+  """
+  portraitAltText: String
+  portraitCredit: String
+  portraitImageS3Bucket: String
+  portraitImageS3Key: String
+
+  """
+  Plain text, max 250.
+  """
+  pullQuote: String
+  pullQuoteAttribution: String
+
+  """
+  Plain text, max 250.
+  """
+  tagline: String
+}
+
+type updateArtistStoryPayload {
+  clientMutationId: String
+  responseOrError: ArtistStoryMutationResponseOrError
+}
+
+input updateArtistStoryVideoInput {
+  """
+  Motion videos only.
+  """
+  caption: String
+  clientMutationId: String
+
+  """
+  The placement's id (not the video's).
+  """
+  id: String!
+
+  """
+  Zero-based position among the Story's videos of the same role.
+  """
+  position: Int
+
+  """
+  Motion videos only. Plain text, max 250.
+  """
+  quote: String
+
+  """
+  Motion videos only, and only with a quote.
+  """
+  quoteAttribution: String
+  role: ArtistStoryVideoRole
+}
+
+type updateArtistStoryVideoPayload {
+  clientMutationId: String
+  responseOrError: ArtistStoryVideoMutationResponseOrError
 }
 
 type updateArtworkFailure {
