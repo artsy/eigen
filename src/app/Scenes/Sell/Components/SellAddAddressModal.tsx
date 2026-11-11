@@ -86,7 +86,6 @@ const SellAddAddressForm: React.FC<SellAddAddressFormProps> = ({ name, onDismiss
     errors,
     touched,
     status,
-    isValid,
     isSubmitting,
     handleBlur,
     handleSubmit,
@@ -96,7 +95,6 @@ const SellAddAddressForm: React.FC<SellAddAddressFormProps> = ({ name, onDismiss
   } = useFormik<AddAddressFormValues>({
     initialValues,
     validationSchema,
-    validateOnMount: true,
     onSubmit: async (address, { setStatus }) => {
       setStatus(null)
 
@@ -130,6 +128,9 @@ const SellAddAddressForm: React.FC<SellAddAddressFormProps> = ({ name, onDismiss
     },
   })
 
+  // Checked on every render: Formik's validateOnMount doesn't run on device, so isValid starts true
+  const canSave = validationSchema.isValidSync(values)
+
   const errorFor = (field: keyof AddAddressFormValues) =>
     touched[field] ? (errors[field] as string | undefined) : undefined
 
@@ -154,7 +155,7 @@ const SellAddAddressForm: React.FC<SellAddAddressFormProps> = ({ name, onDismiss
 
       <SellFormLayout
         buttonLabel="Save Address"
-        buttonDisabled={!isValid || isSubmitting}
+        buttonDisabled={!canSave || isSubmitting}
         buttonLoading={isSubmitting}
         onButtonPress={() => handleSubmit()}
       >
@@ -184,6 +185,7 @@ const SellAddAddressForm: React.FC<SellAddAddressFormProps> = ({ name, onDismiss
               title="Street address"
               testID="sell-street-address"
               country="us"
+              required
               value={values.place}
               onChange={(place) => {
                 setValues(
