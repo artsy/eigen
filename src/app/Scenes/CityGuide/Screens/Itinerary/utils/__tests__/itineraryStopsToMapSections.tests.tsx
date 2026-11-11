@@ -53,6 +53,17 @@ describe("itineraryStopsToMapSections", () => {
     })
   })
 
+  it("marks a place saved when its stop is on one of the viewer's itineraries", () => {
+    const saved = makeStop({ internalID: "saved", isOnMyItineraries: true })
+    const unsaved = makeStop({ internalID: "unsaved", isOnMyItineraries: false })
+    const sections = toMapSections(makeItinerary([saved, unsaved]))
+
+    expect(sections[0].places.map((place) => [place.id, place.isSaved])).toEqual([
+      ["saved", true],
+      ["unsaved", false],
+    ])
+  })
+
   it("drops stops with invalid coordinates rather than trusting them", () => {
     const valid = makeStop({ internalID: "valid" })
     const invalid = makeStop({

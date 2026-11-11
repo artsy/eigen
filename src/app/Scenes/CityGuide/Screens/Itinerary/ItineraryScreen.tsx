@@ -274,6 +274,9 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   // field, so a stop's section is fixed at creation.
   const canEdit = !!itinerary.isMine && !itinerary.isCurated
   const canReorder = canEdit
+  // A curated guide or someone else's itinerary: the map can filter to the stops you've saved.
+  // On your own itinerary every stop is already yours, so Saved would just repeat All.
+  const showSavedFilter = !canEdit
   // A section with nothing in it is nothing to show — not even its heading. Emptying one by
   // removing its last stop leaves it behind on the itinerary, so this is the common case.
   const sections = withStopOrder(itinerary, stopOrder).sections.filter(
@@ -395,6 +398,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                 selectedPlaceId={selectedStopId}
                 onSelectPlace={setSelectedStopId}
                 safeArea
+                showSavedFilter={showSavedFilter}
               />
             ) : (
               // Scoped to this screen rather than the app root: the provider keeps all its

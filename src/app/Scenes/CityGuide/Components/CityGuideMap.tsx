@@ -96,16 +96,22 @@ export const CityGuideMap: React.FC<Props> = (props) => {
 
   const enableGlobalMapList = useFeatureFlag("AREnableCityGuideItineraries")
 
+  // One definition of "saved" for both the Saved filter and the saved pin icon.
+  const savedOptions = useMemo(
+    () => ({ savedMeansOnItineraries: enableGlobalMapList }),
+    [enableGlobalMapList]
+  )
+
   // Derived from the fragment data rather than held in state, so that a show being saved anywhere
   // else in the app re-buckets the results and repaints its pin with the saved variant.
   const bucketResults = useMemo(
-    () =>
-      bucketCityResults(shows, upcomingShows, fairs, {
-        savedMeansOnItineraries: enableGlobalMapList,
-      }),
-    [shows, upcomingShows, fairs, enableGlobalMapList]
+    () => bucketCityResults(shows, upcomingShows, fairs, savedOptions),
+    [shows, upcomingShows, fairs, savedOptions]
   )
-  const featureCollections = useMemo(() => buildFeatureCollections(bucketResults), [bucketResults])
+  const featureCollections = useMemo(
+    () => buildFeatureCollections(bucketResults, savedOptions),
+    [bucketResults, savedOptions]
+  )
 
   const [mapLoaded, setMapLoaded] = useState(false)
   const [activePin, setActivePin] = useState<GeoJSON.Feature | null>(null)
@@ -135,9 +141,11 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   const framedFilterIndexRef = useRef(activeIndex)
 
   // Frames the picked filter's pins. Keyed on the selection rather than the pins themselves, so
-  // un-saving a place from its card doesn't yank the camera around.
+  // un-saving a place from its card doesn't yank the camera around. Only with itineraries on:
+  // without them the bottom sheet covers most of the map, and pins framed to the full map would
+  // sit behind it.
   useEffect(() => {
-    if (!mapLoaded || framedFilterIndexRef.current === activeIndex) return
+    if (!enableGlobalMapList || !mapLoaded || framedFilterIndexRef.current === activeIndex) return
 
     framedFilterIndexRef.current = activeIndex
 

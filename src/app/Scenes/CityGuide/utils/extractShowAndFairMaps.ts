@@ -9,8 +9,9 @@ export const extractShowAndFairMaps = (
   const showsMap: { [key: string]: Show } = {}
   const fairsMap: { [key: string]: Fair } = {}
 
-  const savedUpcomingShows = upcomingShows.filter((node) => node.is_followed)
-  const concatedShows = uniq(shows.concat(savedUpcomingShows))
+  // Every upcoming show, not just followed ones: this is only a slug lookup for tapped pins, and
+  // which upcoming shows get a pin at all is the filters' call (see `bucketCityResults`).
+  const concatedShows = uniq(shows.concat(upcomingShows))
 
   concatedShows.forEach((node) => {
     if (!node.location?.coordinates) {

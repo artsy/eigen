@@ -1,3 +1,4 @@
+import { isSavedShow, SavedOptions } from "app/Scenes/CityGuide/utils/bucketCityResults"
 import { Fair, Show } from "app/Scenes/CityGuide/utils/types"
 
 // Here is a sample GeoJSON document
@@ -16,11 +17,11 @@ import { Fair, Show } from "app/Scenes/CityGuide/utils/types"
 //       },
 // }
 
-export const showsToGeoCityShow = (edges: Show[]): Show[] =>
+export const showsToGeoCityShow = (edges: Show[], options: SavedOptions = {}): Show[] =>
   edges.map((node) => {
     return {
       ...node,
-      icon: node.is_followed ? "pin-saved" : "pin",
+      icon: isSavedShow(node, options) ? "pin-saved" : "pin",
     }
   })
 

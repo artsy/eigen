@@ -14,6 +14,8 @@ export interface MapPlace {
    * Defaults to "pin".
    */
   icon?: string
+  /** On one of the viewer's itineraries. Drives `MapView`'s Saved filter. */
+  isSaved?: boolean
 }
 
 export interface MapSection {

@@ -22,6 +22,7 @@ import { useTracking } from "react-tracking"
 configureMapbox()
 
 const ALL_PILL_ID = "__all__"
+const SAVED_PILL_ID = "__saved__"
 
 interface Props {
   sections: MapSection[]
@@ -44,6 +45,11 @@ interface Props {
    * that runs full bleed under the status bar, so the overlay starts at the safe-area inset instead.
    */
   safeArea?: boolean
+  /**
+   * Adds a "Saved" pill for the places marked `isSaved`. For maps of someone else's stops
+   * (curated guides, shared itineraries); on your own itinerary every stop is already yours.
+   */
+  showSavedFilter?: boolean
 }
 
 export const MapView: React.FC<Props> = ({
@@ -56,6 +62,7 @@ export const MapView: React.FC<Props> = ({
   onSelectPlace,
   pillsTopOffset = 60,
   safeArea = false,
+  showSavedFilter = false,
 }) => {
   const { trackEvent } = useTracking()
   const screenOwner = {
@@ -86,13 +93,36 @@ export const MapView: React.FC<Props> = ({
   const { top } = useSafeAreaInsets()
   const flattened = useMemo(() => flattenMapSections(sections), [sections])
 
-  const visible = useMemo(
-    () =>
-      selectedSectionId === ALL_PILL_ID
-        ? flattened
-        : flattened.filter((f) => f.sectionId === selectedSectionId),
-    [flattened, selectedSectionId]
-  )
+  // A section with no pins on it is nothing to filter to — its pill would only ever clear the
+  // map. An itinerary section whose every stop lacks coordinates arrives here like this.
+  const filterableSections = sections.filter((section) => section.places.length > 0)
+  // Hidden with nothing saved, like the City Guide map's own Saved filter.
+  const hasSavedPlaces = showSavedFilter && flattened.some((f) => f.place.isSaved)
+
+  const pills = [
+    { id: ALL_PILL_ID, title: "All" },
+    ...(hasSavedPlaces ? [{ id: SAVED_PILL_ID, title: "Saved" }] : []),
+    // One section is nothing to filter between: "All" and that section show the same pins.
+    ...(filterableSections.length > 1
+      ? filterableSections.map((section) => ({ id: section.id, title: section.title }))
+      : []),
+  ]
+
+  // "All" alone is a control with no effect.
+  const showPills = pills.length > 1
+
+  // The picked pill can drop out of the row (e.g. un-saving the last saved stop while on
+  // Saved), so fall back to "All" rather than filtering by a pill that's no longer shown.
+  const activePillId = pills.some((pill) => pill.id === selectedSectionId)
+    ? selectedSectionId
+    : ALL_PILL_ID
+
+  const visible = useMemo(() => {
+    if (activePillId === ALL_PILL_ID) return flattened
+    if (activePillId === SAVED_PILL_ID) return flattened.filter((f) => f.place.isSaved)
+
+    return flattened.filter((f) => f.sectionId === activePillId)
+  }, [flattened, activePillId])
 
   // Built from the visible places only, never filtered at the layer.
   const collection = useMemo(() => mapPlacesToGeoJSON(visible), [visible])
@@ -175,19 +205,6 @@ export const MapView: React.FC<Props> = ({
     cameraRef.current?.setCamera({ ...cameraStop, animationDuration: 500 })
   }, [cameraStop, isMapLoaded])
 
-  // A section with no pins on it is nothing to filter to — its pill would only ever clear the
-  // map. An itinerary section whose every stop lacks coordinates arrives here like this.
-  const filterableSections = sections.filter((section) => section.places.length > 0)
-
-  const pills = [
-    { id: ALL_PILL_ID, title: "All" },
-    ...filterableSections.map((section) => ({ id: section.id, title: section.title })),
-  ]
-
-  // One section is nothing to filter between: "All" and that section show the same pins, so
-  // the row is a control with no effect.
-  const showPills = filterableSections.length > 1
-
   return (
     <Flex flex={1}>
       <MapboxGL.MapView
@@ -231,7 +248,7 @@ export const MapView: React.FC<Props> = ({
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <Flex flexDirection="row" px={2} gap={1}>
               {pills.map((pill) => {
-                const isSelected = selectedSectionId === pill.id
+                const isSelected = activePillId === pill.id
 
                 return (
                   <Pill

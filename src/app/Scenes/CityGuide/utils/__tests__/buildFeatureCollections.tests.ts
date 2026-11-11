@@ -26,4 +26,47 @@ describe(buildFeatureCollections, () => {
     expect(result.all.featureCollection.features).toHaveLength(1)
     expect(result.museums.featureCollection.features).toEqual([])
   })
+
+  describe("saved pin icon", () => {
+    const followedShow: any = {
+      slug: "followed",
+      is_followed: true,
+      isOnMyItineraries: false,
+      location: { coordinates: { lat: 40.7, lng: -74.0 } },
+      partner: { type: "Gallery" },
+    }
+    const itineraryShow: any = {
+      slug: "on-itinerary",
+      is_followed: false,
+      isOnMyItineraries: true,
+      location: { coordinates: { lat: 40.7, lng: -74.0 } },
+      partner: { type: "Gallery" },
+    }
+
+    const iconsBySlug = (result: any) =>
+      Object.fromEntries(
+        result.galleries.featureCollection.features.map((feature: any) => [
+          feature.properties.slug,
+          feature.properties.icon,
+        ])
+      )
+
+    it("marks followed shows as saved with itineraries off", () => {
+      const result: any = buildFeatureCollections({
+        ...emptyBucketResults,
+        galleries: [followedShow, itineraryShow],
+      })
+
+      expect(iconsBySlug(result)).toEqual({ followed: "pin-saved", "on-itinerary": "pin" })
+    })
+
+    it("marks shows on an itinerary as saved with itineraries on", () => {
+      const result: any = buildFeatureCollections(
+        { ...emptyBucketResults, galleries: [followedShow, itineraryShow] },
+        { savedMeansOnItineraries: true }
+      )
+
+      expect(iconsBySlug(result)).toEqual({ followed: "pin", "on-itinerary": "pin-saved" })
+    })
+  })
 })

@@ -15,27 +15,34 @@ export interface BucketResults {
 
 export type BucketKey = keyof BucketResults
 
+export interface SavedOptions {
+  /**
+   * With itineraries on, "saved" means what the City Guide's own + button saves — anything
+   * on one of your itineraries — rather than shows you've followed.
+   */
+  savedMeansOnItineraries?: boolean
+}
+
+/**
+ * Whether a show counts as saved. Shared by the Saved filter and the saved pin icon, so the two
+ * always agree on which shows are saved.
+ */
+export const isSavedShow = (show: Show, { savedMeansOnItineraries = false }: SavedOptions = {}) =>
+  savedMeansOnItineraries ? !!show.isOnMyItineraries : show.is_followed === true
+
 export const bucketCityResults = (
   shows: readonly Show[],
   upcomingShows: readonly Show[],
   fairs: readonly Fair[],
-  options: {
-    /**
-     * With itineraries on, "saved" means what the City Guide's own + button saves — anything
-     * on one of your itineraries — rather than shows you've followed.
-     */
-    savedMeansOnItineraries?: boolean
-  } = {}
+  options: SavedOptions = {}
 ): BucketResults => {
   const { savedMeansOnItineraries = false } = options
   // The saved shows needs to be sorted by end_date_asc
   const now = DateTime.now()
   const oneWeekFromNow = DateTime.now().plus({ days: 7 })
 
-  const isSavedShow = (show: Show) =>
-    savedMeansOnItineraries ? !!show.isOnMyItineraries : show.is_followed === true
-  const savedShows = shows.filter(isSavedShow)
-  const savedUpcomingShows = upcomingShows.filter(isSavedShow)
+  const savedShows = shows.filter((show) => isSavedShow(show, options))
+  const savedUpcomingShows = upcomingShows.filter((show) => isSavedShow(show, options))
   const saved = sortBy(uniq(savedShows.concat(savedUpcomingShows)), (show) => show.end_at)
   const savedFairs = savedMeansOnItineraries ? fairs.filter((fair) => !!fair.isOnMyItineraries) : []
 

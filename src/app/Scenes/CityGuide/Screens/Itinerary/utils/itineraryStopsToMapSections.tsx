@@ -86,6 +86,7 @@ export const itineraryStopsToMapSections = (
           href,
           card,
           image: itineraryStopImage(stop),
+          isSaved: !!itineraryStopIsOnMyItineraries(stop),
           saveControl: isCustom ? (
             <CustomStopSaveControl
               stop={customStopInput(stop, coordinates, itinerary.shareToken)}
