@@ -1,4 +1,4 @@
-import { Flex, Touchable, useColor } from "@artsy/palette-mobile"
+import { DEFAULT_HIT_SLOP, Flex, Touchable, useColor } from "@artsy/palette-mobile"
 import { MicrophoneIcon } from "app/Components/Icons/MicrophoneIcon"
 import Animated, {
   SharedValue,
@@ -7,12 +7,12 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated"
 
-const BUTTON_SIZE = 50
 // While listening, the rings show a thin halo even in silence and spread out as the voice gets
-// louder, so the user can see they are being heard.
+// louder, so the user can see they are being heard. At their largest they still fit inside the
+// composer bubble's vertical padding.
 const VOLUME_RINGS = [
-  { opacity: 0.25, restingScale: 1.12, loudestScale: 1.35 },
-  { opacity: 0.12, restingScale: 1.12, loudestScale: 1.6 },
+  { opacity: 0.25, restingScale: 1.15, loudestScale: 1.45 },
+  { opacity: 0.12, restingScale: 1.15, loudestScale: 1.8 },
 ]
 const VOLUME_SPRING = { damping: 14, stiffness: 180 }
 
@@ -22,6 +22,7 @@ interface ArtAssistantVoiceInputButtonProps {
   /** Shows the volume rings; false while the recognizer is still starting. */
   isHearing: boolean
   onPress: () => void
+  size: number
   volume: SharedValue<number>
 }
 
@@ -29,33 +30,37 @@ export const ArtAssistantVoiceInputButton: React.FC<ArtAssistantVoiceInputButton
   isHearing,
   isListening,
   onPress,
+  size,
   volume,
 }) => {
   return (
-    <Flex alignItems="center" height={BUTTON_SIZE} justifyContent="center" width={BUTTON_SIZE}>
+    <Flex alignItems="center" height={size} justifyContent="center" width={size}>
       {!!isHearing &&
-        VOLUME_RINGS.map((ring, index) => <VolumeRing key={index} {...ring} volume={volume} />)}
+        VOLUME_RINGS.map((ring, index) => (
+          <VolumeRing key={index} {...ring} size={size} volume={volume} />
+        ))}
 
       <Touchable
         accessibilityLabel={isListening ? "Stop dictation" : "Dictate a prompt"}
         accessibilityRole="button"
+        hitSlop={DEFAULT_HIT_SLOP}
         onPress={onPress}
-        style={{ borderRadius: BUTTON_SIZE, overflow: "hidden" }}
+        underlayColor="transparent"
       >
-        <Flex
-          alignItems="center"
-          backgroundColor="blue100"
-          borderRadius={BUTTON_SIZE}
-          height={BUTTON_SIZE}
-          justifyContent="center"
-          width={BUTTON_SIZE}
-        >
-          {isListening ? (
-            <Flex backgroundColor="mono0" borderRadius={2} height={14} width={14} />
-          ) : (
-            <MicrophoneIcon fill="mono0" height={22} width={22} />
-          )}
-        </Flex>
+        {isListening ? (
+          <Flex
+            alignItems="center"
+            backgroundColor="blue100"
+            borderRadius={size / 2}
+            height={size}
+            justifyContent="center"
+            width={size}
+          >
+            <Flex backgroundColor="mono0" borderRadius={1} height={size * 0.4} width={size * 0.4} />
+          </Flex>
+        ) : (
+          <MicrophoneIcon fill="mono100" height={size} width={size} />
+        )}
       </Touchable>
     </Flex>
   )
@@ -65,10 +70,17 @@ interface VolumeRingProps {
   loudestScale: number
   opacity: number
   restingScale: number
+  size: number
   volume: SharedValue<number>
 }
 
-const VolumeRing: React.FC<VolumeRingProps> = ({ loudestScale, opacity, restingScale, volume }) => {
+const VolumeRing: React.FC<VolumeRingProps> = ({
+  loudestScale,
+  opacity,
+  restingScale,
+  size,
+  volume,
+}) => {
   const color = useColor()
   const isReducedMotionEnabled = useReducedMotion()
 
@@ -87,12 +99,12 @@ const VolumeRing: React.FC<VolumeRingProps> = ({ loudestScale, opacity, restingS
       style={[
         {
           backgroundColor: color("blue100"),
-          borderRadius: BUTTON_SIZE / 2,
-          height: BUTTON_SIZE,
+          borderRadius: size / 2,
+          height: size,
           opacity,
           pointerEvents: "none",
           position: "absolute",
-          width: BUTTON_SIZE,
+          width: size,
         },
         animatedStyle,
       ]}

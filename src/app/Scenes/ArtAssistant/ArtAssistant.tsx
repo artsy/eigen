@@ -1,5 +1,5 @@
 import { OwnerType, SentArtAssistantMessage } from "@artsy/cohesion"
-import { CameraStrokeIcon, CloseIcon, EditIcon } from "@artsy/icons/native"
+import { ArrowUpIcon, CameraStrokeIcon, CloseIcon, EditIcon } from "@artsy/icons/native"
 import {
   Button,
   DEFAULT_HIT_SLOP,
@@ -76,14 +76,16 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
   const isUploadingImage = attachment?.status === "uploading"
   const attachedImage = attachment?.status === "ready" ? attachment.image : undefined
   const enableVoiceInput = useFeatureFlag("AREnableArtAssistantVoiceInput")
-  const voiceInput = useArtAssistantVoiceInput(setPrompt)
+  // The composer text when dictation starts: the transcript is added after it, so the user can
+  // type and then dictate, or dictate in several goes.
+  const dictationPrefix = useRef("")
+  const handleTranscript = useCallback((transcript: string) => {
+    const prefix = dictationPrefix.current
+    setPrompt(prefix ? `${prefix} ${transcript}` : transcript)
+  }, [])
+  const voiceInput = useArtAssistantVoiceInput(handleTranscript)
   const isListening = voiceInput.status !== "idle"
-  // The microphone takes the Send button's place until there is something to send. It stays while
-  // listening, as the stop button, even though the transcript is already filling the composer.
-  const showVoiceInputButton =
-    enableVoiceInput &&
-    voiceInput.isAvailable &&
-    (isListening || (!prompt.trim().length && !attachment))
+  const showVoiceInputButton = enableVoiceInput && voiceInput.isAvailable
   const composerKeyboardGap = space(1)
   const messageGap = space(2)
   const canSend =
@@ -121,6 +123,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
   }
 
   const handleStartVoiceInput = () => {
+    dictationPrefix.current = prompt.trimEnd()
     dismissComposerKeyboard()
     void voiceInput.start()
   }
@@ -419,7 +422,8 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
 
           <Flex
             flexDirection="row"
-            alignItems="center"
+            // Send stays at the bottom while the composer grows upwards.
+            alignItems="flex-end"
             backgroundColor="background"
             gap={1}
             pb={`${bottom + composerKeyboardGap}px`}
@@ -484,38 +488,42 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
                   value={prompt}
                 />
               </Flex>
+
+              {!!showVoiceInputButton && (
+                <ArtAssistantVoiceInputButton
+                  isHearing={voiceInput.status === "listening"}
+                  isListening={isListening}
+                  onPress={isListening ? voiceInput.stop : handleStartVoiceInput}
+                  // Sized to one text line so the collapsed bubble keeps its height.
+                  size={COMPOSER_LINE_HEIGHT}
+                  volume={voiceInput.volume}
+                />
+              )}
             </Flex>
 
-            {showVoiceInputButton ? (
-              <ArtAssistantVoiceInputButton
-                isHearing={voiceInput.status === "listening"}
-                isListening={isListening}
-                onPress={isListening ? voiceInput.stop : handleStartVoiceInput}
-                volume={voiceInput.volume}
-              />
-            ) : (
-              <Touchable
-                accessibilityLabel="Send"
-                accessibilityRole="button"
-                accessibilityState={{ disabled: !canSend }}
-                disabled={!canSend}
-                onPress={handleSend}
-                style={{ borderRadius: 50, overflow: "hidden" }}
+            <Touchable
+              accessibilityLabel="Send"
+              accessibilityRole="button"
+              accessibilityState={{ disabled: !canSend }}
+              disabled={!canSend}
+              onPress={handleSend}
+              style={{ borderRadius: COMPOSER_COLLAPSED_HEIGHT / 2, overflow: "hidden" }}
+            >
+              <Flex
+                alignItems="center"
+                backgroundColor={canSend ? "mono100" : "mono30"}
+                borderRadius={COMPOSER_COLLAPSED_HEIGHT / 2}
+                height={COMPOSER_COLLAPSED_HEIGHT}
+                justifyContent="center"
+                width={COMPOSER_COLLAPSED_HEIGHT}
               >
-                <Flex
-                  alignItems="center"
-                  backgroundColor={canSend ? "blue100" : "mono30"}
-                  borderRadius={50}
-                  height={50}
-                  justifyContent="center"
-                  px={2}
-                >
-                  <Text variant="sm" color="mono0">
-                    Send
-                  </Text>
-                </Flex>
-              </Touchable>
-            )}
+                <ArrowUpIcon
+                  fill="mono0"
+                  height={COMPOSER_LINE_HEIGHT}
+                  width={COMPOSER_LINE_HEIGHT}
+                />
+              </Flex>
+            </Touchable>
           </Flex>
         </KeyboardAvoidingContainer>
 

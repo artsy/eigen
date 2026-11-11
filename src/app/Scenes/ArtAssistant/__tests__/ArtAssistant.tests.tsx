@@ -1,5 +1,5 @@
 import { captureMessage } from "@sentry/react-native"
-import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor, within } from "@testing-library/react-native"
 import { ArtAssistant } from "app/Scenes/ArtAssistant/ArtAssistant"
 import { ART_ASSISTANT_SUGGESTIONS } from "app/Scenes/ArtAssistant/Components/ArtAssistantEmptyState"
 import { ART_ASSISTANT_TURN_IDLE_TIMEOUT_MS } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
@@ -738,8 +738,12 @@ describe("ArtAssistant", () => {
     }>("expo-speech-recognition")
 
     const startDictation = async () => {
+      const startCount = jest.mocked(ExpoSpeechRecognitionModule.start).mock.calls.length
+
       fireEvent.press(screen.getByRole("button", { name: "Dictate a prompt" }))
-      await waitFor(() => expect(ExpoSpeechRecognitionModule.start).toHaveBeenCalled())
+      await waitFor(() =>
+        expect(ExpoSpeechRecognitionModule.start).toHaveBeenCalledTimes(startCount + 1)
+      )
       act(() => emitSpeechEvent("start"))
     }
 
@@ -771,24 +775,62 @@ describe("ArtAssistant", () => {
       expect(screen.getByLabelText("Send")).toBeOnTheScreen()
     })
 
-    it("shows the microphone in place of Send until there is something to send", () => {
-      renderWithWrappers(<ArtAssistant />)
-
-      expect(screen.getByRole("button", { name: "Dictate a prompt" })).toBeOnTheScreen()
-      expect(screen.queryByLabelText("Send")).not.toBeOnTheScreen()
-
-      fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "Warhol prints")
-
-      expect(screen.queryByRole("button", { name: "Dictate a prompt" })).not.toBeOnTheScreen()
-      expect(screen.getByLabelText("Send")).toBeEnabled()
-    })
-
-    it("shows Send instead of the microphone when an image is attached", () => {
+    it("shows the microphone inside the composer, next to Send", () => {
       mockImageAttachment({ status: "uploading", uri: "file:///photo.jpg" })
       renderWithWrappers(<ArtAssistant />)
 
-      expect(screen.queryByRole("button", { name: "Dictate a prompt" })).not.toBeOnTheScreen()
+      fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "Warhol prints")
+
+      expect(
+        within(screen.getByTestId("art-assistant-composer-input-container")).getByRole("button", {
+          name: "Dictate a prompt",
+        })
+      ).toBeOnTheScreen()
       expect(screen.getByLabelText("Send")).toBeOnTheScreen()
+    })
+
+    it("adds the transcript after text that was already typed", async () => {
+      renderWithWrappers(<ArtAssistant />)
+
+      fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "Warhol prints ")
+      await startDictation()
+      speak("under 5000 dollars", true)
+
+      expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp(
+        "value",
+        "Warhol prints under 5000 dollars"
+      )
+    })
+
+    it("keeps adding to the prompt across several dictations", async () => {
+      renderWithWrappers(<ArtAssistant />)
+
+      await startDictation()
+      speak("moody seascapes", true)
+      act(() => emitSpeechEvent("end"))
+      await startDictation()
+      speak("in blue", true)
+
+      expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp(
+        "value",
+        "moody seascapes in blue"
+      )
+    })
+
+    it("sends what has been dictated so far and stops listening", async () => {
+      const environment = createMockEnvironment()
+      renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+      await startDictation()
+      speak("moody seascapes")
+      fireEvent.press(screen.getByLabelText("Send"))
+      speak("too late", true)
+
+      expect(ExpoSpeechRecognitionModule.abort).toHaveBeenCalled()
+      expect(environment.mock.getMostRecentOperation().request.variables.input).toMatchObject({
+        message: "moody seascapes",
+      })
+      expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp("value", "")
     })
 
     it("writes the transcript into the composer without sending it", async () => {
@@ -809,7 +851,6 @@ describe("ArtAssistant", () => {
       speak("moody seascapes", true)
 
       expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp("value", "moody seascapes")
-      // Still listening, so the button stays a stop button even though there is text.
       expect(screen.getByRole("button", { name: "Stop dictation" })).toBeOnTheScreen()
 
       act(() => emitSpeechEvent("end"))
