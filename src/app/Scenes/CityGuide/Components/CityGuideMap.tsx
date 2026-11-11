@@ -4,6 +4,7 @@ import MapboxGL from "@rnmapbox/maps"
 import { CityGuideFair_fair$key } from "__generated__/CityGuideFair_fair.graphql"
 import { CityGuideMap_viewer$key } from "__generated__/CityGuideMap_viewer.graphql"
 import { CityGuideShow_show$key } from "__generated__/CityGuideShow_show.graphql"
+import { BACK_BUTTON_SIZE_SIZE } from "app/Components/constants"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { CityFilterPills } from "app/Scenes/CityGuide/Components/CityFilterPills"
 import {
@@ -20,8 +21,9 @@ import { cityGuideShowFragment } from "app/Scenes/CityGuide/utils/CityGuideShow"
 import { activeItemsToMapPlaces } from "app/Scenes/CityGuide/utils/activeItemsToMapPlaces"
 import { bucketCityResults, BucketResults } from "app/Scenes/CityGuide/utils/bucketCityResults"
 import { buildFeatureCollections } from "app/Scenes/CityGuide/utils/buildFeatureCollections"
+import { cameraStopForCoordinates } from "app/Scenes/CityGuide/utils/cameraStopForCoordinates"
 import { cityTabs } from "app/Scenes/CityGuide/utils/cityTabs"
-import { PREVIEW_BOTTOM_OFFSET } from "app/Scenes/CityGuide/utils/constants"
+import { BOUNDS_PADDING, PREVIEW_BOTTOM_OFFSET } from "app/Scenes/CityGuide/utils/constants"
 import { EventEmitter } from "app/Scenes/CityGuide/utils/eventEmitter"
 import { extractShowAndFairMaps } from "app/Scenes/CityGuide/utils/extractShowAndFairMaps"
 import { getNearestFeatureToTap } from "app/Scenes/CityGuide/utils/getNearestFeatureToTap"
@@ -92,11 +94,16 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   const currentLocation = viewer.city?.coordinates
   const [userLocation, setUserLocation] = useState(currentLocation)
 
+  const enableGlobalMapList = useFeatureFlag("AREnableCityGuideItineraries")
+
   // Derived from the fragment data rather than held in state, so that a show being saved anywhere
   // else in the app re-buckets the results and repaints its pin with the saved variant.
   const bucketResults = useMemo(
-    () => bucketCityResults(shows, upcomingShows, fairs),
-    [shows, upcomingShows, fairs]
+    () =>
+      bucketCityResults(shows, upcomingShows, fairs, {
+        savedMeansOnItineraries: enableGlobalMapList,
+      }),
+    [shows, upcomingShows, fairs, enableGlobalMapList]
   )
   const featureCollections = useMemo(() => buildFeatureCollections(bucketResults), [bucketResults])
 
@@ -105,7 +112,40 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   const [showCityPicker, setShowCityPicker] = useState(false)
   const [drawerPosition, setDrawerPosition] = useState<DrawerPosition>(DrawerPosition.closed)
 
-  const enableGlobalMapList = useFeatureFlag("AREnableCityGuideItineraries")
+  // A filter's pins can sit anywhere in the city, well outside the default city-centre framing.
+  const filterCameraStop = useMemo(() => {
+    const tab = cityTabs[activeIndex]
+
+    return cameraStopForCoordinates(
+      [...tab.getShows(bucketResults), ...tab.getFairs(bucketResults)]
+        .map((item) => item.location?.coordinates)
+        .filter(isValidLatLng),
+      {
+        // Clears the header and the filter pills under it.
+        paddingTop: safeAreaInsets.top + BACK_BUTTON_SIZE_SIZE + space(1) + BOUNDS_PADDING,
+        paddingBottom: safeAreaInsets.bottom + BOUNDS_PADDING,
+        paddingLeft: BOUNDS_PADDING,
+        paddingRight: BOUNDS_PADDING,
+      }
+    )
+  }, [activeIndex, bucketResults, safeAreaInsets.top, safeAreaInsets.bottom, space])
+
+  // The filter the camera was last framed for. Starts on the opening filter, so the map still
+  // opens on the city-centre view and only reframes once a different filter is picked.
+  const framedFilterIndexRef = useRef(activeIndex)
+
+  // Frames the picked filter's pins. Keyed on the selection rather than the pins themselves, so
+  // un-saving a place from its card doesn't yank the camera around.
+  useEffect(() => {
+    if (!mapLoaded || framedFilterIndexRef.current === activeIndex) return
+
+    framedFilterIndexRef.current = activeIndex
+
+    if (filterCameraStop) {
+      cameraRef.current?.setCamera({ ...filterCameraStop, animationDuration: 500 })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeIndex, mapLoaded])
 
   useEffect(() => {
     EventEmitter.subscribe("filters:change", handleFilterChange)

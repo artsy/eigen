@@ -11,6 +11,7 @@ import {
   MapSection,
 } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 import { matchClusterLeavesToPlaces } from "app/Scenes/CityGuide/Components/Map/utils/matchClusterLeavesToPlaces"
+import { cameraStopForCoordinates } from "app/Scenes/CityGuide/utils/cameraStopForCoordinates"
 import { BOUNDS_PADDING, PREVIEW_BOTTOM_OFFSET } from "app/Scenes/CityGuide/utils/constants"
 import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
 import { useEffect, useMemo, useRef, useState } from "react"
@@ -21,9 +22,6 @@ import { useTracking } from "react-tracking"
 configureMapbox()
 
 const ALL_PILL_ID = "__all__"
-/** Roughly 200m. Below this, fitting bounds over-zooms rather than framing a place. */
-const MIN_BOUNDS_SPAN = 0.002
-const SINGLE_STOP_ZOOM = 14
 
 interface Props {
   sections: MapSection[]
@@ -149,38 +147,21 @@ export const MapView: React.FC<Props> = ({
     setClusterSelection({ clusterId, places })
   }
 
-  const cameraStop = useMemo(() => {
-    if (!visible.length) return undefined
-
-    const lngs = visible.map((f) => f.place.coordinates.lng)
-    const lats = visible.map((f) => f.place.coordinates.lat)
-    const minLng = Math.min(...lngs)
-    const maxLng = Math.max(...lngs)
-    const minLat = Math.min(...lats)
-    const maxLat = Math.max(...lats)
-
-    // One place — or several at the same address — gives a zero-size box, and fitting to
-    // that zooms Mapbox all the way in on a rooftop. Centre at a readable zoom instead.
-    if (maxLng - minLng < MIN_BOUNDS_SPAN && maxLat - minLat < MIN_BOUNDS_SPAN) {
-      return {
-        centerCoordinate: [(minLng + maxLng) / 2, (minLat + maxLat) / 2] as [number, number],
-        zoomLevel: SINGLE_STOP_ZOOM,
-      }
-    }
-
-    return {
-      bounds: {
-        ne: [maxLng, maxLat] as [number, number],
-        sw: [minLng, minLat] as [number, number],
-        // `top` (the safe-area inset) clears the notch/Dynamic Island even when there's no
-        // pills row yet to push pins down (e.g. a single-section itinerary shows no pills).
-        paddingTop: BOUNDS_PADDING + top + overlayHeight,
-        paddingBottom: BOUNDS_PADDING,
-        paddingLeft: BOUNDS_PADDING,
-        paddingRight: BOUNDS_PADDING,
-      },
-    }
-  }, [visible, overlayHeight, top])
+  const cameraStop = useMemo(
+    () =>
+      cameraStopForCoordinates(
+        visible.map((f) => f.place.coordinates),
+        {
+          // `top` (the safe-area inset) clears the notch/Dynamic Island even when there's no
+          // pills row yet to push pins down (e.g. a single-section itinerary shows no pills).
+          paddingTop: BOUNDS_PADDING + top + overlayHeight,
+          paddingBottom: BOUNDS_PADDING,
+          paddingLeft: BOUNDS_PADDING,
+          paddingRight: BOUNDS_PADDING,
+        }
+      ),
+    [visible, overlayHeight, top]
+  )
 
   // The first frame comes from defaultSettings, not the effect below — on mount the camera
   // ref isn't attached yet, so an imperative setCamera silently no-ops.

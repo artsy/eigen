@@ -88,6 +88,7 @@ export const ItinerarySectionRow: React.FC<Props> = ({
   const sortable = useSortableList<string>({
     data: stopIDs,
     keyExtractor: stopIDKey,
+    lockToMainAxis: true,
     onReorder: ({ fromIndex, toIndex }) => {
       const stopID = stopIDs[fromIndex]
 

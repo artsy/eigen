@@ -3,6 +3,7 @@ import { cityTabs, tabHasResults } from "app/Scenes/CityGuide/utils/cityTabs"
 
 const emptyBucketResults: BucketResults = {
   saved: [],
+  savedFairs: [],
   fairs: [],
   galleries: [],
   museums: [],
@@ -20,6 +21,10 @@ describe("tabHasResults", () => {
 
   it("is true when the tab has matching shows", () => {
     expect(tabHasResults(savedTab, { ...emptyBucketResults, saved: [{}] as any })).toBe(true)
+  })
+
+  it("counts saved fairs towards the saved tab", () => {
+    expect(tabHasResults(savedTab, { ...emptyBucketResults, savedFairs: [{}] as any })).toBe(true)
   })
 
   it("is true when the tab has matching fairs", () => {

@@ -490,23 +490,25 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                     zIndex: 1000,
                   }}
                 >
-                  <Button
-                    testID="itinerary-view-toggle"
-                    size="small"
-                    onPress={() => {
-                      trackCohesionEvent({
-                        action: ActionType.tappedNavigationTab,
-                        context_module: ContextModule.cityGuideMapToggle,
-                        context_screen_owner_type: screenOwnerType,
-                        context_screen_owner_id: itinerary.internalID,
-                        context_screen_owner_slug: itinerary.slug ?? undefined,
-                        subject: isMapView ? "list" : "map",
-                      })
-                      setIsMapView((current) => !current)
-                    }}
-                  >
-                    {isMapView ? "Show in List" : "Show in Map"}
-                  </Button>
+                  <Flex borderWidth={1} borderRadius={50} style={{ borderColor: "white" }}>
+                    <Button
+                      testID="itinerary-view-toggle"
+                      size="small"
+                      onPress={() => {
+                        trackCohesionEvent({
+                          action: ActionType.tappedNavigationTab,
+                          context_module: ContextModule.cityGuideMapToggle,
+                          context_screen_owner_type: screenOwnerType,
+                          context_screen_owner_id: itinerary.internalID,
+                          context_screen_owner_slug: itinerary.slug ?? undefined,
+                          subject: isMapView ? "list" : "map",
+                        })
+                        setIsMapView((current) => !current)
+                      }}
+                    >
+                      {isMapView ? "Show in List" : "Show in Map"}
+                    </Button>
+                  </Flex>
                 </Flex>
               </MotiView>
             )}

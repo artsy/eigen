@@ -16,7 +16,7 @@ export const cityTabs: MapTab[] = [
     id: "saved",
     text: "Saved",
     getShows: (bucket) => bucket.saved,
-    getFairs: (_) => [],
+    getFairs: (bucket) => bucket.savedFairs,
   },
   {
     id: "fairs",
