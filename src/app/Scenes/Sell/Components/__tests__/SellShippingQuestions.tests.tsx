@@ -11,7 +11,7 @@ const TestShippingQuestions: React.FC<{ locationComplete?: boolean }> = ({
   <SellLocationStore.Provider
     runtimeModel={{
       ...sellLocationStoreModel,
-      ...(locationComplete && { address: ADDRESS, zip: "10013" }),
+      ...(locationComplete && { address: ADDRESS, postalCode: "10013" }),
     }}
   >
     <SellShippingQuestions />

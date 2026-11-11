@@ -27,7 +27,7 @@ describe("SellLocationFields", () => {
     jest.clearAllMocks()
   })
 
-  it("fills the zip from the picked US address", async () => {
+  it("fills the postal code from the picked US address", async () => {
     renderWithWrappers(<TestLocationFields />)
 
     fireEvent.press(screen.getByTestId("sell-street-address"))
@@ -42,7 +42,7 @@ describe("SellLocationFields", () => {
     })
   })
 
-  it("keeps only digits in the zip", () => {
+  it("keeps only digits in the postal code", () => {
     renderWithWrappers(<TestLocationFields />)
 
     fireEvent.changeText(screen.getByLabelText("Zip code"), "10a01")

@@ -10,16 +10,16 @@ export type SellDelivery = "DROP_OFF" | "COLLECTION" | "EITHER"
 /** Step 3's answers. The provider lives on the LocationAndContact screen. */
 export interface SellLocationStoreModel {
   address: LocationWithDetails | null
-  zip: string
+  postalCode: string
   phoneNumber: string
   packaging: SellPackaging | null
   packer: SellPacker | null
   delivery: SellDelivery | null
   locationComplete: Computed<this, boolean>
   shippingComplete: Computed<this, boolean>
-  /** Also fills the zip when Google knows it */
+  /** Also fills the postal code when Google knows it */
   setAddress: Action<this, LocationWithDetails>
-  setZip: Action<this, string>
+  setPostalCode: Action<this, string>
   setPhoneNumber: Action<this, string>
   setPackaging: Action<this, SellPackaging>
   setPacker: Action<this, SellPacker>
@@ -28,21 +28,23 @@ export interface SellLocationStoreModel {
 
 export const sellLocationStoreModel: SellLocationStoreModel = {
   address: null,
-  zip: "",
+  postalCode: "",
   phoneNumber: "",
   packaging: null,
   packer: null,
   delivery: null,
-  locationComplete: computed((state) => !!state.address && state.zip.length === US_ZIP_LENGTH),
+  locationComplete: computed(
+    (state) => !!state.address && state.postalCode.length === US_ZIP_LENGTH
+  ),
   shippingComplete: computed((state) => !!state.packaging && !!state.packer && !!state.delivery),
   setAddress: action((state, address) => {
     state.address = address
     if (address.postalCode) {
-      state.zip = address.postalCode.slice(0, US_ZIP_LENGTH)
+      state.postalCode = address.postalCode.slice(0, US_ZIP_LENGTH)
     }
   }),
-  setZip: action((state, zip) => {
-    state.zip = zip
+  setPostalCode: action((state, postalCode) => {
+    state.postalCode = postalCode
   }),
   setPhoneNumber: action((state, phoneNumber) => {
     state.phoneNumber = phoneNumber

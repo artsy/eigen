@@ -3,8 +3,8 @@ import { AddressAutocomplete } from "app/Components/AddressAutocomplete/AddressA
 import { SellLocationStore, US_ZIP_LENGTH } from "app/Scenes/Sell/State/SellLocationStore"
 
 export const SellLocationFields: React.FC = () => {
-  const { address, zip } = SellLocationStore.useStoreState((state) => state)
-  const { setAddress, setZip } = SellLocationStore.useStoreActions((actions) => actions)
+  const { address, postalCode } = SellLocationStore.useStoreState((state) => state)
+  const { setAddress, setPostalCode } = SellLocationStore.useStoreActions((actions) => actions)
 
   return (
     <Flex gap={1}>
@@ -28,8 +28,8 @@ export const SellLocationFields: React.FC = () => {
         autoComplete="postal-code"
         textContentType="postalCode"
         maxLength={US_ZIP_LENGTH}
-        value={zip}
-        onChangeText={(text) => setZip(text.replace(/\D/g, ""))}
+        value={postalCode}
+        onChangeText={(text) => setPostalCode(text.replace(/\D/g, ""))}
       />
     </Flex>
   )
