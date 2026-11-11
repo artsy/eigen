@@ -9,6 +9,7 @@ const bottomSheetAnimatedIndex = { value: -1 } as SharedValue<number>
 
 const bucketResultsWithResults = {
   saved: [{}],
+  savedFairs: [],
   fairs: [{}],
   galleries: [{}],
   museums: [{}],
@@ -18,6 +19,7 @@ const bucketResultsWithResults = {
 
 const emptyBucketResults = {
   saved: [],
+  savedFairs: [],
   fairs: [],
   galleries: [],
   museums: [],

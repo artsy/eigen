@@ -1,0 +1,54 @@
+diff --git a/lib/module/DebugOverlay.js b/lib/module/DebugOverlay.js
+index e2eaa95da0ddd965046ca991baa93fec364979ed..d3ea0e990acd3d8c5363a19f8cfdec38ab52a5dd 100644
+--- a/lib/module/DebugOverlay.js
++++ b/lib/module/DebugOverlay.js
+@@ -96,7 +96,7 @@ export const DebugOverlay = ({
+ };
+ const styles = StyleSheet.create({
+   container: {
+-    ...StyleSheet.absoluteFillObject,
++    ...StyleSheet.absoluteFill,
+     zIndex: 99999
+   },
+   overlay: {
+diff --git a/lib/module/HoverLayer.js b/lib/module/HoverLayer.js
+index ba0b0517bb6983e83342326ad31abc1bbbeeb8d0..84c7193dc63dd2c28a31aa41a8e85d045670fe07 100644
+--- a/lib/module/HoverLayer.js
++++ b/lib/module/HoverLayer.js
+@@ -136,7 +136,7 @@ export const HoverLayer = /*#__PURE__*/memo(({
+ });
+ const styles = StyleSheet.create({
+   container: {
+-    ...StyleSheet.absoluteFillObject,
++    ...StyleSheet.absoluteFill,
+     // Default hidden — useAnimatedStyle overrides to opacity:1 when dragging.
+     // Prevents a one-frame flash on first mount before the animated style evaluates.
+     opacity: 0,
+diff --git a/src/DebugOverlay.tsx b/src/DebugOverlay.tsx
+index d93750fec7bc3ec02292024d3049055dde40cfb1..86e8e05a6bfeed47f628f1f49246b4c755f1fe47 100644
+--- a/src/DebugOverlay.tsx
++++ b/src/DebugOverlay.tsx
+@@ -116,7 +116,7 @@ export const DebugOverlay = ({
+ 
+ const styles = StyleSheet.create({
+   container: {
+-    ...StyleSheet.absoluteFillObject,
++    ...StyleSheet.absoluteFill,
+     zIndex: 99999,
+   },
+   overlay: {
+diff --git a/src/HoverLayer.tsx b/src/HoverLayer.tsx
+index 41031b38b156c885562c6a94b3dc45f7d38cd58c..1d585cbbb5c46368365bcc6306c677df99237009 100644
+--- a/src/HoverLayer.tsx
++++ b/src/HoverLayer.tsx
+@@ -152,7 +152,9 @@ export const HoverLayer = memo(
+ 
+ const styles = StyleSheet.create({
+   container: {
+-    ...StyleSheet.absoluteFillObject,
++    // React Native 0.86 removed `absoluteFillObject`; spreading it silently dropped the
++    // absolute positioning, leaving the hover layer a zero-height in-flow view.
++    ...StyleSheet.absoluteFill,
+     // Default hidden — useAnimatedStyle overrides to opacity:1 when dragging.
+     // Prevents a one-frame flash on first mount before the animated style evaluates.
+     opacity: 0,

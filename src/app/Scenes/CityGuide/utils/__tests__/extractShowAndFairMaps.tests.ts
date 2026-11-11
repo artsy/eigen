@@ -39,7 +39,14 @@ describe(extractShowAndFairMaps, () => {
     expect(result.fairs).toEqual({})
   })
 
-  it("merges followed upcoming shows with running shows", () => {
+  it("merges every upcoming show with running shows, followed or not", () => {
+    const shows: any = [
+      {
+        slug: "running",
+        is_followed: false,
+        location: { coordinates: { lat: 1, lng: 2 } },
+      },
+    ]
     const upcomingShows: any = [
       {
         slug: "upcoming-followed",
@@ -53,8 +60,27 @@ describe(extractShowAndFairMaps, () => {
       },
     ]
 
+    const result = extractShowAndFairMaps(shows, upcomingShows, [])
+
+    expect(Object.keys(result.shows).sort()).toEqual([
+      "running",
+      "upcoming-followed",
+      "upcoming-not-followed",
+    ])
+  })
+
+  it("resolves an unfollowed upcoming show that is on an itinerary", () => {
+    const upcomingShows: any = [
+      {
+        slug: "upcoming-on-itinerary",
+        is_followed: false,
+        isOnMyItineraries: true,
+        location: { coordinates: { lat: 1, lng: 2 } },
+      },
+    ]
+
     const result = extractShowAndFairMaps([], upcomingShows, [])
 
-    expect(Object.keys(result.shows)).toEqual(["upcoming-followed"])
+    expect(result.shows["upcoming-on-itinerary"]).toBe(upcomingShows[0])
   })
 })

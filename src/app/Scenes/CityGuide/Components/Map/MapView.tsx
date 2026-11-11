@@ -11,6 +11,7 @@ import {
   MapSection,
 } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 import { matchClusterLeavesToPlaces } from "app/Scenes/CityGuide/Components/Map/utils/matchClusterLeavesToPlaces"
+import { cameraStopForCoordinates } from "app/Scenes/CityGuide/utils/cameraStopForCoordinates"
 import { BOUNDS_PADDING, PREVIEW_BOTTOM_OFFSET } from "app/Scenes/CityGuide/utils/constants"
 import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
 import { useEffect, useMemo, useRef, useState } from "react"
@@ -21,9 +22,7 @@ import { useTracking } from "react-tracking"
 configureMapbox()
 
 const ALL_PILL_ID = "__all__"
-/** Roughly 200m. Below this, fitting bounds over-zooms rather than framing a place. */
-const MIN_BOUNDS_SPAN = 0.002
-const SINGLE_STOP_ZOOM = 14
+const SAVED_PILL_ID = "__saved__"
 
 interface Props {
   sections: MapSection[]
@@ -46,6 +45,11 @@ interface Props {
    * that runs full bleed under the status bar, so the overlay starts at the safe-area inset instead.
    */
   safeArea?: boolean
+  /**
+   * Adds a "Saved" pill for the places marked `isSaved`. For maps of someone else's stops
+   * (curated guides, shared itineraries); on your own itinerary every stop is already yours.
+   */
+  showSavedFilter?: boolean
 }
 
 export const MapView: React.FC<Props> = ({
@@ -58,6 +62,7 @@ export const MapView: React.FC<Props> = ({
   onSelectPlace,
   pillsTopOffset = 60,
   safeArea = false,
+  showSavedFilter = false,
 }) => {
   const { trackEvent } = useTracking()
   const screenOwner = {
@@ -88,13 +93,36 @@ export const MapView: React.FC<Props> = ({
   const { top } = useSafeAreaInsets()
   const flattened = useMemo(() => flattenMapSections(sections), [sections])
 
-  const visible = useMemo(
-    () =>
-      selectedSectionId === ALL_PILL_ID
-        ? flattened
-        : flattened.filter((f) => f.sectionId === selectedSectionId),
-    [flattened, selectedSectionId]
-  )
+  // A section with no pins on it is nothing to filter to — its pill would only ever clear the
+  // map. An itinerary section whose every stop lacks coordinates arrives here like this.
+  const filterableSections = sections.filter((section) => section.places.length > 0)
+  // Hidden with nothing saved, like the City Guide map's own Saved filter.
+  const hasSavedPlaces = showSavedFilter && flattened.some((f) => f.place.isSaved)
+
+  const pills = [
+    { id: ALL_PILL_ID, title: "All" },
+    ...(hasSavedPlaces ? [{ id: SAVED_PILL_ID, title: "Saved" }] : []),
+    // One section is nothing to filter between: "All" and that section show the same pins.
+    ...(filterableSections.length > 1
+      ? filterableSections.map((section) => ({ id: section.id, title: section.title }))
+      : []),
+  ]
+
+  // "All" alone is a control with no effect.
+  const showPills = pills.length > 1
+
+  // The picked pill can drop out of the row (e.g. un-saving the last saved stop while on
+  // Saved), so fall back to "All" rather than filtering by a pill that's no longer shown.
+  const activePillId = pills.some((pill) => pill.id === selectedSectionId)
+    ? selectedSectionId
+    : ALL_PILL_ID
+
+  const visible = useMemo(() => {
+    if (activePillId === ALL_PILL_ID) return flattened
+    if (activePillId === SAVED_PILL_ID) return flattened.filter((f) => f.place.isSaved)
+
+    return flattened.filter((f) => f.sectionId === activePillId)
+  }, [flattened, activePillId])
 
   // Built from the visible places only, never filtered at the layer.
   const collection = useMemo(() => mapPlacesToGeoJSON(visible), [visible])
@@ -149,38 +177,21 @@ export const MapView: React.FC<Props> = ({
     setClusterSelection({ clusterId, places })
   }
 
-  const cameraStop = useMemo(() => {
-    if (!visible.length) return undefined
-
-    const lngs = visible.map((f) => f.place.coordinates.lng)
-    const lats = visible.map((f) => f.place.coordinates.lat)
-    const minLng = Math.min(...lngs)
-    const maxLng = Math.max(...lngs)
-    const minLat = Math.min(...lats)
-    const maxLat = Math.max(...lats)
-
-    // One place — or several at the same address — gives a zero-size box, and fitting to
-    // that zooms Mapbox all the way in on a rooftop. Centre at a readable zoom instead.
-    if (maxLng - minLng < MIN_BOUNDS_SPAN && maxLat - minLat < MIN_BOUNDS_SPAN) {
-      return {
-        centerCoordinate: [(minLng + maxLng) / 2, (minLat + maxLat) / 2] as [number, number],
-        zoomLevel: SINGLE_STOP_ZOOM,
-      }
-    }
-
-    return {
-      bounds: {
-        ne: [maxLng, maxLat] as [number, number],
-        sw: [minLng, minLat] as [number, number],
-        // `top` (the safe-area inset) clears the notch/Dynamic Island even when there's no
-        // pills row yet to push pins down (e.g. a single-section itinerary shows no pills).
-        paddingTop: BOUNDS_PADDING + top + overlayHeight,
-        paddingBottom: BOUNDS_PADDING,
-        paddingLeft: BOUNDS_PADDING,
-        paddingRight: BOUNDS_PADDING,
-      },
-    }
-  }, [visible, overlayHeight, top])
+  const cameraStop = useMemo(
+    () =>
+      cameraStopForCoordinates(
+        visible.map((f) => f.place.coordinates),
+        {
+          // `top` (the safe-area inset) clears the notch/Dynamic Island even when there's no
+          // pills row yet to push pins down (e.g. a single-section itinerary shows no pills).
+          paddingTop: BOUNDS_PADDING + top + overlayHeight,
+          paddingBottom: BOUNDS_PADDING,
+          paddingLeft: BOUNDS_PADDING,
+          paddingRight: BOUNDS_PADDING,
+        }
+      ),
+    [visible, overlayHeight, top]
+  )
 
   // The first frame comes from defaultSettings, not the effect below — on mount the camera
   // ref isn't attached yet, so an imperative setCamera silently no-ops.
@@ -193,19 +204,6 @@ export const MapView: React.FC<Props> = ({
 
     cameraRef.current?.setCamera({ ...cameraStop, animationDuration: 500 })
   }, [cameraStop, isMapLoaded])
-
-  // A section with no pins on it is nothing to filter to — its pill would only ever clear the
-  // map. An itinerary section whose every stop lacks coordinates arrives here like this.
-  const filterableSections = sections.filter((section) => section.places.length > 0)
-
-  const pills = [
-    { id: ALL_PILL_ID, title: "All" },
-    ...filterableSections.map((section) => ({ id: section.id, title: section.title })),
-  ]
-
-  // One section is nothing to filter between: "All" and that section show the same pins, so
-  // the row is a control with no effect.
-  const showPills = filterableSections.length > 1
 
   return (
     <Flex flex={1}>
@@ -250,7 +248,7 @@ export const MapView: React.FC<Props> = ({
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <Flex flexDirection="row" px={2} gap={1}>
               {pills.map((pill) => {
-                const isSelected = selectedSectionId === pill.id
+                const isSelected = activePillId === pill.id
 
                 return (
                   <Pill

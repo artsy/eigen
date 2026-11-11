@@ -86,6 +86,71 @@ describe("MapView cameraStop bounds padding", () => {
   })
 })
 
+describe("MapView Saved filter", () => {
+  const savedSections = (): MapSection[] => [
+    {
+      id: "section-1",
+      title: "Day 1",
+      places: [
+        { id: "saved", title: "Saved", coordinates: { lat: 51.5, lng: -0.1 }, isSaved: true },
+        { id: "unsaved", title: "Unsaved", coordinates: { lat: 51.55, lng: -0.05 } },
+      ],
+    },
+  ]
+
+  const renderMap = (props: { sections?: MapSection[]; showSavedFilter?: boolean } = {}) =>
+    render(
+      <Theme>
+        <ScreenDimensionsProvider>
+          <MapView
+            sections={props.sections ?? savedSections()}
+            citySlug="london-united-kingdom"
+            contextScreenOwnerType={OwnerType.cityGuideGuide}
+            selectedPlaceId={null}
+            onSelectPlace={() => {}}
+            showSavedFilter={props.showSavedFilter}
+          />
+        </ScreenDimensionsProvider>
+      </Theme>
+    )
+
+  const pinnedPlaceIds = () =>
+    screen
+      .UNSAFE_getByType(MapPins)
+      .props.collection.features.map((feature: any) => feature.properties.id)
+
+  it("shows All and Saved pills even for a single section", () => {
+    renderMap({ showSavedFilter: true })
+
+    expect(screen.getByText("All")).toBeOnTheScreen()
+    expect(screen.getByText("Saved")).toBeOnTheScreen()
+  })
+
+  it("filters the pins to saved places", () => {
+    renderMap({ showSavedFilter: true })
+
+    fireEvent.press(screen.getByText("Saved"))
+
+    expect(pinnedPlaceIds()).toEqual(["saved"])
+  })
+
+  it("has no Saved pill without the filter", () => {
+    renderMap()
+
+    expect(screen.queryByText("Saved")).not.toBeOnTheScreen()
+    expect(screen.queryByText("All")).not.toBeOnTheScreen()
+  })
+
+  it("has no Saved pill when nothing is saved", () => {
+    const sections = savedSections()
+    sections[0].places = sections[0].places.map((place) => ({ ...place, isSaved: false }))
+
+    renderMap({ sections, showSavedFilter: true })
+
+    expect(screen.queryByText("Saved")).not.toBeOnTheScreen()
+  })
+})
+
 describe("MapView tracking", () => {
   const twoSections = (): MapSection[] => [
     ...sections(),

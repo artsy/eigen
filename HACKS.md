@@ -347,6 +347,18 @@ When `react-native-collapsible-tab-view` makes the tab-sync frame window configu
 
 The patch shortens the window to 300ms on Android and leaves iOS at 1500ms. Added while enabling the New Architecture (https://github.com/artsy/eigen/pull/12825).
 
+## Patch for react-native-drax
+
+#### When can we remove this:
+
+When the fix is present in a new published version of `react-native-drax`. It is already in the upstream repo, but no new version has been published since March 2026 (`1.1.0`).
+
+#### Explanation/Context:
+
+React Native 0.86 removed `StyleSheet.absoluteFillObject`, but drax `1.1.0` still spreads it into the styles of `HoverLayer` and `DebugOverlay`. Spreading `undefined` silently drops `position: absolute`, so the hover layer (the floating copy of the item being dragged) becomes a zero-height view at the bottom of the `DraxProvider`. While a stop is dragged on the City Guide itinerary screen, the original row is hidden and its copy renders off-screen, so the row looks like it disappears. Reordering still works.
+
+The patch replaces `StyleSheet.absoluteFillObject` with `StyleSheet.absoluteFill` in both files, in `src/` (what Metro bundles, through the package's `react-native` entry point) and in `lib/module/`.
+
 ## ORStackView patch in ios/patches
 
 #### When can we remove this:

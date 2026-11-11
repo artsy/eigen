@@ -26,14 +26,16 @@ export const CityGuideFloatingMapButton = ({
           zIndex: 1000,
         }}
       >
-        <Button
-          onPress={() => {
-            navigate("/local-discovery?citySlug=" + citySlug)
-          }}
-          size="small"
-        >
-          {cityName} Map
-        </Button>
+        <Flex borderWidth={1} borderRadius={50} style={{ borderColor: "white" }}>
+          <Button
+            onPress={() => {
+              navigate("/local-discovery?citySlug=" + citySlug)
+            }}
+            size="small"
+          >
+            {cityName} Map
+          </Button>
+        </Flex>
       </Flex>
     </MotiView>
   )

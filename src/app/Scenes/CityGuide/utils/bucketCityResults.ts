@@ -4,6 +4,8 @@ import type { Fair, Show } from "./types"
 
 export interface BucketResults {
   saved: Show[]
+  /** Only filled when saves mean itineraries — the legacy follow-based "saved" has no fairs. */
+  savedFairs: Fair[]
   fairs: Fair[]
   galleries: Show[]
   museums: Show[]
@@ -13,18 +15,36 @@ export interface BucketResults {
 
 export type BucketKey = keyof BucketResults
 
+export interface SavedOptions {
+  /**
+   * With itineraries on, "saved" means what the City Guide's own + button saves — anything
+   * on one of your itineraries — rather than shows you've followed.
+   */
+  savedMeansOnItineraries?: boolean
+}
+
+/**
+ * Whether a show counts as saved. Shared by the Saved filter and the saved pin icon, so the two
+ * always agree on which shows are saved.
+ */
+export const isSavedShow = (show: Show, { savedMeansOnItineraries = false }: SavedOptions = {}) =>
+  savedMeansOnItineraries ? !!show.isOnMyItineraries : show.is_followed === true
+
 export const bucketCityResults = (
   shows: readonly Show[],
   upcomingShows: readonly Show[],
-  fairs: readonly Fair[]
+  fairs: readonly Fair[],
+  options: SavedOptions = {}
 ): BucketResults => {
+  const { savedMeansOnItineraries = false } = options
   // The saved shows needs to be sorted by end_date_asc
   const now = DateTime.now()
   const oneWeekFromNow = DateTime.now().plus({ days: 7 })
 
-  const savedShows = shows.filter((show) => show.is_followed === true)
-  const savedUpcomingShows = upcomingShows.filter((show) => show.is_followed === true)
+  const savedShows = shows.filter((show) => isSavedShow(show, options))
+  const savedUpcomingShows = upcomingShows.filter((show) => isSavedShow(show, options))
   const saved = sortBy(uniq(savedShows.concat(savedUpcomingShows)), (show) => show.end_at)
+  const savedFairs = savedMeansOnItineraries ? fairs.filter((fair) => !!fair.isOnMyItineraries) : []
 
   const galleries = shows.filter((show) => show.partner?.type === "Gallery")
   const museums = shows.filter(
@@ -46,6 +66,7 @@ export const bucketCityResults = (
 
   return {
     saved,
+    savedFairs,
     fairs: [...fairs],
     galleries,
     museums,
@@ -56,6 +77,7 @@ export const bucketCityResults = (
 
 export const emptyBucketResults: BucketResults = {
   saved: [],
+  savedFairs: [],
   fairs: [],
   galleries: [],
   museums: [],
