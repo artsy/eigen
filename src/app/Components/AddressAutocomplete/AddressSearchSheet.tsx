@@ -1,10 +1,22 @@
-import { Flex, Separator, Text, Touchable, useColor, useSpace } from "@artsy/palette-mobile"
+import { MapPinIcon } from "@artsy/icons/native"
+import {
+  Flex,
+  Separator,
+  Spinner,
+  Text,
+  Touchable,
+  useColor,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { BottomSheetFlatList } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
+import { ACCESSIBLE_SMALL_ICON_SIZE } from "app/Components/constants"
+import { getCurrentLocation } from "app/utils/getCurrentLocation"
 import {
   LocationWithDetails,
   SimpleLocation,
+  getAddressFromCoordinates,
   getLocationDetails,
   getLocationPredictions,
 } from "app/utils/googleMaps"
@@ -15,6 +27,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const MIN_QUERY_LENGTH = 3
 const SNAP_POINTS = ["85%"]
+const CURRENT_LOCATION_ERROR = "We couldn’t find an address for your current location."
 
 interface AddressSearchSheetProps {
   visible: boolean
@@ -42,6 +55,8 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
   const [inputText, setInputText] = useState("")
   const [inputKey, setInputKey] = useState(0)
   const [predictions, setPredictions] = useState<SimpleLocation[] | null>(null)
+  const [locating, setLocating] = useState(false)
+  const [locationError, setLocationError] = useState<string | null>(null)
   const { debouncedValue: debouncedQuery } = useDebouncedValue({ value: query, delay: 300 })
 
   useEffect(() => {
@@ -50,6 +65,7 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
       setInputText(initialQuery)
       setInputKey((key) => key + 1)
       setPredictions(null)
+      setLocationError(null)
     }
   }, [visible, initialQuery])
 
@@ -82,6 +98,37 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
     close()
   }
 
+  // The location only fills the search, so the user still picks the address from the results
+  const searchCurrentLocation = async () => {
+    setLocating(true)
+    setLocationError(null)
+
+    try {
+      const coordinates = await getCurrentLocation()
+      const address = coordinates && (await getAddressFromCoordinates(coordinates))
+
+      if (!address) {
+        setLocationError(CURRENT_LOCATION_ERROR)
+      } else if (country && address.countryCode?.toLowerCase() !== country.toLowerCase()) {
+        const code = country.toUpperCase()
+        setLocationError(
+          `It looks like you’re not in the ${code}. We only accept ${code} addresses for now.`
+        )
+      } else {
+        setQuery(address.name)
+        setInputText(address.name)
+        setInputKey((key) => key + 1)
+      }
+    } catch {
+      setLocationError(CURRENT_LOCATION_ERROR)
+    } finally {
+      setLocating(false)
+    }
+  }
+
+  // Stays until results replace it, so the list doesn't jump at the third character
+  const showCurrentLocation = !predictions
+
   return (
     <AutomountedBottomSheetModal
       sentryName="AddressSearchSheet"
@@ -112,6 +159,42 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
         keyExtractor={(prediction: SimpleLocation) => prediction.id}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ paddingBottom: bottom + space(2) }}
+        ListHeaderComponent={
+          showCurrentLocation ? (
+            <Touchable
+              accessibilityRole="button"
+              disabled={locating}
+              onPress={searchCurrentLocation}
+            >
+              <Flex px={2} pb={2} gap={0.5}>
+                <Flex flexDirection="row" alignItems="center" gap={1}>
+                  <Flex width={ACCESSIBLE_SMALL_ICON_SIZE}>
+                    {locating ? (
+                      <Spinner size="small" />
+                    ) : (
+                      <Flex
+                        width={ACCESSIBLE_SMALL_ICON_SIZE}
+                        height={ACCESSIBLE_SMALL_ICON_SIZE}
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <MapPinIcon size={ACCESSIBLE_SMALL_ICON_SIZE} />
+                      </Flex>
+                    )}
+                  </Flex>
+                  <Text variant="sm" mt={0.5}>
+                    Use Current Location
+                  </Text>
+                </Flex>
+                {!!locationError && (
+                  <Text variant="xs" color="red100">
+                    {locationError}
+                  </Text>
+                )}
+              </Flex>
+            </Touchable>
+          ) : null
+        }
         ListEmptyComponent={
           predictions ? (
             <Text variant="sm" color="mono60" px={2} pt={1}>
