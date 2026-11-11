@@ -12,9 +12,11 @@ import {
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { Partner_partner$data } from "__generated__/Partner_partner.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { ShareHeaderButton } from "app/Components/ShareSheet/ShareHeaderButton"
 // eslint-disable-next-line no-restricted-imports
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect } from "react"
@@ -41,6 +43,21 @@ interface PartnerProps {
 const Partner: React.FC<PartnerProps> = (props) => {
   const { partner, initialTab, artistSlug, locationID, stopID, shareToken } = props
   const { partnerType, displayFullPartnerPage } = partner
+
+  const enableShare = useFeatureFlag("AREnableShareShowPartnerFeature")
+
+  const headerProps = {
+    onBack: goBack,
+    hideTitle: true,
+    rightElements: enableShare ? (
+      <ShareHeaderButton
+        href={`/partner/${partner.slug}`}
+        name={partner.name ?? ""}
+        utmContent="partner-share"
+        accessibilityLabel="Share Partner"
+      />
+    ) : undefined,
+  }
 
   useEffect(() => {
     if (artistSlug) {
@@ -70,7 +87,7 @@ const Partner: React.FC<PartnerProps> = (props) => {
               shareToken={shareToken}
             />
           )}
-          headerProps={{ onBack: goBack, hideTitle: true }}
+          headerProps={headerProps}
         >
           <Tabs.Tab name="Overview" label="Overview">
             <Tabs.ScrollView>
@@ -104,7 +121,7 @@ const Partner: React.FC<PartnerProps> = (props) => {
             showOnlyFollowButton
           />
         )}
-        headerProps={{ onBack: goBack, hideTitle: true }}
+        headerProps={headerProps}
       >
         <Tabs.Tab name="Overview" label="Overview">
           <PartnerOverview partner={partner} />

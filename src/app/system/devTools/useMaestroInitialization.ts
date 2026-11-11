@@ -1,4 +1,5 @@
 import { GlobalStore } from "app/store/GlobalStore"
+import { FeatureName, features } from "app/store/config/features"
 import { useEffect } from "react"
 import { LaunchArguments } from "react-native-launch-arguments"
 
@@ -7,6 +8,8 @@ interface MaestroLaunchArguments {
   password?: string
   shouldSignOut?: boolean
   useMaestroInit?: boolean
+  /** Comma-separated feature flag names to turn on, so flows can cover unreleased features. */
+  enableFeatureFlags?: string
 }
 
 export const useMaestroInitialization = () => {
@@ -39,6 +42,14 @@ export const useMaestroInitialization = () => {
       key: "DTHideAllOnboardingPopovers",
       value: true,
     })
+
+    args.enableFeatureFlags
+      ?.split(",")
+      .map((name) => name.trim())
+      .filter((name): name is FeatureName => name in features)
+      .forEach((key) => {
+        GlobalStore.actions.artsyPrefs.features.setLocalOverride({ key, value: true })
+      })
 
     if (email && password) {
       GlobalStore.actions.auth.signIn({
