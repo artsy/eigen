@@ -730,6 +730,11 @@ type Alert {
     """
     published: Boolean
     saleID: ID
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    """
+    searchProfile: ArtworkSearchProfile
     showID: String
 
     """
@@ -2548,6 +2553,11 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     """
     published: Boolean
     saleID: ID
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    """
+    searchProfile: ArtworkSearchProfile
     showID: String
 
     """
@@ -3221,6 +3231,11 @@ type ArtistPartnerEdge {
     """
     published: Boolean
     saleID: ID
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    """
+    searchProfile: ArtworkSearchProfile
     showID: String
 
     """
@@ -3498,6 +3513,11 @@ type ArtistSeries implements Node {
     """
     published: Boolean
     saleID: ID
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    """
+    searchProfile: ArtworkSearchProfile
     showID: String
 
     """
@@ -5405,6 +5425,11 @@ type ArtworkFilterNode {
     """
     published: Boolean
     saleID: ID
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    """
+    searchProfile: ArtworkSearchProfile
     showID: String
 
     """
@@ -6093,6 +6118,15 @@ type ArtworkSavedSearch {
     first: Int
     last: Int
   ): ArtworkConnection
+}
+
+enum ArtworkSearchProfile {
+  DEFAULT
+
+  """
+  Inventory search for a partner. Requires partnerID and partner access; ignored otherwise.
+  """
+  PARTNER_INVENTORY
 }
 
 type ArtworkSignatureMeta {
@@ -17846,6 +17880,11 @@ interface EntityWithFilterArtworksConnectionInterface {
     """
     published: Boolean
     saleID: ID
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    """
+    searchProfile: ArtworkSearchProfile
     showID: String
 
     """
@@ -18347,6 +18386,11 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     """
     published: Boolean
     saleID: ID
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    """
+    searchProfile: ArtworkSearchProfile
     showID: String
 
     """
@@ -19187,6 +19231,11 @@ input FilterArtworksInput {
   """
   published: Boolean
   saleID: ID
+
+  """
+  Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+  """
+  searchProfile: ArtworkSearchProfile
   showID: String
 
   """
@@ -20012,6 +20061,11 @@ type Gene implements Node & Searchable {
     """
     published: Boolean
     saleID: ID
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    """
+    searchProfile: ArtworkSearchProfile
     showID: String
 
     """
@@ -23542,6 +23596,11 @@ type MarketingCollection implements Node {
     """
     published: Boolean
     saleID: ID
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    """
+    searchProfile: ArtworkSearchProfile
     showID: String
 
     """
@@ -28664,6 +28723,11 @@ type Partner implements Node {
     last: Int
     page: Int
     query: String!
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` matches title, artist, medium type and full or partial inventory ID.
+    """
+    searchProfile: ArtworkSearchProfile
     size: Int
   ): ArtworkConnection
 
@@ -28917,6 +28981,11 @@ type Partner implements Node {
     """
     published: Boolean
     saleID: ID
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    """
+    searchProfile: ArtworkSearchProfile
     showID: String
 
     """
@@ -29564,6 +29633,11 @@ type PartnerArtist {
     """
     published: Boolean
     saleID: ID
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    """
+    searchProfile: ArtworkSearchProfile
     showID: String
 
     """
@@ -29878,6 +29952,11 @@ type PartnerArtistEdge {
     """
     published: Boolean
     saleID: ID
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    """
+    searchProfile: ArtworkSearchProfile
     showID: String
 
     """
@@ -32453,6 +32532,11 @@ type Query {
     """
     published: Boolean
     saleID: ID
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    """
+    searchProfile: ArtworkSearchProfile
     showID: String
 
     """
@@ -33091,6 +33175,11 @@ type Query {
     """
     published: Boolean
     saleID: ID
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    """
+    searchProfile: ArtworkSearchProfile
     showID: String
 
     """
@@ -36991,6 +37080,11 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     """
     published: Boolean
     saleID: ID
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    """
+    searchProfile: ArtworkSearchProfile
     showID: String
 
     """
@@ -37934,6 +38028,11 @@ type Tag implements Node {
     """
     published: Boolean
     saleID: ID
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    """
+    searchProfile: ArtworkSearchProfile
     showID: String
 
     """
@@ -42874,6 +42973,11 @@ type Viewer {
     """
     published: Boolean
     saleID: ID
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    """
+    searchProfile: ArtworkSearchProfile
     showID: String
 
     """
@@ -43448,6 +43552,11 @@ type Viewer {
     """
     published: Boolean
     saleID: ID
+
+    """
+    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    """
+    searchProfile: ArtworkSearchProfile
     showID: String
 
     """
