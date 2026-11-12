@@ -16248,6 +16248,36 @@ type DeletePartnerListMutationPayload {
   partnerListOrError: DeletePartnerListResponseOrError
 }
 
+type DeletePartnerListPublicationCoverImageFailure {
+  mutationError: GravityMutationError
+}
+
+input DeletePartnerListPublicationCoverImageMutationInput {
+  clientMutationId: String
+
+  """
+  The ID of the private viewing room's partner list.
+  """
+  partnerListID: String!
+}
+
+type DeletePartnerListPublicationCoverImageMutationPayload {
+  clientMutationId: String
+
+  """
+  On success: the partner list publication. On error: the error that occurred.
+  """
+  partnerListPublicationOrError: DeletePartnerListPublicationCoverImageResponseOrError
+}
+
+union DeletePartnerListPublicationCoverImageResponseOrError =
+    DeletePartnerListPublicationCoverImageFailure
+  | DeletePartnerListPublicationCoverImageSuccess
+
+type DeletePartnerListPublicationCoverImageSuccess {
+  partnerListPublication: PartnerListPublication
+}
+
 union DeletePartnerListResponseOrError = DeletePartnerListFailure | DeletePartnerListSuccess
 
 type DeletePartnerListSuccess {
@@ -26280,6 +26310,13 @@ type Mutation {
   deletePartnerList(input: DeletePartnerListMutationInput!): DeletePartnerListMutationPayload
 
   """
+  Removes a private viewing room's cover image.
+  """
+  deletePartnerListPublicationCoverImage(
+    input: DeletePartnerListPublicationCoverImageMutationInput!
+  ): DeletePartnerListPublicationCoverImageMutationPayload
+
+  """
   Deletes a location for a partner
   """
   deletePartnerLocation(
@@ -27094,6 +27131,13 @@ type Mutation {
   updatePartnerListArtworkPosition(
     input: UpdatePartnerListArtworkPositionMutationInput!
   ): UpdatePartnerListArtworkPositionMutationPayload
+
+  """
+  Uploads or replaces a private viewing room's cover image. Doesn't publish the room.
+  """
+  updatePartnerListPublicationCoverImage(
+    input: UpdatePartnerListPublicationCoverImageMutationInput!
+  ): UpdatePartnerListPublicationCoverImageMutationPayload
 
   """
   Updates a new location for a partner
@@ -30772,6 +30816,11 @@ type PartnerListPublication {
   Number of artworks currently snapshotted into this publication.
   """
   artworksCount: Int!
+
+  """
+  Cover image for the room's hero banner (viewing rooms rebuild). Not shown to visitors yet.
+  """
+  coverImage: Image
   createdAt(
     format: String
 
@@ -30780,6 +30829,11 @@ type PartnerListPublication {
     """
     timezone: String
   ): String
+
+  """
+  Long plain-text curatorial text introducing the works (viewing rooms rebuild). Not shown to visitors yet.
+  """
+  curatorialText: String
   description: String
 
   """
@@ -32023,6 +32077,11 @@ input PublishPartnerListPublicationMutationInput {
   """
   artworkFieldVisibility: ArtworkFieldVisibilityInput
   clientMutationId: String
+
+  """
+  Long plain-text curatorial text (viewing rooms rebuild). Blank hides it.
+  """
+  curatorialText: String
 
   """
   Plain-text description shown on the published room.
@@ -40702,6 +40761,46 @@ type UpdatePartnerListMutationPayload {
   On success: the updated partner list. On error: the error that occurred.
   """
   partnerListOrError: UpdatePartnerListResponseOrError
+}
+
+type UpdatePartnerListPublicationCoverImageFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdatePartnerListPublicationCoverImageMutationInput {
+  clientMutationId: String
+
+  """
+  The ID of the private viewing room's partner list.
+  """
+  partnerListID: String!
+
+  """
+  S3 bucket containing the uploaded cover image.
+  """
+  remoteImageS3Bucket: String!
+
+  """
+  S3 key of the uploaded cover image.
+  """
+  remoteImageS3Key: String!
+}
+
+type UpdatePartnerListPublicationCoverImageMutationPayload {
+  clientMutationId: String
+
+  """
+  On success: the partner list publication. On error: the error that occurred.
+  """
+  partnerListPublicationOrError: UpdatePartnerListPublicationCoverImageResponseOrError
+}
+
+union UpdatePartnerListPublicationCoverImageResponseOrError =
+    UpdatePartnerListPublicationCoverImageFailure
+  | UpdatePartnerListPublicationCoverImageSuccess
+
+type UpdatePartnerListPublicationCoverImageSuccess {
+  partnerListPublication: PartnerListPublication
 }
 
 union UpdatePartnerListResponseOrError = UpdatePartnerListFailure | UpdatePartnerListSuccess
