@@ -10,6 +10,7 @@ interface AddressAutocompleteProps {
   onChange: (address: LocationWithDetails) => void
   /** ISO 3166-1 alpha-2 code that limits suggestions to one country */
   country?: string
+  required?: boolean
   testID?: string
 }
 
@@ -22,6 +23,7 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
   value,
   onChange,
   country,
+  required,
   testID,
 }) => {
   const [searchVisible, setSearchVisible] = useState(false)
@@ -37,7 +39,7 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
       >
         {/* The sheet does the typing, so the field only shows the picked address */}
         <View pointerEvents="none">
-          <Input title={title} value={value?.name ?? ""} editable={false} />
+          <Input title={title} value={value?.name ?? ""} editable={false} required={required} />
         </View>
       </Touchable>
 

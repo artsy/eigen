@@ -15,7 +15,29 @@ jest.mock("app/utils/googleMaps", () => ({
   getLocationDetails: jest.fn(),
 }))
 
-const ADDRESS = { id: "place-1", name: "401 Broadway, New York, NY, USA" }
+const SAVED_ADDRESS = {
+  internalID: "address-1",
+  name: "Collector",
+  addressLine1: "401 Broadway",
+  city: "New York",
+  region: "NY",
+  postalCode: "10013",
+  country: "US",
+  isDefault: true,
+  phoneNumber: "555 0100",
+}
+
+const NEW_PLACE = { id: "place-2", name: "1 Main St, Brooklyn, NY, USA" }
+
+const NEW_ADDRESS = {
+  ...SAVED_ADDRESS,
+  internalID: "address-2",
+  addressLine1: "1 Main St",
+  city: "Brooklyn",
+  postalCode: "11201",
+  isDefault: false,
+  phoneNumber: null,
+}
 
 type BackPressHandler = Parameters<typeof BackHandler.addEventListener>[1]
 
@@ -84,20 +106,21 @@ const renderSell = async () => {
 
 type SellView = Awaited<ReturnType<typeof renderSell>>
 
+type ActiveArtwork = { internalID: string; artistNames: string; title?: string }
+
 // Step 2 loads the active work with its own query. Step 3 asks for the same fields, so Relay's
 // store answers it. The shared id keeps a generated one from overwriting another work in step 1.
-const resolveActiveArtwork = (
-  view: SellView,
-  artwork: { internalID: string; artistNames: string; title?: string }
-) => {
+const resolveActiveArtwork = (view: SellView, artwork: ActiveArtwork) => {
   view.mockResolveLastOperation({ Artwork: () => ({ id: artwork.internalID, ...artwork }) })
 }
 
-const pickAddress = async () => {
-  fireEvent.press(screen.getByTestId("sell-street-address"))
-  fireEvent.changeText(await screen.findByLabelText("Search addresses"), "401 Broad")
-  fireEvent.press(await screen.findByText(ADDRESS.name))
-  await waitFor(() => expect(screen.getByLabelText("Zip code")).toHaveDisplayValue("10013"))
+// Step 3 also loads the saved addresses, which the earlier steps never asked for
+const resolveLocationStep = (view: SellView, artwork: ActiveArtwork) => {
+  view.mockResolveLastOperation({
+    Artwork: () => ({ id: artwork.internalID, ...artwork }),
+    // A fixed id lets a saved address update this list
+    Me: () => ({ id: "me", addressConnection: { edges: [{ node: SAVED_ADDRESS }] } }),
+  })
 }
 
 const openAuctionConditionStep = async (view: SellView) => {
@@ -118,8 +141,6 @@ const openWorksSummary = async () => {
 
 describe("Sell", () => {
   beforeEach(() => {
-    ;(getLocationPredictions as jest.Mock).mockResolvedValue([ADDRESS])
-    ;(getLocationDetails as jest.Mock).mockResolvedValue({ ...ADDRESS, postalCode: "10013" })
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSellMyCollectionArtwork: true })
   })
 
@@ -197,17 +218,24 @@ describe("Sell", () => {
     expect(screen.getByText("US$2,720")).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Confirm Listing Price"))
+    resolveLocationStep(view, { internalID: "id-a2", artistNames: "Artist A", title: "Work A" })
     expect(await screen.findByText("Step 3 · Shipping Options")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 3 of 3")).toBeOnTheScreen()
     expect(screen.getByText("List Artwork")).toBeDisabled()
-    expect(screen.getByRole("radio", { name: /^Framed\./ })).toBeDisabled()
+    expect(screen.getByRole("radio", { name: /^Collector, 401 Broadway/ })).toBeChecked()
 
-    await pickAddress()
     fireEvent.press(screen.getByRole("radio", { name: /^Framed\./ }))
     fireEvent.press(screen.getByRole("radio", { name: /^Courier packs\./ }))
     expect(screen.getByText("List Artwork")).toBeDisabled()
 
     fireEvent.press(screen.getByRole("radio", { name: /^Courier needs to collect\./ }))
+    await waitFor(() =>
+      expect(screen.getByLabelText("Mobile number")).toHaveDisplayValue("555 0100")
+    )
+    fireEvent.changeText(screen.getByLabelText("Mobile number"), "")
+    expect(screen.getByText("List Artwork")).toBeDisabled()
+
+    fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
     fireEvent.press(screen.getByText("List Artwork"))
     expect(await screen.findByText("Your listing is live!")).toBeOnTheScreen()
     expect(screen.getByText("Artist A’s Work A has been submitted for sale.")).toBeOnTheScreen()
@@ -225,16 +253,82 @@ describe("Sell", () => {
 
     fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
     fireEvent.press(screen.getByText("Continue"))
+    resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
     expect(await screen.findByText("Step 3 · Location & Contact")).toBeOnTheScreen()
     expect(screen.queryByText("How will this be packed?")).not.toBeOnTheScreen()
+    expect(screen.getByRole("radio", { name: /^Collector, 401 Broadway/ })).toBeChecked()
+    // The saved address's phone number fills the empty field
+    await waitFor(() =>
+      expect(screen.getByLabelText("Mobile number")).toHaveDisplayValue("555 0100")
+    )
 
-    await pickAddress()
+    fireEvent.changeText(screen.getByLabelText("Mobile number"), "")
+    fireEvent(screen.getByLabelText("Mobile number"), "blur")
     expect(screen.getByText("Submit for Review")).toBeDisabled()
+    expect(await screen.findByText("Phone number is required")).toBeOnTheScreen()
 
-    fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0100")
+    fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
     fireEvent.press(screen.getByText("Submit for Review"))
     expect(await screen.findByText("Submitted!")).toBeOnTheScreen()
     expect(screen.getByText(/One of our specialists will reach out/)).toBeOnTheScreen()
+  })
+
+  it("adds an address from step 3 and selects it there", async () => {
+    ;(getLocationPredictions as jest.Mock).mockResolvedValue([NEW_PLACE])
+    ;(getLocationDetails as jest.Mock).mockResolvedValue({
+      ...NEW_PLACE,
+      street: "1 Main St",
+      city: "Brooklyn",
+      stateCode: "NY",
+      countryCode: "US",
+      postalCode: "11201",
+    })
+    const view = await renderSell()
+    await openAuctionConditionStep(view)
+    fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
+    fireEvent.press(screen.getByText("Continue"))
+    resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
+    await screen.findByText("Step 3 · Location & Contact")
+    fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
+
+    fireEvent.press(screen.getByLabelText("Add new address"))
+    expect(await screen.findByText("Add address")).toBeOnTheScreen()
+    // The step header has its own close button, so take the modal’s, which renders last
+    fireEvent.press(screen.getAllByLabelText("Close").at(-1)!)
+    await waitFor(() => expect(screen.queryByText("Add address")).not.toBeOnTheScreen())
+    expect(screen.getByLabelText("Mobile number")).toHaveDisplayValue("555 0199")
+
+    fireEvent.press(screen.getByLabelText("Add new address"))
+    await screen.findByText("Add address")
+    fireEvent.changeText(screen.getByLabelText("Full name"), "Collector")
+    fireEvent.press(screen.getByTestId("sell-street-address"))
+    fireEvent.changeText(await screen.findByLabelText("Search addresses"), "1 Main")
+    fireEvent.press(await screen.findByText(NEW_PLACE.name))
+    await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
+    fireEvent.press(screen.getByText("Save Address"))
+
+    await waitFor(() =>
+      expect(view.env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "useCreateUserAddressMutation"
+      )
+    )
+    view.mockResolveLastOperation({
+      CreateUserAddressPayload: () => ({
+        me: {
+          id: "me",
+          addressConnection: {
+            edges: [{ node: SAVED_ADDRESS }, { node: NEW_ADDRESS }],
+          },
+        },
+        userAddressOrErrors: { __typename: "UserAddress", internalID: NEW_ADDRESS.internalID },
+      }),
+    })
+
+    await waitFor(() =>
+      expect(screen.getByRole("radio", { name: /^Collector, 1 Main St/ })).toBeChecked()
+    )
+    expect(screen.queryByText("Add address")).not.toBeOnTheScreen()
+    expect(screen.getByLabelText("Mobile number")).toHaveDisplayValue("555 0199")
   })
 
   it("goes back from the works summary to the work selection, then leaves the flow", async () => {
