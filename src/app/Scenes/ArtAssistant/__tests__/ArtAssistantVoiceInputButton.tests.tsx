@@ -66,7 +66,7 @@ describe("ArtAssistantVoiceInputButton", () => {
       />
     )
 
-    expect(ringScales()).toEqual([1.45, 1.8])
+    expect(ringScales()).toEqual([2.1, 2.5])
   })
 
   it("keeps the rings still with Reduce Motion on", () => {
@@ -81,6 +81,6 @@ describe("ArtAssistantVoiceInputButton", () => {
       />
     )
 
-    expect(ringScales()).toEqual([1.15, 1.15])
+    expect(ringScales()).toEqual([1.7, 1.7])
   })
 })

@@ -1,5 +1,5 @@
+import { MicrophoneIcon } from "@artsy/icons/native"
 import { DEFAULT_HIT_SLOP, Flex, Touchable, useColor } from "@artsy/palette-mobile"
-import { MicrophoneIcon } from "app/Components/Icons/MicrophoneIcon"
 import Animated, {
   SharedValue,
   useAnimatedStyle,
@@ -11,8 +11,8 @@ import Animated, {
 // louder, so the user can see they are being heard. At their largest they still fit inside the
 // composer bubble's vertical padding.
 const VOLUME_RINGS = [
-  { opacity: 0.25, restingScale: 1.15, loudestScale: 1.45 },
-  { opacity: 0.12, restingScale: 1.15, loudestScale: 1.8 },
+  { opacity: 0.1, restingScale: 1.7, loudestScale: 2.1 },
+  { opacity: 0.05, restingScale: 1.7, loudestScale: 2.5 },
 ]
 const VOLUME_SPRING = { damping: 14, stiffness: 180 }
 

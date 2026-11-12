@@ -1,5 +1,5 @@
 import { OwnerType, SentArtAssistantMessage } from "@artsy/cohesion"
-import { ArrowUpIcon, CameraStrokeIcon, CloseIcon, EditIcon } from "@artsy/icons/native"
+import { CameraStrokeIcon, CloseIcon, EditIcon, SendIcon } from "@artsy/icons/native"
 import {
   Button,
   DEFAULT_HIT_SLOP,
@@ -525,11 +525,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
                 justifyContent="center"
                 width={COMPOSER_COLLAPSED_HEIGHT}
               >
-                <ArrowUpIcon
-                  fill="mono0"
-                  height={COMPOSER_LINE_HEIGHT}
-                  width={COMPOSER_LINE_HEIGHT}
-                />
+                <SendIcon fill="mono0" height={COMPOSER_LINE_HEIGHT} width={COMPOSER_LINE_HEIGHT} />
               </Flex>
             </Touchable>
           </Flex>
