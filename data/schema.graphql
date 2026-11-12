@@ -26887,7 +26887,7 @@ type Mutation {
   updateArtistStoryVideo(input: updateArtistStoryVideoInput!): updateArtistStoryVideoPayload
 
   """
-  Updates an ArtnetArtwork and pushes the supported changes to Artnet. At least one of `published`, `availability`, `primaryMedium`, `additionalMediums`, `materials`, `priceToMinor` or `syncOn` is required. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
+  Updates an ArtnetArtwork and pushes the supported changes to Artnet. At least one of `published`, `availability`, `primaryMedium`, `additionalMediums`, `materials`, `priceFromMinor`, `priceToMinor` or `syncOn` is required. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
   """
   updateArtnetArtwork(input: UpdateArtnetArtworkMutationInput!): UpdateArtnetArtworkMutationPayload
 
@@ -38813,7 +38813,12 @@ input UpdateArtnetArtworkMutationInput {
   materials: String
 
   """
-  Ceiling of Artnet's price range, in minor units. The floor is the catalog artwork's price. Pass null to clear it; omit to leave it unchanged.
+  Artnet's own price, in minor units and the artwork's currency, replacing the catalog price there until the next sync. A single price: any ceiling is cleared. Can't be combined with priceToMinor.
+  """
+  priceFromMinor: Long
+
+  """
+  Ceiling of Artnet's price range, in minor units. With sync off the floor is Artnet's own price when it's in the artwork's currency, otherwise the catalog price, and there must be one. Pass null to clear it; omit to leave it unchanged.
   """
   priceToMinor: Long
 
