@@ -58,6 +58,36 @@ const isArtsyRedirectTarget = (url: string, resolved: string) => {
   )
 }
 
+/**
+ * Logged when a marketing link's destination page refused the request and the app used the
+ * redirect instead. The e2e runner (scripts/utils/run_agent_device_suite) looks for this marker in
+ * the device log, to report whether a deeplink flow hit Cloudflare's challenge, so keep it in sync.
+ */
+export const MARKETING_LINK_FALLBACK_MARKER = "[marketing-link-fallback]"
+
+const reportRedirectFallback = (url: string, status: number, cfMitigated: string | null) => {
+  const message = `${MARKETING_LINK_FALLBACK_MARKER} destination answered ${status}${
+    cfMitigated ? ` (cf-mitigated: ${cfMitigated})` : ""
+  }, opening the redirect target instead`
+
+  if (__DEV__) {
+    console.warn(message)
+    return
+  }
+
+  // Release bundles strip every console call but console.error (see babel.config.js), and this one
+  // is what reaches the device log for the e2e runner
+  console.error(message)
+  captureMessage(
+    "[handleDeepLink] Marketing link destination refused the request, used the redirect",
+    {
+      level: "info",
+      tags: { cf_mitigated: cfMitigated ?? "none", status: String(status) },
+      extra: { url },
+    }
+  )
+}
+
 export const fetchMarketingURL = async (url: string) => {
   try {
     const response = await fetch(url)
@@ -66,6 +96,7 @@ export const fetchMarketingURL = async (url: string) => {
     // www.artsy.net answers this kind of request with a 403. We only need the destination URL, and
     // the app loads that screen through Metaphysics, not from that page.
     if (!response.ok && response.url && isArtsyRedirectTarget(url, response.url)) {
+      reportRedirectFallback(url, response.status, response.headers?.get("cf-mitigated") ?? null)
       return response.url
     }
 

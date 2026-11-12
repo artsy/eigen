@@ -1,5 +1,5 @@
 import { captureMessage } from "@sentry/react-native"
-import { fetchMarketingURL } from "./fetchMarketingURL"
+import { MARKETING_LINK_FALLBACK_MARKER, fetchMarketingURL } from "./fetchMarketingURL"
 
 jest.mock("@sentry/react-native", () => ({
   captureMessage: jest.fn(),
@@ -13,12 +13,21 @@ const mockResponse = ({
   status,
   url,
   body = "",
+  headers = {},
 }: {
   ok: boolean
   status: number
   url: string
   body?: string
-}) => ({ ok, status, url, text: () => Promise.resolve(body) }) as unknown as Response
+  headers?: Record<string, string>
+}) =>
+  ({
+    ok,
+    status,
+    url,
+    headers: { get: (name: string) => headers[name.toLowerCase()] ?? null },
+    text: () => Promise.resolve(body),
+  }) as unknown as Response
 
 describe("fetchMarketingURL", () => {
   const fetchMock = jest.fn()
@@ -47,10 +56,30 @@ describe("fetchMarketingURL", () => {
   })
 
   it("returns the redirected URL when the artsy.net page there answers 403 (Cloudflare challenge)", async () => {
-    fetchMock.mockResolvedValue(mockResponse({ ok: false, status: 403, url: ARTWORK_URL }))
+    const consoleError = jest.spyOn(console, "error").mockImplementation(() => undefined)
+    fetchMock.mockResolvedValue(
+      mockResponse({
+        ok: false,
+        status: 403,
+        url: ARTWORK_URL,
+        headers: { "cf-mitigated": "challenge" },
+      })
+    )
 
     expect(await fetchMarketingURL(MARKETING_URL)).toBe(ARTWORK_URL)
-    expect(captureMessage).not.toHaveBeenCalled()
+
+    // The e2e runner looks for this line in the device log
+    expect(consoleError).toHaveBeenCalledWith(
+      `${MARKETING_LINK_FALLBACK_MARKER} destination answered 403 (cf-mitigated: challenge), opening the redirect target instead`
+    )
+    expect(captureMessage).toHaveBeenCalledWith(
+      expect.stringContaining("used the redirect"),
+      expect.objectContaining({
+        level: "info",
+        tags: { cf_mitigated: "challenge", status: "403" },
+      })
+    )
+    consoleError.mockRestore()
   })
 
   it("fails when the marketing link itself answers with an error, without a redirect", async () => {
