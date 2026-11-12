@@ -13,7 +13,7 @@ import { useSharedValue } from "react-native-reanimated"
 export type ArtAssistantVoiceInputStatus = "idle" | "starting" | "listening"
 
 const FALLBACK_LOCALE = "en-US"
-export const ART_ASSISTANT_VOICE_INPUT_ERROR = "Voice input isn't available right now."
+export const ART_ASSISTANT_VOICE_INPUT_ERROR = "Voice input isn’t available right now."
 
 // The recognizer reports volume from -2 to 10, where anything below 0 is inaudible.
 const MAX_VOLUME = 10
@@ -25,6 +25,15 @@ const QUIET_ERRORS: ExpoSpeechRecognitionErrorCode[] = [
   "interrupted",
   "no-speech",
   "speech-timeout",
+]
+
+// Conditions of the device or the network (mic busy during a call, offline, recognition service
+// switched off) rather than bugs: the user still gets the toast, but Sentry doesn't need each one.
+const DEVICE_CONDITION_ERRORS: ExpoSpeechRecognitionErrorCode[] = [
+  "audio-capture",
+  "busy",
+  "network",
+  "service-not-allowed",
 ]
 
 /**
@@ -40,6 +49,9 @@ const QUIET_ERRORS: ExpoSpeechRecognitionErrorCode[] = [
  */
 export const useArtAssistantVoiceInput = (onTranscript: (transcript: string) => void) => {
   const toast = useToast()
+  // `useToast` returns a new object on every render; a ref keeps `start` stable.
+  const toastRef = useRef(toast)
+  toastRef.current = toast
   const [status, setStatus] = useState<ArtAssistantVoiceInputStatus>("idle")
   const [isAvailable] = useState(() => ExpoSpeechRecognitionModule.isRecognitionAvailable())
   const volume = useSharedValue(0)
@@ -76,37 +88,49 @@ export const useArtAssistantVoiceInput = (onTranscript: (transcript: string) => 
 
     setStatus("starting")
 
-    const permission = await ExpoSpeechRecognitionModule.getPermissionsAsync()
+    try {
+      const permission = await ExpoSpeechRecognitionModule.getPermissionsAsync()
 
-    // Once denied, the system prompt never shows again, so Settings is the only way back.
-    if (!permission.granted && !permission.canAskAgain) {
-      setStatus("idle")
-      showPermissionAlert()
-      return
+      // Once denied, the system prompt never shows again, so Settings is the only way back.
+      if (!permission.granted && !permission.canAskAgain) {
+        setStatus("idle")
+        showPermissionAlert()
+        return
+      }
+
+      const { granted } = permission.granted
+        ? permission
+        : await ExpoSpeechRecognitionModule.requestPermissionsAsync()
+
+      if (currentAttempt !== attempt.current) {
+        return
+      }
+
+      if (!granted) {
+        setStatus("idle")
+        return
+      }
+
+      const lang = await getRecognitionLocale()
+
+      if (currentAttempt !== attempt.current) {
+        return
+      }
+
+      isSessionActive.current = true
+      shouldRetryInFallbackLocale.current = false
+      startRecognition(lang)
+    } catch (error) {
+      if (currentAttempt === attempt.current) {
+        isSessionActive.current = false
+        setStatus("idle")
+      }
+
+      captureException(error, { tags: { source: "art_assistant_voice_input" } })
+      toastRef.current.show(ART_ASSISTANT_VOICE_INPUT_ERROR, "bottom", {
+        backgroundColor: "red100",
+      })
     }
-
-    const { granted } = permission.granted
-      ? permission
-      : await ExpoSpeechRecognitionModule.requestPermissionsAsync()
-
-    if (currentAttempt !== attempt.current) {
-      return
-    }
-
-    if (!granted) {
-      setStatus("idle")
-      return
-    }
-
-    const lang = await getRecognitionLocale()
-
-    if (currentAttempt !== attempt.current) {
-      return
-    }
-
-    isSessionActive.current = true
-    shouldRetryInFallbackLocale.current = false
-    startRecognition(lang)
   }, [isAvailable])
 
   // Ends the session without waiting for the final result, e.g. because the prompt was just sent.
@@ -170,9 +194,12 @@ export const useArtAssistantVoiceInput = (onTranscript: (transcript: string) => 
       return
     }
 
-    captureException(new Error(event.message), {
-      tags: { source: "art_assistant_voice_input", speech_recognition_error: event.error },
-    })
+    if (!DEVICE_CONDITION_ERRORS.includes(event.error)) {
+      captureException(new Error(event.message), {
+        tags: { source: "art_assistant_voice_input", speech_recognition_error: event.error },
+      })
+    }
+
     toast.show(ART_ASSISTANT_VOICE_INPUT_ERROR, "bottom", { backgroundColor: "red100" })
   })
 

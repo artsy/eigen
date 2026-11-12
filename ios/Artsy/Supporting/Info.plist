@@ -148,7 +148,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photos will be used to gauge the quality of the work you are submitting.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Used to turn what you say to Art Assistant into text.</string>
+	<string>Art Assistant uses speech recognition to turn what you say into text. Your voice may be sent to Apple to process it.</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>ReactNativeReleaseLevel</key>

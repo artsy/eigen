@@ -268,10 +268,42 @@ describe("useArtAssistantVoiceInput", () => {
     const { result: hook } = renderVoiceInput()
 
     await act(() => hook.current.start())
-    act(() => emit("error", { error: "network", message: "Network failed" }))
+    act(() => emit("error", { error: "client", message: "Client failed" }))
 
     expect(captureException).toHaveBeenCalledWith(expect.any(Error), {
-      tags: { source: "art_assistant_voice_input", speech_recognition_error: "network" },
+      tags: { source: "art_assistant_voice_input", speech_recognition_error: "client" },
+    })
+    expect(mockShowToast).toHaveBeenCalledWith(ART_ASSISTANT_VOICE_INPUT_ERROR, "bottom", {
+      backgroundColor: "red100",
+    })
+  })
+
+  it.each(["audio-capture", "busy", "network", "service-not-allowed"] as const)(
+    "tells the user about a %s error without reporting it",
+    async (error) => {
+      const { result: hook } = renderVoiceInput()
+
+      await act(() => hook.current.start())
+      act(() => emit("error", { error, message: "Device condition" }))
+
+      expect(captureException).not.toHaveBeenCalled()
+      expect(mockShowToast).toHaveBeenCalledWith(ART_ASSISTANT_VOICE_INPUT_ERROR, "bottom", {
+        backgroundColor: "red100",
+      })
+    }
+  )
+
+  it("recovers and reports when starting fails", async () => {
+    jest
+      .mocked(ExpoSpeechRecognitionModule.getPermissionsAsync)
+      .mockRejectedValue(new Error("Permissions unavailable"))
+    const { result: hook } = renderVoiceInput()
+
+    await act(() => hook.current.start())
+
+    expect(hook.current.status).toBe("idle")
+    expect(captureException).toHaveBeenCalledWith(expect.any(Error), {
+      tags: { source: "art_assistant_voice_input" },
     })
     expect(mockShowToast).toHaveBeenCalledWith(ART_ASSISTANT_VOICE_INPUT_ERROR, "bottom", {
       backgroundColor: "red100",
