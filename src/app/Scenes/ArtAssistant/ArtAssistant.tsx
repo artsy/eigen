@@ -1,5 +1,5 @@
 import { OwnerType, SentArtAssistantMessage } from "@artsy/cohesion"
-import { CameraStrokeIcon, CloseIcon, EditIcon } from "@artsy/icons/native"
+import { CameraStrokeIcon, CloseIcon, EditIcon, SendIcon } from "@artsy/icons/native"
 import {
   Button,
   DEFAULT_HIT_SLOP,
@@ -18,8 +18,10 @@ import {
 import { FlashList, FlashListRef } from "@shopify/flash-list"
 import { ArtAssistantEmptyState } from "app/Scenes/ArtAssistant/Components/ArtAssistantEmptyState"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/Components/ArtAssistantMessage"
+import { ArtAssistantVoiceInputButton } from "app/Scenes/ArtAssistant/Components/ArtAssistantVoiceInputButton"
 import { useArtAssistantConversation } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
 import { useArtAssistantImageAttachment } from "app/Scenes/ArtAssistant/hooks/useArtAssistantImageAttachment"
+import { useArtAssistantVoiceInput } from "app/Scenes/ArtAssistant/hooks/useArtAssistantVoiceInput"
 import {
   ArtAssistantImage,
   ArtAssistantMessage as ArtAssistantMessageType,
@@ -80,6 +82,17 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
   const { attachment, pick: pickImage, remove: removeImage } = useArtAssistantImageAttachment()
   const isUploadingImage = attachment?.status === "uploading"
   const attachedImage = attachment?.status === "ready" ? attachment.image : undefined
+  const enableVoiceInput = useFeatureFlag("AREnableArtAssistantVoiceInput")
+  // The composer text when dictation starts: the transcript is added after it, so the user can
+  // type and then dictate, or dictate in several goes.
+  const dictationPrefix = useRef("")
+  const handleTranscript = useCallback((transcript: string) => {
+    const prefix = dictationPrefix.current
+    setPrompt(prefix ? `${prefix} ${transcript}` : transcript)
+  }, [])
+  const voiceInput = useArtAssistantVoiceInput(handleTranscript)
+  const isListening = voiceInput.status !== "idle"
+  const showVoiceInputButton = enableVoiceInput && voiceInput.isAvailable
   const composerKeyboardGap = space(1)
   const messageGap = space(2)
   const canSend =
@@ -96,6 +109,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
 
   const handleOpenNewChatDialog = () => {
     dismissComposerKeyboard()
+    voiceInput.cancel()
     setIsNewChatDialogVisible(true)
   }
 
@@ -105,12 +119,20 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
     anchoredTurn.current = null
     setMessageHeights({})
     removeImage()
+    voiceInput.cancel()
     startNewConversation()
   }
 
   const handleAddImage = () => {
     dismissComposerKeyboard()
+    voiceInput.cancel()
     void pickImage()
+  }
+
+  const handleStartVoiceInput = () => {
+    dictationPrefix.current = prompt.trimEnd()
+    dismissComposerKeyboard()
+    void voiceInput.start()
   }
 
   const handleMessageLayout = useCallback((messageID: string, height: number) => {
@@ -135,6 +157,9 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
 
     pendingScrollIndex.current = userMessageIndex
     void submit(promptText.trim(), { type, image })
+    // A suggestion can be tapped mid-dictation; the rest of the transcript must not refill the
+    // composer that was just cleared.
+    voiceInput.cancel()
     setPrompt("")
     dismissComposerKeyboard()
   }
@@ -405,7 +430,8 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
 
           <Flex
             flexDirection="row"
-            alignItems="center"
+            // Send stays at the bottom while the composer grows upwards.
+            alignItems="flex-end"
             backgroundColor="background"
             gap={1}
             pb={`${bottom + composerKeyboardGap}px`}
@@ -417,7 +443,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
               flex={1}
               flexDirection="row"
               alignItems="flex-end"
-              borderColor={isComposerFocused ? "blue100" : "mono15"}
+              borderColor={isComposerFocused || isListening ? "blue100" : "mono15"}
               borderRadius={COMPOSER_COLLAPSED_HEIGHT / 2}
               borderWidth={1}
               gap={1}
@@ -448,11 +474,13 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
               <Flex flex={1}>
                 <Input
                   accessibilityLabel="Art Assistant prompt"
+                  // The transcript owns the text while listening, so typing would be overwritten.
+                  editable={!isListening}
                   multiline
                   onBlur={() => setIsComposerFocused(false)}
                   onChangeText={setPrompt}
                   onFocus={() => setIsComposerFocused(true)}
-                  placeholder="Tell us what you'd like..."
+                  placeholder={isListening ? "Listening..." : "Tell us what you'd like..."}
                   placeholderTextColor={color("mono60")}
                   ref={composerInputRef}
                   style={{
@@ -468,6 +496,17 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
                   value={prompt}
                 />
               </Flex>
+
+              {!!showVoiceInputButton && (
+                <ArtAssistantVoiceInputButton
+                  isHearing={voiceInput.status === "listening"}
+                  isListening={isListening}
+                  onPress={isListening ? voiceInput.stop : handleStartVoiceInput}
+                  // Sized to one text line so the collapsed bubble keeps its height.
+                  size={COMPOSER_LINE_HEIGHT}
+                  volume={voiceInput.volume}
+                />
+              )}
             </Flex>
 
             <Touchable
@@ -476,19 +515,17 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
               accessibilityState={{ disabled: !canSend }}
               disabled={!canSend}
               onPress={handleSend}
-              style={{ borderRadius: 50, overflow: "hidden" }}
+              style={{ borderRadius: COMPOSER_COLLAPSED_HEIGHT / 2, overflow: "hidden" }}
             >
               <Flex
                 alignItems="center"
-                backgroundColor={canSend ? "blue100" : "mono30"}
-                borderRadius={50}
-                height={50}
+                backgroundColor={canSend ? "mono100" : "mono30"}
+                borderRadius={COMPOSER_COLLAPSED_HEIGHT / 2}
+                height={COMPOSER_COLLAPSED_HEIGHT}
                 justifyContent="center"
-                px={2}
+                width={COMPOSER_COLLAPSED_HEIGHT}
               >
-                <Text variant="sm" color="mono0">
-                  Send
-                </Text>
+                <SendIcon fill="mono0" height={COMPOSER_LINE_HEIGHT} width={COMPOSER_LINE_HEIGHT} />
               </Flex>
             </Touchable>
           </Flex>

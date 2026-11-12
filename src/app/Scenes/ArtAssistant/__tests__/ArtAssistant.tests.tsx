@@ -1,5 +1,5 @@
 import { captureMessage } from "@sentry/react-native"
-import { act, fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor, within } from "@testing-library/react-native"
 import { ArtAssistant } from "app/Scenes/ArtAssistant/ArtAssistant"
 import { ART_ASSISTANT_SUGGESTIONS } from "app/Scenes/ArtAssistant/Components/ArtAssistantEmptyState"
 import { ART_ASSISTANT_TURN_IDLE_TIMEOUT_MS } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
@@ -11,11 +11,16 @@ import { ART_ASSISTANT_ERRORS } from "app/Scenes/ArtAssistant/utils/artAssistant
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL, renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { ExpoSpeechRecognitionModule } from "expo-speech-recognition"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { createMockEnvironment } from "relay-test-utils"
 
 jest.mock("app/Scenes/ArtAssistant/Components/ArtAssistantArtworkGrid", () => ({
   ArtAssistantArtworkGrid: () => null,
+}))
+jest.mock("react-native-reanimated", () => ({
+  ...require("react-native-reanimated/mock"),
+  useReducedMotion: jest.fn(() => false),
 }))
 jest.mock("app/Scenes/ArtAssistant/hooks/useArtAssistantImageAttachment", () => ({
   useArtAssistantImageAttachment: jest.fn(),
@@ -725,6 +730,160 @@ describe("ArtAssistant", () => {
       fireEvent.press(screen.getByRole("button", { name: "Remove image" }))
 
       expect(mockRemoveImage).toHaveBeenCalled()
+    })
+  })
+
+  describe("voice input", () => {
+    const { __emit: emitSpeechEvent } = jest.requireMock<{
+      __emit: (eventName: string, event?: unknown) => void
+    }>("expo-speech-recognition")
+
+    const startDictation = async () => {
+      const startCount = jest.mocked(ExpoSpeechRecognitionModule.start).mock.calls.length
+
+      fireEvent.press(screen.getByRole("button", { name: "Dictate a prompt" }))
+      await waitFor(() =>
+        expect(ExpoSpeechRecognitionModule.start).toHaveBeenCalledTimes(startCount + 1)
+      )
+      act(() => emitSpeechEvent("start"))
+    }
+
+    const speak = (transcript: string, isFinal = false) =>
+      act(() =>
+        emitSpeechEvent("result", {
+          isFinal,
+          results: [{ confidence: 1, segments: [], transcript }],
+        })
+      )
+
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtAssistantVoiceInput: true })
+    })
+
+    it("hides the microphone while voice input is off", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtAssistantVoiceInput: false })
+      renderWithWrappers(<ArtAssistant />)
+
+      expect(screen.queryByRole("button", { name: "Dictate a prompt" })).not.toBeOnTheScreen()
+      expect(screen.getByLabelText("Send")).toBeOnTheScreen()
+    })
+
+    it("hides the microphone when the device has no speech recognizer", () => {
+      jest.mocked(ExpoSpeechRecognitionModule.isRecognitionAvailable).mockReturnValueOnce(false)
+      renderWithWrappers(<ArtAssistant />)
+
+      expect(screen.queryByRole("button", { name: "Dictate a prompt" })).not.toBeOnTheScreen()
+      expect(screen.getByLabelText("Send")).toBeOnTheScreen()
+    })
+
+    it("shows the microphone inside the composer, next to Send", () => {
+      mockImageAttachment({ status: "uploading", uri: "file:///photo.jpg" })
+      renderWithWrappers(<ArtAssistant />)
+
+      fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "Warhol prints")
+
+      expect(
+        within(screen.getByTestId("art-assistant-composer-input-container")).getByRole("button", {
+          name: "Dictate a prompt",
+        })
+      ).toBeOnTheScreen()
+      expect(screen.getByLabelText("Send")).toBeOnTheScreen()
+    })
+
+    it("adds the transcript after text that was already typed", async () => {
+      renderWithWrappers(<ArtAssistant />)
+
+      fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "Warhol prints ")
+      await startDictation()
+      speak("under 5000 dollars", true)
+
+      expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp(
+        "value",
+        "Warhol prints under 5000 dollars"
+      )
+    })
+
+    it("keeps adding to the prompt across several dictations", async () => {
+      renderWithWrappers(<ArtAssistant />)
+
+      await startDictation()
+      speak("moody seascapes", true)
+      act(() => emitSpeechEvent("end"))
+      await startDictation()
+      speak("in blue", true)
+
+      expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp(
+        "value",
+        "moody seascapes in blue"
+      )
+    })
+
+    it("sends what has been dictated so far and stops listening", async () => {
+      const environment = createMockEnvironment()
+      renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+      await startDictation()
+      speak("moody seascapes")
+      fireEvent.press(screen.getByLabelText("Send"))
+      speak("too late", true)
+
+      expect(ExpoSpeechRecognitionModule.abort).toHaveBeenCalled()
+      expect(environment.mock.getMostRecentOperation().request.variables.input).toMatchObject({
+        message: "moody seascapes",
+      })
+      expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp("value", "")
+    })
+
+    it("writes the transcript into the composer without sending it", async () => {
+      const environment = createMockEnvironment()
+      renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+      await startDictation()
+
+      expect(KeyboardController.dismiss).toHaveBeenCalled()
+      expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp("editable", false)
+      expect(screen.getAllByTestId("art-assistant-voice-input-ring")).toHaveLength(2)
+      expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp(
+        "placeholder",
+        "Listening..."
+      )
+
+      speak("moody")
+      speak("moody seascapes", true)
+
+      expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp("value", "moody seascapes")
+      expect(screen.getByRole("button", { name: "Stop dictation" })).toBeOnTheScreen()
+
+      act(() => emitSpeechEvent("end"))
+
+      expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp("editable", true)
+      expect(screen.queryByTestId("art-assistant-voice-input-ring")).not.toBeOnTheScreen()
+      expect(screen.getByLabelText("Send")).toBeEnabled()
+      expect(environment.mock.getAllOperations()).toHaveLength(0)
+    })
+
+    it("stops listening from the stop button", async () => {
+      renderWithWrappers(<ArtAssistant />)
+
+      await startDictation()
+      fireEvent.press(screen.getByRole("button", { name: "Stop dictation" }))
+
+      expect(ExpoSpeechRecognitionModule.stop).toHaveBeenCalled()
+    })
+
+    it("stops listening when a suggestion is sent mid-dictation", async () => {
+      const environment = createMockEnvironment()
+      renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+      await startDictation()
+      fireEvent.press(screen.getByText(ART_ASSISTANT_SUGGESTIONS[0]))
+      speak("too late", true)
+
+      expect(ExpoSpeechRecognitionModule.abort).toHaveBeenCalled()
+      expect(environment.mock.getMostRecentOperation().request.variables.input).toMatchObject({
+        message: ART_ASSISTANT_SUGGESTIONS[0],
+      })
+      expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp("value", "")
     })
   })
 })
