@@ -70,6 +70,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
     startNewConversation,
     submit,
     trackSuggestedReplyTapped,
+    trackVoiceInputTapped,
   } = useArtAssistantConversation()
   const [messageHeights, setMessageHeights] = useState<Record<string, number>>({})
   const composerInputRef = useRef<InputRef>(null)
@@ -130,9 +131,15 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
   }
 
   const handleStartVoiceInput = () => {
+    trackVoiceInputTapped("start")
     dictationPrefix.current = prompt.trimEnd()
     dismissComposerKeyboard()
     void voiceInput.start()
+  }
+
+  const handleStopVoiceInput = () => {
+    trackVoiceInputTapped("stop")
+    voiceInput.stop()
   }
 
   const handleMessageLayout = useCallback((messageID: string, height: number) => {
@@ -501,7 +508,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
                 <ArtAssistantVoiceInputButton
                   isHearing={voiceInput.status === "listening"}
                   isListening={isListening}
-                  onPress={isListening ? voiceInput.stop : handleStartVoiceInput}
+                  onPress={isListening ? handleStopVoiceInput : handleStartVoiceInput}
                   // Sized to one text line so the collapsed bubble keeps its height.
                   size={COMPOSER_LINE_HEIGHT}
                   volume={voiceInput.volume}

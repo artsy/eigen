@@ -9,6 +9,7 @@ import {
   TappedArtAssistantNewChat,
   TappedArtAssistantSuggestedReply,
   TappedArtAssistantSuggestion,
+  TappedArtAssistantVoiceInput,
 } from "@artsy/cohesion"
 import { ArtAssistantFeedbackRating } from "app/Scenes/ArtAssistant/types"
 import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
@@ -120,6 +121,21 @@ export const useArtAssistantTracking = () => {
     [trackEvent]
   )
 
+  const trackVoiceInputTapped = useCallback(
+    (conversationID: string, type: TappedArtAssistantVoiceInput["type"]) => {
+      const payload: TappedArtAssistantVoiceInput = {
+        action: ActionType.tappedArtAssistantVoiceInput,
+        context_module: ContextModule.artAssistant,
+        context_screen_owner_type: OwnerType.artAssistant,
+        conversation_id: conversationID,
+        type,
+      }
+
+      trackEvent(payload)
+    },
+    [trackEvent]
+  )
+
   const trackNewChat = useCallback(
     (conversationID: string, messageCount: number) => {
       const payload: TappedArtAssistantNewChat = {
@@ -223,5 +239,6 @@ export const useArtAssistantTracking = () => {
     trackSuggestedReplyTapped,
     trackSuggestionTapped,
     trackTurnFailed,
+    trackVoiceInputTapped,
   }
 }

@@ -871,6 +871,34 @@ describe("ArtAssistant", () => {
       expect(ExpoSpeechRecognitionModule.stop).toHaveBeenCalled()
     })
 
+    it("tracks the taps that start and stop dictation", async () => {
+      renderWithWrappers(<ArtAssistant />)
+
+      await startDictation()
+      fireEvent.press(screen.getByRole("button", { name: "Stop dictation" }))
+
+      const voiceInputTaps = mockTrackEvent.mock.calls
+        .map(([call]) => call as Record<string, any>)
+        .filter((call) => call.action === "tappedArtAssistantVoiceInput")
+
+      expect(voiceInputTaps).toEqual([
+        {
+          action: "tappedArtAssistantVoiceInput",
+          context_module: "artAssistant",
+          context_screen_owner_type: "artAssistant",
+          conversation_id: expect.any(String),
+          type: "start",
+        },
+        {
+          action: "tappedArtAssistantVoiceInput",
+          context_module: "artAssistant",
+          context_screen_owner_type: "artAssistant",
+          conversation_id: voiceInputTaps[0].conversation_id,
+          type: "stop",
+        },
+      ])
+    })
+
     it("stops listening when a suggestion is sent mid-dictation", async () => {
       const environment = createMockEnvironment()
       renderWithHookWrappersTL(<ArtAssistant />, environment)
