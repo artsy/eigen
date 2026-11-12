@@ -530,7 +530,10 @@ end
 def upload_ios_maestro_to_s3
   app_name = "Artsy"
   derived_data_path = ENV['DERIVED_DATA_PATH'] || 'derived_data'
-  s3_dest = "#{S3_IOS_BUILDS_PATH}#{app_name}-latest.zip"
+  # TODO revert before merge: a PR build uploads under its own name, so it doesn't replace the
+  # Artsy-latest.zip that the nightly e2e tests download
+  zip_name = ENV['MAESTRO_IOS_ZIP_NAME'].to_s.empty? ? "#{app_name}-latest.zip" : ENV['MAESTRO_IOS_ZIP_NAME']
+  s3_dest = "#{S3_IOS_BUILDS_PATH}#{zip_name}"
   configuration = "QA"
 
   # Find the .app bundle
@@ -548,7 +551,6 @@ def upload_ios_maestro_to_s3
   UI.success("✅ Found app at: #{app_path}")
 
   # Zip the .app bundle
-  zip_name = "#{app_name}-latest.zip"
   app_dir = File.dirname(app_path)
   app_basename = File.basename(app_path)
 

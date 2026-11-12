@@ -1,0 +1,31 @@
+# TODO delete before merge: builds this branch's iOS QA app on Blacksmith and runs the agent-device
+# suite on it, the way nightly-qa.yml does on main. The build uploads as Artsy-pr-<number>.zip, so the
+# nightly's Artsy-latest.zip is untouched.
+name: PR iOS QA build and agent-device e2e (temporary)
+
+on:
+  pull_request:
+
+concurrency:
+  group: pr-ios-qa-agent-device-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-ios:
+    if: github.head_ref == 'gkartalis/deeplink-email-ios-diagnostics'
+    uses: ./.github/workflows/build-maestro-ios.yml
+    with:
+      runs-on: blacksmith-6vcpu-macos-26
+      zip-name: Artsy-pr-${{ github.event.pull_request.number }}.zip
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  e2e-ios-agent-device:
+    needs: build-ios
+    uses: ./.github/workflows/ios-e2e-agent-device.yml
+    with:
+      zip-name: Artsy-pr-${{ github.event.pull_request.number }}.zip
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

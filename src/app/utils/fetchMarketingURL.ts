@@ -1,4 +1,5 @@
 import { captureMessage } from "@sentry/react-native"
+import { isMarketingURL } from "app/utils/isMarketingURL"
 
 const captureFetchError = (errorMessage: string, url: string, status?: number) => {
   if (__DEV__) {
@@ -45,9 +46,28 @@ const extractResolvedURLFromBody = (html: string): string | null => {
   return null
 }
 
+/**
+ * Whether `resolved` is an artsy.net page that the marketing link `url` redirected to. Marketing
+ * hosts don't count, so a redirect that ends on another tracking link can't loop.
+ */
+const isArtsyRedirectTarget = (url: string, resolved: string) => {
+  return (
+    resolved !== url &&
+    /^https:\/\/([a-z0-9-]+\.)*artsy\.net(\/|\?|#|$)/i.test(resolved) &&
+    !isMarketingURL(resolved)
+  )
+}
+
 export const fetchMarketingURL = async (url: string) => {
   try {
     const response = await fetch(url)
+
+    // The redirect worked even when the page it led to refused us: Cloudflare's bot challenge on
+    // www.artsy.net answers this kind of request with a 403. We only need the destination URL, and
+    // the app loads that screen through Metaphysics, not from that page.
+    if (!response.ok && response.url && isArtsyRedirectTarget(url, response.url)) {
+      return response.url
+    }
 
     if (!response.ok) {
       const errorMessage = `HTTP error! status: ${response.status}`
