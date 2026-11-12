@@ -234,7 +234,7 @@ export const features = {
   },
   AREnableShareShowPartnerFeature: {
     description: "Show a share button on show, partner and feature screens",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableShareShowPartnerFeature",
   },
