@@ -17,20 +17,21 @@ import {
 } from "app/Scenes/HomeView/Components/CityGuides/CityGuideCarouselCard"
 import { CityGuidesBackdrop } from "app/Scenes/HomeView/Components/CityGuides/CityGuidesBackdrop"
 import {
-  CITY_GUIDE_CARD_HEIGHT,
-  CITY_GUIDE_CARD_WIDTH,
-  CITY_GUIDE_ITEM_WIDTH,
   canLoop,
+  getCityGuideCardWidth,
+  getCityGuideItemWidth,
   getInitialIndex,
   getLoopedLength,
 } from "app/Scenes/HomeView/Components/CityGuides/cityGuidesCarousel"
+import { getNearestCityGuideHref } from "app/Scenes/HomeView/Components/CityGuides/getNearestCityGuideHref"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { RouterLink } from "app/system/navigation/RouterLink"
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
-import { useLocation } from "app/utils/hooks/useLocation"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { memo, useCallback, useMemo, useRef, useState } from "react"
 import { FlatList, ListRenderItem } from "react-native"
@@ -39,10 +40,13 @@ import Animated, {
   useAnimatedScrollHandler,
   useSharedValue,
 } from "react-native-reanimated"
-import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
 
-/** Leaves room around the centered card for it to scale up without clipping */
-const CAROUSEL_HEIGHT = CITY_GUIDE_CARD_HEIGHT + 14
+/**
+ * Cards size to their content; this approximates a city card (padding, title, image, chips) for
+ * the loading skeleton only.
+ */
+const PLACEHOLDER_CARD_HEIGHT = 206
 
 interface HomeViewSectionCityGuidesProps extends FlexProps {
   section: HomeViewSectionCityGuides_section$key
@@ -54,18 +58,9 @@ export const HomeViewSectionCityGuides: React.FC<HomeViewSectionCityGuidesProps>
     const section = useFragment(fragment, sectionProp)
     const tracking = useHomeViewTracking()
 
-    // Never prompts: only resolves when the user has already granted location access
-    const { location } = useLocation({ skipPermissionRequests: true })
-    const hasLocation = !!location
-
     const cards = useMemo(
-      () =>
-        (extractNodes(section.cardsConnection) as CityGuideCarouselCardData[]).filter(
-          // "Explore city near me" (no slug) is only useful when the City Guide can find the
-          // nearest city, which, like here, needs a device location
-          (card) => !!card.citySlug || hasLocation
-        ),
-      [section.cardsConnection, hasLocation]
+      () => extractNodes(section.cardsConnection) as CityGuideCarouselCardData[],
+      [section.cardsConnection]
     )
 
     if (cards.length === 0) {
@@ -80,13 +75,10 @@ export const HomeViewSectionCityGuides: React.FC<HomeViewSectionCityGuidesProps>
       <Theme theme="v3light">
         <Flex {...flexProps} overflow="hidden">
           <CityGuidesCarousel
-            // The location can arrive after the rail is shown. The loop and initial position
-            // depend on the number of cards, so start over (on the first card) when it changes.
-            key={cards.length}
             cards={cards}
             contextModule={contextModule}
             header={
-              <Flex px={2} pt="25px" pb={2}>
+              <Flex px={1} pt={2}>
                 <Text variant="xl" color="mono0">
                   {section.component?.title}
                 </Text>
@@ -94,9 +86,8 @@ export const HomeViewSectionCityGuides: React.FC<HomeViewSectionCityGuidesProps>
             }
             footer={
               <Flex
-                px={2}
-                pt={2}
-                pb="25px"
+                px={1}
+                pb={2}
                 flexDirection="row"
                 alignItems="flex-end"
                 justifyContent="space-between"
@@ -157,8 +148,34 @@ const CityGuidesCarousel: React.FC<CityGuidesCarouselProps> = ({
   footer,
 }) => {
   const tracking = useHomeViewTracking()
+  const environment = useRelayEnvironment()
   const { width: screenWidth } = useScreenDimensions()
+  const cardWidth = getCityGuideCardWidth(screenWidth)
+  const itemWidth = getCityGuideItemWidth(screenWidth)
   const listRef = useRef<FlatList<CityGuideCarouselCardData>>(null)
+
+  // While "Explore city near me" waits on the permission prompt and the device position
+  const [isLocating, setIsLocating] = useState(false)
+  const isLocatingRef = useRef(false)
+
+  const openNearestCityGuide = useCallback(async () => {
+    if (isLocatingRef.current) return
+
+    isLocatingRef.current = true
+    setIsLocating(true)
+
+    try {
+      const href = await getNearestCityGuideHref(environment)
+
+      // `null`: location access wasn't granted, so nothing happens
+      if (href) {
+        navigate(href)
+      }
+    } finally {
+      isLocatingRef.current = false
+      setIsLocating(false)
+    }
+  }, [environment])
 
   const count = cards.length
   const loop = canLoop(count)
@@ -174,14 +191,23 @@ const CityGuidesCarousel: React.FC<CityGuidesCarouselProps> = ({
 
   const backdropImageURLs = useMemo(() => cards.map((card) => card.image?.imageURL), [cards])
 
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (event) => {
-      position.value = event.contentOffset.x / CITY_GUIDE_ITEM_WIDTH
+  const scrollHandler = useAnimatedScrollHandler(
+    {
+      onScroll: (event) => {
+        position.value = event.contentOffset.x / itemWidth
+      },
+      onMomentumEnd: (event) => {
+        runOnJS(setCenteredIndex)(Math.round(event.contentOffset.x / itemWidth))
+      },
     },
-    onMomentumEnd: (event) => {
-      runOnJS(setCenteredIndex)(Math.round(event.contentOffset.x / CITY_GUIDE_ITEM_WIDTH))
-    },
-  })
+    [itemWidth]
+  )
+
+  // Fixed-size items: no measuring, and the initial index can be jumped to directly
+  const getItemLayout = useCallback(
+    (_: unknown, index: number) => ({ length: itemWidth, offset: itemWidth * index, index }),
+    [itemWidth]
+  )
 
   const handleCardPress = useCallback(
     (card: CityGuideCarouselCardData, itemIndex: number, isCentered: boolean) => {
@@ -199,8 +225,14 @@ const CityGuidesCarousel: React.FC<CityGuidesCarouselProps> = ({
         contextModule,
         itemIndex % count
       )
+
+      // City cards navigate through their `RouterLink`. The near-me card needs the user's
+      // location first, so it navigates once that's resolved.
+      if (!card.citySlug) {
+        openNearestCityGuide()
+      }
     },
-    [tracking, contextModule, count]
+    [tracking, contextModule, count, openNearestCityGuide]
   )
 
   const renderItem: ListRenderItem<CityGuideCarouselCardData> = useCallback(
@@ -208,16 +240,19 @@ const CityGuidesCarousel: React.FC<CityGuidesCarouselProps> = ({
       <CityGuideCarouselCard
         card={item}
         index={index}
+        cardWidth={cardWidth}
+        itemWidth={itemWidth}
         isCentered={index === centeredIndex}
+        isLoading={isLocating ? !item.citySlug : false}
         position={position}
         onPress={handleCardPress}
       />
     ),
-    [centeredIndex, position, handleCardPress]
+    [cardWidth, itemWidth, centeredIndex, isLocating, position, handleCardPress]
   )
 
   return (
-    <Flex>
+    <Flex gap={2}>
       <CityGuidesBackdrop imageURLs={backdropImageURLs} position={position} loop={loop} />
 
       {header}
@@ -228,16 +263,14 @@ const CityGuidesCarousel: React.FC<CityGuidesCarouselProps> = ({
         renderItem={renderItem}
         // Every card shows up many times, so the index is what makes a key unique
         keyExtractor={keyExtractor}
-        extraData={centeredIndex}
+        extraData={`${centeredIndex}-${isLocating}`}
         horizontal
         showsHorizontalScrollIndicator={false}
         // Center-snapping, one card per swipe
-        snapToInterval={CITY_GUIDE_ITEM_WIDTH}
+        snapToInterval={itemWidth}
         decelerationRate="fast"
         disableIntervalMomentum
-        contentContainerStyle={{ paddingHorizontal: (screenWidth - CITY_GUIDE_ITEM_WIDTH) / 2 }}
-        style={{ height: CAROUSEL_HEIGHT }}
-        // Fixed-size items: no measuring, and the initial index can be jumped to directly
+        contentContainerStyle={{ paddingHorizontal: (screenWidth - itemWidth) / 2 }}
         getItemLayout={getItemLayout}
         initialScrollIndex={initialIndex}
         initialNumToRender={3}
@@ -254,12 +287,6 @@ const CityGuidesCarousel: React.FC<CityGuidesCarouselProps> = ({
 
 const keyExtractor = (item: CityGuideCarouselCardData, index: number) =>
   `${item.citySlug ?? "near-me"}-${index}`
-
-const getItemLayout = (_: unknown, index: number) => ({
-  length: CITY_GUIDE_ITEM_WIDTH,
-  offset: CITY_GUIDE_ITEM_WIDTH * index,
-  index,
-})
 
 const fragment = graphql`
   fragment HomeViewSectionCityGuides_section on HomeViewSectionCityGuides {
@@ -293,18 +320,21 @@ const fragment = graphql`
 `
 
 const HomeViewSectionCityGuidesPlaceholder: React.FC<FlexProps> = (flexProps) => {
+  const { width: screenWidth } = useScreenDimensions()
+
   return (
     <Skeleton>
-      <Flex {...flexProps} px={2} pt="25px" pb="25px">
+      <Flex {...flexProps} gap={2} p={1}>
         <SkeletonText variant="xl">Discover the art that makes your city</SkeletonText>
 
-        <Flex height={CAROUSEL_HEIGHT} mt={2} alignItems="center" justifyContent="center">
-          <SkeletonBox width={CITY_GUIDE_CARD_WIDTH} height={CITY_GUIDE_CARD_HEIGHT} />
+        <Flex alignItems="center">
+          <SkeletonBox
+            width={getCityGuideCardWidth(screenWidth)}
+            height={PLACEHOLDER_CARD_HEIGHT}
+          />
         </Flex>
 
-        <SkeletonText variant="sm-display" mt={2}>
-          Then create your own way
-        </SkeletonText>
+        <SkeletonText variant="sm-display">Then create your own way</SkeletonText>
       </Flex>
     </Skeleton>
   )

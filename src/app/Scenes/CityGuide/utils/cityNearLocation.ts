@@ -1,6 +1,7 @@
 import { CityData } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 
-const CITY_RADIUS_M = 100 * 200 // 500km
+/** Far enough to cover a day trip, e.g. Aachen to Brussels (~120km) */
+const CITY_RADIUS_M = 500 * 1000 // 500km
 
 // Helper: Haversine formula to calculate distance between two lat/lng points in meters
 function distanceInMeters(lat1: number, lon1: number, lat2: number, lon2: number) {
@@ -18,7 +19,7 @@ function distanceInMeters(lat1: number, lon1: number, lat2: number, lon2: number
 /**
  * @param {Object[]} cities - Array of city objects, each with { epicenter: { latitude, longitude }, ... }
  * @param {Object} location - Object with { latitude, longitude }
- * @returns {Object|null} - Closest city within 100km, or null
+ * @returns {Object|null} - Closest city within 500km, or null
  */
 export function cityNearLocation(cities: CityData[], location: { lat: number; lng: number }) {
   if (cities.length === 0) return null

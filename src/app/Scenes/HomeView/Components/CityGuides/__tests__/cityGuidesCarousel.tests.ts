@@ -1,11 +1,36 @@
 import {
+  SIDE_CARD_SCALE,
   canLoop,
   distanceFromPosition,
+  getCityGuideCardWidth,
+  getCityGuideItemWidth,
   getInitialIndex,
   getLoopedLength,
 } from "app/Scenes/HomeView/Components/CityGuides/cityGuidesCarousel"
 
 describe("cityGuidesCarousel", () => {
+  describe("sizes", () => {
+    it("matches the design's 268pt card on a 390pt screen", () => {
+      expect(getCityGuideCardWidth(390)).toBe(268)
+    })
+
+    it("keeps the card's share of the screen on other widths", () => {
+      expect(getCityGuideCardWidth(430) / 430).toBeCloseTo(268 / 390, 2)
+    })
+
+    it("leaves a 10pt visible gap between the centered card and its shrunk neighbours", () => {
+      ;[375, 390, 430].forEach((screenWidth) => {
+        const cardWidth = getCityGuideCardWidth(screenWidth)
+        const itemWidth = getCityGuideItemWidth(screenWidth)
+
+        const centeredCardRightEdge = cardWidth / 2
+        const neighbourLeftEdge = itemWidth - (cardWidth * SIDE_CARD_SCALE) / 2
+
+        expect(neighbourLeftEdge - centeredCardRightEdge).toBeCloseTo(10, 0)
+      })
+    })
+  })
+
   describe("looping", () => {
     it("loops from two cards on", () => {
       expect(canLoop(1)).toBe(false)

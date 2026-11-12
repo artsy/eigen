@@ -1,21 +1,18 @@
 import { ChevronSmallRightIcon } from "@artsy/icons/native"
-import { Flex, Image, Text, useColor } from "@artsy/palette-mobile"
+import { Flex, Image, Spinner, Text, useColor } from "@artsy/palette-mobile"
 import {
-  CITY_GUIDE_CARD_HEIGHT,
-  CITY_GUIDE_CARD_WIDTH,
-  CITY_GUIDE_ITEM_WIDTH,
   SIDE_CARD_DIM_OPACITY,
   SIDE_CARD_SCALE,
 } from "app/Scenes/HomeView/Components/CityGuides/cityGuidesCarousel"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { memo, useCallback } from "react"
-import { StyleSheet } from "react-native"
+import { memo, useCallback, useState } from "react"
+import { LayoutChangeEvent, StyleSheet } from "react-native"
 import Animated, { SharedValue, interpolate, useAnimatedStyle } from "react-native-reanimated"
 
 const CARD_PADDING = 14
-const CONTENT_WIDTH = CITY_GUIDE_CARD_WIDTH - CARD_PADDING * 2
-const CITY_IMAGE_HEIGHT = 76
-const NEAR_ME_IMAGE_HEIGHT = 90
+const CITY_IMAGE_HEIGHT = 80
+/** The near-me image fills what's left of the card, but never shrinks below this */
+const NEAR_ME_IMAGE_MIN_HEIGHT = 60
 const ARROW_SIZE = 30
 
 export interface CityGuideCarouselCardData {
@@ -30,7 +27,12 @@ interface CityGuideCarouselCardProps {
   card: CityGuideCarouselCardData
   /** Index in the (looped) list */
   index: number
+  cardWidth: number
+  /** Width of the list item holding the card, see `getCityGuideItemWidth` */
+  itemWidth: number
   isCentered: boolean
+  /** The near-me card is waiting on location access and the device position */
+  isLoading?: boolean
   /** Scroll position in item units */
   position: SharedValue<number>
   onPress: (card: CityGuideCarouselCardData, index: number, isCentered: boolean) => void
@@ -42,9 +44,10 @@ interface CityGuideCarouselCardProps {
  * so swiping never re-renders it.
  */
 export const CityGuideCarouselCard: React.FC<CityGuideCarouselCardProps> = memo(
-  ({ card, index, isCentered, position, onPress }) => {
+  ({ card, index, cardWidth, itemWidth, isCentered, isLoading = false, position, onPress }) => {
     const color = useColor()
     const isNearMe = !card.citySlug
+    const contentWidth = cardWidth - CARD_PADDING * 2
 
     const cardStyle = useAnimatedStyle(() => {
       const distance = Math.min(Math.abs(position.value - index), 1)
@@ -64,24 +67,31 @@ export const CityGuideCarouselCard: React.FC<CityGuideCarouselCardProps> = memo(
     )
 
     return (
-      <Flex width={CITY_GUIDE_ITEM_WIDTH} alignItems="center">
+      // Horizontal list items stretch to the tallest one, and the card fills its item: all cards end
+      // up as tall as the tallest content, with no fixed height
+      <Flex width={itemWidth} alignItems="center">
         <Animated.View
-          style={[styles.card, { backgroundColor: color("mono0") }, cardStyle]}
+          style={[styles.card, { width: cardWidth, backgroundColor: color("mono0") }, cardStyle]}
           testID={`city-guide-card-${card.citySlug ?? "near-me"}`}
         >
           <RouterLink
             to={card.href}
-            disableNavigation={!isCentered}
+            // Side cards scroll to the center instead, and the near-me card navigates once it knows
+            // the nearest city
+            disableNavigation={!isCentered || isNearMe}
             // The route has no prefetch queries, and each card would mount a visibility sentinel
             disablePrefetch
             onPress={handlePress}
             accessibilityRole={isCentered ? "link" : "button"}
-            accessibilityLabel={
-              isCentered ? `Open the ${card.title} City Guide` : `Show ${card.title}`
-            }
+            accessibilityLabel={getAccessibilityLabel(card, isCentered)}
+            accessibilityState={{ busy: isLoading }}
             style={styles.content}
           >
-            {isNearMe ? <NearMeContent card={card} /> : <CityContent card={card} />}
+            {isNearMe ? (
+              <NearMeContent card={card} contentWidth={contentWidth} isLoading={isLoading} />
+            ) : (
+              <CityContent card={card} contentWidth={contentWidth} />
+            )}
           </RouterLink>
 
           <Animated.View
@@ -94,10 +104,23 @@ export const CityGuideCarouselCard: React.FC<CityGuideCarouselCardProps> = memo(
   }
 )
 
-const CityContent: React.FC<{ card: CityGuideCarouselCardData }> = ({ card }) => {
+const getAccessibilityLabel = (card: CityGuideCarouselCardData, isCentered: boolean) => {
+  if (!isCentered) return `Show ${card.title}`
+
+  return card.citySlug
+    ? `Open the ${card.title} City Guide`
+    : "Open the City Guide for the city nearest to you"
+}
+
+interface ContentProps {
+  card: CityGuideCarouselCardData
+  contentWidth: number
+}
+
+const CityContent: React.FC<ContentProps> = ({ card, contentWidth }) => {
   return (
     <>
-      <Text variant="lg-display" numberOfLines={1}>
+      <Text variant="xl" numberOfLines={1}>
         {card.title}
       </Text>
 
@@ -105,7 +128,7 @@ const CityContent: React.FC<{ card: CityGuideCarouselCardData }> = ({ card }) =>
         <Flex mt={1}>
           <Image
             src={card.image.imageURL}
-            width={CONTENT_WIDTH}
+            width={contentWidth}
             height={CITY_IMAGE_HEIGHT}
             style={styles.image}
           />
@@ -113,18 +136,17 @@ const CityContent: React.FC<{ card: CityGuideCarouselCardData }> = ({ card }) =>
       )}
 
       <Flex flexDirection="row" alignItems="center" mt={1}>
-        <Flex flex={1} flexDirection="row" alignItems="center" overflow="hidden">
+        <Flex flex={1} flexDirection="row" alignItems="center" overflow="hidden" gap={1}>
           {card.chips.map((chip) => (
             <Flex
+              py={0.5}
+              px={1}
               key={chip}
               backgroundColor="mono5"
-              borderRadius={13}
-              height={26}
-              px="8px"
-              mr="6px"
+              borderRadius={10}
               justifyContent="center"
             >
-              <Text variant="xxs" numberOfLines={1}>
+              <Text variant="xs" numberOfLines={1}>
                 {chip}
               </Text>
             </Flex>
@@ -137,26 +159,39 @@ const CityContent: React.FC<{ card: CityGuideCarouselCardData }> = ({ card }) =>
   )
 }
 
-const NearMeContent: React.FC<{ card: CityGuideCarouselCardData }> = ({ card }) => {
+const NearMeContent: React.FC<ContentProps & { isLoading: boolean }> = ({
+  card,
+  contentWidth,
+  isLoading,
+}) => {
+  // Measured, so the image fills the card down to where the city cards end, whatever the title's
+  // line count or font scale
+  const [imageHeight, setImageHeight] = useState(0)
+
+  const handleImageAreaLayout = useCallback((event: LayoutChangeEvent) => {
+    // Same-value updates are skipped, so this settles after the first layout
+    setImageHeight(Math.round(event.nativeEvent.layout.height))
+  }, [])
+
   return (
-    <Flex flex={1} justifyContent="space-between">
-      <Flex maxWidth={150}>
-        <Text variant="lg-display" numberOfLines={2}>
-          {card.title}
-        </Text>
-      </Flex>
+    <Flex flex={1}>
+      <Text variant="xl" numberOfLines={2}>
+        {card.title}
+      </Text>
 
       {!!card.image?.imageURL && (
-        <Flex>
-          <Image
-            src={card.image.imageURL}
-            width={CONTENT_WIDTH}
-            height={NEAR_ME_IMAGE_HEIGHT}
-            style={styles.image}
-          />
+        <Flex flex={1} mt={1} minHeight={NEAR_ME_IMAGE_MIN_HEIGHT} onLayout={handleImageAreaLayout}>
+          {imageHeight > 0 && (
+            <Image
+              src={card.image.imageURL}
+              width={contentWidth}
+              height={imageHeight}
+              style={styles.image}
+            />
+          )}
 
           <Flex style={styles.nearMeArrow}>
-            <Arrow />
+            <Arrow isLoading={isLoading} />
           </Flex>
         </Flex>
       )}
@@ -165,7 +200,7 @@ const NearMeContent: React.FC<{ card: CityGuideCarouselCardData }> = ({ card }) 
 }
 
 /** Decorative: the whole card is the touch target */
-const Arrow: React.FC = () => {
+const Arrow: React.FC<{ isLoading?: boolean }> = ({ isLoading = false }) => {
   return (
     <Flex
       width={ARROW_SIZE}
@@ -177,15 +212,20 @@ const Arrow: React.FC = () => {
       accessible={false}
       importantForAccessibility="no-hide-descendants"
     >
-      <ChevronSmallRightIcon fill="mono0" width={18} height={18} />
+      {isLoading ? (
+        <Flex testID="city-guide-near-me-spinner" justifyContent="center" alignItems="center">
+          <Spinner size="small" color="mono0" />
+        </Flex>
+      ) : (
+        <ChevronSmallRightIcon fill="mono0" width={18} height={18} />
+      )}
     </Flex>
   )
 }
 
 const styles = StyleSheet.create({
   card: {
-    width: CITY_GUIDE_CARD_WIDTH,
-    height: CITY_GUIDE_CARD_HEIGHT,
+    flex: 1,
     borderRadius: 6,
     overflow: "hidden",
   },
