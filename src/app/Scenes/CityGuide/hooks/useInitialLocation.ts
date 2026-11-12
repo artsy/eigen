@@ -1,6 +1,6 @@
-import { CityData } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
-import { cityNearLocation } from "app/Scenes/CityGuide/utils/cityNearLocation"
 import { GlobalStore } from "app/store/GlobalStore"
+import { cityNearLocation } from "app/utils/cityGuide/cityNearLocation"
+import { CityData } from "app/utils/cityGuide/types"
 import { useLocation } from "app/utils/hooks/useLocation"
 
 export const useInitialLocation = (cities: CityData[], preselectedCitySlug?: string) => {

@@ -1,5 +1,5 @@
-import { CityData } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
-import { cityNearLocation } from "app/Scenes/CityGuide/utils/cityNearLocation"
+import { cityNearLocation } from "app/utils/cityGuide/cityNearLocation"
+import { CityData } from "app/utils/cityGuide/types"
 
 const cities = [
   { name: "Paris", coordinates: { lat: 48.8566, lng: 2.3522 } },

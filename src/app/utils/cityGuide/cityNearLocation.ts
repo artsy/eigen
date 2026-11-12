@@ -1,4 +1,4 @@
-import { CityData } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
+import { CityData } from "app/utils/cityGuide/types"
 
 /** Far enough to cover a day trip, e.g. Aachen to Brussels (~120km) */
 const CITY_RADIUS_M = 500 * 1000 // 500km

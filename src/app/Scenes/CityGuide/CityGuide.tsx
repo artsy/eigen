@@ -1,10 +1,10 @@
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
 import { CityGuideCitiesLoadFailure } from "app/Scenes/CityGuide/Components/CityGuideCitiesLoadFailure"
 import { CityGuideMapQueryRenderer } from "app/Scenes/CityGuide/Components/CityGuideMapQueryRenderer"
-import { useCityGuideCities } from "app/Scenes/CityGuide/hooks/useCityGuideCities"
 import { useCityGuideMapStatusBar } from "app/Scenes/CityGuide/hooks/useCityGuideMapStatusBar"
 import { useInitialLocation } from "app/Scenes/CityGuide/hooks/useInitialLocation"
 import { goBack } from "app/system/navigation/navigate"
+import { useCityGuideCities } from "app/utils/cityGuide/useCityGuideCities"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 
 interface CityGuideProps {

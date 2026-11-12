@@ -1,8 +1,8 @@
 import { CityGuideMapQueryRendererQuery } from "__generated__/CityGuideMapQueryRendererQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { CityData } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 import { CityGuideMap } from "app/Scenes/CityGuide/Components/CityGuideMap"
 import { MAX_GRAPHQL_INT } from "app/Scenes/CityGuide/utils/maxGraphQLInt"
+import { CityData } from "app/utils/cityGuide/types"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 

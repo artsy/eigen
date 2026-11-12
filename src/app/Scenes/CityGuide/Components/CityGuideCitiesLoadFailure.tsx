@@ -1,5 +1,5 @@
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { cityGuideCitiesQuery } from "app/Scenes/CityGuide/hooks/useCityGuideCities"
+import { cityGuideCitiesQuery } from "app/utils/cityGuide/useCityGuideCities"
 import { FallbackProps } from "react-error-boundary"
 import { fetchQuery, useRelayEnvironment } from "react-relay"
 

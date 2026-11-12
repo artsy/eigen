@@ -12,7 +12,7 @@ jest.mock("@react-navigation/native", () => ({
     mockFocusEffect = effect
   },
 }))
-jest.mock("app/Scenes/CityGuide/hooks/useCityGuideCities", () => ({
+jest.mock("app/utils/cityGuide/useCityGuideCities", () => ({
   useCityGuideCities: () => [],
 }))
 jest.mock("app/Scenes/CityGuide/hooks/useInitialLocation", () => ({

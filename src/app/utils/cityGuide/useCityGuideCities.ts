@@ -1,5 +1,5 @@
 import { useCityGuideCitiesQuery } from "__generated__/useCityGuideCitiesQuery.graphql"
-import { CityData } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
+import { CityData } from "app/utils/cityGuide/types"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const cityGuideCitiesQuery = graphql`

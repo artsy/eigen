@@ -12,6 +12,7 @@ import {
 } from "@artsy/palette-mobile"
 import { usePresentedOverlay } from "app/Components/ProgressiveOnboarding/popoverPresentationContext"
 import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
+import { CityData } from "app/utils/cityGuide/types"
 import { useScreenDimensions } from "app/utils/hooks"
 import {
   ProvideScreenTracking,
@@ -23,14 +24,6 @@ import React, { useEffect, useId, useState } from "react"
 import { Modal, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-export type CityData = {
-  slug: string
-  name: string
-  coordinates: {
-    lat: number
-    lng: number
-  }
-}
 interface Props {
   cities: CityData[]
   showCityPicker: boolean
