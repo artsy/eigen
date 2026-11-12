@@ -9,6 +9,13 @@ on:
       AWS_SECRET_ACCESS_KEY:
         required: true
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab, on the latest QA build
+  # TODO revert before merge: runs only the iOS deeplink flows, 3 times, on this PR, against the
+  # latest QA build, to diagnose deeplink-email.ios
+  pull_request:
+    paths:
+      - .github/workflows/ios-e2e-agent-device.yml
+      - e2e-agent-device/**
+      - scripts/utils/run_agent_device_suite
 
 env:
   AGENT_DEVICE_NO_UPDATE_NOTIFIER: 1
@@ -26,6 +33,15 @@ jobs:
     # Blacksmith rather than GitHub-hosted macos-26, where simulator launches were slow enough to crash the XCTest runner
     runs-on: blacksmith-6vcpu-macos-26
     timeout-minutes: 60
+    # TODO revert before merge: 3 copies on a PR to measure flakiness, 1 otherwise
+    strategy:
+      fail-fast: false
+      matrix:
+        repeat: ${{ github.event_name == 'pull_request' && fromJSON('[1, 2, 3]') || fromJSON('[1]') }}
+    env:
+      # TODO revert before merge: on a PR, only the deeplinks and no Slack
+      SKIP_FLOWS: ${{ github.event_name == 'pull_request' && 'login signup' || '' }}
+      SKIP_SLACK_REPORT: ${{ github.event_name == 'pull_request' && '1' || '' }}
 
     steps:
       - name: Checkout repository
@@ -148,7 +164,7 @@ jobs:
         if: failure() && steps.prepare-runner.outcome == 'failure'
         uses: actions/upload-artifact@v4
         with:
-          name: agent-device-ios-runner-logs
+          name: agent-device-ios-runner-logs-${{ matrix.repeat }}
           path: |
             .agent-device/**/*.log
             .agent-device/**/*.ndjson
@@ -160,11 +176,31 @@ jobs:
 
       # Saved right away so a later test failure doesn't throw away the built runner
       - name: Save agent-device iOS runner
-        if: steps.runner-cache.outputs.cache-hit != 'true'
+        # Only one copy saves, so the PR's copies don't race for the same key
+        if: steps.runner-cache.outputs.cache-hit != 'true' && matrix.repeat == 1
         uses: actions/cache/save@v4
         with:
           path: ~/.agent-device/apple-runner/derived
           key: agent-device-runner-${{ env.AGENT_DEVICE_VERSION }}-xcode-${{ env.XCODE_VERSION }}
+
+      # TODO revert before merge: the app's fetch of the SendGrid link got HTTP 403 on CI runners
+      # (Sentry EIGEN-AYTC), while it's a 302 elsewhere. This shows which hop returns it to this
+      # runner, with the app's user agent. Prints statuses and hosts/paths only, never the tracking URL.
+      - name: Diagnose the email link's redirects
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: |
+          URL=$(grep -o 'https://email-link.artsy.net/[^"]*' e2e-agent-device/flows/deeplink-email.ios.ad)
+          UA="Artsy/1 CFNetwork/3860.100.1 Darwin/25.3.0"
+          echo "Runner public IP: $(curl -s --max-time 10 https://checkip.amazonaws.com)"
+          for i in 1 2 3; do
+            echo "--- request $i: email-link.artsy.net/ls/click"
+            curl -s -o /dev/null -L --max-time 30 -A "$UA" -D - "$URL" | tr -d '\r' | awk '
+              tolower($1) ~ /^http\// { print "  status " $2 }
+              tolower($1) == "location:" { sub(/\?.*/, "", $2); print "  -> " $2 }
+              tolower($1) == "server:" || tolower($1) == "cf-mitigated:" { print "     " $1 " " $2 }'
+            sleep 5
+          done
 
       - name: Run agent-device E2E Tests
         run: ./scripts/utils/run_agent_device_suite ios "$SIMULATOR_UDID"
@@ -173,7 +209,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: agent-device-ios-artifacts
+          name: agent-device-ios-artifacts-${{ matrix.repeat }}
           # Reports only: this repo's artifacts are public, and agent-device logs and screenshots
           # can show the test account. Failure screenshots go to S3 and Slack instead.
           path: |
