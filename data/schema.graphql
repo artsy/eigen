@@ -2756,6 +2756,11 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   """
   recentShow: String
   related: ArtistRelatedData
+
+  """
+  Representative artworks (ordered), resolved from their ids.
+  """
+  representativeArtworks: [Artwork!]
   residencies: String
 
   """
@@ -18509,6 +18514,11 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   profile: Profile
 
   """
+  Representative artworks (ordered), resolved from their ids.
+  """
+  representativeArtworks: [Artwork!]
+
+  """
   This connection only supports forward pagination. We're replacing Relay's default cursor with one from Gravity.
   """
   showsConnection(
@@ -23798,6 +23808,11 @@ type MarketingCollection implements Node {
     size: Int = 10
   ): [MarketingCollection!]!
   representativeArtworkID: String
+
+  """
+  Representative artworks (ordered), resolved from their ids.
+  """
+  representativeArtworks: [Artwork!]
   showFeaturedArtists: Boolean!
   showHeaderArtworksRail: Boolean!
   slug: String!
@@ -35723,6 +35738,11 @@ type Sale implements Node {
   A registration for this sale or null
   """
   registrationStatus: Bidder
+
+  """
+  Representative artworks (ordered), resolved from their ids.
+  """
+  representativeArtworks: [Artwork!]
   requireBidderApproval: Boolean
   requireIdentityVerification: Boolean
   saleAgreement: SaleAgreement
