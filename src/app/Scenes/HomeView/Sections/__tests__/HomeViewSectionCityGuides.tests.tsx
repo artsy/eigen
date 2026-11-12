@@ -104,6 +104,12 @@ describe("HomeViewSectionCityGuides", () => {
     expect(screen.getAllByText("89 Shows").length).toBeGreaterThan(0)
   })
 
+  it("has a dark background behind the backdrop images", () => {
+    renderWithRelay({ HomeViewSectionCityGuides: () => section })
+
+    expect(screen.getByTestId("city-guides-section")).toHaveStyle({ backgroundColor: "#000000" })
+  })
+
   it("renders one blurred backdrop layer per card", () => {
     renderWithRelay({ HomeViewSectionCityGuides: () => section })
 

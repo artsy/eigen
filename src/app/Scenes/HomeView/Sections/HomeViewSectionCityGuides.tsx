@@ -74,7 +74,12 @@ export const HomeViewSectionCityGuides: React.FC<HomeViewSectionCityGuidesProps>
     return (
       // Always light: white cards and white type over a dark, blurred backdrop
       <Theme theme="v3light">
-        <Flex {...flexProps} overflow="hidden">
+        <Flex
+          {...flexProps}
+          backgroundColor="mono100"
+          overflow="hidden"
+          testID="city-guides-section"
+        >
           <CityGuidesCarousel
             cards={cards}
             contextModule={contextModule}
