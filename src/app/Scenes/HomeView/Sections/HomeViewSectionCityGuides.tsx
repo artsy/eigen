@@ -23,7 +23,7 @@ import {
   getInitialIndex,
   getLoopedLength,
 } from "app/Scenes/HomeView/Components/CityGuides/cityGuidesCarousel"
-import { getNearestCityGuideHref } from "app/Scenes/HomeView/Components/CityGuides/getNearestCityGuideHref"
+import { findNearestCityGuide } from "app/Scenes/HomeView/Components/CityGuides/findNearestCityGuide"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
@@ -32,9 +32,10 @@ import { RouterLink } from "app/system/navigation/RouterLink"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { memo, useCallback, useMemo, useRef, useState } from "react"
-import { FlatList, ListRenderItem } from "react-native"
+import { Alert, FlatList, Linking, ListRenderItem } from "react-native"
 import Animated, {
   runOnJS,
   useAnimatedScrollHandler,
@@ -165,11 +166,18 @@ const CityGuidesCarousel: React.FC<CityGuidesCarouselProps> = ({
     setIsLocating(true)
 
     try {
-      const href = await getNearestCityGuideHref(environment)
+      const result = await findNearestCityGuide(environment)
 
-      // `null`: location access wasn't granted, so nothing happens
-      if (href) {
-        navigate(href)
+      switch (result.status) {
+        case "granted":
+          navigate(result.href)
+          break
+        case "blocked":
+          showLocationSettingsAlert()
+          break
+        case "denied":
+          // The user just declined the prompt: respect it
+          break
       }
     } finally {
       isLocatingRef.current = false
@@ -285,6 +293,17 @@ const CityGuidesCarousel: React.FC<CityGuidesCarouselProps> = ({
   )
 }
 
+/** Once denied, the system prompt never shows again, so Settings is the only way back. */
+const showLocationSettingsAlert = () =>
+  Alert.alert(
+    "Allow access to your location",
+    "To find the City Guide near you, allow Artsy to access your location in Settings.",
+    [
+      { text: "Cancel", style: "cancel" },
+      { text: "Open Settings", onPress: () => Linking.openSettings() },
+    ]
+  )
+
 const keyExtractor = (item: CityGuideCarouselCardData, index: number) =>
   `${item.citySlug ?? "near-me"}-${index}`
 
@@ -350,7 +369,7 @@ const homeViewSectionCityGuidesQuery = graphql`
   }
 `
 
-export const HomeViewSectionCityGuidesQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
+const HomeViewSectionCityGuidesWithSuspense: React.FC<SectionSharedProps> = withSuspense({
   Component: ({ sectionID, index, ...flexProps }) => {
     const data = useLazyLoadQuery<HomeViewSectionCityGuidesQuery>(
       homeViewSectionCityGuidesQuery,
@@ -369,3 +388,14 @@ export const HomeViewSectionCityGuidesQueryRenderer: React.FC<SectionSharedProps
   LoadingFallback: HomeViewSectionCityGuidesPlaceholder,
   ErrorFallback: NoFallback,
 })
+
+/** Behind a flag; when it's off, the section's query isn't even sent. */
+export const HomeViewSectionCityGuidesQueryRenderer: React.FC<SectionSharedProps> = (props) => {
+  const isEnabled = useFeatureFlag("AREnableHomeViewCityGuidesRail")
+
+  if (!isEnabled) {
+    return null
+  }
+
+  return <HomeViewSectionCityGuidesWithSuspense {...props} />
+}

@@ -215,6 +215,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCityGuideArticlesForYou",
   },
+  AREnableHomeViewCityGuidesRail: {
+    description: "Show the City Guides rail on the home view",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableHomeViewCityGuidesRail",
+  },
   AREnableSellMyCollectionArtwork: {
     description: "Enable the new Sell My Collection Artwork experience",
     readyForRelease: false,

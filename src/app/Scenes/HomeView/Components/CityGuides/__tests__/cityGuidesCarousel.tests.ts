@@ -10,12 +10,12 @@ import {
 
 describe("cityGuidesCarousel", () => {
   describe("sizes", () => {
-    it("matches the design's 268pt card on a 390pt screen", () => {
-      expect(getCityGuideCardWidth(390)).toBe(268)
+    it("matches the design's 268pt card on a 370pt screen", () => {
+      expect(getCityGuideCardWidth(370)).toBe(268)
     })
 
     it("keeps the card's share of the screen on other widths", () => {
-      expect(getCityGuideCardWidth(430) / 430).toBeCloseTo(268 / 390, 2)
+      expect(getCityGuideCardWidth(430) / 430).toBeCloseTo(268 / 370, 2)
     })
 
     it("leaves a 10pt visible gap between the centered card and its shrunk neighbours", () => {

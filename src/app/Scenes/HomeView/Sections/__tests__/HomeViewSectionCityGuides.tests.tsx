@@ -1,25 +1,27 @@
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { HomeViewSectionCityGuidesTestsQuery } from "__generated__/HomeViewSectionCityGuidesTestsQuery.graphql"
-import { getNearestCityGuideHref } from "app/Scenes/HomeView/Components/CityGuides/getNearestCityGuideHref"
+import { findNearestCityGuide } from "app/Scenes/HomeView/Components/CityGuides/findNearestCityGuide"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionCityGuides } from "app/Scenes/HomeView/Sections/HomeViewSectionCityGuides"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { Alert, Linking } from "react-native"
 import { graphql } from "react-relay"
 
 jest.mock("app/utils/hooks/withSuspense")
-jest.mock("app/Scenes/HomeView/Components/CityGuides/getNearestCityGuideHref", () => ({
-  getNearestCityGuideHref: jest.fn(),
+jest.mock("app/Scenes/HomeView/Components/CityGuides/findNearestCityGuide", () => ({
+  findNearestCityGuide: jest.fn(),
 }))
 
-const mockGetNearestCityGuideHref = getNearestCityGuideHref as jest.Mock
+const mockFindNearestCityGuide = findNearestCityGuide as jest.Mock
 
 describe("HomeViewSectionCityGuides", () => {
   beforeEach(() => {
     ;(navigate as jest.Mock).mockClear()
     mockTrackEvent.mockClear()
-    mockGetNearestCityGuideHref.mockReset()
+    mockFindNearestCityGuide.mockReset()
+    jest.restoreAllMocks()
   })
 
   const { renderWithRelay } = setupTestWrapper<HomeViewSectionCityGuidesTestsQuery>({
@@ -171,12 +173,15 @@ describe("HomeViewSectionCityGuides", () => {
 
       centerNearMeCard()
 
-      expect(mockGetNearestCityGuideHref).not.toHaveBeenCalled()
+      expect(mockFindNearestCityGuide).not.toHaveBeenCalled()
       expect(navigate).not.toHaveBeenCalled()
     })
 
     it("opens the nearest city's City Guide and tracks the tap", async () => {
-      mockGetNearestCityGuideHref.mockResolvedValue("/city-guide?citySlug=new-york-ny-usa")
+      mockFindNearestCityGuide.mockResolvedValue({
+        status: "granted",
+        href: "/city-guide?citySlug=new-york-ny-usa",
+      })
       renderWithRelay({ HomeViewSectionCityGuides: () => section })
 
       centerNearMeCard()
@@ -186,7 +191,7 @@ describe("HomeViewSectionCityGuides", () => {
         expect(navigate).toHaveBeenCalledWith("/city-guide?citySlug=new-york-ny-usa")
       )
       expect(navigate).toHaveBeenCalledTimes(1)
-      expect(mockGetNearestCityGuideHref).toHaveBeenCalledTimes(1)
+      expect(mockFindNearestCityGuide).toHaveBeenCalledTimes(1)
       expect(mockTrackEvent).toHaveBeenCalledWith(
         expect.objectContaining({
           action: "tappedCardGroup",
@@ -196,8 +201,9 @@ describe("HomeViewSectionCityGuides", () => {
       )
     })
 
-    it("does nothing when location access isn't granted", async () => {
-      mockGetNearestCityGuideHref.mockResolvedValue(null)
+    it("does nothing when the user declines the location prompt", async () => {
+      mockFindNearestCityGuide.mockResolvedValue({ status: "denied" })
+      const alertSpy = jest.spyOn(Alert, "alert")
       renderWithRelay({ HomeViewSectionCityGuides: () => section })
 
       centerNearMeCard()
@@ -209,15 +215,36 @@ describe("HomeViewSectionCityGuides", () => {
           screen.queryByTestId("city-guide-near-me-spinner", { includeHiddenElements: true })
         ).not.toBeOnTheScreen()
       )
-      expect(mockGetNearestCityGuideHref).toHaveBeenCalledTimes(1)
+      expect(mockFindNearestCityGuide).toHaveBeenCalledTimes(1)
       expect(navigate).not.toHaveBeenCalled()
+      expect(alertSpy).not.toHaveBeenCalled()
+    })
+
+    it("points to Settings when location access can't be asked for anymore", async () => {
+      mockFindNearestCityGuide.mockResolvedValue({ status: "blocked" })
+      const alertSpy = jest.spyOn(Alert, "alert")
+      const openSettingsSpy = jest.spyOn(Linking, "openSettings").mockResolvedValue()
+      renderWithRelay({ HomeViewSectionCityGuides: () => section })
+
+      centerNearMeCard()
+      fireEvent.press(nearMeCard())
+
+      await waitFor(() => expect(alertSpy).toHaveBeenCalledTimes(1))
+      expect(navigate).not.toHaveBeenCalled()
+
+      const [title, , buttons] = alertSpy.mock.calls[0]
+      expect(title).toBe("Allow access to your location")
+      expect(buttons?.map((button) => button.text)).toEqual(["Cancel", "Open Settings"])
+
+      buttons?.find((button) => button.text === "Open Settings")?.onPress?.()
+      expect(openSettingsSpy).toHaveBeenCalledTimes(1)
     })
 
     it("shows a spinner and ignores repeated taps while it's locating", async () => {
-      let resolveHref: (href: string | null) => void = () => {}
-      mockGetNearestCityGuideHref.mockReturnValue(
+      let resolveResult: (result: { status: "granted"; href: string }) => void = () => {}
+      mockFindNearestCityGuide.mockReturnValue(
         new Promise((resolve) => {
-          resolveHref = resolve
+          resolveResult = resolve
         })
       )
       renderWithRelay({ HomeViewSectionCityGuides: () => section })
@@ -230,10 +257,10 @@ describe("HomeViewSectionCityGuides", () => {
       ).toBeGreaterThan(0)
 
       fireEvent.press(nearMeCard())
-      expect(mockGetNearestCityGuideHref).toHaveBeenCalledTimes(1)
+      expect(mockFindNearestCityGuide).toHaveBeenCalledTimes(1)
 
       await act(async () => {
-        resolveHref("/city-guide")
+        resolveResult({ status: "granted", href: "/city-guide" })
       })
 
       expect(
