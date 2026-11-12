@@ -3,11 +3,6 @@ name: iOS E2E Tests (agent-device)
 on:
   # Called by nightly-qa.yml once the iOS QA build has succeeded, independently of the Maestro suite
   workflow_call:
-    # TODO revert before merge: the PR-only workflow tests its own build instead of Artsy-latest.zip
-    inputs:
-      zip-name:
-        type: string
-        default: Artsy-latest.zip
     secrets:
       AWS_ACCESS_KEY_ID:
         required: true
@@ -17,8 +12,6 @@ on:
 
 env:
   AGENT_DEVICE_NO_UPDATE_NOTIFIER: 1
-  # TODO revert before merge: no Slack report for a PR run
-  SKIP_SLACK_REPORT: ${{ github.event_name == 'pull_request' && '1' || '' }}
 
 # Two runs racing to save the runner cache made one of them fail to save it, so runs on a branch take
 # turns. The group is spelled out because inside a called workflow `github.workflow` is the caller's
@@ -88,7 +81,7 @@ jobs:
         run: ./scripts/setup/setup-env-for-maestro ios
 
       - name: Download iOS App
-        run: aws s3 cp "s3://artsy-citadel/eigen/builds/ios/${{ inputs.zip-name || 'Artsy-latest.zip' }}" ./Artsy.zip
+        run: aws s3 cp s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip ./Artsy.zip
 
       - name: Unzip iOS App
         run: unzip Artsy.zip

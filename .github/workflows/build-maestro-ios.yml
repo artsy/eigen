@@ -3,16 +3,6 @@ name: Build iOS QA App for Maestro
 on:
   # Called by nightly-qa.yml, which also runs the e2e tests on the build
   workflow_call:
-    # TODO revert before merge: lets the PR-only workflow build this branch on Blacksmith and upload
-    # it under its own name
-    inputs:
-      runs-on:
-        type: string
-        default: macos-26
-      zip-name:
-        description: S3 file name for a non-main build, so it doesn't replace Artsy-latest.zip
-        type: string
-        default: ""
     secrets:
       AWS_ACCESS_KEY_ID:
         required: true
@@ -22,9 +12,8 @@ on:
 
 jobs:
   build-ios-qa:
-    # TODO revert before merge: also builds a branch when it gets its own zip name
-    if: github.ref == 'refs/heads/main' || inputs.zip-name != ''
-    runs-on: ${{ inputs.runs-on || 'macos-26' }}
+    if: github.ref == 'refs/heads/main'
+    runs-on: macos-26
     timeout-minutes: 120
 
     steps:
@@ -51,4 +40,3 @@ jobs:
         env:
           FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 120
           FASTLANE_XCODE_LIST_TIMEOUT: 120
-          MAESTRO_IOS_ZIP_NAME: ${{ inputs.zip-name }}
