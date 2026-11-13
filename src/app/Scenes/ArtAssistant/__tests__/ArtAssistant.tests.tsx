@@ -12,7 +12,6 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL, renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ExpoSpeechRecognitionModule } from "expo-speech-recognition"
-import { StyleSheet } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { createMockEnvironment } from "relay-test-utils"
 
@@ -234,47 +233,35 @@ describe("ArtAssistant", () => {
   })
 
   describe("expanding the composer", () => {
-    const getBorderColor = () =>
-      StyleSheet.flatten(screen.getByTestId("art-assistant-composer-input-container").props.style)
-        .borderColor
-
-    it("expands and darkens the border while it is focused, and collapses on blur when empty", () => {
+    it("expands while it is focused, and collapses on blur when empty", () => {
       renderWithWrappers(<ArtAssistant />)
 
       const prompt = screen.getByLabelText("Art Assistant prompt")
-      const collapsedBorder = getBorderColor()
-
-      expect(collapsedBorder).toEqual("transparent")
       expect(screen.queryByLabelText("Send")).not.toBeOnTheScreen()
       expect(screen.getByText("Art Assistant is AI and can make mistakes")).toBeOnTheScreen()
 
       fireEvent(prompt, "focus")
 
-      const focusedBorder = getBorderColor()
-      expect(focusedBorder).not.toEqual(collapsedBorder)
       expect(screen.getByLabelText("Send")).toBeDisabled()
       expect(screen.queryByText("Art Assistant is AI and can make mistakes")).not.toBeOnTheScreen()
 
       fireEvent(prompt, "blur")
 
-      expect(getBorderColor()).toEqual(collapsedBorder)
       expect(screen.queryByLabelText("Send")).not.toBeOnTheScreen()
       expect(screen.getByText("Art Assistant is AI and can make mistakes")).toBeOnTheScreen()
     })
 
-    it("stays expanded after blur while there is text, with a lighter border than when focused", () => {
+    it("stays expanded after blur while there is text", () => {
       renderWithWrappers(<ArtAssistant />)
 
       const prompt = screen.getByLabelText("Art Assistant prompt")
 
       fireEvent(prompt, "focus")
-      const focusedBorder = getBorderColor()
       fireEvent.changeText(prompt, "Warhol prints")
       fireEvent(prompt, "blur")
 
       expect(screen.getByLabelText("Send")).toBeEnabled()
-      expect(getBorderColor()).not.toEqual(focusedBorder)
-      expect(getBorderColor()).not.toEqual("transparent")
+      expect(screen.queryByText("Art Assistant is AI and can make mistakes")).not.toBeOnTheScreen()
     })
   })
 

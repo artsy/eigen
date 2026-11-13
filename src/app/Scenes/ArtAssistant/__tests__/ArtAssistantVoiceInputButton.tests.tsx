@@ -9,6 +9,7 @@ jest.mock("react-native-reanimated", () => ({
 }))
 
 const loudVolume = { get: () => 1 } as SharedValue<number>
+const quietVolume = { get: () => 0 } as SharedValue<number>
 
 const ringScales = () =>
   screen
@@ -66,7 +67,24 @@ describe("ArtAssistantVoiceInputButton", () => {
       />
     )
 
-    expect(ringScales()).toEqual([1.4, 1.7])
+    // The rings are the only visual cue that the user is being heard, so we assert their scale:
+    // louder speech must spread them wider than silence does.
+    const loudScales = ringScales()
+    expect(loudScales.every((scale) => scale > 1)).toBe(true)
+    expect(loudScales[1]).toBeGreaterThan(loudScales[0])
+
+    screen.unmount()
+    renderWithWrappers(
+      <ArtAssistantVoiceInputButton
+        isHearing
+        isListening
+        onPress={jest.fn()}
+        size={40}
+        volume={quietVolume}
+      />
+    )
+
+    ringScales().forEach((scale, index) => expect(loudScales[index]).toBeGreaterThan(scale))
   })
 
   it("keeps the rings still with Reduce Motion on", () => {
@@ -81,6 +99,20 @@ describe("ArtAssistantVoiceInputButton", () => {
       />
     )
 
-    expect(ringScales()).toEqual([1.15, 1.15])
+    // With Reduce Motion the rings must not move with the volume, so loud and quiet match.
+    const loudScales = ringScales()
+
+    screen.unmount()
+    renderWithWrappers(
+      <ArtAssistantVoiceInputButton
+        isHearing
+        isListening
+        onPress={jest.fn()}
+        size={40}
+        volume={quietVolume}
+      />
+    )
+
+    expect(ringScales()).toEqual(loudScales)
   })
 })

@@ -396,7 +396,6 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
                     backgroundColor="mono5"
                     borderRadius={10}
                     height={ATTACHMENT_PREVIEW_SIZE}
-                    overflow="visible"
                     testID="art-assistant-image-attachment"
                     width={ATTACHMENT_PREVIEW_SIZE}
                   >

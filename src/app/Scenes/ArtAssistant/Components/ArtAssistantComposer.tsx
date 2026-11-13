@@ -1,5 +1,6 @@
 import { SendIcon } from "@artsy/icons/native"
-import { DEFAULT_HIT_SLOP, Flex, Input, InputRef, Touchable } from "@artsy/palette-mobile"
+import { DEFAULT_HIT_SLOP, Flex, Input, InputRef, Touchable, useSpace } from "@artsy/palette-mobile"
+import { THEME } from "@artsy/palette-tokens"
 import React from "react"
 
 // This component knows nothing about Art Assistant: everything it shows comes in through props
@@ -7,12 +8,10 @@ import React from "react"
 
 export const COMPOSER_ICON_SIZE = 20
 export const COMPOSER_ACTION_SIZE = 36
-const COMPOSER_LINE_HEIGHT = 20
+// The line height of the text the Input renders (`sm-display`), so the rows line up with it.
+const COMPOSER_LINE_HEIGHT = parseInt(THEME.textVariants["sm-display"].lineHeight, 10)
 const COMPOSER_MAX_TEXT_HEIGHT = 4 * COMPOSER_LINE_HEIGHT
 const COMPOSER_BORDER_RADIUS = 12
-const COMPOSER_PADDING = 8
-// The gap between an action in the collapsed row and the text next to it.
-const COMPOSER_ACTION_GAP = 8
 
 interface ArtAssistantComposerProps {
   /** Shown above the text, e.g. a preview of an attached image. */
@@ -61,20 +60,22 @@ export const ArtAssistantComposer: React.FC<ArtAssistantComposerProps> = ({
   trailingActions,
   value,
 }) => {
+  const space = useSpace()
   const isCollapsed = !isExpanded
+  const padding = space(1)
 
   // Collapsed, the actions sit on top of the input row so that the input keeps its place in the
   // tree, and with it the focus, when the composer expands.
   const collapsedActionsProps = isCollapsed
     ? ({
-        left: COMPOSER_PADDING,
+        left: padding,
         position: "absolute",
-        right: COMPOSER_PADDING,
-        top: COMPOSER_PADDING,
+        right: padding,
+        top: padding,
       } as const)
     : {}
   const collapsedTextInset = (hasActions: boolean) =>
-    isCollapsed && hasActions ? COMPOSER_ACTION_SIZE + COMPOSER_ACTION_GAP : 0
+    isCollapsed && hasActions ? COMPOSER_ACTION_SIZE + space(0.5) : 0
   const textInset = isCollapsed ? (COMPOSER_ACTION_SIZE - COMPOSER_LINE_HEIGHT) / 2 : 0
 
   return (
@@ -84,7 +85,7 @@ export const ArtAssistantComposer: React.FC<ArtAssistantComposerProps> = ({
       borderRadius={COMPOSER_BORDER_RADIUS}
       borderWidth={1}
       gap={1}
-      p={`${COMPOSER_PADDING}px`}
+      p={1}
       testID={testID}
     >
       {attachment}

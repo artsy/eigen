@@ -1,5 +1,6 @@
 import { MicrophoneIcon } from "@artsy/icons/native"
 import { DEFAULT_HIT_SLOP, Flex, Touchable, useColor } from "@artsy/palette-mobile"
+import { COMPOSER_ICON_SIZE } from "app/Scenes/ArtAssistant/Components/ArtAssistantComposer"
 import Animated, {
   SharedValue,
   useAnimatedStyle,
@@ -62,7 +63,7 @@ export const ArtAssistantVoiceInputButton: React.FC<ArtAssistantVoiceInputButton
               width={size * 0.35}
             />
           ) : (
-            <MicrophoneIcon fill="mono100" height={size / 2} width={size / 2} />
+            <MicrophoneIcon fill="mono100" height={COMPOSER_ICON_SIZE} width={COMPOSER_ICON_SIZE} />
           )}
         </Flex>
       </Touchable>
