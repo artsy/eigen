@@ -1,5 +1,6 @@
 import { MicrophoneIcon } from "@artsy/icons/native"
 import { DEFAULT_HIT_SLOP, Flex, Touchable, useColor } from "@artsy/palette-mobile"
+import { COMPOSER_ICON_SIZE } from "app/Scenes/ArtAssistant/Components/ArtAssistantComposer"
 import Animated, {
   SharedValue,
   useAnimatedStyle,
@@ -8,11 +9,10 @@ import Animated, {
 } from "react-native-reanimated"
 
 // While listening, the rings show a thin halo even in silence and spread out as the voice gets
-// louder, so the user can see they are being heard. At their largest they still fit inside the
-// composer bubble's vertical padding.
+// louder, so the user can see they are being heard.
 const VOLUME_RINGS = [
-  { opacity: 0.1, restingScale: 1.7, loudestScale: 2.1 },
-  { opacity: 0.05, restingScale: 1.7, loudestScale: 2.5 },
+  { opacity: 0.15, restingScale: 1.15, loudestScale: 1.4 },
+  { opacity: 0.08, restingScale: 1.15, loudestScale: 1.7 },
 ]
 const VOLUME_SPRING = { damping: 14, stiffness: 180 }
 
@@ -47,20 +47,25 @@ export const ArtAssistantVoiceInputButton: React.FC<ArtAssistantVoiceInputButton
         onPress={onPress}
         underlayColor="transparent"
       >
-        {isListening ? (
-          <Flex
-            alignItems="center"
-            backgroundColor="blue100"
-            borderRadius={size / 2}
-            height={size}
-            justifyContent="center"
-            width={size}
-          >
-            <Flex backgroundColor="mono0" borderRadius={1} height={size * 0.4} width={size * 0.4} />
-          </Flex>
-        ) : (
-          <MicrophoneIcon fill="mono100" height={size} width={size} />
-        )}
+        <Flex
+          alignItems="center"
+          backgroundColor={isListening ? "blue100" : "mono10"}
+          borderRadius={size / 2}
+          height={size}
+          justifyContent="center"
+          width={size}
+        >
+          {isListening ? (
+            <Flex
+              backgroundColor="mono0"
+              borderRadius={1}
+              height={size * 0.35}
+              width={size * 0.35}
+            />
+          ) : (
+            <MicrophoneIcon fill="mono100" height={COMPOSER_ICON_SIZE} width={COMPOSER_ICON_SIZE} />
+          )}
+        </Flex>
       </Touchable>
     </Flex>
   )
