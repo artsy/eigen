@@ -136,7 +136,8 @@ take_screenshot() {
 # iOS opens a universal link in Safari when the app doesn't claim it. A flow can't see that: its
 # `open ${APP_ID}` brings the app back, and the waits only look inside the app. So for every iOS
 # deeplink flow, Safari is closed before each attempt and checked from outside after it. Android
-# flows don't need this: they assert the app's own root view, which Chrome doesn't have.
+# flows don't need this: they assert the app's own root view, which Chrome doesn't have. The other
+# flows (login, signup) never open a link, so they skip it.
 checks_safari() {
   [ "$PLATFORM" = "ios" ] && [[ "$NAME" == deeplink-* ]]
 }
@@ -150,19 +151,6 @@ safari_is_running() {
 }
 
 SAFARI_MESSAGE="The link opened in Safari instead of the app"
-
-# When a marketing link's destination page refuses the app's request (Cloudflare's bot challenge on
-# www.artsy.net answers 403), the app opens the redirect target anyway and logs this marker. The
-# flow passes either way, so the device log is the only place that tells whether it happened.
-# Keep in sync with MARKETING_LINK_FALLBACK_MARKER in src/app/utils/fetchMarketingURL.ts.
-MARKETING_LINK_FALLBACK_MARKER="[marketing-link-fallback]"
-
-# Prints what the app logged with the marker since $1 (local time, YYYY-MM-DD HH:MM:SS), if anything
-marketing_link_fallback_since() {
-  xcrun simctl spawn "$DEVICE" log show --info --start "$1" --style compact \
-    --predicate "subsystem == \"com.facebook.react.log\" AND eventMessage CONTAINS \"$MARKETING_LINK_FALLBACK_MARKER\"" \
-    2> /dev/null | grep -F "$MARKETING_LINK_FALLBACK_MARKER" | tail -n 1 | sed 's/.*\[marketing-link-fallback\] *//' || true
-}
 
 # Flows that run first, in this order; the rest follow alphabetically. The cheap flows go first because
 # a freshly booted simulator or emulator is at its slowest at the start of the job. The deeplinks are
@@ -274,16 +262,6 @@ print_summary() {
       echo "Failures:"
       printf '%s' "$failures"
     fi
-    # Whether a marketing link's destination refused the app's request (see MARKETING_LINK_FALLBACK_MARKER)
-    if [ "$PLATFORM" = "ios" ]; then
-      echo
-      if [ -s "$ARTIFACTS_DIR/fallbacks.tsv" ]; then
-        echo "Marketing link fallbacks (the destination refused the app's request, the app used the redirect):"
-        LC_ALL=C awk -F'\t' '{ printf "  ☁️ %s attempt %s (%s): %s\n", $1, $2, $3, $4 }' "$ARTIFACTS_DIR/fallbacks.tsv"
-      else
-        echo "Marketing link fallbacks: none, every destination answered the app's request"
-      fi
-    fi
   } | tee "$ARTIFACTS_DIR/summary.txt"
 
   if [ -n "$GITHUB_STEP_SUMMARY" ]; then
@@ -315,7 +293,6 @@ for FLOW in $(platform_flows); do
     echo "Running test: $FLOW (attempt $attempt/$MAX_ATTEMPTS)"
     ATTEMPT_DIR="$ARTIFACTS_DIR/$NAME/attempt-$attempt"
     ATTEMPT_START=$(now_ms)
-    ATTEMPT_START_LOG_TIME=$(date '+%Y-%m-%d %H:%M:%S')
     mkdir -p "$ATTEMPT_DIR"
 
     # Replaces e2e/flows/signup.js. New per attempt, since a failed attempt may already have created the account.
@@ -345,17 +322,6 @@ for FLOW in $(platform_flows); do
       --reporter "junit:$ATTEMPT_DIR/junit.xml" \
       --reporter ./e2e-agent-device/reporters/failures.mjs; then
       TEST_PASSED=true
-    fi
-    if checks_safari; then
-      FALLBACK=$(marketing_link_fallback_since "$ATTEMPT_START_LOG_TIME")
-      if [ -n "$FALLBACK" ]; then
-        echo "☁️ The app's request was refused and it used the redirect: $FALLBACK"
-        printf '%s\t%s\t%s\t%s\n' "$NAME" "$attempt" "$([ "$TEST_PASSED" = true ] && echo passed || echo failed)" \
-          "$FALLBACK" >> "$ARTIFACTS_DIR/fallbacks.tsv"
-        if [ -n "$GITHUB_ACTIONS" ]; then
-          echo "::notice title=Marketing link fallback::$NAME ($PLATFORM) attempt $attempt: $FALLBACK"
-        fi
-      fi
     fi
     # Checked even when the flow passed: a pass after Safari took the link isn't a pass
     if checks_safari && safari_is_running; then
