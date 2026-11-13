@@ -12,6 +12,7 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL, renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ExpoSpeechRecognitionModule } from "expo-speech-recognition"
+import { StyleSheet } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { createMockEnvironment } from "relay-test-utils"
 
@@ -57,7 +58,8 @@ describe("ArtAssistant", () => {
     expect(screen.getByTestId("art-assistant-layout")).toBeOnTheScreen()
     expect(screen.queryByRole("button", { name: "Start a new chat" })).not.toBeOnTheScreen()
     expect(screen.getByLabelText("Art Assistant prompt")).toBeOnTheScreen()
-    expect(screen.getByLabelText("Send")).toBeDisabled()
+    expect(screen.queryByLabelText("Send")).not.toBeOnTheScreen()
+    expect(screen.getByText("Art Assistant is AI and can make mistakes")).toBeOnTheScreen()
 
     ART_ASSISTANT_SUGGESTIONS.forEach((suggestion) => {
       expect(screen.getByText(suggestion)).toBeOnTheScreen()
@@ -109,7 +111,7 @@ describe("ArtAssistant", () => {
     renderWithWrappers(<ArtAssistant initialPrompt={null} />)
 
     expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp("value", "")
-    expect(screen.getByLabelText("Send")).toBeDisabled()
+    expect(screen.queryByLabelText("Send")).not.toBeOnTheScreen()
   })
 
   it("sends a suggestion as soon as it is picked", () => {
@@ -214,19 +216,66 @@ describe("ArtAssistant", () => {
     expect(screen.getByLabelText("Send")).toBeDisabled()
   })
 
-  it("highlights the composer while it is focused", () => {
+  it("keeps the composer to one row, with the AI notice, until there is something to send", () => {
     renderWithWrappers(<ArtAssistant />)
 
-    const composer = screen.getByTestId("art-assistant-composer-input-container")
-    const prompt = screen.getByLabelText("Art Assistant prompt")
+    expect(screen.getByText("Art Assistant is AI and can make mistakes")).toBeOnTheScreen()
+    expect(screen.queryByLabelText("Send")).not.toBeOnTheScreen()
 
-    expect(composer).toHaveStyle({ borderColor: "#D8D8D8" })
+    fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "Warhol prints")
 
-    fireEvent(prompt, "focus")
-    expect(composer).toHaveStyle({ borderColor: "#1023D7" })
+    expect(screen.queryByText("Art Assistant is AI and can make mistakes")).not.toBeOnTheScreen()
+    expect(screen.getByLabelText("Send")).toBeEnabled()
 
-    fireEvent(prompt, "blur")
-    expect(composer).toHaveStyle({ borderColor: "#D8D8D8" })
+    fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "")
+
+    expect(screen.getByText("Art Assistant is AI and can make mistakes")).toBeOnTheScreen()
+    expect(screen.queryByLabelText("Send")).not.toBeOnTheScreen()
+  })
+
+  describe("expanding the composer", () => {
+    const getBorderColor = () =>
+      StyleSheet.flatten(screen.getByTestId("art-assistant-composer-input-container").props.style)
+        .borderColor
+
+    it("expands and darkens the border while it is focused, and collapses on blur when empty", () => {
+      renderWithWrappers(<ArtAssistant />)
+
+      const prompt = screen.getByLabelText("Art Assistant prompt")
+      const collapsedBorder = getBorderColor()
+
+      expect(collapsedBorder).toEqual("transparent")
+      expect(screen.queryByLabelText("Send")).not.toBeOnTheScreen()
+      expect(screen.getByText("Art Assistant is AI and can make mistakes")).toBeOnTheScreen()
+
+      fireEvent(prompt, "focus")
+
+      const focusedBorder = getBorderColor()
+      expect(focusedBorder).not.toEqual(collapsedBorder)
+      expect(screen.getByLabelText("Send")).toBeDisabled()
+      expect(screen.queryByText("Art Assistant is AI and can make mistakes")).not.toBeOnTheScreen()
+
+      fireEvent(prompt, "blur")
+
+      expect(getBorderColor()).toEqual(collapsedBorder)
+      expect(screen.queryByLabelText("Send")).not.toBeOnTheScreen()
+      expect(screen.getByText("Art Assistant is AI and can make mistakes")).toBeOnTheScreen()
+    })
+
+    it("stays expanded after blur while there is text, with a lighter border than when focused", () => {
+      renderWithWrappers(<ArtAssistant />)
+
+      const prompt = screen.getByLabelText("Art Assistant prompt")
+
+      fireEvent(prompt, "focus")
+      const focusedBorder = getBorderColor()
+      fireEvent.changeText(prompt, "Warhol prints")
+      fireEvent(prompt, "blur")
+
+      expect(screen.getByLabelText("Send")).toBeEnabled()
+      expect(getBorderColor()).not.toEqual(focusedBorder)
+      expect(getBorderColor()).not.toEqual("transparent")
+    })
   })
 
   it("dismisses the keyboard when the conversation starts scrolling", () => {
@@ -248,7 +297,7 @@ describe("ArtAssistant", () => {
     expect(screen.getByText("blue painting")).toBeOnTheScreen()
     expect(screen.getByText("Thinking...")).toBeOnTheScreen()
     expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp("value", "")
-    expect(screen.getByLabelText("Send")).toBeDisabled()
+    expect(screen.queryByLabelText("Send")).not.toBeOnTheScreen()
     expect(KeyboardController.dismiss).toHaveBeenCalledTimes(1)
 
     const operation = environment.mock.getMostRecentOperation()
@@ -289,7 +338,7 @@ describe("ArtAssistant", () => {
 
     expect(screen.queryByText("Searching artworks...")).not.toBeOnTheScreen()
     expect(screen.getByText("I found a few works for you.")).toBeOnTheScreen()
-    expect(screen.getByLabelText("Send")).toBeDisabled()
+    expect(screen.queryByLabelText("Send")).not.toBeOnTheScreen()
     expect(KeyboardController.dismiss).toHaveBeenCalledTimes(1)
   })
 
@@ -760,11 +809,24 @@ describe("ArtAssistant", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtAssistantVoiceInput: true })
     })
 
+    it("expands the composer as soon as dictation starts, before any text arrives", async () => {
+      renderWithWrappers(<ArtAssistant />)
+
+      expect(screen.queryByLabelText("Send")).not.toBeOnTheScreen()
+
+      await startDictation()
+
+      expect(screen.getByLabelText("Send")).toBeOnTheScreen()
+      expect(screen.queryByText("Art Assistant is AI and can make mistakes")).not.toBeOnTheScreen()
+    })
+
     it("hides the microphone while voice input is off", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtAssistantVoiceInput: false })
       renderWithWrappers(<ArtAssistant />)
 
       expect(screen.queryByRole("button", { name: "Dictate a prompt" })).not.toBeOnTheScreen()
+      fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "Warhol prints")
+
       expect(screen.getByLabelText("Send")).toBeOnTheScreen()
     })
 
@@ -773,6 +835,8 @@ describe("ArtAssistant", () => {
       renderWithWrappers(<ArtAssistant />)
 
       expect(screen.queryByRole("button", { name: "Dictate a prompt" })).not.toBeOnTheScreen()
+      fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "Warhol prints")
+
       expect(screen.getByLabelText("Send")).toBeOnTheScreen()
     })
 
