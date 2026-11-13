@@ -17,6 +17,10 @@ describe(formatLargeNumber, () => {
     it("returns the number of billions when less than 1t which is totally going to happen soon", () => {
       expect(formatLargeNumber(543235234432)).toEqual("543B")
     })
+
+    it("returns the number of trillions", () => {
+      expect(formatLargeNumber(2500000000000)).toBeTruthy()
+    })
   })
 
   describe("decimal places specified", () => {

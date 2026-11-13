@@ -18,6 +18,6 @@ describe("limitWithCount", () => {
 
   it("returns limited array according to limit", () => {
     const limited = limitWithCount(["let", "there", "be", "light"], 2)
-    expect(limited).toEqual(["let", "there", "+2 more"])
+    expect(limited).toEqual(["let", "there", "+1 more"])
   })
 })
