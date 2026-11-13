@@ -1,12 +1,11 @@
 import { OwnerType, SentArtAssistantMessage } from "@artsy/cohesion"
-import { CameraStrokeIcon, CloseIcon, EditIcon, SendIcon } from "@artsy/icons/native"
+import { CameraStrokeIcon, CloseIcon, EditIcon } from "@artsy/icons/native"
 import {
   Button,
   DEFAULT_HIT_SLOP,
   Dialog,
   Flex,
   Image,
-  Input,
   InputRef,
   Screen,
   Spinner,
@@ -16,6 +15,12 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { FlashList, FlashListRef } from "@shopify/flash-list"
+import {
+  ArtAssistantComposer,
+  ArtAssistantComposerAction,
+  COMPOSER_ACTION_SIZE,
+  COMPOSER_ICON_SIZE,
+} from "app/Scenes/ArtAssistant/Components/ArtAssistantComposer"
 import { ArtAssistantEmptyState } from "app/Scenes/ArtAssistant/Components/ArtAssistantEmptyState"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/Components/ArtAssistantMessage"
 import { ArtAssistantVoiceInputButton } from "app/Scenes/ArtAssistant/Components/ArtAssistantVoiceInputButton"
@@ -36,11 +41,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-const COMPOSER_LINE_HEIGHT = 20
-const COMPOSER_COLLAPSED_HEIGHT = 50
-const COMPOSER_VERTICAL_PADDING = (COMPOSER_COLLAPSED_HEIGHT - COMPOSER_LINE_HEIGHT) / 2
-const COMPOSER_MAX_TEXT_HEIGHT = 4 * COMPOSER_LINE_HEIGHT
-const ATTACHMENT_PREVIEW_SIZE = 64
+const ATTACHMENT_PREVIEW_SIZE = 56
 
 interface ArtAssistantProps {
   initialPrompt?: string
@@ -96,6 +97,8 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
   const showVoiceInputButton = enableVoiceInput && voiceInput.isAvailable
   const composerKeyboardGap = space(1)
   const messageGap = space(2)
+  // Until the user focuses it, dictates or has something to send, the composer stays a single row.
+  const isComposerExpanded = isComposerFocused || isListening || prompt.length > 0 || !!attachment
   const canSend =
     (prompt.trim().length > 0 || !!attachedImage) && !isResponding && !isUploadingImage
 
@@ -372,169 +375,120 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
             testID="art-assistant-content"
           />
 
-          <Flex backgroundColor="background" px={2} pt={1}>
-            <Text variant="xs" color="mono60" textAlign="center">
-              Art Assistant is AI and can make mistakes
-            </Text>
-          </Flex>
-
-          {!!attachment && (
-            <Flex backgroundColor="background" flexDirection="row" px={2} pt={1}>
-              <Flex
-                backgroundColor="mono5"
-                borderRadius={10}
-                height={ATTACHMENT_PREVIEW_SIZE}
-                overflow="hidden"
-                testID="art-assistant-image-attachment"
-                width={ATTACHMENT_PREVIEW_SIZE}
-              >
-                <Image
-                  accessibilityLabel={isUploadingImage ? "Uploading image" : "Image to send"}
-                  height={ATTACHMENT_PREVIEW_SIZE}
-                  // A local file, so there is nothing for Gemini to resize.
-                  performResize={false}
-                  src={attachment.uri}
-                  style={{ opacity: isUploadingImage ? 0.5 : 1 }}
-                  width={ATTACHMENT_PREVIEW_SIZE}
-                />
-
-                {!!isUploadingImage && (
-                  <Flex
-                    alignItems="center"
-                    bottom={0}
-                    justifyContent="center"
-                    left={0}
-                    position="absolute"
-                    right={0}
-                    testID="art-assistant-image-uploading"
-                    top={0}
-                  >
-                    <Spinner size="small" />
-                  </Flex>
-                )}
-
-                <Touchable
-                  accessibilityLabel="Remove image"
-                  accessibilityRole="button"
-                  hitSlop={DEFAULT_HIT_SLOP}
-                  onPress={removeImage}
-                  style={{ position: "absolute", top: space(0.5), right: space(0.5) }}
-                >
-                  <Flex
-                    alignItems="center"
-                    backgroundColor="mono0"
-                    borderRadius={11}
-                    height={22}
-                    justifyContent="center"
-                    width={22}
-                  >
-                    <CloseIcon fill="mono100" height={14} width={14} />
-                  </Flex>
-                </Touchable>
-              </Flex>
-            </Flex>
-          )}
-
           <Flex
-            flexDirection="row"
-            // Send stays at the bottom while the composer grows upwards.
-            alignItems="flex-end"
             backgroundColor="background"
-            gap={1}
             pb={`${bottom + composerKeyboardGap}px`}
             px={2}
             pt={1}
             testID="art-assistant-composer"
           >
-            <Flex
-              flex={1}
-              flexDirection="row"
-              alignItems="flex-end"
-              borderColor={isComposerFocused || isListening ? "blue100" : "mono15"}
-              borderRadius={COMPOSER_COLLAPSED_HEIGHT / 2}
-              borderWidth={1}
-              gap={1}
-              minHeight={COMPOSER_COLLAPSED_HEIGHT}
-              px={2}
-              py={`${COMPOSER_VERTICAL_PADDING}px`}
+            {!isComposerExpanded && (
+              <Text variant="xs" color="mono60" pb={1} textAlign="center">
+                Art Assistant is AI and can make mistakes
+              </Text>
+            )}
+
+            <ArtAssistantComposer
+              attachment={
+                !!attachment && (
+                  <Flex
+                    alignSelf="flex-start"
+                    backgroundColor="mono5"
+                    borderRadius={10}
+                    height={ATTACHMENT_PREVIEW_SIZE}
+                    testID="art-assistant-image-attachment"
+                    width={ATTACHMENT_PREVIEW_SIZE}
+                  >
+                    <Flex borderRadius={10} flex={1} overflow="hidden">
+                      <Image
+                        accessibilityLabel={isUploadingImage ? "Uploading image" : "Image to send"}
+                        height={ATTACHMENT_PREVIEW_SIZE}
+                        // A local file, so there is nothing for Gemini to resize.
+                        performResize={false}
+                        src={attachment.uri}
+                        style={{ opacity: isUploadingImage ? 0.5 : 1 }}
+                        width={ATTACHMENT_PREVIEW_SIZE}
+                      />
+
+                      {!!isUploadingImage && (
+                        <Flex
+                          alignItems="center"
+                          bottom={0}
+                          justifyContent="center"
+                          left={0}
+                          position="absolute"
+                          right={0}
+                          testID="art-assistant-image-uploading"
+                          top={0}
+                        >
+                          <Spinner size="small" />
+                        </Flex>
+                      )}
+                    </Flex>
+
+                    <Touchable
+                      accessibilityLabel="Remove image"
+                      accessibilityRole="button"
+                      hitSlop={DEFAULT_HIT_SLOP}
+                      onPress={removeImage}
+                      style={{ position: "absolute", top: space(0.5), right: space(0.5) }}
+                    >
+                      <Flex
+                        alignItems="center"
+                        backgroundColor="mono100"
+                        borderRadius={10}
+                        height={20}
+                        justifyContent="center"
+                        width={20}
+                      >
+                        <CloseIcon fill="mono0" height={12} width={12} />
+                      </Flex>
+                    </Touchable>
+                  </Flex>
+                )
+              }
+              canSend={canSend}
+              // The transcript owns the text while listening, so typing would be overwritten.
+              editable={!isListening}
+              inputAccessibilityLabel="Art Assistant prompt"
+              inputRef={composerInputRef}
+              isExpanded={isComposerExpanded}
+              isFocused={isComposerFocused}
+              leadingActions={
+                !!enableImageSearch && (
+                  <ArtAssistantComposerAction
+                    accessibilityLabel="Add an image"
+                    isDisabled={isResponding}
+                    onPress={handleAddImage}
+                  >
+                    <CameraStrokeIcon
+                      fill={isResponding ? "mono30" : "mono100"}
+                      height={COMPOSER_ICON_SIZE}
+                      width={COMPOSER_ICON_SIZE}
+                    />
+                  </ArtAssistantComposerAction>
+                )
+              }
+              onBlur={() => setIsComposerFocused(false)}
+              onChangeText={setPrompt}
+              onFocus={() => setIsComposerFocused(true)}
+              onSend={handleSend}
+              placeholder={isListening ? "Listening..." : "Tell us what you’d like..."}
+              placeholderTextColor={color("mono60")}
               testID="art-assistant-composer-input-container"
-            >
-              {!!enableImageSearch && (
-                <Touchable
-                  accessibilityLabel="Add an image"
-                  accessibilityRole="button"
-                  accessibilityState={{ disabled: isResponding }}
-                  disabled={isResponding}
-                  hitSlop={DEFAULT_HIT_SLOP}
-                  onPress={handleAddImage}
-                  underlayColor="transparent"
-                >
-                  {/* Sized to one text line so the collapsed bubble keeps its height. */}
-                  <CameraStrokeIcon
-                    fill={isResponding ? "mono30" : "mono100"}
-                    height={COMPOSER_LINE_HEIGHT}
-                    width={COMPOSER_LINE_HEIGHT}
+              trailingActions={
+                !!showVoiceInputButton && (
+                  <ArtAssistantVoiceInputButton
+                    isHearing={voiceInput.status === "listening"}
+                    isListening={isListening}
+                    onPress={isListening ? handleStopVoiceInput : handleStartVoiceInput}
+                    size={COMPOSER_ACTION_SIZE}
+                    volume={voiceInput.volume}
                   />
-                </Touchable>
-              )}
-
-              <Flex flex={1}>
-                <Input
-                  accessibilityLabel="Art Assistant prompt"
-                  // The transcript owns the text while listening, so typing would be overwritten.
-                  editable={!isListening}
-                  multiline
-                  onBlur={() => setIsComposerFocused(false)}
-                  onChangeText={setPrompt}
-                  onFocus={() => setIsComposerFocused(true)}
-                  placeholder={isListening ? "Listening..." : "Tell us what you'd like..."}
-                  placeholderTextColor={color("mono60")}
-                  ref={composerInputRef}
-                  style={{
-                    borderWidth: 0,
-                    height: undefined,
-                    maxHeight: COMPOSER_MAX_TEXT_HEIGHT,
-                    minHeight: COMPOSER_LINE_HEIGHT,
-                    paddingBottom: 0,
-                    paddingLeft: 0,
-                    paddingRight: 0,
-                    paddingTop: 0,
-                  }}
-                  value={prompt}
-                />
-              </Flex>
-
-              {!!showVoiceInputButton && (
-                <ArtAssistantVoiceInputButton
-                  isHearing={voiceInput.status === "listening"}
-                  isListening={isListening}
-                  onPress={isListening ? handleStopVoiceInput : handleStartVoiceInput}
-                  // Sized to one text line so the collapsed bubble keeps its height.
-                  size={COMPOSER_LINE_HEIGHT}
-                  volume={voiceInput.volume}
-                />
-              )}
-            </Flex>
-
-            <Touchable
-              accessibilityLabel="Send"
-              accessibilityRole="button"
-              accessibilityState={{ disabled: !canSend }}
-              disabled={!canSend}
-              onPress={handleSend}
-              style={{ borderRadius: COMPOSER_COLLAPSED_HEIGHT / 2, overflow: "hidden" }}
-            >
-              <Flex
-                alignItems="center"
-                backgroundColor={canSend ? "mono100" : "mono30"}
-                borderRadius={COMPOSER_COLLAPSED_HEIGHT / 2}
-                height={COMPOSER_COLLAPSED_HEIGHT}
-                justifyContent="center"
-                width={COMPOSER_COLLAPSED_HEIGHT}
-              >
-                <SendIcon fill="mono0" height={COMPOSER_LINE_HEIGHT} width={COMPOSER_LINE_HEIGHT} />
-              </Flex>
-            </Touchable>
+                )
+              }
+              value={prompt}
+            />
           </Flex>
         </KeyboardAvoidingContainer>
 
