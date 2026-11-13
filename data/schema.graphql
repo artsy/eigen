@@ -8224,6 +8224,21 @@ type CRMContact {
   assignedToUserID: String
 
   """
+  ISO 4217 currency code of the budget, e.g. USD
+  """
+  budgetCurrency: String
+
+  """
+  Upper end of the contact's budget, in `budgetCurrency`
+  """
+  budgetMax: Float
+
+  """
+  Lower end of the contact's budget, in `budgetCurrency`
+  """
+  budgetMin: Float
+
+  """
   Any of collector, artist, enthusiast, advisor, critic, curator, journalist, gallery, institution, museum, buyer, government
   """
   categories: [String!]
@@ -13665,6 +13680,13 @@ input CreateCRMContactInput {
   Must be a user who belongs to the contact's partner
   """
   assignedToUserID: String
+
+  """
+  ISO 4217 code, e.g. USD. Required when a budget bound is set.
+  """
+  budgetCurrency: String
+  budgetMax: Float
+  budgetMin: Float
 
   """
   Replaces the whole list on update. Unknown values are rejected.
@@ -39499,6 +39521,13 @@ input UpdateCRMContactInput {
   Must be a user who belongs to the contact's partner
   """
   assignedToUserID: String
+
+  """
+  ISO 4217 code, e.g. USD. Required when a budget bound is set.
+  """
+  budgetCurrency: String
+  budgetMax: Float
+  budgetMin: Float
 
   """
   Replaces the whole list on update. Unknown values are rejected.
