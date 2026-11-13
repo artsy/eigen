@@ -2,7 +2,8 @@ name: 🤖 AI PR Review
 
 on:
   pull_request:
-    types: [opened, synchronize, ready_for_review, labeled, unlabeled]
+    # closed is for the AI review's outcome experiments (artsy/duchamp#168); it never starts a review.
+    types: [opened, synchronize, ready_for_review, labeled, unlabeled, closed]
 
 jobs:
   claude-review:

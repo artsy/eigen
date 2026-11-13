@@ -3848,6 +3848,11 @@ type ArtnetArtwork {
   ): String
 
   """
+  Whether a Delete pushed to Artnet has not settled yet. Edits are refused while it has not.
+  """
+  deleteInFlight: Boolean
+
+  """
   A globally unique ID.
   """
   id: ID!
@@ -3856,6 +3861,11 @@ type ArtnetArtwork {
   A type-specific ID likely used as a database ID.
   """
   internalID: ID!
+
+  """
+  What came back for the latest Delete pushed to Artnet: Artnet's messages when it settled the Delete without confirming the artwork is gone (the ArtnetArtwork is then kept), or Gravity's reason if it gave up waiting. Empty while the Delete is pending, or when none was pushed.
+  """
+  lastDeleteMessages: [String]
 
   """
   Free-text materials (e.g. "oil on canvas"), distinct from the medium vocabulary.
@@ -8222,6 +8232,21 @@ type CRMContact {
   The partner user this contact is assigned to
   """
   assignedToUserID: String
+
+  """
+  ISO 4217 currency code of the budget, e.g. USD
+  """
+  budgetCurrency: String
+
+  """
+  Upper end of the contact's budget, in `budgetCurrency`
+  """
+  budgetMax: Float
+
+  """
+  Lower end of the contact's budget, in `budgetCurrency`
+  """
+  budgetMin: Float
 
   """
   Any of collector, artist, enthusiast, advisor, critic, curator, journalist, gallery, institution, museum, buyer, government
@@ -13667,6 +13692,13 @@ input CreateCRMContactInput {
   assignedToUserID: String
 
   """
+  ISO 4217 code, e.g. USD. Required when a budget bound is set.
+  """
+  budgetCurrency: String
+  budgetMax: Float
+  budgetMin: Float
+
+  """
   Replaces the whole list on update. Unknown values are rejected.
   """
   categories: [String!]
@@ -15602,6 +15634,36 @@ type DeleteArtistSuccess {
 
 union DeleteArtistSuccessOrErrorType = DeleteArtistFailure | DeleteArtistSuccess
 
+type DeleteArtnetArtworkFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteArtnetArtworkMutationInput {
+  clientMutationId: String
+
+  """
+  The ID of the ArtnetArtwork.
+  """
+  id: String!
+}
+
+type DeleteArtnetArtworkMutationPayload {
+  """
+  On success: the ArtnetArtwork the Delete was pushed for. On error: the error that occurred.
+  """
+  artnetArtworkOrError: DeleteArtnetArtworkResponseOrError
+  clientMutationId: String
+}
+
+union DeleteArtnetArtworkResponseOrError = DeleteArtnetArtworkFailure | DeleteArtnetArtworkSuccess
+
+type DeleteArtnetArtworkSuccess {
+  """
+  The ArtnetArtwork the Delete was pushed for. `deleteInFlight` is true while the Delete is pending, and false means it was already destroyed.
+  """
+  artnetArtwork: ArtnetArtwork
+}
+
 type DeleteArtworkFailure {
   mutationError: GravityMutationError
 }
@@ -16251,6 +16313,36 @@ type DeletePartnerListMutationPayload {
   On success: the deleted partner list. On error: the error that occurred.
   """
   partnerListOrError: DeletePartnerListResponseOrError
+}
+
+type DeletePartnerListPublicationCoverImageFailure {
+  mutationError: GravityMutationError
+}
+
+input DeletePartnerListPublicationCoverImageMutationInput {
+  clientMutationId: String
+
+  """
+  The ID of the private viewing room's partner list.
+  """
+  partnerListID: String!
+}
+
+type DeletePartnerListPublicationCoverImageMutationPayload {
+  clientMutationId: String
+
+  """
+  On success: the partner list publication. On error: the error that occurred.
+  """
+  partnerListPublicationOrError: DeletePartnerListPublicationCoverImageResponseOrError
+}
+
+union DeletePartnerListPublicationCoverImageResponseOrError =
+    DeletePartnerListPublicationCoverImageFailure
+  | DeletePartnerListPublicationCoverImageSuccess
+
+type DeletePartnerListPublicationCoverImageSuccess {
+  partnerListPublication: PartnerListPublication
 }
 
 union DeletePartnerListResponseOrError = DeletePartnerListFailure | DeletePartnerListSuccess
@@ -26109,6 +26201,11 @@ type Mutation {
   deleteArtistStoryVideo(input: deleteArtistStoryVideoInput!): deleteArtistStoryVideoPayload
 
   """
+  Removes an ArtnetArtwork from Artnet by pushing a Delete. Removal is asynchronous: the ArtnetArtwork is returned as is, with `deleteInFlight` set, and is destroyed once Artnet's Delete task settles and its messages confirm the artwork is gone, after which it can no longer be found. If they don't, it stays and `lastDeleteMessages` says why, and the mutation can be repeated. Repeating it while one is pending does nothing, and edits are refused meanwhile. An ArtnetArtwork whose Create made no artwork on Artnet is destroyed immediately. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
+  """
+  deleteArtnetArtwork(input: DeleteArtnetArtworkMutationInput!): DeleteArtnetArtworkMutationPayload
+
+  """
   Deletes an artwork.
   """
   deleteArtwork(input: DeleteArtworkMutationInput!): DeleteArtworkMutationPayload
@@ -26293,6 +26390,13 @@ type Mutation {
   Deletes a partner list.
   """
   deletePartnerList(input: DeletePartnerListMutationInput!): DeletePartnerListMutationPayload
+
+  """
+  Removes a private viewing room's cover image.
+  """
+  deletePartnerListPublicationCoverImage(
+    input: DeletePartnerListPublicationCoverImageMutationInput!
+  ): DeletePartnerListPublicationCoverImageMutationPayload
 
   """
   Deletes a location for a partner
@@ -26865,7 +26969,7 @@ type Mutation {
   updateArtistStoryVideo(input: updateArtistStoryVideoInput!): updateArtistStoryVideoPayload
 
   """
-  Updates an ArtnetArtwork and pushes the supported changes to Artnet. At least one of `published`, `availability`, `materials`, `priceToMinor` or `syncOn` is required. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
+  Updates an ArtnetArtwork and pushes the supported changes to Artnet. At least one of `published`, `availability`, `primaryMedium`, `additionalMediums`, `materials`, `priceFromMinor`, `priceToMinor` or `syncOn` is required. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
   """
   updateArtnetArtwork(input: UpdateArtnetArtworkMutationInput!): UpdateArtnetArtworkMutationPayload
 
@@ -27109,6 +27213,13 @@ type Mutation {
   updatePartnerListArtworkPosition(
     input: UpdatePartnerListArtworkPositionMutationInput!
   ): UpdatePartnerListArtworkPositionMutationPayload
+
+  """
+  Uploads or replaces a private viewing room's cover image. Doesn't publish the room.
+  """
+  updatePartnerListPublicationCoverImage(
+    input: UpdatePartnerListPublicationCoverImageMutationInput!
+  ): UpdatePartnerListPublicationCoverImageMutationPayload
 
   """
   Updates a new location for a partner
@@ -30787,6 +30898,11 @@ type PartnerListPublication {
   Number of artworks currently snapshotted into this publication.
   """
   artworksCount: Int!
+
+  """
+  Cover image for the room's hero banner (viewing rooms rebuild). Not shown to visitors yet.
+  """
+  coverImage: Image
   createdAt(
     format: String
 
@@ -30795,6 +30911,11 @@ type PartnerListPublication {
     """
     timezone: String
   ): String
+
+  """
+  Long plain-text curatorial text introducing the works (viewing rooms rebuild). Not shown to visitors yet.
+  """
+  curatorialText: String
   description: String
 
   """
@@ -32038,6 +32159,11 @@ input PublishPartnerListPublicationMutationInput {
   """
   artworkFieldVisibility: ArtworkFieldVisibilityInput
   clientMutationId: String
+
+  """
+  Long plain-text curatorial text (viewing rooms rebuild). Blank hides it.
+  """
+  curatorialText: String
 
   """
   Plain-text description shown on the published room.
@@ -38753,6 +38879,11 @@ type UpdateArtnetArtworkFailure {
 
 input UpdateArtnetArtworkMutationInput {
   """
+  The artwork's other mediums on Artnet, from Artnet's accepted mediums. Replaces them: what is missing is removed, and an empty list removes them all. Omit to leave them unchanged.
+  """
+  additionalMediums: [String!]
+
+  """
   Gravity availability (e.g. `for sale`, `sold`), normalized to an Artnet sale status.
   """
   availability: String
@@ -38769,9 +38900,19 @@ input UpdateArtnetArtworkMutationInput {
   materials: String
 
   """
-  Ceiling of Artnet's price range, in minor units. The floor is the catalog artwork's price. Pass null to clear it; omit to leave it unchanged.
+  Artnet's own price, in minor units and the artwork's currency, replacing the catalog price there until the next sync. A single price: any ceiling is cleared. Can't be combined with priceToMinor.
+  """
+  priceFromMinor: Long
+
+  """
+  Ceiling of Artnet's price range, in minor units. With sync off the floor is Artnet's own price when it's in the artwork's currency, otherwise the catalog price, and there must be one. Pass null to clear it; omit to leave it unchanged.
   """
   priceToMinor: Long
+
+  """
+  The artwork's primary medium on Artnet, from Artnet's accepted mediums. Replaces the current primary, which is removed from Artnet; the additional mediums are kept. Omit to leave it unchanged.
+  """
+  primaryMedium: String
 
   """
   Publish or unpublish the artwork on Artnet.
@@ -39425,6 +39566,13 @@ input UpdateCRMContactInput {
   Must be a user who belongs to the contact's partner
   """
   assignedToUserID: String
+
+  """
+  ISO 4217 code, e.g. USD. Required when a budget bound is set.
+  """
+  budgetCurrency: String
+  budgetMax: Float
+  budgetMin: Float
 
   """
   Replaces the whole list on update. Unknown values are rejected.
@@ -40712,6 +40860,46 @@ type UpdatePartnerListMutationPayload {
   On success: the updated partner list. On error: the error that occurred.
   """
   partnerListOrError: UpdatePartnerListResponseOrError
+}
+
+type UpdatePartnerListPublicationCoverImageFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdatePartnerListPublicationCoverImageMutationInput {
+  clientMutationId: String
+
+  """
+  The ID of the private viewing room's partner list.
+  """
+  partnerListID: String!
+
+  """
+  S3 bucket containing the uploaded cover image.
+  """
+  remoteImageS3Bucket: String!
+
+  """
+  S3 key of the uploaded cover image.
+  """
+  remoteImageS3Key: String!
+}
+
+type UpdatePartnerListPublicationCoverImageMutationPayload {
+  clientMutationId: String
+
+  """
+  On success: the partner list publication. On error: the error that occurred.
+  """
+  partnerListPublicationOrError: UpdatePartnerListPublicationCoverImageResponseOrError
+}
+
+union UpdatePartnerListPublicationCoverImageResponseOrError =
+    UpdatePartnerListPublicationCoverImageFailure
+  | UpdatePartnerListPublicationCoverImageSuccess
+
+type UpdatePartnerListPublicationCoverImageSuccess {
+  partnerListPublication: PartnerListPublication
 }
 
 union UpdatePartnerListResponseOrError = UpdatePartnerListFailure | UpdatePartnerListSuccess

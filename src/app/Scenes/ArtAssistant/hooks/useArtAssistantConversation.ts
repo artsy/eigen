@@ -1,4 +1,8 @@
-import { ArtAssistantTurnFailed, SentArtAssistantMessage } from "@artsy/cohesion"
+import {
+  ArtAssistantTurnFailed,
+  SentArtAssistantMessage,
+  TappedArtAssistantVoiceInput,
+} from "@artsy/cohesion"
 import {
   AIAgentActivity,
   AIAgentDisplayedSectionInput,
@@ -138,6 +142,7 @@ export const useArtAssistantConversation = () => {
     trackResponseReceived,
     trackSuggestedReplyTapped,
     trackTurnFailed,
+    trackVoiceInputTapped,
   } = useArtAssistantTracking()
   const userID = GlobalStore.useAppState((state) => state.auth.userID)
   const authenticationToken = GlobalStore.useAppState((state) => state.auth.userAccessToken)
@@ -458,6 +463,12 @@ export const useArtAssistantConversation = () => {
     [trackSuggestedReplyTapped]
   )
 
+  const trackVoiceInputTappedInConversation = useCallback(
+    (type: TappedArtAssistantVoiceInput["type"]) =>
+      trackVoiceInputTapped(conversationID.current, type),
+    [trackVoiceInputTapped]
+  )
+
   const setFeedbackRating = useCallback(
     (messageID: string, rating: ArtAssistantFeedbackRating | undefined) => {
       setMessages((current) =>
@@ -542,6 +553,7 @@ export const useArtAssistantConversation = () => {
     startNewConversation,
     submit,
     trackSuggestedReplyTapped: trackSuggestedReplyTappedInConversation,
+    trackVoiceInputTapped: trackVoiceInputTappedInConversation,
   }
 }
 

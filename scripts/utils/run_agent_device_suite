@@ -66,7 +66,9 @@ if [ -z "$DEVICE" ]; then
   exit 1
 fi
 
-export AD_VAR_APP_ID="${MAESTRO_APP_ID:-$DEFAULT_APP_ID}"
+# AGENT_DEVICE_APP_ID wins over the env file's MAESTRO_APP_ID, e.g. to run the flows locally against a
+# dev build (net.artsy.artsy) instead of the QA app
+export AD_VAR_APP_ID="${AGENT_DEVICE_APP_ID:-${MAESTRO_APP_ID:-$DEFAULT_APP_ID}}"
 export AD_VAR_EMAIL="${MAESTRO_TEST_EMAIL:?MAESTRO_TEST_EMAIL is not set}"
 export AD_VAR_PASSWORD="${MAESTRO_TEST_PASSWORD:?MAESTRO_TEST_PASSWORD is not set}"
 
@@ -130,6 +132,25 @@ take_screenshot() {
     adb -s "$DEVICE" exec-out screencap -p > "$1"
   fi
 }
+
+# iOS opens a universal link in Safari when the app doesn't claim it. A flow can't see that: its
+# `open ${APP_ID}` brings the app back, and the waits only look inside the app. So for every iOS
+# deeplink flow, Safari is closed before each attempt and checked from outside after it. Android
+# flows don't need this: they assert the app's own root view, which Chrome doesn't have. The other
+# flows (login, signup) never open a link, so they skip it.
+checks_safari() {
+  [ "$PLATFORM" = "ios" ] && [[ "$NAME" == deeplink-* ]]
+}
+
+close_safari() {
+  xcrun simctl terminate "$DEVICE" com.apple.mobilesafari > /dev/null 2>&1 || true
+}
+
+safari_is_running() {
+  xcrun simctl spawn "$DEVICE" launchctl list 2> /dev/null | grep -q "UIKitApplication:com.apple.mobilesafari"
+}
+
+SAFARI_MESSAGE="The link opened in Safari instead of the app"
 
 # Flows that run first, in this order; the rest follow alphabetically. The cheap flows go first because
 # a freshly booted simulator or emulator is at its slowest at the start of the job. The deeplinks are
@@ -279,6 +300,9 @@ for FLOW in $(platform_flows); do
     export AD_VAR_SIGNUP_EMAIL="mobileQA+agentdevice-$TIMESTAMP@qa.qa"
     export AD_VAR_SIGNUP_PASSWORD="Pwd$TIMESTAMP" # pragma: allowlist secret
 
+    if checks_safari; then
+      close_safari
+    fi
     if ! launch_app "$FLOW"; then
       echo "Failed to launch $AD_VAR_APP_ID"
       record_attempt failed $(($(now_ms) - ATTEMPT_START)) "Failed to launch $AD_VAR_APP_ID"
@@ -290,12 +314,26 @@ for FLOW in $(platform_flows); do
       record_attempt failed $(($(now_ms) - ATTEMPT_START)) "The app didn't reach the flow's first screen after launch"
       continue
     fi
+    TEST_PASSED=false
     if AD_FAILURES_PATH="$ATTEMPT_DIR/failures.json" agent-device test "$FLOW" \
       "$DEVICE_FLAG" "$DEVICE" \
       --artifacts-dir "$ATTEMPT_DIR" \
       --reporter default \
       --reporter "junit:$ATTEMPT_DIR/junit.xml" \
       --reporter ./e2e-agent-device/reporters/failures.mjs; then
+      TEST_PASSED=true
+    fi
+    # Checked even when the flow passed: a pass after Safari took the link isn't a pass
+    if checks_safari && safari_is_running; then
+      echo "❌ $SAFARI_MESSAGE"
+      take_screenshot "$ATTEMPT_DIR/failure-screen.png" || true
+      jq -n --arg file "$FLOW" --arg title "$NAME" --arg message "$SAFARI_MESSAGE" \
+        '[{file: $file, title: $title, message: $message}]' > "$ATTEMPT_DIR/failures.json"
+      record_attempt failed $(($(now_ms) - ATTEMPT_START)) "$SAFARI_MESSAGE"
+      close_safari
+      continue
+    fi
+    if [ "$TEST_PASSED" = true ]; then
       PASSED=true
       record_attempt passed $(($(now_ms) - ATTEMPT_START)) ""
       break

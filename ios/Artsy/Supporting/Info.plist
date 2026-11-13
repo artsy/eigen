@@ -141,10 +141,14 @@
 	<string>Using User Location to display nearby shows</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Using User Location to display nearby shows</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used to dictate your questions to Art Assistant.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Camera access is needed to submit consignments.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photos will be used to gauge the quality of the work you are submitting.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Art Assistant uses speech recognition to turn what you say into text. Your voice may be sent to Apple to process it.</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>ReactNativeReleaseLevel</key>

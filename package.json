@@ -118,7 +118,7 @@
   },
   "dependencies": {
     "@artsy/changelog": "0.1.0",
-    "@artsy/cohesion": "4.421.0",
+    "@artsy/cohesion": "4.425.0",
     "@artsy/icons": "3.85.0",
     "@artsy/palette-mobile": "24.21.0",
     "@artsy/to-title-case": "1.2.1",
@@ -165,6 +165,7 @@
     "expo-file-system": "57.0.6",
     "expo-image-manipulator": "57.0.16",
     "expo-navigation-bar": "57.0.2",
+    "expo-speech-recognition": "57.1.1",
     "expo-updates": "patch:expo-updates@npm%3A57.0.21#~/.yarn/patches/expo-updates-npm-57.0.21-63a9a567f4.patch",
     "formik": "2.2.9",
     "graphql-sse": "2.6.1",

@@ -11,7 +11,7 @@ import {
   CityGuideBottomSheet,
   COLLAPSED_SHEET_HEIGHT,
 } from "app/Scenes/CityGuide/Components/CityGuideBottomSheet"
-import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
+import { CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 import { CityGuideMapHeader } from "app/Scenes/CityGuide/Components/CityGuideMapHeader"
 import { CityGuideMapPins } from "app/Scenes/CityGuide/Components/CityGuideMapPins"
 import { MapPreviewCard } from "app/Scenes/CityGuide/Components/Map/MapPreviewCard"
@@ -36,6 +36,7 @@ import {
 import { MAX_GRAPHQL_INT } from "app/Scenes/CityGuide/utils/maxGraphQLInt"
 import { DrawerPosition, Fair, MapTab, Show } from "app/Scenes/CityGuide/utils/types"
 import { GlobalStore } from "app/store/GlobalStore"
+import { CityData } from "app/utils/cityGuide/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"

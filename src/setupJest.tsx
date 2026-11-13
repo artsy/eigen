@@ -391,6 +391,45 @@ jest.mock("expo-image-manipulator", () => {
   }
 })
 
+// The recognizer is native, so tests drive it by emitting its events themselves:
+// `jest.requireMock("expo-speech-recognition").__emit("result", { isFinal: false, results: [...] })`.
+jest.mock("expo-speech-recognition", () => {
+  const { useEffect, useRef } = require("react")
+  const listeners = new Map<string, Set<(event: unknown) => void>>()
+  const permission = { canAskAgain: true, expires: "never", granted: true, status: "granted" }
+
+  return {
+    __emit: (eventName: string, event: unknown = null) => {
+      listeners.get(eventName)?.forEach((listener) => listener(event))
+    },
+    ExpoSpeechRecognitionModule: {
+      abort: jest.fn(),
+      getPermissionsAsync: jest.fn(() => Promise.resolve(permission)),
+      getSupportedLocales: jest.fn(() => Promise.resolve({ installedLocales: [], locales: [] })),
+      isRecognitionAvailable: jest.fn(() => true),
+      requestPermissionsAsync: jest.fn(() => Promise.resolve(permission)),
+      start: jest.fn(),
+      stop: jest.fn(),
+    },
+    useSpeechRecognitionEvent: (eventName: string, listener: (event: unknown) => void) => {
+      const listenerRef = useRef(listener)
+      listenerRef.current = listener
+
+      useEffect(() => {
+        const handler = (event: unknown) => listenerRef.current(event)
+        const eventListeners = listeners.get(eventName) ?? new Set()
+
+        eventListeners.add(handler)
+        listeners.set(eventName, eventListeners)
+
+        return () => {
+          eventListeners.delete(handler)
+        }
+      }, [eventName])
+    },
+  }
+})
+
 // Reports every file as already gone, so importing it (Scenes/Lens/utils/discardTempPhotos.ts) is
 // a no-op in tests. Tests that care about deletion mock that module, or this one, themselves.
 jest.mock("expo-file-system", () => ({

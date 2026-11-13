@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react-native"
-import { CityData } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 import { useInitialLocation } from "app/Scenes/CityGuide/hooks/useInitialLocation"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+import { CityData } from "app/utils/cityGuide/types"
 import { useLocation } from "app/utils/hooks/useLocation"
 
 jest.mock("app/utils/hooks/useLocation", () => ({

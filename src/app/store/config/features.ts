@@ -185,6 +185,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtAssistantImageSearch",
   },
+  AREnableArtAssistantVoiceInput: {
+    description: "Enable dictating prompts in Art Assistant",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableArtAssistantVoiceInput",
+  },
   AREnableCityGuideItineraries: {
     description: "Enable City Guide Itineraries",
     readyForRelease: true,
@@ -209,6 +215,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCityGuideArticlesForYou",
   },
+  AREnableHomeViewCityGuidesRail: {
+    description: "Show the City Guides rail on the home view",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableHomeViewCityGuidesRail",
+  },
   AREnableSellMyCollectionArtwork: {
     description: "Enable the new Sell My Collection Artwork experience",
     readyForRelease: false,
@@ -228,7 +240,7 @@ export const features = {
   },
   AREnableShareShowPartnerFeature: {
     description: "Show a share button on show, partner and feature screens",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableShareShowPartnerFeature",
   },
