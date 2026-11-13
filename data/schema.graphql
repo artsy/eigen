@@ -3853,9 +3853,19 @@ type ArtnetArtwork {
   deleteInFlight: Boolean
 
   """
+  Artnet holds images the Artsy artwork does not. `syncImages` then does nothing, and Artnet's images change only through `addImageIDs`, `removeImageIDs` and `uploadImageS3Locations` on `updateArtnetArtwork`.
+  """
+  hasSeparateImageSets: Boolean
+
+  """
   A globally unique ID.
   """
   id: ID!
+
+  """
+  The images Artnet holds for this artwork, and those sent to it.
+  """
+  images: [ArtnetArtworkImage]
 
   """
   A type-specific ID likely used as a database ID.
@@ -3897,6 +3907,62 @@ type ArtnetArtwork {
     """
     timezone: String
   ): String
+}
+
+"""
+An image of an artwork on Artnet, or one sent to Artnet.
+"""
+type ArtnetArtworkImage {
+  """
+  The artwork image on Artsy that this is a copy of. Null for an image only Artnet has.
+  """
+  artsyImageID: String
+  createdAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  Where Artnet serves the image. Null until Artnet holds the image.
+  """
+  imageURL: String
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+  status: ArtnetArtworkImageStatus!
+}
+
+enum ArtnetArtworkImageStatus {
+  """
+  Sent to Artnet, which did not add it (for example an image under 500 x 500 px). Send it again with `addImageIDs`.
+  """
+  NOT_ADDED
+
+  """
+  Artnet holds this image.
+  """
+  ON_ARTNET
+
+  """
+  Sent to Artnet, which has not confirmed it yet.
+  """
+  PENDING_ADD
+
+  """
+  Artnet has been asked to remove it and has not confirmed yet.
+  """
+  PENDING_REMOVE
 }
 
 """
@@ -26969,7 +27035,7 @@ type Mutation {
   updateArtistStoryVideo(input: updateArtistStoryVideoInput!): updateArtistStoryVideoPayload
 
   """
-  Updates an ArtnetArtwork and pushes the supported changes to Artnet. At least one of `published`, `availability`, `primaryMedium`, `additionalMediums`, `materials`, `priceFromMinor`, `priceToMinor` or `syncOn` is required. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
+  Updates an ArtnetArtwork and pushes the supported changes to Artnet. At least one of `published`, `availability`, `primaryMedium`, `additionalMediums`, `materials`, `priceFromMinor`, `priceToMinor`, `syncOn`, `syncImages`, `addImageIDs`, `removeImageIDs` or `uploadImageS3Locations` is required. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
   """
   updateArtnetArtwork(input: UpdateArtnetArtworkMutationInput!): UpdateArtnetArtworkMutationPayload
 
@@ -38879,6 +38945,11 @@ type UpdateArtnetArtworkFailure {
 
 input UpdateArtnetArtworkMutationInput {
   """
+  IDs of the Artsy artwork's images to send to Artnet. An image Artnet already holds is ignored; one it did not add before is tried again.
+  """
+  addImageIDs: [String!]
+
+  """
   The artwork's other mediums on Artnet, from Artnet's accepted mediums. Replaces them: what is missing is removed, and an empty list removes them all. Omit to leave them unchanged.
   """
   additionalMediums: [String!]
@@ -38920,9 +38991,24 @@ input UpdateArtnetArtworkMutationInput {
   published: Boolean
 
   """
+  IDs of `ArtnetArtworkImage`s to remove from Artnet. Artnet keeps at least one image on an artwork. When `hasSeparateImageSets` is false, an image still on the Artsy artwork cannot be removed this way: delete it from the artwork and send `syncImages`.
+  """
+  removeImageIDs: [String!]
+
+  """
+  Add the Artsy artwork's new images to Artnet and remove its deleted ones. Send after an image save. Does nothing when `hasSeparateImageSets` is true, and is ignored when images are named in the same request.
+  """
+  syncImages: Boolean
+
+  """
   Also push the artwork-sourced fields (title, artist, dimensions, description, medium, materials, editions), making Gravity the source of truth for them. The artist is resolved to Artnet's own artist record by best match. Set when the edit came from an inventory row rather than the Artnet row.
   """
   syncOn: Boolean
+
+  """
+  Image files already uploaded to S3, to add to Artnet without adding them to the Artsy artwork.
+  """
+  uploadImageS3Locations: [S3LocationInput!]
 }
 
 type UpdateArtnetArtworkMutationPayload {
