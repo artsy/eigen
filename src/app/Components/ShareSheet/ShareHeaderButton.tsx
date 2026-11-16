@@ -1,34 +1,28 @@
 import { ShareIcon } from "@artsy/icons/native"
 import { Touchable } from "@artsy/palette-mobile"
-import { getShareURL } from "app/Components/ShareSheet/helpers"
+import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import React from "react"
-import RNShare from "react-native-share"
 
 interface ShareHeaderButtonProps {
   href: string
+  internalID: string
   name: string
-  utmContent: string
+  slug: string
   accessibilityLabel: string
 }
 
+/** Opens the app's share sheet for a page with no artwork image, like a show, partner or feature. */
 export const ShareHeaderButton: React.FC<ShareHeaderButtonProps> = ({
   href,
+  internalID,
   name,
-  utmContent,
+  slug,
   accessibilityLabel,
 }) => {
-  const handlePress = async () => {
-    const url = getShareURL(`${href}?utm_content=${utmContent}`)
+  const { showShareSheet } = useShareSheet()
 
-    try {
-      await RNShare.open({
-        title: name,
-        message: `View ${name} on Artsy\n${url}`,
-        failOnCancel: false,
-      })
-    } catch (error) {
-      console.error("ShareHeaderButton.tsx", error)
-    }
+  const handlePress = () => {
+    showShareSheet({ type: "default", href, internalID, slug, title: name })
   }
 
   return (

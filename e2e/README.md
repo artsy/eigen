@@ -1,6 +1,6 @@
 # End-to-end tests
 
-The e2e flows run with [agent-device](https://github.com/callstack/agent-device) by Callstack, which drives iOS simulators and Android emulators. The flows are deterministic `.ad` replay scripts that run without an LLM, on the QA builds of `main`. They cover login, signup and deeplinks.
+The e2e flows run with [agent-device](https://github.com/callstack/agent-device) by Callstack, which drives iOS simulators and Android emulators. The flows are deterministic `.ad` replay scripts that run without an LLM, on the QA builds of `main`. They cover login, signup, deeplinks and the share sheet.
 
 `perf/` holds the separate Flashlight performance test, which still uses Maestro. See [Measuring performance with Flashlight](../docs/measuring_performance_with_flashlight.md).
 
@@ -23,7 +23,7 @@ The e2e flows run with [agent-device](https://github.com/callstack/agent-device)
 ## Layout
 
 - `flows/<name>.ad`: one script per scenario, shared by iOS and Android. The platform comes from the device passed to the runner.
-- `flows/<name>.<ios|android>.ad`: a platform-only version, for a scenario that has to work differently on each platform. The `deeplink-*` flows are. `SKIP_FLOWS` uses the name without the suffix, e.g. `SKIP_FLOWS="deeplink-email deeplink-click"`.
+- `flows/<name>.<ios|android>.ad`: a platform-only version, for a scenario that has to work differently on each platform. The `deeplink-*` and `share` flows are. `SKIP_FLOWS` uses the name without the suffix, e.g. `SKIP_FLOWS="deeplink-email deeplink-click"`.
 - `reporters/failures.mjs`: a test reporter that writes the failed tests to `failures.json` for `scripts/ci/report-e2e-test-failure`.
 
 ### Launch arguments
@@ -94,3 +94,10 @@ How the links are opened, to stay close to a user tapping a link in an email:
 - **Android:** `open "<url>"` without the app id sends a plain VIEW intent, like tapping the link, so Android resolves it. Only a verified App Link opens the app; anything else opens a browser. After the content check, the flow waits for `net.artsy.app:id/action_bar_root`, which only exists when the Artsy app is in the foreground. The content check alone isn't enough, because the artsy.net page in a browser shows the same text.
 
 The `click` and `email` links make the app fetch the tracking URL to find the destination (`useDeepLinks`). So they also depend on Braze and SendGrid answering, and on those tracking links not expiring.
+
+## Share
+
+`share` turns on `AREnableShareShowPartnerFeature` with the `enableFeatureFlags` launch argument (a comma-separated list of flag names), then opens a show, a partner and a feature with `artsy://` links while the app is running. On each page it taps the share button and checks the app's own share sheet opens (Copy link and More), not the system one. The show and partner close the sheet with its X; the feature taps Copy link and waits for the "Copied to Clipboard" toast.
+
+- Bottom sheets hide their rows from agent-device (and VoiceOver) unless they set `accessible={false}`: gorhom's default turns the whole sheet into a single "Bottom Sheet" element.
+- Don't tap More. It opens the system share sheet, which iOS draws outside the app; agent-device can't see inside it, and stops seeing the app's own screen once it's open.

@@ -41,7 +41,9 @@ export const ShareSheet = () => {
   const shotRef = useRef<ViewShotRef>(null)
   const [isImageReady, setIsImageReady] = useState(false)
   const showInstagramStoriesItem =
-    useCanOpenURL("instagram://user?username=instagram") && data?.type !== "sale"
+    useCanOpenURL("instagram://user?username=instagram") &&
+    data?.type !== "sale" &&
+    data?.type !== "default"
   const { trackEvent } = useTracking()
   const webURL = GlobalStore.useAppState((s) => s.devicePrefs.environment.strings.webURL)
 
@@ -192,6 +194,9 @@ export const ShareSheet = () => {
       onDismiss={hideShareSheet}
       enableDynamicSizing={false}
       snapPoints={SNAP_POINTS}
+      // gorhom makes the whole sheet one "Bottom Sheet" element by default, which hides its rows from
+      // VoiceOver and from the e2e tests
+      accessible={false}
     >
       <BottomSheetView style={{ flex: 1 }}>
         <NavigationHeader useXButton onLeftButtonPress={() => hideShareSheet()}>

@@ -52,8 +52,9 @@ const Partner: React.FC<PartnerProps> = (props) => {
     rightElements: enableShare ? (
       <ShareHeaderButton
         href={`/partner/${partner.slug}`}
+        internalID={partner.internalID}
         name={partner.name ?? ""}
-        utmContent="partner-share"
+        slug={partner.slug}
         accessibilityLabel="Share Partner"
       />
     ) : undefined,
