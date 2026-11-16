@@ -40,13 +40,12 @@ lane :notify_if_new_license_agreement do
   end
 end
 
-desc "Notifies in slack if a maestro test failed"
-lane :report_maestro_failure do |options|
+desc "Notifies in slack if an e2e test failed"
+lane :report_e2e_failure do |options|
   s3_url = options[:s3_url]
   error_message = options[:error_message]
   flow_name = options[:flow_name]
   platform = options[:platform] || "unknown"
-  tool = options[:tool] || "Maestro"
   puts platform
   # Set platform-specific icon
   platform_icon = case platform.downcase
@@ -60,7 +59,7 @@ lane :report_maestro_failure do |options|
 
   message = <<~MSG
               :x: :tophat:
-              #{tool} test failed for #{platform_icon} #{platform}!
+              E2E test failed for #{platform_icon} #{platform}!
               Flow: #{flow_name}
               Error: `#{error_message}`
               Screenshot at time of failure:
@@ -527,7 +526,7 @@ rescue => e
   UI.error("Failed to write to #{path}: #{e.message}")
 end
 
-def upload_ios_maestro_to_s3
+def upload_ios_qa_to_s3
   app_name = "Artsy"
   derived_data_path = ENV['DERIVED_DATA_PATH'] || 'derived_data'
   s3_dest = "#{S3_IOS_BUILDS_PATH}#{app_name}-latest.zip"
@@ -542,7 +541,7 @@ def upload_ios_maestro_to_s3
   if app_path.nil? || !File.exist?(app_path)
     UI.error("❌ .app not found at: #{app_search_pattern}")
     UI.error("Searched in: #{full_derived_data_path}/Build/Products/#{configuration}-iphonesimulator/")
-    raise "iOS Maestro app build not found"
+    raise "iOS QA app build not found"
   end
 
   UI.success("✅ Found app at: #{app_path}")
@@ -562,13 +561,13 @@ def upload_ios_maestro_to_s3
   UI.success("✅ Uploaded #{zip_name} to #{s3_dest}")
 end
 
-def upload_android_maestro_to_s3(apk_path)
+def upload_android_qa_to_s3(apk_path)
   app_name = "Artsy"
   s3_dest = "#{S3_ANDROID_BUILDS_PATH}#{app_name}-latest.apk"
 
   if apk_path.nil? || !File.exist?(apk_path)
-    UI.error("❌ Maestro APK not found at: #{apk_path}")
-    raise "Android Maestro app build not found"
+    UI.error("❌ QA APK not found at: #{apk_path}")
+    raise "Android QA app build not found"
   end
 
   UI.success("✅ Found apk at: #{apk_path}")
@@ -602,7 +601,7 @@ def ios_build_params(deployment_target)
       codesigning_identity: 'Apple Distribution: Art.sy Inc. (23KMWZ572J)',
       silent: true
     }
-  when 'maestro'
+  when 'simulator_qa'
     {
       derived_data_path: "derived_data",
       build_path: "archives",

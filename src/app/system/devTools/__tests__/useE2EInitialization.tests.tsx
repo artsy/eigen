@@ -1,5 +1,5 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { useMaestroInitialization } from "app/system/devTools/useMaestroInitialization"
+import { useE2EInitialization } from "app/system/devTools/useE2EInitialization"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { LaunchArguments } from "react-native-launch-arguments"
 
@@ -8,11 +8,11 @@ jest.mock("react-native-launch-arguments", () => ({
 }))
 
 const TestComponent = () => {
-  useMaestroInitialization()
+  useE2EInitialization()
   return null
 }
 
-describe("useMaestroInitialization", () => {
+describe("useE2EInitialization", () => {
   const mockLaunchArguments = (args: object) => {
     ;(LaunchArguments.value as jest.Mock).mockReturnValue(args)
   }
@@ -22,7 +22,7 @@ describe("useMaestroInitialization", () => {
 
   it("turns on the feature flags named in enableFeatureFlags", () => {
     mockLaunchArguments({
-      useMaestroInit: true,
+      useE2EInit: true,
       enableFeatureFlags: "AREnableShareShowPartnerFeature, NotARealFlag",
     })
 
@@ -32,7 +32,7 @@ describe("useMaestroInitialization", () => {
     expect(localOverrides()).not.toHaveProperty("NotARealFlag")
   })
 
-  it("ignores enableFeatureFlags outside Maestro runs", () => {
+  it("ignores enableFeatureFlags outside e2e runs", () => {
     mockLaunchArguments({ enableFeatureFlags: "AREnableShareShowPartnerFeature" })
 
     renderWithWrappers(<TestComponent />)

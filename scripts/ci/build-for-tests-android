@@ -16,7 +16,7 @@ CAPITALIZED_BUILD_TYPE="$(echo "$BUILD_TYPE" | awk '{print toupper(substr($0,1,1
 # nothing to disable here.
 #
 # R8 minification/resource shrinking is also turned off: the beta APK built here is uploaded
-# as the Maestro e2e app (see upload-emu-app), and those builds are never shipped.
+# as the e2e QA app (see upload-emu-app), and those builds are never shipped.
 #
 # -PskipJsBundle (android/app/build.gradle) skips the release JS bundle and the expo-updates
 # embedded manifest: this build only checks that native code compiles. The beta variant still

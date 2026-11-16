@@ -2,10 +2,10 @@ context timeout=300000
 # @title Deeplink - Logged Out
 # Opens an artist link while logged out, as a cold start. The app keeps the link (launchURL in useDeepLinks) and opens
 # it once the user has logged in.
-# The link is opened without the app id, the same VIEW intent as Maestro's openLink, so Android resolves it: only a
+# The link is opened without the app id, a plain VIEW intent, like tapping the link, so Android resolves it: only a
 # verified App Link opens the app, anything else opens Chrome. net.artsy.app's root view then proves the app handled it,
 # since the artsy.net page in Chrome shows the same text.
-# @launch useMaestroInit=true shouldSignOut=true
+# @launch useE2EInit=true shouldSignOut=true
 open ${APP_ID}
 # The first launch on a cold CI simulator can take over a minute
 wait 'label="Sign up or log in" || text="Sign up or log in"' 90000

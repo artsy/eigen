@@ -40,7 +40,7 @@ describe("SignUpNameStep", () => {
     expect(screen.getByA11yHint("Enter your full name")).toBeTruthy()
   })
 
-  // The agent-device signup flow presses this button by its accessibility label, so a rename has to
+  // The e2e signup flow presses this button by its accessibility label, so a rename has to
   // fail here rather than in a QA run replayed against a prebuilt app
   it("labels the Continue button so it can be told apart from the password step's", () => {
     renderWithWrappers(

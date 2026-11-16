@@ -1,5 +1,5 @@
 // Writes the suite's failed tests to $AD_FAILURES_PATH as JSON so
-// scripts/ci/report-agent-device-test-failure can report them to Slack.
+// scripts/ci/report-e2e-test-failure can report them to Slack.
 import fs from "node:fs"
 import path from "node:path"
 

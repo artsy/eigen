@@ -6,7 +6,7 @@ context timeout=300000
 # launches the app with the link, or opens Safari. `open <app> <url>` would launch the app first and send the link while
 # it's still starting, which drops it. `open ${APP_ID}` then attaches to the running app without restarting it; if
 # Safari took the link, it brings the app back on its home screen and the next wait fails.
-# @launch useMaestroInit=true shouldSignOut=true
+# @launch useE2EInit=true shouldSignOut=true
 open ${APP_ID}
 # The first launch on a cold CI simulator can take over a minute
 wait 'label="Sign up or log in" || text="Sign up or log in"' 90000
