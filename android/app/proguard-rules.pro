@@ -35,3 +35,9 @@
 # @stripe/stripe-react-native references the optional push-provisioning SDK
 # (com.stripe:stripe-android-issuing-push-provisioning), which we don't depend on.
 -dontwarn com.stripe.android.pushProvisioning.**
+
+# Expo converts nested Records (e.g. expo-speech-recognition's volumeChangeEventOptions) with
+# kotlin-reflect. Once R8 renames @Field and strips its Kotlin metadata, `Field.key` reads as null
+# and the conversion throws a NullPointerException.
+-keep class expo.modules.kotlin.records.Field { *; }
+-keep class expo.modules.kotlin.records.Required { *; }
