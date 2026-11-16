@@ -19,4 +19,4 @@ if [[ "$PLATFORM" != "ios" && "$PLATFORM" != "android" ]]; then
 fi
 
 # Download the environment file for the specified platform
-aws s3 cp "s3://artsy-citadel/eigen/.env.maestro.$PLATFORM" ".env.maestro.$PLATFORM"
+aws s3 cp "s3://artsy-citadel/eigen/.env.e2e.$PLATFORM" ".env.e2e.$PLATFORM"

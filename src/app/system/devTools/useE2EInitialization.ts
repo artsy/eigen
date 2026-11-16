@@ -3,16 +3,16 @@ import { FeatureName, features } from "app/store/config/features"
 import { useEffect } from "react"
 import { LaunchArguments } from "react-native-launch-arguments"
 
-interface MaestroLaunchArguments {
+interface E2ELaunchArguments {
   email?: string
   password?: string
   shouldSignOut?: boolean
-  useMaestroInit?: boolean
+  useE2EInit?: boolean
   /** Comma-separated feature flag names to turn on, so flows can cover unreleased features. */
   enableFeatureFlags?: string
 }
 
-export const useMaestroInitialization = () => {
+export const useE2EInitialization = () => {
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const { setPushPermissionsRequestedThisSession, setPushNotificationSettingsPromptSeen } =
@@ -23,21 +23,21 @@ export const useMaestroInitialization = () => {
       return
     }
 
-    const args = LaunchArguments.value<MaestroLaunchArguments>()
+    const args = LaunchArguments.value<E2ELaunchArguments>()
     const email = args.email
     const password = args.password
     const shouldSignOut = args.shouldSignOut
-    const useMaestroInit = args.useMaestroInit
+    const useE2EInit = args.useE2EInit
 
-    if (!useMaestroInit) {
+    if (!useE2EInit) {
       return
     }
 
-    // Hides the push permission prompt for Maestro tests
+    // Hides the push permission prompt for e2e tests
     setPushPermissionsRequestedThisSession(true)
     setPushNotificationSettingsPromptSeen(true)
 
-    // Dismiss all progressive onboarding popovers for Maestro tests
+    // Dismiss all progressive onboarding popovers for e2e tests
     GlobalStore.actions.artsyPrefs.features.setLocalOverride({
       key: "DTHideAllOnboardingPopovers",
       value: true,

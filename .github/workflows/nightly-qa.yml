@@ -1,15 +1,12 @@
 # Builds the QA apps from main on weekday mornings and runs the e2e tests on them:
 #
-#   has-main-changed ─┬─▶ build-ios ─────┬─▶ e2e-ios-maestro
-#                     │                  └─▶ e2e-ios-agent-device
-#                     └─▶ build-android ─┬─▶ e2e-android-maestro
-#                                        └─▶ e2e-android-agent-device
+#   has-main-changed ─┬─▶ build-ios ─────▶ e2e-ios
+#                     └─▶ build-android ─▶ e2e-android
 #
 # A scheduled run skips both builds when main hasn't changed since the last run that built it, and the
-# e2e jobs only follow a build that succeeded, so they never re-test the previous build. Each e2e suite
-# only depends on its platform's build, so Maestro and agent-device run side by side and a failure in
-# one doesn't stop the other. Starting this workflow manually always builds. The build and e2e
-# workflows can also be started on their own.
+# e2e jobs only follow a build that succeeded, so they never re-test the previous build. Each e2e job
+# only depends on its platform's build, so a failure on one platform doesn't stop the other. Starting
+# this workflow manually always builds. The build and e2e workflows can also be started on their own.
 name: Nightly QA build and e2e
 
 on:
@@ -39,7 +36,7 @@ jobs:
   build-ios:
     needs: has-main-changed
     if: needs.has-main-changed.outputs.changed == 'true'
-    uses: ./.github/workflows/build-maestro-ios.yml
+    uses: ./.github/workflows/build-qa-ios.yml
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -47,37 +44,23 @@ jobs:
   build-android:
     needs: has-main-changed
     if: needs.has-main-changed.outputs.changed == 'true'
-    uses: ./.github/workflows/build-maestro-android.yml
+    uses: ./.github/workflows/build-qa-android.yml
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
       ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
 
-  e2e-ios-maestro:
+  e2e-ios:
     needs: build-ios
-    uses: ./.github/workflows/ios-e2e-maestro.yml
+    uses: ./.github/workflows/ios-e2e.yml
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-  e2e-android-maestro:
+  e2e-android:
     needs: build-android
-    uses: ./.github/workflows/android-e2e-maestro.yml
-    secrets:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-  e2e-ios-agent-device:
-    needs: build-ios
-    uses: ./.github/workflows/ios-e2e-agent-device.yml
-    secrets:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-  e2e-android-agent-device:
-    needs: build-android
-    uses: ./.github/workflows/android-e2e-agent-device.yml
+    uses: ./.github/workflows/android-e2e.yml
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

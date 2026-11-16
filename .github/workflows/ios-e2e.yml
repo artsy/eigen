@@ -1,7 +1,7 @@
-name: iOS E2E Tests (agent-device)
+name: iOS E2E Tests
 
 on:
-  # Called by nightly-qa.yml once the iOS QA build has succeeded, independently of the Maestro suite
+  # Called by nightly-qa.yml once the iOS QA build has succeeded
   workflow_call:
     secrets:
       AWS_ACCESS_KEY_ID:
@@ -18,7 +18,7 @@ env:
 # name, which the Android suite would share. On a branch a newer run makes the older one pointless; on
 # main a newer run waits instead, so it doesn't cancel the nightly's.
 concurrency:
-  group: e2e-agent-device-ios-${{ github.ref }}
+  group: e2e-ios-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
@@ -77,8 +77,8 @@ jobs:
       - name: Set up env for ci
         run: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci
 
-      - name: Set up maestro env
-        run: ./scripts/setup/setup-env-for-maestro ios
+      - name: Set up e2e env
+        run: ./scripts/setup/setup-env-for-e2e ios
 
       - name: Download iOS App
         run: aws s3 cp s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip ./Artsy.zip
@@ -89,8 +89,8 @@ jobs:
       - name: Install agent-device
         run: |
           # Single source of truth for the pinned version, shared with the other platform's
-          # workflow and e2e-agent-device/README.md
-          AGENT_DEVICE_VERSION=$(cat e2e-agent-device/agent-device-version)
+          # workflow and e2e/README.md
+          AGENT_DEVICE_VERSION=$(cat e2e/agent-device-version)
           echo "AGENT_DEVICE_VERSION=$AGENT_DEVICE_VERSION" >> $GITHUB_ENV
           npm install -g "agent-device@${AGENT_DEVICE_VERSION}"
           echo "AGENT_DEVICE_STATE_DIR=$GITHUB_WORKSPACE/.agent-device" >> $GITHUB_ENV
@@ -124,7 +124,7 @@ jobs:
           echo "🚀 Bring simulator to foreground..."
           open -a simulator
 
-          # No app site association prefetch here, unlike the Maestro workflow: opening the files in Safari
+          # No app site association prefetch here: opening the files in Safari
           # can hang for minutes and leave simctl unresponsive, which then fails the agent-device runner
           # startup. The deeplinks flow passes without it.
 
@@ -166,18 +166,18 @@ jobs:
           path: ~/.agent-device/apple-runner/derived
           key: agent-device-runner-${{ env.AGENT_DEVICE_VERSION }}-xcode-${{ env.XCODE_VERSION }}
 
-      - name: Run agent-device E2E Tests
-        run: ./scripts/utils/run_agent_device_suite ios "$SIMULATOR_UDID"
+      - name: Run E2E tests
+        run: ./scripts/utils/run_e2e_suite ios "$SIMULATOR_UDID"
 
       - name: Upload test artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: agent-device-ios-artifacts
+          name: e2e-ios-artifacts
           # Reports only: this repo's artifacts are public, and agent-device logs and screenshots
           # can show the test account. Failure screenshots go to S3 and Slack instead.
           path: |
-            e2e-agent-device/artifacts/ios/**/junit.xml
-            e2e-agent-device/artifacts/ios/failures.json
+            e2e/artifacts/ios/**/junit.xml
+            e2e/artifacts/ios/failures.json
           if-no-files-found: ignore
           retention-days: 7

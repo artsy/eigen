@@ -50,9 +50,8 @@ const config = {
     "**/.claude/**/*",
 
     // Environment files (test/dev-specific)
-    ".env.maestro", // Maestro test config
-    ".env.maestro.android", // Android Maestro config
-    ".env.maestro.ios", // iOS Maestro config
+    ".env.e2e.android", // Android e2e config
+    ".env.e2e.ios", // iOS e2e config
     "Brewfile.lock.json", // Homebrew dependencies
     "**/.i-had-a-netrc-file", // netrc file
     // Node modules

@@ -1,4 +1,4 @@
-name: Build Android QA App for Maestro
+name: Build Android QA App
 
 on:
   # Called by nightly-qa.yml, which also runs the e2e tests on the build
@@ -39,8 +39,8 @@ jobs:
       - name: Setup Android environment
         uses: ./.github/actions/setup-android-environment
 
-      - name: Build Android app and upload to S3 for Maestro
-        run: bundle exec fastlane build_maestro_android
+      - name: Build Android app and upload to S3 for e2e tests
+        run: bundle exec fastlane build_qa_android
         env:
           VERBOSE: 1
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}

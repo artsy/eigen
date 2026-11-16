@@ -1,4 +1,4 @@
-name: Build iOS QA App for Maestro
+name: Build iOS QA App
 
 on:
   # Called by nightly-qa.yml, which also runs the e2e tests on the build
@@ -35,8 +35,8 @@ jobs:
       - name: Setup iOS environment
         uses: ./.github/actions/setup-ios-environment
 
-      - name: Build iOS app and upload to S3 for Maestro
-        run: bundle exec fastlane build_maestro_ios
+      - name: Build iOS app and upload to S3 for e2e tests
+        run: bundle exec fastlane build_qa_ios
         env:
           FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 120
           FASTLANE_XCODE_LIST_TIMEOUT: 120

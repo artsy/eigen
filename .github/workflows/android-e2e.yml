@@ -1,7 +1,7 @@
-name: Android E2E Tests (agent-device)
+name: Android E2E Tests
 
 on:
-  # Called by nightly-qa.yml once the Android QA build has succeeded, independently of the Maestro suite
+  # Called by nightly-qa.yml once the Android QA build has succeeded
   workflow_call:
     secrets:
       AWS_ACCESS_KEY_ID:
@@ -17,7 +17,7 @@ env:
 # which the iOS suite would share. On a branch a newer run makes the older one pointless; on main a
 # newer run waits instead, so it doesn't cancel the nightly's.
 concurrency:
-  group: e2e-agent-device-android-${{ github.ref }}
+  group: e2e-android-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
@@ -54,8 +54,8 @@ jobs:
       - name: Set up env for ci
         run: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci
 
-      - name: Set up maestro env
-        run: ./scripts/setup/setup-env-for-maestro android
+      - name: Set up e2e env
+        run: ./scripts/setup/setup-env-for-e2e android
 
       - name: Download Android App (APK)
         run: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
@@ -63,8 +63,8 @@ jobs:
       - name: Install agent-device
         run: |
           # Single source of truth for the pinned version, shared with the other platform's
-          # workflow and e2e-agent-device/README.md
-          AGENT_DEVICE_VERSION=$(cat e2e-agent-device/agent-device-version)
+          # workflow and e2e/README.md
+          AGENT_DEVICE_VERSION=$(cat e2e/agent-device-version)
           echo "AGENT_DEVICE_VERSION=$AGENT_DEVICE_VERSION" >> $GITHUB_ENV
           npm install -g "agent-device@${AGENT_DEVICE_VERSION}"
           echo "AGENT_DEVICE_STATE_DIR=$GITHUB_WORKSPACE/.agent-device" >> $GITHUB_ENV
@@ -106,17 +106,17 @@ jobs:
             adb install Artsy.apk
 
             echo "🧪 Running agent-device tests..."
-            ./scripts/utils/run_agent_device_suite android emulator-5554
+            ./scripts/utils/run_e2e_suite android emulator-5554
 
       - name: Upload test artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: agent-device-android-artifacts
+          name: e2e-android-artifacts
           # Reports only: this repo's artifacts are public, and agent-device logs and screenshots
           # can show the test account. Failure screenshots go to S3 and Slack instead.
           path: |
-            e2e-agent-device/artifacts/android/**/junit.xml
-            e2e-agent-device/artifacts/android/failures.json
+            e2e/artifacts/android/**/junit.xml
+            e2e/artifacts/android/failures.json
           if-no-files-found: ignore
           retention-days: 7

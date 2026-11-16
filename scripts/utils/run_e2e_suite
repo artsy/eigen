@@ -11,8 +11,8 @@ PLATFORM=$1
 DEVICE=$2
 MAX_ATTEMPTS=3
 
-ARTIFACTS_DIR="e2e-agent-device/artifacts/$PLATFORM"
-ENV_FILE=".env.maestro.$PLATFORM"
+ARTIFACTS_DIR="e2e/artifacts/$PLATFORM"
+ENV_FILE=".env.e2e.$PLATFORM"
 
 # Strips one pair of matching surrounding quotes
 unquote() {
@@ -23,9 +23,8 @@ unquote() {
   printf '%s' "$value"
 }
 
-# Reuse the Maestro env file (same test account). Maestro reads it as a picocli @argfile, so lines
-# look like `-e KEY=value`, `-e "KEY=value"` or `-e KEY="value"`; plain `KEY=value` works too.
-# The file is per platform, so it wins over the shell (e.g. a shell MAESTRO_APP_ID set for Android).
+# The test account and app id, one `KEY=value` per line (values may be quoted). The file is per
+# platform, so it wins over the shell (e.g. a shell E2E_APP_ID set for Android).
 if [ -f "$ENV_FILE" ]; then
   LOADED_KEYS=""
   while IFS= read -r line || [ -n "$line" ]; do
@@ -33,8 +32,6 @@ if [ -f "$ENV_FILE" ]; then
     # Trim surrounding whitespace
     line="${line#"${line%%[![:space:]]*}"}"
     line="${line%"${line##*[![:space:]]}"}"
-    [[ "$line" =~ ^(-e|--env)[[:space:]=]+(.*)$ ]] && line="${BASH_REMATCH[2]}"
-    line=$(unquote "$line")
     [[ "$line" =~ ^([A-Za-z_][A-Za-z0-9_]*)=(.*)$ ]] || continue
     key="${BASH_REMATCH[1]}"
     value=$(unquote "${BASH_REMATCH[2]}")
@@ -66,11 +63,11 @@ if [ -z "$DEVICE" ]; then
   exit 1
 fi
 
-# AGENT_DEVICE_APP_ID wins over the env file's MAESTRO_APP_ID, e.g. to run the flows locally against a
+# E2E_APP_ID_OVERRIDE wins over the env file's E2E_APP_ID, e.g. to run the flows locally against a
 # dev build (net.artsy.artsy) instead of the QA app
-export AD_VAR_APP_ID="${AGENT_DEVICE_APP_ID:-${MAESTRO_APP_ID:-$DEFAULT_APP_ID}}"
-export AD_VAR_EMAIL="${MAESTRO_TEST_EMAIL:?MAESTRO_TEST_EMAIL is not set}"
-export AD_VAR_PASSWORD="${MAESTRO_TEST_PASSWORD:?MAESTRO_TEST_PASSWORD is not set}"
+export AD_VAR_APP_ID="${E2E_APP_ID_OVERRIDE:-${E2E_APP_ID:-$DEFAULT_APP_ID}}"
+export AD_VAR_EMAIL="${E2E_TEST_EMAIL:?E2E_TEST_EMAIL is not set}"
+export AD_VAR_PASSWORD="${E2E_TEST_PASSWORD:?E2E_TEST_PASSWORD is not set}"
 
 # The credentials are passed to the app as launch arguments, so keep them out of the public CI logs
 if [ -n "$GITHUB_ACTIONS" ]; then
@@ -85,7 +82,7 @@ shell_quote() {
 
 # agent-device scripts can't pass launch arguments, so each flow declares them in a
 # `# @launch key=value ...` header and we (re)launch the app with them before the flow runs.
-# Values written as ${VAR} are read from AD_VAR_VAR. This is what useMaestroInitialization reads.
+# Values written as ${VAR} are read from AD_VAR_VAR. This is what useE2EInitialization reads.
 # On Android, agent-device's `open` sends a new launch intent and MainActivity (singleTask + setIntent)
 # replaces our extras with it. So before running a flow, wait_until_launched waits for the screen the
 # arguments produce (the flow's first `wait`), which proves they were read. iOS process arguments can't
@@ -160,7 +157,7 @@ FIRST_FLOWS="login signup deeplink-email deeplink-click deeplink-artist"
 # Flows for this platform: shared `name.ad` files plus `name.<platform>.ad` ones, FIRST_FLOWS first
 platform_flows() {
   local flow base name first all=""
-  for flow in $(find e2e-agent-device/flows -name "*.ad" | sort); do
+  for flow in $(find e2e/flows -name "*.ad" | sort); do
     base=$(basename "$flow" .ad)
     case "$base" in
       *.ios | *.android) [ "${base##*.}" = "$PLATFORM" ] || continue ;;
@@ -206,7 +203,7 @@ seconds() {
   LC_ALL=C awk -v ms="$1" 'BEGIN { printf "%.1fs", ms / 1000 }'
 }
 
-# The flow's `# @title` header, like a Maestro flow's `name:`, or its file name
+# The flow's `# @title` header, or its file name
 flow_title() {
   local title
   title=$(grep -m 1 "^# @title " "$1" | sed "s/^# @title //")
@@ -266,7 +263,7 @@ print_summary() {
 
   if [ -n "$GITHUB_STEP_SUMMARY" ]; then
     {
-      echo "### agent-device $PLATFORM: $passed passed, $failed failed"
+      echo "### E2E $PLATFORM: $passed passed, $failed failed"
       echo '```'
       sed '1,3d' "$ARTIFACTS_DIR/summary.txt"
       echo '```'
@@ -295,9 +292,9 @@ for FLOW in $(platform_flows); do
     ATTEMPT_START=$(now_ms)
     mkdir -p "$ATTEMPT_DIR"
 
-    # Replaces e2e/flows/signup.js. New per attempt, since a failed attempt may already have created the account.
+    # New per attempt, since a failed attempt may already have created the account.
     TIMESTAMP=$(date +%s)
-    export AD_VAR_SIGNUP_EMAIL="mobileQA+agentdevice-$TIMESTAMP@qa.qa"
+    export AD_VAR_SIGNUP_EMAIL="mobileQA+e2e-$TIMESTAMP@qa.qa"
     export AD_VAR_SIGNUP_PASSWORD="Pwd$TIMESTAMP" # pragma: allowlist secret
 
     if checks_safari; then
@@ -320,7 +317,7 @@ for FLOW in $(platform_flows); do
       --artifacts-dir "$ATTEMPT_DIR" \
       --reporter default \
       --reporter "junit:$ATTEMPT_DIR/junit.xml" \
-      --reporter ./e2e-agent-device/reporters/failures.mjs; then
+      --reporter ./e2e/reporters/failures.mjs; then
       TEST_PASSED=true
     fi
     # Checked even when the flow passed: a pass after Safari took the link isn't a pass
@@ -361,7 +358,7 @@ for FLOW in $(platform_flows); do
     echo "⚠️ $FLOW is flaky: passed on attempt $attempt"
     # Shows on the run summary, so a suite that only passes thanks to retries doesn't look healthy
     if [ -n "$GITHUB_ACTIONS" ]; then
-      echo "::warning title=Flaky agent-device flow::$NAME ($PLATFORM) passed on attempt $attempt of $MAX_ATTEMPTS"
+      echo "::warning title=Flaky e2e flow::$NAME ($PLATFORM) passed on attempt $attempt of $MAX_ATTEMPTS"
     fi
   fi
 done
@@ -375,7 +372,7 @@ if [ $EXIT_CODE -ne 0 ]; then
   # SKIP_SLACK_REPORT turns off Slack, e.g. while trying out changes on a branch
   if [ -n "$CI" ] && [ -z "$SKIP_SLACK_REPORT" ]; then
     echo "At least one test failed — uploading screenshots and notifying Slack"
-    ./scripts/ci/report-agent-device-test-failure "$PLATFORM" "$ARTIFACTS_DIR/failures.json" || true
+    ./scripts/ci/report-e2e-test-failure "$PLATFORM" "$ARTIFACTS_DIR/failures.json" || true
   fi
 fi
 

@@ -162,7 +162,7 @@ tsconfig.tsbuildinfo
 # Temporary files created by Metro to check the health of the file watcher
 .metro-health-check*
 
-# maestro test artifacts
+# maestro artifacts (Flashlight perf tests in e2e/perf)
 .maestro/*
 
 #########################################################
@@ -203,6 +203,6 @@ AWSCLIV2.pkg
 # Generated route-drift report (regenerate with `yarn route-drift`)
 scripts/route-drift/route-drift-report.md
 
-# agent-device e2e artifacts
-e2e-agent-device/artifacts/
+# e2e artifacts
+e2e/artifacts/
 .agent-device/
