@@ -66,6 +66,8 @@ export type ShareSheetSaleItem = {
 
 export type ShareSheetDefaultItem = {
   type: "default"
+  /** The link's utm_content tag, e.g. "show-share". Defaults to "artwork-share". */
+  utmContent?: string
   slug: string
   internalID: string
   href: string

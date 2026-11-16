@@ -59,13 +59,15 @@ export const Show: React.FC<ShowProps> = ({ show, stopID, shareToken }) => {
       headerRight: () => (
         <ShareHeaderButton
           href={`/show/${show.slug}`}
+          internalID={show.internalID}
           name={show.name ?? ""}
+          slug={show.slug}
           utmContent="show-share"
           accessibilityLabel="Share Show"
         />
       ),
     })
-  }, [enableShare, navigation, show.slug, show.name])
+  }, [enableShare, navigation, show.internalID, show.slug, show.name])
 
   const openeFilterArtworksModal = () => {
     setVisible(true)

@@ -20,6 +20,8 @@ export const getShareMessage = (artistNames: string[], title?: string) => {
 
 export const shareContent = (shareSheetItem: ShareSheetItem) => {
   const { title, href, artists } = shareSheetItem
+  const utmContent =
+    (shareSheetItem.type === "default" && shareSheetItem.utmContent) || "artwork-share"
   let computedTitle = ""
 
   if (artists && artists.length) {
@@ -32,7 +34,7 @@ export const shareContent = (shareSheetItem: ShareSheetItem) => {
   return {
     title: computedTitle,
     message: computedTitle,
-    url: `${unsafe__getEnvironment().webURL}${href}?utm_content=artwork-share`,
+    url: `${unsafe__getEnvironment().webURL}${href}?utm_content=${utmContent}`,
   }
 }
 

@@ -1,0 +1,48 @@
+context timeout=240000
+# @title Share - Show, Partner and Feature
+# Opens a show, a partner and a feature with artsy:// links while the app is running, and checks each
+# share button opens the app's share sheet (Copy link, More), not the system one. Show and partner close
+# it with its X; the feature copies the link. The buttons are behind AREnableShareShowPartnerFeature,
+# turned on for this run with the enableFeatureFlags launch argument.
+# `open <url>` without the app id runs `simctl openurl`, and `open ${APP_ID}` then attaches to the
+# running app without restarting it (see the deeplink flows).
+# Don't tap More: it opens the system share sheet, which iOS draws outside the app, and agent-device
+# stops seeing the app's screen once it opens.
+# @launch useE2EInit=true email=${EMAIL} password=${PASSWORD} enableFeatureFlags=AREnableShareShowPartnerFeature
+open ${APP_ID}
+# The first launch on a cold CI simulator can take over a minute
+wait 'id="search-button"' 90000
+
+open "artsy://show/gagosian-jordan-wolfson"
+open ${APP_ID}
+wait 'label="Share Show"' 30000
+wait 'text="Jordan Wolfson"' 10000
+press 'label="Share Show"'
+wait 'label="Copy link"' 10000
+wait 'label="More"' 10000
+press 'id="fancy-modal-header-left-button"'
+wait absent 'label="Copy link"' 10000
+wait 'label="Share Show"' 10000
+
+open "artsy://partner/gagosian"
+open ${APP_ID}
+wait 'label="Share Partner"' 30000
+wait 'text="Gagosian"' 10000
+press 'label="Share Partner"'
+wait 'label="Copy link"' 10000
+wait 'label="More"' 10000
+press 'id="fancy-modal-header-left-button"'
+wait absent 'label="Copy link"' 10000
+wait 'label="Share Partner"' 10000
+
+open "artsy://feature/the-artsy-vanguard-2027"
+open ${APP_ID}
+wait 'label="Share Feature"' 30000
+wait 'text="The Artsy Vanguard 2027"' 10000
+press 'label="Share Feature"'
+wait 'label="Copy link"' 10000
+wait 'label="More"' 10000
+press 'label="Copy link"'
+wait 'text="Copied to Clipboard"' 10000
+wait absent 'label="Copy link"' 10000
+close ${APP_ID}
