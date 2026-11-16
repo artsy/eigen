@@ -1,17 +1,39 @@
 import { SendIcon } from "@artsy/icons/native"
-import { DEFAULT_HIT_SLOP, Flex, Input, InputRef, Touchable, useSpace } from "@artsy/palette-mobile"
+import {
+  DEFAULT_HIT_SLOP,
+  Flex,
+  Input,
+  InputRef,
+  Touchable,
+  useColor,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { THEME } from "@artsy/palette-tokens"
-import React from "react"
+import React, { useEffect, useRef } from "react"
+import { LayoutChangeEvent, StyleSheet } from "react-native"
+import Animated, {
+  Easing,
+  FadeIn,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated"
 
 // This component knows nothing about Art Assistant: everything it shows comes in through props
 // and slots, so it can move to palette-mobile as is once the design is approved.
 
-export const COMPOSER_ICON_SIZE = 20
-export const COMPOSER_ACTION_SIZE = 36
+/** The size of an 18×18 icon, e.g. the camera, in a composer action. */
+export const COMPOSER_ICON_SIZE = 24
+export const COMPOSER_ACTION_SIZE = 40
+// The arrow fills its whole box, unlike the 18×18 icons, so it needs a smaller one to match them.
+const COMPOSER_SEND_ICON_SIZE = 15
 // The line height of the text the Input renders (`sm-display`), so the rows line up with it.
 const COMPOSER_LINE_HEIGHT = parseInt(THEME.textVariants["sm-display"].lineHeight, 10)
 const COMPOSER_MAX_TEXT_HEIGHT = 4 * COMPOSER_LINE_HEIGHT
-const COMPOSER_BORDER_RADIUS = 12
+const COMPOSER_BORDER_RADIUS = 8
+const COMPOSER_BORDER_WIDTH = 1
+const COMPOSER_ANIMATION_DURATION = 200
+const COMPOSER_TIMING = { duration: COMPOSER_ANIMATION_DURATION, easing: Easing.out(Easing.cubic) }
 
 interface ArtAssistantComposerProps {
   /** Shown above the text, e.g. a preview of an attached image. */
@@ -60,97 +82,179 @@ export const ArtAssistantComposer: React.FC<ArtAssistantComposerProps> = ({
   trailingActions,
   value,
 }) => {
+  const color = useColor()
   const space = useSpace()
   const isCollapsed = !isExpanded
   const padding = space(1)
 
-  // Collapsed, the actions sit on top of the input row so that the input keeps its place in the
-  // tree, and with it the focus, when the composer expands.
-  const collapsedActionsProps = isCollapsed
-    ? ({
-        left: padding,
-        position: "absolute",
-        right: padding,
-        top: padding,
-      } as const)
-    : {}
-  const collapsedTextInset = (hasActions: boolean) =>
-    isCollapsed && hasActions ? COMPOSER_ACTION_SIZE + space(0.5) : 0
-  const textInset = isCollapsed ? (COMPOSER_ACTION_SIZE - COMPOSER_LINE_HEIGHT) / 2 : 0
+  const collapsedHeight = COMPOSER_ACTION_SIZE + 2 * padding
+  // Collapsed, the text sits between the actions, in the middle of the row: across the actions
+  // and down from its place above them.
+  const leadingInset = leadingActions ? COMPOSER_ACTION_SIZE + space(0.5) : 0
+  const trailingInset = trailingActions ? COMPOSER_ACTION_SIZE + space(0.5) : 0
+  const collapsedTextOffset = COMPOSER_ACTION_SIZE / 2 + padding + COMPOSER_LINE_HEIGHT / 2
+  // Collapsed, the border takes the background color: easing from `transparent` would pass
+  // through a dark grey.
+  const borderColor = color(isFocused ? "mono30" : isCollapsed ? "mono5" : "mono10")
+  // Collapsed, the composer is a pill.
+  const borderRadius = isCollapsed ? COMPOSER_ACTION_SIZE / 2 + padding : COMPOSER_BORDER_RADIUS
+
+  // Nothing here uses layout transitions: they get stuck when the composer changes behind
+  // something else, e.g. the image picker. Instead, the content is always laid out expanded and
+  // held to the bottom edge, like the actions, and the container eases its height between a
+  // single row and the whole content. While it grows, its top edge uncovers the content in place.
+  const height = useSharedValue(collapsedHeight)
+  const contentHeight = useRef<number | null>(null)
+  const animateHeight = (nextHeight: number) => height.set(withTiming(nextHeight, COMPOSER_TIMING))
+
+  // Expanding starts as soon as it renders, without waiting for the content to be measured again.
+  useEffect(() => {
+    if (contentHeight.current !== null) {
+      animateHeight(isExpanded ? contentHeight.current : collapsedHeight)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isExpanded])
+
+  const handleContentLayout = (event: LayoutChangeEvent) => {
+    const isFirstLayout = contentHeight.current === null
+    contentHeight.current = event.nativeEvent.layout.height
+
+    if (isFirstLayout && isExpanded) {
+      height.set(contentHeight.current)
+    } else if (!isFirstLayout && isExpanded) {
+      animateHeight(contentHeight.current)
+    }
+  }
+
+  const heightAnimatedStyle = useAnimatedStyle(() => ({ height: height.get() }))
+  const borderAnimatedStyle = useAnimatedStyle(() => ({
+    borderColor: withTiming(borderColor, COMPOSER_TIMING),
+    borderRadius: withTiming(borderRadius, COMPOSER_TIMING),
+  }))
+  const textAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateX: withTiming(isCollapsed ? leadingInset : 0, COMPOSER_TIMING) },
+      { translateY: withTiming(isCollapsed ? collapsedTextOffset : 0, COMPOSER_TIMING) },
+    ],
+  }))
+  const sendAnimatedStyle = useAnimatedStyle(() => ({
+    width: withTiming(isExpanded ? padding + COMPOSER_ACTION_SIZE : 0, COMPOSER_TIMING),
+  }))
 
   return (
-    <Flex
-      backgroundColor="mono5"
-      borderColor={isFocused ? "mono30" : isCollapsed ? "transparent" : "mono10"}
-      borderRadius={COMPOSER_BORDER_RADIUS}
-      borderWidth={1}
-      gap={1}
-      p={1}
-      testID={testID}
-    >
-      {attachment}
-
-      <Input
-        accessibilityLabel={inputAccessibilityLabel}
-        editable={editable}
-        multiline
-        onBlur={onBlur}
-        onChangeText={onChangeText}
-        onFocus={onFocus}
-        placeholder={placeholder}
-        placeholderTextColor={placeholderTextColor}
-        ref={inputRef}
-        style={{
-          borderWidth: 0,
-          height: undefined,
-          maxHeight: COMPOSER_MAX_TEXT_HEIGHT,
-          minHeight: COMPOSER_LINE_HEIGHT,
-          paddingBottom: textInset,
-          paddingLeft: collapsedTextInset(!!leadingActions),
-          paddingRight: collapsedTextInset(!!trailingActions),
-          paddingTop: textInset,
-        }}
-        value={value}
+    <Animated.View style={heightAnimatedStyle} testID={testID}>
+      {/* The border sits on its own view: on the view whose height animates, every frame of the
+          height would put the border back as it was before the animation. */}
+      <Animated.View
+        pointerEvents="none"
+        style={[
+          StyleSheet.absoluteFill,
+          { backgroundColor: color("mono5"), borderWidth: COMPOSER_BORDER_WIDTH },
+          borderAnimatedStyle,
+        ]}
       />
+
+      {/* The content lays out at once, while the container takes a few frames to catch up with
+          it, e.g. right after an image is picked. Clipped, it never spills out of the border. The
+          actions stay outside, so that the dictation rings can spread past it. */}
+      <Animated.View
+        style={[
+          StyleSheet.absoluteFill,
+          { justifyContent: "flex-end", overflow: "hidden" },
+          borderAnimatedStyle,
+        ]}
+      >
+        <Flex gap={1} onLayout={handleContentLayout} p={1}>
+          {attachment}
+
+          <Animated.View
+            style={[
+              // Collapsed, the text leaves room for the actions on both sides.
+              { paddingRight: isCollapsed ? leadingInset + trailingInset : 0 },
+              textAnimatedStyle,
+            ]}
+          >
+            <Input
+              accessibilityLabel={inputAccessibilityLabel}
+              editable={editable}
+              multiline
+              onBlur={onBlur}
+              onChangeText={onChangeText}
+              onFocus={onFocus}
+              placeholder={placeholder}
+              placeholderTextColor={placeholderTextColor}
+              ref={inputRef}
+              style={{
+                borderWidth: 0,
+                height: undefined,
+                maxHeight: COMPOSER_MAX_TEXT_HEIGHT,
+                minHeight: COMPOSER_LINE_HEIGHT,
+                paddingBottom: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                paddingTop: 0,
+              }}
+              value={value}
+            />
+          </Animated.View>
+
+          {/* The row of the actions, which sit on top of it. */}
+          <Flex height={COMPOSER_ACTION_SIZE} />
+        </Flex>
+      </Animated.View>
 
       <Flex
         alignItems="center"
+        bottom={padding}
         flexDirection="row"
         justifyContent="space-between"
+        left={padding}
         pointerEvents="box-none"
-        {...collapsedActionsProps}
+        position="absolute"
+        right={padding}
       >
         <Flex alignItems="center" flexDirection="row" gap={1}>
           {leadingActions}
         </Flex>
 
-        <Flex alignItems="center" flexDirection="row" gap={1}>
+        <Flex alignItems="center" flexDirection="row">
           {trailingActions}
 
-          {!!isExpanded && (
-            <Touchable
-              accessibilityLabel="Send"
-              accessibilityRole="button"
-              accessibilityState={{ disabled: !canSend }}
-              disabled={!canSend}
-              onPress={onSend}
-              underlayColor="transparent"
-            >
-              <Flex
-                alignItems="center"
-                backgroundColor={canSend ? "mono100" : "mono30"}
-                borderRadius={COMPOSER_ACTION_SIZE / 2}
-                height={COMPOSER_ACTION_SIZE}
-                justifyContent="center"
-                width={COMPOSER_ACTION_SIZE}
-              >
-                <SendIcon fill="mono0" height={COMPOSER_ICON_SIZE} width={COMPOSER_ICON_SIZE} />
-              </Flex>
-            </Touchable>
-          )}
+          {/* Opens up the room for Send, which moves the trailing actions aside. */}
+          <Animated.View
+            style={[{ alignItems: "flex-end", overflow: "hidden" }, sendAnimatedStyle]}
+          >
+            {!!isExpanded && (
+              <Animated.View entering={FadeIn.duration(COMPOSER_ANIMATION_DURATION)}>
+                <Touchable
+                  accessibilityLabel="Send"
+                  accessibilityRole="button"
+                  accessibilityState={{ disabled: !canSend }}
+                  disabled={!canSend}
+                  onPress={onSend}
+                  underlayColor="transparent"
+                >
+                  <Flex
+                    alignItems="center"
+                    backgroundColor={canSend ? "mono100" : "mono30"}
+                    borderRadius={COMPOSER_ACTION_SIZE / 2}
+                    height={COMPOSER_ACTION_SIZE}
+                    justifyContent="center"
+                    width={COMPOSER_ACTION_SIZE}
+                  >
+                    <SendIcon
+                      fill="mono0"
+                      height={COMPOSER_SEND_ICON_SIZE}
+                      width={COMPOSER_SEND_ICON_SIZE}
+                    />
+                  </Flex>
+                </Touchable>
+              </Animated.View>
+            )}
+          </Animated.View>
         </Flex>
       </Flex>
-    </Flex>
+    </Animated.View>
   )
 }
 

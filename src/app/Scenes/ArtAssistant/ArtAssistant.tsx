@@ -41,7 +41,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-const ATTACHMENT_PREVIEW_SIZE = 56
+const ATTACHMENT_PREVIEW_SIZE = 80
 
 interface ArtAssistantProps {
   initialPrompt?: string
