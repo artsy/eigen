@@ -62,6 +62,7 @@ export const Show: React.FC<ShowProps> = ({ show, stopID, shareToken }) => {
           internalID={show.internalID}
           name={show.name ?? ""}
           slug={show.slug}
+          utmContent="show-share"
           accessibilityLabel="Share Show"
         />
       ),

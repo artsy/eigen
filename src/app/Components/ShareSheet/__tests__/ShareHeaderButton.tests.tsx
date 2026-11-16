@@ -22,6 +22,7 @@ describe("ShareHeaderButton", () => {
         internalID="show-id"
         name="The Big Show"
         slug="the-big-show"
+        utmContent="show-share"
         accessibilityLabel="Share Show"
       />
     )
@@ -34,6 +35,7 @@ describe("ShareHeaderButton", () => {
       internalID: "show-id",
       slug: "the-big-show",
       title: "The Big Show",
+      utmContent: "show-share",
     })
     expect(RNShare.open).not.toHaveBeenCalled()
   })

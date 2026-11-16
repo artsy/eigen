@@ -55,6 +55,7 @@ const Partner: React.FC<PartnerProps> = (props) => {
         internalID={partner.internalID}
         name={partner.name ?? ""}
         slug={partner.slug}
+        utmContent="partner-share"
         accessibilityLabel="Share Partner"
       />
     ) : undefined,

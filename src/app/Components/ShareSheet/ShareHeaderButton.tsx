@@ -8,6 +8,8 @@ interface ShareHeaderButtonProps {
   internalID: string
   name: string
   slug: string
+  /** The shared link's utm_content tag, e.g. "show-share" */
+  utmContent: string
   accessibilityLabel: string
 }
 
@@ -17,12 +19,13 @@ export const ShareHeaderButton: React.FC<ShareHeaderButtonProps> = ({
   internalID,
   name,
   slug,
+  utmContent,
   accessibilityLabel,
 }) => {
   const { showShareSheet } = useShareSheet()
 
   const handlePress = () => {
-    showShareSheet({ type: "default", href, internalID, slug, title: name })
+    showShareSheet({ type: "default", href, internalID, slug, title: name, utmContent })
   }
 
   return (

@@ -61,6 +61,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       internalID={feature.internalID}
       name={feature.name ?? ""}
       slug={feature.slug}
+      utmContent="feature-share"
       accessibilityLabel="Share Feature"
     />
   ) : undefined
