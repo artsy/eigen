@@ -80,3 +80,34 @@ describe("shareContent should return correct content for", () => {
     expect(shareContent(artwork)).toEqual(expectedOutput)
   })
 })
+
+describe("shareContent's utm_content", () => {
+  it("uses the default item's own tag", () => {
+    const show: ShareSheetItem = {
+      type: "default",
+      href: "/show/the-big-show",
+      internalID: "show-id",
+      slug: "the-big-show",
+      title: "The Big Show",
+      utmContent: "show-share",
+    }
+
+    expect(shareContent(show).url).toBe(
+      "https://staging.artsy.net/show/the-big-show?utm_content=show-share"
+    )
+  })
+
+  it("falls back to artwork-share for a default item without one", () => {
+    const show: ShareSheetItem = {
+      type: "default",
+      href: "/show/the-big-show",
+      internalID: "show-id",
+      slug: "the-big-show",
+      title: "The Big Show",
+    }
+
+    expect(shareContent(show).url).toBe(
+      "https://staging.artsy.net/show/the-big-show?utm_content=artwork-share"
+    )
+  })
+})

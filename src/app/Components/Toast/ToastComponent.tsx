@@ -5,8 +5,8 @@ import { internal_navigationRef } from "app/Navigation/Navigation"
 import { modules } from "app/Navigation/utils/modules"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/hooks"
-import { useEffect, useMemo, useState } from "react"
-import { Animated } from "react-native"
+import { Fragment, useEffect, useMemo, useState } from "react"
+import { Animated, Platform } from "react-native"
 import { FullWindowOverlay } from "react-native-screens"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
 import { ToastDetails, ToastDuration } from "./types"
@@ -19,6 +19,10 @@ const IMAGE_SIZE = 40
 const EDGE_TOAST_PADDING = 10
 const NAVBAR_HEIGHT = 44
 const TOAST_ANIMATION_DURATION = 450
+
+// Keeps the middle toast above modals on iOS. On Android FullWindowOverlay is a plain View laid out
+// after the app, below the screen, which hid the toast, so the toast renders directly there instead
+const MiddleToastOverlay = Platform.OS === "ios" ? FullWindowOverlay : Fragment
 
 export const TOAST_DURATION_MAP: Record<ToastDuration, number> = {
   short: 2500,
@@ -96,7 +100,7 @@ export const ToastComponent = ({
     )
 
     return (
-      <FullWindowOverlay>
+      <MiddleToastOverlay>
         <AnimatedFlex
           width={MIDDLE_TOAST_SIZE}
           height={MIDDLE_TOAST_SIZE}
@@ -122,7 +126,7 @@ export const ToastComponent = ({
             innerMiddle
           )}
         </AnimatedFlex>
-      </FullWindowOverlay>
+      </MiddleToastOverlay>
     )
   }
 
