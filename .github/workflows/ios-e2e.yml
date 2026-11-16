@@ -9,9 +9,15 @@ on:
       AWS_SECRET_ACCESS_KEY:
         required: true
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab, on the latest QA build
+  # TEMP (#14485): test this PR's QA build from S3. Revert before merge, with SKIP_SLACK_REPORT below
+  push:
+    branches:
+      - gkartalis/e2e-cleanup
 
 env:
   AGENT_DEVICE_NO_UPDATE_NOTIFIER: 1
+  # TEMP (#14485): no Slack for this PR's runs
+  SKIP_SLACK_REPORT: 1
 
 # Two runs racing to save the runner cache made one of them fail to save it, so runs on a branch take
 # turns. The group is spelled out because inside a called workflow `github.workflow` is the caller's
