@@ -3899,6 +3899,11 @@ type ArtnetArtwork {
   Whether the artwork is published on Artnet.
   """
   published: Boolean
+
+  """
+  What the last push of this artwork to Artnet had to say, if anything. Null once a later push settles cleanly — a working push is what clears these, nothing acknowledges them.
+  """
+  pushMessages: ArtnetPushMessages
   updatedAt(
     format: String
 
@@ -4178,6 +4183,21 @@ enum ArtnetImportState {
   FINALIZING
   PENDING
   PROCESSING
+}
+
+"""
+What Artnet had to say about the last push of this artwork. Artnet reports no severity and no failure state — work that went wrong comes back complete, carrying messages — so these say only that the push had something to report, not that it failed. Read `gaveUp` for the one hard distinction.
+"""
+type ArtnetPushMessages {
+  """
+  True when Gravity stopped asking how the push turned out, so the outcome is unknown rather than bad. False when Artnet itself reported these messages.
+  """
+  gaveUp: Boolean
+
+  """
+  What Artnet said about the push, verbatim, plus Gravity's own reason when it gave up. A message can be a warning about work that still succeeded, such as an image Artnet could not add to an artwork it did create.
+  """
+  messages: [String]
 }
 
 """
@@ -30966,7 +30986,7 @@ type PartnerListPublication {
   artworksCount: Int!
 
   """
-  Cover image for the room's hero banner (viewing rooms rebuild). Not shown to visitors yet.
+  Cover image for the room's hero banner (viewing rooms rebuild), as currently uploaded. Visitors see the one from the last publish, via PrivateViewingRoom.coverImageURL.
   """
   coverImage: Image
   createdAt(
@@ -32030,6 +32050,11 @@ type PrivateViewingRoom {
   applyBrand: Boolean
   artworks: [PrivateViewingRoomArtwork!]
   brandKit: BrandKit
+
+  """
+  URL of the room's cover image as of the last publish (viewing rooms rebuild), for the hero banner. Omitted without a cover, and for a gated room until authenticated.
+  """
+  coverImageURL: String
   description: String
 
   """
@@ -32092,6 +32117,11 @@ type PrivateViewingRoomContents {
   applyBrand: Boolean
   artworks: [PrivateViewingRoomArtwork!]
   brandKit: BrandKit
+
+  """
+  URL of the room's cover image as of the last publish (viewing rooms rebuild), for the hero banner. Omitted without a cover, and for a gated room until authenticated.
+  """
+  coverImageURL: String
   description: String
 
   """
