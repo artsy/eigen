@@ -51,11 +51,11 @@ export const SellSavedAddresses: React.FC<SellSavedAddressesProps> = ({
                   <RadioButton selected={checked} disabled={disabled} />
                 </Flex>
                 <Flex flex={1}>
-                  <Text variant="sm" color={disabled ? "mono30" : checked ? "mono100" : "mono60"}>
+                  <Text variant="sm" color={disabled ? "mono30" : "mono100"}>
                     {address.name}
                   </Text>
                   {lines.map((line) => (
-                    <Text key={line} variant="sm" color={disabled ? "mono30" : "mono60"}>
+                    <Text key={line} variant="sm" color={disabled ? "mono30" : "mono100"}>
                       {line}
                     </Text>
                   ))}
