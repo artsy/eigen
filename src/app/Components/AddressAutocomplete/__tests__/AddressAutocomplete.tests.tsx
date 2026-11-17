@@ -13,6 +13,18 @@ jest.mock("app/utils/googleMaps", () => ({
   getLocationDetails: jest.fn(),
 }))
 
+// gorhom unmounts a sheet's content when it closes, but the global mock keeps it mounted
+jest.mock("app/Components/BottomSheet/AutomountedBottomSheetModal", () => {
+  const { createElement } = jest.requireActual("react")
+  const { AutomountedBottomSheetModal } = jest.requireActual(
+    "app/Components/BottomSheet/AutomountedBottomSheetModal"
+  )
+  return {
+    AutomountedBottomSheetModal: (props: { visible: boolean }) =>
+      props.visible ? createElement(AutomountedBottomSheetModal, props) : null,
+  }
+})
+
 const ADDRESS = { id: "place-1", name: "401 Broadway, New York, NY, USA" }
 
 const TestAddressAutocomplete: React.FC<{ onChange?: (address: LocationWithDetails) => void }> = ({
