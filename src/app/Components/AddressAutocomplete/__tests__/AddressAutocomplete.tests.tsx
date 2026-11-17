@@ -210,6 +210,47 @@ describe("AddressAutocomplete", () => {
       expect(captureException).toHaveBeenCalledWith(error)
     })
 
+    it("starts from the picked address, not the last location, when reopened", async () => {
+      ;(getAddressFromCoordinates as jest.Mock).mockResolvedValue(HERE)
+      renderWithWrappers(<TestAddressAutocomplete />)
+
+      fireEvent.press(screen.getByTestId("street-address"))
+      fireEvent.press(await screen.findByText("Use Current Location"))
+      await waitFor(() =>
+        expect(screen.getByLabelText("Search addresses")).toHaveDisplayValue(HERE.name)
+      )
+      fireEvent.press(await screen.findByText(ADDRESS.name))
+      await screen.findByDisplayValue(ADDRESS.name)
+
+      fireEvent.press(screen.getByTestId("street-address"))
+
+      await waitFor(() =>
+        expect(screen.getByLabelText("Search addresses")).toHaveDisplayValue(ADDRESS.name)
+      )
+    })
+
+    it("drops a lookup that finishes after the sheet closed", async () => {
+      let resolveAddress: (address: typeof HERE) => void = () => null
+      ;(getAddressFromCoordinates as jest.Mock).mockReturnValue(
+        new Promise((resolve) => {
+          resolveAddress = resolve
+        })
+      )
+      renderWithWrappers(<TestAddressAutocomplete />)
+
+      fireEvent.press(screen.getByTestId("street-address"))
+      fireEvent.press(await screen.findByText("Use Current Location"))
+      await waitFor(() => expect(getAddressFromCoordinates).toHaveBeenCalled())
+      // What a swipe down calls
+      act(() => screen.UNSAFE_getByProps({ sentryName: "AddressSearchSheet" }).props.onDismiss())
+      await waitFor(() => expect(screen.queryByLabelText("Search addresses")).not.toBeOnTheScreen())
+
+      await act(async () => resolveAddress(HERE))
+      fireEvent.press(screen.getByTestId("street-address"))
+
+      expect(await screen.findByLabelText("Search addresses")).toHaveDisplayValue("")
+    })
+
     it("keeps what the user typed while the location was loading", async () => {
       let resolveAddress: (address: typeof HERE) => void = () => null
       ;(getAddressFromCoordinates as jest.Mock).mockReturnValue(

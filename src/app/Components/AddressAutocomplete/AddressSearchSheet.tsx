@@ -59,13 +59,15 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
   const [predictions, setPredictions] = useState<SimpleLocation[] | null>(null)
   const [locating, setLocating] = useState(false)
   const [locationError, setLocationError] = useState<string | null>(null)
-  // Raised by each lookup and each keystroke, so a slow lookup can't replace what the user typed
+  // Raised by each lookup, keystroke and close, so a slow lookup can't land somewhere stale
   const lookupRef = useRef(0)
   const { debouncedValue: debouncedQuery } = useDebouncedValue({ value: query, delay: 300 })
 
   useEffect(() => {
     if (visible) {
       setQuery(initialQuery)
+      // The sheet outlives its content, so drop the last open's location fill
+      setLocatedAddress(null)
       setPredictions(null)
       setLocationError(null)
     }
@@ -91,6 +93,8 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
 
   // Android keeps the keyboard open after the sheet's input goes away
   const close = () => {
+    // A lookup still running would otherwise fill the next open
+    lookupRef.current += 1
     KeyboardController.dismiss()
     onDismiss()
   }

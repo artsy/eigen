@@ -3,10 +3,13 @@ import { Location } from "app/utils/hooks/useLocation"
 import { PermissionsAndroid, Platform } from "react-native"
 
 const TIMEOUT = 10000
+const MAXIMUM_AGE = 30000
+// Coarser than this, the address can be a street away. iOS with Precise Location off reports km
+const MAX_ACCURACY_METERS = 200
 
 export type CurrentLocation =
   | { status: "located"; location: Location }
-  /** Android users can grant approximate location only, which can land a street away */
+  /** Approximate location only, which can land a street away */
   | { status: "approximate" }
   | { status: "denied" }
   | { status: "unavailable" }
@@ -50,9 +53,14 @@ export const getCurrentLocation = async (): Promise<CurrentLocation> => {
   return new Promise((resolve) => {
     Geolocation.getCurrentPosition(
       ({ coords }) =>
-        resolve({ status: "located", location: { lat: coords.latitude, lng: coords.longitude } }),
+        resolve(
+          coords.accuracy > MAX_ACCURACY_METERS
+            ? { status: "approximate" }
+            : { status: "located", location: { lat: coords.latitude, lng: coords.longitude } }
+        ),
       () => resolve({ status: "unavailable" }),
-      { timeout: TIMEOUT }
+      // The defaults allow a coarse fix and a cached position of any age
+      { timeout: TIMEOUT, enableHighAccuracy: true, maximumAge: MAXIMUM_AGE }
     )
   })
 }

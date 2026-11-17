@@ -12,7 +12,7 @@ describe(getCurrentLocation, () => {
     jest.clearAllMocks()
     Platform.OS = "android"
     ;(Geolocation.getCurrentPosition as jest.Mock).mockImplementation((onSuccess) =>
-      onSuccess({ coords: { latitude: 40.7, longitude: -73.99 } })
+      onSuccess({ coords: { latitude: 40.7, longitude: -73.99, accuracy: 15 } })
     )
   })
 
@@ -34,6 +34,20 @@ describe(getCurrentLocation, () => {
       location: { lat: 40.7, lng: -73.99 },
     })
     expect(requestMultiple).toHaveBeenCalledWith([ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION])
+    expect(Geolocation.getCurrentPosition).toHaveBeenCalledWith(
+      expect.any(Function),
+      expect.any(Function),
+      expect.objectContaining({ enableHighAccuracy: true, maximumAge: 30000 })
+    )
+  })
+
+  it("treats a coarse fix as approximate, as iOS gives with Precise Location off", async () => {
+    grant(GRANTED, GRANTED)
+    ;(Geolocation.getCurrentPosition as jest.Mock).mockImplementation((onSuccess) =>
+      onSuccess({ coords: { latitude: 40.7, longitude: -73.99, accuracy: 3000 } })
+    )
+
+    expect(await getCurrentLocation()).toEqual({ status: "approximate" })
   })
 
   it("says so when the user only allows approximate location", async () => {
