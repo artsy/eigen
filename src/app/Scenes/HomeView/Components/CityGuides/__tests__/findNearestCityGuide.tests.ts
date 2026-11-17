@@ -1,29 +1,18 @@
 import Geolocation from "@react-native-community/geolocation"
 import { findNearestCityGuide } from "app/Scenes/HomeView/Components/CityGuides/findNearestCityGuide"
 import { AppState, AppStateEvent, Platform } from "react-native"
-import { check, request } from "react-native-permissions"
+import { request } from "react-native-permissions"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 jest.mock("react-native-permissions", () => ({
-  PERMISSIONS: {
-    ANDROID: { ACCESS_COARSE_LOCATION: "android.permission.ACCESS_COARSE_LOCATION" },
-    IOS: { LOCATION_WHEN_IN_USE: "ios.permission.LOCATION_WHEN_IN_USE" },
-  },
-  RESULTS: {
-    GRANTED: "granted",
-    LIMITED: "limited",
-    DENIED: "denied",
-    BLOCKED: "blocked",
-    UNAVAILABLE: "unavailable",
-  },
+  PERMISSIONS: { ANDROID: { ACCESS_COARSE_LOCATION: "android.permission.ACCESS_COARSE_LOCATION" } },
+  RESULTS: { GRANTED: "granted", LIMITED: "limited", DENIED: "denied", BLOCKED: "blocked" },
   request: jest.fn(),
-  check: jest.fn(),
 }))
 
 const mockRequestAuthorization = Geolocation.requestAuthorization as jest.Mock
 const mockGetCurrentPosition = Geolocation.getCurrentPosition as jest.Mock
 const mockRequest = request as jest.Mock
-const mockCheck = check as jest.Mock
 
 const LONDON = { lat: 51.51, lng: -0.13 }
 const MANCHESTER = { lat: 53.4808, lng: -2.2426 } // ~260km from London
@@ -114,8 +103,6 @@ describe("findNearestCityGuide", () => {
     mockRequestAuthorization.mockReset()
     mockGetCurrentPosition.mockReset()
     mockRequest.mockReset()
-    // iOS: the prompt hasn't been answered yet
-    mockCheck.mockReset().mockResolvedValue("denied")
 
     appStateListeners = {}
     jest.spyOn(AppState, "addEventListener").mockImplementation((type, listener) => {
@@ -147,25 +134,59 @@ describe("findNearestCityGuide", () => {
       expect(mockGetCurrentPosition).not.toHaveBeenCalled()
     })
 
-    it("doesn't wait on the system when access was already granted", async () => {
-      // `requestAuthorization` never calls back when the status doesn't change
-      mockCheck.mockResolvedValue("granted")
-      mockRequestAuthorization.mockImplementation(() => {})
-      setPosition(LONDON)
+    describe("when the system never answers the request, because the status didn't change", () => {
+      beforeEach(() => {
+        jest.useFakeTimers()
+        mockRequestAuthorization.mockImplementation(() => {})
+      })
 
-      const { outcome } = await run()
+      afterEach(() => {
+        jest.useRealTimers()
+      })
 
-      expect(outcome).toEqual({ status: "granted", href: expect.any(String) })
-      expect(mockRequestAuthorization).not.toHaveBeenCalled()
-    })
+      it("is granted when a position can be found", async () => {
+        setPosition(LONDON)
 
-    it("is blocked, without prompting, when access was denied before", async () => {
-      mockCheck.mockResolvedValue("blocked")
+        const result = findNearestCityGuide(createMockEnvironment())
+        await jest.advanceTimersByTimeAsync(1000)
 
-      const { outcome } = await run()
+        // Settled as granted: the flow moved on to the position lookup and the cities query,
+        // which the mock environment never answers
+        expect(mockGetCurrentPosition).toHaveBeenCalledTimes(2)
+        await expect(Promise.race([result, "pending"])).resolves.toBe("pending")
+      })
 
-      expect(outcome).toEqual({ status: "blocked" })
-      expect(mockRequestAuthorization).not.toHaveBeenCalled()
+      it("is blocked when access was denied before", async () => {
+        mockGetCurrentPosition.mockImplementation((_success, error) =>
+          error({ code: 1, message: "denied" })
+        )
+
+        const result = findNearestCityGuide(createMockEnvironment())
+        await jest.advanceTimersByTimeAsync(1000)
+
+        await expect(result).resolves.toEqual({ status: "blocked" })
+      })
+
+      it("is granted when access was granted but there's no fix in time", async () => {
+        mockGetCurrentPosition.mockImplementation((_success, error) =>
+          error({ code: 3, message: "Location request timed out" })
+        )
+
+        const result = findNearestCityGuide(createMockEnvironment())
+        await jest.advanceTimersByTimeAsync(1000)
+
+        expect(mockGetCurrentPosition).toHaveBeenCalled()
+        await expect(Promise.race([result, "pending"])).resolves.toBe("pending")
+      })
+
+      it("doesn't assume anything while the prompt is on screen", async () => {
+        const result = findNearestCityGuide(createMockEnvironment())
+        appStateListeners.change?.forEach((listener) => listener("inactive"))
+        await jest.advanceTimersByTimeAsync(5000)
+
+        expect(mockGetCurrentPosition).not.toHaveBeenCalled()
+        await expect(Promise.race([result, "pending"])).resolves.toBe("pending")
+      })
     })
 
     it("stops listening to the app state once settled", async () => {
