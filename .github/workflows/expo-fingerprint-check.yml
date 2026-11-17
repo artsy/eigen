@@ -33,11 +33,10 @@ jobs:
       - name: Setup JavaScript environment
         uses: ./.github/actions/setup-javascript-environment
 
-      - name: Setup Ruby
-        uses: ./.github/actions/setup-ruby
-
-      - name: Setup iOS environment
-        uses: ./.github/actions/setup-ios-environment
+      # Fonts are the only untracked input under ios/ the fingerprint hashes. No `pod install`: it can
+      # rewrite Podfile.lock and change the hash. Keep in sync with pr-preview.yml.
+      - name: Download fonts from s3
+        run: ./scripts/setup/download-fonts
 
       - name: Set up Java
         uses: actions/setup-java@v4
