@@ -10,10 +10,6 @@ interface AddressAutocompleteProps {
   onChange: (address: LocationWithDetails) => void
   /** ISO 3166-1 alpha-2 code that limits suggestions to one country */
   country?: string
-  required?: boolean
-  /** Controls the search sheet from outside, eg to close it on Android Back inside a modal */
-  searchVisible?: boolean
-  onSearchVisibleChange?: (visible: boolean) => void
   testID?: string
 }
 
@@ -26,18 +22,9 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
   value,
   onChange,
   country,
-  required,
-  searchVisible: controlledSearchVisible,
-  onSearchVisibleChange,
   testID,
 }) => {
-  const [ownSearchVisible, setOwnSearchVisible] = useState(false)
-  const searchVisible = controlledSearchVisible ?? ownSearchVisible
-
-  const setSearchVisible = (visible: boolean) => {
-    setOwnSearchVisible(visible)
-    onSearchVisibleChange?.(visible)
-  }
+  const [searchVisible, setSearchVisible] = useState(false)
 
   return (
     <>
@@ -50,7 +37,7 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
       >
         {/* The sheet does the typing, so the field only shows the picked address */}
         <View pointerEvents="none">
-          <Input title={title} value={value?.name ?? ""} editable={false} required={required} />
+          <Input title={title} value={value?.name ?? ""} editable={false} />
         </View>
       </Touchable>
 

@@ -96,8 +96,7 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
           accessibilityLabel="Search addresses"
           autoComplete="street-address"
           textContentType="fullStreetAddress"
-          // Uncontrolled, since a controlled input lags while typing. The sheet remounts on open
-          defaultValue={initialQuery}
+          value={query}
           onChangeText={setQuery}
         />
       </Flex>

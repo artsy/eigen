@@ -1,18 +1,10 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { SellLocationFieldsTestQuery } from "__generated__/SellLocationFieldsTestQuery.graphql"
 import { SellLocationFields } from "app/Scenes/Sell/Components/SellLocationFields"
 import { SellLocationStore, SellSavedAddress } from "app/Scenes/Sell/State/SellLocationStore"
-import { getLocationDetails, getLocationPredictions } from "app/utils/googleMaps"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { useEffect } from "react"
 import { graphql } from "react-relay"
-
-jest.mock("app/utils/googleMaps", () => ({
-  getLocationPredictions: jest.fn(),
-  getLocationDetails: jest.fn(),
-}))
-
-const PLACE = { id: "place-1", name: "401 Broadway, New York, NY, USA" }
 
 const address = (internalID: string, overrides: Partial<SellSavedAddress> = {}) => ({
   internalID,
@@ -68,18 +60,6 @@ const { renderWithRelay } = setupTestWrapper<SellLocationFieldsTestQuery>({
 })
 
 describe("SellLocationFields", () => {
-  beforeEach(() => {
-    ;(getLocationPredictions as jest.Mock).mockResolvedValue([PLACE])
-    ;(getLocationDetails as jest.Mock).mockResolvedValue({
-      ...PLACE,
-      street: "401 Broadway",
-      city: "New York",
-      stateCode: "NY",
-      countryCode: "US",
-      postalCode: "10013",
-    })
-  })
-
   afterEach(() => {
     jest.clearAllMocks()
   })
@@ -124,84 +104,5 @@ describe("SellLocationFields", () => {
 
     expect(screen.getAllByRole("radio")).toHaveLength(4)
     expect(screen.queryByText("Show all addresses (4)")).not.toBeOnTheScreen()
-  })
-
-  it("saves a new address and selects it", async () => {
-    const view = renderWithRelay({
-      Me: () => ({ id: "me", name: "Collector", addressConnection: addressConnection([]) }),
-    })
-
-    expect(screen.queryAllByRole("radio")).toHaveLength(0)
-
-    fireEvent.press(screen.getByLabelText("Add new address"))
-    await waitFor(() => expect(screen.getByText("Save Address")).toBeDisabled())
-
-    fireEvent.press(screen.getByTestId("sell-street-address"))
-    fireEvent.changeText(await screen.findByLabelText("Search addresses"), "401 Broad")
-    fireEvent.press(await screen.findByText(PLACE.name))
-    await waitFor(() =>
-      expect(screen.getByLabelText("ZIP/Postal code")).toHaveDisplayValue("10013")
-    )
-    expect(getLocationPredictions).toHaveBeenCalledWith("401 Broad", {
-      types: "address",
-      country: "us",
-    })
-
-    fireEvent.press(screen.getByText("Save Address"))
-
-    await waitFor(() =>
-      expect(view.env.mock.getMostRecentOperation().request.variables.input).toEqual({
-        attributes: {
-          name: "Collector",
-          addressLine1: "401 Broadway",
-          addressLine2: null,
-          city: "New York",
-          region: "NY",
-          postalCode: "10013",
-          country: "US",
-        },
-      })
-    )
-
-    view.mockResolveLastOperation({
-      CreateUserAddressPayload: () => ({
-        // The same id as the query's Me, so the new address lands in the rendered list
-        me: { id: "me", addressConnection: addressConnection([address("new-1")]) },
-        userAddressOrErrors: { __typename: "UserAddress", internalID: "new-1" },
-      }),
-    })
-
-    await waitFor(() =>
-      expect(screen.getByRole("radio", { name: /^Collector new-1/ })).toBeChecked()
-    )
-    expect(onAddress).toHaveBeenLastCalledWith(expect.objectContaining({ internalID: "new-1" }))
-  })
-
-  it("shows the error when the address can’t be saved", async () => {
-    const view = renderWithRelay({
-      Me: () => ({ id: "me", addressConnection: addressConnection([address("1")]) }),
-    })
-
-    fireEvent.press(screen.getByLabelText("Add new address"))
-    fireEvent.press(screen.getByTestId("sell-street-address"))
-    fireEvent.changeText(await screen.findByLabelText("Search addresses"), "401 Broad")
-    fireEvent.press(await screen.findByText(PLACE.name))
-    await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
-
-    fireEvent.press(screen.getByText("Save Address"))
-    await waitFor(() =>
-      expect(view.env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-        "useCreateUserAddressMutation"
-      )
-    )
-    view.mockResolveLastOperation({
-      CreateUserAddressPayload: () => ({
-        me: { id: "me", addressConnection: addressConnection([address("1")]) },
-        userAddressOrErrors: { __typename: "Errors", errors: [{ message: "Name is required" }] },
-      }),
-    })
-
-    expect(await screen.findByText("Name is required")).toBeOnTheScreen()
-    expect(screen.getByRole("radio", { name: /^Collector 1/ })).toBeChecked()
   })
 })

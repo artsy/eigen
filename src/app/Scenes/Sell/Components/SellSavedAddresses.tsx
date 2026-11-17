@@ -1,4 +1,3 @@
-import { AddIcon } from "@artsy/icons/native"
 import { Flex, RadioButton, Text, Touchable } from "@artsy/palette-mobile"
 import { SellSavedAddress, isSellableAddress } from "app/Scenes/Sell/State/SellLocationStore"
 import { useState } from "react"
@@ -9,20 +8,15 @@ interface SellSavedAddressesProps {
   addresses: readonly SellSavedAddress[]
   value: SellSavedAddress | null
   onChange: (address: SellSavedAddress) => void
-  onAddNew: () => void
 }
 
 export const SellSavedAddresses: React.FC<SellSavedAddressesProps> = ({
   addresses,
   value,
   onChange,
-  onAddNew,
 }) => {
   const [showAll, setShowAll] = useState(false)
-  const selectedIndex = addresses.findIndex((address) => address.internalID === value?.internalID)
-  // A just-saved address can sort past the first three, so keep the selection visible
-  const expanded = showAll || selectedIndex >= VISIBLE_COUNT
-  const visibleAddresses = expanded ? addresses : addresses.slice(0, VISIBLE_COUNT)
+  const visibleAddresses = showAll ? addresses : addresses.slice(0, VISIBLE_COUNT)
 
   return (
     <Flex gap={2}>
@@ -72,20 +66,13 @@ export const SellSavedAddresses: React.FC<SellSavedAddressesProps> = ({
         </Text>
       )}
 
-      {!expanded && addresses.length > VISIBLE_COUNT && (
+      {!showAll && addresses.length > VISIBLE_COUNT && (
         <Touchable accessibilityRole="button" onPress={() => setShowAll(true)}>
           <Text variant="sm" underline>
             Show all addresses ({addresses.length})
           </Text>
         </Touchable>
       )}
-
-      <Touchable accessibilityRole="button" accessibilityLabel="Add new address" onPress={onAddNew}>
-        <Flex flexDirection="row" alignItems="center" gap={0.5}>
-          <AddIcon width={20} height={20} />
-          <Text variant="sm">Add new address</Text>
-        </Flex>
-      </Touchable>
     </Flex>
   )
 }

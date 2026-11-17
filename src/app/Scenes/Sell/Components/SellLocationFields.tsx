@@ -1,11 +1,10 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { SellLocationFields_me$key } from "__generated__/SellLocationFields_me.graphql"
-import { SellAddAddressModal } from "app/Scenes/Sell/Components/SellAddAddressModal"
 import { SellSavedAddresses } from "app/Scenes/Sell/Components/SellSavedAddresses"
 import { SellLocationStore, isSellableAddress } from "app/Scenes/Sell/State/SellLocationStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { sortBy } from "lodash"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo } from "react"
 import { graphql, useFragment } from "react-relay"
 
 interface SellLocationFieldsProps {
@@ -24,21 +23,13 @@ export const SellLocationFields: React.FC<SellLocationFieldsProps> = ({ me }) =>
       ]),
     [data.addressConnection]
   )
-  const [adding, setAdding] = useState(false)
-  const [savedAddressID, setSavedAddressID] = useState<string | null>(null)
-
-  // Selects the default address on load, and a new address once it's back from the save
+  // Selects the first address the user can sell from on load
   useEffect(() => {
-    const saved = addresses.find((address) => address.internalID === savedAddressID)
-    const next = saved ?? (value ? null : addresses.find(isSellableAddress))
-
-    if (saved) {
-      setSavedAddressID(null)
-    }
-    if (next && next.internalID !== value?.internalID) {
+    const next = value ? null : addresses.find(isSellableAddress)
+    if (next) {
       onChange(next)
     }
-  }, [addresses, savedAddressID, value, onChange])
+  }, [addresses, value, onChange])
 
   return (
     <Flex gap={1}>
@@ -47,26 +38,13 @@ export const SellLocationFields: React.FC<SellLocationFieldsProps> = ({ me }) =>
         We use this to estimate shipping and arrange pickup.
       </Text>
 
-      <SellSavedAddresses
-        addresses={addresses}
-        value={value}
-        onChange={onChange}
-        onAddNew={() => setAdding(true)}
-      />
-
-      <SellAddAddressModal
-        visible={adding}
-        name={data.name}
-        onDismiss={() => setAdding(false)}
-        onSaved={setSavedAddressID}
-      />
+      <SellSavedAddresses addresses={addresses} value={value} onChange={onChange} />
     </Flex>
   )
 }
 
 const sellLocationFieldsFragment = graphql`
   fragment SellLocationFields_me on Me {
-    name
     addressConnection(first: 20) {
       edges {
         node {
