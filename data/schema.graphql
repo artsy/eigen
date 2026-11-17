@@ -31074,9 +31074,19 @@ type PartnerListPublication {
   applyBrand: Boolean
 
   """
+  Number of artwork columns, 2 to 4 (viewing rooms rebuild). Null on a room published before the rebuild.
+  """
+  artworkColumns: Int
+
+  """
   Per-field visibility toggles for artworks in the room. Any key the gallery hasn't set is null.
   """
   artworkFieldVisibility: ArtworkFieldVisibility
+
+  """
+  Artworks as a grid or masonry (viewing rooms rebuild). Null on a room published before the rebuild.
+  """
+  artworkLayout: ViewingRoomArtworkLayout
 
   """
   Number of artworks currently snapshotted into this publication.
@@ -31106,6 +31116,11 @@ type PartnerListPublication {
   Optional heading shown on the published room.
   """
   heading: String
+
+  """
+  Hero banner style (viewing rooms rebuild). Null on a room published before the rebuild.
+  """
+  heroStyle: ViewingRoomHeroStyle
 
   """
   Public-facing path for this private viewing room.
@@ -31151,6 +31166,11 @@ type PartnerListPublication {
   """
   showGalleryName: Boolean
   slug: String
+
+  """
+  Alignment of the heading and text (viewing rooms rebuild). Null on a room published before the rebuild.
+  """
+  textAlignment: ViewingRoomTextAlignment
   updatedAt(
     format: String
 
@@ -32146,6 +32166,16 @@ union PricingBreakdownLineUnion = ShippingLine | SubtotalLine | TaxLine | TotalL
 
 type PrivateViewingRoom {
   applyBrand: Boolean
+
+  """
+  Number of artwork columns, 2 to 4 (viewing rooms rebuild). Omitted like heroStyle.
+  """
+  artworkColumns: Int
+
+  """
+  Artworks as a grid or masonry (viewing rooms rebuild). Omitted like heroStyle.
+  """
+  artworkLayout: ViewingRoomArtworkLayout
   artworks: [PrivateViewingRoomArtwork!]
   brandKit: BrandKit
 
@@ -32162,9 +32192,19 @@ type PrivateViewingRoom {
   heading: String
 
   """
+  Hero banner style (viewing rooms rebuild). Omitted on a room published before the rebuild, which keeps its original layout, and for a gated room until authenticated.
+  """
+  heroStyle: ViewingRoomHeroStyle
+
+  """
   Whether this room requires a passcode to view.
   """
   passcodeRequired: Boolean!
+
+  """
+  Alignment of the heading and text (viewing rooms rebuild). Omitted like heroStyle.
+  """
+  textAlignment: ViewingRoomTextAlignment
 }
 
 type PrivateViewingRoomArtwork {
@@ -32213,6 +32253,16 @@ type PrivateViewingRoomArtworkEditionInfo {
 
 type PrivateViewingRoomContents {
   applyBrand: Boolean
+
+  """
+  Number of artwork columns, 2 to 4 (viewing rooms rebuild). Omitted like heroStyle.
+  """
+  artworkColumns: Int
+
+  """
+  Artworks as a grid or masonry (viewing rooms rebuild). Omitted like heroStyle.
+  """
+  artworkLayout: ViewingRoomArtworkLayout
   artworks: [PrivateViewingRoomArtwork!]
   brandKit: BrandKit
 
@@ -32227,6 +32277,16 @@ type PrivateViewingRoomContents {
   """
   galleryName: String
   heading: String
+
+  """
+  Hero banner style (viewing rooms rebuild). Omitted on a room published before the rebuild, which keeps its original layout, and for a gated room until authenticated.
+  """
+  heroStyle: ViewingRoomHeroStyle
+
+  """
+  Alignment of the heading and text (viewing rooms rebuild). Omitted like heroStyle.
+  """
+  textAlignment: ViewingRoomTextAlignment
 }
 
 type Profile {
@@ -32349,9 +32409,19 @@ input PublishPartnerListPublicationMutationInput {
   applyBrand: Boolean
 
   """
+  Number of artwork columns, 2 to 4 (viewing rooms rebuild). Gravity rejects other values.
+  """
+  artworkColumns: Int
+
+  """
   Per-field visibility toggles for artworks in the room.
   """
   artworkFieldVisibility: ArtworkFieldVisibilityInput
+
+  """
+  Artworks as a grid or masonry (viewing rooms rebuild).
+  """
+  artworkLayout: ViewingRoomArtworkLayout
   clientMutationId: String
 
   """
@@ -32370,6 +32440,11 @@ input PublishPartnerListPublicationMutationInput {
   heading: String
 
   """
+  Hero banner style (viewing rooms rebuild).
+  """
+  heroStyle: ViewingRoomHeroStyle
+
+  """
   The ID of the partner list to publish as a viewing room.
   """
   partnerListID: String!
@@ -32383,6 +32458,11 @@ input PublishPartnerListPublicationMutationInput {
   Whether to show the gallery name on the public page.
   """
   showGalleryName: Boolean
+
+  """
+  Alignment of the heading and text (viewing rooms rebuild).
+  """
+  textAlignment: ViewingRoomTextAlignment
 }
 
 type PublishPartnerListPublicationMutationPayload {
@@ -45694,6 +45774,11 @@ input ViewingRoomArtworkInput {
   position: Int
 }
 
+enum ViewingRoomArtworkLayout {
+  GRID
+  MASONRY
+}
+
 input ViewingRoomAttributes {
   body: String
 
@@ -45752,6 +45837,11 @@ type ViewingRoomEdge {
   node: ViewingRoom
 }
 
+enum ViewingRoomHeroStyle {
+  EDITORIAL
+  FULL_IMAGE
+}
+
 union ViewingRoomOrErrorsUnion = Errors | ViewingRoom
 
 type ViewingRoomPublishedNotificationItem {
@@ -45800,6 +45890,11 @@ input ViewingRoomSubsectionInput {
   delete: Boolean = false
   image: ARImageInput
   internalID: ID
+}
+
+enum ViewingRoomTextAlignment {
+  CENTER
+  LEFT
 }
 
 """
