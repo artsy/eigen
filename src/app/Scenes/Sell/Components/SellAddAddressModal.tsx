@@ -33,7 +33,9 @@ const validationSchema = Yup.object().shape({
   addressLine1: Yup.string()
     .trim()
     .required("Enter a street address.")
-    .matches(/^\d/, "Enter a street number."),
+    // Anywhere in the line, since grid addresses like "W156 N8480 Pilgrim Rd" don't start with one
+    .matches(/\d/, "Enter a street number.")
+    .matches(/[a-z]{2,}/i, "Enter a street name."),
   city: Yup.string().trim().required("Enter a city."),
   region: Yup.string().trim().required("Enter a state."),
   postalCode: Yup.string()
@@ -242,12 +244,13 @@ const SellAddAddressForm: React.FC<SellAddAddressFormProps> = ({
               searchVisible={searchOpen}
               onSearchVisibleChange={onSearchOpenChange}
               onChange={(place) => {
-                // Clear what the new place lacks, so nothing from the last place is left behind
+                // Start from the new place alone, so no field from the last place is left behind
                 setValues(
                   {
                     ...values,
                     place,
                     addressLine1: place.street ?? "",
+                    addressLine2: "",
                     city: place.city ?? "",
                     region: place.stateCode ?? "",
                     postalCode: place.postalCode ?? "",

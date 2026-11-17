@@ -97,6 +97,7 @@ describe("SellAddAddressModal", () => {
   it("clears the fields the newly picked place doesn’t have", async () => {
     renderAddAddress()
     await pickPlace()
+    fireEvent.changeText(screen.getByLabelText("Apt, floor, suite, etc."), "Floor 3")
     ;(getLocationPredictions as jest.Mock).mockResolvedValue([OTHER_PLACE])
     ;(getLocationDetails as jest.Mock).mockResolvedValue({
       ...OTHER_PLACE,
@@ -108,6 +109,7 @@ describe("SellAddAddressModal", () => {
 
     expect(screen.getByLabelText("City")).toHaveDisplayValue("")
     expect(screen.getByLabelText("ZIP/Postal code")).toHaveDisplayValue("")
+    expect(screen.getByLabelText("Apt, floor, suite, etc.")).toHaveDisplayValue("")
   })
 
   it("asks for a street number when the picked street has none", async () => {
@@ -127,7 +129,20 @@ describe("SellAddAddressModal", () => {
     expect(await screen.findByText("Enter a street number.")).toBeOnTheScreen()
     expect(screen.getByText("Save Address")).toBeDisabled()
 
+    fireEvent.changeText(screen.getByLabelText("Address line 1"), "401")
+    expect(await screen.findByText("Enter a street name.")).toBeOnTheScreen()
+    expect(screen.getByText("Save Address")).toBeDisabled()
+
     fireEvent.changeText(screen.getByLabelText("Address line 1"), "401 Broadway")
+    await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
+  })
+
+  it("accepts street numbers that don’t lead the line", async () => {
+    renderAddAddress()
+    await pickPlace()
+
+    fireEvent.changeText(screen.getByLabelText("Address line 1"), "W156 N8480 Pilgrim Rd")
+
     await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
   })
 
