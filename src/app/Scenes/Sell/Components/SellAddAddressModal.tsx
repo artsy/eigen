@@ -28,13 +28,19 @@ interface AddAddressFormValues {
   postalCode: string
 }
 
+// The first word holds the building number, eg "401 Broadway" or the Wisconsin grid
+// "W156 N8480 Pilgrim Rd". An ordinal there, as in "5th Avenue", is part of the street name
+const hasBuildingNumber = (street: string) => {
+  const firstWord = street.trim().split(/\s+/)[0]
+  return /\d/.test(firstWord) && !/^\d+(st|nd|rd|th)$/i.test(firstWord)
+}
+
 const validationSchema = Yup.object().shape({
   name: Yup.string().trim().required("Enter your full name."),
   addressLine1: Yup.string()
     .trim()
     .required("Enter a street address.")
-    // Anywhere in the line, since grid addresses like "W156 N8480 Pilgrim Rd" don't start with one
-    .matches(/\d/, "Enter a street number.")
+    .test("street-number", "Enter a street number.", (street) => hasBuildingNumber(street ?? ""))
     .matches(/[a-z]{2,}/i, "Enter a street name."),
   city: Yup.string().trim().required("Enter a city."),
   region: Yup.string().trim().required("Enter a state."),
@@ -234,53 +240,43 @@ const SellAddAddressForm: React.FC<SellAddAddressFormProps> = ({
             required
           />
 
-          <Flex gap={0.5}>
-            <AddressAutocomplete
-              title="Street address"
-              testID="sell-street-address"
-              country="us"
-              required
-              value={values.place}
-              searchVisible={searchOpen}
-              onSearchVisibleChange={onSearchOpenChange}
-              onChange={(place) => {
-                // Start from the new place alone, so no field from the last place is left behind
-                setValues(
-                  {
-                    ...values,
-                    place,
-                    addressLine1: place.street ?? "",
-                    addressLine2: "",
-                    city: place.city ?? "",
-                    region: place.stateCode ?? "",
-                    postalCode: place.postalCode ?? "",
-                  },
-                  true
-                )
-                setFieldTouched("addressLine1", true, false)
-              }}
-            />
-            {!values.place && !!errorFor("addressLine1") && (
-              <Text variant="xs" color="red100" px={1}>
-                {errorFor("addressLine1")}
-              </Text>
-            )}
-          </Flex>
+          <AddressAutocomplete
+            title="Search for an address"
+            testID="sell-street-address"
+            country="us"
+            value={values.place}
+            searchVisible={searchOpen}
+            onSearchVisibleChange={onSearchOpenChange}
+            onChange={(place) => {
+              // Start from the new place alone, so no field from the last place is left behind
+              setValues(
+                {
+                  ...values,
+                  place,
+                  addressLine1: place.street ?? "",
+                  addressLine2: "",
+                  city: place.city ?? "",
+                  region: place.stateCode ?? "",
+                  postalCode: place.postalCode ?? "",
+                },
+                true
+              )
+              setFieldTouched("addressLine1", true, false)
+            }}
+          />
 
-          {/* Google can leave out the street number, or the whole street, so let users fix it */}
-          {!!values.place && (
-            <Input
-              title="Address line 1"
-              accessibilityLabel="Address line 1"
-              autoComplete="address-line1"
-              textContentType="streetAddressLine1"
-              required
-              value={values.addressLine1}
-              error={errorFor("addressLine1")}
-              onChangeText={handleChangeText("addressLine1")}
-              onBlur={handleBlur("addressLine1")}
-            />
-          )}
+          {/* Typed or filled from the search, since Google can miss the number or the whole street */}
+          <Input
+            title="Address line 1"
+            accessibilityLabel="Address line 1"
+            autoComplete="address-line1"
+            textContentType="streetAddressLine1"
+            required
+            value={values.addressLine1}
+            error={errorFor("addressLine1")}
+            onChangeText={handleChangeText("addressLine1")}
+            onBlur={handleBlur("addressLine1")}
+          />
 
           <Input
             title="Apt, floor, suite, etc. (optional)"

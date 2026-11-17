@@ -137,6 +137,36 @@ describe("SellAddAddressModal", () => {
     await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
   })
 
+  it("doesn’t take a numbered street for a building number", async () => {
+    renderAddAddress()
+    await pickPlace()
+
+    fireEvent.changeText(screen.getByLabelText("Address line 1"), "5th Avenue")
+    expect(await screen.findByText("Enter a street number.")).toBeOnTheScreen()
+    expect(screen.getByText("Save Address")).toBeDisabled()
+
+    fireEvent.changeText(screen.getByLabelText("Address line 1"), "1 5th Avenue")
+    await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
+  })
+
+  it("saves an address typed without the search", async () => {
+    renderAddAddress()
+
+    fireEvent.changeText(screen.getByLabelText("Address line 1"), "401 Broadway")
+    fireEvent.changeText(screen.getByLabelText("City"), "New York")
+    fireEvent.changeText(screen.getByLabelText("State, region or province"), "NY")
+    fireEvent.changeText(screen.getByLabelText("ZIP/Postal code"), "10013")
+    await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
+    fireEvent.press(screen.getByText("Save Address"))
+
+    await waitFor(() =>
+      expect(
+        getMockRelayEnvironment().mock.getMostRecentOperation().request.variables.input.attributes
+      ).toMatchObject({ addressLine1: "401 Broadway", city: "New York", postalCode: "10013" })
+    )
+    expect(getLocationPredictions).not.toHaveBeenCalled()
+  })
+
   it("accepts street numbers that don’t lead the line", async () => {
     renderAddAddress()
     await pickPlace()
