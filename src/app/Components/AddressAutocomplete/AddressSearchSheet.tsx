@@ -22,6 +22,7 @@ import {
   getLocationPredictions,
 } from "app/utils/googleMaps"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
+import { showLocationSettingsAlert } from "app/utils/showLocationSettingsAlert"
 import { useEffect, useRef, useState } from "react"
 import { AccessibilityInfo, Platform } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
@@ -127,6 +128,19 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
 
     try {
       const current = await getCurrentLocation()
+
+      if (isStale() || current.status === "denied") {
+        return
+      }
+      if (current.status === "blocked") {
+        showLocationSettingsAlert("To use your current location")
+        return
+      }
+      if (current.status === "approximate") {
+        showLocationError(PRECISE_LOCATION_ERROR)
+        return
+      }
+
       const address =
         current.status === "located" ? await getAddressFromCoordinates(current.location) : null
 
@@ -134,9 +148,7 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
         return
       }
 
-      if (current.status === "approximate") {
-        showLocationError(PRECISE_LOCATION_ERROR)
-      } else if (!address) {
+      if (!address) {
         showLocationError(CURRENT_LOCATION_ERROR)
       } else if (country && address.countryCode?.toLowerCase() !== country.toLowerCase()) {
         const code = country.toUpperCase()

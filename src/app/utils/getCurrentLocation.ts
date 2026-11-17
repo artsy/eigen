@@ -1,5 +1,6 @@
 import Geolocation from "@react-native-community/geolocation"
 import { Location } from "app/utils/hooks/useLocation"
+import { requestIOSLocationPermission } from "app/utils/requestIOSLocationPermission"
 import { PermissionsAndroid, Platform } from "react-native"
 
 const TIMEOUT = 10000
@@ -11,46 +12,34 @@ export type CurrentLocation =
   | { status: "located"; location: Location }
   /** Approximate location only, which can land a street away */
   | { status: "approximate" }
+  /** The user declined the prompt just now */
   | { status: "denied" }
+  /** Location was denied before and can't be asked for again: only Settings can grant it */
+  | { status: "blocked" }
   | { status: "unavailable" }
 
-type Permission = "granted" | "approximate" | "denied"
+type Permission = "granted" | "approximate" | "denied" | "blocked"
 
-const requestPermission = async (): Promise<Permission> => {
-  if (Platform.OS === "android") {
-    const { ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION } = PermissionsAndroid.PERMISSIONS
-    // Some Android 12 builds ignore a request for fine location on its own
-    const results = await PermissionsAndroid.requestMultiple([
-      ACCESS_FINE_LOCATION,
-      ACCESS_COARSE_LOCATION,
-    ])
+const requestAndroidPermission = async (): Promise<Permission> => {
+  const { ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION } = PermissionsAndroid.PERMISSIONS
+  const { GRANTED, NEVER_ASK_AGAIN } = PermissionsAndroid.RESULTS
+  // Some Android 12 builds ignore a request for fine location on its own
+  const results = await PermissionsAndroid.requestMultiple([
+    ACCESS_FINE_LOCATION,
+    ACCESS_COARSE_LOCATION,
+  ])
 
-    if (results[ACCESS_FINE_LOCATION] === PermissionsAndroid.RESULTS.GRANTED) {
-      return "granted"
-    }
-    if (results[ACCESS_COARSE_LOCATION] === PermissionsAndroid.RESULTS.GRANTED) {
-      return "approximate"
-    }
-    return "denied"
+  if (results[ACCESS_FINE_LOCATION] === GRANTED) {
+    return "granted"
   }
-
-  return new Promise<Permission>((resolve) => {
-    Geolocation.requestAuthorization(
-      () => resolve("granted"),
-      () => resolve("denied")
-    )
-  })
+  if (results[ACCESS_COARSE_LOCATION] === GRANTED) {
+    return "approximate"
+  }
+  return results[ACCESS_FINE_LOCATION] === NEVER_ASK_AGAIN ? "blocked" : "denied"
 }
 
-/** Asks for precise location permission when needed and returns the device's position */
-export const getCurrentLocation = async (): Promise<CurrentLocation> => {
-  const permission = await requestPermission()
-
-  if (permission !== "granted") {
-    return { status: permission }
-  }
-
-  return new Promise((resolve) => {
+const getPosition = (enableHighAccuracy: boolean) =>
+  new Promise<CurrentLocation>((resolve) => {
     Geolocation.getCurrentPosition(
       ({ coords }) =>
         resolve(
@@ -60,7 +49,23 @@ export const getCurrentLocation = async (): Promise<CurrentLocation> => {
         ),
       () => resolve({ status: "unavailable" }),
       // The defaults allow a coarse fix and a cached position of any age
-      { timeout: TIMEOUT, enableHighAccuracy: true, maximumAge: MAXIMUM_AGE }
+      { timeout: TIMEOUT, enableHighAccuracy, maximumAge: MAXIMUM_AGE }
     )
   })
+
+/** Asks for precise location permission when needed and returns the device's position */
+export const getCurrentLocation = async (): Promise<CurrentLocation> => {
+  const permission =
+    Platform.OS === "android"
+      ? await requestAndroidPermission()
+      : await requestIOSLocationPermission()
+
+  if (permission !== "granted") {
+    return { status: permission }
+  }
+
+  const position = await getPosition(true)
+
+  // Android's high accuracy uses GPS alone, which often has no fix indoors; Wi‑Fi can still do
+  return position.status === "unavailable" ? getPosition(false) : position
 }

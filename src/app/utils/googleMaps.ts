@@ -55,7 +55,8 @@ export const getLocationPredictions = async (
     if (__DEV__) {
       console.warn(error)
     } else {
-      captureMessage(`Error fetching location predictions on: ${url} -> Error: ${error}`)
+      // The URL holds the API key and what the user typed
+      captureMessage(`Error fetching location predictions -> ${error}`)
     }
   }
 

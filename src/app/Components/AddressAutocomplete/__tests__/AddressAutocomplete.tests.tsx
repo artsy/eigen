@@ -10,7 +10,7 @@ import {
 } from "app/utils/googleMaps"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useState } from "react"
-import { AccessibilityInfo } from "react-native"
+import { AccessibilityInfo, Alert, Linking } from "react-native"
 
 jest.mock("app/utils/googleMaps", () => ({
   getLocationPredictions: jest.fn(),
@@ -68,6 +68,7 @@ describe("AddressAutocomplete", () => {
 
   afterEach(() => {
     jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 
   it("searches addresses in the given country and shows the picked one in the field", async () => {
@@ -167,8 +168,8 @@ describe("AddressAutocomplete", () => {
       expect(onChange).not.toHaveBeenCalled()
     })
 
-    it("says so when location access is denied", async () => {
-      ;(getCurrentLocation as jest.Mock).mockResolvedValue({ status: "denied" })
+    it("says so when the device can’t find its position", async () => {
+      ;(getCurrentLocation as jest.Mock).mockResolvedValue({ status: "unavailable" })
       renderWithWrappers(<TestAddressAutocomplete />)
 
       fireEvent.press(screen.getByTestId("street-address"))
@@ -181,6 +182,44 @@ describe("AddressAutocomplete", () => {
       expect(AccessibilityInfo.announceForAccessibility).toHaveBeenCalledWith(
         "We couldn’t find an address for your current location."
       )
+    })
+
+    it("does nothing when the user declines the prompt", async () => {
+      ;(getCurrentLocation as jest.Mock).mockResolvedValue({ status: "denied" })
+      const alert = jest.spyOn(Alert, "alert")
+      renderWithWrappers(<TestAddressAutocomplete />)
+
+      fireEvent.press(screen.getByTestId("street-address"))
+      fireEvent.press(await screen.findByText("Use Current Location"))
+
+      await waitFor(() => expect(getCurrentLocation).toHaveBeenCalled())
+      expect(
+        screen.queryByText("We couldn’t find an address for your current location.")
+      ).not.toBeOnTheScreen()
+      expect(alert).not.toHaveBeenCalled()
+      expect(getAddressFromCoordinates).not.toHaveBeenCalled()
+    })
+
+    it("points to Settings when location was blocked before", async () => {
+      ;(getCurrentLocation as jest.Mock).mockResolvedValue({ status: "blocked" })
+      const alert = jest.spyOn(Alert, "alert").mockImplementation(() => null)
+      const openSettings = jest.spyOn(Linking, "openSettings").mockResolvedValue()
+      renderWithWrappers(<TestAddressAutocomplete />)
+
+      fireEvent.press(screen.getByTestId("street-address"))
+      fireEvent.press(await screen.findByText("Use Current Location"))
+
+      await waitFor(() =>
+        expect(alert).toHaveBeenCalledWith(
+          "Allow access to your location",
+          "To use your current location, allow Artsy to access your location in Settings.",
+          expect.any(Array)
+        )
+      )
+      const buttons = alert.mock.calls[0][2]
+      buttons?.find((button) => button.text === "Open Settings")?.onPress?.()
+      expect(openSettings).toHaveBeenCalled()
+      expect(getAddressFromCoordinates).not.toHaveBeenCalled()
     })
 
     it("asks for precise location when only approximate is allowed", async () => {
@@ -249,6 +288,27 @@ describe("AddressAutocomplete", () => {
       fireEvent.press(screen.getByTestId("street-address"))
 
       expect(await screen.findByLabelText("Search addresses")).toHaveDisplayValue("")
+    })
+
+    it("doesn’t look up the address once the user types while locating", async () => {
+      let resolveLocation: (location: unknown) => void = () => null
+      ;(getCurrentLocation as jest.Mock).mockReturnValue(
+        new Promise((resolve) => {
+          resolveLocation = resolve
+        })
+      )
+      renderWithWrappers(<TestAddressAutocomplete />)
+
+      fireEvent.press(screen.getByTestId("street-address"))
+      fireEvent.press(await screen.findByText("Use Current Location"))
+      fireEvent.changeText(screen.getByLabelText("Search addresses"), "401 Broad")
+
+      await act(async () =>
+        resolveLocation({ status: "located", location: { lat: 40.7, lng: -73.99 } })
+      )
+
+      expect(getAddressFromCoordinates).not.toHaveBeenCalled()
+      expect(screen.getByLabelText("Search addresses")).toHaveDisplayValue("401 Broad")
     })
 
     it("keeps what the user typed while the location was loading", async () => {

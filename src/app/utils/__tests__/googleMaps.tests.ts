@@ -43,6 +43,20 @@ describe(getLocationPredictions, () => {
     expect(fetchMock.mock.calls[0][0]).toContain("types=address")
     expect(fetchMock.mock.calls[0][0]).toContain("components=country%3Aus")
   })
+
+  it("logs a failed request without the API key or what the user typed", async () => {
+    const dev = __DEV__
+    ;(global as any).__DEV__ = false
+    ;(captureMessage as jest.Mock).mockClear()
+    fetchMock.mockRejectOnce(new Error("Network request failed"))
+
+    await getLocationPredictions("401 Broadway", { types: "address", country: "us" })
+
+    expect(captureMessage).toHaveBeenCalledWith(
+      "Error fetching location predictions -> Error: Network request failed"
+    )
+    ;(global as any).__DEV__ = dev
+  })
 })
 
 describe(getAddressFromCoordinates, () => {
