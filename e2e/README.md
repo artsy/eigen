@@ -97,7 +97,7 @@ The `click` and `email` links make the app fetch the tracking URL to find the de
 
 ## Share
 
-`share` turns on `AREnableShareShowPartnerFeature` with the `enableFeatureFlags` launch argument (a comma-separated list of flag names), then opens a show, a partner and a feature with `https://artsy.net` links while the app is running (on iOS, an `artsy://` link makes iOS ask “Open in ‘Artsy’?” first). On each page it taps the share button and checks the app's own share sheet opens (Copy link and More), not the system one. The show and partner close the sheet with its X; the feature taps Copy link and waits for the "Copied to Clipboard" toast.
+`share` turns on `AREnableShareShowPartnerFeature` with the `enableFeatureFlags` launch argument (a comma-separated list of flag names), then opens a show, a partner and a feature by link while the app is running: `https://artsy.net` links on iOS, `artsy://` links on Android. On iOS, an `artsy://` link makes iOS ask “Open in ‘Artsy’?” first, and the flow can't see that alert. On each page it taps the share button and checks the app's own share sheet opens (Copy link and More), not the system one. The show and partner close the sheet with its X; the feature taps Copy link and waits for the "Copied to Clipboard" toast.
 
 - Bottom sheets hide their rows from agent-device (and VoiceOver) unless they set `accessible={false}`: gorhom's default turns the whole sheet into a single "Bottom Sheet" element.
 - Don't tap More. It opens the system share sheet, which iOS draws outside the app; agent-device can't see inside it, and stops seeing the app's own screen once it's open.

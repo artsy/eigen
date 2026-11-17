@@ -1,13 +1,13 @@
 context timeout=240000
 # @title Share - Show, Partner and Feature
-# Opens a show, a partner and a feature with artsy.net universal links while the app is running, and checks each
+# Opens a show, a partner and a feature with artsy.net links while the app is running, and checks each
 # share button opens the app's share sheet (Copy link, More), not the system one. Show and partner close
 # it with its X; the feature copies the link. The buttons are behind AREnableShareShowPartnerFeature,
 # turned on for this run with the enableFeatureFlags launch argument.
-# Not artsy:// links: `simctl openurl` on a custom scheme makes iOS ask “Open in ‘Artsy’?”, which the flow
-# can't see, and the alert stays up into the next attempt. Universal links open the app without asking.
 # `open <url>` without the app id runs `simctl openurl`, and `open ${APP_ID}` then attaches to the
 # running app without restarting it (see the deeplink flows).
+# Use https links, not artsy:// ones: on a custom scheme, iOS asks “Open in ‘Artsy’?” first. The flow
+# can't see that alert, and it stays up into the next attempt. Universal links open the app directly.
 # Don't tap More: it opens the system share sheet, which iOS draws outside the app, and agent-device
 # stops seeing the app's screen once it opens.
 # @launch useE2EInit=true email=${EMAIL} password=${PASSWORD} enableFeatureFlags=AREnableShareShowPartnerFeature
