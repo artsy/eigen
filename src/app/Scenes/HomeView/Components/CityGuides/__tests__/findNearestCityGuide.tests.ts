@@ -134,6 +134,61 @@ describe("findNearestCityGuide", () => {
       expect(mockGetCurrentPosition).not.toHaveBeenCalled()
     })
 
+    describe("when the system never answers the request, because the status didn't change", () => {
+      beforeEach(() => {
+        jest.useFakeTimers()
+        mockRequestAuthorization.mockImplementation(() => {})
+      })
+
+      afterEach(() => {
+        jest.useRealTimers()
+      })
+
+      it("is granted when a position can be found", async () => {
+        setPosition(LONDON)
+
+        const result = findNearestCityGuide(createMockEnvironment())
+        await jest.advanceTimersByTimeAsync(1000)
+
+        // Settled as granted: the flow moved on to the position lookup and the cities query,
+        // which the mock environment never answers
+        expect(mockGetCurrentPosition).toHaveBeenCalledTimes(2)
+        await expect(Promise.race([result, "pending"])).resolves.toBe("pending")
+      })
+
+      it("is blocked when access was denied before", async () => {
+        mockGetCurrentPosition.mockImplementation((_success, error) =>
+          error({ code: 1, message: "denied" })
+        )
+
+        const result = findNearestCityGuide(createMockEnvironment())
+        await jest.advanceTimersByTimeAsync(1000)
+
+        await expect(result).resolves.toEqual({ status: "blocked" })
+      })
+
+      it("is granted when access was granted but there's no fix in time", async () => {
+        mockGetCurrentPosition.mockImplementation((_success, error) =>
+          error({ code: 3, message: "Location request timed out" })
+        )
+
+        const result = findNearestCityGuide(createMockEnvironment())
+        await jest.advanceTimersByTimeAsync(1000)
+
+        expect(mockGetCurrentPosition).toHaveBeenCalled()
+        await expect(Promise.race([result, "pending"])).resolves.toBe("pending")
+      })
+
+      it("doesn't assume anything while the prompt is on screen", async () => {
+        const result = findNearestCityGuide(createMockEnvironment())
+        appStateListeners.change?.forEach((listener) => listener("inactive"))
+        await jest.advanceTimersByTimeAsync(5000)
+
+        expect(mockGetCurrentPosition).not.toHaveBeenCalled()
+        await expect(Promise.race([result, "pending"])).resolves.toBe("pending")
+      })
+    })
+
     it("stops listening to the app state once settled", async () => {
       const remove = jest.fn()
       jest.spyOn(AppState, "addEventListener").mockReturnValue({ remove })
