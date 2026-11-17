@@ -120,8 +120,8 @@ Runs on every push to `main`. It:
 
 1. Generates the current Expo fingerprint hash
 2. Downloads the previously stored fingerprint from `s3://mobile-cached-builds/eigen-expo-fingerprint/latest.txt`
-3. Compares the two — if they match, no builds are needed
-4. If they differ, checks S3 for existing cached builds for each platform (in case the fingerprint changed but a build was already uploaded for it)
+3. Compares the two to decide whether `latest.txt` needs updating
+4. Checks `s3://mobile-cached-builds/eigen/cached-builds/` for an existing build of the current fingerprint, per platform. This runs on every push, not only when the fingerprint changes, so a build that failed earlier gets retried
 5. Outputs `needs_ios_build` and `needs_android_build` flags as artifacts for downstream workflows
 6. Saves the new fingerprint to S3 whenever it changed — regardless of whether a build was needed
 
@@ -136,8 +136,9 @@ Triggered automatically after `expo-fingerprint-check` completes. It:
 
 1. Downloads the `needs_ios_build` artifact from the fingerprint check
 2. Exits early if no build is needed
-3. Otherwise: sets up the full iOS environment (macOS 15, Xcode, simulator), then runs `bundle exec npx expo run:ios --no-bundler`
-4. `EXPO_BUILD_CACHE_UPLOAD=1` is set in the job environment — so after a successful build the result is automatically uploaded to S3
+3. Fails if `pod install` changed `ios/Podfile.lock` (see [Troubleshooting](#ci-build-fails-with-podfilelock-drift))
+4. Otherwise: sets up the full iOS environment (macOS 15, Xcode, simulator), then runs `bundle exec npx expo run:ios --no-bundler`
+5. `EXPO_BUILD_CACHE_UPLOAD=1` is set in the job environment — so after a successful build the result is automatically uploaded to S3
 
 ### 3. `android-expo-build` ([.github/workflows/android-expo-build.yml](../.github/workflows/android-expo-build.yml))
 
@@ -151,9 +152,9 @@ push to main
     ▼
 expo-fingerprint-check
     │
-    ├── fingerprint unchanged → skip both builds ✅
+    ├── fingerprint changed → update latest.txt
     │
-    └── fingerprint changed
+    └── check S3 for the current fingerprint
             │
             ├── S3 already has iOS build → skip iOS build ✅
             ├── S3 already has Android build → skip Android build ✅
@@ -165,7 +166,7 @@ expo-fingerprint-check
                     └── builds & uploads .android.tar.gz to S3
 ```
 
-Both build workflows can also be triggered manually from the GitHub Actions tab (`workflow_dispatch`).
+Both build workflows can also be triggered manually from the GitHub Actions tab (`workflow_dispatch`). Each build workflow runs one at a time (a `concurrency` group), so a queued run for the same fingerprint downloads the build the previous run uploaded instead of compiling again.
 
 ---
 
@@ -187,6 +188,16 @@ Compare the output to a previous run (or the `latest-debug.txt` in S3 if `EXPO_F
 - A new file was added that isn't excluded in `fingerprint.config.js`
 
 If a file is being included that shouldn't affect the native build, add it to the `ignorePaths` list in [fingerprint.config.js](../fingerprint.config.js).
+
+### CI build fails with Podfile.lock drift
+
+`pod install` on CI rewrote `ios/Podfile.lock`, usually because a pod's podspec was edited upstream (e.g. marked deprecated) and CI fetched the new version while your local spec cache still has the old one. The rewritten lockfile changes the fingerprint, so the build would be uploaded under a hash nobody else computes. Refresh the lockfile locally and commit it:
+
+```sh
+cd ios && bundle exec pod install --repo-update
+```
+
+If it fails with a CDN error (`Error in the HTTP2 framing layer`), run `bundle exec pod install` again.
 
 ### S3 download is slow or fails
 

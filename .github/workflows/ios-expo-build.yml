@@ -6,6 +6,12 @@ on:
     types: [completed]
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
 
+# Queue instead of running in parallel: a queued run for the same fingerprint then downloads the
+# build the previous run uploaded instead of compiling it again.
+concurrency:
+  group: ios-expo-cache-build
+  cancel-in-progress: false
+
 jobs:
   check-build-needed:
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
@@ -54,6 +60,16 @@ jobs:
 
       - name: Setup iOS environment
         uses: ./.github/actions/setup-ios-environment
+
+      # A rewritten Podfile.lock changes the fingerprint, so the build would be cached under a hash
+      # nobody else computes. Fail early instead of spending ~80 min on an unusable upload.
+      - name: Fail on Podfile.lock drift
+        run: |
+          if ! git diff --quiet -- ios/Podfile.lock; then
+            echo "::error::pod install changed ios/Podfile.lock, so this build can't be reused. Run 'cd ios && bundle exec pod install --repo-update' locally and commit the lockfile."
+            git --no-pager diff -- ios/Podfile.lock
+            exit 1
+          fi
 
       - name: Set up env for ci
         run: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci

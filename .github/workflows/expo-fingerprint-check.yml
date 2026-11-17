@@ -128,20 +128,15 @@ jobs:
       - name: Check S3 for existing cached builds
         id: check-s3-cache
         run: |
-          # If fingerprints match, no build is needed for either platform
-          if [ "${{ steps.compare.outputs.changed }}" != "true" ]; then
-            echo "✅ Fingerprints match - no build needed"
-            echo "needs_ios_build=false" >> $GITHUB_OUTPUT
-            echo "needs_android_build=false" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-
+          # Checked on every push, not only when the fingerprint changes: a build that failed
+          # (e.g. emulator didn't boot) leaves no cached artifact, and latest.txt has already moved
+          # on, so a fingerprint-only check would never retry it.
           FINGERPRINT="${{ steps.generate-fingerprint.outputs.fingerprint }}"
 
           echo "🔍 Checking S3 for existing builds with fingerprint: $FINGERPRINT"
 
           # Check if Android tar.gz exists
-          if aws s3api head-object --bucket artsy-citadel --key "eigen/cached-builds/${FINGERPRINT}.android.tar.gz" 2>/dev/null; then
+          if aws s3api head-object --bucket mobile-cached-builds --key "eigen/cached-builds/${FINGERPRINT}.android.tar.gz" 2>/dev/null; then
             echo "✅ Found Android build in S3"
             echo "needs_android_build=false" >> $GITHUB_OUTPUT
           else
@@ -150,7 +145,7 @@ jobs:
           fi
 
           # Check if iOS tar.gz exists
-          if aws s3api head-object --bucket artsy-citadel --key "eigen/cached-builds/${FINGERPRINT}.ios.tar.gz" 2>/dev/null; then
+          if aws s3api head-object --bucket mobile-cached-builds --key "eigen/cached-builds/${FINGERPRINT}.ios.tar.gz" 2>/dev/null; then
             echo "✅ Found iOS build in S3"
             echo "needs_ios_build=false" >> $GITHUB_OUTPUT
           else
