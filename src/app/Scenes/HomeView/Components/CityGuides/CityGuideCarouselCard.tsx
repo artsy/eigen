@@ -120,7 +120,7 @@ interface ContentProps {
 const CityContent: React.FC<ContentProps> = ({ card, contentWidth }) => {
   return (
     <>
-      <Text variant="xl" numberOfLines={1}>
+      <Text variant="lg-display" numberOfLines={1} fontWeight="bold">
         {card.title}
       </Text>
 
@@ -175,7 +175,7 @@ const NearMeContent: React.FC<ContentProps & { isLoading: boolean }> = ({
 
   return (
     <Flex flex={1}>
-      <Text variant="xl" numberOfLines={2}>
+      <Text variant="lg-display" numberOfLines={2} fontWeight="bold">
         {card.title}
       </Text>
 
