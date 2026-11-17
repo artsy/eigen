@@ -1,6 +1,5 @@
 import { MicrophoneIcon } from "@artsy/icons/native"
 import { DEFAULT_HIT_SLOP, Flex, Touchable, useColor } from "@artsy/palette-mobile"
-import { COMPOSER_ICON_SIZE } from "app/Scenes/ArtAssistant/Components/ArtAssistantComposer"
 import Animated, {
   SharedValue,
   useAnimatedStyle,
@@ -15,6 +14,9 @@ const VOLUME_RINGS = [
   { opacity: 0.08, restingScale: 1.15, loudestScale: 1.7 },
 ]
 const VOLUME_SPRING = { damping: 14, stiffness: 180 }
+// The microphone fills more of its 18×18 box than the camera next to it, so it takes a smaller size
+// to look the same.
+const MICROPHONE_ICON_SIZE = 22
 
 interface ArtAssistantVoiceInputButtonProps {
   /** Shows the stop button. */
@@ -63,7 +65,11 @@ export const ArtAssistantVoiceInputButton: React.FC<ArtAssistantVoiceInputButton
               width={size * 0.35}
             />
           ) : (
-            <MicrophoneIcon fill="mono100" height={COMPOSER_ICON_SIZE} width={COMPOSER_ICON_SIZE} />
+            <MicrophoneIcon
+              fill="mono100"
+              height={MICROPHONE_ICON_SIZE}
+              width={MICROPHONE_ICON_SIZE}
+            />
           )}
         </Flex>
       </Touchable>
