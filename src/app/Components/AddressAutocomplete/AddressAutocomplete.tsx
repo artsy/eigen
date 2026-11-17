@@ -11,6 +11,9 @@ interface AddressAutocompleteProps {
   /** ISO 3166-1 alpha-2 code that limits suggestions to one country */
   country?: string
   required?: boolean
+  /** Controls the search sheet from outside, eg to close it on Android Back inside a modal */
+  searchVisible?: boolean
+  onSearchVisibleChange?: (visible: boolean) => void
   testID?: string
 }
 
@@ -24,9 +27,17 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
   onChange,
   country,
   required,
+  searchVisible: controlledSearchVisible,
+  onSearchVisibleChange,
   testID,
 }) => {
-  const [searchVisible, setSearchVisible] = useState(false)
+  const [ownSearchVisible, setOwnSearchVisible] = useState(false)
+  const searchVisible = controlledSearchVisible ?? ownSearchVisible
+
+  const setSearchVisible = (visible: boolean) => {
+    setOwnSearchVisible(visible)
+    onSearchVisibleChange?.(visible)
+  }
 
   return (
     <>
