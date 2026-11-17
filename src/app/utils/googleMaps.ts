@@ -102,6 +102,13 @@ export const getAddressFromCoordinates = async ({
 
   const response = await fetch("https://maps.googleapis.com/maps/api/geocode/json?" + queryString)
   const data = await response.json()
+
+  // Without this, a key that lacks the Geocoding API looks like "no address here"
+  if (data.status !== "OK" && data.status !== "ZERO_RESULTS") {
+    captureMessage(
+      `Error finding an address from coordinates -> ${data.status}: ${data.error_message}`
+    )
+  }
   const result = data.results?.[0] as (PlaceResult & GeocodeResult) | undefined
 
   if (!result) {

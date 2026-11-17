@@ -9,6 +9,7 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { BottomSheetFlatList } from "@gorhom/bottom-sheet"
+import { captureException } from "@sentry/react-native"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { ACCESSIBLE_SMALL_ICON_SIZE } from "app/Components/constants"
@@ -21,13 +22,15 @@ import {
   getLocationPredictions,
 } from "app/utils/googleMaps"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import { AccessibilityInfo, Platform } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const MIN_QUERY_LENGTH = 3
 const SNAP_POINTS = ["85%"]
 const CURRENT_LOCATION_ERROR = "We couldn’t find an address for your current location."
+const PRECISE_LOCATION_ERROR = "Turn on precise location to use your current address."
 
 interface AddressSearchSheetProps {
   visible: boolean
@@ -56,6 +59,8 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
   const [predictions, setPredictions] = useState<SimpleLocation[] | null>(null)
   const [locating, setLocating] = useState(false)
   const [locationError, setLocationError] = useState<string | null>(null)
+  // Raised by each lookup and each keystroke, so a slow lookup can't replace what the user typed
+  const lookupRef = useRef(0)
   const { debouncedValue: debouncedQuery } = useDebouncedValue({ value: query, delay: 300 })
 
   useEffect(() => {
@@ -95,28 +100,54 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
     close()
   }
 
+  const showLocationError = (message: string) => {
+    setLocationError(message)
+    // Android reads the error through its live region
+    if (Platform.OS === "ios") {
+      AccessibilityInfo.announceForAccessibility(message)
+    }
+  }
+
+  const handleChangeText = (text: string) => {
+    lookupRef.current += 1
+    setQuery(text)
+  }
+
   // The location only fills the search, so the user still picks the address from the results
   const searchCurrentLocation = async () => {
+    const lookup = ++lookupRef.current
+    const isStale = () => lookup !== lookupRef.current
+
     setLocating(true)
     setLocationError(null)
 
     try {
-      const coordinates = await getCurrentLocation()
-      const address = coordinates && (await getAddressFromCoordinates(coordinates))
+      const current = await getCurrentLocation()
+      const address =
+        current.status === "located" ? await getAddressFromCoordinates(current.location) : null
 
-      if (!address) {
-        setLocationError(CURRENT_LOCATION_ERROR)
+      if (isStale()) {
+        return
+      }
+
+      if (current.status === "approximate") {
+        showLocationError(PRECISE_LOCATION_ERROR)
+      } else if (!address) {
+        showLocationError(CURRENT_LOCATION_ERROR)
       } else if (country && address.countryCode?.toLowerCase() !== country.toLowerCase()) {
         const code = country.toUpperCase()
-        setLocationError(
+        showLocationError(
           `It looks like you’re not in the ${code}. We only accept ${code} addresses for now.`
         )
       } else {
         setQuery(address.name)
         setLocatedAddress(address.name)
       }
-    } catch {
-      setLocationError(CURRENT_LOCATION_ERROR)
+    } catch (error) {
+      captureException(error)
+      if (!isStale()) {
+        showLocationError(CURRENT_LOCATION_ERROR)
+      }
     } finally {
       setLocating(false)
     }
@@ -148,7 +179,7 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
           // and the key remounts the input when the location fills it
           key={locatedAddress ?? "typed"}
           defaultValue={locatedAddress ?? initialQuery}
-          onChangeText={setQuery}
+          onChangeText={handleChangeText}
         />
       </Flex>
 
@@ -185,7 +216,7 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
                   </Text>
                 </Flex>
                 {!!locationError && (
-                  <Text variant="xs" color="red100">
+                  <Text variant="xs" color="red100" accessibilityLiveRegion="polite">
                     {locationError}
                   </Text>
                 )}

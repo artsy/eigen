@@ -1,4 +1,9 @@
-import { getLocationPredictions, getLocationDetails } from "app/utils/googleMaps"
+import { captureMessage } from "@sentry/react-native"
+import {
+  getAddressFromCoordinates,
+  getLocationPredictions,
+  getLocationDetails,
+} from "app/utils/googleMaps"
 import { fetchMockResponseOnce } from "app/utils/tests/fetchMockHelpers"
 
 describe(getLocationPredictions, () => {
@@ -37,6 +42,33 @@ describe(getLocationPredictions, () => {
 
     expect(fetchMock.mock.calls[0][0]).toContain("types=address")
     expect(fetchMock.mock.calls[0][0]).toContain("components=country%3Aus")
+  })
+})
+
+describe(getAddressFromCoordinates, () => {
+  beforeEach(() => {
+    fetchMock.mockClear()
+    ;(captureMessage as jest.Mock).mockClear()
+  })
+
+  it("returns null without logging when there's no address", async () => {
+    fetchMockResponseOnce(JSON.stringify({ status: "ZERO_RESULTS", results: [] }))
+
+    expect(await getAddressFromCoordinates({ lat: 40.7, lng: -73.99 })).toBeNull()
+    expect(captureMessage).not.toHaveBeenCalled()
+  })
+
+  it("logs a refused request, so it doesn't pass for a missing address", async () => {
+    fetchMockResponseOnce(
+      JSON.stringify({
+        status: "REQUEST_DENIED",
+        error_message: "This API project is not authorized to use this API.",
+        results: [],
+      })
+    )
+
+    expect(await getAddressFromCoordinates({ lat: 40.7, lng: -73.99 })).toBeNull()
+    expect(captureMessage).toHaveBeenCalledWith(expect.stringContaining("REQUEST_DENIED"))
   })
 })
 

@@ -140,7 +140,7 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Using User Location to display nearby shows</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Using User Location to display nearby shows</string>
+	<string>Artsy uses your location to show nearby shows and to fill in your address.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Used to dictate your questions to Art Assistant.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

@@ -1,4 +1,5 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { captureException } from "@sentry/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { AddressAutocomplete } from "app/Components/AddressAutocomplete/AddressAutocomplete"
 import { getCurrentLocation } from "app/utils/getCurrentLocation"
 import {
@@ -9,6 +10,7 @@ import {
 } from "app/utils/googleMaps"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useState } from "react"
+import { AccessibilityInfo } from "react-native"
 
 jest.mock("app/utils/googleMaps", () => ({
   getLocationPredictions: jest.fn(),
@@ -119,7 +121,10 @@ describe("AddressAutocomplete", () => {
     const HERE = { id: "place-2", name: "1 Main St, Brooklyn, NY, USA", countryCode: "US" }
 
     beforeEach(() => {
-      ;(getCurrentLocation as jest.Mock).mockResolvedValue({ lat: 40.7, lng: -73.99 })
+      ;(getCurrentLocation as jest.Mock).mockResolvedValue({
+        status: "located",
+        location: { lat: 40.7, lng: -73.99 },
+      })
     })
 
     it("fills the search with the device's address, without picking it", async () => {
@@ -163,7 +168,7 @@ describe("AddressAutocomplete", () => {
     })
 
     it("says so when location access is denied", async () => {
-      ;(getCurrentLocation as jest.Mock).mockResolvedValue(null)
+      ;(getCurrentLocation as jest.Mock).mockResolvedValue({ status: "denied" })
       renderWithWrappers(<TestAddressAutocomplete />)
 
       fireEvent.press(screen.getByTestId("street-address"))
@@ -173,6 +178,59 @@ describe("AddressAutocomplete", () => {
         await screen.findByText("We couldn’t find an address for your current location.")
       ).toBeOnTheScreen()
       expect(getAddressFromCoordinates).not.toHaveBeenCalled()
+      expect(AccessibilityInfo.announceForAccessibility).toHaveBeenCalledWith(
+        "We couldn’t find an address for your current location."
+      )
+    })
+
+    it("asks for precise location when only approximate is allowed", async () => {
+      ;(getCurrentLocation as jest.Mock).mockResolvedValue({ status: "approximate" })
+      renderWithWrappers(<TestAddressAutocomplete />)
+
+      fireEvent.press(screen.getByTestId("street-address"))
+      fireEvent.press(await screen.findByText("Use Current Location"))
+
+      expect(
+        await screen.findByText("Turn on precise location to use your current address.")
+      ).toBeOnTheScreen()
+      expect(getAddressFromCoordinates).not.toHaveBeenCalled()
+    })
+
+    it("logs a failed lookup and shows the same message", async () => {
+      const error = new Error("Network request failed")
+      ;(getAddressFromCoordinates as jest.Mock).mockRejectedValue(error)
+      renderWithWrappers(<TestAddressAutocomplete />)
+
+      fireEvent.press(screen.getByTestId("street-address"))
+      fireEvent.press(await screen.findByText("Use Current Location"))
+
+      expect(
+        await screen.findByText("We couldn’t find an address for your current location.")
+      ).toBeOnTheScreen()
+      expect(captureException).toHaveBeenCalledWith(error)
+    })
+
+    it("keeps what the user typed while the location was loading", async () => {
+      let resolveAddress: (address: typeof HERE) => void = () => null
+      ;(getAddressFromCoordinates as jest.Mock).mockReturnValue(
+        new Promise((resolve) => {
+          resolveAddress = resolve
+        })
+      )
+      renderWithWrappers(<TestAddressAutocomplete />)
+
+      fireEvent.press(screen.getByTestId("street-address"))
+      fireEvent.press(await screen.findByText("Use Current Location"))
+      await waitFor(() => expect(getAddressFromCoordinates).toHaveBeenCalled())
+      fireEvent.changeText(screen.getByLabelText("Search addresses"), "401 Broad")
+
+      await act(async () => resolveAddress(HERE))
+
+      expect(screen.getByLabelText("Search addresses")).toHaveDisplayValue("401 Broad")
+      expect(getLocationPredictions).toHaveBeenLastCalledWith("401 Broad", {
+        types: "address",
+        country: "us",
+      })
     })
   })
 })
