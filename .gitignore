@@ -206,3 +206,4 @@ scripts/route-drift/route-drift-report.md
 # e2e artifacts
 e2e/artifacts/
 .agent-device/
+/tasks/

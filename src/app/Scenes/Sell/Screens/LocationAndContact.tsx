@@ -1,5 +1,6 @@
-import { Flex, Input, Text } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { LocationAndContactQuery } from "__generated__/LocationAndContactQuery.graphql"
+import { SellContactFields } from "app/Scenes/Sell/Components/SellContactFields"
 import { SellFormLayout } from "app/Scenes/Sell/Components/SellFormLayout"
 import { SellLocationFields } from "app/Scenes/Sell/Components/SellLocationFields"
 import { SellShippingQuestions } from "app/Scenes/Sell/Components/SellShippingQuestions"
@@ -14,6 +15,7 @@ import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 type Artwork = NonNullable<LocationAndContactQuery["response"]["artwork"]>
+type Me = NonNullable<LocationAndContactQuery["response"]["me"]>
 
 export const LocationAndContact: React.FC = () => {
   const artworkID = SellFlowStore.useStoreState((state) => state.activeArtworkID)
@@ -35,9 +37,9 @@ const LocationAndContactContent: React.FC<{ artworkID: string }> = withSuspense(
       artworkID,
     })
     const [submitted, setSubmitted] = useState(false)
-    const artwork = data.artwork
+    const { artwork, me } = data
 
-    if (!artwork) {
+    if (!artwork || !me) {
       return <LocationAndContactError />
     }
 
@@ -46,9 +48,9 @@ const LocationAndContactContent: React.FC<{ artworkID: string }> = withSuspense(
     return (
       <>
         {isAuction ? (
-          <AuctionLocationForm artwork={artwork} onSubmit={() => setSubmitted(true)} />
+          <AuctionLocationForm artwork={artwork} me={me} onSubmit={() => setSubmitted(true)} />
         ) : (
-          <MarketplaceShippingForm artwork={artwork} onSubmit={() => setSubmitted(true)} />
+          <MarketplaceShippingForm artwork={artwork} me={me} onSubmit={() => setSubmitted(true)} />
         )}
 
         {!!submitted && (
@@ -80,12 +82,12 @@ const marketplaceConfirmation = ({ artistNames, title }: Artwork) => ({
 
 interface FormProps {
   artwork: Artwork
+  me: Me
   onSubmit: () => void
 }
 
-const AuctionLocationForm: React.FC<FormProps> = ({ artwork, onSubmit }) => {
+const AuctionLocationForm: React.FC<FormProps> = ({ artwork, me, onSubmit }) => {
   const { locationComplete, phoneNumber } = SellLocationStore.useStoreState((state) => state)
-  const setPhoneNumber = SellLocationStore.useStoreActions((actions) => actions.setPhoneNumber)
 
   return (
     <SellFormLayout
@@ -100,37 +102,24 @@ const AuctionLocationForm: React.FC<FormProps> = ({ artwork, onSubmit }) => {
 
         <Flex gap={2}>
           <Text variant="md">Location</Text>
-          <SellLocationFields />
+          <SellLocationFields me={me} />
         </Flex>
 
-        <Flex gap={1}>
-          <Text variant="md">Contact</Text>
-          <Text variant="sm">What’s the best mobile number to reach you on?</Text>
-          <Text variant="xs" color="mono60">
-            A specialist will contact you directly to discuss next steps.
-          </Text>
-          <Input
-            title="Mobile number"
-            accessibilityLabel="Mobile number"
-            keyboardType="phone-pad"
-            autoComplete="tel"
-            textContentType="telephoneNumber"
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
-          />
-        </Flex>
+        <SellContactFields />
       </Flex>
     </SellFormLayout>
   )
 }
 
-const MarketplaceShippingForm: React.FC<FormProps> = ({ artwork, onSubmit }) => {
-  const { locationComplete, shippingComplete } = SellLocationStore.useStoreState((state) => state)
+const MarketplaceShippingForm: React.FC<FormProps> = ({ artwork, me, onSubmit }) => {
+  const { locationComplete, shippingComplete, phoneNumber } = SellLocationStore.useStoreState(
+    (state) => state
+  )
 
   return (
     <SellFormLayout
       buttonLabel="List Artwork"
-      buttonDisabled={!locationComplete || !shippingComplete}
+      buttonDisabled={!locationComplete || !shippingComplete || !phoneNumber.trim()}
       onButtonPress={onSubmit}
     >
       <SellStepIntro stepName="LocationAndContact" channelKind="MARKETPLACE" px={2} />
@@ -140,11 +129,15 @@ const MarketplaceShippingForm: React.FC<FormProps> = ({ artwork, onSubmit }) => 
 
         <Flex gap={2}>
           <Text variant="md">Shipping</Text>
-          <SellLocationFields />
+          <SellLocationFields me={me} />
         </Flex>
       </Flex>
 
       <SellShippingQuestions />
+
+      <Flex px={2} pt={4}>
+        <SellContactFields />
+      </Flex>
     </SellFormLayout>
   )
 }
@@ -164,6 +157,9 @@ const locationAndContactQuery = graphql`
       artistNames
       title
       ...SellWorkCard_artwork
+    }
+    me {
+      ...SellLocationFields_me
     }
   }
 `

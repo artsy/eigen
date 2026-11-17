@@ -2,7 +2,6 @@ import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { Sell } from "app/Scenes/Sell/Sell"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
-import { getLocationDetails, getLocationPredictions } from "app/utils/googleMaps"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Alert, BackHandler } from "react-native"
@@ -10,12 +9,17 @@ import { Alert, BackHandler } from "react-native"
 // setupJest stubs useNavigation, but this test drives the real stack
 jest.mock("@react-navigation/native", () => jest.requireActual("@react-navigation/native"))
 
-jest.mock("app/utils/googleMaps", () => ({
-  getLocationPredictions: jest.fn(),
-  getLocationDetails: jest.fn(),
-}))
-
-const ADDRESS = { id: "place-1", name: "401 Broadway, New York, NY, USA" }
+const SAVED_ADDRESS = {
+  internalID: "address-1",
+  name: "Collector",
+  addressLine1: "401 Broadway",
+  city: "New York",
+  region: "NY",
+  postalCode: "10013",
+  country: "US",
+  isDefault: true,
+  phoneNumber: "555 0100",
+}
 
 type BackPressHandler = Parameters<typeof BackHandler.addEventListener>[1]
 
@@ -84,20 +88,21 @@ const renderSell = async () => {
 
 type SellView = Awaited<ReturnType<typeof renderSell>>
 
+type ActiveArtwork = { internalID: string; artistNames: string; title?: string }
+
 // Step 2 loads the active work with its own query. Step 3 asks for the same fields, so Relay's
 // store answers it. The shared id keeps a generated one from overwriting another work in step 1.
-const resolveActiveArtwork = (
-  view: SellView,
-  artwork: { internalID: string; artistNames: string; title?: string }
-) => {
+const resolveActiveArtwork = (view: SellView, artwork: ActiveArtwork) => {
   view.mockResolveLastOperation({ Artwork: () => ({ id: artwork.internalID, ...artwork }) })
 }
 
-const pickAddress = async () => {
-  fireEvent.press(screen.getByTestId("sell-street-address"))
-  fireEvent.changeText(await screen.findByLabelText("Search addresses"), "401 Broad")
-  fireEvent.press(await screen.findByText(ADDRESS.name))
-  await waitFor(() => expect(screen.getByLabelText("Zip code")).toHaveDisplayValue("10013"))
+// Step 3 also loads the saved addresses, which the earlier steps never asked for
+const resolveLocationStep = (view: SellView, artwork: ActiveArtwork) => {
+  view.mockResolveLastOperation({
+    Artwork: () => ({ id: artwork.internalID, ...artwork }),
+    // A fixed id lets a saved address update this list
+    Me: () => ({ id: "me", addressConnection: { edges: [{ node: SAVED_ADDRESS }] } }),
+  })
 }
 
 const openAuctionConditionStep = async (view: SellView) => {
@@ -118,8 +123,6 @@ const openWorksSummary = async () => {
 
 describe("Sell", () => {
   beforeEach(() => {
-    ;(getLocationPredictions as jest.Mock).mockResolvedValue([ADDRESS])
-    ;(getLocationDetails as jest.Mock).mockResolvedValue({ ...ADDRESS, postalCode: "10013" })
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSellMyCollectionArtwork: true })
   })
 
@@ -198,17 +201,27 @@ describe("Sell", () => {
     expect(await screen.findByText("US$2,720")).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Confirm Listing Price"))
+    resolveLocationStep(view, { internalID: "id-a2", artistNames: "Artist A", title: "Work A" })
     expect(await screen.findByText("Step 3 · Shipping Options")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 3 of 3")).toBeOnTheScreen()
     expect(screen.getByText("List Artwork")).toBeDisabled()
-    expect(screen.getByRole("radio", { name: /^Framed\./ })).toBeDisabled()
+    // Step 3 selects the default address in an effect, after its first render
+    await waitFor(() =>
+      expect(screen.getByRole("radio", { name: /^Collector, 401 Broadway/ })).toBeChecked()
+    )
 
-    await pickAddress()
     fireEvent.press(screen.getByRole("radio", { name: /^Framed\./ }))
     fireEvent.press(screen.getByRole("radio", { name: /^Courier packs\./ }))
     expect(screen.getByText("List Artwork")).toBeDisabled()
 
     fireEvent.press(screen.getByRole("radio", { name: /^Courier needs to collect\./ }))
+    await waitFor(() =>
+      expect(screen.getByLabelText("Mobile number")).toHaveDisplayValue("555 0100")
+    )
+    fireEvent.changeText(screen.getByLabelText("Mobile number"), "")
+    expect(screen.getByText("List Artwork")).toBeDisabled()
+
+    fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
     await waitFor(() => expect(screen.getByText("List Artwork")).toBeEnabled())
     fireEvent.press(screen.getByText("List Artwork"))
     expect(await screen.findByText("Your listing is live!")).toBeOnTheScreen()
@@ -228,13 +241,23 @@ describe("Sell", () => {
     fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
     await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
     fireEvent.press(screen.getByText("Continue"))
+    resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
     expect(await screen.findByText("Step 3 · Location & Contact")).toBeOnTheScreen()
     expect(screen.queryByText("How will this be packed?")).not.toBeOnTheScreen()
+    await waitFor(() =>
+      expect(screen.getByRole("radio", { name: /^Collector, 401 Broadway/ })).toBeChecked()
+    )
+    // The saved address's phone number fills the empty field
+    await waitFor(() =>
+      expect(screen.getByLabelText("Mobile number")).toHaveDisplayValue("555 0100")
+    )
 
-    await pickAddress()
+    fireEvent.changeText(screen.getByLabelText("Mobile number"), "")
+    fireEvent(screen.getByLabelText("Mobile number"), "blur")
     expect(screen.getByText("Submit for Review")).toBeDisabled()
+    expect(await screen.findByText("Phone number is required")).toBeOnTheScreen()
 
-    fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0100")
+    fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
     fireEvent.press(screen.getByText("Submit for Review"))
     expect(await screen.findByText("Submitted!")).toBeOnTheScreen()
     expect(screen.getByText(/One of our specialists will reach out/)).toBeOnTheScreen()
