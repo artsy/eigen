@@ -5,7 +5,7 @@ import { CityData } from "app/utils/cityGuide/types"
 import { cityGuideCitiesQuery } from "app/utils/cityGuide/useCityGuideCities"
 import { Location } from "app/utils/hooks/useLocation"
 import { AppState, Platform } from "react-native"
-import { PERMISSIONS, RESULTS, request } from "react-native-permissions"
+import { PERMISSIONS, RESULTS, check, request } from "react-native-permissions"
 import { fetchQuery } from "react-relay"
 import { IEnvironment } from "relay-runtime"
 
@@ -54,7 +54,18 @@ const requestAndroidLocationPermission = async (): Promise<PermissionResult> => 
  * Geolocation reports both failures the same way, so the prompt is detected instead: while it's on
  * screen the app is `inactive`.
  */
-const requestIOSLocationPermission = () =>
+const requestIOSLocationPermission = async (): Promise<PermissionResult> => {
+  // `requestAuthorization` only calls back when the authorization status changes, so it never
+  // settles once the user has already answered the prompt. Only ask while it's undetermined.
+  const status = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
+
+  if (status === RESULTS.GRANTED || status === RESULTS.LIMITED) return "granted"
+  if (status === RESULTS.BLOCKED || status === RESULTS.UNAVAILABLE) return "blocked"
+
+  return promptIOSLocationPermission()
+}
+
+const promptIOSLocationPermission = () =>
   new Promise<PermissionResult>((resolve) => {
     let wasPromptShown = false
 
