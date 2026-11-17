@@ -9,7 +9,6 @@ import {
   InputRef,
   Screen,
   Spinner,
-  Text,
   Touchable,
   useColor,
   useSpace,
@@ -21,6 +20,7 @@ import {
   COMPOSER_ACTION_SIZE,
   COMPOSER_ICON_SIZE,
 } from "app/Scenes/ArtAssistant/Components/ArtAssistantComposer"
+import { ArtAssistantDisclaimer } from "app/Scenes/ArtAssistant/Components/ArtAssistantDisclaimer"
 import { ArtAssistantEmptyState } from "app/Scenes/ArtAssistant/Components/ArtAssistantEmptyState"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/Components/ArtAssistantMessage"
 import { ArtAssistantVoiceInputButton } from "app/Scenes/ArtAssistant/Components/ArtAssistantVoiceInputButton"
@@ -382,11 +382,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
             pt={1}
             testID="art-assistant-composer"
           >
-            {!isComposerExpanded && (
-              <Text variant="xs" color="mono60" pb={1} textAlign="center">
-                Art Assistant is AI and can make mistakes
-              </Text>
-            )}
+            <ArtAssistantDisclaimer isVisible={!isComposerExpanded} />
 
             <ArtAssistantComposer
               attachment={

@@ -33,7 +33,11 @@ const COMPOSER_MAX_TEXT_HEIGHT = 4 * COMPOSER_LINE_HEIGHT
 const COMPOSER_BORDER_RADIUS = 8
 const COMPOSER_BORDER_WIDTH = 1
 const COMPOSER_ANIMATION_DURATION = 200
-const COMPOSER_TIMING = { duration: COMPOSER_ANIMATION_DURATION, easing: Easing.out(Easing.cubic) }
+/** How the composer eases between its states, for anything that moves along with it. */
+export const COMPOSER_TIMING = {
+  duration: COMPOSER_ANIMATION_DURATION,
+  easing: Easing.out(Easing.cubic),
+}
 
 interface ArtAssistantComposerProps {
   /** Shown above the text, e.g. a preview of an attached image. */
@@ -116,8 +120,16 @@ export const ArtAssistantComposer: React.FC<ArtAssistantComposerProps> = ({
   }, [isExpanded])
 
   const handleContentLayout = (event: LayoutChangeEvent) => {
+    const nextHeight = event.nativeEvent.layout.height
+    // Held to the bottom edge, the content moves on every frame of the height animation, and each
+    // move is a layout event. Only a new height matters: easing again towards the same one would
+    // start the animation over.
+    if (nextHeight === contentHeight.current) {
+      return
+    }
+
     const isFirstLayout = contentHeight.current === null
-    contentHeight.current = event.nativeEvent.layout.height
+    contentHeight.current = nextHeight
 
     if (isFirstLayout && isExpanded) {
       height.set(contentHeight.current)
