@@ -31107,7 +31107,7 @@ type PartnerListPublication {
   ): String
 
   """
-  Long plain-text curatorial text introducing the works (viewing rooms rebuild). Not shown to visitors yet.
+  Long plain-text curatorial text introducing the works (viewing rooms rebuild).
   """
   curatorialText: String
   description: String
@@ -32183,6 +32183,11 @@ type PrivateViewingRoom {
   URL of the room's cover image as of the last publish (viewing rooms rebuild), for the hero banner. Omitted without a cover, and for a gated room until authenticated.
   """
   coverImageURL: String
+
+  """
+  Long plain-text curatorial text introducing the works (viewing rooms rebuild). Omitted when the gallery didn't add any, and for a gated room until authenticated.
+  """
+  curatorialText: String
   description: String
 
   """
@@ -32270,6 +32275,11 @@ type PrivateViewingRoomContents {
   URL of the room's cover image as of the last publish (viewing rooms rebuild), for the hero banner. Omitted without a cover, and for a gated room until authenticated.
   """
   coverImageURL: String
+
+  """
+  Long plain-text curatorial text introducing the works (viewing rooms rebuild). Omitted when the gallery didn't add any, and for a gated room until authenticated.
+  """
+  curatorialText: String
   description: String
 
   """
