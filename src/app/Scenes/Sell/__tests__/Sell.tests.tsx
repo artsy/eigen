@@ -205,7 +205,10 @@ describe("Sell", () => {
     expect(await screen.findByText("Step 3 · Shipping Options")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 3 of 3")).toBeOnTheScreen()
     expect(screen.getByText("List Artwork")).toBeDisabled()
-    expect(screen.getByRole("radio", { name: /^Collector, 401 Broadway/ })).toBeChecked()
+    // Step 3 selects the default address in an effect, after its first render
+    await waitFor(() =>
+      expect(screen.getByRole("radio", { name: /^Collector, 401 Broadway/ })).toBeChecked()
+    )
 
     fireEvent.press(screen.getByRole("radio", { name: /^Framed\./ }))
     fireEvent.press(screen.getByRole("radio", { name: /^Courier packs\./ }))
@@ -241,7 +244,9 @@ describe("Sell", () => {
     resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
     expect(await screen.findByText("Step 3 · Location & Contact")).toBeOnTheScreen()
     expect(screen.queryByText("How will this be packed?")).not.toBeOnTheScreen()
-    expect(screen.getByRole("radio", { name: /^Collector, 401 Broadway/ })).toBeChecked()
+    await waitFor(() =>
+      expect(screen.getByRole("radio", { name: /^Collector, 401 Broadway/ })).toBeChecked()
+    )
     // The saved address's phone number fills the empty field
     await waitFor(() =>
       expect(screen.getByLabelText("Mobile number")).toHaveDisplayValue("555 0100")
