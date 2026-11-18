@@ -9,11 +9,13 @@ import { SellSubmittedBottomSheet } from "app/Scenes/Sell/Components/SellSubmitt
 import { SellWorkCard } from "app/Scenes/Sell/Components/SellWorkCard"
 import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { SellLocationStore } from "app/Scenes/Sell/State/SellLocationStore"
+import { useSaveResaleSubmission } from "app/Scenes/Sell/hooks/useUpdateResaleSubmission"
 import {
   ResaleSubmissionWithChannel,
   isResaleSubmissionSellable,
   toResaleSubmission,
 } from "app/Scenes/Sell/utils/resaleSubmission"
+import { toShippingAnswers } from "app/Scenes/Sell/utils/shippingAnswers"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -138,15 +140,25 @@ const MarketplaceShippingForm: React.FC<FormProps> = ({
   resaleSubmission,
   onSubmit,
 }) => {
-  const { locationComplete, shippingComplete, phoneNumber } = SellLocationStore.useStoreState(
-    (state) => state
-  )
+  const { locationComplete, shippingComplete, phoneNumber, packaging, packer, delivery } =
+    SellLocationStore.useStoreState((state) => state)
+  const { save, saving } = useSaveResaleSubmission({ onSaved: onSubmit })
+
+  // Listing the work, the address and the phone number wait on backend support
+  const saveAndSubmit = () => {
+    if (!packaging || !packer || !delivery) {
+      return
+    }
+
+    save({ id: resaleSubmission.internalID, ...toShippingAnswers({ packaging, packer, delivery }) })
+  }
 
   return (
     <SellFormLayout
       buttonLabel="List Artwork"
       buttonDisabled={!locationComplete || !shippingComplete || !phoneNumber.trim()}
-      onButtonPress={onSubmit}
+      buttonLoading={saving}
+      onButtonPress={saveAndSubmit}
     >
       <SellStepIntro stepName="LocationAndContact" channelKind="MARKETPLACE" px={2} />
 
