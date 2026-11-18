@@ -1,0 +1,17 @@
+diff --git a/android/build.gradle b/android/build.gradle
+index 0e66ee0e00e20b61a538f0b3fd650d10fbed5a7a..eb9e0b013ece07047ccd1ba864b96b2f4ac16727 100644
+--- a/android/build.gradle
++++ b/android/build.gradle
+@@ -179,7 +179,11 @@ dependencies {
+   compileOnly "com.google.android.gms:play-services-wallet:19.3.0"
+ 
+   // Users need to declare this dependency on their own, otherwise all methods are a no-op
+-  compileOnly "com.stripe:stripe-android-issuing-push-provisioning:1.1.0"
++  compileOnly("com.stripe:stripe-android-issuing-push-provisioning:1.1.0") {
++    // play-services-tapandpay is a private Google SDK that apps must provide. AGP 9
++    // resolves compileOnly dependencies for release lint, which fails without it.
++    exclude group: "com.google.android.gms", module: "play-services-tapandpay"
++  }
+ 
+   testImplementation "junit:junit:4.13"
+   testImplementation "org.mockito:mockito-core:3.+"
