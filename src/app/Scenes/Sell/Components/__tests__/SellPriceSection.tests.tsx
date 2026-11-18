@@ -9,11 +9,12 @@ import {
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Alert } from "react-native"
 
-const TestPriceSection: React.FC<{ rating?: SellConditionStoreModel["rating"] }> = ({
-  rating = "FAIR",
-}) => (
+const TestPriceSection: React.FC<{
+  rating?: SellConditionStoreModel["rating"]
+  estimate?: string | null
+}> = ({ rating = "FAIR", estimate = "US$3,000–US$3,400" }) => (
   <SellConditionStore.Provider runtimeModel={{ ...sellConditionStoreModel, rating }}>
-    <SellPriceSection artistNames="Theo Bardsley" />
+    <SellPriceSection artistNames="Theo Bardsley" estimate={estimate} />
   </SellConditionStore.Provider>
 )
 
@@ -25,8 +26,16 @@ describe("SellPriceSection", () => {
   it("shows the recommended range for the artwork", () => {
     renderWithWrappers(<TestPriceSection />)
 
-    expect(screen.getByText("US$3,000–3,400")).toBeOnTheScreen()
+    expect(screen.getByText("US$3,000–US$3,400")).toBeOnTheScreen()
     expect(screen.getByText("Based on comparable sales by Theo Bardsley")).toBeOnTheScreen()
+  })
+
+  it("hides the range when the submission has none, but still asks for a price", () => {
+    renderWithWrappers(<TestPriceSection estimate={null} />)
+
+    expect(screen.queryByText("Recommended price range")).not.toBeOnTheScreen()
+    expect(screen.queryByText("See more Insights >")).not.toBeOnTheScreen()
+    expect(screen.getByLabelText("Asking price")).toBeOnTheScreen()
   })
 
   it("formats the asking price and updates the payout", () => {
