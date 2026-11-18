@@ -1,6 +1,7 @@
 import { ArtworkEntity, ArtworkListEntity } from "app/Components/ArtworkLists/types"
 import { useToast } from "app/Components/Toast/toastHook"
 import { ToastOptions, ToastPlacement } from "app/Components/Toast/types"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 
 const DEFAULT_TOAST_PLACEMENT: ToastPlacement = "bottom"
@@ -44,6 +45,20 @@ export const useArtworkListToast = (bottomPadding?: number | null) => {
 
   const removedFromDefaultArtworkList = () => {
     showToast("Removed from Saved Artworks")
+  }
+
+  const savedToLastSavedArtworkList = (options: {
+    artworkList: ArtworkListEntity
+    onToastPress: () => void
+  }) => {
+    const { artworkList, onToastPress } = options
+
+    showToast(`Added to ${artworkList.name}`, {
+      cta: "Change",
+      onPress: onToastPress,
+      backgroundColor: "green100",
+      description: null,
+    })
   }
 
   const changesSaved = () => {
@@ -93,6 +108,7 @@ export const useArtworkListToast = (bottomPadding?: number | null) => {
   return {
     savedToDefaultArtworkList,
     removedFromDefaultArtworkList,
+    savedToLastSavedArtworkList,
     addedToSingleArtworkList,
     addedToMultipleArtworkLists,
     removedFromSingleArtworkList,

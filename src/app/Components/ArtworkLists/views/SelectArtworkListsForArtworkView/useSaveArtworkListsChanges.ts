@@ -2,6 +2,7 @@ import { ActionType, AddedArtworkToArtworkList, OwnerType } from "@artsy/cohesio
 import { captureMessage } from "@sentry/react-native"
 import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { useOnSaveArtworkLists } from "app/Components/ArtworkLists/useOnSaveArtworkLists"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { useCallback } from "react"
 import { useTracking } from "react-tracking"
@@ -13,13 +14,13 @@ interface Options {
 }
 
 export const useSaveArtworkListsChanges = (options?: Options) => {
-  const { artwork, addingArtworkListIDs, removingArtworkListIDs } = ArtworkListsStore.useStoreState(
-    (state) => ({
+  const { artwork, addingArtworkLists, addingArtworkListIDs, removingArtworkListIDs } =
+    ArtworkListsStore.useStoreState((state) => ({
       artwork: state.state.artwork,
+      addingArtworkLists: state.state.addingArtworkLists,
       addingArtworkListIDs: state.addingArtworkListIDs,
       removingArtworkListIDs: state.removingArtworkListIDs,
-    })
-  )
+    }))
   const { onSaveArtworkLists } = useOnSaveArtworkLists()
   const analytics = useAnalyticsContext()
   const { trackEvent } = useTracking()
@@ -55,6 +56,12 @@ export const useSaveArtworkListsChanges = (options?: Options) => {
       onCompleted: (...args) => {
         if (addingArtworkListIDs.length > 0) {
           trackAddedArtworkToArtworkLists()
+
+          const lastAdded = addingArtworkLists[addingArtworkLists.length - 1]
+          GlobalStore.actions.lastSavedList.setLastSavedList({
+            internalID: lastAdded.internalID,
+            name: lastAdded.name,
+          })
         }
 
         onSaveArtworkLists()
@@ -71,7 +78,13 @@ export const useSaveArtworkListsChanges = (options?: Options) => {
         options?.onError?.(error)
       },
     })
-  }, [artwork?.internalID, addingArtworkListIDs, removingArtworkListIDs, onSaveArtworkLists])
+  }, [
+    artwork?.internalID,
+    addingArtworkLists,
+    addingArtworkListIDs,
+    removingArtworkListIDs,
+    onSaveArtworkLists,
+  ])
 
   return {
     save,

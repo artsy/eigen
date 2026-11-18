@@ -3,8 +3,16 @@ import { useArtworkListContext } from "app/Components/ArtworkLists/ArtworkListCo
 import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ArtworkEntity } from "app/Components/ArtworkLists/types"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
+import { useUpdateArtworkListsForArtwork } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
+import { GlobalStore } from "app/store/GlobalStore"
+import { useLastSavedList } from "app/store/LastSavedListModel"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { SaveArtworkOptions, useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
+import { refreshOnArtworkSave } from "app/utils/refreshHelpers"
 import { graphql, useFragment } from "react-relay"
+
+/** Slug used to reference the default "Saved Artworks" collection. */
+export const SAVED_ARTWORKS_COLLECTION_ID = "saved-artwork"
 
 interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError"> {
   artworkFragmentRef: useSaveArtworkToArtworkLists_artwork$key
@@ -20,7 +28,12 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     (actions) => actions.openSelectArtworkListsView
   )
 
+  const isLastSavedListEnabled = useFeatureFlag("ARDefaultToLastSavedList")
+  const lastSavedList = useLastSavedList()
+  const setLastSavedList = GlobalStore.actions.lastSavedList.setLastSavedList
+
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
+  const [commitListUpdate] = useUpdateArtworkListsForArtwork(artwork?.id ?? "")
 
   const customArtworkListsCount = artwork?.customArtworkLists?.totalCount ?? 0
   const isSavedToCustomArtworkLists = customArtworkListsCount > 0
@@ -52,7 +65,13 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     id: artwork.id,
     internalID: artwork.internalID,
     isSaved: !!artwork.isSaved,
-    onCompleted,
+    onCompleted: (isArtworkSaved) => {
+      if (isLastSavedListEnabled && isArtworkSaved) {
+        setLastSavedList({ internalID: SAVED_ARTWORKS_COLLECTION_ID, name: "Saved Artworks" })
+      }
+
+      onCompleted?.(isArtworkSaved)
+    },
     optimisticUpdater: (isArtworkSaved, _store, isCalledBefore) => {
       if (isCalledBefore) {
         return
@@ -83,6 +102,47 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     openSelectArtworkListsView(artworkEntity)
   }
 
+  const saveArtworkToLastSavedList = () => {
+    if (!lastSavedList) {
+      return
+    }
+
+    commitListUpdate({
+      variables: {
+        artworkID: artwork.internalID,
+        input: {
+          artworkIDs: [artwork.internalID],
+          addToCollectionIDs: [lastSavedList.internalID],
+          removeFromCollectionIDs: [],
+        },
+      },
+      onCompleted: (data) => {
+        const responseOrError = data.artworksCollectionsBatchUpdate?.responseOrError
+
+        // The remembered list was likely deleted — forget it and let the user pick again.
+        if ((responseOrError as any)?.mutationError) {
+          setLastSavedList(null)
+          openSelectArtworkListsForArtworkView()
+          return
+        }
+
+        refreshOnArtworkSave()
+        onCompleted?.(true)
+
+        if (!suppressToasts) {
+          toast.savedToLastSavedArtworkList({
+            artworkList: lastSavedList,
+            onToastPress: openSelectArtworkListsForArtworkView,
+          })
+        }
+      },
+      onError: (error) => {
+        setLastSavedList(null)
+        restOptions.onError?.(error)
+      },
+    })
+  }
+
   const saveArtworkToLists = () => {
     if (options.saveToDefaultCollectionOnly) {
       saveArtworkToDefaultArtworkList()
@@ -91,6 +151,16 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
 
     if (artworkListID || isSavedToCustomArtworkLists) {
       openSelectArtworkListsForArtworkView()
+      return
+    }
+
+    if (
+      isLastSavedListEnabled &&
+      !isSaved &&
+      lastSavedList &&
+      lastSavedList.internalID !== SAVED_ARTWORKS_COLLECTION_ID
+    ) {
+      saveArtworkToLastSavedList()
       return
     }
 

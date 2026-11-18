@@ -589,6 +589,56 @@ describe("ArtworkGridItem", () => {
         expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
       })
     })
+
+    describe("ARDefaultToLastSavedList", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ ARDefaultToLastSavedList: true })
+      })
+
+      it("saves to the last-used list instead of the default collection", () => {
+        __globalStoreTestUtils__?.injectState({
+          lastSavedList: { lastSavedList: { internalID: "list-123", name: "My List" } },
+        })
+
+        const { env } = renderWithRelay({ Artwork: () => artwork })
+
+        fireEvent.press(screen.getByTestId("save-artwork-icon"))
+
+        const operation = env.mock.getMostRecentOperation()
+        expect(operation.request.node.operation.name).toBe(
+          "useUpdateArtworkListsForArtworkMutation"
+        )
+        expect(operation.request.variables.input.addToCollectionIDs).toEqual(["list-123"])
+      })
+
+      it("falls back to the default collection when the last-used list is the default", () => {
+        __globalStoreTestUtils__?.injectState({
+          lastSavedList: {
+            lastSavedList: { internalID: "saved-artwork", name: "Saved Artworks" },
+          },
+        })
+
+        const { env } = renderWithRelay({ Artwork: () => artwork })
+
+        fireEvent.press(screen.getByTestId("save-artwork-icon"))
+
+        const operation = env.mock.getMostRecentOperation()
+        expect(operation.request.node.operation.name).toBe("useSaveArtworkMutation")
+      })
+
+      it("saves to the default collection when there is no last-used list", () => {
+        __globalStoreTestUtils__?.injectState({
+          lastSavedList: { lastSavedList: null },
+        })
+
+        const { env } = renderWithRelay({ Artwork: () => artwork })
+
+        fireEvent.press(screen.getByTestId("save-artwork-icon"))
+
+        const operation = env.mock.getMostRecentOperation()
+        expect(operation.request.node.operation.name).toBe("useSaveArtworkMutation")
+      })
+    })
   })
 
   describe("unlisted artworks", () => {
