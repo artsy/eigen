@@ -1,0 +1,66 @@
+context timeout=300000
+# @title Favorites - Save Artwork and Follow Artist
+# Saves an artwork and follows its artist, checks both show in Favorites, then unsaves and unfollows and checks
+# Favorites again, so the test account ends where it started.
+# Uses "Maestro Test Artwork, 2025" by "Test Artist", the same staging test data as deeplink-email. The work is sold,
+# so its save button stays "Save artwork" (a lot in an open sale would read "Watch lot"), and with no custom lists
+# a save goes straight to Saved Artworks instead of opening the list picker.
+# If an earlier attempt stopped after saving or following, the first save or follow step fails until the test
+# account is cleaned up by hand: unsave the artwork and unfollow Test Artist.
+# @launch useE2EInit=true email=${EMAIL} password=${PASSWORD}
+open ${APP_ID}
+# The first launch on a cold CI simulator can take over a minute
+wait 'id="search-button"' 90000
+
+# Save the artwork. https links open the app directly; artsy:// links make iOS ask first (see share.ios.ad).
+open "https://artsy.net/artwork/68f8d42e48a62efeaf971460"
+open ${APP_ID}
+wait 'label="Maestro Test Artwork, 2025"' 30000
+wait 'label="Save artwork"' 15000
+press 'label="Save artwork"'
+wait 'label="Unsave artwork"' 15000
+
+# Follow its artist. Palette's Button repeats its label on an inner view, so match the button role.
+press 'label="Test Artist"'
+wait 'role="button" label="Follow Test Artist"' 30000
+press 'role="button" label="Follow Test Artist"'
+wait 'role="button" label="Following Test Artist"' 10000
+# The follow mutation is debounced by 350ms and leaving the screen cancels it, so stay until it's sent
+wait 2000
+
+# Both show in Favorites
+press 'label="Favorites"'
+wait 'label="Follows"' 30000
+press 'label="Follows"'
+# Each row's follow button is labelled with the artist's name. The row's own label differs by platform (iOS
+# merges the name, nationality and button; Android doesn't), so check the button.
+wait 'role="button" label="Following Test Artist"' 30000
+press 'label="Saves"'
+wait 'label="Saved Artworks"' 30000
+press 'label="Saved Artworks"'
+# The grid item's label also reads the gallery, price and signals, so match its title testID
+wait 'id="artworkGridItem-Maestro Test Artwork"' 30000
+
+# Clean up from the saved list: open the artwork, unsave it, then unfollow its artist
+press 'id="artworkGridItem-Maestro Test Artwork"'
+wait 'label="Unsave artwork"' 30000
+press 'label="Unsave artwork"'
+wait 'label="Save artwork"' 15000
+press 'label="Test Artist"'
+wait 'role="button" label="Following Test Artist"' 30000
+press 'role="button" label="Following Test Artist"'
+wait 'role="button" label="Follow Test Artist"' 10000
+wait 2000
+
+# Tapping the selected tab pops back to the Favorites screen. Unfollowed artists stay listed until a refetch, with
+# their button back to "Follow"; the unsaved artwork leaves Saved Artworks.
+press 'label="Favorites"'
+wait 'label="Follows"' 30000
+press 'label="Follows"'
+wait 'role="button" label="Follow Test Artist"' 30000
+press 'label="Saves"'
+wait 'label="Saved Artworks"' 30000
+press 'label="Saved Artworks"'
+wait 'label="Sort"' 30000
+wait absent 'id="artworkGridItem-Maestro Test Artwork"' 30000
+close ${APP_ID}

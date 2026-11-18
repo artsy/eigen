@@ -41,7 +41,8 @@ describe("MyCollectionArtworkGridItem", () => {
       }),
     })
 
-    expect(screen.getByLabelText("Go to artwork details")).toBeOnTheScreen()
+    expect(screen.getByLabelText(/^artistNames, title/)).toBeOnTheScreen()
+    expect(screen.getByHintText("Go to artwork details")).toBeOnTheScreen()
     expect(screen.getByTestId("Fallback")).toBeOnTheScreen()
 
     expect(screen.getByText("artistNames")).toBeOnTheScreen()
@@ -55,7 +56,7 @@ describe("MyCollectionArtworkGridItem", () => {
       }),
     })
 
-    fireEvent.press(screen.getByLabelText("Go to artwork details"))
+    fireEvent.press(screen.getByHintText("Go to artwork details"))
 
     expect(navigate).toHaveBeenCalledWith("/my-collection/artwork/artwork-slug", {
       passProps: {
@@ -76,7 +77,7 @@ describe("MyCollectionArtworkGridItem", () => {
       }),
     })
 
-    fireEvent.press(screen.getByLabelText("Go to artwork details"))
+    fireEvent.press(screen.getByHintText("Go to artwork details"))
 
     expect(navigate).toHaveBeenCalledWith("/my-collection/artwork/artwork-slug", {
       passProps: {
@@ -93,7 +94,7 @@ describe("MyCollectionArtworkGridItem", () => {
       }),
     })
 
-    fireEvent.press(screen.getByLabelText("Go to artwork details"))
+    fireEvent.press(screen.getByHintText("Go to artwork details"))
 
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenCalledWith(

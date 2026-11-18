@@ -1,0 +1,60 @@
+context timeout=300000
+# @title My Collection - Add and Delete Artwork
+# Adds an artwork to My Collection (artist search, skip the artwork search, title and medium), checks it
+# shows in the collection, then deletes it from the edit form so the test account ends where it started.
+# The artist stays in the account's collected artists: the "remove artist" checkbox only works when this
+# is the account's last work by them, and leaving it unticked keeps the run idempotent either way.
+# @launch useE2EInit=true email=${EMAIL} password=${PASSWORD}
+open ${APP_ID}
+# The first launch on a cold CI simulator can take over a minute
+wait 'id="search-button"' 90000
+
+# Profile tab → My Collection
+press 'label="Profile"'
+wait 'id="account-card"' 30000
+press 'id="account-card"'
+wait 'label="Add to My Collection"' 30000
+press 'label="Add to My Collection"'
+
+# Step 1: pick a real Artsy artist
+wait 'text="Search for artists on Artsy"' 15000
+fill 'text="Search for artists on Artsy"' "KAWS"
+wait 'id="autosuggest-search-result-KAWS"' 15000
+press 'id="autosuggest-search-result-KAWS"'
+
+# Step 2: KAWS has artworks on Artsy, so the artwork search comes next. Skip it.
+wait 'text="Select an Artwork"' 15000
+wait 'role="button" label="Skip"' 15000
+press 'role="button" label="Skip"'
+
+# Step 3: the main form. Title and medium are the only required fields.
+wait 'label="Title"' 15000
+wait absent 'text="Select an Artwork"' 10000
+fill 'label="Title"' "E2E Test Artwork"
+press 'id="CategorySelect"'
+wait 'text="Painting"' 10000
+press 'text="Painting"'
+wait absent 'id="select-close-button"' 10000
+press 'role="button" label="Complete"'
+
+# Saving holds a modal for at least 4.5s (2.5s insights + 2s market data), then closes the form
+wait 'id="saving-artwork-modal"' 10000
+wait absent 'id="saving-artwork-modal"' 60000
+# Grid items are labelled with their caption: artist, title and date (none here)
+wait 'label="KAWS, E2E Test Artwork"' 30000
+
+# Open it, then delete it from the edit form
+press 'label="KAWS, E2E Test Artwork"'
+wait 'label="Edit" || text="Edit"' 30000
+press 'label="Edit" || text="Edit"'
+wait 'label="Title"' 30000
+scroll down --until 'label="Delete artwork"'
+press 'label="Delete artwork"'
+# The palette Button exposes its inner view with the same label, so match the button role only
+wait 'role="button" label="Delete Artwork"' 15000
+press 'role="button" label="Delete Artwork"'
+
+# Deleting closes the edit form and the artwork screen, back to My Collection. Check the work is gone.
+wait 'label="Add to My Collection"' 30000
+wait absent 'label="KAWS, E2E Test Artwork"' 30000
+close ${APP_ID}

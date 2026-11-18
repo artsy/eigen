@@ -1,6 +1,6 @@
 # End-to-end tests
 
-The e2e flows run with [agent-device](https://github.com/callstack/agent-device) by Callstack, which drives iOS simulators and Android emulators. The flows are deterministic `.ad` replay scripts that run without an LLM, on the QA builds of `main`. They cover login, signup, deeplinks and the share sheet.
+The e2e flows run with [agent-device](https://github.com/callstack/agent-device) by Callstack, which drives iOS simulators and Android emulators. The flows are deterministic `.ad` replay scripts that run without an LLM, on the QA builds of `main`. They cover login, signup, deeplinks, the share sheet, adding and deleting a My Collection artwork, and saving an artwork and following an artist in Favorites.
 
 `perf/` holds the separate Flashlight performance test, which still uses Maestro. See [Measuring performance with Flashlight](../docs/measuring_performance_with_flashlight.md).
 
@@ -73,6 +73,11 @@ AD_VAR_APP_ID=net.artsy.qa AD_VAR_EMAIL=... AD_VAR_PASSWORD=... agent-device rep
 - Wait for the element you're about to use, not just a heading on its screen. A heading can appear before the field is ready, and neighbouring screens can share headings.
 - After moving to a new screen, `wait absent` for the previous screen's field before pressing anything. On slower simulators both screens are on screen during the transition, so a selector like `label="Continue"` matches twice.
 - Give the first `wait` a generous timeout (90s). The first launch on a cold CI simulator can take over a minute.
+- A flow that changes the test account (saves, follows, My Collection works) must undo it before it ends, and check the undo landed. Scripts can't branch, so a retry can't clean up after an attempt that stopped halfway: its first toggle fails until someone resets the account by hand. Say in the flow's header what to reset.
+- Prefer stable test data over live inventory. `favorites` uses the sold staging work "Maestro Test Artwork, 2025" by "Test Artist", which won't change under the flow.
+- Palette's `Button` repeats its accessibility label on an inner view, so a label matches twice. Add the role: `press 'role="button" label="Delete Artwork"'`.
+- Labels that include counts or prices ("Follow 1.2K", "Saved Artworks, 3 Artworks") change between runs. Give the element a stable `accessibilityLabel` (and put the count in `accessibilityValue`), or fall back to its `testID`.
+- With `useE2EInit`, dev builds silence LogBox (`useE2EInitialization`). Its banner sits over the tab bar and swallows taps meant for it. QA builds have no LogBox, so this only affects local runs.
 - See `agent-device help scripting` and `agent-device help test` for the full syntax.
 
 ## Deeplinks

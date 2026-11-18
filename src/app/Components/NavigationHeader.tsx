@@ -13,6 +13,7 @@ export interface NavigationHeaderProps {
   rightButtonDisabled?: boolean
   rightButtonText?: string
   rightButtonTestId?: string
+  /** Overrides the right button's accessibility label, e.g. for a `renderRightButton` icon */
   rightButtonAccessibilityLabel?: string
   useXButton?: boolean
   useShareButton?: boolean
@@ -28,7 +29,7 @@ export const NavigationHeader: React.FC<React.PropsWithChildren<NavigationHeader
   onLeftButtonPress,
   rightButtonText,
   rightButtonTestId,
-  rightButtonAccessibilityLabel = "Save",
+  rightButtonAccessibilityLabel,
   onRightButtonPress,
   rightButtonDisabled,
   useXButton,
@@ -59,12 +60,29 @@ export const NavigationHeader: React.FC<React.PropsWithChildren<NavigationHeader
     }
   }
 
+  const leftButtonAccessibilityLabel = leftButtonText ?? (useXButton ? "Close" : "Back")
+
+  // Name the right button after what it shows. A custom `renderRightButton` has no label unless
+  // the caller passes one, so screen readers fall back to the rendered content's own label.
+  const rightButtonLabel =
+    rightButtonAccessibilityLabel ??
+    rightButtonText ??
+    (useShareButton
+      ? "Share"
+      : rightCloseButton
+        ? "Close"
+        : renderRightButton
+          ? undefined
+          : "Next")
+
   return (
     <Flex>
       <Container alignItems="center" justifyContent="center">
         <Flex position="absolute" left={0} alignItems="flex-start">
           {!!onLeftButtonPress && (
             <LeftButtonContainer
+              accessibilityRole="button"
+              accessibilityLabel={leftButtonAccessibilityLabel}
               hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
               onPress={() => onLeftButtonPress()}
               testID="fancy-modal-header-left-button"
@@ -77,7 +95,7 @@ export const NavigationHeader: React.FC<React.PropsWithChildren<NavigationHeader
           {!!onRightButtonPress && (
             <RightButtonContainer
               accessibilityRole="button"
-              accessibilityLabel={rightButtonAccessibilityLabel}
+              accessibilityLabel={rightButtonLabel}
               hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
               onPress={() => !rightButtonDisabled && onRightButtonPress()}
               disabled={rightButtonDisabled}

@@ -1,6 +1,7 @@
 import { GlobalStore } from "app/store/GlobalStore"
 import { FeatureName, features } from "app/store/config/features"
 import { useEffect } from "react"
+import { LogBox } from "react-native"
 import { LaunchArguments } from "react-native-launch-arguments"
 
 interface E2ELaunchArguments {
@@ -14,6 +15,7 @@ interface E2ELaunchArguments {
 
 export const useE2EInitialization = () => {
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
+  const userEmail = GlobalStore.useAppState((state) => state.auth.userEmail)
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const { setPushPermissionsRequestedThisSession, setPushNotificationSettingsPromptSeen } =
     GlobalStore.actions.artsyPrefs.pushPromptLogic
@@ -31,6 +33,12 @@ export const useE2EInitialization = () => {
 
     if (!useE2EInit) {
       return
+    }
+
+    // On a local dev build, LogBox's banner sits over the tab bar and takes taps meant for it.
+    // QA and release builds have no LogBox, so this only changes local runs.
+    if (__DEV__) {
+      LogBox.ignoreAllLogs(true)
     }
 
     // Hides the push permission prompt for e2e tests
@@ -51,7 +59,11 @@ export const useE2EInitialization = () => {
         GlobalStore.actions.artsyPrefs.features.setLocalOverride({ key, value: true })
       })
 
-    if (email && password) {
+    // Signing in again while already signed in as the same account swaps the token after the
+    // home screen has rendered, which resets the navigation mid-flow, so keep the session instead
+    const isSignedInAsEmail = isLoggedIn && userEmail?.toLowerCase() === email?.toLowerCase()
+
+    if (email && password && !isSignedInAsEmail) {
       GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
         oauthMode: "email",
