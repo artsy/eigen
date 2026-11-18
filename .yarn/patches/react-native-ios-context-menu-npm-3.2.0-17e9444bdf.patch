@@ -1,3 +1,16 @@
+diff --git a/ios/RNIContextMenuButton/RNIContextMenuButtonViewManager.mm b/ios/RNIContextMenuButton/RNIContextMenuButtonViewManager.mm
+index 13db268ec83b59786076721f5d1c25b154e16124..2fba5fc801946dc54234f3d0a785620d67238edc 100644
+--- a/ios/RNIContextMenuButton/RNIContextMenuButtonViewManager.mm
++++ b/ios/RNIContextMenuButton/RNIContextMenuButtonViewManager.mm
+@@ -12,7 +12,7 @@
+ 
+ #import RNI_UTILITIES_HEADER(RNIBaseViewUtils.h)
+ 
+-#import "RCTBridge.h"
++#import <React/RCTBridge.h>
+ #import <React/RCTViewManager.h>
+ #import <React/RCTUIManager.h>
+ 
 diff --git a/ios/RNIContextMenuView/RNIContextMenuViewContent.swift b/ios/RNIContextMenuView/RNIContextMenuViewContent.swift
 index c01e1ef8449defcc35b8513991de85c8e8acc07f..d2636fb1bcdc0195f30586f2da8ef0321fb223cd 100644
 --- a/ios/RNIContextMenuView/RNIContextMenuViewContent.swift
@@ -14,3 +27,16 @@ index c01e1ef8449defcc35b8513991de85c8e8acc07f..d2636fb1bcdc0195f30586f2da8ef032
        view: self.menuPreviewTargetView,
        parameters: self.menuPreviewParameters
      );
+diff --git a/ios/RNIContextMenuView/RNIContextMenuViewManager.mm b/ios/RNIContextMenuView/RNIContextMenuViewManager.mm
+index 3a0ac508aafa6fd2dd3043d9f340c6eeb6e8d9bb..6bd0211db5e2914ed0e8d24a1df6af6441ba7343 100644
+--- a/ios/RNIContextMenuView/RNIContextMenuViewManager.mm
++++ b/ios/RNIContextMenuView/RNIContextMenuViewManager.mm
+@@ -12,7 +12,7 @@
+ 
+ #import RNI_UTILITIES_HEADER(RNIBaseViewUtils.h)
+ 
+-#import "RCTBridge.h"
++#import <React/RCTBridge.h>
+ #import <React/RCTViewManager.h>
+ #import <React/RCTUIManager.h>
+ 

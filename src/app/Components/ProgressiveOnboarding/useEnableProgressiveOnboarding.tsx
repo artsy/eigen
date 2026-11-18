@@ -1,7 +1,7 @@
 import { useIsFocused } from "@react-navigation/native"
 import { GlobalStore } from "app/store/GlobalStore"
+import { runAfterInteractions } from "app/utils/runAfterInteractions"
 import { useEffect } from "react"
-import { InteractionManager } from "react-native"
 
 /**
  * Sets the Progressive Onboarding to a ready state when the caller screen is focused
@@ -15,7 +15,7 @@ export const useEnableProgressiveOnboarding = () => {
 
   useEffect(() => {
     if (isFocused && !isReady) {
-      InteractionManager.runAfterInteractions(() => {
+      runAfterInteractions(() => {
         setIsReady(true)
       })
     }
