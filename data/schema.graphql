@@ -31063,6 +31063,11 @@ type PartnerList {
   publication: PartnerListPublication
 
   """
+  Public-facing path of this list's private viewing room, from the same inline key as published. Null if no publication exists yet.
+  """
+  publicationHref: String
+
+  """
   Whether this list's private viewing room publication is live. Null if no publication exists yet.
   """
   published: Boolean
