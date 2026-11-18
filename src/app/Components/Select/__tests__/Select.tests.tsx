@@ -5,8 +5,7 @@ import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Modal } from "react-native"
 
-jest.mock("react-native/Libraries/Interaction/InteractionManager", () => ({
-  ...jest.requireActual("react-native/Libraries/Interaction/InteractionManager"),
+jest.mock("app/utils/runAfterInteractions", () => ({
   runAfterInteractions: jest.fn((callback) => callback()),
 }))
 

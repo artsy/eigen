@@ -29,6 +29,37 @@ require("setimmediate")
 
 // @ts-expect-error
 global.__TEST__ = true
+
+// jsdom doesn't provide setImmediate/clearImmediate, but RN 0.88's NativeAnimatedHelper calls
+// `clearImmediate` unconditionally when starting/stopping animations. Legacy fake timers capture
+// jsdom's missing value when the environment is created and restore it as `undefined` on
+// `useRealTimers()`, so fall back to Node's implementation whenever the global is unset.
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const nodeTimers = require("timers")
+;(["setImmediate", "clearImmediate"] as const).forEach((name) => {
+  let current = (global as any)[name]
+  Object.defineProperty(global, name, {
+    configurable: true,
+    get: () => (typeof current === "function" ? current : nodeTimers[name]),
+    set: (value) => {
+      current = value
+    },
+  })
+})
+
+// RN 0.88 removed InteractionManager; app code defers work with `requestIdleCallback`
+// (see app/utils/runAfterInteractions). Jest's environment doesn't provide it.
+if (typeof global.requestIdleCallback !== "function") {
+  global.requestIdleCallback = ((
+    callback: (deadline: { didTimeout: boolean; timeRemaining: () => number }) => void
+  ) =>
+    setTimeout(
+      () => callback({ didTimeout: false, timeRemaining: () => 50 }),
+      0
+    ) as unknown as number) as typeof requestIdleCallback
+  global.cancelIdleCallback = ((handle: number) =>
+    clearTimeout(handle as unknown as NodeJS.Timeout)) as typeof cancelIdleCallback
+}
 declare const process: any
 
 expect.extend(matchers)

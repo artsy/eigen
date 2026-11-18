@@ -8,8 +8,9 @@ import { cleanLocalImages } from "app/utils/LocalImageStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
+import { runAfterInteractions } from "app/utils/runAfterInteractions"
 import { useEffect } from "react"
-import { Alert, InteractionManager } from "react-native"
+import { Alert } from "react-native"
 import { RelayPaginationProp, graphql } from "react-relay"
 import { MyCollectionArtworkEdge } from "./MyCollectionLegacy"
 import { myCollectionDeleteArtwork } from "./mutations/myCollectionDeleteArtwork"
@@ -68,13 +69,13 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me, 
                       })
                     )
                       .then(() => {
-                        InteractionManager.runAfterInteractions(() => {
+                        runAfterInteractions(() => {
                           Alert.alert("All artworks deleted")
                           refreshMyCollection()
                         })
                       })
                       .catch(() => {
-                        InteractionManager.runAfterInteractions(() => {
+                        runAfterInteractions(() => {
                           Alert.alert("Couldn't delete your artworks")
                         })
                       })
