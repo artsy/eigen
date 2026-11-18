@@ -8235,6 +8235,7 @@ type CRMActivity {
     timezone: String
   ): String
   crmContactID: String!
+  description: String
 
   """
   Null for activities that are not emails
@@ -8260,6 +8261,15 @@ type CRMActivity {
     timezone: String
   ): String
   partnerID: String!
+  subject: String
+  updatedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
 }
 
 """
@@ -13765,6 +13775,42 @@ type CreateBrandKitSuccess {
   brandKit: BrandKit
 }
 
+type CreateCRMActivityFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateCRMActivityInput {
+  clientMutationId: String
+  crmContactID: String!
+  description: String!
+
+  """
+  Kind of activity. Only NOTE is accepted for now
+  """
+  kind: CRMActivityKind!
+
+  """
+  ISO 8601 time the activity happened. Defaults to now on create
+  """
+  occurredAt: String
+  subject: String
+}
+
+type CreateCRMActivityPayload {
+  clientMutationId: String
+
+  """
+  On success: the created activity
+  """
+  crmActivityOrError: CreateCRMActivityResponseOrError
+}
+
+union CreateCRMActivityResponseOrError = CreateCRMActivityFailure | CreateCRMActivitySuccess
+
+type CreateCRMActivitySuccess {
+  crmActivity: CRMActivity
+}
+
 type CreateCRMContactEmailFailure {
   mutationError: GravityMutationError
 }
@@ -15974,6 +16020,34 @@ union DeleteBrandKitResponseOrError = DeleteBrandKitFailure | DeleteBrandKitSucc
 
 type DeleteBrandKitSuccess {
   success: Boolean
+}
+
+type DeleteCRMActivityFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteCRMActivityInput {
+  clientMutationId: String
+
+  """
+  The internal ID of the activity
+  """
+  id: String!
+}
+
+type DeleteCRMActivityPayload {
+  clientMutationId: String
+
+  """
+  On success: the removed activity
+  """
+  crmActivityOrError: DeleteCRMActivityResponseOrError
+}
+
+union DeleteCRMActivityResponseOrError = DeleteCRMActivityFailure | DeleteCRMActivitySuccess
+
+type DeleteCRMActivitySuccess {
+  crmActivity: CRMActivity
 }
 
 type DeleteCRMContactEmailFailure {
@@ -26068,6 +26142,11 @@ type Mutation {
   createBuyerOffer(input: createBuyerOfferInput!): createBuyerOfferPayload
 
   """
+  Add an activity to a CRM contact's timeline. Only notes can be created for now.
+  """
+  createCRMActivity(input: CreateCRMActivityInput!): CreateCRMActivityPayload
+
+  """
   Create a CRM contact. It needs at least one of firstName, lastName, company or an email. Creation is all-or-nothing: a failing email or location creates nothing.
   """
   createCRMContact(input: CreateCRMContactInput!): CreateCRMContactPayload
@@ -26418,6 +26497,11 @@ type Mutation {
   Remove the logo from a brand kit
   """
   deleteBrandKitLogo(input: DeleteBrandKitLogoInput!): DeleteBrandKitLogoPayload
+
+  """
+  Remove an activity from a CRM contact's timeline. Email activities can't be removed.
+  """
+  deleteCRMActivity(input: DeleteCRMActivityInput!): DeleteCRMActivityPayload
 
   """
   Remove an email from a CRM contact. Fails when it is the contact's last email and the contact has no name or company.
@@ -27190,6 +27274,11 @@ type Mutation {
   updateCMSLastAccessTimestamp(
     input: UpdateCMSLastAccessTimestampMutationInput!
   ): UpdateCMSLastAccessTimestampMutationPayload
+
+  """
+  Change an activity's subject or description. Email activities can't be changed.
+  """
+  updateCRMActivity(input: UpdateCRMActivityInput!): UpdateCRMActivityPayload
 
   """
   Update a CRM contact's own fields. Emails and locations have their own mutations, and a contact can't change partner.
@@ -40000,6 +40089,41 @@ union UpdateCMSLastAccessTimestampResponseOrError =
 
 type UpdateCMSLastAccessTimestampSuccess {
   partner: Partner
+}
+
+type UpdateCRMActivityFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateCRMActivityInput {
+  clientMutationId: String
+  description: String
+
+  """
+  The internal ID of the activity
+  """
+  id: String!
+
+  """
+  ISO 8601 time the activity happened. Defaults to now on create
+  """
+  occurredAt: String
+  subject: String
+}
+
+type UpdateCRMActivityPayload {
+  clientMutationId: String
+
+  """
+  On success: the updated activity
+  """
+  crmActivityOrError: UpdateCRMActivityResponseOrError
+}
+
+union UpdateCRMActivityResponseOrError = UpdateCRMActivityFailure | UpdateCRMActivitySuccess
+
+type UpdateCRMActivitySuccess {
+  crmActivity: CRMActivity
 }
 
 type UpdateCRMContactEmailFailure {
