@@ -23,9 +23,10 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
+import { runAfterInteractions } from "app/utils/runAfterInteractions"
 import { AnimatePresence, MotiView } from "moti"
 import { memo, RefObject, useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { InteractionManager, ListRenderItem, Platform } from "react-native"
+import { ListRenderItem, Platform } from "react-native"
 import { SwipeableMethods } from "react-native-gesture-handler/ReanimatedSwipeable"
 import Animated, {
   Easing,
@@ -90,7 +91,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
 
   useEffect(() => {
     if (shouldStartOnboardingAnimation) {
-      InteractionManager.runAfterInteractions(() => {
+      runAfterInteractions(() => {
         if (firstSwipeableRef.current) {
           firstSwipeableRef.current.openRight()
         }

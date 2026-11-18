@@ -1,0 +1,19 @@
+diff --git a/ios/src/ImageCropPicker.h b/ios/src/ImageCropPicker.h
+index b6a925a424e18d95cc02841e3f965e0dca6ca114..90ba26f36c8aa0e5fd26763ce077db513a30566d 100644
+--- a/ios/src/ImageCropPicker.h
++++ b/ios/src/ImageCropPicker.h
+@@ -13,14 +13,10 @@
+ #if __has_include(<React/RCTBridgeModule.h>)
+ #import <React/RCTBridgeModule.h>
+ #import <React/RCTImageURLLoader.h>
+-#import <React/RCTImageShadowView.h>
+-#import <React/RCTImageView.h>
+ #import <React/RCTImageLoaderProtocol.h>
+ #else
+ #import "RCTBridgeModule.h"
+ #import "RCTImageURLLoader.h"
+-#import "RCTImageShadowView.h"
+-#import "RCTImageView.h"
+ #import "RCTImageLoaderProtocol.h"
+ #endif
+ 

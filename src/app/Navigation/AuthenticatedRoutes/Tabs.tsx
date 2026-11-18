@@ -22,9 +22,10 @@ import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { Onboarding } from "app/Scenes/Onboarding/Screens/Onboarding/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEnvironmentColor } from "app/utils/hooks/useEnvironmentColor"
+import { runAfterInteractions } from "app/utils/runAfterInteractions"
 import { postEventToProviders } from "app/utils/track/providers"
 import { useCallback, useEffect, useState } from "react"
-import { Easing, InteractionManager, PixelRatio, Platform } from "react-native"
+import { Easing, PixelRatio, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 if (Platform.OS === "ios") {
@@ -61,7 +62,7 @@ const AppTabs: React.FC = () => {
   const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
 
   const handleTabPress = useCallback(
-    (e: EventArg<"tabPress", true, undefined>) => {
+    (e: Pick<EventArg<"tabPress", true>, "target">) => {
       // the tab name is saved in e.target postfixed with random string like sell-Nw_wCNTWwOg95v
       const tabName = Object.keys(bottomTabsConfig).find(
         (tab) => e.target?.startsWith(tab)
@@ -187,7 +188,7 @@ const AppTabs: React.FC = () => {
       screenListeners={{
         tabPress: (e) => {
           // The goal of this is to queue up the tab press event to be handled after the tab has changed
-          InteractionManager.runAfterInteractions(() => {
+          runAfterInteractions(() => {
             handleTabPress(e)
           })
         },
