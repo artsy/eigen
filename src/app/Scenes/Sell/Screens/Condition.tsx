@@ -1,7 +1,6 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { ConditionQuery } from "__generated__/ConditionQuery.graphql"
-import { useToast } from "app/Components/Toast/toastHook"
 import { SellConditionSection } from "app/Scenes/Sell/Components/SellConditionSection"
 import { SellFormLayout } from "app/Scenes/Sell/Components/SellFormLayout"
 import { SellPriceSection } from "app/Scenes/Sell/Components/SellPriceSection"
@@ -11,14 +10,13 @@ import { SellNavigationProp } from "app/Scenes/Sell/Sell"
 import { SellConditionStore } from "app/Scenes/Sell/State/SellConditionStore"
 import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { useConfirmLeavingConditionStep } from "app/Scenes/Sell/hooks/useConfirmLeavingConditionStep"
-import { useUpdateResaleSubmission } from "app/Scenes/Sell/hooks/useUpdateResaleSubmission"
+import { useSaveResaleSubmission } from "app/Scenes/Sell/hooks/useUpdateResaleSubmission"
 import {
   ResaleSubmissionWithChannel,
   hasSupportedChannel,
   toResaleSubmission,
 } from "app/Scenes/Sell/utils/resaleSubmission"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 type Artwork = NonNullable<
@@ -70,9 +68,7 @@ const ConditionForm: React.FC<{
 }> = ({ artwork, resaleSubmission, onContinue }) => {
   const { rating, askingPrice } = SellConditionStore.useStoreState((state) => state)
   useConfirmLeavingConditionStep()
-  const toast = useToast()
-  const { submitMutation: updateResaleSubmission } = useUpdateResaleSubmission()
-  const [saving, setSaving] = useState(false)
+  const { save, saving } = useSaveResaleSubmission("We couldn’t save your price. Please try again.")
 
   const channelKind = resaleSubmission.channel
   const isMarketplace = channelKind === "MARKETPLACE"
@@ -85,29 +81,9 @@ const ConditionForm: React.FC<{
       return
     }
 
-    setSaving(true)
-
-    try {
-      const response = await updateResaleSubmission({
-        variables: { input: { id: resaleSubmission.internalID, priceListed: askingPrice } },
-      })
-
-      if (
-        response.updateResaleSubmission?.resaleSubmissionOrError?.__typename !==
-        "UpdateResaleSubmissionSuccess"
-      ) {
-        throw new Error("updateResaleSubmission failed")
-      }
-    } catch {
-      toast.show("We couldn’t save your price. Please try again.", "bottom", {
-        backgroundColor: "red100",
-      })
-      return
-    } finally {
-      setSaving(false)
+    if (await save({ id: resaleSubmission.internalID, priceListed: askingPrice })) {
+      onContinue()
     }
-
-    onContinue()
   }
 
   return (
