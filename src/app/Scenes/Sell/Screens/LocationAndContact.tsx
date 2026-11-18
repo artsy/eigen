@@ -7,39 +7,50 @@ import { SellShippingQuestions } from "app/Scenes/Sell/Components/SellShippingQu
 import { SellStepIntro } from "app/Scenes/Sell/Components/SellStepIntro"
 import { SellSubmittedBottomSheet } from "app/Scenes/Sell/Components/SellSubmittedBottomSheet"
 import { SellWorkCard } from "app/Scenes/Sell/Components/SellWorkCard"
-import { ActiveSellWork, SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
+import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { SellLocationStore } from "app/Scenes/Sell/State/SellLocationStore"
-import { ResaleSubmissionWithChannel } from "app/Scenes/Sell/utils/resaleSubmission"
+import {
+  ResaleSubmissionWithChannel,
+  hasSupportedChannel,
+  toResaleSubmission,
+} from "app/Scenes/Sell/utils/resaleSubmission"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
-type Artwork = NonNullable<LocationAndContactQuery["response"]["artwork"]>
+type Artwork = NonNullable<
+  NonNullable<
+    NonNullable<LocationAndContactQuery["response"]["me"]>["resaleSubmission"]
+  >["submittedArtwork"]
+>
 type Me = NonNullable<LocationAndContactQuery["response"]["me"]>
 
 export const LocationAndContact: React.FC = () => {
-  const activeWork = SellFlowStore.useStoreState((state) => state.activeWork)
+  const resaleSubmissionID = SellFlowStore.useStoreState((state) => state.activeResaleSubmissionID)
 
-  if (!activeWork) {
+  if (!resaleSubmissionID) {
     return null
   }
 
   return (
     <SellLocationStore.Provider>
-      <LocationAndContactContent {...activeWork} />
+      <LocationAndContactContent resaleSubmissionID={resaleSubmissionID} />
     </SellLocationStore.Provider>
   )
 }
 
-const LocationAndContactContent: React.FC<ActiveSellWork> = withSuspense({
-  Component: ({ artworkID, resaleSubmission }) => {
+const LocationAndContactContent: React.FC<{ resaleSubmissionID: string }> = withSuspense({
+  Component: ({ resaleSubmissionID }) => {
     const data = useLazyLoadQuery<LocationAndContactQuery>(locationAndContactQuery, {
-      artworkID,
+      resaleSubmissionID,
     })
     const [submitted, setSubmitted] = useState(false)
-    const { artwork, me } = data
+    const me = data.me
+    const artwork = me?.resaleSubmission?.submittedArtwork
 
-    if (!artwork || !me) {
+    const resaleSubmission = me?.resaleSubmission && toResaleSubmission(me.resaleSubmission)
+
+    if (!me || !resaleSubmission || !hasSupportedChannel(resaleSubmission) || !artwork) {
       return <LocationAndContactError />
     }
 
@@ -167,15 +178,18 @@ const LocationAndContactError: React.FC = () => (
 )
 
 const locationAndContactQuery = graphql`
-  query LocationAndContactQuery($artworkID: String!) {
-    artwork(id: $artworkID) {
-      internalID
-      artistNames
-      title
-      ...SellWorkCard_artwork
-    }
+  query LocationAndContactQuery($resaleSubmissionID: String!) {
     me {
       ...SellLocationFields_me
+      resaleSubmission(id: $resaleSubmissionID) {
+        ...resaleSubmission_resaleSubmission
+        submittedArtwork {
+          internalID
+          artistNames
+          title
+          ...SellWorkCard_artwork
+        }
+      }
     }
   }
 `

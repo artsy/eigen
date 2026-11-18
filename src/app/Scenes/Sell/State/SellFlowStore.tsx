@@ -1,21 +1,15 @@
-import { ResaleSubmissionWithChannel } from "app/Scenes/Sell/utils/resaleSubmission"
 import { Action, action, createContextStore } from "easy-peasy"
 
-/** The work the seller is taking through steps 2 and 3 */
-export interface ActiveSellWork {
-  artworkID: string
-  resaleSubmission: ResaleSubmissionWithChannel
-}
-
 export interface SellFlowStoreModel {
-  activeWork: ActiveSellWork | null
-  setActiveWork: Action<this, ActiveSellWork>
+  /** The resale submission the seller is working on in steps 2 and 3 */
+  activeResaleSubmissionID: string | null
+  setActiveResaleSubmissionID: Action<this, string>
 }
 
 export const sellFlowStoreModel: SellFlowStoreModel = {
-  activeWork: null,
-  setActiveWork: action((state, work) => {
-    state.activeWork = work
+  activeResaleSubmissionID: null,
+  setActiveResaleSubmissionID: action((state, resaleSubmissionID) => {
+    state.activeResaleSubmissionID = resaleSubmissionID
   }),
 }
 
