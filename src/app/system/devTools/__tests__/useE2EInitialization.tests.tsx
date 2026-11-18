@@ -41,6 +41,8 @@ describe("useE2EInitialization", () => {
   })
 
   describe("signing in with email and password", () => {
+    const mockPassword = "test-password" // pragma: allowlist secret
+
     let signIn: jest.SpyInstance
 
     beforeEach(() => {
@@ -53,12 +55,12 @@ describe("useE2EInitialization", () => {
 
     it("signs in when signed out", () => {
       __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: null, userEmail: null } })
-      mockLaunchArguments({ useE2EInit: true, email: "e2e@artsy.net", password: "secret" })
+      mockLaunchArguments({ useE2EInit: true, email: "e2e@artsy.net", password: mockPassword })
 
       renderWithWrappers(<TestComponent />)
 
       expect(signIn).toHaveBeenCalledWith(
-        expect.objectContaining({ email: "e2e@artsy.net", password: "secret" })
+        expect.objectContaining({ email: "e2e@artsy.net", password: mockPassword })
       )
     })
 
@@ -66,7 +68,7 @@ describe("useE2EInitialization", () => {
       __globalStoreTestUtils__?.injectState({
         auth: { userAccessToken: "token", userEmail: "E2E@artsy.net" },
       })
-      mockLaunchArguments({ useE2EInit: true, email: "e2e@artsy.net", password: "secret" })
+      mockLaunchArguments({ useE2EInit: true, email: "e2e@artsy.net", password: mockPassword })
 
       renderWithWrappers(<TestComponent />)
 
@@ -77,7 +79,7 @@ describe("useE2EInitialization", () => {
       __globalStoreTestUtils__?.injectState({
         auth: { userAccessToken: "token", userEmail: "someone-else@artsy.net" },
       })
-      mockLaunchArguments({ useE2EInit: true, email: "e2e@artsy.net", password: "secret" })
+      mockLaunchArguments({ useE2EInit: true, email: "e2e@artsy.net", password: mockPassword })
 
       renderWithWrappers(<TestComponent />)
 
