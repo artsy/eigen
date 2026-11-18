@@ -8226,6 +8226,15 @@ type BuyersPremium {
 }
 
 type CRMActivity {
+  """
+  The artists this activity is about. Deleted ones are left out
+  """
+  artists: [Artist!]!
+
+  """
+  The artworks this activity is about. Deleted ones are left out
+  """
+  artworks: [Artwork!]!
   createdAt(
     format: String
 
@@ -8305,7 +8314,10 @@ type CRMActivityEdge {
 }
 
 enum CRMActivityKind {
+  CALL
   EMAIL
+  INTEREST
+  MEETING
   NOTE
 }
 
@@ -13780,12 +13792,25 @@ type CreateCRMActivityFailure {
 }
 
 input CreateCRMActivityInput {
-  clientMutationId: String
-  crmContactID: String!
-  description: String!
+  """
+  Artists the partner shows or represents that the activity is about. An INTEREST needs an artwork or an artist
+  """
+  artistIDs: [String!]
 
   """
-  Kind of activity. Only NOTE is accepted for now
+  Artworks of the partner that the activity is about
+  """
+  artworkIDs: [String!]
+  clientMutationId: String
+  crmContactID: String!
+
+  """
+  Required for NOTE
+  """
+  description: String
+
+  """
+  Kind of activity. EMAIL is not accepted
   """
   kind: CRMActivityKind!
 
@@ -26142,7 +26167,7 @@ type Mutation {
   createBuyerOffer(input: createBuyerOfferInput!): createBuyerOfferPayload
 
   """
-  Add an activity to a CRM contact's timeline. Only notes can be created for now.
+  Add an activity to a CRM contact's timeline. Email activities can't be created.
   """
   createCRMActivity(input: CreateCRMActivityInput!): CreateCRMActivityPayload
 
@@ -27276,7 +27301,7 @@ type Mutation {
   ): UpdateCMSLastAccessTimestampMutationPayload
 
   """
-  Change an activity's subject or description. Email activities can't be changed.
+  Change an activity. Email activities can't be changed.
   """
   updateCRMActivity(input: UpdateCRMActivityInput!): UpdateCRMActivityPayload
 
@@ -40096,6 +40121,15 @@ type UpdateCRMActivityFailure {
 }
 
 input UpdateCRMActivityInput {
+  """
+  Replaces the artists the activity is about. An empty list clears them, leaving it out keeps them
+  """
+  artistIDs: [String!]
+
+  """
+  Replaces the artworks the activity is about. An empty list clears them, leaving it out keeps them
+  """
+  artworkIDs: [String!]
   clientMutationId: String
   description: String
 
@@ -40103,6 +40137,11 @@ input UpdateCRMActivityInput {
   The internal ID of the activity
   """
   id: String!
+
+  """
+  Switch between NOTE, CALL, MEETING and INTEREST
+  """
+  kind: CRMActivityKind
 
   """
   ISO 8601 time the activity happened. Defaults to now on create
