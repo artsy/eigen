@@ -2,6 +2,7 @@ import { Flex, Text } from "@artsy/palette-mobile"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { SelectWorksQuery } from "__generated__/SelectWorksQuery.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
+import { useToast } from "app/Components/Toast/toastHook"
 import {
   SellSelectionNoteBottomSheet,
   SellSelectionWork,
@@ -11,7 +12,9 @@ import { SellStepLayout } from "app/Scenes/Sell/Components/SellStepLayout"
 import { SellWorksSummary } from "app/Scenes/Sell/Components/SellWorksSummary"
 import { SellNavigationProp, SellNavigationRoutes } from "app/Scenes/Sell/Sell"
 import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
+import { MAX_SELECTED_WORKS } from "app/Scenes/Sell/constants"
 import { isWorkSellable } from "app/Scenes/Sell/utils/isWorkSellable"
+import { toggleWorkSelection } from "app/Scenes/Sell/utils/toggleWorkSelection"
 import { extractNodes } from "app/utils/extractNodes"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -59,15 +62,23 @@ const SelectWorksContent: React.FC<SelectWorksContentProps> = withSuspense({
     const artworks = extractNodes(data.me?.myCollectionConnection)
     const [selectedWorkIDs, setSelectedWorkIDs] = useState<string[]>([])
     const [reviewedWorks, setReviewedWorks] = useState<SellSelectionWork[]>()
+    const [footerHeight, setFooterHeight] = useState(0)
+    const toast = useToast()
 
     const selectedArtworks = artworks.filter((artwork) =>
       selectedWorkIDs.includes(artwork.internalID)
     )
 
     const toggleWork = (internalID: string) => {
-      setSelectedWorkIDs((ids) =>
-        ids.includes(internalID) ? ids.filter((id) => id !== internalID) : [...ids, internalID]
-      )
+      const nextIDs = toggleWorkSelection(selectedWorkIDs, internalID)
+
+      if (nextIDs) {
+        setSelectedWorkIDs(nextIDs)
+      } else {
+        toast.show(`You can select up to ${MAX_SELECTED_WORKS} works at a time.`, "bottom", {
+          bottomPadding: footerHeight,
+        })
+      }
     }
 
     if (showWorksSummary) {
@@ -85,6 +96,7 @@ const SelectWorksContent: React.FC<SelectWorksContentProps> = withSuspense({
           buttonLabel="Verify If Sellable"
           buttonDisabled={!selectedWorkIDs.length}
           onButtonPress={() => setReviewedWorks(selectedArtworks)}
+          onFooterHeightChange={setFooterHeight}
         >
           <MasonryInfiniteScrollArtworkGrid
             artworks={artworks}

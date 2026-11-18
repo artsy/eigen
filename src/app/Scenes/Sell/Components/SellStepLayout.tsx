@@ -5,12 +5,15 @@ interface SellStepLayoutProps {
   buttonLabel: string
   buttonDisabled?: boolean
   onButtonPress: () => void
+  /** How far the button area reaches above the bottom safe area */
+  onFooterHeightChange?: (height: number) => void
 }
 
 export const SellStepLayout: React.FC<React.PropsWithChildren<SellStepLayoutProps>> = ({
   buttonLabel,
   buttonDisabled,
   onButtonPress,
+  onFooterHeightChange,
   children,
 }) => {
   const { bottom } = useSafeAreaInsets()
@@ -20,7 +23,11 @@ export const SellStepLayout: React.FC<React.PropsWithChildren<SellStepLayoutProp
     <Flex flex={1} bg="mono0" style={{ paddingBottom: bottom + space(2) }}>
       <Flex flex={1}>{children}</Flex>
 
-      <Box px={2} pt={2}>
+      <Box
+        px={2}
+        pt={2}
+        onLayout={({ nativeEvent }) => onFooterHeightChange?.(nativeEvent.layout.height + space(2))}
+      >
         <Button block haptic variant="fillDark" disabled={buttonDisabled} onPress={onButtonPress}>
           {buttonLabel}
         </Button>
