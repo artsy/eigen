@@ -178,12 +178,13 @@ cancel_running_betas() {
   while :; do
     pending=0
     for run_id in "${running_run_ids[@]}"; do
-      status=$(gh_api "actions/runs/${run_id}" | jq -r '.status // "completed"')
+      # An API error (e.g. rate limit) has no .status, so it counts as not stopped.
+      status=$(gh_api "actions/runs/${run_id}" | jq -r '.status // "unknown"')
       [ "$status" != "completed" ] && pending=$((pending + 1))
     done
     [ "$pending" -eq 0 ] && break
     if [ "$SECONDS" -ge "$deadline" ]; then
-      echo "Error: ${pending} run(s) still have not stopped after 2 minutes. Check them on GitHub and re-run this script."
+      echo "Error: could not confirm ${pending} run(s) stopped after 2 minutes. Check them on GitHub and re-run this script."
       exit 1
     fi
     echo "  waiting for ${pending} run(s) to stop..."
@@ -209,8 +210,14 @@ echo
 
 if [ "$rc_conflict" = true ]; then
   echo "🚨 The conflict is a RELEASE CANDIDATE — DO NOT override."
-  echo "   Overriding will corrupt the build that is about to ship. Wait for the RC"
-  echo "   builds to finish and check with the release owner first."
+  if [ ${#running_run_ids[@]} -gt 0 ]; then
+    echo "   Overriding cancels the running $PLATFORM beta(s) listed above, including"
+    echo "   the RC build, so it will not ship. Wait for the RC builds to finish and"
+    echo "   check with the release owner first."
+  else
+    echo "   Overriding will corrupt the build that is about to ship. Wait for the RC"
+    echo "   builds to finish and check with the release owner first."
+  fi
   echo
   read -r -p "   If you are certain, type 'override-rc' to continue (anything else aborts): " REPLY
   echo
