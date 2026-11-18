@@ -6,7 +6,7 @@ import { Tab } from "app/Scenes/MyCollection/MyCollection"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
-import { InteractionManager } from "react-native"
+import { runAfterInteractions } from "app/utils/runAfterInteractions"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export const MyCollectionBottomSheetModalProfile: React.FC<{
@@ -39,7 +39,7 @@ export const MyCollectionBottomSheetModalProfile: React.FC<{
               accessibilityRole="button"
               onPress={() => {
                 setViewKind({ viewKind: null })
-                InteractionManager.runAfterInteractions(() => {
+                runAfterInteractions(() => {
                   navigate("/my-profile/edit")
                 })
               }}
@@ -50,7 +50,7 @@ export const MyCollectionBottomSheetModalProfile: React.FC<{
               accessibilityRole="button"
               onPress={() => {
                 setViewKind({ viewKind: null })
-                InteractionManager.runAfterInteractions(() => {
+                runAfterInteractions(() => {
                   navigate("my-collection/artworks/new", {
                     passProps: {
                       source: Tab.collection,
@@ -65,7 +65,7 @@ export const MyCollectionBottomSheetModalProfile: React.FC<{
               accessibilityRole="button"
               onPress={() => {
                 setViewKind({ viewKind: null })
-                InteractionManager.runAfterInteractions(() => {
+                runAfterInteractions(() => {
                   navigate("my-collection/collected-artists/new", {
                     passProps: {
                       source: Tab.collection,

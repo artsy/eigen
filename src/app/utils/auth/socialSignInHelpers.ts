@@ -9,8 +9,9 @@ import {
 import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
+import { runAfterInteractions } from "app/utils/runAfterInteractions"
 import { capitalize } from "lodash"
-import { Alert, InteractionManager } from "react-native"
+import { Alert } from "react-native"
 
 export const useSocialLogin = () => {
   const navigation = useNavigation<NavigationProp<OnboardingNavigationStack>>()
@@ -21,7 +22,7 @@ export const useSocialLogin = () => {
       callback().catch((error: AuthPromiseRejectType) => {
         setTimeout(() => {
           GlobalStore.actions.auth.setSessionState({ isLoading: false })
-          InteractionManager.runAfterInteractions(() => {
+          runAfterInteractions(() => {
             handleError(error)
           })
         }, 200)
@@ -43,7 +44,7 @@ export const useSocialLogin = () => {
       }
       GlobalStore.actions.auth.setSessionState({ isLoading: false })
 
-      InteractionManager.runAfterInteractions(() => {
+      runAfterInteractions(() => {
         const errorMode = error.message === "Attempt blocked" ? "attempt blocked" : "no account"
         showErrorAlert(errorMode, error)
         return

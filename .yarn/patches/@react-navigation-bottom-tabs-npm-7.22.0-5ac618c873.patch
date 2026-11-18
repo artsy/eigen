@@ -1,16 +1,16 @@
 diff --git a/lib/module/views/BottomTabBar.js b/lib/module/views/BottomTabBar.js
-index cb4e310644f3bb2ec2a6a4358930dbfe620a9ce1..ecacb80eb56b474e62a7d66b19a952691803b55c 100644
+index c6e64da5a93253c6e667dc9791e5b90410608719..fbdb38a10f16cd30df4950b8bbd61bb6074e82c5 100644
 --- a/lib/module/views/BottomTabBar.js
 +++ b/lib/module/views/BottomTabBar.js
-@@ -123,6 +123,7 @@ export function BottomTabBar({
-     tabBarShowLabel,
+@@ -124,6 +124,7 @@ export function BottomTabBar({
+     tabBarLabelVisibilityMode,
      tabBarLabelPosition,
      tabBarHideOnKeyboard = false,
 +    tabBarVisible = false,
      tabBarVisibilityAnimationConfig,
      tabBarVariant = 'uikit',
      tabBarStyle,
-@@ -140,7 +141,7 @@ export function BottomTabBar({
+@@ -142,7 +143,7 @@ export function BottomTabBar({
    }
    const isKeyboardShown = useIsKeyboardShown();
    const onHeightChange = React.useContext(BottomTabBarHeightCallbackContext);
@@ -19,7 +19,7 @@ index cb4e310644f3bb2ec2a6a4358930dbfe620a9ce1..ecacb80eb56b474e62a7d66b19a95269
    const visibilityAnimationConfigRef = React.useRef(tabBarVisibilityAnimationConfig);
    React.useEffect(() => {
      visibilityAnimationConfigRef.current = tabBarVisibilityAnimationConfig;
-@@ -241,8 +242,12 @@ export function BottomTabBar({
+@@ -243,8 +244,12 @@ export function BottomTabBar({
          translateY: visible.interpolate({
            inputRange: [0, 1],
            outputRange: [layout.height + insets[tabBarPosition === 'top' ? 'top' : 'bottom'] + StyleSheet.hairlineWidth, 0]
@@ -34,10 +34,10 @@ index cb4e310644f3bb2ec2a6a4358930dbfe620a9ce1..ecacb80eb56b474e62a7d66b19a95269
        // This is needed to avoid gap at bottom when the tab bar is hidden
        position: isTabBarHidden ? 'absolute' : undefined
 diff --git a/src/types.tsx b/src/types.tsx
-index 2438b03e744a2845fa6f7035586f64d4cc8e91c1..eaa6d4bcbf574075317d131c7a0b0b21b89d542c 100644
+index 1d20afa948b597f706e2f87ec4b08d33ffbc288a..e08a3996210cc1c615ad38ed5471021c034b16fc 100644
 --- a/src/types.tsx
 +++ b/src/types.tsx
-@@ -239,6 +239,11 @@ export type BottomTabNavigationOptions = HeaderOptions & {
+@@ -289,6 +289,11 @@ export type BottomTabNavigationOptions = HeaderOptions & {
     */
    tabBarVariant?: Variant;
  
@@ -50,18 +50,18 @@ index 2438b03e744a2845fa6f7035586f64d4cc8e91c1..eaa6d4bcbf574075317d131c7a0b0b21
     * Style object for the tab bar container.
     */
 diff --git a/src/views/BottomTabBar.tsx b/src/views/BottomTabBar.tsx
-index 55b9c8f3065ca5e887930af4ea9779838bb136cb..816b02840afb5a1007d79cfa4b740d063db348f8 100644
+index 23b3728f8c333949980b1da495cf567fc1864970..306f6e4603dcd443b597c7d718595aaab55456b6 100644
 --- a/src/views/BottomTabBar.tsx
 +++ b/src/views/BottomTabBar.tsx
-@@ -175,6 +175,7 @@ export function BottomTabBar({
+@@ -181,6 +181,7 @@ export function BottomTabBar({
      tabBarVariant = 'uikit',
      tabBarStyle,
      tabBarBackground,
 +    tabBarVisible = false,
+     tabBarTransparent,
      tabBarActiveTintColor,
      tabBarInactiveTintColor,
-     tabBarActiveBackgroundColor,
-@@ -205,7 +206,7 @@ export function BottomTabBar({
+@@ -212,7 +213,7 @@ export function BottomTabBar({
  
    const onHeightChange = React.useContext(BottomTabBarHeightCallbackContext);
  
@@ -70,7 +70,7 @@ index 55b9c8f3065ca5e887930af4ea9779838bb136cb..816b02840afb5a1007d79cfa4b740d06
  
    const visibilityAnimationConfigRef = React.useRef(
      tabBarVisibilityAnimationConfig
-@@ -367,6 +368,10 @@ export function BottomTabBar({
+@@ -376,6 +377,10 @@ export function BottomTabBar({
                          0,
                        ],
                      }),

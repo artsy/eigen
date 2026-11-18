@@ -90,7 +90,7 @@ index 68cca5011f61e8efab72c10ec4ebe21bd7efe904..b8a10caee1c2f91ea5deed876b65fb59
        return true;
      } catch (Exception exception) {
 diff --git a/ios/Keys.mm b/ios/Keys.mm
-index b135cda89ae695d143c99cca04719f370b580c55..9c58b2e3d4afd0fcffbfdc78935dd0edda4b17db 100644
+index b135cda89ae695d143c99cca04719f370b580c55..9d3e2d159a99063a38e1413ea96383da1a200581 100644
 --- a/ios/Keys.mm
 +++ b/ios/Keys.mm
 @@ -4,7 +4,10 @@
@@ -147,7 +147,7 @@ index b135cda89ae695d143c99cca04719f370b580c55..9c58b2e3d4afd0fcffbfdc78935dd0ed
  @implementation Keys
  
  @synthesize bridge = _bridge;
-@@ -24,10 +62,30 @@ RCT_EXPORT_MODULE()
+@@ -24,10 +62,29 @@ RCT_EXPORT_MODULE()
      return YES;
  }
  
@@ -169,18 +169,17 @@ index b135cda89ae695d143c99cca04719f370b580c55..9c58b2e3d4afd0fcffbfdc78935dd0ed
  {
 -    RCTBridge* bridge = [RCTBridge currentBridge];
 +#ifdef RCT_NEW_ARCH_ENABLED
-+    // Bridgeless: bindings already installed by installJSIBindingsWithRuntime:.
-+    if (self.bridge == nil) {
-+        return @true;
-+    }
-+#endif
-+
-+    // Legacy Bridge path (Old Architecture or bridge-mode New Arch).
++    // New Architecture: bindings are always installed by installJSIBindingsWithRuntime: before
++    // this runs. React Native 0.88 removed RCTCxxBridge, so the legacy path below can't compile
++    // here anyway.
++    return @true;
++#else
++    // Legacy Bridge path (Old Architecture).
 +    RCTBridge* bridge = self.bridge ?: [RCTBridge currentBridge];
      RCTCxxBridge* cxxBridge = (RCTCxxBridge*)bridge;
      if (cxxBridge == nil) {
          return @false;
-@@ -37,76 +95,40 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install)
+@@ -37,76 +94,41 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install)
      if (jsiRuntime == nil) {
          return @false;
      }
@@ -223,6 +222,7 @@ index b135cda89ae695d143c99cca04719f370b580c55..9c58b2e3d4afd0fcffbfdc78935dd0ed
 -   
 +    installKeysBindings(*jsiRuntime);
      return @true;
++#endif
  }
  
  

@@ -79,7 +79,6 @@ const NON_NATIVE_FILES = [
   "metro.config.js",
   ".prettierignore",
   ".prettierrc.cjs",
-  "ReactotronConfig.js",
   "relay.config.js",
   "renovate.json",
   "tsconfig.json",
