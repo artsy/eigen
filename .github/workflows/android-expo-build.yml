@@ -31,7 +31,7 @@ jobs:
   android-expo-cache-build:
     needs: check-build-needed
     if: ${{ needs.check-build-needed.outputs.needs_build == 'true' }}
-    runs-on: ubuntu-latest # Use ubuntu-latest for better Android emulator support
+    runs-on: ubuntu-24.04 # Pinned: setup-ruby lacks our .ruby-version on ubuntu-26.04
     timeout-minutes: 60
 
     env:

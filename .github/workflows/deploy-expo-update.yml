@@ -240,7 +240,7 @@ jobs:
   notify-slack:
     needs: [deploy, github-release, sentry-alerts]
     if: always() && inputs.deployment == 'production' && needs.deploy.result == 'success'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout repository
