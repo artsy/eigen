@@ -9786,6 +9786,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@stripe/stripe-react-native@patch:@stripe/stripe-react-native@npm%3A0.64.0#~/.yarn/patches/@stripe-stripe-react-native-npm-0.64.0-73434f60f5.patch":
+  version: 0.64.0
+  resolution: "@stripe/stripe-react-native@patch:@stripe/stripe-react-native@npm%3A0.64.0#~/.yarn/patches/@stripe-stripe-react-native-npm-0.64.0-73434f60f5.patch::version=0.64.0&hash=babe03"
+  peerDependencies:
+    expo: ">=46.0.9"
+    react: "*"
+    react-native: "*"
+    react-native-webview: "*"
+  peerDependenciesMeta:
+    expo:
+      optional: true
+    react-native-webview:
+      optional: true
+  checksum: 10c0/1a6d6de9a57c143547f3b9b5539f0b460939e955a122e4728324d8a3ea3111dc1f4e21ef9404d63b2e50392b6bf6308b4811ece26b7244e58a043cef997995c1
+  languageName: node
+  linkType: hard
+
 "@styled-system/background@npm:^5.1.2":
   version: 5.1.2
   resolution: "@styled-system/background@npm:5.1.2"
@@ -14030,7 +14047,7 @@ __metadata:
     "@segment/sovran-react-native": "npm:1.1.5"
     "@sentry/react-native": "npm:8.28.0"
     "@shopify/flash-list": "npm:2.3.2"
-    "@stripe/stripe-react-native": "npm:0.64.0"
+    "@stripe/stripe-react-native": "patch:@stripe/stripe-react-native@npm%3A0.64.0#~/.yarn/patches/@stripe-stripe-react-native-npm-0.64.0-73434f60f5.patch"
     "@styled-system/theme-get": "npm:5.1.2"
     "@testing-library/react-native": "npm:13.3.3"
     "@types/argparse": "npm:2.0.10"

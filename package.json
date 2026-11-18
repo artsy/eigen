@@ -149,7 +149,7 @@
     "@segment/sovran-react-native": "1.1.5",
     "@sentry/react-native": "8.28.0",
     "@shopify/flash-list": "2.3.2",
-    "@stripe/stripe-react-native": "0.64.0",
+    "@stripe/stripe-react-native": "patch:@stripe/stripe-react-native@npm%3A0.64.0#~/.yarn/patches/@stripe-stripe-react-native-npm-0.64.0-73434f60f5.patch",
     "@styled-system/theme-get": "5.1.2",
     "@unleash/proxy-client-react": "4.5.2",
     "autosuggest-highlight": "3.3.4",

@@ -374,6 +374,16 @@ React Native 0.88's `NativeAnimatedHelper` calls `clearImmediate` unconditionall
 
 React Native 0.87 removed `InteractionManager`, so app code now defers work with `requestIdleCallback` (`app/utils/runAfterInteractions`). Jest doesn't provide it, so the setup file polyfills it with `setTimeout(…, 0)`.
 
+## Patch for @stripe/stripe-react-native (Android release lint, `play-services-tapandpay`)
+
+#### When can we remove this:
+
+When we upgrade to `@stripe/stripe-react-native@0.82+`, which has the same exclude upstream (https://github.com/stripe/stripe-react-native/issues/2728). That upgrade is its own piece of work: from `0.78` the Stripe iOS SDK is resolved through Swift Package Manager and needs `use_frameworks! :linkage => :dynamic`, and `0.84` drops CocoaPods resolution entirely.
+
+#### Explanation/Context:
+
+Stripe declares `compileOnly "com.stripe:stripe-android-issuing-push-provisioning:1.1.0"`, which depends on Google's private `play-services-tapandpay` SDK (not on any public Maven repository). Android Gradle Plugin 9 resolves `compileOnly` dependencies for the release lint check (`lintVitalAnalyzeRelease`), so `assembleRelease` failed with "Could not find com.google.android.gms:play-services-tapandpay:17.1.2". The patch excludes `play-services-tapandpay` from that dependency, the same fix as upstream. We don't use push provisioning, so nothing at runtime changes.
+
 ## Patch for @react-native-menu/menu (iOS imports)
 
 #### When can we remove this:
