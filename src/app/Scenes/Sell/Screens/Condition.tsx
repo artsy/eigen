@@ -8,28 +8,28 @@ import { SellStepIntro } from "app/Scenes/Sell/Components/SellStepIntro"
 import { SellWorkCard } from "app/Scenes/Sell/Components/SellWorkCard"
 import { SellNavigationProp } from "app/Scenes/Sell/Sell"
 import { SellConditionStore } from "app/Scenes/Sell/State/SellConditionStore"
-import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
+import { ActiveSellWork, SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { useConfirmLeavingConditionStep } from "app/Scenes/Sell/hooks/useConfirmLeavingConditionStep"
-import { SellChannel, getSellChannel } from "app/Scenes/Sell/utils/getSellChannel"
+import { ResaleSubmissionWithChannel } from "app/Scenes/Sell/utils/resaleSubmission"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const Condition: React.FC = () => {
-  const artworkID = SellFlowStore.useStoreState((state) => state.activeArtworkID)
+  const activeWork = SellFlowStore.useStoreState((state) => state.activeWork)
 
-  if (!artworkID) {
+  if (!activeWork) {
     return null
   }
 
   return (
     <SellConditionStore.Provider>
-      <ConditionContent artworkID={artworkID} />
+      <ConditionContent {...activeWork} />
     </SellConditionStore.Provider>
   )
 }
 
-const ConditionContent: React.FC<{ artworkID: string }> = withSuspense({
-  Component: ({ artworkID }) => {
+const ConditionContent: React.FC<ActiveSellWork> = withSuspense({
+  Component: ({ artworkID, resaleSubmission }) => {
     const navigation = useNavigation<SellNavigationProp>()
     const data = useLazyLoadQuery<ConditionQuery>(conditionQuery, { artworkID })
     const artwork = data.artwork
@@ -41,7 +41,7 @@ const ConditionContent: React.FC<{ artworkID: string }> = withSuspense({
     return (
       <ConditionForm
         artwork={artwork}
-        channelKind={getSellChannel(artwork.internalID).kind}
+        resaleSubmission={resaleSubmission}
         onContinue={() => navigation.navigate("LocationAndContact")}
       />
     )
@@ -52,12 +52,13 @@ const ConditionContent: React.FC<{ artworkID: string }> = withSuspense({
 
 const ConditionForm: React.FC<{
   artwork: NonNullable<ConditionQuery["response"]["artwork"]>
-  channelKind: SellChannel["kind"]
+  resaleSubmission: ResaleSubmissionWithChannel
   onContinue: () => void
-}> = ({ artwork, channelKind, onContinue }) => {
+}> = ({ artwork, resaleSubmission, onContinue }) => {
   const { rating, askingPrice } = SellConditionStore.useStoreState((state) => state)
   useConfirmLeavingConditionStep()
 
+  const channelKind = resaleSubmission.channel
   const isMarketplace = channelKind === "MARKETPLACE"
   const canContinue = !!rating && (!isMarketplace || !!askingPrice)
 
@@ -70,7 +71,7 @@ const ConditionForm: React.FC<{
       <SellStepIntro stepName="Condition" channelKind={channelKind} px={2} />
 
       <Flex px={2} pb={4}>
-        <SellWorkCard artwork={artwork} />
+        <SellWorkCard artwork={artwork} resaleSubmission={resaleSubmission} />
       </Flex>
 
       <SellConditionSection />
