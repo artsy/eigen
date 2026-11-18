@@ -4,6 +4,7 @@ import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore
 import { useOnSaveArtworkLists } from "app/Components/ArtworkLists/useOnSaveArtworkLists"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useCallback } from "react"
 import { useTracking } from "react-tracking"
 import { useUpdateArtworkListsForArtwork, MutationConfig } from "./useUpdateArtworkListsForArtwork"
@@ -24,6 +25,7 @@ export const useSaveArtworkListsChanges = (options?: Options) => {
   const { onSaveArtworkLists } = useOnSaveArtworkLists()
   const analytics = useAnalyticsContext()
   const { trackEvent } = useTracking()
+  const isLastSavedListEnabled = useFeatureFlag("ARDefaultToLastSavedList")
   const [commit, inProgress] = useUpdateArtworkListsForArtwork(artwork?.id ?? "")
 
   const trackAddedArtworkToArtworkLists = () => {
@@ -57,11 +59,19 @@ export const useSaveArtworkListsChanges = (options?: Options) => {
         if (addingArtworkListIDs.length > 0) {
           trackAddedArtworkToArtworkLists()
 
-          const lastAdded = addingArtworkLists[addingArtworkLists.length - 1]
-          GlobalStore.actions.lastSavedList.setLastSavedList({
-            internalID: lastAdded.internalID,
-            name: lastAdded.name,
-          })
+          if (isLastSavedListEnabled) {
+            const lastAdded = addingArtworkLists[addingArtworkLists.length - 1]
+            const added =
+              args[0].artworksCollectionsBatchUpdate?.responseOrError?.addedToArtworkLists
+            const isDefault = !!added?.find((list) => list?.internalID === lastAdded.internalID)
+              ?.default
+
+            GlobalStore.actions.lastSavedList.setLastSavedList({
+              internalID: lastAdded.internalID,
+              name: lastAdded.name,
+              default: isDefault,
+            })
+          }
         }
 
         onSaveArtworkLists()
@@ -84,6 +94,7 @@ export const useSaveArtworkListsChanges = (options?: Options) => {
     addingArtworkListIDs,
     removingArtworkListIDs,
     onSaveArtworkLists,
+    isLastSavedListEnabled,
   ])
 
   return {

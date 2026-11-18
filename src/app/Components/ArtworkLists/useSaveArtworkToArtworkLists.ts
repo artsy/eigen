@@ -1,3 +1,4 @@
+import { ActionType, AddedArtworkToArtworkList, OwnerType } from "@artsy/cohesion"
 import { useSaveArtworkToArtworkLists_artwork$key } from "__generated__/useSaveArtworkToArtworkLists_artwork.graphql"
 import { useArtworkListContext } from "app/Components/ArtworkLists/ArtworkListContext"
 import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
@@ -6,13 +7,18 @@ import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkLists
 import { useUpdateArtworkListsForArtwork } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useLastSavedList } from "app/store/LastSavedListModel"
+import { useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { SaveArtworkOptions, useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { refreshOnArtworkSave } from "app/utils/refreshHelpers"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 /** Slug used to reference the default "Saved Artworks" collection. */
 export const SAVED_ARTWORKS_COLLECTION_ID = "saved-artwork"
+
+/** Gravity returns this when the target list no longer exists. */
+const NOT_FOUND_STATUS_CODE = 404
 
 interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError"> {
   artworkFragmentRef: useSaveArtworkToArtworkLists_artwork$key
@@ -31,6 +37,8 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   const isLastSavedListEnabled = useFeatureFlag("ARDefaultToLastSavedList")
   const lastSavedList = useLastSavedList()
   const setLastSavedList = GlobalStore.actions.lastSavedList.setLastSavedList
+  const analytics = useAnalyticsContext()
+  const { trackEvent } = useTracking()
 
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
   const [commitListUpdate, isSavingToList] = useUpdateArtworkListsForArtwork(artwork?.id ?? "")
@@ -67,7 +75,11 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     isSaved: !!artwork.isSaved,
     onCompleted: (isArtworkSaved) => {
       if (isLastSavedListEnabled && isArtworkSaved) {
-        setLastSavedList({ internalID: SAVED_ARTWORKS_COLLECTION_ID, name: "Saved Artworks" })
+        setLastSavedList({
+          internalID: SAVED_ARTWORKS_COLLECTION_ID,
+          name: "Saved Artworks",
+          default: true,
+        })
       }
 
       onCompleted?.(isArtworkSaved)
@@ -102,6 +114,19 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     openSelectArtworkListsView(artworkEntity)
   }
 
+  const trackAddedArtworkToArtworkList = (artworkListID: string) => {
+    const event: AddedArtworkToArtworkList = {
+      action: ActionType.addedArtworkToArtworkList,
+      context_owner_id: analytics.contextScreenOwnerId,
+      context_owner_slug: analytics.contextScreenOwnerSlug,
+      context_owner_type: analytics.contextScreenOwnerType || OwnerType.artwork,
+      artwork_ids: [artwork.internalID],
+      owner_ids: [artworkListID],
+    }
+
+    trackEvent(event)
+  }
+
   const saveArtworkToLastSavedList = () => {
     if (!lastSavedList || isSavingToList) {
       return
@@ -133,15 +158,24 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
       },
       onCompleted: (data) => {
         const responseOrError = data.artworksCollectionsBatchUpdate?.responseOrError
+        const mutationError = responseOrError?.mutationError
 
-        // The remembered list was likely deleted — forget it and let the user pick again.
-        if ((responseOrError as any)?.mutationError) {
-          setLastSavedList(null)
-          openSelectArtworkListsForArtworkView()
+        if (mutationError) {
+          // The remembered list no longer exists — forget it so we fall back to the default next time.
+          if (mutationError.statusCode === NOT_FOUND_STATUS_CODE) {
+            setLastSavedList(null)
+          }
+
+          if (!suppressToasts) {
+            toast.error()
+          }
+
+          restOptions.onError?.(new Error("artworksCollectionsBatchUpdate failed"))
           return
         }
 
         refreshOnArtworkSave()
+        trackAddedArtworkToArtworkList(lastSavedList.internalID)
         onCompleted?.(true)
 
         if (!suppressToasts) {
@@ -152,7 +186,11 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
         }
       },
       onError: (error) => {
-        setLastSavedList(null)
+        // Network/timeout failure — keep the remembered list, just surface the error.
+        if (!suppressToasts) {
+          toast.error()
+        }
+
         restOptions.onError?.(error)
       },
     })
@@ -169,12 +207,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
       return
     }
 
-    if (
-      isLastSavedListEnabled &&
-      !isSaved &&
-      lastSavedList &&
-      lastSavedList.internalID !== SAVED_ARTWORKS_COLLECTION_ID
-    ) {
+    if (isLastSavedListEnabled && !isSaved && lastSavedList && !lastSavedList.default) {
       saveArtworkToLastSavedList()
       return
     }

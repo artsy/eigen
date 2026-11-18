@@ -65,6 +65,10 @@ export const useArtworkListToast = (bottomPadding?: number | null) => {
     showToast("Changes saved", { backgroundColor: "green100" })
   }
 
+  const error = () => {
+    showToast("Something went wrong. Please try again.", { backgroundColor: "red100" })
+  }
+
   const addedToSingleArtworkList = (options: SingleArtworkListOptions) => {
     const { artworkList } = options
     const message = `Added to ${artworkList.name} list`
@@ -114,5 +118,6 @@ export const useArtworkListToast = (bottomPadding?: number | null) => {
     removedFromSingleArtworkList,
     removedFromMultipleArtworkLists,
     changesSaved,
+    error,
   }
 }
