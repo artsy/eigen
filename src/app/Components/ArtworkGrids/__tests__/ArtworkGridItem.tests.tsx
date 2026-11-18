@@ -609,6 +609,9 @@ describe("ArtworkGridItem", () => {
           "useUpdateArtworkListsForArtworkMutation"
         )
         expect(operation.request.variables.input.addToCollectionIDs).toEqual(["list-123"])
+
+        // Heart fills optimistically, before the server replies.
+        expect(screen.getByTestId("filled-heart-icon")).toBeOnTheScreen()
       })
 
       it("falls back to the default collection when the last-used list is the default", () => {

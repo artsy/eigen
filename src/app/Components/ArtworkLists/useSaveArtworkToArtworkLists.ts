@@ -33,7 +33,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   const setLastSavedList = GlobalStore.actions.lastSavedList.setLastSavedList
 
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
-  const [commitListUpdate] = useUpdateArtworkListsForArtwork(artwork?.id ?? "")
+  const [commitListUpdate, isSavingToList] = useUpdateArtworkListsForArtwork(artwork?.id ?? "")
 
   const customArtworkListsCount = artwork?.customArtworkLists?.totalCount ?? 0
   const isSavedToCustomArtworkLists = customArtworkListsCount > 0
@@ -103,7 +103,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   }
 
   const saveArtworkToLastSavedList = () => {
-    if (!lastSavedList) {
+    if (!lastSavedList || isSavingToList) {
       return
     }
 
@@ -115,6 +115,21 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
           addToCollectionIDs: [lastSavedList.internalID],
           removeFromCollectionIDs: [],
         },
+      },
+      // Fill the heart immediately so a second tap routes to the picker rather than re-adding.
+      optimisticUpdater: (store) => {
+        const entity = store.get(artwork.id)?.getLinkedRecord("collectionsConnection", {
+          first: 0,
+          default: false,
+          saves: true,
+        })
+
+        if (!entity) {
+          return
+        }
+
+        const prevValue = (entity.getValue("totalCount") ?? 0) as number
+        entity.setValue(prevValue + 1, "totalCount")
       },
       onCompleted: (data) => {
         const responseOrError = data.artworksCollectionsBatchUpdate?.responseOrError
