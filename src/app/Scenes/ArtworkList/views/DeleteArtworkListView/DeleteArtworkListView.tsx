@@ -10,6 +10,7 @@ import {
   AutoHeightBottomSheetProps,
 } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { HeaderMenuArtworkListEntity } from "app/Scenes/ArtworkList/types"
+import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { FC } from "react"
 import { useTracking } from "react-tracking"
@@ -54,6 +55,7 @@ export const DeleteArtworkListView: FC<DeleteArtworkListViewProps> = ({
         },
       },
       onCompleted: () => {
+        GlobalStore.actions.lastSavedList.forgetListIfMatches(artworkListEntity.internalID)
         toast.changesSaved()
         trackAnalytics()
         goBack()

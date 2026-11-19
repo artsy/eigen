@@ -9,6 +9,7 @@ import { getSearchModel, SearchModel } from "app/Scenes/Search/SearchModel"
 import { getUserPrefsModel, UserPrefsModel } from "app/Scenes/Search/UserPrefsModel"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { getInfiniteDiscoveryModel, InfiniteDiscoveryModel } from "app/store/InfiniteDiscoveryModel"
+import { getLastSavedListModel, LastSavedListModel } from "app/store/LastSavedListModel"
 import { getOnboardingModel, OnboardingModel } from "app/store/OnboardingModel"
 import {
   getProgressiveOnboardingModel,
@@ -49,6 +50,7 @@ interface GlobalStoreStateModel {
   recentPriceRanges: RecentPriceRangesModel
   progressiveOnboarding: ProgressiveOnboardingModel
   infiniteDiscovery: InfiniteDiscoveryModel
+  lastSavedList: LastSavedListModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
@@ -139,6 +141,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   recentPriceRanges: getRecentPriceRangesModel(),
   progressiveOnboarding: getProgressiveOnboardingModel(),
   infiniteDiscovery: getInfiniteDiscoveryModel(),
+  lastSavedList: getLastSavedListModel(),
 
   setSessionState: action((state, payload) => {
     state.sessionState = { ...state.sessionState, ...payload }
