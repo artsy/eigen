@@ -1,4 +1,3 @@
-import { ActionType, ClickedShareButton, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Join, Spacer } from "@artsy/palette-mobile"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
 import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
@@ -9,6 +8,7 @@ import { ShareArtworkListView } from "app/Scenes/ArtworkList/views/ShareArtworkL
 import { FC, useCallback, useState } from "react"
 import { useTracking } from "react-tracking"
 import { ManageArtworkListMenuItem } from "./ManageArtworkListMenuItem"
+import { tracks } from "./tracks"
 import { DeleteArtworkListView } from "./views/DeleteArtworkListView/DeleteArtworkListView"
 
 interface ManageArtworkListViewProps {
@@ -43,14 +43,7 @@ export const ManageArtworkListView: FC<ManageArtworkListViewProps> = ({
   }, [])
 
   const openShareView = () => {
-    const event: ClickedShareButton = {
-      action: ActionType.clickedShareButton,
-      context_module: ContextModule.saves,
-      context_owner_type: OwnerType.saves,
-      context_owner_id: artworkListEntity.internalID,
-      context_owner_slug: artworkListEntity.slug ?? undefined,
-    }
-    trackEvent(event)
+    trackEvent(tracks.clickedShareButton(artworkListEntity))
     setIsShareViewVisible(true)
   }
 

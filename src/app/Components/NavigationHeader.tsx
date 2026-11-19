@@ -13,6 +13,7 @@ export interface NavigationHeaderProps {
   rightButtonDisabled?: boolean
   rightButtonText?: string
   rightButtonTestId?: string
+  rightButtonAccessibilityLabel?: string
   useXButton?: boolean
   useShareButton?: boolean
   rightCloseButton?: boolean
@@ -27,6 +28,7 @@ export const NavigationHeader: React.FC<React.PropsWithChildren<NavigationHeader
   onLeftButtonPress,
   rightButtonText,
   rightButtonTestId,
+  rightButtonAccessibilityLabel = "Save",
   onRightButtonPress,
   rightButtonDisabled,
   useXButton,
@@ -75,7 +77,7 @@ export const NavigationHeader: React.FC<React.PropsWithChildren<NavigationHeader
           {!!onRightButtonPress && (
             <RightButtonContainer
               accessibilityRole="button"
-              accessibilityLabel="Save"
+              accessibilityLabel={rightButtonAccessibilityLabel}
               hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
               onPress={() => !rightButtonDisabled && onRightButtonPress()}
               disabled={rightButtonDisabled}
