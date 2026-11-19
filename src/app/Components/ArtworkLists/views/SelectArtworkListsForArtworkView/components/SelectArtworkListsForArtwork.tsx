@@ -15,7 +15,7 @@ const SelectArtworkListsForArtworkContent = () => {
   const queryData = useLazyLoadQuery<SelectArtworkListsForArtworkQuery>(
     selectArtworkListsForArtworkQuery,
     { artworkID: artwork?.internalID ?? "" },
-    { fetchPolicy: "network-only" }
+    { fetchPolicy: "store-and-network" }
   )
 
   if (!queryData.me) {
