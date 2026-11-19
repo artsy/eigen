@@ -165,7 +165,11 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
             toast.error()
           }
 
-          restOptions.onError?.(new Error("artworksCollectionsBatchUpdate failed"))
+          restOptions.onError?.(
+            new Error(
+              `artworksCollectionsBatchUpdate failed (statusCode: ${mutationError.statusCode})`
+            )
+          )
           return
         }
 
