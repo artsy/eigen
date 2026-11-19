@@ -232,26 +232,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:7.29.0, @babel/core@npm:^7.24.4":
-  version: 7.29.0
-  resolution: "@babel/core@npm:7.29.0"
+"@babel/core@npm:7.29.7, @babel/core@npm:^7.18.5":
+  version: 7.29.7
+  resolution: "@babel/core@npm:7.29.7"
   dependencies:
-    "@babel/code-frame": "npm:^7.29.0"
-    "@babel/generator": "npm:^7.29.0"
-    "@babel/helper-compilation-targets": "npm:^7.28.6"
-    "@babel/helper-module-transforms": "npm:^7.28.6"
-    "@babel/helpers": "npm:^7.28.6"
-    "@babel/parser": "npm:^7.29.0"
-    "@babel/template": "npm:^7.28.6"
-    "@babel/traverse": "npm:^7.29.0"
-    "@babel/types": "npm:^7.29.0"
+    "@babel/code-frame": "npm:^7.29.7"
+    "@babel/generator": "npm:^7.29.7"
+    "@babel/helper-compilation-targets": "npm:^7.29.7"
+    "@babel/helper-module-transforms": "npm:^7.29.7"
+    "@babel/helpers": "npm:^7.29.7"
+    "@babel/parser": "npm:^7.29.7"
+    "@babel/template": "npm:^7.29.7"
+    "@babel/traverse": "npm:^7.29.7"
+    "@babel/types": "npm:^7.29.7"
     "@jridgewell/remapping": "npm:^2.3.5"
     convert-source-map: "npm:^2.0.0"
     debug: "npm:^4.1.0"
     gensync: "npm:^1.0.0-beta.2"
     json5: "npm:^2.2.3"
     semver: "npm:^6.3.1"
-  checksum: 10c0/5127d2e8e842ae409e11bcbb5c2dff9874abf5415e8026925af7308e903f4f43397341467a130490d1a39884f461bc2b67f3063bce0be44340db89687fd852aa
+  checksum: 10c0/112fb09c24de7a1de64d1de2c31fe65c4e6af4cb2fb6e6d99ea5373e6fc51e75b88581c0efae4c4c68f119a02a988c7106e95011a41530a2fb8ed793c7eaa07b
   languageName: node
   linkType: hard
 
@@ -278,29 +278,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.18.5":
-  version: 7.29.7
-  resolution: "@babel/core@npm:7.29.7"
-  dependencies:
-    "@babel/code-frame": "npm:^7.29.7"
-    "@babel/generator": "npm:^7.29.7"
-    "@babel/helper-compilation-targets": "npm:^7.29.7"
-    "@babel/helper-module-transforms": "npm:^7.29.7"
-    "@babel/helpers": "npm:^7.29.7"
-    "@babel/parser": "npm:^7.29.7"
-    "@babel/template": "npm:^7.29.7"
-    "@babel/traverse": "npm:^7.29.7"
-    "@babel/types": "npm:^7.29.7"
-    "@jridgewell/remapping": "npm:^2.3.5"
-    convert-source-map: "npm:^2.0.0"
-    debug: "npm:^4.1.0"
-    gensync: "npm:^1.0.0-beta.2"
-    json5: "npm:^2.2.3"
-    semver: "npm:^6.3.1"
-  checksum: 10c0/112fb09c24de7a1de64d1de2c31fe65c4e6af4cb2fb6e6d99ea5373e6fc51e75b88581c0efae4c4c68f119a02a988c7106e95011a41530a2fb8ed793c7eaa07b
-  languageName: node
-  linkType: hard
-
 "@babel/core@npm:^7.20.0":
   version: 7.26.10
   resolution: "@babel/core@npm:7.26.10"
@@ -321,6 +298,29 @@ __metadata:
     json5: "npm:^2.2.3"
     semver: "npm:^6.3.1"
   checksum: 10c0/e046e0e988ab53841b512ee9d263ca409f6c46e2a999fe53024688b92db394346fa3aeae5ea0866331f62133982eee05a675d22922a4603c3f603aa09a581d62
+  languageName: node
+  linkType: hard
+
+"@babel/core@npm:^7.24.4":
+  version: 7.29.0
+  resolution: "@babel/core@npm:7.29.0"
+  dependencies:
+    "@babel/code-frame": "npm:^7.29.0"
+    "@babel/generator": "npm:^7.29.0"
+    "@babel/helper-compilation-targets": "npm:^7.28.6"
+    "@babel/helper-module-transforms": "npm:^7.28.6"
+    "@babel/helpers": "npm:^7.28.6"
+    "@babel/parser": "npm:^7.29.0"
+    "@babel/template": "npm:^7.28.6"
+    "@babel/traverse": "npm:^7.29.0"
+    "@babel/types": "npm:^7.29.0"
+    "@jridgewell/remapping": "npm:^2.3.5"
+    convert-source-map: "npm:^2.0.0"
+    debug: "npm:^4.1.0"
+    gensync: "npm:^1.0.0-beta.2"
+    json5: "npm:^2.2.3"
+    semver: "npm:^6.3.1"
+  checksum: 10c0/5127d2e8e842ae409e11bcbb5c2dff9874abf5415e8026925af7308e903f4f43397341467a130490d1a39884f461bc2b67f3063bce0be44340db89687fd852aa
   languageName: node
   linkType: hard
 
@@ -3751,9 +3751,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/cli@npm:^58.1.20":
-  version: 58.1.20
-  resolution: "@expo/cli@npm:58.1.20"
+"@expo/cli@npm:^58.1.21":
+  version: 58.1.21
+  resolution: "@expo/cli@npm:58.1.21"
   dependencies:
     2g: "npm:^1.0.1"
     "@expo/code-signing-certificates": "npm:^0.0.7"
@@ -3767,7 +3767,7 @@ __metadata:
     "@expo/log-box": "npm:^58.0.15"
     "@expo/log-box-utils": "npm:^58.0.2"
     "@expo/metro": "npm:~58.0.0"
-    "@expo/metro-config": "npm:58.0.22"
+    "@expo/metro-config": "npm:58.0.23"
     "@expo/metro-file-map": "npm:^58.0.6"
     "@expo/osascript": "npm:^2.8.1"
     "@expo/package-manager": "npm:^1.14.2"
@@ -3775,7 +3775,7 @@ __metadata:
     "@expo/plist": "npm:^0.10.2"
     "@expo/prebuild-config": "npm:^58.0.20"
     "@expo/require-utils": "npm:^58.0.6"
-    "@expo/router-server": "npm:^58.0.22"
+    "@expo/router-server": "npm:^58.0.23"
     "@expo/schema-utils": "npm:^58.0.3"
     "@expo/spawn-async": "npm:^1.8.0"
     "@expo/ws-tunnel": "npm:^2.0.1"
@@ -3830,7 +3830,7 @@ __metadata:
       optional: true
   bin:
     expo-internal: bin/cli.js
-  checksum: 10c0/c3e9404a641d97b0330aa39e7e6313c9a7a20129b99dadbf44bff251a556d5ea9332ed47f80e76f106bca705d1c9e89de73ac832c1ca3a18dab872d99aa714ee
+  checksum: 10c0/5a1cb91e06bbad43ff989fe3b3566a5e6a40df7b27edc7420c9c3b9b1ad0a767aa94dbe504e6cfa19c46b8784b96301d502fa03a9fb85695e96861a6d629f8fc
   languageName: node
   linkType: hard
 
@@ -4064,9 +4064,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/metro-config@npm:58.0.22, @expo/metro-config@npm:~58.0.22":
-  version: 58.0.22
-  resolution: "@expo/metro-config@npm:58.0.22"
+"@expo/metro-config@npm:58.0.23, @expo/metro-config@npm:~58.0.23":
+  version: 58.0.23
+  resolution: "@expo/metro-config@npm:58.0.23"
   dependencies:
     2g: "npm:^1.0.1"
     "@babel/code-frame": "npm:^7.20.0"
@@ -4090,7 +4090,7 @@ __metadata:
     hermes-parser: "npm:^0.36.0"
     jsc-safe-url: "npm:^0.2.4"
     lightningcss: "npm:^1.30.1"
-    noxcturnal: "npm:^0.1.11"
+    noxcturnal: "npm:^0.1.14"
     picomatch: "npm:^4.0.4"
     postcss: "npm:^8.5.23"
     resolve-from: "npm:^5.0.0"
@@ -4100,7 +4100,7 @@ __metadata:
   peerDependenciesMeta:
     expo:
       optional: true
-  checksum: 10c0/64b980a8134a44ac0c2aea478cbb405bc04d0070ae3be8526ffee41cec4b3cee6e179cdca3e90e6e951482c1f1513af33a07dc7ff62ba57f44f177d0f47b9a85
+  checksum: 10c0/938b16a3e578ed8056d60efc56d1c2820ca04d31d377db29aec61c8f681b8136db2ac963751e0b72c64a58e062009a6666960fa7f06dfde8180cc1ef24571858
   languageName: node
   linkType: hard
 
@@ -4281,9 +4281,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/router-server@npm:^58.0.22":
-  version: 58.0.22
-  resolution: "@expo/router-server@npm:58.0.22"
+"@expo/router-server@npm:^58.0.23":
+  version: 58.0.23
+  resolution: "@expo/router-server@npm:58.0.23"
   dependencies:
     debug: "npm:^4.3.4"
   peerDependencies:
@@ -4305,7 +4305,7 @@ __metadata:
       optional: true
     react-server-dom-webpack:
       optional: true
-  checksum: 10c0/b2cb5dae234b30d62411bba477bf2995c3c559ff15e8ffc3f1d0a71b3d1e1ea06411f6b6ea3a0175c4b92dea802b7bf14931751d331451af36e2a1c072d0e39d
+  checksum: 10c0/3a063dac8aa3511f876e28b8caf573277e86fc3a9b7810e4a3243109cb81a532955d15381370711e67ed8c758828a54ef11db3039c30df5cd6e9cb10c3301157
   languageName: node
   linkType: hard
 
@@ -7216,23 +7216,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-documents/picker@npm:10.1.5":
-  version: 10.1.5
-  resolution: "@react-native-documents/picker@npm:10.1.5"
+"@react-native-documents/picker@npm:11.0.4":
+  version: 11.0.4
+  resolution: "@react-native-documents/picker@npm:11.0.4"
   peerDependencies:
     react: "*"
-    react-native: "*"
-  checksum: 10c0/bc1215a73dd8919c45bc21337092b2baac2241d7d7708c5234306a35bf294358bc98c6fad6d01f68c7691da29e439e016dd86c22e0be91a9423fa67a80e234eb
-  languageName: node
-  linkType: hard
-
-"@react-native-documents/picker@patch:@react-native-documents/picker@npm%3A10.1.5#~/.yarn/patches/@react-native-documents-picker-npm-10.1.5-575f9947ed.patch":
-  version: 10.1.5
-  resolution: "@react-native-documents/picker@patch:@react-native-documents/picker@npm%3A10.1.5#~/.yarn/patches/@react-native-documents-picker-npm-10.1.5-575f9947ed.patch::version=10.1.5&hash=0933c8"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10c0/202e096e23dbefb15b599442caab7f0c02fbbd7fe96552c06c2aeedfec971f3cd96ec82704b8610359aad3f89a148ce29fcbf14d2d29c6734dab4989760c5634
+    react-native: ">=0.79.0"
+  checksum: 10c0/041bb024f623ebc7db10b9a9e4dad7fd76b00d1a3097e13bf04b89bf6e30947ef4c1fdb653d3adcaae0bc40e94fc06aec7317a66a3fd670cb521d81dc3c19acf
   languageName: node
   linkType: hard
 
@@ -13861,7 +13851,7 @@ __metadata:
     "@artsy/palette-mobile": "npm:24.23.0"
     "@artsy/to-title-case": "npm:1.2.1"
     "@artsy/update-repo": "npm:0.8.3"
-    "@babel/core": "npm:7.29.0"
+    "@babel/core": "npm:7.29.7"
     "@babel/plugin-proposal-decorators": "npm:7.18.9"
     "@babel/plugin-transform-flow-strip-types": "npm:7.18.9"
     "@babel/plugin-transform-named-capturing-groups-regex": "npm:7.20.5"
@@ -13887,7 +13877,7 @@ __metadata:
     "@react-native-community/cli-platform-ios": "npm:20.2.0"
     "@react-native-community/geolocation": "npm:3.4.0"
     "@react-native-community/netinfo": "npm:12.0.1"
-    "@react-native-documents/picker": "patch:@react-native-documents/picker@npm%3A10.1.5#~/.yarn/patches/@react-native-documents-picker-npm-10.1.5-575f9947ed.patch"
+    "@react-native-documents/picker": "npm:11.0.4"
     "@react-native-documents/viewer": "npm:4.0.0"
     "@react-native-firebase/app": "npm:23.1.0"
     "@react-native-firebase/messaging": "npm:23.1.0"
@@ -13969,10 +13959,10 @@ __metadata:
     eslint-plugin-react-native-a11y: "npm:3.5.1"
     eslint-plugin-testing-library: "npm:6.5.0"
     events: "npm:3.3.0"
-    expo: "npm:58.0.25"
+    expo: "npm:58.0.26"
     expo-build-disk-cache: "patch:expo-build-disk-cache@npm%3A0.7.2#~/.yarn/patches/expo-build-disk-cache-npm-0.7.2-c51a562767.patch"
     expo-build-properties: "npm:58.0.12"
-    expo-file-system: "npm:58.0.13"
+    expo-file-system: "npm:58.0.14"
     expo-image-manipulator: "npm:58.0.16"
     expo-navigation-bar: "npm:58.0.4"
     expo-speech-recognition: "npm:58.0.1"
@@ -14020,7 +14010,7 @@ __metadata:
     react-native-gesture-handler: "npm:2.33.1"
     react-native-get-random-values: "npm:1.11.0"
     react-native-haptic-feedback: "npm:1.13.0"
-    react-native-image-crop-picker: "patch:react-native-image-crop-picker@npm%3A0.51.1#~/.yarn/patches/react-native-image-crop-picker-npm-0.51.1-29891905ee.patch"
+    react-native-image-crop-picker: "npm:0.52.0"
     react-native-in-app-review: "npm:4.3.3"
     react-native-ios-context-menu: "patch:react-native-ios-context-menu@npm%3A3.2.0#~/.yarn/patches/react-native-ios-context-menu-npm-3.2.0-17e9444bdf.patch"
     react-native-ios-utilities: "patch:react-native-ios-utilities@npm%3A5.2.0#~/.yarn/patches/react-native-ios-utilities-npm-5.2.0-56ad99c890.patch"
@@ -14033,7 +14023,7 @@ __metadata:
     react-native-nitro-image: "npm:0.15.1"
     react-native-nitro-modules: "npm:0.36.5"
     react-native-pager-view: "npm:9.0.7"
-    react-native-performance: "patch:react-native-performance@npm%3A5.1.4#~/.yarn/patches/react-native-performance-npm-5.1.4-3d90b975d5.patch"
+    react-native-performance: "npm:7.0.0"
     react-native-permissions: "npm:5.4.4"
     react-native-reanimated: "patch:react-native-reanimated@npm%3A4.7.1#~/.yarn/patches/react-native-reanimated-npm-4.7.1-dbfb143762.patch"
     react-native-render-html: "npm:6.3.4"
@@ -15306,13 +15296,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-file-system@npm:58.0.13, expo-file-system@npm:~58.0.13":
-  version: 58.0.13
-  resolution: "expo-file-system@npm:58.0.13"
+"expo-file-system@npm:58.0.14, expo-file-system@npm:~58.0.14":
+  version: 58.0.14
+  resolution: "expo-file-system@npm:58.0.14"
   peerDependencies:
     expo: "*"
     react-native: "*"
-  checksum: 10c0/e68fb7b8ee0b99c0683037f9754e90d176bcfae4ce823f3e2c1fcede9cebf4428a420e529c870b10af3e6b3a2160933b652b700ca68d57f08960512764868c66
+  checksum: 10c0/ecbd6fe1242fbf553eff998fe8518c0b8a4cf35d8dbb7830c69e691459daf025e116ff46035974c33c8f2e0b6b286f59b337fbc1532239fbfee6fd6aaf97c6da
   languageName: node
   linkType: hard
 
@@ -15565,12 +15555,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo@npm:58.0.25":
-  version: 58.0.25
-  resolution: "expo@npm:58.0.25"
+"expo@npm:58.0.26":
+  version: 58.0.26
+  resolution: "expo@npm:58.0.26"
   dependencies:
     "@babel/runtime": "npm:^7.20.0"
-    "@expo/cli": "npm:^58.1.20"
+    "@expo/cli": "npm:^58.1.21"
     "@expo/config": "npm:~58.0.12"
     "@expo/config-plugins": "npm:~58.0.13"
     "@expo/devtools": "npm:~58.0.2"
@@ -15580,12 +15570,12 @@ __metadata:
     "@expo/log-box": "npm:^58.0.15"
     "@expo/log-box-utils": "npm:^58.0.2"
     "@expo/metro": "npm:~58.0.0"
-    "@expo/metro-config": "npm:~58.0.22"
+    "@expo/metro-config": "npm:~58.0.23"
     "@ungap/structured-clone": "npm:^1.3.0"
-    babel-preset-expo: "npm:~58.0.25"
+    babel-preset-expo: "npm:~58.0.26"
     expo-asset: "npm:~58.0.21"
     expo-constants: "npm:~58.0.16"
-    expo-file-system: "npm:~58.0.13"
+    expo-file-system: "npm:~58.0.14"
     expo-font: "npm:~58.0.12"
     expo-keep-awake: "npm:~58.0.4"
     expo-modules-autolinking: "npm:~58.1.0"
@@ -15618,7 +15608,7 @@ __metadata:
     expo-modules: bin/modules
     expo-modules-autolinking: bin/autolinking
     fingerprint: bin/fingerprint
-  checksum: 10c0/648572dc2ae042a8481ce9778680f4b59666abae560cbee6fc4da646fc5887dc74f7c86572eebd3879634c2af9e508b382d1c5ffbe33e7ae8b93e496a9b8d66f
+  checksum: 10c0/e7f613cac44fe8503038ea0947272641ce46f23b496b6f622adfb19ec8da22968ef3f57931cf608f8dd55b7179698fb12b6e3b7fcbe71f347beb65df509552b3
   languageName: node
   linkType: hard
 
@@ -20586,7 +20576,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"noxcturnal@npm:^0.1.11":
+"noxcturnal@npm:^0.1.14":
   version: 0.1.14
   resolution: "noxcturnal@npm:0.1.14"
   dependencies:
@@ -22119,23 +22109,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-image-crop-picker@npm:0.51.1":
-  version: 0.51.1
-  resolution: "react-native-image-crop-picker@npm:0.51.1"
+"react-native-image-crop-picker@npm:0.52.0":
+  version: 0.52.0
+  resolution: "react-native-image-crop-picker@npm:0.52.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/3abe4051446b4391364562fafb93c1852633822276de4a2840ffe52bde0745d4a3bc534b5fb4208bb2f727542bd1b2dcefcafbf9f55c802b95f88de2fc4344fb
-  languageName: node
-  linkType: hard
-
-"react-native-image-crop-picker@patch:react-native-image-crop-picker@npm%3A0.51.1#~/.yarn/patches/react-native-image-crop-picker-npm-0.51.1-29891905ee.patch":
-  version: 0.51.1
-  resolution: "react-native-image-crop-picker@patch:react-native-image-crop-picker@npm%3A0.51.1#~/.yarn/patches/react-native-image-crop-picker-npm-0.51.1-29891905ee.patch::version=0.51.1&hash=86133c"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10c0/c583db4c8ac5c2828af6835c3c6af57e7d85e5a3ed1130a6fa90d5993f8ab3e3ee07d53a00b0aa08d7703bbc6a9c7299e40367f8ce71ceae76c26ec5e81a144e
+  checksum: 10c0/04e0030266abfe36678d6de7e1a2578cc1cfe46bdd0bc9f50b9ab73ab8aefc8656441bc04b00b086060fd2158e95f69d4a3f368fd58e7ca3559562511782d6ed
   languageName: node
   linkType: hard
 
@@ -22332,21 +22312,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-performance@npm:5.1.4":
-  version: 5.1.4
-  resolution: "react-native-performance@npm:5.1.4"
+"react-native-performance@npm:7.0.0":
+  version: 7.0.0
+  resolution: "react-native-performance@npm:7.0.0"
   peerDependencies:
     react-native: "*"
-  checksum: 10c0/2a50d9ca4e0580418ef4fee508395191624ca02a4a23a4485b1dd6780f662ca4ebd8f1aad8693d062dd0f0f513cddde3b4945e9e0a9627a8dca6f82b663bd270
-  languageName: node
-  linkType: hard
-
-"react-native-performance@patch:react-native-performance@npm%3A5.1.4#~/.yarn/patches/react-native-performance-npm-5.1.4-3d90b975d5.patch":
-  version: 5.1.4
-  resolution: "react-native-performance@patch:react-native-performance@npm%3A5.1.4#~/.yarn/patches/react-native-performance-npm-5.1.4-3d90b975d5.patch::version=5.1.4&hash=25e3a1"
-  peerDependencies:
-    react-native: "*"
-  checksum: 10c0/c2c9179337a80c644563bae4fa5dccf3069c4023302cc637d43dec0cf5e1bae8f35d1664a447562d507204735cecd0f01d699e44ffb03e7fc817b506fc36f602
+  checksum: 10c0/3e95bb5813aeef7dc1a524799cf4ba5b10dd6094dfea08f3df9a30230e01a934299090601a8fdf07e1e2be6f76df53a1970ecc4dc166bbc051889f823a966852
   languageName: node
   linkType: hard
 
