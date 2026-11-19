@@ -8235,6 +8235,7 @@ type CRMActivity {
   The artworks this activity is about. Deleted ones are left out
   """
   artworks: [Artwork!]!
+  channel: CRMActivityChannel
   createdAt(
     format: String
 
@@ -8279,6 +8280,15 @@ type CRMActivity {
     """
     timezone: String
   ): String
+}
+
+"""
+How the activity happened, apart from its kind
+"""
+enum CRMActivityChannel {
+  EMAIL
+  IN_PERSON
+  SYSTEM
 }
 
 """
@@ -13801,6 +13811,11 @@ input CreateCRMActivityInput {
   Artworks of the partner that the activity is about
   """
   artworkIDs: [String!]
+
+  """
+  How the activity happened. Defaults to SYSTEM
+  """
+  channel: CRMActivityChannel
   clientMutationId: String
   crmContactID: String!
 
@@ -33576,6 +33591,11 @@ type Query {
     before: String
 
     """
+    Only contacts with any of these categories. Case-insensitive.
+    """
+    categories: [String!]
+
+    """
     Only contacts with this category. Case-insensitive, one value only.
     """
     category: String
@@ -40160,6 +40180,11 @@ input UpdateCRMActivityInput {
   Replaces the artworks the activity is about. An empty list clears them, leaving it out keeps them
   """
   artworkIDs: [String!]
+
+  """
+  How the activity happened
+  """
+  channel: CRMActivityChannel
   clientMutationId: String
   description: String
 
@@ -44319,6 +44344,11 @@ type Viewer {
     """
     assignedToUserID: String
     before: String
+
+    """
+    Only contacts with any of these categories. Case-insensitive.
+    """
+    categories: [String!]
 
     """
     Only contacts with this category. Case-insensitive, one value only.
