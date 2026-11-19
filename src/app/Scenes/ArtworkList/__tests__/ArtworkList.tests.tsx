@@ -118,16 +118,20 @@ describe("ArtworkList", () => {
   })
 
   describe("Contextual menu button", () => {
-    it("should be displayed for default artwork list, but only offers Share List", async () => {
+    it("shows a share icon for the default list that opens the share sheet directly", async () => {
       const { mockResolveLastOperation } = renderWithRelay()
 
       mockResolveLastOperation({ Me: () => me })
 
-      expect(screen.getByLabelText(CONTEXTUAL_MENU_LABEL)).toBeOnTheScreen()
+      expect(screen.getByLabelText("Share List")).toBeOnTheScreen()
+      expect(screen.queryByLabelText(CONTEXTUAL_MENU_LABEL)).not.toBeOnTheScreen()
 
       fireEvent.press(screen.getByTestId("fancy-modal-header-right-button"))
 
-      expect(screen.getByText("Share List")).toBeOnTheScreen()
+      // Drops straight into the share sheet, skipping the manage-list menu
+      expect(
+        screen.getByText("Create a shareable link to allow others to view this list")
+      ).toBeOnTheScreen()
       expect(screen.queryByText("Edit List")).not.toBeOnTheScreen()
       expect(screen.queryByText("Delete List")).not.toBeOnTheScreen()
     })
