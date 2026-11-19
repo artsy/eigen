@@ -106,7 +106,7 @@ PODS:
     - Expecta (~> 1.0)
     - iOSSnapshotTestCase (~> 8.0)
     - Specta (~> 2.0)
-  - Expo (58.0.25):
+  - Expo (58.0.26):
     - ExpoModulesCore
     - ExpoModulesJSI
     - hermes-engine
@@ -145,7 +145,7 @@ PODS:
     - ExpoModulesCore
   - ExpoDomWebView (58.0.2):
     - ExpoModulesCore
-  - ExpoFileSystem (58.0.13):
+  - ExpoFileSystem (58.0.14):
     - ExpoModulesCore
   - ExpoFont (58.0.12):
     - ExpoModulesCore
@@ -1824,7 +1824,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - react-native-document-picker (10.1.5):
+  - react-native-document-picker (11.0.4):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2134,7 +2134,7 @@ PODS:
     - ReactNativeDependencies
     - SwiftUIIntrospect (~> 1.0)
     - Yoga
-  - react-native-performance (5.1.4):
+  - react-native-performance (7.0.0):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2872,7 +2872,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - RNImageCropPicker (0.51.1):
+  - RNImageCropPicker (0.52.0):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2895,10 +2895,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
-    - RNImageCropPicker/QBImagePickerController (= 0.51.1)
+    - RNImageCropPicker/QBImagePickerController (= 0.52.0)
     - TOCropViewController (~> 2.8.0)
     - Yoga
-  - RNImageCropPicker/QBImagePickerController (0.51.1):
+  - RNImageCropPicker/QBImagePickerController (0.52.0):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -4176,12 +4176,12 @@ SPEC CHECKSUMS:
   EXManifests: b0b83ad894166f7e080b18814c5e73aed46e366e
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": 7a3ac7ad2b9bae43aadb4dca08113bb495c98f3e
-  Expo: c11bb32bebda9fafb2e1b8482ddeae4eaf69594d
+  Expo: 23763d9c59158fd5cae2d5831d3e42576f61f011
   ExpoAdapterFBSDKNext: 16c905ebd6449c37bd5dfbb2784a678ce084b26e
   ExpoAdapterGoogleSignIn: ab4d9fc38cb91077a4138d178395525ec65d0c2e
   ExpoAsset: eda9e4844b55b78d4e71a0e2de767a038f3a0806
   ExpoDomWebView: b2a6d681b9d34c23b1f584321386ca8da1d36afb
-  ExpoFileSystem: b619d80b490c53117a9a9c976021a4ce5a9da440
+  ExpoFileSystem: 3f4f423755d1ed5ef084caeb3a62c4a3fca0bf12
   ExpoFont: daea737a2e3742f9a946f2884518e70dd37011f3
   ExpoImageManipulator: a480e23723df0ed8d2d67b1251eb3a0afe26a42e
   ExpoKeepAwake: 3dc7cce59bdc13796f772ac54d3af1ca6b6954cd
@@ -4286,7 +4286,7 @@ SPEC CHECKSUMS:
   React-mutationobservernativemodule: b97a67c29f724d18a92379e7390f24350acb433a
   react-native-blob-util: ea24cd3d99caf83cd0e00dd0ed664a3bd867eafe
   react-native-blurhash: ac6bcbc5ceeb75b207822c55c8d471b886d528e6
-  react-native-document-picker: 4c7c7d8a3d09e720b1c4c1821b999651db1f8832
+  react-native-document-picker: 0ff1b93d9a39c96da50c8bb26cae014f67d46b24
   react-native-document-viewer: 832e32b3f1195b2a58f408195ca3d94ce5052169
   react-native-fbsdk-next: 52f81e60eb3e8e0e06cf9728b4572d3509ca9d01
   react-native-geolocation: 97727dea8bb527b85702d5cd4c5e731224bf8f09
@@ -4300,7 +4300,7 @@ SPEC CHECKSUMS:
   react-native-menu: 873858c7bb7d451e7c3562e295e03dc51554b973
   react-native-netinfo: 687391ecedb199c6d67fbc46c87cbae3277de967
   react-native-pager-view: 81dc1ef286b128ee4c448afd9fc766b7c5141c1d
-  react-native-performance: 4ad3231de688e898caf18a4f38936cc2ca5c3079
+  react-native-performance: a087a287f26b105bb9ee084f58d3484ff80a6da1
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd
   react-native-safe-area-context: 56700b839169ce88ffcec68c40447916fe512462
   react-native-shake: f05c6cce8e9ed3e0d3f2d784b6efbeb9b4c0420b
@@ -4354,7 +4354,7 @@ SPEC CHECKSUMS:
   RNFBMessaging: 8c72e2f7d5eb2cc24d87e60c8be21eb2c94da272
   RNGestureHandler: 0124c0b5117c1376f013aaac888ed4134ca88b58
   RNGoogleSignin: fc2a6fdbfcab34c571eabecdb75194a620625a3b
-  RNImageCropPicker: 9d3459e159c824ffc1bbc2c3a4b473dbf7032c46
+  RNImageCropPicker: d720c15ca65ea60724cfc6578ad4d221f1446014
   RNKeychain: 990ea9078621f2617a9cdabdb4cfb485a8c1560d
   RNLocalize: 1af8f57d4cf2f301aa2eee3973c04befb28df1c1
   rnmapbox-maps: c06e7a15edc0f11da8f7770a87bb0afebe77f413

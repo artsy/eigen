@@ -886,8 +886,8 @@ jest.mock("@react-native-community/geolocation", () => ({
 }))
 
 jest.mock("@react-native-documents/picker", () => ({
-  default: jest.fn(),
   pick: jest.fn(),
+  types: { images: "image/*", pdf: "application/pdf", docx: "docx", doc: "doc" },
 }))
 
 jest.mock("app/utils/queryPrefetching", () => ({

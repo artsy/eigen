@@ -394,36 +394,6 @@ When we can upgrade `@react-native-menu/menu` past `1.2.2` — zeego pins exactl
 
 `MenuViewManager.mm` and `NewArch/MenuView.mm` used quoted imports (`#import "RCTBridge.h"`, `#import "RCTFabricComponentsPlugins.h"`) that only resolved through React Native's old header search paths. With React Native 0.88's prebuilt `React.framework` they fail with "'RCTBridge.h' file not found". The patch switches them to framework imports (`<React/RCTBridge.h>`), which is where the prebuilt headers live.
 
-## Patch for react-native-image-crop-picker (iOS imports)
-
-#### When can we remove this:
-
-When we upgrade to `react-native-image-crop-picker@0.52+`, which drops these imports upstream.
-
-#### Explanation/Context:
-
-`ImageCropPicker.h` imported the legacy (Paper) `RCTImageShadowView.h` and `RCTImageView.h`, which React Native 0.88's prebuilt `React.framework` no longer ships ("'React/RCTImageShadowView.h' file not found"). Neither class is used anywhere in the library, so the patch just removes the two imports — the same change as upstream `0.52.0`.
-
-## Patch for react-native-performance (iOS)
-
-#### When can we remove this:
-
-When we upgrade to `react-native-performance@7+` (check that `@rozenite/performance-monitor-plugin` still works with its rewritten JS API first).
-
-#### Explanation/Context:
-
-React Native 0.88 removed `ReactMarker::StartupLogger`'s `get…EndTime()` getters, so `RNPerformanceManager.mm` stopped compiling. The patch backports `7.0.0`'s fix: it reads the start/end timestamps for script execution, app startup and runtime init from `RCTPerformanceLogger` instead. We only use this library as the required peer of the dev-only Rozenite performance monitor.
-
-## Patch for @react-native-documents/picker (Android `currentActivity`)
-
-#### When can we remove this:
-
-When we upgrade to `@react-native-documents/picker@12+`, which reads `reactApplicationContext.currentActivity` itself.
-
-#### Explanation/Context:
-
-React Native 0.88 changed how Kotlin modules access the current activity: the module's own `currentActivity` property no longer compiles ("Function invocation 'getCurrentActivity()' expected"). The patch reads it from `reactApplicationContext` at the three call sites, the same change upstream made.
-
 ## Legacy React Native TypeScript types (`tsconfig.json` customConditions)
 
 #### When can we remove this:
