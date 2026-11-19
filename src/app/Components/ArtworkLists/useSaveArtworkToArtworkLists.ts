@@ -17,9 +17,6 @@ import { useTracking } from "react-tracking"
 /** Slug used to reference the default "Saved Artworks" collection. */
 export const SAVED_ARTWORKS_COLLECTION_ID = "saved-artwork"
 
-/** Gravity returns this when the target list no longer exists. */
-const NOT_FOUND_STATUS_CODE = 404
-
 interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError"> {
   artworkFragmentRef: useSaveArtworkToArtworkLists_artwork$key
   saveToDefaultCollectionOnly?: boolean
@@ -161,10 +158,8 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
         const mutationError = responseOrError?.mutationError
 
         if (mutationError) {
-          // The remembered list no longer exists — forget it so we fall back to the default next time.
-          if (mutationError.statusCode === NOT_FOUND_STATUS_CODE) {
-            setLastSavedList(null)
-          }
+          // forget the remembered list on any failure
+          setLastSavedList(null)
 
           if (!suppressToasts) {
             toast.error()

@@ -617,6 +617,31 @@ describe("ArtworkGridItem", () => {
           expect(screen.getByTestId("filled-heart-icon")).toBeOnTheScreen()
         })
 
+        it("forgets the remembered list when the server rejects the save", () => {
+          __globalStoreTestUtils__?.injectState({
+            lastSavedList: {
+              lastSavedList: { internalID: "list-123", name: "My List", default: false },
+            },
+          })
+
+          const { mockResolveLastOperation } = renderWithRelay({ Artwork: () => artwork })
+
+          fireEvent.press(screen.getByTestId("save-artwork-icon"))
+
+          mockResolveLastOperation({
+            Mutation: () => ({
+              artworksCollectionsBatchUpdate: {
+                responseOrError: {
+                  __typename: "ArtworksCollectionsBatchUpdateFailure",
+                  mutationError: { statusCode: 422 },
+                },
+              },
+            }),
+          })
+
+          expect(__globalStoreTestUtils__?.getCurrentState().lastSavedList.lastSavedList).toBeNull()
+        })
+
         it("falls back to the default collection when the last-used list is the default", () => {
           __globalStoreTestUtils__?.injectState({
             lastSavedList: {
