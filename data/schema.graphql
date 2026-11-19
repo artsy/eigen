@@ -33594,11 +33594,6 @@ type Query {
     Only contacts with any of these categories. Case-insensitive.
     """
     categories: [String!]
-
-    """
-    Only contacts with this category. Case-insensitive, one value only.
-    """
-    category: String
     first: Int
 
     """
@@ -44349,11 +44344,6 @@ type Viewer {
     Only contacts with any of these categories. Case-insensitive.
     """
     categories: [String!]
-
-    """
-    Only contacts with this category. Case-insensitive, one value only.
-    """
-    category: String
     first: Int
 
     """
