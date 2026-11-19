@@ -31284,6 +31284,11 @@ type PartnerListPublication {
   Whether the gallery name is shown on the public page.
   """
   showGalleryName: Boolean
+
+  """
+  Whether the gallery's brand kit logo is shown on the public page, apart from the gallery name. Null on a room published before the logo had its own setting.
+  """
+  showLogo: Boolean
   slug: String
 
   """
@@ -32326,6 +32331,11 @@ type PrivateViewingRoom {
   passcodeRequired: Boolean!
 
   """
+  Whether to show the brand kit logo, apart from the gallery name. Null on a room published before the logo had its own setting, which shows the logo in place of the name when the brand is applied. The brand kit also comes with it when only the logo is on; apply its colors and font only when applyBrand is true.
+  """
+  showLogo: Boolean
+
+  """
   Alignment of the heading and text (viewing rooms rebuild). Omitted like heroStyle.
   """
   textAlignment: ViewingRoomTextAlignment
@@ -32411,6 +32421,11 @@ type PrivateViewingRoomContents {
   Hero banner style (viewing rooms rebuild). Omitted on a room published before the rebuild, which keeps its original layout, and for a gated room until authenticated.
   """
   heroStyle: ViewingRoomHeroStyle
+
+  """
+  Whether to show the brand kit logo, apart from the gallery name. Null on a room published before the logo had its own setting, which shows the logo in place of the name when the brand is applied. The brand kit also comes with it when only the logo is on; apply its colors and font only when applyBrand is true.
+  """
+  showLogo: Boolean
 
   """
   Alignment of the heading and text (viewing rooms rebuild). Omitted like heroStyle.
@@ -32587,6 +32602,11 @@ input PublishPartnerListPublicationMutationInput {
   Whether to show the gallery name on the public page.
   """
   showGalleryName: Boolean
+
+  """
+  Whether to show the gallery's brand kit logo on the public page, apart from the gallery name.
+  """
+  showLogo: Boolean
 
   """
   Alignment of the heading and text (viewing rooms rebuild).
@@ -39510,12 +39530,17 @@ input UpdateArtnetArtworkMutationInput {
   removeImageIDs: [String!]
 
   """
+  Push only title, artist, dimensions and description, plus the editions for their dimensions. Price, availability, medium and materials stay as Artnet has them. Set after an inventory edit when the partner's Auto-Update is off. Ignored when `syncOn` is set.
+  """
+  syncCore: Boolean
+
+  """
   Add the Artsy artwork's new images to Artnet and remove its deleted ones. Send after an image save. Does nothing when `hasSeparateImageSets` is true, and is ignored when images are named in the same request.
   """
   syncImages: Boolean
 
   """
-  Also push the artwork-sourced fields (title, artist, dimensions, description, medium, materials, editions), making Gravity the source of truth for them. The artist is resolved to Artnet's own artist record by best match. Set when the edit came from an inventory row rather than the Artnet row.
+  Also push the artwork-sourced fields (title, artist, dimensions, description, medium, materials, editions), making Gravity the source of truth for them. The artist is resolved to Artnet's own artist record by best match. Also sends price and availability from the catalog. Set when the edit came from an inventory row rather than the Artnet row.
   """
   syncOn: Boolean
 
