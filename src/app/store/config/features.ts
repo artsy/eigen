@@ -337,9 +337,6 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
       }
     },
   },
-  DTFPSCounter: {
-    description: "FPS counter",
-  },
   DTUseProductionUnleash: {
     description: "Use Production Unleash",
   },
