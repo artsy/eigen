@@ -55,7 +55,8 @@ export const getLocationPredictions = async (
     if (__DEV__) {
       console.warn(error)
     } else {
-      captureMessage(`Error fetching location predictions on: ${url} -> Error: ${error}`)
+      // The URL holds the API key and what the user typed
+      captureMessage(`Error fetching location predictions -> ${error}`)
     }
   }
 
@@ -82,7 +83,46 @@ export const getLocationDetails = async ({
   const data = await response.json()
 
   // TODO: Add dedicated error handling to the maps response
-  const { address_components, geometry } = data.result as PlaceResult
+  return placeToLocation(data.result as PlaceResult, { id, name })
+}
+
+/** Finds the street address at the given coordinates, or null when there isn't one */
+export const getAddressFromCoordinates = async ({
+  lat,
+  lng,
+}: {
+  lat: number
+  lng: number
+}): Promise<LocationWithDetails | null> => {
+  const queryString = stringify({
+    key: API_KEY,
+    latlng: `${lat},${lng}`,
+    result_type: "street_address|premise",
+    language: "en",
+  })
+
+  const response = await fetch("https://maps.googleapis.com/maps/api/geocode/json?" + queryString)
+  const data = await response.json()
+
+  // Without this, a key that lacks the Geocoding API looks like "no address here"
+  if (data.status !== "OK" && data.status !== "ZERO_RESULTS") {
+    captureMessage(
+      `Error finding an address from coordinates -> ${data.status}: ${data.error_message}`
+    )
+  }
+  const result = data.results?.[0] as (PlaceResult & GeocodeResult) | undefined
+
+  if (!result) {
+    return null
+  }
+
+  return placeToLocation(result, { id: result.place_id, name: result.formatted_address })
+}
+
+const placeToLocation = (
+  { address_components, geometry }: PlaceResult,
+  { id, name }: SimpleLocation
+): LocationWithDetails => {
   const cityPlace = address_components.find((comp) => comp.types.includes("locality"))
   const statePlace = address_components.find((comp) =>
     comp.types.includes("administrative_area_level_1")
@@ -114,6 +154,11 @@ export const getLocationDetails = async ({
     id,
     name,
   }
+}
+
+interface GeocodeResult {
+  place_id: string
+  formatted_address: string
 }
 
 interface GeocoderAddressComponent {
