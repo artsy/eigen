@@ -325,8 +325,8 @@ export const Artwork: React.FC<ArtworkProps> = memo(
             <View ref={itemRef}>
               {!!label && (
                 <Box position="absolute" top={1} left={1} zIndex={1}>
-                  <Pill variant="badge" disabled>
-                    {label}
+                  <Pill disabled style={{ opacity: 0.9 }}>
+                    <Text variant="xxs">{label}</Text>
                   </Pill>
                 </Box>
               )}
