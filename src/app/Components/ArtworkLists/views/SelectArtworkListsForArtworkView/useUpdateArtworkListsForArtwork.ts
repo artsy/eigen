@@ -2,8 +2,8 @@ import {
   useUpdateArtworkListsForArtworkMutation,
   useUpdateArtworkListsForArtworkMutation$data,
 } from "__generated__/useUpdateArtworkListsForArtworkMutation.graphql"
-import { UseMutationConfig, graphql, useMutation } from "react-relay"
-import { Disposable } from "relay-runtime"
+import { ConnectionHandler, UseMutationConfig, graphql, useMutation } from "react-relay"
+import { Disposable, RecordSourceSelectorProxy } from "relay-runtime"
 
 interface Counts {
   custom: number
@@ -68,11 +68,57 @@ export const useUpdateArtworkListsForArtwork = (artworkID: string): MutationResu
         const newValue = prevValue + addedCounts.custom - removedCounts.custom
 
         entity.setValue(newValue, "totalCount")
+
+        moveSavedListsToFront(store, response?.addedToArtworkLists)
       },
     })
   }
 
   return [commit, isInProgress]
+}
+
+/**
+ * Gravity sorts the lists UPDATED_AT_DESC, so a list you just saved to jumps to
+ * the front on the next fetch. Mirror that in the store up front, otherwise
+ * store-and-network paints the stale order for a frame before the network
+ * response reorders it. The default "Saved Artworks" list isn't part of this
+ * connection, so it's skipped.
+ */
+const moveSavedListsToFront = (
+  store: RecordSourceSelectorProxy,
+  addedToArtworkLists: Response["addedToArtworkLists"]
+) => {
+  const addedCustomListIDs = (addedToArtworkLists ?? [])
+    .filter((list) => list && !list.default)
+    .map((list) => list?.internalID)
+
+  if (!addedCustomListIDs.length) {
+    return
+  }
+
+  const me = store.getRoot().getLinkedRecord("me")
+  const connection = me && ConnectionHandler.getConnection(me, "ArtworkLists_customArtworkLists")
+
+  if (!connection) {
+    return
+  }
+
+  const edges = connection.getLinkedRecords("edges") ?? []
+
+  addedCustomListIDs.forEach((internalID) => {
+    const node = edges
+      .find((edge) => edge?.getLinkedRecord("node")?.getValue("internalID") === internalID)
+      ?.getLinkedRecord("node")
+    const nodeID = node?.getValue("id")
+
+    if (!node || typeof nodeID !== "string") {
+      return
+    }
+
+    ConnectionHandler.deleteNode(connection, nodeID)
+    const newEdge = ConnectionHandler.createEdge(store, connection, node, "Collection")
+    ConnectionHandler.insertEdgeBefore(connection, newEdge)
+  })
 }
 
 export const getArtworkListsCountByType = (artworkLists: ArtworkListEntity) => {

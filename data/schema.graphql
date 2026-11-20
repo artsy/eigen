@@ -9242,6 +9242,11 @@ type Collection {
   private: Boolean!
 
   """
+  Representative artworks (ordered), resolved from their ids.
+  """
+  representativeArtworks: [Artwork!]
+
+  """
   True if this collection represents artworks explicitly saved by the user, false otherwise.
   """
   saves: Boolean!

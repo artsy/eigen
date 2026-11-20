@@ -6,7 +6,6 @@ import { StackedImageLayout } from "app/Scenes/ArtworkLists/StackedImageLayout"
 import { useArtworkListsColCount } from "app/Scenes/ArtworkLists/useArtworkListsColCount"
 import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
@@ -29,8 +28,9 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = ({ artworkList, imagesL
   const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
 
   const item = useFragment(artworkListItemFragment, artworkList)
-  const artworkNodes = extractNodes(item.artworksConnection)
-  const imageURLs = artworkNodes.map((node) => node.image?.resized?.url ?? null)
+  const imageURLs = (item.representativeArtworks ?? []).map(
+    (artwork) => artwork.image?.resized?.url ?? null
+  )
 
   const { trackTappedArtworkList } = useFavoritesTracking()
 
@@ -81,14 +81,10 @@ const artworkListItemFragment = graphql`
     internalID
     artworksCount(onlyVisible: true)
     shareableWithPartners
-    artworksConnection(first: 4) {
-      edges {
-        node {
-          image {
-            resized(height: 300, width: 300, version: "normalized") {
-              url
-            }
-          }
+    representativeArtworks {
+      image {
+        resized(height: 300, width: 300, version: "normalized") {
+          url
         }
       }
     }
