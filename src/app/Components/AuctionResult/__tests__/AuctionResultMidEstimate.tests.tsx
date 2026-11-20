@@ -1,11 +1,10 @@
+import { THEMES } from "@artsy/palette-mobile"
 import { screen } from "@testing-library/react-native"
 import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-// palette colors
-const GREEN_100 = "#00674A"
-const RED_100 = "#D71023"
-const MONO_60 = "#707070"
+// tests render with the light theme
+const { green100: GREEN_100, red100: RED_100, mono60: MONO_60 } = THEMES.v3light.colors
 
 describe("AuctionResultMidEstimate", () => {
   it("renders the short description", () => {
