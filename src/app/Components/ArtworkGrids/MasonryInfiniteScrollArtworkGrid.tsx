@@ -49,6 +49,8 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   onItemVisibilityChange?: (artworkID: string, index: number, visible: boolean) => void
   /** Internal IDs of the artworks that show a selected check */
   selectedArtworkIDs?: string[]
+  /** Short statuses shown on top of artworks, by internal ID */
+  artworkLabels?: Record<string, string>
 }
 
 /**
@@ -94,6 +96,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   fitToFrame,
   onItemVisibilityChange,
   selectedArtworkIDs,
+  artworkLabels,
   ...rest
 }) => {
   const space = useSpace()
@@ -148,6 +151,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         isSelected={
           selectedArtworkIDs ? selectedArtworkIDs.includes(item.internalID ?? item.id) : undefined
         }
+        label={artworkLabels?.[item.internalID ?? item.id]}
       />
     ),
     [
@@ -177,6 +181,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       fitToFrame,
       onItemVisibilityChange,
       selectedArtworkIDs,
+      artworkLabels,
     ]
   )
 
