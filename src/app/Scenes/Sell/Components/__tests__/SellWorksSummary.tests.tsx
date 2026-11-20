@@ -7,8 +7,20 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 const RESALE_SUBMISSIONS: Record<string, ResaleSubmissionWithChannel> = {
-  "id-a2": { internalID: "s-1", state: "ACCEPTED", channel: "MARKETPLACE", estimate: null },
-  "id-b4": { internalID: "s-2", state: "ACCEPTED", channel: "AUCTION", estimate: null },
+  "id-a2": {
+    internalID: "s-1",
+    state: "ACCEPTED",
+    channel: "MARKETPLACE",
+    estimate: null,
+    statusMessage: "In progress",
+  },
+  "id-b4": {
+    internalID: "s-2",
+    state: "ACCEPTED",
+    channel: "AUCTION",
+    estimate: null,
+    statusMessage: "In progress",
+  },
 }
 
 describe("SellWorksSummary", () => {

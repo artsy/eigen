@@ -70,10 +70,13 @@ const mockHardwareBack = () => {
 }
 
 // What createResaleSubmissions answers for each work in the collection
-const RESALE_SUBMISSIONS: Record<string, { state: string; channel: string | null }> = {
-  "id-a2": { state: "ACCEPTED", channel: "MARKETPLACE" },
-  "id-c3": { state: "REJECTED", channel: null },
-  "id-b4": { state: "ACCEPTED", channel: "AUCTION" },
+const RESALE_SUBMISSIONS: Record<
+  string,
+  { state: string; channel: string | null; statusMessage: string }
+> = {
+  "id-a2": { state: "ACCEPTED", channel: "MARKETPLACE", statusMessage: "In progress" },
+  "id-c3": { state: "REJECTED", channel: null, statusMessage: "Previously rejected" },
+  "id-b4": { state: "ACCEPTED", channel: "AUCTION", statusMessage: "In progress" },
 }
 
 const resaleSubmissionFor = (artworkID: string) => ({
@@ -274,6 +277,33 @@ describe("Sell", () => {
 
     expect(await screen.findByText("Start Submission")).toBeOnTheScreen()
     expect(operationNames(view)).not.toContain("useCreateResaleSubmissionsMutation")
+  })
+
+  it("labels works with their submission’s status, including new ones", async () => {
+    const view = await renderSell({
+      Me: () => {
+        const me = collection.Me()
+        const auctionWork = me.myCollectionConnection.edges[2].node
+        return {
+          ...me,
+          myCollectionConnection: {
+            edges: [
+              ...me.myCollectionConnection.edges.slice(0, 2),
+              { node: { ...auctionWork, activeResaleSubmission: resaleSubmissionFor("id-b4") } },
+            ],
+          },
+        }
+      },
+    })
+
+    expect(screen.getByText("In progress")).toBeOnTheScreen()
+    expect(screen.queryByText("Previously rejected")).not.toBeOnTheScreen()
+
+    fireEvent.press(screen.getByTestId("artworkGridItem-Unsellable Work"))
+    fireEvent.press(screen.getByText("Verify If Sellable"))
+    await resolveVerify(view)
+
+    expect(await screen.findByText("Previously rejected")).toBeOnTheScreen()
   })
 
   it("sends a work only once, even when verified again", async () => {

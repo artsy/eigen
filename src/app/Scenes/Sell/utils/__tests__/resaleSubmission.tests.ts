@@ -8,6 +8,7 @@ const resaleSubmission = (overrides: Partial<ResaleSubmission>): ResaleSubmissio
   state: "ACCEPTED",
   channel: "MARKETPLACE",
   estimate: null,
+  statusMessage: "In progress",
   ...overrides,
 })
 

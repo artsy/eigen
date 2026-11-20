@@ -90,6 +90,13 @@ const SelectWorksContent: React.FC<SelectWorksContentProps> = withSuspense({
       ...createdResaleSubmissions,
     }
 
+    const artworkLabels: Record<string, string> = {}
+    Object.entries(resaleSubmissionsByArtworkID).forEach(([artworkID, { statusMessage }]) => {
+      if (statusMessage) {
+        artworkLabels[artworkID] = statusMessage
+      }
+    })
+
     const selectedArtworks = artworks.filter((artwork) =>
       selectedWorkIDs.includes(artwork.internalID)
     )
@@ -177,6 +184,7 @@ const SelectWorksContent: React.FC<SelectWorksContentProps> = withSuspense({
           <MasonryInfiniteScrollArtworkGrid
             artworks={artworks}
             selectedArtworkIDs={selectedWorkIDs}
+            artworkLabels={artworkLabels}
             onPress={(_slug, artwork) => !!artwork && toggleWork(artwork.internalID)}
             hideSaveIcon
             hideSaleInfo

@@ -12,6 +12,8 @@ export interface ResaleSubmission {
   channel: SupportedSellChannel | null
   /** The recommended price range, like “US$2,800–US$3,600”, or null without both ends */
   estimate: string | null
+  /** The status label, like “In progress” or “Submitted” */
+  statusMessage: string
 }
 
 /** A submission whose channel the app can show */
@@ -34,10 +36,8 @@ const isSupportedSellChannel = (
 export const toResaleSubmission = (
   key: resaleSubmission_resaleSubmission$key
 ): ResaleSubmission => {
-  const { internalID, state, channel, recommendedPriceMin, recommendedPriceMax } = readInlineData(
-    resaleSubmissionFragment,
-    key
-  )
+  const { internalID, state, channel, statusMessage, recommendedPriceMin, recommendedPriceMax } =
+    readInlineData(resaleSubmissionFragment, key)
   const min = recommendedPriceMin?.display
   const max = recommendedPriceMax?.display
 
@@ -46,6 +46,7 @@ export const toResaleSubmission = (
     state,
     channel: isSupportedSellChannel(channel) ? channel : null,
     estimate: min && max ? `${min}–${max}` : null,
+    statusMessage,
   }
 }
 
@@ -54,6 +55,7 @@ const resaleSubmissionFragment = graphql`
     internalID
     state
     channel
+    statusMessage
     recommendedPriceMin {
       display
     }

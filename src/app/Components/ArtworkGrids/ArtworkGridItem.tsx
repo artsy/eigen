@@ -3,6 +3,7 @@ import {
   Box,
   Flex,
   Image,
+  Pill,
   Skeleton,
   SkeletonBox,
   SkeletonText,
@@ -86,6 +87,8 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   fitToFrame?: boolean
   /** Shows a check on the image and turns off navigation and the long-press menu. Pass it only in grids that select artworks. */
   isSelected?: boolean
+  /** A short status shown on top of the image */
+  label?: string
 }
 
 export const Artwork: React.FC<ArtworkProps> = memo(
@@ -122,6 +125,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     hideCreateAlertOnArtworkPreview = false,
     fitToFrame = false,
     isSelected,
+    label,
   }) => {
     const itemRef = useRef<any>(null)
     const disappearableRef = useRef<Disappearable>(null)
@@ -319,6 +323,13 @@ export const Artwork: React.FC<ArtworkProps> = memo(
             accessibilityState={isSelectable ? { checked: isSelected } : undefined}
           >
             <View ref={itemRef}>
+              {!!label && (
+                <Box position="absolute" top={1} left={1} zIndex={1}>
+                  <Pill variant="badge" disabled>
+                    {label}
+                  </Pill>
+                </Box>
+              )}
               {!!isSelected && (
                 <Box position="absolute" top={1} right={1} zIndex={1}>
                   <SelectionCheck checked />

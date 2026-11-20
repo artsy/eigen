@@ -12,6 +12,7 @@ const resaleSubmission = (
   state: "ACCEPTED",
   channel: "MARKETPLACE",
   estimate: null,
+  statusMessage: "In progress",
   ...overrides,
 })
 
