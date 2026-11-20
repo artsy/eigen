@@ -52,7 +52,7 @@ press 'label="Delete My Account" || text="Delete My Account"'
 # The fields have no accessibility label, so they match by placeholder while empty.
 # Type the password first: the reason field is multiline, so once it's focused the keyboard can't be
 # closed and swallows the tap meant for the password field. The Delete button sits above the keyboard.
-# The password field sits below the fold on the CI emulator, and Android leaves off-screen views out of the tree
+# Android leaves off-screen views out of the tree, so make sure the password field is on screen
 wait 'text="Please share with us why you are leaving"' 30000
 scroll down --until 'text="Enter your password to continue"'
 press 'text="Enter your password to continue"'

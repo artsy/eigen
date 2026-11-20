@@ -101,6 +101,9 @@ jobs:
         with:
           api-level: 34
           arch: x86_64
+          # Without a profile the emulator gets a small default screen, where forms like Delete My Account
+          # need scrolling the flows can't do reliably. Match a common phone instead.
+          profile: pixel_7
           ram-size: "8192M"
           heap-size: "4096M"
           disk-size: "8G"
