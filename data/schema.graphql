@@ -4275,6 +4275,10 @@ type ArtsyShippingOptInResponse {
 }
 
 type Artwork implements Node & Searchable & Sellable {
+  """
+  The current user’s active resale submission for this artwork, if there is one.
+  """
+  activeResaleSubmission: ResaleSubmission
   additionalInformation(format: Format): String
   artaShippingEnabled: Boolean
     @deprecated(reason: "Prefer to use `processWithArtsyShippingDomestic`. [Will be removed in v2]")
@@ -36133,6 +36137,11 @@ type ResaleSubmission {
   """
   rejectionReasons: [ResaleSubmissionRejectionReason!]!
   state: ResaleSubmissionState!
+
+  """
+  A simple user-facing message to indicate the status of this submission, derived from current state.
+  """
+  statusMessage: String!
 
   """
   The My Collection artwork being resold.
