@@ -155,8 +155,8 @@ const resolveVerify = async (view: SellView, failedIDs: string[] = []) => {
   return artworkIDs as string[]
 }
 
-/** Answers Step 2’s price save, and returns what it sent */
-const resolveSavePrice = async (view: SellView, outcome: "success" | "failure" = "success") => {
+/** Answers a save from Step 2 or 3, and returns what it sent */
+const resolveSave = async (view: SellView, outcome: "success" | "failure" = "success") => {
   await waitFor(() => expect(operationNames(view)).toContain("useUpdateResaleSubmissionMutation"))
   const { input } = view.env.mock.getMostRecentOperation().request.variables
 
@@ -381,7 +381,7 @@ describe("Sell", () => {
     expect(await screen.findByText("US$2,720")).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Confirm Listing Price"))
-    expect(await resolveSavePrice(view)).toEqual({
+    expect(await resolveSave(view)).toEqual({
       id: "resaleSubmission-id-a2",
       priceListed: "3200",
     })
@@ -409,6 +409,12 @@ describe("Sell", () => {
     fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
     await waitFor(() => expect(screen.getByText("List Artwork")).toBeEnabled())
     fireEvent.press(screen.getByText("List Artwork"))
+    expect(await resolveSave(view)).toEqual({
+      id: "resaleSubmission-id-a2",
+      packaging: "FRAMED",
+      packer: "COURIER",
+      courierHandoff: "COURIER_PICKUP",
+    })
     expect(await screen.findByText("Your listing is live!")).toBeOnTheScreen()
     expect(screen.getByText("Artist A’s Work A has been submitted for sale.")).toBeOnTheScreen()
 
@@ -440,14 +446,14 @@ describe("Sell", () => {
       await openPriceStep(view)
 
       fireEvent.press(screen.getByText("Confirm Listing Price"))
-      await resolveSavePrice(view, "failure")
+      await resolveSave(view, "failure")
       await expectSaveError()
       expect(screen.getByText("Step 2 · Condition & Price")).toBeOnTheScreen()
 
       // A loading button ignores presses
       await waitFor(() => expect(screen.UNSAFE_queryByType(Spinner)).toBeNull())
       fireEvent.press(screen.getByText("Confirm Listing Price"))
-      await resolveSavePrice(view)
+      await resolveSave(view)
       await waitFor(() => expect(operationNames(view)).toContain("LocationAndContactQuery"))
       resolveLocationStep(view, { internalID: "id-a2", artistNames: "Artist A" })
       expect(await screen.findByText("Step 3 · Shipping Options")).toBeOnTheScreen()
@@ -477,6 +483,48 @@ describe("Sell", () => {
 
       expect(operationNames(view)).not.toContain("useUpdateResaleSubmissionMutation")
     })
+  })
+
+  it("stays on step 3 when the shipping options can’t be saved", async () => {
+    const view = await renderSell()
+    await openWorksSummary(view)
+    fireEvent.press(screen.getByText("Start Listing"))
+    resolveActiveArtwork(view, { internalID: "id-a2", artistNames: "Artist A" })
+    fireEvent.press(await screen.findByRole("radio", { name: /^Excellent\./ }))
+    fireEvent.changeText(screen.getByLabelText("Asking price"), "3200")
+    await waitFor(() => expect(screen.getByText("Confirm Listing Price")).toBeEnabled())
+    fireEvent.press(screen.getByText("Confirm Listing Price"))
+    await resolveSave(view)
+    await waitFor(() => expect(operationNames(view)).toContain("LocationAndContactQuery"))
+    resolveLocationStep(view, { internalID: "id-a2", artistNames: "Artist A" })
+    await waitFor(() =>
+      expect(screen.getByRole("radio", { name: /^Collector, 401 Broadway/ })).toBeChecked()
+    )
+
+    // Each question unlocks once the one before it is answered
+    for (const index of [0, 1, 2]) {
+      fireEvent.press(screen.getAllByRole("radio", { name: /^Open to both\./ })[index])
+      await waitFor(() =>
+        expect(screen.getAllByRole("radio", { name: /^Open to both\./ })[index]).toBeChecked()
+      )
+    }
+    await waitFor(() => expect(screen.getByText("List Artwork")).toBeEnabled())
+    fireEvent.press(screen.getByText("List Artwork"))
+
+    expect(await resolveSave(view, "failure")).toEqual({
+      id: "resaleSubmission-id-a2",
+      packaging: "NO_PREFERENCE",
+      packer: "NO_PREFERENCE",
+      courierHandoff: "NO_PREFERENCE",
+    })
+    await waitFor(() =>
+      expect(mockShowToast).toHaveBeenCalledWith(
+        "We couldn’t save your shipping options. Please try again.",
+        "bottom",
+        expect.objectContaining({ backgroundColor: "red100" })
+      )
+    )
+    expect(screen.queryByText("Your listing is live!")).not.toBeOnTheScreen()
   })
 
   it("asks auction works for a condition, then a location and phone number", async () => {
