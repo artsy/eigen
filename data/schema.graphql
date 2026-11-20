@@ -16796,6 +16796,41 @@ type DeletePurchaseSuccess {
   purchase: Purchase
 }
 
+type DeleteResaleSubmissionImageFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteResaleSubmissionImageInput {
+  clientMutationId: String
+
+  """
+  The internal ID of the resale submission.
+  """
+  id: String!
+
+  """
+  The internal ID of the condition photo to remove.
+  """
+  imageID: String!
+}
+
+type DeleteResaleSubmissionImagePayload {
+  clientMutationId: String
+
+  """
+  On success: the resale submission without the photo.
+  """
+  resaleSubmissionOrError: DeleteResaleSubmissionImageResponseOrError
+}
+
+union DeleteResaleSubmissionImageResponseOrError =
+    DeleteResaleSubmissionImageFailure
+  | DeleteResaleSubmissionImageSuccess
+
+type DeleteResaleSubmissionImageSuccess {
+  resaleSubmission: ResaleSubmission
+}
+
 type DeleteShippingPresetFailure {
   mutationError: GravityMutationError
 }
@@ -26738,6 +26773,13 @@ type Mutation {
   deletePurchase(input: deletePurchaseInput!): deletePurchasePayload
 
   """
+  Remove a condition photo from a resale submission.
+  """
+  deleteResaleSubmissionImage(
+    input: DeleteResaleSubmissionImageInput!
+  ): DeleteResaleSubmissionImagePayload
+
+  """
   Deletes a shipping preset for a partner.
   """
   deleteShippingPreset(
@@ -27581,7 +27623,7 @@ type Mutation {
   updateQuiz(input: updateQuizMutationInput!): updateQuizMutationPayload
 
   """
-  Update the asking price and shipping preferences of a resale submission. Omitted or null fields are left unchanged.
+  Update the asking price, shipping preferences and condition photos of a resale submission. Omitted or null fields are left unchanged.
   """
   updateResaleSubmission(input: UpdateResaleSubmissionInput!): UpdateResaleSubmissionPayload
 
@@ -36029,6 +36071,11 @@ type ResaleSubmission {
   channel: ResaleSubmissionChannel
 
   """
+  Photos the seller added to show the work’s condition, oldest first.
+  """
+  conditionPhotos: [Image!]!
+
+  """
   The seller’s answer to how the work will get to its buyer.
   """
   courierHandoff: ResaleSubmissionCourierHandoff
@@ -42280,6 +42327,11 @@ input UpdateResaleSubmissionInput {
   How the work will get to its buyer.
   """
   courierHandoff: ResaleSubmissionCourierHandoff
+
+  """
+  S3 URLs of uploaded photos to add as condition photos, in order, at most 10. Each is added separately: if one fails, the ones before it stay saved, so reload conditionPhotos before retrying.
+  """
+  externalImageUrls: [String]
 
   """
   The internal ID of the resale submission to update.
