@@ -17,8 +17,8 @@ describe("ArtistShows", () => {
     `,
   })
 
-  it("Renders artist name", () => {
-    renderWithRelay({
+  it("Renders artist name", async () => {
+    await renderWithRelay({
       Artist: () => ({
         name: "Andy Warhol",
       }),
@@ -28,8 +28,8 @@ describe("ArtistShows", () => {
     expect(screen.getByText("Past Shows")).toBeOnTheScreen()
   })
 
-  it("Renders list of shows", () => {
-    renderWithRelay({
+  it("Renders list of shows", async () => {
+    await renderWithRelay({
       // ShowsConnection is named as ShowConnection
       ShowConnection: () => ({
         edges: [

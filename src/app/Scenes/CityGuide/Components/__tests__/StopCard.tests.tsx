@@ -10,8 +10,8 @@ const card = (overrides: Partial<StopCardFields> = {}): StopCardFields => ({
 })
 
 describe("StopCard", () => {
-  it("renders the title, subtitle, hours and admission with a dot between them", () => {
-    renderWithWrappers(
+  it("renders the title, subtitle, hours and admission with a dot between them", async () => {
+    await renderWithWrappers(
       <StopCard
         card={card({ subtitle: "Cafe", hours: "7am-4pm", admission: "Free" })}
         image={null}
@@ -25,20 +25,20 @@ describe("StopCard", () => {
     expect(screen.getByTestId("stop-card-meta-dot")).toBeOnTheScreen()
   })
 
-  it("centers the row on the cross axis, so the save control lines up with the title", () => {
-    renderWithWrappers(<StopCard card={card()} image={null} />)
+  it("centers the row on the cross axis, so the save control lines up with the title", async () => {
+    await renderWithWrappers(<StopCard card={card()} image={null} />)
 
     expect(screen.getByTestId("stop-card")).toHaveStyle({ alignItems: "center" })
   })
 
-  it("shows no dot when only one of hours and admission is present", () => {
-    renderWithWrappers(<StopCard card={card({ hours: "7am-4pm" })} image={null} />)
+  it("shows no dot when only one of hours and admission is present", async () => {
+    await renderWithWrappers(<StopCard card={card({ hours: "7am-4pm" })} image={null} />)
 
     expect(screen.queryByTestId("stop-card-meta-dot")).not.toBeOnTheScreen()
   })
 
-  it("renders an event's kind as its own eyebrow above the title", () => {
-    renderWithWrappers(
+  it("renders an event's kind as its own eyebrow above the title", async () => {
+    await renderWithWrappers(
       <StopCard
         card={card({ eventKind: "Closing Reception", title: "Georg Baselitz: Back Again" })}
         image={null}
@@ -49,20 +49,20 @@ describe("StopCard", () => {
     expect(screen.getByText("Georg Baselitz: Back Again")).toBeOnTheScreen()
   })
 
-  it("renders no eyebrow when the stop has no event kind", () => {
-    renderWithWrappers(<StopCard card={card()} image={null} />)
+  it("renders no eyebrow when the stop has no event kind", async () => {
+    await renderWithWrappers(<StopCard card={card()} image={null} />)
 
     expect(screen.queryByText("Closing Reception")).not.toBeOnTheScreen()
   })
 
-  it("renders the image when present, and nothing when absent", () => {
-    const { rerender } = renderWithWrappers(
+  it("renders the image when present, and nothing when absent", async () => {
+    const { rerender } = await renderWithWrappers(
       <StopCard card={card()} image={{ url: "https://example.com/cafe.jpg" }} />
     )
 
     expect(screen.getByTestId("stop-card-image")).toBeOnTheScreen()
 
-    rerender(<StopCard card={card()} image={null} />)
+    await rerender(<StopCard card={card()} image={null} />)
 
     expect(screen.queryByTestId("stop-card-image")).not.toBeOnTheScreen()
   })

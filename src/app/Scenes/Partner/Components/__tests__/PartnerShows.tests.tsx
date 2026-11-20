@@ -22,8 +22,8 @@ describe("PartnerShows", () => {
     `,
   })
 
-  it("renders the shows correctly", () => {
-    renderWithRelay({
+  it("renders the shows correctly", async () => {
+    await renderWithRelay({
       Partner: () => PartnerShowsFixture,
     })
 
@@ -39,14 +39,14 @@ describe("PartnerShows", () => {
     expect(screen.getByText("Frieze London 2019: Sterling Ruby Online Viewing Room")).toBeTruthy()
   })
 
-  it("doesn't show non-displayable", () => {
+  it("doesn't show non-displayable", async () => {
     const fixture = cloneDeep(PartnerShowsFixture)
     // @ts-ignore
     fixture.pastShows.edges[0].node.isDisplayable = false
     // @ts-ignore
     fixture.currentAndUpcomingShows.edges[0].node.isDisplayable = false
 
-    renderWithRelay({
+    await renderWithRelay({
       Partner: () => fixture,
     })
 

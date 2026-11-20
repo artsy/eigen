@@ -23,8 +23,8 @@ describe("ArticleHero", () => {
     `,
   })
 
-  it("renders default fields", () => {
-    renderWithRelay({
+  it("renders default fields", async () => {
+    await renderWithRelay({
       Article: () => ({
         hero: {
           media: null,
@@ -46,8 +46,8 @@ describe("ArticleHero", () => {
     expect(screen.getByText("Jun 12, 2023")).toBeOnTheScreen()
   })
 
-  it("renders hero image if available", () => {
-    renderWithRelay({
+  it("renders hero image if available", async () => {
+    await renderWithRelay({
       Article: () => ({
         hero: {
           media: null,
@@ -63,8 +63,8 @@ describe("ArticleHero", () => {
     expect(screen.getByTestId("palette-image")).toBeOnTheScreen()
   })
 
-  it("renders hero video if available", () => {
-    renderWithRelay({
+  it("renders hero video if available", async () => {
+    await renderWithRelay({
       Article: () => ({
         hero: {
           media: "https://example.com/video.mp4",
@@ -84,8 +84,8 @@ describe("ArticleHero", () => {
     expect(screen.getByTestId("ArticleHeroVideo")).toBeOnTheScreen()
   })
 
-  it("does not render hero image if not available", () => {
-    renderWithRelay({
+  it("does not render hero image if not available", async () => {
+    await renderWithRelay({
       Article: () => ({
         hero: null,
         publishedAt: "2023-06-15T00:00:00.000Z",

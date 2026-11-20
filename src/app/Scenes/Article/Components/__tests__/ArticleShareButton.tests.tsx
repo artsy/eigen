@@ -22,8 +22,8 @@ describe("ArticleShareButton", () => {
     `,
   })
 
-  it("shares the article", () => {
-    renderWithRelay({
+  it("shares the article", async () => {
+    await renderWithRelay({
       Article: () => ({
         href: "/article/foo",
         title: "Example Article",
@@ -32,7 +32,7 @@ describe("ArticleShareButton", () => {
 
     expect(screen.getByTestId("shareButton")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByTestId("shareButton"))
+    await fireEvent.press(screen.getByTestId("shareButton"))
 
     expect(RNShare.open).toHaveBeenCalledWith({
       title: "Example Article",

@@ -29,8 +29,8 @@ describe("CollectionsByCategoryArtworksWithFiltersRail", () => {
       `,
     })
 
-  it("renders", () => {
-    renderWithRelay({
+  it("renders", async () => {
+    await renderWithRelay({
       FilterArtworksConnection: () => ({ edges, counts: { total: 2 } }),
       DiscoveryArtworksWithFiltersCollection: () => ({
         title: "Test Category",
@@ -41,8 +41,8 @@ describe("CollectionsByCategoryArtworksWithFiltersRail", () => {
     expect(screen.getByText("Test Category")).toBeOnTheScreen()
   })
 
-  it("when tapping on an artwork", () => {
-    renderWithRelay({
+  it("when tapping on an artwork", async () => {
+    await renderWithRelay({
       FilterArtworksConnection: () => ({ edges, counts: { total: 2 } }),
       DiscoveryArtworksWithFiltersCollection: () => ({
         title: "Test Category",
@@ -50,7 +50,7 @@ describe("CollectionsByCategoryArtworksWithFiltersRail", () => {
       }),
     })
 
-    fireEvent.press(screen.getByTestId(`artwork-${edges[0].node.slug}`))
+    await fireEvent.press(screen.getByTestId(`artwork-${edges[0].node.slug}`))
 
     expect(navigate).toHaveBeenCalledWith(`/artwork/${edges[0].node.internalID}`)
     expect(trackEvent).toHaveBeenLastCalledWith({
@@ -64,8 +64,8 @@ describe("CollectionsByCategoryArtworksWithFiltersRail", () => {
     })
   })
 
-  it("when tapping on the title", () => {
-    renderWithRelay({
+  it("when tapping on the title", async () => {
+    await renderWithRelay({
       FilterArtworksConnection: () => ({ edges, counts: { total: 1 } }),
       DiscoveryArtworksWithFiltersCollection: () => ({
         title: "Test Category",
@@ -73,7 +73,7 @@ describe("CollectionsByCategoryArtworksWithFiltersRail", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("Test Category"))
+    await fireEvent.press(screen.getByText("Test Category"))
 
     expect(navigate).toHaveBeenCalledWith(
       "/collect?category=test&title=Test%20Category&disableSubtitle=true"

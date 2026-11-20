@@ -16,8 +16,8 @@ describe("CollapsibleArtworkDetails", () => {
     `,
   })
 
-  it("displays basic artwork details when collapsed", () => {
-    renderWithRelay({
+  it("displays basic artwork details when collapsed", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         title: "Artwork Title",
         date: "Artwork Date",
@@ -31,7 +31,7 @@ describe("CollapsibleArtworkDetails", () => {
   })
 
   it("displays additonal artwork details when expanded", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         title: "Artwork Title",
         date: "Artwork Date",
@@ -63,7 +63,7 @@ describe("CollapsibleArtworkDetails", () => {
       }),
     })
 
-    fireEvent.press(screen.getByLabelText("Show artwork details"))
+    await fireEvent.press(screen.getByLabelText("Show artwork details"))
 
     await waitFor(() => {
       expect(screen.getByLabelText("Hide artwork details")).toBeVisible()
@@ -88,7 +88,7 @@ describe("CollapsibleArtworkDetails", () => {
   })
 
   it("doesn't display missing artwork details when expanded", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         saleMessage: "Artwork Sale Message",
         manufacturer: null,
@@ -97,7 +97,7 @@ describe("CollapsibleArtworkDetails", () => {
       }),
     })
 
-    fireEvent.press(screen.getByLabelText("Show artwork details"))
+    await fireEvent.press(screen.getByLabelText("Show artwork details"))
 
     await waitFor(() => {
       expect(screen.getByLabelText("Hide artwork details")).toBeVisible()
@@ -110,13 +110,13 @@ describe("CollapsibleArtworkDetails", () => {
   })
 
   it("diplays 'not included' when the artwork is not framed", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         isFramed: false,
       }),
     })
 
-    fireEvent.press(screen.getByLabelText("Show artwork details"))
+    await fireEvent.press(screen.getByLabelText("Show artwork details"))
 
     await waitFor(() => {
       expect(screen.getByLabelText("Hide artwork details")).toBeVisible()
@@ -128,14 +128,14 @@ describe("CollapsibleArtworkDetails", () => {
 
   describe("framed dimensions", () => {
     it("shows framed dimensions when data is available", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Artwork: () => ({
           dimensions: { in: "20 × 24 in", cm: "50.8 × 61 cm" },
           framedDimensions: { in: "24 × 28 in", cm: "61 × 71.1 cm" },
         }),
       })
 
-      fireEvent.press(screen.getByLabelText("Show artwork details"))
+      await fireEvent.press(screen.getByLabelText("Show artwork details"))
 
       await waitFor(() => {
         expect(screen.getByLabelText("Hide artwork details")).toBeVisible()
@@ -148,14 +148,14 @@ describe("CollapsibleArtworkDetails", () => {
     })
 
     it("does not show framed dimensions when data is missing", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Artwork: () => ({
           dimensions: { in: "20 × 24 in", cm: "50.8 × 61 cm" },
           framedDimensions: null,
         }),
       })
 
-      fireEvent.press(screen.getByLabelText("Show artwork details"))
+      await fireEvent.press(screen.getByLabelText("Show artwork details"))
 
       await waitFor(() => {
         expect(screen.getByLabelText("Hide artwork details")).toBeVisible()

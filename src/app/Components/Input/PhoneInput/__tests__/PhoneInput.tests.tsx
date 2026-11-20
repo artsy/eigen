@@ -12,16 +12,16 @@ describe("PhoneInput", () => {
     onChangeText = jest.fn()
   })
 
-  const selectCountry = (countryName: string) => {
-    fireEvent.press(screen.getAllByRole("button")[0])
+  const selectCountry = async (countryName: string) => {
+    await fireEvent.press(screen.getAllByRole("button")[0])
     expect(screen.getByText("Country code")).toBeOnTheScreen()
-    fireEvent.changeText(screen.getByPlaceholderText("Type to search..."), countryName)
+    await fireEvent.changeText(screen.getByPlaceholderText("Type to search..."), countryName)
     // option labels can include the local name, e.g. "Germany (Deutschland)"
-    fireEvent.press(screen.getByText(new RegExp(`^${countryName}`)))
+    await fireEvent.press(screen.getByText(new RegExp(`^${countryName}`)))
   }
 
-  it("provides a Select for the country", () => {
-    renderWithWrappers(
+  it("provides a Select for the country", async () => {
+    await renderWithWrappers(
       <PhoneInput
         testID="phone-input"
         value="+447825577664"
@@ -33,21 +33,21 @@ describe("PhoneInput", () => {
       />
     )
 
-    selectCountry("Germany")
+    await selectCountry("Germany")
     expect(screen.getByText("🇩🇪  +49")).toBeOnTheScreen()
     expect(screen.getByTestId("phone-input")).toHaveDisplayValue("78 25577664")
 
-    selectCountry("France")
+    await selectCountry("France")
     expect(screen.getByText("🇫🇷  +33")).toBeOnTheScreen()
     expect(screen.getByTestId("phone-input")).toHaveDisplayValue("78 25 57 76 64")
 
-    selectCountry("United States")
+    await selectCountry("United States")
     expect(screen.getByText("🇺🇸  +1")).toBeOnTheScreen()
     expect(screen.getByTestId("phone-input")).toHaveDisplayValue("(782) 557-7664")
   })
 
-  it("renders an input with the phone number pre-filled", () => {
-    renderWithWrappers(
+  it("renders an input with the phone number pre-filled", async () => {
+    await renderWithWrappers(
       <PhoneInput
         testID="phone-input"
         value="+447825577664"
@@ -62,8 +62,8 @@ describe("PhoneInput", () => {
     expect(screen.getByTestId("phone-input")).toHaveDisplayValue("7825 577664")
   })
 
-  it("shows custom error message, when error is controlled and phone number is invalid", () => {
-    renderWithWrappers(
+  it("shows custom error message, when error is controlled and phone number is invalid", async () => {
+    await renderWithWrappers(
       <PhoneInput
         testID="phone-input"
         value="447825577664"
@@ -77,13 +77,13 @@ describe("PhoneInput", () => {
       />
     )
 
-    fireEvent.changeText(screen.getByTestId("phone-input"), "")
+    await fireEvent.changeText(screen.getByTestId("phone-input"), "")
 
     expect(screen.getByText("custom error message")).toBeOnTheScreen()
   })
 
   it("shows local error message when parent does not control error and phone number is invalid", async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <PhoneInput
         testID="phone-input"
         value="447825577664"
@@ -95,14 +95,14 @@ describe("PhoneInput", () => {
       />
     )
 
-    fireEvent.changeText(screen.getByTestId("phone-input"), "")
+    await fireEvent.changeText(screen.getByTestId("phone-input"), "")
 
     // validation is async (validatePhoneNumber)
     expect(await screen.findByText("Please enter a valid phone number.")).toBeOnTheScreen()
   })
 
-  it("does not show a validation message when phone number valid", () => {
-    renderWithWrappers(
+  it("does not show a validation message when phone number valid", async () => {
+    await renderWithWrappers(
       <PhoneInput
         value=""
         onChange={onChange}
@@ -116,8 +116,8 @@ describe("PhoneInput", () => {
     expect(screen.queryByTestId("input-error")).toBeNull()
   })
 
-  it("calls onChange and onChangeText when the value changes", () => {
-    renderWithWrappers(
+  it("calls onChange and onChangeText when the value changes", async () => {
+    await renderWithWrappers(
       <PhoneInput
         testID="phone-input"
         value="+447825577664"
@@ -129,11 +129,11 @@ describe("PhoneInput", () => {
     expect(onChange).not.toHaveBeenCalled()
     expect(onChangeText).not.toHaveBeenCalled()
 
-    fireEvent.changeText(screen.getByTestId("phone-input"), "999")
+    await fireEvent.changeText(screen.getByTestId("phone-input"), "999")
     expect(onChange).toHaveBeenCalledWith("+44 999")
     expect(onChangeText).toHaveBeenCalledWith("+44 999")
 
-    selectCountry("United States")
+    await selectCountry("United States")
     expect(onChange).toHaveBeenCalledWith("+1 (999) ")
     expect(onChangeText).toHaveBeenCalledWith("+1 (999) ")
   })

@@ -48,7 +48,7 @@ describe("useArtAssistantImageAttachment", () => {
         resolveUpload = resolve
       })
     )
-    const { result } = renderHook(() => useArtAssistantImageAttachment())
+    const { result } = await renderHook(() => useArtAssistantImageAttachment())
 
     let pending: Promise<void> = Promise.resolve()
     await act(async () => {
@@ -73,7 +73,7 @@ describe("useArtAssistantImageAttachment", () => {
 
   it("does nothing when the picker is cancelled", async () => {
     jest.mocked(showPhotoActionSheet).mockRejectedValue(pickerError("E_PICKER_CANCELLED"))
-    const { result } = renderHook(() => useArtAssistantImageAttachment())
+    const { result } = await renderHook(() => useArtAssistantImageAttachment())
 
     await act(() => result.current.pick())
 
@@ -88,7 +88,7 @@ describe("useArtAssistantImageAttachment", () => {
     ["E_NO_LIBRARY_PERMISSION", "Allow access to your photos"],
   ])("points to Settings when the picker rejects with %s", async (code, title) => {
     jest.mocked(showPhotoActionSheet).mockRejectedValue(pickerError(code))
-    const { result } = renderHook(() => useArtAssistantImageAttachment())
+    const { result } = await renderHook(() => useArtAssistantImageAttachment())
 
     await act(() => result.current.pick())
 
@@ -103,7 +103,7 @@ describe("useArtAssistantImageAttachment", () => {
 
   it("reports any other picker failure", async () => {
     jest.mocked(showPhotoActionSheet).mockRejectedValue(new Error("Load failed"))
-    const { result } = renderHook(() => useArtAssistantImageAttachment())
+    const { result } = await renderHook(() => useArtAssistantImageAttachment())
 
     await act(() => result.current.pick())
 
@@ -116,7 +116,7 @@ describe("useArtAssistantImageAttachment", () => {
 
   it("clears the attachment and explains when the upload fails", async () => {
     jest.mocked(uploadImageToS3).mockRejectedValue(new Error("S3 upload failed"))
-    const { result } = renderHook(() => useArtAssistantImageAttachment())
+    const { result } = await renderHook(() => useArtAssistantImageAttachment())
 
     await act(() => result.current.pick())
 
@@ -134,13 +134,13 @@ describe("useArtAssistantImageAttachment", () => {
         resolveUpload = resolve
       })
     )
-    const { result } = renderHook(() => useArtAssistantImageAttachment())
+    const { result } = await renderHook(() => useArtAssistantImageAttachment())
 
     let pending: Promise<void> = Promise.resolve()
     await act(async () => {
       pending = result.current.pick()
     })
-    act(() => result.current.remove())
+    await act(() => result.current.remove())
     await act(async () => {
       resolveUpload({ bucket: "bucket", key: "key" })
       await pending

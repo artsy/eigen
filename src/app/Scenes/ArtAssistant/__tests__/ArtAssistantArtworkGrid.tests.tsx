@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ArtAssistantArtworkGridQuery } from "__generated__/ArtAssistantArtworkGridQuery.graphql"
 import { ArtAssistantArtworkGrid } from "app/Scenes/ArtAssistant/Components/ArtAssistantArtworkGrid"
 import { navigate } from "app/system/navigation/navigate"
@@ -13,10 +13,10 @@ describe("ArtAssistantArtworkGrid", () => {
   })
 
   it("renders artworks in the grid", async () => {
-    renderReadyGrid()
+    await renderReadyGrid()
 
-    await waitForElementToBeRemoved(() =>
-      screen.queryByTestId("art-assistant-artwork-grid-loading")
+    await waitFor(() =>
+      expect(screen.queryByTestId("art-assistant-artwork-grid-loading")).not.toBeOnTheScreen()
     )
 
     expect(screen.getByTestId("art-assistant-artwork-grid")).toBeOnTheScreen()
@@ -25,25 +25,25 @@ describe("ArtAssistantArtworkGrid", () => {
   })
 
   it("navigates to the artwork on tap", async () => {
-    renderReadyGrid()
+    await renderReadyGrid()
 
-    await waitForElementToBeRemoved(() =>
-      screen.queryByTestId("art-assistant-artwork-grid-loading")
+    await waitFor(() =>
+      expect(screen.queryByTestId("art-assistant-artwork-grid-loading")).not.toBeOnTheScreen()
     )
 
-    fireEvent.press(screen.getByText("Ai Weiwei"))
+    await fireEvent.press(screen.getByText("Ai Weiwei"))
 
     expect(navigate).toHaveBeenCalledWith("/artwork/ai-weiwei-sunflower-seeds-exhibition")
   })
 
   it("reports the tapped artwork against the Art Assistant results", async () => {
-    renderReadyGrid()
+    await renderReadyGrid()
 
-    await waitForElementToBeRemoved(() =>
-      screen.queryByTestId("art-assistant-artwork-grid-loading")
+    await waitFor(() =>
+      expect(screen.queryByTestId("art-assistant-artwork-grid-loading")).not.toBeOnTheScreen()
     )
 
-    fireEvent.press(screen.getByText("Jean-Michel Basquiat"))
+    await fireEvent.press(screen.getByText("Jean-Michel Basquiat"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -59,14 +59,14 @@ describe("ArtAssistantArtworkGrid", () => {
     )
   })
 
-  it("renders loading state while the query is pending", () => {
-    renderWithWrappers(<ArtAssistantArtworkGrid artworkIDs={ARTWORK_IDS} />)
+  it("renders loading state while the query is pending", async () => {
+    await renderWithWrappers(<ArtAssistantArtworkGrid artworkIDs={ARTWORK_IDS} />)
 
     expect(screen.getByTestId("art-assistant-artwork-grid-loading")).toBeOnTheScreen()
   })
 
-  it("renders empty state for a section with no artworks", () => {
-    renderWithWrappers(<ArtAssistantArtworkGrid artworkIDs={[]} />)
+  it("renders empty state for a section with no artworks", async () => {
+    await renderWithWrappers(<ArtAssistantArtworkGrid artworkIDs={[]} />)
 
     expect(screen.getByText("No matching artworks found.")).toBeOnTheScreen()
   })
@@ -76,20 +76,20 @@ describe("ArtAssistantArtworkGrid", () => {
       Component: () => <ArtAssistantArtworkGrid artworkIDs={ARTWORK_IDS} />,
     })
 
-    renderWithRelay({ Query: () => ({ artworksConnection: { edges: [] } }) })
+    await renderWithRelay({ Query: () => ({ artworksConnection: { edges: [] } }) })
 
-    await waitForElementToBeRemoved(() =>
-      screen.queryByTestId("art-assistant-artwork-grid-loading")
+    await waitFor(() =>
+      expect(screen.queryByTestId("art-assistant-artwork-grid-loading")).not.toBeOnTheScreen()
     )
 
     expect(screen.getByText("No matching artworks found.")).toBeOnTheScreen()
   })
 
-  it("caps the query at 8 IDs even when more are provided", () => {
+  it("caps the query at 8 IDs even when more are provided", async () => {
     const manyIDs = Array.from({ length: 12 }, (_, i) => `artwork-id-${i}`)
     const environment = createMockEnvironment()
 
-    renderWithHookWrappersTL(<ArtAssistantArtworkGrid artworkIDs={manyIDs} />, environment)
+    await renderWithHookWrappersTL(<ArtAssistantArtworkGrid artworkIDs={manyIDs} />, environment)
 
     const { variables } = environment.mock.getMostRecentOperation().request
     expect(variables.artworkIDs).toEqual(manyIDs.slice(0, 8))

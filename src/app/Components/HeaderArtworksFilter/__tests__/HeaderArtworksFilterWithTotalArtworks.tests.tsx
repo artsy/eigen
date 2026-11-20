@@ -50,8 +50,8 @@ describe("HeaderArtworksFilterWithTotalArtworks", () => {
     )
   }
 
-  it("renders artworks filter header with correct text", () => {
-    getWrapper({
+  it("renders artworks filter header with correct text", async () => {
+    await getWrapper({
       initialData: {
         ...initialState,
         counts: {
@@ -64,8 +64,8 @@ describe("HeaderArtworksFilterWithTotalArtworks", () => {
     expect(screen.getByText("Sort & Filter")).toBeOnTheScreen()
   })
 
-  it("doesn't render artworks filter header", () => {
-    getWrapper({})
+  it("doesn't render artworks filter header", async () => {
+    await getWrapper({})
     expect(screen.queryByText(/Showing/)).not.toBeOnTheScreen()
     expect(screen.queryByText(/works/)).not.toBeOnTheScreen()
     expect(screen.queryByText(/Sort & Filter/)).not.toBeOnTheScreen()

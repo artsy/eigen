@@ -49,86 +49,86 @@ describe("MyCollectionArtistsAutosuggest", () => {
   afterEach(jest.clearAllMocks)
 
   it("renders", async () => {
-    renderWithRelay()
+    await renderWithRelay()
 
     const input = await screen.findByPlaceholderText("Search for artists on Artsy")
     expect(input).toBeOnTheScreen()
 
-    fireEvent.changeText(input, "test")
+    await fireEvent.changeText(input, "test")
   })
 
   it("renders matches", async () => {
-    const { mockResolveLastOperation, env } = renderWithRelay()
+    const { mockResolveLastOperation, env } = await renderWithRelay()
 
     const input = await screen.findByPlaceholderText("Search for artists on Artsy")
-    fireEvent.changeText(input, "test")
+    await fireEvent.changeText(input, "test")
 
     await waitFor(() => expect(env.mock.getAllOperations().length).toBe(1))
 
-    mockResolveLastOperation({ MatchConnection: () => ({ edges: matches }) })
+    await mockResolveLastOperation({ MatchConnection: () => ({ edges: matches }) })
 
     expect(await screen.findAllByText(/mock-value-for-field-"name"/)).toHaveLength(2)
   })
 
   it("calls expand on focus", async () => {
-    renderWithRelay()
+    await renderWithRelay()
 
     const input = await screen.findByPlaceholderText("Search for artists on Artsy")
-    fireEvent(input, "focus")
+    await fireEvent(input, "focus")
 
     expect(mockExpand).toHaveBeenCalledTimes(1)
   })
 
   it("calls collapse on blur", async () => {
-    renderWithRelay()
+    await renderWithRelay()
 
     const input = await screen.findByPlaceholderText("Search for artists on Artsy")
-    fireEvent(input, "focus")
-    fireEvent(input, "blur")
+    await fireEvent(input, "focus")
+    await fireEvent(input, "blur")
 
     expect(mockCollapse).toHaveBeenCalledTimes(1)
   })
 
   it("does not call collapse on blur given matches", async () => {
-    const { env, mockResolveLastOperation } = renderWithRelay()
+    const { env, mockResolveLastOperation } = await renderWithRelay()
 
     const input = await screen.findByPlaceholderText("Search for artists on Artsy")
-    fireEvent.changeText(input, "test")
+    await fireEvent.changeText(input, "test")
 
     await waitFor(() => expect(env.mock.getAllOperations().length).toBe(1))
 
-    mockResolveLastOperation({ MatchConnection: () => ({ edges: matches }) })
+    await mockResolveLastOperation({ MatchConnection: () => ({ edges: matches }) })
 
     await screen.findAllByText(/mock-value-for-field-"name"/)
 
-    fireEvent(input, "focus")
-    fireEvent(input, "blur")
+    await fireEvent(input, "focus")
+    await fireEvent(input, "blur")
 
     expect(mockCollapse).not.toHaveBeenCalled()
   })
 
   it("calls collapse on clear", async () => {
     jest.spyOn(KeyboardController, "isVisible").mockReturnValue(false)
-    renderWithRelay()
+    await renderWithRelay()
 
     const input = await screen.findByPlaceholderText("Search for artists on Artsy")
-    fireEvent.changeText(input, "test")
+    await fireEvent.changeText(input, "test")
 
     const clearButton = await screen.findByTestId("clear-input-button")
-    fireEvent.press(clearButton)
+    await fireEvent.press(clearButton)
 
     expect(mockCollapse).toHaveBeenCalledTimes(1)
   })
 
   it("calls collapse on clear given the keyboard visible", async () => {
     jest.spyOn(KeyboardController, "isVisible").mockReturnValue(true)
-    renderWithRelay()
+    await renderWithRelay()
 
     const input = await screen.findByPlaceholderText("Search for artists on Artsy")
-    fireEvent.changeText(input, "test")
+    await fireEvent.changeText(input, "test")
 
     const clearButton = await screen.findByTestId("clear-input-button")
-    fireEvent.press(clearButton)
+    await fireEvent.press(clearButton)
 
     expect(mockCollapse).toHaveBeenCalledTimes(0)
   })

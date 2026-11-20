@@ -37,7 +37,7 @@ describe("CareerHighlightsBigCardsSwiper", () => {
   })
 
   it("renders the swiper and all slides when the data for all types is available", async () => {
-    renderWithHookWrappersTL(<TestRendererAllTypesAvailable />, mockEnvironment)
+    await renderWithHookWrappersTL(<TestRendererAllTypesAvailable />, mockEnvironment)
 
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation({
@@ -59,7 +59,7 @@ describe("CareerHighlightsBigCardsSwiper", () => {
   })
 
   it("renders the swiper and the slides we have the data for when the data for some types is not available", async () => {
-    renderWithHookWrappersTL(<TestRendererSomeTypesAvailable />, mockEnvironment)
+    await renderWithHookWrappersTL(<TestRendererSomeTypesAvailable />, mockEnvironment)
 
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation({

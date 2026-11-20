@@ -30,8 +30,8 @@ describe("FindInspirationDifferently", () => {
     jest.mocked(useFeatureFlag).mockReturnValue(false)
   })
 
-  it("shows City Guide and Discover Daily when the other features are unavailable", () => {
-    renderWithWrappers(<FindInspirationDifferently />)
+  it("shows City Guide and Discover Daily when the other features are unavailable", async () => {
+    await renderWithWrappers(<FindInspirationDifferently />)
 
     expect(screen.getByText("Discover Art Your Way")).toBeOnTheScreen()
     expect(screen.getByText("Discover Daily")).toBeOnTheScreen()
@@ -40,29 +40,29 @@ describe("FindInspirationDifferently", () => {
     expect(screen.queryByText("Art Assistant")).not.toBeOnTheScreen()
   })
 
-  it("shows Artsy Lens only when it is enabled", () => {
+  it("shows Artsy Lens only when it is enabled", async () => {
     jest.mocked(useEnableArtsyLens).mockReturnValue(true)
 
-    renderWithWrappers(<FindInspirationDifferently />)
+    await renderWithWrappers(<FindInspirationDifferently />)
 
     expect(screen.getByText("Artsy Lens")).toBeOnTheScreen()
     expect(screen.getByText("Discover Daily")).toBeOnTheScreen()
     expect(screen.queryByText("Art Assistant")).not.toBeOnTheScreen()
   })
 
-  it("shows Art Assistant only when its entry point is enabled", () => {
+  it("shows Art Assistant only when its entry point is enabled", async () => {
     jest.mocked(useEnableArtAssistant).mockReturnValue(true)
 
-    renderWithWrappers(<FindInspirationDifferently />)
+    await renderWithWrappers(<FindInspirationDifferently />)
 
     expect(screen.getByText("Art Assistant")).toBeOnTheScreen()
     expect(screen.queryByText("Artsy Lens")).not.toBeOnTheScreen()
   })
 
-  it("exposes the card description and beta status to screen readers", () => {
+  it("exposes the card description and beta status to screen readers", async () => {
     jest.mocked(useEnableArtsyLens).mockReturnValue(true)
 
-    renderWithWrappers(<FindInspirationDifferently />)
+    await renderWithWrappers(<FindInspirationDifferently />)
 
     expect(screen.getByRole("button", { name: "Artsy Lens, beta" })).toHaveProp(
       "accessibilityHint",
@@ -111,26 +111,26 @@ describe("FindInspirationDifferently", () => {
         type: "thumbnail",
       },
     },
-  ])("tracks one event and opens $name when its card is tapped", ({ name, href, event }) => {
+  ])("tracks one event and opens $name when its card is tapped", async ({ name, href, event }) => {
     jest.mocked(useEnableArtsyLens).mockReturnValue(true)
     jest.mocked(useEnableArtAssistant).mockReturnValue(true)
 
-    renderWithWrappers(<FindInspirationDifferently />)
+    await renderWithWrappers(<FindInspirationDifferently />)
 
-    fireEvent.press(screen.getByRole("button", { name }))
+    await fireEvent.press(screen.getByRole("button", { name }))
 
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenCalledWith(event)
     expect(navigate).toHaveBeenCalledWith(href)
   })
 
-  it("opens the new City Guide when the itineraries flag is on", () => {
+  it("opens the new City Guide when the itineraries flag is on", async () => {
     jest.mocked(useFeatureFlag).mockReturnValue(true)
 
-    renderWithWrappers(<FindInspirationDifferently />)
+    await renderWithWrappers(<FindInspirationDifferently />)
 
     expect(screen.getByText("BETA")).toBeOnTheScreen()
-    fireEvent.press(screen.getByRole("button", { name: "City Guide, beta" }))
+    await fireEvent.press(screen.getByRole("button", { name: "City Guide, beta" }))
 
     expect(navigate).toHaveBeenCalledWith("/city-guide")
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
@@ -144,11 +144,11 @@ describe("FindInspirationDifferently", () => {
     })
   })
 
-  it("opens the legacy City Guide when the itineraries flag is off", () => {
-    renderWithWrappers(<FindInspirationDifferently />)
+  it("opens the legacy City Guide when the itineraries flag is off", async () => {
+    await renderWithWrappers(<FindInspirationDifferently />)
 
     expect(screen.queryByText("BETA")).not.toBeOnTheScreen()
-    fireEvent.press(screen.getByRole("button", { name: "City Guide" }))
+    await fireEvent.press(screen.getByRole("button", { name: "City Guide" }))
 
     expect(navigate).toHaveBeenCalledWith("/local-discovery")
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
@@ -162,11 +162,11 @@ describe("FindInspirationDifferently", () => {
     })
   })
 
-  it("hides City Guide on tablets", () => {
+  it("hides City Guide on tablets", async () => {
     jest.mocked(isTablet).mockReturnValue(true)
     jest.mocked(useFeatureFlag).mockReturnValue(true)
 
-    renderWithWrappers(<FindInspirationDifferently />)
+    await renderWithWrappers(<FindInspirationDifferently />)
 
     expect(screen.queryByText("City Guide")).not.toBeOnTheScreen()
     expect(screen.getByText("Discover Daily")).toBeOnTheScreen()

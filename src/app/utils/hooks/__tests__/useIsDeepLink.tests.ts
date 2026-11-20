@@ -29,7 +29,7 @@ describe("useIsDeepLink", () => {
     mockUseIsFocusedMock.mockReturnValue(true)
 
     // Render the hook under test
-    const { result } = renderHook(() => useIsDeepLink())
+    const { result } = await renderHook(() => useIsDeepLink())
 
     await waitFor(() =>
       expect(result.current).toEqual({
@@ -47,7 +47,7 @@ describe("useIsDeepLink", () => {
     mockUseIsFocusedMock.mockReturnValue(true)
 
     // Render the hook under test
-    const { result } = renderHook(() => useIsDeepLink())
+    const { result } = await renderHook(() => useIsDeepLink())
 
     // Wait for async effects to resolve
     await waitFor(() =>
@@ -67,7 +67,7 @@ describe("useIsDeepLink", () => {
     mockUseIsFocusedMock.mockReturnValue(true)
 
     // Render the hook under test
-    const { result } = renderHook(() => useIsDeepLink())
+    const { result } = await renderHook(() => useIsDeepLink())
 
     await waitFor(() =>
       expect(result.current).toEqual({
@@ -86,7 +86,7 @@ describe("useIsDeepLink", () => {
     mockUseIsFocusedMock.mockReturnValue(true)
 
     // Render the hook under test
-    const { result } = renderHook(() => useIsDeepLink())
+    const { result } = await renderHook(() => useIsDeepLink())
 
     await waitFor(() =>
       expect(result.current).toEqual({
@@ -108,7 +108,7 @@ describe("useIsDeepLink", () => {
     mockUseIsFocusedMock.mockReturnValue(true)
 
     // Render the hook under test
-    const { result } = renderHook(() => useIsDeepLink())
+    const { result } = await renderHook(() => useIsDeepLink())
 
     await waitFor(() =>
       expect(result.current).toEqual({

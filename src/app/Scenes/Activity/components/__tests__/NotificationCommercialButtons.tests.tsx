@@ -17,8 +17,8 @@ describe("CommercialButtons", () => {
   })
 
   describe("when partner offer is expired", () => {
-    it("renders View Work when the feature flag is on", () => {
-      renderWithRelay(
+    it("renders View Work when the feature flag is on", async () => {
+      await renderWithRelay(
         { Artwork: () => ({ internalID: "artwork-id" }) },
         { artworkID: "artwork-id", partnerOffer }
       )

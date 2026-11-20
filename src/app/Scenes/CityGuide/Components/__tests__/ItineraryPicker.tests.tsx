@@ -34,15 +34,15 @@ describe("ItineraryPicker", () => {
   })
 
   it("shows the top-level stop count", async () => {
-    renderWithRelay(connection([itinerary("a", "London Oct 2026")]), props)
+    await renderWithRelay(connection([itinerary("a", "London Oct 2026")]), props)
 
-    fireEvent.press(await screen.findByText("London Oct 2026"))
+    await fireEvent.press(await screen.findByText("London Oct 2026"))
 
     expect(await screen.findByText("4 stops")).toBeOnTheScreen()
   })
 
   it("names the itinerary being viewed", async () => {
-    renderWithRelay(connection([itinerary("a", "London Oct 2026")]), props)
+    await renderWithRelay(connection([itinerary("a", "London Oct 2026")]), props)
 
     expect(await screen.findByText("London Oct 2026")).toBeOnTheScreen()
   })
@@ -50,11 +50,11 @@ describe("ItineraryPicker", () => {
   // It used to be gated on having more than one, which read as a dead button for anyone with
   // exactly one — the common case while nothing can create them yet.
   it("still opens with only one itinerary", async () => {
-    renderWithRelay(connection([itinerary("a", "London Oct 2026")]), props)
+    await renderWithRelay(connection([itinerary("a", "London Oct 2026")]), props)
 
     await screen.findByTestId("itinerary-picker")
 
-    fireEvent.press(screen.getByText("London Oct 2026"))
+    await fireEvent.press(screen.getByText("London Oct 2026"))
 
     expect(await screen.findByText("Your Itineraries")).toBeOnTheScreen()
   })
@@ -62,40 +62,40 @@ describe("ItineraryPicker", () => {
   // A curated guide is owned by the editor who created it in forque, so it can turn up in
   // `me.itinerariesConnection` — it has no peers to switch between, so it doesn't belong here.
   it("filters out curated guides", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       connection([itinerary("a", "London Oct 2026"), itinerary("b", "Armory Week 2026", true)]),
       props
     )
 
-    fireEvent.press(await screen.findByText("London Oct 2026"))
+    await fireEvent.press(await screen.findByText("London Oct 2026"))
 
     expect(await screen.findByText("Your Itineraries")).toBeOnTheScreen()
     expect(screen.queryByText("Armory Week 2026")).not.toBeOnTheScreen()
   })
 
   it("lists the others once there is more than one", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       connection([itinerary("a", "London Oct 2026"), itinerary("b", "London Winter")]),
       props
     )
 
-    fireEvent.press(await screen.findByText("London Oct 2026"))
+    await fireEvent.press(await screen.findByText("London Oct 2026"))
 
     expect(await screen.findByText("London Winter")).toBeOnTheScreen()
   })
 
   it("switches to the itinerary that is picked", async () => {
-    const view = renderWithRelay(
+    const view = await renderWithRelay(
       connection([itinerary("a", "London Oct 2026"), itinerary("b", "London Winter")]),
       props
     )
 
-    fireEvent.press(await screen.findByText("London Oct 2026"))
-    fireEvent.press(await screen.findByText("London Winter"))
+    await fireEvent.press(await screen.findByText("London Oct 2026"))
+    await fireEvent.press(await screen.findByText("London Winter"))
 
     // Resolve the picker's own itinerariesConnection first, then the pre-fetch it kicks off.
     await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
-    view.mockResolveLastOperation({
+    await view.mockResolveLastOperation({
       Itinerary: () => ({ internalID: "b", title: "London Winter" }),
     })
 
@@ -106,13 +106,13 @@ describe("ItineraryPicker", () => {
   })
 
   it("is a no-op when the active itinerary is tapped", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       connection([itinerary("a", "London Oct 2026"), itinerary("b", "London Winter")]),
       props
     )
 
-    fireEvent.press(await screen.findByText("London Oct 2026"))
-    fireEvent.press(screen.getAllByText("London Oct 2026")[1])
+    await fireEvent.press(await screen.findByText("London Oct 2026"))
+    await fireEvent.press(screen.getAllByText("London Oct 2026")[1])
 
     expect(mockSetParams).not.toHaveBeenCalled()
     await waitFor(() => expect(screen.queryByText("Your Itineraries")).not.toBeOnTheScreen())

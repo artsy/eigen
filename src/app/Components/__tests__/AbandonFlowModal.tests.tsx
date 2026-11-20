@@ -22,8 +22,8 @@ describe("AbandonFlowModal", () => {
     jest.clearAllMocks()
   })
 
-  it("renders correctly with all props", () => {
-    renderWithWrappers(<AbandonFlowModal {...mockProps} />)
+  it("renders correctly with all props", async () => {
+    await renderWithWrappers(<AbandonFlowModal {...mockProps} />)
 
     expect(screen.getByText("Test Title")).toBeTruthy()
     expect(screen.getByText("Test Subtitle")).toBeTruthy()
@@ -31,25 +31,25 @@ describe("AbandonFlowModal", () => {
     expect(screen.getByText("Continue")).toBeTruthy()
   })
 
-  it("calls onDismiss when continue button is pressed", () => {
-    renderWithWrappers(<AbandonFlowModal {...mockProps} />)
+  it("calls onDismiss when continue button is pressed", async () => {
+    await renderWithWrappers(<AbandonFlowModal {...mockProps} />)
 
-    fireEvent.press(screen.getByText("Continue"))
+    await fireEvent.press(screen.getByText("Continue"))
     expect(mockProps.onDismiss).toHaveBeenCalledTimes(1)
   })
 
-  it("calls onLeave when leave button is pressed and onLeave is provided", () => {
-    renderWithWrappers(<AbandonFlowModal {...mockProps} />)
+  it("calls onLeave when leave button is pressed and onLeave is provided", async () => {
+    await renderWithWrappers(<AbandonFlowModal {...mockProps} />)
 
-    fireEvent.press(screen.getByText("Leave"))
+    await fireEvent.press(screen.getByText("Leave"))
     expect(mockProps.onLeave).toHaveBeenCalledTimes(1)
     expect(popToRoot).not.toHaveBeenCalled()
   })
 
-  it("calls popToRoot when leave button is pressed and onLeave is not provided", () => {
-    renderWithWrappers(<AbandonFlowModal {...mockProps} onLeave={undefined} />)
+  it("calls popToRoot when leave button is pressed and onLeave is not provided", async () => {
+    await renderWithWrappers(<AbandonFlowModal {...mockProps} onLeave={undefined} />)
 
-    fireEvent.press(screen.getByText("Leave"))
+    await fireEvent.press(screen.getByText("Leave"))
     expect(popToRoot).toHaveBeenCalledTimes(1)
   })
 })

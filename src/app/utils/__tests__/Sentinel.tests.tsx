@@ -14,8 +14,8 @@ const TestComponentWithSentinel = () => {
 }
 
 describe("Sentinel", () => {
-  it("renders child components", () => {
-    renderWithWrappers(<TestComponentWithSentinel />)
+  it("renders child components", async () => {
+    await renderWithWrappers(<TestComponentWithSentinel />)
     expect(screen.getByTestId("child-content")).toBeDefined()
   })
 })

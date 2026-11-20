@@ -49,7 +49,7 @@ describe("CustomStopScreen", () => {
   })
 
   it("tracks the screen view against cityGuideCustomStop", async () => {
-    renderWithRelay(withStop(), props)
+    await renderWithRelay(withStop(), props)
 
     await screen.findByText("Coffee at London Cafe")
 
@@ -61,7 +61,7 @@ describe("CustomStopScreen", () => {
   })
 
   it("renders every block the stop carries", async () => {
-    renderWithRelay(withStop(), props)
+    await renderWithRelay(withStop(), props)
 
     expect(await screen.findByText("Coffee at London Cafe")).toBeOnTheScreen()
     expect(screen.getByText("12 Bermondsey Street")).toBeOnTheScreen()
@@ -78,7 +78,7 @@ describe("CustomStopScreen", () => {
 
   // Each block is absent rather than empty, the way the Show screen's own bands are.
   it("leaves out the blocks the stop has no data for", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       withStop({
         address: null,
         category: null,
@@ -99,14 +99,14 @@ describe("CustomStopScreen", () => {
   })
 
   it("hides the image section when the stop has no image", async () => {
-    renderWithRelay(withStop({ image: null }), props)
+    await renderWithRelay(withStop({ image: null }), props)
 
     expect(await screen.findByText("Coffee at London Cafe")).toBeOnTheScreen()
     expect(screen.queryByTestId("custom-stop-image")).not.toBeOnTheScreen()
   })
 
   it("says so when the itinerary holds no such stop", async () => {
-    renderWithRelay(withStop({ internalID: "another-stop" }), props)
+    await renderWithRelay(withStop({ internalID: "another-stop" }), props)
 
     expect(await screen.findByText("This stop is no longer available.")).toBeOnTheScreen()
     expect(screen.queryByText("Coffee at London Cafe")).not.toBeOnTheScreen()
@@ -114,7 +114,7 @@ describe("CustomStopScreen", () => {
 
   // A stop with an entity has its own page, so it must not render here.
   it("says so for a stop backed by an Artsy entity", async () => {
-    renderWithRelay(withStop({ item: { __typename: "Show" } }), props)
+    await renderWithRelay(withStop({ item: { __typename: "Show" } }), props)
 
     expect(await screen.findByText("This stop is no longer available.")).toBeOnTheScreen()
   })
@@ -123,15 +123,15 @@ describe("CustomStopScreen", () => {
   // already there, so there is nothing to add.
   describe("add to itinerary", () => {
     it("offers to add a curated guide's stop", async () => {
-      renderWithRelay(withStop(), props)
+      await renderWithRelay(withStop(), props)
 
       expect(await screen.findByTestId("custom-stop-save-button")).toBeOnTheScreen()
     })
 
     it("tracks tappedAddToItinerary, marked as a curated guide, with no destination entity", async () => {
-      renderWithRelay(withStop(), props)
+      await renderWithRelay(withStop(), props)
 
-      fireEvent.press(await screen.findByTestId("custom-stop-save-button"))
+      await fireEvent.press(await screen.findByTestId("custom-stop-save-button"))
 
       expect(mockTrackEvent).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -144,7 +144,7 @@ describe("CustomStopScreen", () => {
     })
 
     it("offers nothing on your own itinerary", async () => {
-      renderWithRelay(withStop({}, false), props)
+      await renderWithRelay(withStop({}, false), props)
 
       expect(await screen.findByText("Coffee at London Cafe")).toBeOnTheScreen()
       expect(screen.queryByTestId("custom-stop-save-button")).not.toBeOnTheScreen()
@@ -152,11 +152,11 @@ describe("CustomStopScreen", () => {
   })
 
   it("refetches on pull to refresh without unmounting the stop", async () => {
-    const view = renderWithRelay(withStop(), props)
+    const view = await renderWithRelay(withStop(), props)
 
     await screen.findByText("Coffee at London Cafe")
 
-    act(() => {
+    await act(() => {
       pullToRefresh()
     })
 

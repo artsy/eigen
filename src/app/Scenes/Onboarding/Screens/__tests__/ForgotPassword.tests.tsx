@@ -41,27 +41,27 @@ describe("ForgotPassword", () => {
     jest.clearAllMocks()
   })
 
-  it("renders reset button disabled initially", () => {
-    renderWithHookWrappersTL(<TestProvider />)
+  it("renders reset button disabled initially", async () => {
+    await renderWithHookWrappersTL(<TestProvider />)
 
     expect(screen.getByTestId("resetButton").props.accessibilityState.disabled).toEqual(true)
   })
 
-  it("validates form on blur", () => {
-    renderWithHookWrappersTL(<TestProvider />)
+  it("validates form on blur", async () => {
+    await renderWithHookWrappersTL(<TestProvider />)
 
     const emailInput = screen.getByTestId("email-address")
 
-    fireEvent.changeText(emailInput, "example@mail.com")
-    fireEvent(emailInput, "blur")
+    await fireEvent.changeText(emailInput, "example@mail.com")
+    await fireEvent(emailInput, "blur")
 
     expect(mockValidateForm).toHaveBeenCalled()
   })
 
-  it("does not submit when onSubmitEditing if the form is not dirty", () => {
-    renderWithHookWrappersTL(<TestProvider />)
+  it("does not submit when onSubmitEditing if the form is not dirty", async () => {
+    await renderWithHookWrappersTL(<TestProvider />)
 
-    fireEvent(screen.getByTestId("email-address"), "submitEditing")
+    await fireEvent(screen.getByTestId("email-address"), "submitEditing")
 
     expect(mockValidateForm).not.toHaveBeenCalled()
   })

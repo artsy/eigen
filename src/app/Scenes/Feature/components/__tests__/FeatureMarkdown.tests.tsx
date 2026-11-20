@@ -9,8 +9,8 @@ describe(FeatureMarkdown, () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableEnrichedMarkdown: false })
     })
 
-    it("renders markdown", () => {
-      renderWithWrappers(<FeatureMarkdown content="this is _some_ **markdown**" />)
+    it("renders markdown", async () => {
+      await renderWithWrappers(<FeatureMarkdown content="this is _some_ **markdown**" />)
       expect(screen.getByText(/this is some markdown/)).toBeOnTheScreen()
     })
   })
@@ -20,8 +20,8 @@ describe(FeatureMarkdown, () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableEnrichedMarkdown: true })
     })
 
-    it("renders the content with the native markdown renderer", () => {
-      renderWithWrappers(<FeatureMarkdown content="this is _some_ **markdown**" />)
+    it("renders the content with the native markdown renderer", async () => {
+      await renderWithWrappers(<FeatureMarkdown content="this is _some_ **markdown**" />)
 
       expect(screen.getByText("this is _some_ **markdown**")).toBeOnTheScreen()
     })

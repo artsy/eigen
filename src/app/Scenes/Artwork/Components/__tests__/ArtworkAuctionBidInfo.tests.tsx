@@ -1,4 +1,4 @@
-import { act } from "@testing-library/react-native"
+import { act, screen } from "@testing-library/react-native"
 import { ArtworkAuctionBidInfo_Test_Query } from "__generated__/ArtworkAuctionBidInfo_Test_Query.graphql"
 import { ArtworkAuctionBidInfo } from "app/Scenes/Artwork/Components/ArtworkAuctionBidInfo"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -34,24 +34,24 @@ describe("ArtworkAuctionBidInfo", () => {
   }
 
   it("displays proper starting bid info when no bids", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     await act(async () => {
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
       })
       await flushPromiseQueue()
     })
 
-    expect(getByText("Starting bid")).toBeTruthy()
-    expect(getByText("$3,000")).toBeTruthy()
+    expect(screen.getByText("Starting bid")).toBeTruthy()
+    expect(screen.getByText("$3,000")).toBeTruthy()
   })
 
   it("displays proper current bid info when there are bids", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     await act(async () => {
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => ({
           ...artwork,
           saleArtwork: {
@@ -68,15 +68,15 @@ describe("ArtworkAuctionBidInfo", () => {
       await flushPromiseQueue()
     })
 
-    expect(getByText("Current bid")).toBeTruthy()
-    expect(getByText("$850")).toBeTruthy()
+    expect(screen.getByText("Current bid")).toBeTruthy()
+    expect(screen.getByText("$850")).toBeTruthy()
   })
 
   it("displays nothing when no current bid info", async () => {
-    const { queryByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     await act(async () => {
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => ({
           ...artwork,
           saleArtwork: {
@@ -90,15 +90,15 @@ describe("ArtworkAuctionBidInfo", () => {
       await flushPromiseQueue()
     })
 
-    expect(queryByLabelText("Auction Bid Info")).toBeNull()
+    expect(screen.queryByLabelText("Auction Bid Info")).toBeNull()
   })
 
   describe("displays winning indicator", () => {
     it("with my bid winning", async () => {
-      const { getByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
       await act(async () => {
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        await resolveMostRecentRelayOperation(mockEnvironment, {
           Artwork: () => ({
             ...artwork,
             saleArtwork: {
@@ -121,14 +121,14 @@ describe("ArtworkAuctionBidInfo", () => {
         await flushPromiseQueue()
       })
 
-      expect(getByLabelText("My Bid Winning Icon")).toBeTruthy()
+      expect(screen.getByLabelText("My Bid Winning Icon")).toBeTruthy()
     })
 
     it("with me increasing my max bid while winning", async () => {
-      const { getByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
       await act(async () => {
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        await resolveMostRecentRelayOperation(mockEnvironment, {
           Artwork: () => ({
             ...artwork,
             saleArtwork: {
@@ -151,16 +151,16 @@ describe("ArtworkAuctionBidInfo", () => {
         await flushPromiseQueue()
       })
 
-      expect(getByLabelText("My Bid Winning Icon")).toBeTruthy()
+      expect(screen.getByLabelText("My Bid Winning Icon")).toBeTruthy()
     })
   })
 
   describe("displays losing indicator", () => {
     it("for open auction with my bid losing", async () => {
-      const { getByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
       await act(async () => {
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        await resolveMostRecentRelayOperation(mockEnvironment, {
           Artwork: () => ({
             ...artwork,
             saleArtwork: {
@@ -183,7 +183,7 @@ describe("ArtworkAuctionBidInfo", () => {
         await flushPromiseQueue()
       })
 
-      expect(getByLabelText("My Bid Losing Icon")).toBeTruthy()
+      expect(screen.getByLabelText("My Bid Losing Icon")).toBeTruthy()
     })
   })
 })

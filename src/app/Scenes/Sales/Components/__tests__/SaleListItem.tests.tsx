@@ -3,15 +3,15 @@ import SaleListItem from "app/Scenes/Sales/Components/SaleListItem"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("SaleListItem", () => {
-  it("renders without throwing an error", () => {
-    renderWithWrappers(
+  it("renders without throwing an error", async () => {
+    await renderWithWrappers(
       <SaleListItem sale={props as any} containerWidth={750} index={0} columnCount={4} />
     )
   })
 
   describe("SalesRail Subtitle", () => {
-    it("renders formattedStartDateTime as the subtitle", () => {
-      renderWithWrappers(
+    it("renders formattedStartDateTime as the subtitle", async () => {
+      await renderWithWrappers(
         <SaleListItem sale={props as any} containerWidth={750} index={0} columnCount={4} />
       )
 

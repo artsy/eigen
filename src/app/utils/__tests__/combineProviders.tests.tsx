@@ -10,11 +10,11 @@ const ProviderCSpecial = (props: { needed: string }) => <View testID="C" {...pro
 const ProviderC = (props: any) => <ProviderCSpecial needed="special" {...props} />
 
 describe("combineProviders", () => {
-  it("works", () => {
+  it("works", async () => {
     const Providers = ({ children }: { children?: React.ReactNode }) =>
       combineProviders([ProviderA, ProviderB, ProviderC], children)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <Providers>
         <Child />
       </Providers>

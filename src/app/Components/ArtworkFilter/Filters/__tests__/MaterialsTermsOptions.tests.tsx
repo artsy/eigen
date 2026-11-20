@@ -65,8 +65,8 @@ describe("Materials Options Screen", () => {
   }
 
   describe("before any filters are selected", () => {
-    it("renders all options present in the aggregation", () => {
-      renderWithWrappers(<MockMaterialsTermsOptionsScreen initialData={initialState} />)
+    it("renders all options present in the aggregation", async () => {
+      await renderWithWrappers(<MockMaterialsTermsOptionsScreen initialData={initialState} />)
 
       expect(screen.getByText("Acrylic")).toBeOnTheScreen()
       expect(screen.getByText("Canvas")).toBeOnTheScreen()
@@ -86,14 +86,14 @@ describe("Materials Options Screen", () => {
       ],
     }
 
-    it("displays the number of the selected filters on the filter modal screen", () => {
-      renderWithWrappers(<MockFilterScreen initialState={state} />)
+    it("displays the number of the selected filters on the filter modal screen", async () => {
+      await renderWithWrappers(<MockFilterScreen initialState={state} />)
 
       expect(screen.getByText("Material • 1")).toBeTruthy()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      renderWithWrappers(<MockMaterialsTermsOptionsScreen initialData={state} />)
+      await renderWithWrappers(<MockMaterialsTermsOptionsScreen initialData={state} />)
       const options = screen.getAllByTestId("multi-select-option-button")
       const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
 

@@ -4,8 +4,8 @@ import { ConversationEventRow } from "app/Scenes/Inbox/Components/Conversations/
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("ConversationEventRow", () => {
-  it("renders the message", () => {
-    renderWithWrappers(
+  it("renders the message", async () => {
+    await renderWithWrappers(
       <ConversationEventRow
         Icon={MoneyFillIcon}
         iconFill="mono100"
@@ -17,10 +17,10 @@ describe("ConversationEventRow", () => {
     expect(screen.getByText("You received an offer for $450")).toBeTruthy()
   })
 
-  it("renders an inline action link and calls onPress", () => {
+  it("renders an inline action link and calls onPress", async () => {
     const onPress = jest.fn()
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <ConversationEventRow
         Icon={MoneyFillIcon}
         iconFill="mono100"
@@ -30,7 +30,7 @@ describe("ConversationEventRow", () => {
       />
     )
 
-    fireEvent.press(screen.getByText("See details."))
+    await fireEvent.press(screen.getByText("See details."))
     expect(onPress).toHaveBeenCalled()
   })
 })

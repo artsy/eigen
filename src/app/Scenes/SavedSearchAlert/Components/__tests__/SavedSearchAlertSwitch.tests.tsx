@@ -18,23 +18,23 @@ describe("SavedSearchAlertSwitch", () => {
     onChangeMock.mockClear()
   })
 
-  it("renders without throwing an error", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("renders without throwing an error", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     expect(screen.getByText("Label")).toBeTruthy()
   })
 
-  it("should render active state", () => {
-    renderWithWrappers(<TestRenderer active />)
+  it("should render active state", async () => {
+    await renderWithWrappers(<TestRenderer active />)
 
     expect(screen.getByLabelText("Label Toggler")).toBeOnTheScreen()
     expect(screen.getByLabelText("Label Toggler")).toBeSelected()
   })
 
-  it('should call "onChange" handler when the toggle is pressed', () => {
-    renderWithWrappers(<TestRenderer />)
+  it('should call "onChange" handler when the toggle is pressed', async () => {
+    await renderWithWrappers(<TestRenderer />)
 
-    fireEvent(screen.getByLabelText("Label Toggler"), "valueChange", true)
+    await fireEvent(screen.getByLabelText("Label Toggler"), "valueChange", true)
 
     expect(onChangeMock).toBeCalledWith(true)
   })

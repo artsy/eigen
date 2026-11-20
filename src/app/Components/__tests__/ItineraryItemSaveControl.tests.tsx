@@ -3,7 +3,6 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryItemSaveControl } from "app/Components/ItineraryItemSaveControl"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { MockPayloadGenerator } from "relay-test-utils"
 
 jest.mock("app/utils/hooks/useFeatureFlag", () => ({ useFeatureFlag: () => true }))
 
@@ -19,7 +18,7 @@ describe("ItineraryItemSaveControl", () => {
   it.each(["SHOW", "FAIR"] as const)(
     "shows the saved state of a %s and opens the itinerary sheet",
     async (itemType) => {
-      const view = renderWithRelay(
+      const view = await renderWithRelay(
         {
           Query: () => ({
             [itemType === "SHOW" ? "show" : "fair"]: { isOnMyItineraries: true },
@@ -35,7 +34,7 @@ describe("ItineraryItemSaveControl", () => {
       )
 
       expect(await screen.findByLabelText("My event is on an itinerary")).toBeOnTheScreen()
-      fireEvent.press(screen.getByLabelText("My event is on an itinerary"))
+      await fireEvent.press(screen.getByLabelText("My event is on an itinerary"))
       await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(1))
       const operation = view.env.mock.getMostRecentOperation()
       expect(operation.request.node.params.name).toBe("AddToItinerarySheetQuery")
@@ -67,7 +66,7 @@ describe("ItineraryItemSaveControl", () => {
     }
 
     const openSheet = async (itineraries: object[]) => {
-      const view = renderWithRelay(
+      const view = await renderWithRelay(
         {
           Show: () => ({
             isOnMyItineraries: false,
@@ -77,21 +76,19 @@ describe("ItineraryItemSaveControl", () => {
         showProps
       )
 
-      fireEvent.press(await screen.findByLabelText("Add My show to an itinerary"))
+      await fireEvent.press(await screen.findByLabelText("Add My show to an itinerary"))
       await waitFor(() =>
         expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
           "AddToItinerarySheetQuery"
         )
       )
       const operation = view.env.mock.getMostRecentOperation()
-      view.env.mock.resolveMostRecentOperation(() =>
-        MockPayloadGenerator.generate(operation, {
-          Query: () => ({ sourceShow: { myItineraryStopMemberships: [] }, sourceFair: null }),
-          Me: () => ({
-            itinerariesConnection: { edges: itineraries.map((node) => ({ node })) },
-          }),
-        })
-      )
+      await view.mockResolveLastOperation({
+        Query: () => ({ sourceShow: { myItineraryStopMemberships: [] }, sourceFair: null }),
+        Me: () => ({
+          itinerariesConnection: { edges: itineraries.map((node) => ({ node })) },
+        }),
+      })
 
       return { view, operation }
     }
@@ -109,8 +106,8 @@ describe("ItineraryItemSaveControl", () => {
         { internalID: "paris", title: "Paris trip", isCurated: false, stopsCount: 0 },
       ])
 
-      fireEvent.press(await screen.findByText("Paris trip"))
-      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+      await fireEvent.press(await screen.findByText("Paris trip"))
+      await fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
 
       await waitFor(() =>
         expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
@@ -125,7 +122,7 @@ describe("ItineraryItemSaveControl", () => {
 
       // The create row shows while the list loads, but only works once it has.
       await screen.findByText("0 selected")
-      fireEvent.press(screen.getByTestId("add-to-itinerary-create"))
+      await fireEvent.press(screen.getByTestId("add-to-itinerary-create"))
 
       expect(screen.getByTestId("create-itinerary-name").props.value).toMatch(/^Paris \w+ \d{4}$/)
       expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -138,7 +135,7 @@ describe("ItineraryItemSaveControl", () => {
   })
 
   it("lists every itinerary and offers no create when the show has no City Guide city", async () => {
-    const view = renderWithRelay(
+    const view = await renderWithRelay(
       { Show: () => ({ isOnMyItineraries: false, cityGuideCity: null }) },
       {
         itemType: "SHOW",
@@ -148,7 +145,7 @@ describe("ItineraryItemSaveControl", () => {
       }
     )
 
-    fireEvent.press(await screen.findByLabelText("Add My show to an itinerary"))
+    await fireEvent.press(await screen.findByLabelText("Add My show to an itinerary"))
     await waitFor(() =>
       expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
         "AddToItinerarySheetQuery"
@@ -157,15 +154,13 @@ describe("ItineraryItemSaveControl", () => {
     expect(view.env.mock.getMostRecentOperation().request.variables).toMatchObject({
       citySlug: null,
     })
-    view.env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Me: () => ({
-          itinerariesConnection: {
-            edges: [{ node: { internalID: "a", title: "First", isCurated: false } }],
-          },
-        }),
-      })
-    )
+    await view.mockResolveLastOperation({
+      Me: () => ({
+        itinerariesConnection: {
+          edges: [{ node: { internalID: "a", title: "First", isCurated: false } }],
+        },
+      }),
+    })
 
     expect(await screen.findByText("First")).toBeOnTheScreen()
     expect(screen.queryByTestId("add-to-itinerary-create")).not.toBeOnTheScreen()

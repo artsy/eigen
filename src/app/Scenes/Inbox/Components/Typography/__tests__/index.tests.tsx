@@ -2,8 +2,8 @@ import { screen } from "@testing-library/react-native"
 import { Subtitle } from "app/Scenes/Inbox/Components/Typography"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-it("passes on props to subtitle", () => {
-  renderWithWrappers(
+it("passes on props to subtitle", async () => {
+  await renderWithWrappers(
     <Subtitle numberOfLines={1} ellipsizeMode="middle">
       My Subtitle
     </Subtitle>

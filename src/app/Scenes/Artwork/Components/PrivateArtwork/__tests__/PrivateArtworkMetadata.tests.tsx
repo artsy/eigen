@@ -20,7 +20,7 @@ describe("PrivateArtworkMetadata", () => {
   })
 
   it("displays condition info when condition info is present", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => {
         return {
           conditionDescription: {
@@ -33,7 +33,7 @@ describe("PrivateArtworkMetadata", () => {
   })
 
   it("does not display condition info when condition info is not present", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => {
         return {
           conditionDescription: {
@@ -46,7 +46,7 @@ describe("PrivateArtworkMetadata", () => {
   })
 
   it("displays provenance info by default when provenance is present and conditionDescription is lacking", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => {
         return {
           conditionDescription: {
@@ -60,7 +60,7 @@ describe("PrivateArtworkMetadata", () => {
   })
 
   it("does not display provenance info when provenance is not present", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => {
         return {
           privateProvenance: null,
@@ -71,7 +71,7 @@ describe("PrivateArtworkMetadata", () => {
   })
 
   it("displays exhibition history by default when exhibition history is present yet other options are null", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => {
         return {
           conditionDescription: {
@@ -86,7 +86,7 @@ describe("PrivateArtworkMetadata", () => {
   })
 
   it("does not display exhibition history when exhibition history is not present", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => {
         return {
           privateExhibitionHistory: null,
@@ -97,7 +97,7 @@ describe("PrivateArtworkMetadata", () => {
   })
 
   it("tracks condition expand press", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => {
         return {
           conditionDescription: {
@@ -107,7 +107,7 @@ describe("PrivateArtworkMetadata", () => {
       },
     })
 
-    fireEvent.press(screen.getAllByTestId("expandableAccordion")[0])
+    await fireEvent.press(screen.getAllByTestId("expandableAccordion")[0])
     expect(mockTrackEvent).toBeCalledWith({
       action: "toggledAccordion",
       context_module: "aboutTheWork",
@@ -118,7 +118,7 @@ describe("PrivateArtworkMetadata", () => {
   })
 
   it("tracks provenance expand press", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => {
         return {
           privateProvenance: "Test Provenance Details",
@@ -126,7 +126,7 @@ describe("PrivateArtworkMetadata", () => {
       },
     })
 
-    fireEvent.press(screen.getAllByTestId("expandableAccordion")[1])
+    await fireEvent.press(screen.getAllByTestId("expandableAccordion")[1])
     expect(mockTrackEvent).toBeCalledWith({
       action: "toggledAccordion",
       context_module: "aboutTheWork",
@@ -137,7 +137,7 @@ describe("PrivateArtworkMetadata", () => {
   })
 
   it("tracks exhibition history expand press", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => {
         return {
           privateExhibitionHistory: "Test Exhibition History Details",
@@ -145,7 +145,7 @@ describe("PrivateArtworkMetadata", () => {
       },
     })
 
-    fireEvent.press(screen.getAllByTestId("expandableAccordion")[2])
+    await fireEvent.press(screen.getAllByTestId("expandableAccordion")[2])
     expect(mockTrackEvent).toBeCalledWith({
       action: "toggledAccordion",
       context_module: "aboutTheWork",

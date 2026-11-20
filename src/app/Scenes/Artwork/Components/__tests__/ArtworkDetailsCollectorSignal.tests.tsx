@@ -15,8 +15,8 @@ describe("ArtworkDetailsCollectorSignal", () => {
     `,
   })
 
-  it("does not render signals if they are not present", () => {
-    renderWithRelay({
+  it("does not render signals if they are not present", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         collectorSignals: {
           curatorsPick: false,
@@ -31,8 +31,8 @@ describe("ArtworkDetailsCollectorSignal", () => {
     expect(screen.queryByText(/Showing now/)).not.toBeOnTheScreen()
   })
 
-  it("renders showing now signal when running show is present and other signals are not", () => {
-    renderWithRelay({
+  it("renders showing now signal when running show is present and other signals are not", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         collectorSignals: {
           curatorsPick: false,
@@ -53,8 +53,8 @@ describe("ArtworkDetailsCollectorSignal", () => {
     expect(screen.getByText(/Saenger Galería at The Armory Show 2024/)).toBeOnTheScreen()
   })
 
-  it("doesn't render showing now if running show is present but other signals are present as well", () => {
-    renderWithRelay({
+  it("doesn't render showing now if running show is present but other signals are present as well", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         collectorSignals: {
           curatorsPick: true,
@@ -72,8 +72,8 @@ describe("ArtworkDetailsCollectorSignal", () => {
     expect(screen.queryByText(/Showing now/)).not.toBeOnTheScreen()
   })
 
-  it("renders the curators pick signal", () => {
-    renderWithRelay({
+  it("renders the curators pick signal", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         collectorSignals: {
           increasedInterest: false,
@@ -88,8 +88,8 @@ describe("ArtworkDetailsCollectorSignal", () => {
     expect(screen.queryByText(/Showing now/)).not.toBeOnTheScreen()
   })
 
-  it("renders the curator's pick signal even when there's an increased interest signal", () => {
-    renderWithRelay({
+  it("renders the curator's pick signal even when there's an increased interest signal", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         collectorSignals: {
           increasedInterest: true,
@@ -104,8 +104,8 @@ describe("ArtworkDetailsCollectorSignal", () => {
     expect(screen.queryByText(/Showing now/)).not.toBeOnTheScreen()
   })
 
-  it("renders the increased interest signal", () => {
-    renderWithRelay({
+  it("renders the increased interest signal", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         collectorSignals: {
           increasedInterest: true,

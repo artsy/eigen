@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { screen } from "@testing-library/react-native"
 import { ArtworkErrorScreen } from "app/Scenes/Artwork/Components/ArtworkError"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
@@ -8,9 +8,9 @@ describe("ArtworkError", () => {
       Component: ArtworkErrorScreen,
     })
 
-    renderWithRelay({})
+    await renderWithRelay({})
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("placeholder"))
+    expect(screen.queryByTestId("placeholder")).not.toBeOnTheScreen()
 
     expect(screen.getByText("The artwork you were looking for isn't available.")).toBeTruthy()
   })
@@ -20,9 +20,9 @@ describe("ArtworkError", () => {
       Component: ArtworkErrorScreen,
     })
 
-    renderWithRelay({})
+    await renderWithRelay({})
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("placeholder"))
+    expect(screen.queryByTestId("placeholder")).not.toBeOnTheScreen()
 
     expect(screen.getByText("Artworks Recommendations")).toBeTruthy()
   })
@@ -32,7 +32,7 @@ describe("ArtworkError", () => {
       Component: ArtworkErrorScreen,
     })
 
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         artworkRecommendationsCount: {
           totalCount: 0,
@@ -40,7 +40,7 @@ describe("ArtworkError", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("placeholder"))
+    expect(screen.queryByTestId("placeholder")).not.toBeOnTheScreen()
 
     expect(screen.getByText("New Works for You")).toBeTruthy()
   })
@@ -50,9 +50,9 @@ describe("ArtworkError", () => {
       Component: ArtworkErrorScreen,
     })
 
-    renderWithRelay({})
+    await renderWithRelay({})
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("placeholder"))
+    expect(screen.queryByTestId("placeholder")).not.toBeOnTheScreen()
 
     expect(screen.getByText("Recently Viewed")).toBeTruthy()
   })

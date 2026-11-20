@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import {
   SavedSearchEntity,
   SearchCriteriaAttributes,
@@ -78,8 +78,8 @@ describe(ConfirmationScreen, () => {
     ),
   })
 
-  it("displays the newly created alert criteria", () => {
-    renderWithRelay()
+  it("displays the newly created alert criteria", async () => {
+    await renderWithRelay()
 
     expect(screen.getByText("Your alert has been saved")).toBeOnTheScreen()
     expect(screen.getByText("David Hockney")).toBeOnTheScreen()
@@ -88,11 +88,13 @@ describe(ConfirmationScreen, () => {
   })
 
   it("displays the correct message when there are many matches", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       FilterArtworksConnection: () => ({ counts: { total: NUMBER_OF_ARTWORKS_TO_SHOW + 1 } }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
+    await waitFor(() =>
+      expect(screen.queryByTestId("MatchingArtworksPlaceholder")).not.toBeOnTheScreen()
+    )
 
     expect(
       screen.getByText(
@@ -102,11 +104,13 @@ describe(ConfirmationScreen, () => {
   })
 
   it("displays the correct message when there are few matches", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       FilterArtworksConnection: () => ({ counts: { total: NUMBER_OF_ARTWORKS_TO_SHOW - 1 } }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
+    await waitFor(() =>
+      expect(screen.queryByTestId("MatchingArtworksPlaceholder")).not.toBeOnTheScreen()
+    )
 
     expect(
       screen.getByText("You might like these 9 works currently on Artsy that match your criteria:")
@@ -114,11 +118,13 @@ describe(ConfirmationScreen, () => {
   })
 
   it("displays the correct message when there are no matches", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       FilterArtworksConnection: () => ({ counts: { total: 0 } }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
+    await waitFor(() =>
+      expect(screen.queryByTestId("MatchingArtworksPlaceholder")).not.toBeOnTheScreen()
+    )
 
     expect(
       screen.getByText("There aren't any works available that meet the criteria at this time.")
@@ -126,10 +132,12 @@ describe(ConfirmationScreen, () => {
   })
 
   it("displays the matching artworks", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       FilterArtworksConnection: () => artworksConnection,
     })
-    await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
+    await waitFor(() =>
+      expect(screen.queryByTestId("MatchingArtworksPlaceholder")).not.toBeOnTheScreen()
+    )
 
     expect(screen.getByText("Untitled #1")).toBeOnTheScreen()
     expect(screen.getByText("Untitled #2")).toBeOnTheScreen()
@@ -137,27 +145,29 @@ describe(ConfirmationScreen, () => {
 
   describe("CTAs", () => {
     it("renders manage-alerts button always", async () => {
-      renderWithRelay()
+      await renderWithRelay()
 
       const manageButton = screen.queryByText("Manage your alerts")
       expect(manageButton).toBeOnTheScreen()
 
-      fireEvent.press(manageButton!)
+      await fireEvent.press(manageButton!)
       await flushPromiseQueue()
 
       expect(navigate).toHaveBeenCalledWith("/favorites/alerts")
     })
 
     it("renders see-all button if there are more works to show", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         FilterArtworksConnection: () => ({ counts: { total: NUMBER_OF_ARTWORKS_TO_SHOW + 1 } }),
       })
-      await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
+      await waitFor(() =>
+        expect(screen.queryByTestId("MatchingArtworksPlaceholder")).not.toBeOnTheScreen()
+      )
 
       const seeAllButton = screen.queryByText("See all matching works")
       expect(seeAllButton).toBeOnTheScreen()
 
-      fireEvent.press(seeAllButton!)
+      await fireEvent.press(seeAllButton!)
       await flushPromiseQueue()
 
       expect(navigate).toHaveBeenCalledWith("/artist/david-hockney", {
@@ -166,10 +176,12 @@ describe(ConfirmationScreen, () => {
     })
 
     it("does not render see-all button if there are no more works to show", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         FilterArtworksConnection: () => ({ counts: { total: NUMBER_OF_ARTWORKS_TO_SHOW - 1 } }),
       })
-      await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
+      await waitFor(() =>
+        expect(screen.queryByTestId("MatchingArtworksPlaceholder")).not.toBeOnTheScreen()
+      )
 
       expect(screen.queryByText("See all matching works")).not.toBeOnTheScreen()
     })
@@ -182,15 +194,17 @@ describe(ConfirmationScreen, () => {
     })
 
     it("sends a tracking event when an artwork is tapped", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         FilterArtworksConnection: () => ({
           edges: [{ node: { title: "Untitled #1", slug: "untitled", collectorSignals: null } }],
         }),
       })
 
-      await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
+      await waitFor(() =>
+        expect(screen.queryByTestId("MatchingArtworksPlaceholder")).not.toBeOnTheScreen()
+      )
 
-      fireEvent.press(screen.getByText("Untitled #1"))
+      await fireEvent.press(screen.getByText("Untitled #1"))
 
       expect(mockTrackEvent).toBeCalledWith({
         action: "tappedArtworkGroup",
@@ -203,7 +217,7 @@ describe(ConfirmationScreen, () => {
     })
 
     it("sends a tracking event when an artwork with a partner offer is tapped", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         FilterArtworksConnection: () => ({
           edges: [
             {
@@ -217,9 +231,11 @@ describe(ConfirmationScreen, () => {
         }),
       })
 
-      await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
+      await waitFor(() =>
+        expect(screen.queryByTestId("MatchingArtworksPlaceholder")).not.toBeOnTheScreen()
+      )
 
-      fireEvent.press(screen.getByText("Untitled #1"))
+      await fireEvent.press(screen.getByText("Untitled #1"))
 
       expect(mockTrackEvent).toBeCalledWith({
         action: "tappedArtworkGroup",
@@ -233,7 +249,7 @@ describe(ConfirmationScreen, () => {
     })
 
     it("sends a tracking event when an artwork with a partner offer is tapped", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         FilterArtworksConnection: () => ({
           edges: [
             {
@@ -250,9 +266,11 @@ describe(ConfirmationScreen, () => {
         }),
       })
 
-      await waitForElementToBeRemoved(() => screen.queryByTestId("MatchingArtworksPlaceholder"))
+      await waitFor(() =>
+        expect(screen.queryByTestId("MatchingArtworksPlaceholder")).not.toBeOnTheScreen()
+      )
 
-      fireEvent.press(screen.getByText("Untitled #1"))
+      await fireEvent.press(screen.getByText("Untitled #1"))
 
       expect(mockTrackEvent).toBeCalledWith({
         action: "tappedArtworkGroup",

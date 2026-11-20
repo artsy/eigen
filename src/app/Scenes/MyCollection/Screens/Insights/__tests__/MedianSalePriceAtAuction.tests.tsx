@@ -11,21 +11,21 @@ describe("MedianSalePriceAtAuction", () => {
   })
 
   it("renders title", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       SelectArtistModal_myCollectionInfo: () => ({
         artist: {
-          name: "Test Artist"
-        }
+          name: "Test Artist",
+        },
       }),
       MedianSalePriceChartDataContextProvider_query: () => ({
         artist: {
           id: "artist-id",
           name: "Test Artist",
           auctionResultConnection: {
-            edges: []
-          }
-        }
-      })
+            edges: [],
+          },
+        },
+      }),
     })
 
     await flushPromiseQueue()

@@ -48,8 +48,8 @@ describe("ArtistHeaderNavRight", () => {
     jest.clearAllMocks()
   })
 
-  it("renders the share button", () => {
-    renderWithRelay({
+  it("renders the share button", async () => {
+    await renderWithRelay({
       Artist: () => mockArtist,
     })
 
@@ -57,19 +57,19 @@ describe("ArtistHeaderNavRight", () => {
     expect(shareButton).toBeOnTheScreen()
   })
 
-  it("calls onSharePress when share button is pressed", () => {
-    renderWithRelay({
+  it("calls onSharePress when share button is pressed", async () => {
+    await renderWithRelay({
       Artist: () => mockArtist,
     })
 
     const shareButton = screen.getByLabelText("Share")
-    fireEvent.press(shareButton)
+    await fireEvent.press(shareButton)
 
     expect(mockShowShareSheet).toHaveBeenCalledTimes(1)
   })
 
-  it("renders the follow button when artist is not followed", () => {
-    renderWithRelay({
+  it("renders the follow button when artist is not followed", async () => {
+    await renderWithRelay({
       Artist: () => ({
         ...mockArtist,
         isFollowed: false,
@@ -79,8 +79,8 @@ describe("ArtistHeaderNavRight", () => {
     expect(screen.getByText("Follow 100")).toBeOnTheScreen()
   })
 
-  it("renders the follow button when artist is followed", () => {
-    renderWithRelay({
+  it("renders the follow button when artist is followed", async () => {
+    await renderWithRelay({
       Artist: () => ({
         ...mockArtist,
         isFollowed: true,
@@ -90,8 +90,8 @@ describe("ArtistHeaderNavRight", () => {
     expect(screen.getByText("Following 100")).toBeOnTheScreen()
   })
 
-  it("displays the follow count when available", () => {
-    renderWithRelay({
+  it("displays the follow count when available", async () => {
+    await renderWithRelay({
       Artist: () => ({
         ...mockArtist,
         isFollowed: false,
@@ -104,8 +104,8 @@ describe("ArtistHeaderNavRight", () => {
     expect(screen.getByText("Follow 1.2K")).toBeOnTheScreen()
   })
 
-  it("handles follow/follow button press", () => {
-    renderWithRelay({
+  it("handles follow/follow button press", async () => {
+    await renderWithRelay({
       Artist: () => ({
         ...mockArtist,
         isFollowed: false,
@@ -113,12 +113,12 @@ describe("ArtistHeaderNavRight", () => {
     })
 
     const followButton = screen.getByText("Follow 100")
-    fireEvent.press(followButton)
+    await fireEvent.press(followButton)
 
     expect(screen.getByText("Following 100")).toBeOnTheScreen()
 
     const followButton2 = screen.getByText("Following 100")
-    fireEvent.press(followButton2)
+    await fireEvent.press(followButton2)
   })
 })
 

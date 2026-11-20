@@ -20,7 +20,7 @@ describe("ArticleFeaturedArtistNotification", () => {
   })
 
   it("renders all elements", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         notification,
       }),
@@ -33,7 +33,7 @@ describe("ArticleFeaturedArtistNotification", () => {
 
   describe("Artist section", () => {
     it("opens Artist page", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({
           notification,
         }),
@@ -41,7 +41,7 @@ describe("ArticleFeaturedArtistNotification", () => {
 
       const artistName = screen.getByText("lee eun")
 
-      fireEvent.press(artistName)
+      await fireEvent.press(artistName)
 
       expect(navigate).toHaveBeenCalledWith("/artist/lee-eun-1")
     })
@@ -49,7 +49,7 @@ describe("ArticleFeaturedArtistNotification", () => {
 
   describe("Article secion", () => {
     it("opens article from Article card", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({
           notification,
         }),
@@ -57,7 +57,7 @@ describe("ArticleFeaturedArtistNotification", () => {
 
       const editorialTitle = screen.getByTestId("article-card")
 
-      fireEvent.press(editorialTitle)
+      await fireEvent.press(editorialTitle)
 
       expect(navigate).toHaveBeenCalledWith(
         "/article/artsy-editorial-10-artists-discover-foundations"
@@ -65,11 +65,11 @@ describe("ArticleFeaturedArtistNotification", () => {
     })
 
     it("opens article by pressing the Read Article CTA", async () => {
-      renderWithRelay({ Me: () => ({ notification }) })
+      await renderWithRelay({ Me: () => ({ notification }) })
 
       const readArticleCTA = screen.getByText("Read Article")
 
-      fireEvent.press(readArticleCTA)
+      await fireEvent.press(readArticleCTA)
 
       expect(navigate).toHaveBeenCalledWith(
         "/article/artsy-editorial-10-artists-discover-foundations"

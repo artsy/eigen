@@ -8,7 +8,7 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 const swipeTaskOpen = async (task: ReturnType<typeof screen.getByTestId>) => {
-  fireEvent(task, "onSwipeableWillOpen", { direction: "right" })
+  await fireEvent(task, "onSwipeableWillOpen", { direction: "right" })
 }
 
 describe("HomeViewSectionTasks", () => {
@@ -37,7 +37,7 @@ describe("HomeViewSectionTasks", () => {
   })
 
   it("renders the section properly", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       HomeViewSectionTasks: () => ({
         internalID: "home-view-section-recommended-tasks",
         component: {
@@ -52,7 +52,7 @@ describe("HomeViewSectionTasks", () => {
     expect(screen.getByText("Task 1")).toBeOnTheScreen()
     expect(screen.getByText("Task Message 1")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Show All"))
+    await fireEvent.press(screen.getByText("Show All"))
 
     expect(screen.getByText("Task 1")).toBeOnTheScreen()
     expect(screen.getByText("Task 2")).toBeOnTheScreen()
@@ -61,8 +61,8 @@ describe("HomeViewSectionTasks", () => {
     expect(screen.getByText("Show Less")).toBeOnTheScreen()
   })
 
-  it("shouldn't render Show All button when there is only one task", () => {
-    renderWithRelay({
+  it("shouldn't render Show All button when there is only one task", async () => {
+    await renderWithRelay({
       HomeViewSectionTasks: () => ({
         internalID: "home-view-section-recommended-tasks",
         component: {
@@ -92,7 +92,7 @@ describe("HomeViewSectionTasks", () => {
   })
 
   it("navigates and tracks when tapping a task", async () => {
-    const { mockResolveLastOperation } = renderWithRelay({
+    const { env, mockResolveLastOperation } = await renderWithRelay({
       HomeViewSectionTasks: () => ({
         internalID: "home-view-section-recommended-tasks",
         component: {
@@ -102,13 +102,16 @@ describe("HomeViewSectionTasks", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("Show All"))
-    fireEvent.press(screen.getByText("Task 1"))
+    await fireEvent.press(screen.getByText("Show All"))
+    await fireEvent.press(screen.getByText("Task 1"))
 
-    await waitFor(() => {
-      // mock reslove the mutation
-      mockResolveLastOperation({})
-    })
+    await waitFor(() =>
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "useAcknowledgeTaskMutation"
+      )
+    )
+    // mock resolve the mutation
+    await mockResolveLastOperation({})
 
     expect(navigate).toHaveBeenCalledWith("/test-link")
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
@@ -136,44 +139,47 @@ describe("HomeViewSectionTasks", () => {
       tasksConnection: mockTasks,
     }
 
-    const { mockResolveLastOperation } = renderWithRelay({
+    const { env, mockResolveLastOperation } = await renderWithRelay({
       HomeViewSectionTasks: () => initialHomeViewSection,
     })
 
     expect(screen.getByText("Task 1")).toBeOnTheScreen()
     expect(screen.getByText("Task 2")).toBeOnTheScreen()
     const task1 = screen.getByTestId("user-task-1")
-    swipeTaskOpen(task1)
+    await swipeTaskOpen(task1)
 
     // Tap Clear on the first task
-    fireEvent.press(within(task1).getByText("Clear"))
+    await fireEvent.press(within(task1).getByText("Clear"))
 
     // task optimistically clears
     await waitFor(() => {
       expect(screen.queryByText("Task 1")).not.toBeOnTheScreen()
     })
 
-    await waitFor(() => {
-      // mock resolve the mutation
-      mockResolveLastOperation({
-        DismissTaskMutationPayload: () => ({
-          homeViewTasksSection: {
-            __typename: "HomeViewTasksSection",
-            ...initialHomeViewSection,
-            tasksConnection: {
-              edges: initialHomeViewSection.tasksConnection.edges.filter(
-                ({ node }) => node.internalID !== "1"
-              ),
-            },
+    await waitFor(() =>
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "useDismissTaskMutation"
+      )
+    )
+    // mock resolve the mutation
+    await mockResolveLastOperation({
+      DismissTaskMutationPayload: () => ({
+        homeViewTasksSection: {
+          __typename: "HomeViewTasksSection",
+          ...initialHomeViewSection,
+          tasksConnection: {
+            edges: initialHomeViewSection.tasksConnection.edges.filter(
+              ({ node }) => node.internalID !== "1"
+            ),
           },
-          taskOrError: {
-            __typename: "DismissTaskSuccess",
-            task: {
-              internalID: "1",
-            },
+        },
+        taskOrError: {
+          __typename: "DismissTaskSuccess",
+          task: {
+            internalID: "1",
           },
-        }),
-      })
+        },
+      }),
     })
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
@@ -194,7 +200,7 @@ describe("HomeViewSectionTasks", () => {
   })
 
   it("closes open tasks when collapsing the section", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       HomeViewSectionTasks: () => ({
         internalID: "home-view-section-recommended-tasks",
         component: {
@@ -204,7 +210,7 @@ describe("HomeViewSectionTasks", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("Show All"))
+    await fireEvent.press(screen.getByText("Show All"))
     const task2 = screen.getByTestId("user-task-2")
 
     await swipeTaskOpen(task2)
@@ -213,7 +219,7 @@ describe("HomeViewSectionTasks", () => {
       within(task2).getByText("Clear")
     })
 
-    fireEvent.press(screen.getByText("Show Less"))
+    await fireEvent.press(screen.getByText("Show Less"))
 
     await waitFor(() => {
       expect(() => screen.getByText("Clear")).toThrow()

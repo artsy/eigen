@@ -22,13 +22,13 @@ describe("GeneArtworks", () => {
   })
 
   it("renders filter header", async () => {
-    renderWithRelay({})
+    await renderWithRelay({})
 
     expect(screen.getByText("Sort & Filter")).toBeOnTheScreen()
   })
 
-  it("renders artworks grid", () => {
-    renderWithRelay({
+  it("renders artworks grid", async () => {
+    await renderWithRelay({
       FilterArtworksConnection() {
         return {
           counts: {
@@ -43,7 +43,7 @@ describe("GeneArtworks", () => {
   })
 
   it("renders empty artworks grid view", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       FilterArtworksConnection() {
         return {
           counts: {
@@ -59,8 +59,8 @@ describe("GeneArtworks", () => {
     ).toBeOnTheScreen()
   })
 
-  it("renders empty message when artworks is empty", () => {
-    renderWithRelay({
+  it("renders empty message when artworks is empty", async () => {
+    await renderWithRelay({
       FilterArtworksConnection() {
         return {
           edges: [],
@@ -74,10 +74,10 @@ describe("GeneArtworks", () => {
   })
 
   it("opens the filter modal when pressing sort & filter", async () => {
-    renderWithRelay({})
+    await renderWithRelay({})
 
     expect(screen.queryByText("Show Results")).not.toBeOnTheScreen()
-    fireEvent.press(screen.getByText("Sort & Filter"))
+    await fireEvent.press(screen.getByText("Sort & Filter"))
 
     expect(screen.getByText("Show Results")).toBeOnTheScreen()
     expect(screen.getByText("Ways to Buy")).toBeOnTheScreen()

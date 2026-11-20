@@ -48,7 +48,7 @@ describe("useConversationsWebsocket", () => {
     __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "user-access-token" } })
   })
 
-  const renderTheHook = (
+  const renderTheHook = async (
     params: {
       subscriptionKey?: string
       enabled?: boolean
@@ -61,7 +61,7 @@ describe("useConversationsWebsocket", () => {
     const wrapper = ({ children }: { children: React.ReactNode }) => {
       return <GlobalStoreProvider>{children}</GlobalStoreProvider>
     }
-    const utils = renderHook(
+    const utils = await renderHook(
       (props: { subscriptionKey: string }) => {
         return useConversationsWebsocket({
           subscriptionKey: props.subscriptionKey,
@@ -75,8 +75,8 @@ describe("useConversationsWebsocket", () => {
     return { ...utils, onEvent, onConnected }
   }
 
-  it("subscribes to the ConversationsChannel with the user's access token", () => {
-    renderTheHook()
+  it("subscribes to the ConversationsChannel with the user's access token", async () => {
+    await renderTheHook()
 
     expect(mockCable.subscriptions.create).toHaveBeenCalledWith({
       channel: "ConversationsChannel",
@@ -89,8 +89,8 @@ describe("useConversationsWebsocket", () => {
     )
   })
 
-  it("invokes onEvent when a message event is received", () => {
-    const { onEvent } = renderTheHook()
+  it("invokes onEvent when a message event is received", async () => {
+    const { onEvent } = await renderTheHook()
 
     const event: ConversationsWebsocketEvent = {
       type: "message.sent",
@@ -102,9 +102,9 @@ describe("useConversationsWebsocket", () => {
     expect(onEvent).toHaveBeenCalledWith(event)
   })
 
-  it("invokes onConnected on reconnects but not on the initial connection", () => {
+  it("invokes onConnected on reconnects but not on the initial connection", async () => {
     const onConnected = jest.fn()
-    renderTheHook({ onConnected })
+    await renderTheHook({ onConnected })
 
     channelListeners.connected()
     expect(onConnected).not.toHaveBeenCalled()
@@ -113,9 +113,9 @@ describe("useConversationsWebsocket", () => {
     expect(onConnected).toHaveBeenCalledTimes(1)
   })
 
-  it("invokes onConnected on the first connection after a resubscribe", () => {
+  it("invokes onConnected on the first connection after a resubscribe", async () => {
     const onConnected = jest.fn()
-    const { rerender } = renderTheHook({ subscriptionKey: "inbox", onConnected })
+    const { rerender } = await renderTheHook({ subscriptionKey: "inbox", onConnected })
 
     // Initial connection is skipped — the consumer fetches on mount.
     channelListeners.connected()
@@ -123,17 +123,17 @@ describe("useConversationsWebsocket", () => {
 
     // Resubscribing (e.g. `enabled` toggled with screen focus) should
     // surface the new subscription's first `connected` as a catch-up.
-    rerender({ subscriptionKey: "conversation:123" })
+    await rerender({ subscriptionKey: "conversation:123" })
     channelListeners.connected()
     expect(onConnected).toHaveBeenCalledTimes(1)
   })
 
-  it("unsubscribes from the channel on unmount", () => {
-    const { unmount } = renderTheHook()
+  it("unsubscribes from the channel on unmount", async () => {
+    const { unmount } = await renderTheHook()
 
     expect(mockChannelsHolder.channels["conversations:inbox"]).toBe(mockChannel)
 
-    unmount()
+    await unmount()
 
     expect(mockChannel.removeListener).toHaveBeenCalledWith("received", expect.any(Function))
     expect(mockChannel.removeListener).toHaveBeenCalledWith("connected", expect.any(Function))
@@ -141,10 +141,10 @@ describe("useConversationsWebsocket", () => {
     expect(mockChannelsHolder.channels["conversations:inbox"]).toBeUndefined()
   })
 
-  it("resubscribes when the subscriptionKey changes", () => {
-    const { rerender } = renderTheHook({ subscriptionKey: "inbox" })
+  it("resubscribes when the subscriptionKey changes", async () => {
+    const { rerender } = await renderTheHook({ subscriptionKey: "inbox" })
 
-    rerender({ subscriptionKey: "conversation:123" })
+    await rerender({ subscriptionKey: "conversation:123" })
 
     expect(mockChannel.unsubscribe).toHaveBeenCalledTimes(1)
     expect(mockChannelsHolder.channels["conversations:inbox"]).toBeUndefined()
@@ -154,32 +154,32 @@ describe("useConversationsWebsocket", () => {
     )
   })
 
-  it("unsubscribes the created subscription when setChannel returns nothing", () => {
+  it("unsubscribes the created subscription when setChannel returns nothing", async () => {
     mockChannelsHolder.setChannel = jest.fn(() => undefined)
 
-    renderTheHook()
+    await renderTheHook()
 
     expect(mockSubscription.unsubscribe).toHaveBeenCalled()
   })
 
-  it("does not subscribe when disabled", () => {
-    renderTheHook({ enabled: false })
+  it("does not subscribe when disabled", async () => {
+    await renderTheHook({ enabled: false })
 
     expect(mockCable.subscriptions.create).not.toHaveBeenCalled()
   })
 
-  it("does not subscribe when the feature flag is off", () => {
+  it("does not subscribe when the feature flag is off", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationsRealtime: false })
 
-    renderTheHook()
+    await renderTheHook()
 
     expect(mockCable.subscriptions.create).not.toHaveBeenCalled()
   })
 
-  it("does not subscribe without a user access token", () => {
+  it("does not subscribe without a user access token", async () => {
     __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: null } })
 
-    renderTheHook()
+    await renderTheHook()
 
     expect(mockCable.subscriptions.create).not.toHaveBeenCalled()
   })

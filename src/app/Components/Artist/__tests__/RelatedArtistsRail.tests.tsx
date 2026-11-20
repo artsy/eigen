@@ -29,8 +29,8 @@ describe("RelatedArtistsRail", () => {
     `,
   })
 
-  it("renders", () => {
-    renderWithRelay()
+  it("renders", async () => {
+    await renderWithRelay()
 
     expect(screen.getByText("Related Artists")).toBeOnTheScreen()
     expect(screen.getByText(/mock-value-for-field-"name"/)).toBeOnTheScreen()

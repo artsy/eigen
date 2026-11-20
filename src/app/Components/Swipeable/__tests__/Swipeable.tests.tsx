@@ -11,30 +11,30 @@ jest.mock("react-native-haptic-feedback", () => ({
 describe("Swipeable Component", () => {
   const mockAction = jest.fn()
 
-  it("should render without crashing", () => {
-    renderWithWrappers(
+  it("should render without crashing", async () => {
+    await renderWithWrappers(
       <Swipeable {...mockProps} actionComponentWidth={80} actionOnPress={mockAction} />
     )
 
     expect(screen.getByTestId("swipeable-component")).toBeOnTheScreen()
   })
 
-  it("should call the action when the action component is pressed", () => {
-    renderWithWrappers(
+  it("should call the action when the action component is pressed", async () => {
+    await renderWithWrappers(
       <Swipeable {...mockProps} actionComponentWidth={80} actionOnPress={mockAction} />
     )
 
-    fireEvent.press(screen.getByText("Swipe Me"))
+    await fireEvent.press(screen.getByText("Swipe Me"))
 
     expect(mockAction).toHaveBeenCalled()
   })
 
-  it("should trigger haptic feedback on swipe", () => {
-    renderWithWrappers(
+  it("should trigger haptic feedback on swipe", async () => {
+    await renderWithWrappers(
       <Swipeable {...mockProps} actionComponentWidth={80} actionOnSwipe={mockAction} />
     )
 
-    fireEvent(screen.getByTestId("swipeable-component"), "onSwipeableOpen")
+    await fireEvent(screen.getByTestId("swipeable-component"), "onSwipeableOpen")
 
     expect(ReactNativeHapticFeedback.trigger).toHaveBeenCalledWith("impactLight")
   })

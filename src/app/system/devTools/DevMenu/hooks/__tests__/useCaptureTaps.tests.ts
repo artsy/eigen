@@ -51,8 +51,8 @@ describe("useCaptureTaps", () => {
   }
 
   describe("when tapping too fast", () => {
-    it("should reset tap count when taps are faster than MIN_DURATION_BETWEEN_TAPS", () => {
-      const { result } = renderHook(() => useCaptureTaps())
+    it("should reset tap count when taps are faster than MIN_DURATION_BETWEEN_TAPS", async () => {
+      const { result } = await renderHook(() => useCaptureTaps())
 
       // First tap
       result.current.handleStartShouldSetResponderCapture()
@@ -66,8 +66,8 @@ describe("useCaptureTaps", () => {
       expect(mockNavigate).not.toHaveBeenCalled()
     })
 
-    it("should treat taps faster than 70ms as separate tap sequences", () => {
-      const { result } = renderHook(() => useCaptureTaps())
+    it("should treat taps faster than 70ms as separate tap sequences", async () => {
+      const { result } = await renderHook(() => useCaptureTaps())
 
       // First tap
       result.current.handleStartShouldSetResponderCapture()
@@ -88,8 +88,8 @@ describe("useCaptureTaps", () => {
   })
 
   describe("when tapping too slow", () => {
-    it("should reset tap count when taps are slower than MAX_DURATION_BETWEEN_TAPS", () => {
-      const { result } = renderHook(() => useCaptureTaps())
+    it("should reset tap count when taps are slower than MAX_DURATION_BETWEEN_TAPS", async () => {
+      const { result } = await renderHook(() => useCaptureTaps())
 
       // First tap
       result.current.handleStartShouldSetResponderCapture()
@@ -103,8 +103,8 @@ describe("useCaptureTaps", () => {
       expect(mockNavigate).not.toHaveBeenCalled()
     })
 
-    it("should treat taps slower than 300ms as new tap sequences", () => {
-      const { result } = renderHook(() => useCaptureTaps())
+    it("should treat taps slower than 300ms as new tap sequences", async () => {
+      const { result } = await renderHook(() => useCaptureTaps())
 
       // First tap
       result.current.handleStartShouldSetResponderCapture()
@@ -125,8 +125,8 @@ describe("useCaptureTaps", () => {
   })
 
   describe("when tapping at the correct speed", () => {
-    it("should navigate to dev menu after 5 valid taps", () => {
-      const { result } = renderHook(() => useCaptureTaps())
+    it("should navigate to dev menu after 5 valid taps", async () => {
+      const { result } = await renderHook(() => useCaptureTaps())
 
       // First tap
       result.current.handleStartShouldSetResponderCapture()
@@ -141,8 +141,8 @@ describe("useCaptureTaps", () => {
       expect(mockNavigate).toHaveBeenCalledWith("DevMenu")
     })
 
-    it("should not navigate with only 4 valid taps", () => {
-      const { result } = renderHook(() => useCaptureTaps())
+    it("should not navigate with only 4 valid taps", async () => {
+      const { result } = await renderHook(() => useCaptureTaps())
 
       // First tap
       result.current.handleStartShouldSetResponderCapture()
@@ -156,8 +156,8 @@ describe("useCaptureTaps", () => {
       expect(mockNavigate).not.toHaveBeenCalled()
     })
 
-    it("should navigate with taps at minimum valid duration (exactly 70ms)", () => {
-      const { result } = renderHook(() => useCaptureTaps())
+    it("should navigate with taps at minimum valid duration (exactly 70ms)", async () => {
+      const { result } = await renderHook(() => useCaptureTaps())
 
       result.current.handleStartShouldSetResponderCapture()
 
@@ -169,8 +169,8 @@ describe("useCaptureTaps", () => {
       expect(mockNavigate).toHaveBeenCalledTimes(1)
     })
 
-    it("should navigate with taps at maximum valid duration (just under 300ms)", () => {
-      const { result } = renderHook(() => useCaptureTaps())
+    it("should navigate with taps at maximum valid duration (just under 300ms)", async () => {
+      const { result } = await renderHook(() => useCaptureTaps())
 
       result.current.handleStartShouldSetResponderCapture()
 
@@ -182,8 +182,8 @@ describe("useCaptureTaps", () => {
       expect(mockNavigate).toHaveBeenCalledTimes(1)
     })
 
-    it("should reset tap count after navigating", () => {
-      const { result } = renderHook(() => useCaptureTaps())
+    it("should reset tap count after navigating", async () => {
+      const { result } = await renderHook(() => useCaptureTaps())
 
       // First successful sequence
       result.current.handleStartShouldSetResponderCapture()

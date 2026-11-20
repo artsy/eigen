@@ -1,6 +1,8 @@
-import { act, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { act, screen, waitFor } from "@testing-library/react-native"
 import { ActivityScreen } from "app/Scenes/Activity/ActivityScreen"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 
 describe("ActivityScreen", () => {
   const { renderWithRelay } = setupTestWrapper({
@@ -8,17 +10,16 @@ describe("ActivityScreen", () => {
   })
 
   it("renders items", async () => {
-    const { mockResolveLastOperation: resolveHeaderLastOperation } = renderWithRelay({
+    const { env } = await renderWithRelay({
       NotificationConnection: () => notifications,
     })
 
-    act(() => {
-      resolveHeaderLastOperation({})
-    })
+    await resolveHeaderQuery(env, {})
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("activity-content-placeholder"), {
-      timeout: 15000,
-    })
+    await waitFor(
+      () => expect(screen.queryByTestId("activity-content-placeholder")).not.toBeOnTheScreen(),
+      { timeout: 15000 }
+    )
 
     expect(screen.getByText("Notification One")).toBeOnTheScreen()
     expect(screen.getByText("Notification Two")).toBeOnTheScreen()
@@ -26,19 +27,19 @@ describe("ActivityScreen", () => {
 
   describe("notification type filter pills", () => {
     it("renders all filter pills", async () => {
-      const { mockResolveLastOperation: resolveHeaderLastOperation } = renderWithRelay({
+      const { env } = await renderWithRelay({
         NotificationConnection: () => {
           notifications
         },
       })
 
-      act(() => {
-        resolveHeaderLastOperation({
-          NotificationConnection: () => ({ totalCount: 1 }),
-        })
+      await resolveHeaderQuery(env, {
+        NotificationConnection: () => ({ totalCount: 1 }),
       })
 
-      await waitForElementToBeRemoved(() => screen.queryByTestId("activity-content-placeholder"))
+      await waitFor(() =>
+        expect(screen.queryByTestId("activity-content-placeholder")).not.toBeOnTheScreen()
+      )
 
       await screen.findByText("All")
       expect(screen.getByText("Offers")).toBeOnTheScreen()
@@ -47,17 +48,17 @@ describe("ActivityScreen", () => {
     })
 
     it("does not render 'Offers' filter pill when there are no offers available", async () => {
-      const { mockResolveLastOperation: resolveHeaderLastOperation } = renderWithRelay({
+      const { env } = await renderWithRelay({
         NotificationConnection: () => notifications,
       })
 
-      act(() => {
-        resolveHeaderLastOperation({
-          NotificationConnection: () => ({ totalCount: 0 }),
-        })
+      await resolveHeaderQuery(env, {
+        NotificationConnection: () => ({ totalCount: 0 }),
       })
 
-      await waitForElementToBeRemoved(() => screen.queryByTestId("activity-content-placeholder"))
+      await waitFor(() =>
+        expect(screen.queryByTestId("activity-content-placeholder")).not.toBeOnTheScreen()
+      )
 
       await waitFor(() => expect(screen.queryByText("Offers")).not.toBeOnTheScreen())
 
@@ -68,7 +69,7 @@ describe("ActivityScreen", () => {
   })
 
   it("renders empty states", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       NotificationConnection: () => ({
         edges: [],
       }),
@@ -78,7 +79,7 @@ describe("ActivityScreen", () => {
   })
 
   it("hides notifications with 0 artworks", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       NotificationConnection: () => ({
         edges: [
           ...notifications.edges,
@@ -95,13 +96,31 @@ describe("ActivityScreen", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("activity-content-placeholder"))
+    await waitFor(() =>
+      expect(screen.queryByTestId("activity-content-placeholder")).not.toBeOnTheScreen()
+    )
 
     await screen.findByText("Notification One")
     expect(screen.getByText("Notification Two")).toBeOnTheScreen()
     expect(screen.queryByText("Notification Three")).not.toBeOnTheScreen()
   })
 })
+
+// The header query is not the most recent operation: the screen also marks notifications as seen.
+const resolveHeaderQuery = async (
+  env: ReturnType<typeof createMockEnvironment>,
+  mockResolvers: MockResolvers
+) => {
+  const operation = env.mock
+    .getAllOperations()
+    .find((op) => op.request.node.operation.name === "ActivityHeaderQuery")
+
+  expect(operation).toBeDefined()
+
+  await act(() => {
+    env.mock.resolve(operation!, MockPayloadGenerator.generate(operation!, mockResolvers))
+  })
+}
 
 const notifications = {
   edges: [

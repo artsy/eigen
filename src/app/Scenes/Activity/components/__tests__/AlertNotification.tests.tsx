@@ -37,7 +37,7 @@ describe("AlertNotification", () => {
   })
 
   it("renders all elements", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         notification,
       }),
@@ -53,7 +53,7 @@ describe("AlertNotification", () => {
 
   describe("Edit Alert Button in the header", () => {
     it("links to the edit alert screen", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({
           notification,
         }),
@@ -61,7 +61,7 @@ describe("AlertNotification", () => {
 
       const editAlertButton = await screen.findByTestId("edit-alert-header-link")
 
-      fireEvent.press(editAlertButton)
+      await fireEvent.press(editAlertButton)
 
       await waitFor(() =>
         expect(navigate).toHaveBeenCalledWith("/favorites/alerts/internal-alert-id/edit")
@@ -71,7 +71,7 @@ describe("AlertNotification", () => {
 
   describe("Edit Alert CTA", () => {
     it("links to the edit alert screen", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({
           notification,
         }),
@@ -79,7 +79,7 @@ describe("AlertNotification", () => {
 
       const editAlertButton = await screen.findByTestId("edit-alert-CTA")
 
-      fireEvent.press(editAlertButton)
+      await fireEvent.press(editAlertButton)
 
       await waitFor(() =>
         expect(navigate).toHaveBeenCalledWith("/favorites/alerts/internal-alert-id/edit")
@@ -89,7 +89,7 @@ describe("AlertNotification", () => {
 
   describe("'View all works by ...' link", () => {
     it("links to alerts target href", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({
           notification,
         }),
@@ -97,7 +97,7 @@ describe("AlertNotification", () => {
 
       const viewAllWorksByLink = await screen.findByText("View all works by Banksy")
 
-      fireEvent.press(viewAllWorksByLink)
+      await fireEvent.press(viewAllWorksByLink)
 
       await waitFor(() => expect(navigate).toHaveBeenCalledWith("/artist/banksy/works-for-sale"))
     })

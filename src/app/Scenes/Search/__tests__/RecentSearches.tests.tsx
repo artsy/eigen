@@ -34,32 +34,32 @@ const TestPage = () => (
 )
 
 describe("Recent Searches", () => {
-  it("has an empty state", () => {
-    renderWithWrappers(<TestPage />)
+  it("has an empty state", async () => {
+    await renderWithWrappers(<TestPage />)
 
     expect(screen.getByText("We’ll save your recent searches here")).toBeOnTheScreen()
   })
 
-  it("shows recent searches if there were any", () => {
-    renderWithWrappers(<TestPage />)
+  it("shows recent searches if there were any", async () => {
+    await renderWithWrappers(<TestPage />)
 
-    act(() => {
+    await act(() => {
       GlobalStore.actions.search.addRecentSearch(banksy)
     })
 
     expect(screen.getByText("Banksy")).toBeOnTheScreen()
 
-    act(() => {
+    await act(() => {
       GlobalStore.actions.search.addRecentSearch(andyWarhol)
     })
 
     expect(screen.getByText("Banksy")).toBeOnTheScreen()
   })
 
-  it("shows all recent searches", () => {
-    renderWithWrappers(<TestPage />)
+  it("shows all recent searches", async () => {
+    await renderWithWrappers(<TestPage />)
 
-    act(() => {
+    await act(() => {
       GlobalStore.actions.search.addRecentSearch(banksy)
       GlobalStore.actions.search.addRecentSearch(andyWarhol)
       GlobalStore.actions.search.addRecentSearch(keithHaring)

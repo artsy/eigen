@@ -33,29 +33,29 @@ describe("SaleActiveBids", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  it("renders no items if the user has no active lots standing", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("renders no items if the user has no active lots standing", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     const mockProps = {
       Me: () => ({
         lotStandings: [],
       }),
     }
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    await resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(screen.queryByText("Your Active Bids")).not.toBeOnTheScreen()
     expect(screen.queryAllByRole("button")).toHaveLength(0)
   })
 
-  it("renders list of lots if the user has active lots standing", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("renders list of lots if the user has active lots standing", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     const mockProps = {
       Me: () => ({
         lotStandings,
       }),
     }
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    await resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(screen.getByText("Your Active Bids")).toBeOnTheScreen()
     // Each SaleActiveBidItem renders a single pressable row

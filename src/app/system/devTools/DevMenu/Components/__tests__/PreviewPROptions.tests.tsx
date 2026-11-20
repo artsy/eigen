@@ -22,10 +22,10 @@ const mockFetch = (status: number, body: object = {}) => {
 const expand = () => fireEvent.press(screen.getByLabelText("Preview PR"))
 
 const loadAndConfirm = async () => {
-  renderWithWrappers(<PreviewPROptions />)
-  expand()
-  fireEvent.changeText(screen.getByLabelText("PR Number"), "123")
-  fireEvent.press(screen.getByText("Load PR"))
+  await renderWithWrappers(<PreviewPROptions />)
+  await expand()
+  await fireEvent.changeText(screen.getByLabelText("PR Number"), "123")
+  await fireEvent.press(screen.getByText("Load PR"))
   await waitFor(() => expect(Alert.alert).toHaveBeenCalledTimes(1))
   const buttons = (Alert.alert as jest.Mock).mock.calls[0][2]
   buttons.find((button: { text: string }) => button.text === "Switch").onPress()
@@ -46,11 +46,11 @@ describe("PreviewPROptions", () => {
 
   it("asks for confirmation, then switches the channel", async () => {
     mockFetch(200, openLabeledPR)
-    renderWithWrappers(<PreviewPROptions />)
-    expand()
+    await renderWithWrappers(<PreviewPROptions />)
+    await expand()
 
-    fireEvent.changeText(screen.getByLabelText("PR Number"), "123")
-    fireEvent.press(screen.getByText("Load PR"))
+    await fireEvent.changeText(screen.getByLabelText("PR Number"), "123")
+    await fireEvent.press(screen.getByText("Load PR"))
 
     await waitFor(() => expect(Alert.alert).toHaveBeenCalledTimes(1))
     expect(global.fetch).toHaveBeenCalledWith(
@@ -130,11 +130,11 @@ describe("PreviewPROptions", () => {
 
   it("shows the error and does not switch when the PR is not eligible", async () => {
     mockFetch(200, { ...openLabeledPR, state: "closed" })
-    renderWithWrappers(<PreviewPROptions />)
-    expand()
+    await renderWithWrappers(<PreviewPROptions />)
+    await expand()
 
-    fireEvent.changeText(screen.getByLabelText("PR Number"), "123")
-    fireEvent.press(screen.getByText("Load PR"))
+    await fireEvent.changeText(screen.getByLabelText("PR Number"), "123")
+    await fireEvent.press(screen.getByText("Load PR"))
 
     expect(await screen.findByText("PR #123 is not open")).toBeOnTheScreen()
     expect(Alert.alert).not.toHaveBeenCalled()
@@ -152,11 +152,11 @@ describe("PreviewPROptions", () => {
       Object.defineProperty(Updates, "channel", { value: originalChannel, configurable: true })
     })
 
-    it("shows the channel and PR number without calling GitHub", () => {
+    it("shows the channel and PR number without calling GitHub", async () => {
       global.fetch = jest.fn() as unknown as typeof global.fetch
 
-      renderWithWrappers(<PreviewPROptions />)
-      expand()
+      await renderWithWrappers(<PreviewPROptions />)
+      await expand()
 
       expect(screen.getByText(/Channel: review-app-123/)).toBeOnTheScreen()
       expect(screen.getByText(/PR: #123/)).toBeOnTheScreen()

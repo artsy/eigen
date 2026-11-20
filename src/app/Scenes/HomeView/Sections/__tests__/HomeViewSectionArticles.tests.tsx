@@ -31,8 +31,8 @@ describe("HomeViewSectionArticles", () => {
     `,
   })
 
-  it("does not render the section if no articles are available", () => {
-    renderWithRelay({
+  it("does not render the section if no articles are available", async () => {
+    await renderWithRelay({
       HomeViewSectionArticles: () => ({
         internalID: "home-view-section-latest-articles",
         component: {
@@ -46,8 +46,8 @@ describe("HomeViewSectionArticles", () => {
     expect(screen.toJSON()).toBeNull()
   })
 
-  it("renders a list of articles", () => {
-    renderWithRelay({
+  it("renders a list of articles", async () => {
+    await renderWithRelay({
       HomeViewSectionArticles: () => ({
         internalID: "home-view-section-latest-articles",
         contextModule: "articleRail",
@@ -80,8 +80,8 @@ describe("HomeViewSectionArticles", () => {
     expect(screen.getByText("Article 2")).toBeOnTheScreen()
   })
 
-  it("tracks article navigation", () => {
-    renderWithRelay({
+  it("tracks article navigation", async () => {
+    await renderWithRelay({
       HomeViewSectionArticles: () => ({
         internalID: "home-view-section-latest-articles",
         contextModule: "articleRail",
@@ -113,7 +113,7 @@ describe("HomeViewSectionArticles", () => {
     expect(screen.getByText("Article 1")).toBeOnTheScreen()
     expect(screen.getByText("Article 2")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Article 2"))
+    await fireEvent.press(screen.getByText("Article 2"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedArticleGroup",
@@ -128,8 +128,8 @@ describe("HomeViewSectionArticles", () => {
     })
   })
 
-  it("tracks view-all navigation", () => {
-    renderWithRelay({
+  it("tracks view-all navigation", async () => {
+    await renderWithRelay({
       HomeViewSectionArticles: () => ({
         internalID: "home-view-section-latest-articles",
         contextModule: "articleRail",
@@ -161,7 +161,7 @@ describe("HomeViewSectionArticles", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("Latest Articles"))
+    await fireEvent.press(screen.getByText("Latest Articles"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedArticleGroup",

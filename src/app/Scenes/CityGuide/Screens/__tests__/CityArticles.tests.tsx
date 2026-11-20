@@ -36,7 +36,7 @@ describe("CityArticlesScreen", () => {
   })
 
   it("tracks the screen view", async () => {
-    renderWithRelay({ City: () => ({ cityArticles: [article("Only Article", 0)] }) })
+    await renderWithRelay({ City: () => ({ cityArticles: [article("Only Article", 0)] }) })
 
     await screen.findByText("Artsy Editorial")
 
@@ -48,7 +48,7 @@ describe("CityArticlesScreen", () => {
   })
 
   it("titles the screen", async () => {
-    renderWithRelay({ City: () => ({ cityArticles: [article("Only Article", 0)] }) })
+    await renderWithRelay({ City: () => ({ cityArticles: [article("Only Article", 0)] }) })
 
     expect(await screen.findByText("Artsy Editorial")).toBeOnTheScreen()
   })
@@ -60,7 +60,7 @@ describe("CityArticlesScreen", () => {
       article(`Article ${position}`, position)
     )
 
-    renderWithRelay({ City: () => ({ cityArticles: attachments }) })
+    await renderWithRelay({ City: () => ({ cityArticles: attachments }) })
 
     expect(await screen.findAllByTestId("event-article-row")).toHaveLength(attachments.length)
   })
@@ -68,7 +68,7 @@ describe("CityArticlesScreen", () => {
   it("orders rows by the attachment's position", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideArticlesForYou: false })
 
-    renderWithRelay({
+    await renderWithRelay({
       City: () => ({
         cityArticles: [article("Second", 1), article("First", 0)],
       }),
@@ -87,7 +87,7 @@ describe("CityArticlesScreen", () => {
     })
 
     it("renders every row from the connection, not the curated array", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         City: () => ({
           cityArticles: [article("Curated", 0)],
           recommendedArticlesConnection: {
@@ -107,7 +107,7 @@ describe("CityArticlesScreen", () => {
     })
 
     it("tags a curated row's tracking with the curated context_module", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         City: () => ({
           cityArticles: [article("Curated", 0)],
           recommendedArticlesConnection: {
@@ -118,7 +118,7 @@ describe("CityArticlesScreen", () => {
         }),
       })
 
-      fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
+      await fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
 
       expect(mockTrackEvent).toHaveBeenCalledWith(
         expect.objectContaining({ context_module: "articles" })
@@ -126,7 +126,7 @@ describe("CityArticlesScreen", () => {
     })
 
     it("tags a recommended row's tracking with a distinct context_module", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         City: () => ({
           cityArticles: [],
           recommendedArticlesConnection: {
@@ -137,7 +137,7 @@ describe("CityArticlesScreen", () => {
         }),
       })
 
-      fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
+      await fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
 
       expect(mockTrackEvent).toHaveBeenCalledWith(
         expect.objectContaining({ context_module: "relatedArticles" })
@@ -145,7 +145,7 @@ describe("CityArticlesScreen", () => {
     })
 
     it("loads the next page when the list end is reached", async () => {
-      const { mockResolveLastOperation } = renderWithRelay({
+      const { mockResolveLastOperation } = await renderWithRelay({
         City: () => ({
           cityArticles: [],
           recommendedArticlesConnection: {
@@ -158,9 +158,9 @@ describe("CityArticlesScreen", () => {
 
       expect(await screen.findAllByTestId("event-article-row")).toHaveLength(1)
 
-      fireEvent(screen.getByTestId("city-articles-list"), "onEndReached")
+      await fireEvent(screen.getByTestId("city-articles-list"), "onEndReached")
 
-      mockResolveLastOperation({
+      await mockResolveLastOperation({
         City: () => ({
           recommendedArticlesConnection: {
             totalCount: 2,
@@ -179,7 +179,7 @@ describe("CityArticlesScreen", () => {
   it("lists only the curated articles when the flag is off, even if the server returns recommendations", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideArticlesForYou: false })
 
-    renderWithRelay({
+    await renderWithRelay({
       City: () => ({
         cityArticles: [article("Curated", 0)],
         recommendedArticlesConnection: {

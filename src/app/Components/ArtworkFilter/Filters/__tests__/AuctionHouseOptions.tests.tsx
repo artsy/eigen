@@ -41,8 +41,8 @@ describe("AuctionHouse options screen", () => {
     sizeMetric: "cm",
   }
 
-  it("selects only the option that is selected", () => {
-    renderWithWrappers(
+  it("selects only the option that is selected", async () => {
+    await renderWithWrappers(
       <MockAuctionHouseScreen {...getEssentialProps()} initialData={initialState} />
     )
     const options = screen.getAllByTestId("multi-select-option-button")
@@ -51,15 +51,15 @@ describe("AuctionHouse options screen", () => {
     expect(options[0]).toHaveTextContent("Sotheby's")
     expect(checkboxes[0]).toHaveProp("selected", false)
 
-    fireEvent.press(screen.getByText("Sotheby's"))
+    await fireEvent.press(screen.getByText("Sotheby's"))
 
     expect(checkboxes[0]).toHaveProp("selected", true)
 
     expect(screen.getByText("Clear")).toBeTruthy()
   })
 
-  it("allows multiple auction houses to be selected", () => {
-    renderWithWrappers(
+  it("allows multiple auction houses to be selected", async () => {
+    await renderWithWrappers(
       <MockAuctionHouseScreen {...getEssentialProps()} initialData={initialState} />
     )
 
@@ -79,10 +79,10 @@ describe("AuctionHouse options screen", () => {
     expect(checkboxes[3]).toHaveProp("selected", false)
     expect(checkboxes[4]).toHaveProp("selected", false)
 
-    fireEvent.press(screen.getByText("Sotheby's"))
-    fireEvent.press(screen.getByText("Christie's"))
-    fireEvent.press(screen.getByText("Bonhams"))
-    fireEvent.press(screen.getByText("Artsy Auction"))
+    await fireEvent.press(screen.getByText("Sotheby's"))
+    await fireEvent.press(screen.getByText("Christie's"))
+    await fireEvent.press(screen.getByText("Bonhams"))
+    await fireEvent.press(screen.getByText("Artsy Auction"))
 
     expect(checkboxes[0]).toHaveProp("selected", true)
     expect(checkboxes[1]).toHaveProp("selected", true)

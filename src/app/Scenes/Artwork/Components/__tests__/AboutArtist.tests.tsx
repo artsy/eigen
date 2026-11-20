@@ -21,8 +21,8 @@ describe("AboutArtist", () => {
     `,
   })
 
-  it("renders about artist correctly for one artist", () => {
-    renderWithRelay({
+  it("renders about artist correctly for one artist", async () => {
+    await renderWithRelay({
       Artist: () => ({
         name: "Abbas Kiarostami",
       }),
@@ -32,8 +32,8 @@ describe("AboutArtist", () => {
     expect(screen.getByText("Abbas Kiarostami")).toBeTruthy()
   })
 
-  it("renders about artist correctly for more than one artists", () => {
-    renderWithRelay({
+  it("renders about artist correctly for more than one artists", async () => {
+    await renderWithRelay({
       Artist: () => ({
         name: "Abbas Kiarostami",
       }),
@@ -57,8 +57,8 @@ describe("AboutArtist", () => {
     expect(screen.queryAllByText("Abbas Kiarostami")).toHaveLength(2)
   })
 
-  it("does not render anything if unlisted is false and displayArtistBio is false", () => {
-    renderWithRelay({
+  it("does not render anything if unlisted is false and displayArtistBio is false", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         isUnlisted: true,
         displayArtistBio: false,
@@ -75,8 +75,8 @@ describe("AboutArtist", () => {
     expect(screen.queryByText("Biography of Abbas Kiarostami")).not.toBeOnTheScreen()
   })
 
-  it("tracks taps on artist bio read more", () => {
-    renderWithRelay({
+  it("tracks taps on artist bio read more", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         isUnlisted: true,
         displayArtistBio: true,
@@ -91,7 +91,7 @@ describe("AboutArtist", () => {
     })
 
     const readMoreLink = screen.getByText("Read more")
-    fireEvent.press(readMoreLink)
+    await fireEvent.press(readMoreLink)
     expect(mockTrackEvent).toBeCalledWith({
       action_name: "readMore",
       action_type: "tap",

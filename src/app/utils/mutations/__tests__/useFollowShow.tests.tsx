@@ -17,48 +17,48 @@ describe("useFollowShow", () => {
     env.mockClear()
   })
 
-  it("sends unfollow false when the show is not followed", () => {
-    const { result } = renderHook(
+  it("sends unfollow false when the show is not followed", async () => {
+    const { result } = await renderHook(
       () => useFollowShow({ id: "node-id", internalID: "internal-id", isFollowed: false }),
       { wrapper }
     )
 
-    act(() => result.current.followShow())
+    await act(() => result.current.followShow())
 
     expect(env.mock.getMostRecentOperation().request.variables).toEqual({
       input: { partnerShowID: "internal-id", unfollow: false },
     })
   })
 
-  it("sends unfollow true when the show is already followed", () => {
-    const { result } = renderHook(
+  it("sends unfollow true when the show is already followed", async () => {
+    const { result } = await renderHook(
       () => useFollowShow({ id: "node-id", internalID: "internal-id", isFollowed: true }),
       { wrapper }
     )
 
-    act(() => result.current.followShow())
+    await act(() => result.current.followShow())
 
     expect(env.mock.getMostRecentOperation().request.variables).toEqual({
       input: { partnerShowID: "internal-id", unfollow: true },
     })
   })
 
-  it("accepts an undefined isFollowed and treats it as not followed", () => {
-    const { result } = renderHook(
+  it("accepts an undefined isFollowed and treats it as not followed", async () => {
+    const { result } = await renderHook(
       () => useFollowShow({ id: "node-id", internalID: "internal-id", isFollowed: undefined }),
       { wrapper }
     )
 
-    act(() => result.current.followShow())
+    await act(() => result.current.followShow())
 
     expect(env.mock.getMostRecentOperation().request.variables).toEqual({
       input: { partnerShowID: "internal-id", unfollow: false },
     })
   })
 
-  it("calls onCompleted with the next followed state", () => {
+  it("calls onCompleted with the next followed state", async () => {
     const onCompleted = jest.fn()
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () =>
         useFollowShow({
           id: "node-id",
@@ -69,8 +69,8 @@ describe("useFollowShow", () => {
       { wrapper }
     )
 
-    act(() => result.current.followShow())
-    act(() => {
+    await act(() => result.current.followShow())
+    await act(() => {
       env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation))
     })
 

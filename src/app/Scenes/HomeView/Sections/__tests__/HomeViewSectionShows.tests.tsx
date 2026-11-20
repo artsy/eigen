@@ -1,4 +1,4 @@
-import { act, fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { HomeViewSectionShowsTestsQuery } from "__generated__/HomeViewSectionShowsTestsQuery.graphql"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionShows } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
@@ -40,34 +40,35 @@ describe("HomeViewSectionShows", () => {
   })
 
   it("renders the section properly", async () => {
-    const { mockResolveLastOperation } = renderWithRelay({
+    const { mockResolveLastOperation } = await renderWithRelay({
       HomeViewComponent: () => ({
         title: "Shows for You",
       }),
     })
 
-    act(() => {
-      mockResolveLastOperation({
-        ShowConnection: () => ({
-          edges: [
-            {
-              node: {
-                name: "show 1",
-              },
+    expect(screen.getByTestId("show-rail-placeholder")).toBeOnTheScreen()
+
+    await mockResolveLastOperation({
+      ShowConnection: () => ({
+        edges: [
+          {
+            node: {
+              name: "show 1",
             },
-            {
-              node: {
-                name: "show 2",
-              },
+          },
+          {
+            node: {
+              name: "show 2",
             },
-          ],
-        }),
-      })
+          },
+        ],
+      }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("show-rail-placeholder"), {
-      timeout: 10000,
-    })
+    await waitFor(
+      () => expect(screen.queryByTestId("show-rail-placeholder")).not.toBeOnTheScreen(),
+      { timeout: 10000 }
+    )
 
     expect(screen.getByText("Shows for You")).toBeOnTheScreen()
     expect(screen.getByText("show 1")).toBeOnTheScreen()
@@ -75,7 +76,7 @@ describe("HomeViewSectionShows", () => {
   })
 
   it("tracks shows taps properly", async () => {
-    const { mockResolveLastOperation } = renderWithRelay({
+    const { mockResolveLastOperation } = await renderWithRelay({
       HomeViewSectionShows: () => ({
         internalID: "home-view-section-shows-for-you",
         component: {
@@ -84,36 +85,37 @@ describe("HomeViewSectionShows", () => {
       }),
     })
 
-    act(() => {
-      mockResolveLastOperation({
-        ShowConnection: () => ({
-          edges: [
-            {
-              node: {
-                internalID: "show-1-id",
-                slug: "show-1-slug",
-                name: "show 1",
-                href: "/show-1-href",
-              },
+    expect(screen.getByTestId("show-rail-placeholder")).toBeOnTheScreen()
+
+    await mockResolveLastOperation({
+      ShowConnection: () => ({
+        edges: [
+          {
+            node: {
+              internalID: "show-1-id",
+              slug: "show-1-slug",
+              name: "show 1",
+              href: "/show-1-href",
             },
-            {
-              node: {
-                internalID: "show-2-id",
-                slug: "show-2-slug",
-                name: "show 2",
-                href: "/show-2-href",
-              },
+          },
+          {
+            node: {
+              internalID: "show-2-id",
+              slug: "show-2-slug",
+              name: "show 2",
+              href: "/show-2-href",
             },
-          ],
-        }),
-      })
+          },
+        ],
+      }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("show-rail-placeholder"), {
-      timeout: 10000,
-    })
+    await waitFor(
+      () => expect(screen.queryByTestId("show-rail-placeholder")).not.toBeOnTheScreen(),
+      { timeout: 10000 }
+    )
 
-    fireEvent.press(screen.getByText("show 2"))
+    await fireEvent.press(screen.getByText("show 2"))
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
         [
           {

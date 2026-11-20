@@ -33,9 +33,9 @@ describe("ShowArtworksEmptyState", () => {
     />
   )
 
-  const getWrapper = (mockResolvers = {}) => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+  const getWrapper = async (mockResolvers = {}) => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
@@ -43,8 +43,8 @@ describe("ShowArtworksEmptyState", () => {
   }
 
   describe("fair booth", () => {
-    it("renders the correct message for non-closed fair booths", () => {
-      getWrapper({ Show: () => ({ isFairBooth: true }) })
+    it("renders the correct message for non-closed fair booths", async () => {
+      await getWrapper({ Show: () => ({ isFairBooth: true }) })
 
       expect(
         screen.getByText(
@@ -53,8 +53,8 @@ describe("ShowArtworksEmptyState", () => {
       ).toBeOnTheScreen()
     })
 
-    it("renders the correct message for closed fair booths", () => {
-      getWrapper({
+    it("renders the correct message for closed fair booths", async () => {
+      await getWrapper({
         Show: () => ({ isFairBooth: true, status: "closed" }),
       })
 
@@ -66,8 +66,8 @@ describe("ShowArtworksEmptyState", () => {
   })
 
   describe("show", () => {
-    it("renders the correct message for non-closed shows", () => {
-      getWrapper({ Show: () => ({ isFairBooth: false }) })
+    it("renders the correct message for non-closed shows", async () => {
+      await getWrapper({ Show: () => ({ isFairBooth: false }) })
 
       expect(
         screen.getByText(
@@ -76,8 +76,8 @@ describe("ShowArtworksEmptyState", () => {
       ).toBeOnTheScreen()
     })
 
-    it("renders the correct message for closed shows", () => {
-      getWrapper({
+    it("renders the correct message for closed shows", async () => {
+      await getWrapper({
         Show: () => ({ isFairBooth: false, status: "closed" }),
       })
 

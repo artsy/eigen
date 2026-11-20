@@ -45,8 +45,8 @@ describe("PaymentFailureBanner", () => {
     ;(useHomeViewTracking as jest.Mock).mockReturnValue(mockTracking)
   })
 
-  it("renders the error banner when a single payment has failed", () => {
-    renderWithRelay({
+  it("renders the error banner when a single payment has failed", async () => {
+    await renderWithRelay({
       CommerceOrderConnectionWithTotalCount: () => ({
         edges: [
           {
@@ -65,12 +65,12 @@ describe("PaymentFailureBanner", () => {
     expect(link).toBeTruthy()
     expect(text).toBeTruthy()
 
-    fireEvent.press(link)
+    await fireEvent.press(link)
     expect(navigate).toHaveBeenCalledWith("orders/1/payment/new")
   })
 
-  it("renders the error banner when multiple payments have failed", () => {
-    renderWithRelay({
+  it("renders the error banner when multiple payments have failed", async () => {
+    await renderWithRelay({
       CommerceOrderConnectionWithTotalCount: () => ({
         edges: [
           {
@@ -94,12 +94,12 @@ describe("PaymentFailureBanner", () => {
     expect(link).toBeTruthy()
     expect(text).toBeTruthy()
 
-    fireEvent.press(link)
+    await fireEvent.press(link)
     expect(navigate).toHaveBeenCalledWith("orders")
   })
 
-  it("does not render the banner when there are no payment failures", () => {
-    renderWithRelay({
+  it("does not render the banner when there are no payment failures", async () => {
+    await renderWithRelay({
       CommerceOrderConnectionWithTotalCount: () => ({
         edges: [],
       }),
@@ -108,8 +108,8 @@ describe("PaymentFailureBanner", () => {
     expect(screen.queryByTestId("PaymentFailureBanner")).toBeNull()
   })
 
-  it("calls bannerViewed tracking event when the banner is visible", () => {
-    renderWithRelay({
+  it("calls bannerViewed tracking event when the banner is visible", async () => {
+    await renderWithRelay({
       CommerceOrderConnectionWithTotalCount: () => ({
         edges: [
           {
@@ -125,8 +125,8 @@ describe("PaymentFailureBanner", () => {
     expect(mockTracking.bannerViewed).toHaveBeenCalledWith([{ code: "order-1", internalID: "1" }])
   })
 
-  it("calls tappedChangePaymentMethod tracking event when the link is clicked", () => {
-    renderWithRelay({
+  it("calls tappedChangePaymentMethod tracking event when the link is clicked", async () => {
+    await renderWithRelay({
       CommerceOrderConnectionWithTotalCount: () => ({
         edges: [
           {
@@ -140,7 +140,7 @@ describe("PaymentFailureBanner", () => {
     })
 
     const link = screen.getByText("Update payment method.")
-    fireEvent.press(link)
+    await fireEvent.press(link)
 
     expect(mockTracking.bannerViewed).toHaveBeenCalledWith([{ code: "order-1", internalID: "1" }])
   })

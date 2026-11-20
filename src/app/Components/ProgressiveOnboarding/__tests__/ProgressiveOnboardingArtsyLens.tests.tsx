@@ -65,10 +65,10 @@ describe("ProgressiveOnboardingArtsyLens", () => {
 
   it.each([OwnerType.home, OwnerType.search] as const)(
     "stays hidden on %s during the first two launches",
-    (ownerType) => {
+    async (ownerType) => {
       for (const launchCount of [1, 2]) {
         ArtsyNativeModule.launchCount = launchCount
-        const { unmount } = renderTooltip(false, ownerType)
+        const { unmount } = await renderTooltip(false, ownerType)
 
         expect(screen.queryByText("Artsy Lens")).not.toBeOnTheScreen()
         expect(mockTrackEvent).not.toHaveBeenCalled()
@@ -77,20 +77,20 @@ describe("ProgressiveOnboardingArtsyLens", () => {
             .activePopover
         ).toBeUndefined()
 
-        unmount()
+        await unmount()
       }
     }
   )
 
   it.each([3, 4])("can appear from launch %s onwards", async (launchCount) => {
     ArtsyNativeModule.launchCount = launchCount
-    renderTooltip()
+    await renderTooltip()
 
     expect(await screen.findByText("Artsy Lens")).toBeOnTheScreen()
   })
 
   it("shows the Artsy Lens copy and tracks the view", async () => {
-    renderTooltip()
+    await renderTooltip()
 
     expect(await screen.findByText("Artsy Lens")).toBeOnTheScreen()
     expect(screen.getByText("Take a picture of a work to find more like it")).toBeOnTheScreen()
@@ -104,24 +104,24 @@ describe("ProgressiveOnboardingArtsyLens", () => {
   })
 
   it("remembers dismissal and does not show the tooltip again", async () => {
-    const { unmount } = renderTooltip()
+    const { unmount } = await renderTooltip()
 
     expect(await screen.findByText("Artsy Lens")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Dismiss"))
+    await fireEvent.press(screen.getByText("Dismiss"))
 
     expect(__globalStoreTestUtils__?.getCurrentState().progressiveOnboarding.dismissed).toEqual([
       { key: "artsy-lens", timestamp: expect.any(Number) },
     ])
 
-    unmount()
-    renderTooltip(false, OwnerType.search)
+    await unmount()
+    await renderTooltip(false, OwnerType.search)
 
     expect(screen.queryByText("Artsy Lens")).not.toBeOnTheScreen()
   })
 
   it("can first appear on Search and tracks Search as its context", async () => {
-    renderTooltip(false, OwnerType.search)
+    await renderTooltip(false, OwnerType.search)
 
     expect(await screen.findByText("Artsy Lens")).toBeOnTheScreen()
     expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -132,19 +132,19 @@ describe("ProgressiveOnboardingArtsyLens", () => {
     })
   })
 
-  it("waits until Home is focused", () => {
+  it("waits until Home is focused", async () => {
     mockUseIsFocused.mockReturnValue(false)
-    renderTooltip()
+    await renderTooltip()
 
     expect(screen.queryByText("Artsy Lens")).not.toBeOnTheScreen()
   })
 
-  it("waits while another progressive onboarding popover is active", () => {
+  it("waits while another progressive onboarding popover is active", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: { sessionState: { activePopover: "another-popover" } },
     })
 
-    renderTooltip()
+    await renderTooltip()
 
     expect(screen.queryByText("Artsy Lens")).not.toBeOnTheScreen()
     expect(
@@ -152,12 +152,12 @@ describe("ProgressiveOnboardingArtsyLens", () => {
     ).toBe("another-popover")
   })
 
-  it("waits when Home tooltips are deferred for this session", () => {
+  it("waits when Home tooltips are deferred for this session", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: { sessionState: { deferHomeTooltipsThisSession: true } },
     })
 
-    renderTooltip()
+    await renderTooltip()
 
     expect(screen.queryByText("Artsy Lens")).not.toBeOnTheScreen()
   })
@@ -167,13 +167,13 @@ describe("ProgressiveOnboardingArtsyLens", () => {
       progressiveOnboarding: { sessionState: { deferHomeTooltipsThisSession: true } },
     })
 
-    renderTooltip(false, OwnerType.search)
+    await renderTooltip(false, OwnerType.search)
 
     expect(await screen.findByText("Artsy Lens")).toBeOnTheScreen()
   })
 
-  it("stays hidden behind the search overlay", () => {
-    renderTooltip(true)
+  it("stays hidden behind the search overlay", async () => {
+    await renderTooltip(true)
 
     expect(screen.queryByText("Artsy Lens")).not.toBeOnTheScreen()
   })

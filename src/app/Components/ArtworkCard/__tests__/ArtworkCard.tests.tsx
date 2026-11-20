@@ -30,8 +30,8 @@ describe("ArtworkCard", () => {
     mockTrackEvent.mockClear()
   })
 
-  it("renders artwork card with basic information", () => {
-    renderWithRelay({
+  it("renders artwork card with basic information", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "test-artwork-id",
         title: "Test Artwork",
@@ -61,8 +61,8 @@ describe("ArtworkCard", () => {
     expect(screen.getByTestId("save-artwork-icon")).toBeOnTheScreen()
   })
 
-  it("shows 'Saved' text when artwork is saved", () => {
-    renderWithRelay({
+  it("shows 'Saved' text when artwork is saved", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "test-artwork-id",
         title: "Test Artwork",
@@ -90,12 +90,12 @@ describe("ArtworkCard", () => {
     expect(screen.getByText("Saved")).toBeOnTheScreen()
   })
 
-  it("renders multiple images when supportMultipleImages is true", () => {
+  it("renders multiple images when supportMultipleImages is true", async () => {
     defaultProps = {
       supportMultipleImages: true,
       showPager: true,
     }
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "test-artwork-id",
         title: "Test Artwork",
@@ -130,8 +130,8 @@ describe("ArtworkCard", () => {
     expect(screen.getByText("Test Artist")).toBeOnTheScreen()
   })
 
-  it("handles save button press", () => {
-    renderWithRelay({
+  it("handles save button press", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "test-artwork-id",
         title: "Test Artwork",
@@ -159,19 +159,19 @@ describe("ArtworkCard", () => {
     const saveButton = screen.getByTestId("save-artwork-icon")
     expect(saveButton).toBeOnTheScreen()
 
-    fireEvent.press(saveButton)
+    await fireEvent.press(saveButton)
 
     expect(screen.getByText("Saved")).toBeOnTheScreen()
   })
 
-  it("tracks save with artwork entity id, slug, and context", () => {
+  it("tracks save with artwork entity id, slug, and context", async () => {
     defaultProps = {
       ...defaultProps,
       contextModule: ContextModule.infiniteDiscoveryArtworkCard,
       ownerType: OwnerType.infiniteDiscoveryArtwork,
     }
 
-    const { mockResolveLastOperation } = renderWithRelay({
+    const { mockResolveLastOperation } = await renderWithRelay({
       Artwork: () => ({
         id: "test-artwork-relay-id",
         internalID: "test-artwork-id",
@@ -183,9 +183,9 @@ describe("ArtworkCard", () => {
       }),
     })
 
-    fireEvent.press(screen.getByTestId("save-artwork-icon"))
+    await fireEvent.press(screen.getByTestId("save-artwork-icon"))
 
-    mockResolveLastOperation({
+    await mockResolveLastOperation({
       SaveArtworkPayload: () => ({
         artwork: {
           id: "test-artwork-id",
@@ -211,8 +211,8 @@ describe("ArtworkCard", () => {
     `)
   })
 
-  it("renders sale message when available", () => {
-    renderWithRelay({
+  it("renders sale message when available", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "test-artwork-id",
         title: "Test Artwork",
@@ -241,8 +241,8 @@ describe("ArtworkCard", () => {
     expect(screen.getByText("$5,000")).toBeOnTheScreen()
   })
 
-  it("does not render artist section when no artists", () => {
-    renderWithRelay({
+  it("does not render artist section when no artists", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "test-artwork-id",
         title: "Test Artwork",
@@ -267,8 +267,8 @@ describe("ArtworkCard", () => {
     expect(screen.queryByText("Test Artist")).not.toBeOnTheScreen()
   })
 
-  it("renders thumbnails for multiple images", () => {
-    renderWithRelay({
+  it("renders thumbnails for multiple images", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "test-artwork-id",
         title: "Test Artwork",

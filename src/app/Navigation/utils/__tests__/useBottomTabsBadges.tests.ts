@@ -28,14 +28,14 @@ describe("useBottomTabsBadges", () => {
     mockUseSpace.mockReturnValue(() => 10)
   })
 
-  it("returns default badge states when no clues or notifications are present", () => {
+  it("returns default badge states when no clues or notifications are present", async () => {
     mockUseVisualClue.mockReturnValue({ showVisualClue: () => false })
     mockUseTabBarBadge.mockReturnValue({
       unreadConversationsCount: 0,
       hasUnseenNotifications: false,
     })
 
-    const { result } = renderHook(() => useBottomTabsBadges())
+    const { result } = await renderHook(() => useBottomTabsBadges())
 
     expect(result.current.tabsBadges).toMatchObject({
       home: { tabBarBadge: undefined, tabBarBadgeStyle: {} },
@@ -45,13 +45,13 @@ describe("useBottomTabsBadges", () => {
     })
   })
 
-  it('updates badge for "home" tab when unseen notifications are present', () => {
+  it('updates badge for "home" tab when unseen notifications are present', async () => {
     mockUseVisualClue.mockReturnValue({ showVisualClue: () => false })
     mockUseTabBarBadge.mockReturnValue({
       hasUnseenNotifications: true,
     })
 
-    const { result } = renderHook(() => useBottomTabsBadges())
+    const { result } = await renderHook(() => useBottomTabsBadges())
 
     expect(result.current.tabsBadges.home).toMatchObject({
       tabBarBadge: "",
@@ -61,13 +61,13 @@ describe("useBottomTabsBadges", () => {
     })
   })
 
-  it('updates badge for "inbox" tab when unseen notifications are present', () => {
+  it('updates badge for "inbox" tab when unseen notifications are present', async () => {
     mockUseVisualClue.mockReturnValue({ showVisualClue: () => false })
     mockUseTabBarBadge.mockReturnValue({
       unreadConversationsCount: 5,
     })
 
-    const { result } = renderHook(() => useBottomTabsBadges())
+    const { result } = await renderHook(() => useBottomTabsBadges())
 
     expect(result.current.tabsBadges.inbox).toMatchObject({
       tabBarBadge: 5,
@@ -77,13 +77,13 @@ describe("useBottomTabsBadges", () => {
     })
   })
 
-  it('prioritises conversations count over visual clues for "inbox" tab', () => {
+  it('prioritises conversations count over visual clues for "inbox" tab', async () => {
     mockUseVisualClue.mockReturnValue({ showVisualClue: () => true })
     mockUseTabBarBadge.mockReturnValue({
       unreadConversationsCount: 5,
     })
 
-    const { result } = renderHook(() => useBottomTabsBadges())
+    const { result } = await renderHook(() => useBottomTabsBadges())
 
     expect(result.current.tabsBadges.inbox).toMatchObject({
       tabBarBadge: 5,

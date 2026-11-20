@@ -4,16 +4,16 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
 
 describe(renderWithLoadProgress, () => {
-  it(`renders a spinner while the graphqls are loading`, () => {
-    renderWithWrappers(
+  it(`renders a spinner while the graphqls are loading`, async () => {
+    await renderWithWrappers(
       renderWithLoadProgress(() => null, {})({ error: null, props: null, retry: () => null })!
     )
 
     expect(screen.getByTestId("relay-loading")).toBeTruthy()
   })
 
-  it(`renders the real content when the graphqls are done`, () => {
-    renderWithWrappers(
+  it(`renders the real content when the graphqls are done`, async () => {
+    await renderWithWrappers(
       renderWithLoadProgress(
         () => <Text>the real content</Text>,
         {}

@@ -34,8 +34,8 @@ const saleArtworkFixture = (overrides = {}) => {
 
 describe(ActiveLotStanding, () => {
   describe("User winning status", () => {
-    it("says 'Highest bid' if the user is winning the lot", () => {
-      renderWithWrappers(
+    it("says 'Highest bid' if the user is winning the lot", async () => {
+      await renderWithWrappers(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
@@ -46,8 +46,8 @@ describe(ActiveLotStanding, () => {
       expect(screen.root).toHaveTextContent("Highest bid", { exact: false })
     })
 
-    it("says 'Highest bid' if the user is has the high bid and reserveStatus is UnknownReserve", () => {
-      renderWithWrappers(
+    it("says 'Highest bid' if the user is has the high bid and reserveStatus is UnknownReserve", async () => {
+      await renderWithWrappers(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
@@ -58,10 +58,10 @@ describe(ActiveLotStanding, () => {
       expect(screen.root).toHaveTextContent("Highest bid", { exact: false })
     })
 
-    it("says 'Highest bid' if the user is winning but reserveStatus is ReserveNotMet in auction with Live part", () => {
+    it("says 'Highest bid' if the user is winning but reserveStatus is ReserveNotMet in auction with Live part", async () => {
       const date = new Date()
       date.setDate(date.getDate() + 1)
-      renderWithWrappers(
+      await renderWithWrappers(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
@@ -73,8 +73,8 @@ describe(ActiveLotStanding, () => {
       expect(screen.root).toHaveTextContent("Highest bid", { exact: false })
     })
 
-    it("hides winning info if auction with Live part are in Live bidding", () => {
-      renderWithWrappers(
+    it("hides winning info if auction with Live part are in Live bidding", async () => {
+      await renderWithWrappers(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
@@ -86,8 +86,8 @@ describe(ActiveLotStanding, () => {
       expect(screen.root).not.toHaveTextContent("Highest bid", { exact: false })
     })
 
-    it("hides winning info if auction with Live part is past open Live bidding time", () => {
-      renderWithWrappers(
+    it("hides winning info if auction with Live part is past open Live bidding time", async () => {
+      await renderWithWrappers(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
@@ -99,8 +99,8 @@ describe(ActiveLotStanding, () => {
       expect(screen.root).not.toHaveTextContent("Highest bid", { exact: false })
     })
 
-    it("says 'Reserve not met' if the user is winning the lot, but the reserveStatus is ReserveNotMet", () => {
-      renderWithWrappers(
+    it("says 'Reserve not met' if the user is winning the lot, but the reserveStatus is ReserveNotMet", async () => {
+      await renderWithWrappers(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
@@ -111,8 +111,8 @@ describe(ActiveLotStanding, () => {
       expect(screen.root).toHaveTextContent("Reserve not met", { exact: false })
     })
 
-    it("says 'Outbid' if the user is outbid on the lot, but the reserveStatus is ReserveNotMet", () => {
-      renderWithWrappers(
+    it("says 'Outbid' if the user is outbid on the lot, but the reserveStatus is ReserveNotMet", async () => {
+      await renderWithWrappers(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: false,
@@ -123,8 +123,8 @@ describe(ActiveLotStanding, () => {
       expect(screen.root).toHaveTextContent("Outbid", { exact: false })
     })
 
-    it("says 'outbid' if the user is outbid on the lot and reserve is met", () => {
-      renderWithWrappers(
+    it("says 'outbid' if the user is outbid on the lot and reserve is met", async () => {
+      await renderWithWrappers(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: false,
@@ -137,8 +137,8 @@ describe(ActiveLotStanding, () => {
   })
 
   describe("selling price", () => {
-    it("shows floor selling price", () => {
-      renderWithWrappers(
+    it("shows floor selling price", async () => {
+      await renderWithWrappers(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,

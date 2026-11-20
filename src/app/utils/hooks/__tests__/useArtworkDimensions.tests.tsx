@@ -10,8 +10,8 @@ describe("useArtworkDimensions", () => {
   const wrapper = ({ children }: any) => <GlobalStoreProvider>{children}</GlobalStoreProvider>
 
   describe("with no dimensions", () => {
-    it("returns null for all dimension texts", () => {
-      const { result } = renderHook(
+    it("returns null for all dimension texts", async () => {
+      const { result } = await renderHook(
         () => useArtworkDimensions({ dimensions: null, framedDimensions: null }),
         { wrapper }
       )
@@ -26,8 +26,8 @@ describe("useArtworkDimensions", () => {
   describe("with only regular dimensions", () => {
     const dimensions = { in: "20 × 24 in", cm: "50.8 × 61 cm" }
 
-    it("returns formatted dimensions in both-metrics format (default)", () => {
-      const { result } = renderHook(
+    it("returns formatted dimensions in both-metrics format (default)", async () => {
+      const { result } = await renderHook(
         () => useArtworkDimensions({ dimensions, framedDimensions: null }),
         { wrapper }
       )
@@ -38,8 +38,8 @@ describe("useArtworkDimensions", () => {
       expect(result.current.hasFramedDimensions).toBe(false)
     })
 
-    it("returns formatted dimensions in preferred-metric format", () => {
-      const { result } = renderHook(
+    it("returns formatted dimensions in preferred-metric format", async () => {
+      const { result } = await renderHook(
         () =>
           useArtworkDimensions({ dimensions, framedDimensions: null, format: "preferred-metric" }),
         { wrapper }
@@ -54,10 +54,13 @@ describe("useArtworkDimensions", () => {
     const dimensions = { in: "20 × 24 in", cm: "50.8 × 61 cm" }
     const framedDimensions = { in: "24 × 28 in", cm: "61 × 71.1 cm" }
 
-    it("returns framed dimensions as dimensionText and both separately", () => {
-      const { result } = renderHook(() => useArtworkDimensions({ dimensions, framedDimensions }), {
-        wrapper,
-      })
+    it("returns framed dimensions as dimensionText and both separately", async () => {
+      const { result } = await renderHook(
+        () => useArtworkDimensions({ dimensions, framedDimensions }),
+        {
+          wrapper,
+        }
+      )
 
       expect(result.current.dimensionText).toBe("24 × 28 in | 61 × 71.1 cm")
       expect(result.current.regularDimensionText).toBe("20 × 24 in | 50.8 × 61 cm")
@@ -65,8 +68,8 @@ describe("useArtworkDimensions", () => {
       expect(result.current.hasFramedDimensions).toBe(true)
     })
 
-    it("includes 'with frame included' text when includeFrameText is true", () => {
-      const { result } = renderHook(
+    it("includes 'with frame included' text when includeFrameText is true", async () => {
+      const { result } = await renderHook(
         () => useArtworkDimensions({ dimensions, framedDimensions, includeFrameText: true }),
         { wrapper }
       )
@@ -77,8 +80,8 @@ describe("useArtworkDimensions", () => {
       )
     })
 
-    it("works with preferred-metric format", () => {
-      const { result } = renderHook(
+    it("works with preferred-metric format", async () => {
+      const { result } = await renderHook(
         () => useArtworkDimensions({ dimensions, framedDimensions, format: "preferred-metric" }),
         { wrapper }
       )
@@ -95,8 +98,8 @@ describe("useArtworkDimensions", () => {
       cm: "50.8 × 61 cm",
     }
 
-    it("returns regular dimensions when framedDimensions is null", () => {
-      const { result } = renderHook(
+    it("returns regular dimensions when framedDimensions is null", async () => {
+      const { result } = await renderHook(
         () => useArtworkDimensions({ dimensions, framedDimensions: null }),
         { wrapper }
       )
@@ -107,8 +110,8 @@ describe("useArtworkDimensions", () => {
       expect(result.current.hasFramedDimensions).toBe(false)
     })
 
-    it("returns regular dimensions when framedDimensions has no values", () => {
-      const { result } = renderHook(
+    it("returns regular dimensions when framedDimensions has no values", async () => {
+      const { result } = await renderHook(
         () => useArtworkDimensions({ dimensions, framedDimensions: { in: null, cm: null } }),
         { wrapper }
       )
@@ -119,8 +122,8 @@ describe("useArtworkDimensions", () => {
   })
 
   describe("with partial dimension data", () => {
-    it("handles only inches in regular dimensions", () => {
-      const { result } = renderHook(
+    it("handles only inches in regular dimensions", async () => {
+      const { result } = await renderHook(
         () =>
           useArtworkDimensions({
             dimensions: { in: "20 × 24 in", cm: null },
@@ -132,8 +135,8 @@ describe("useArtworkDimensions", () => {
       expect(result.current.dimensionText).toBe("20 × 24 in")
     })
 
-    it("handles only centimeters in regular dimensions", () => {
-      const { result } = renderHook(
+    it("handles only centimeters in regular dimensions", async () => {
+      const { result } = await renderHook(
         () =>
           useArtworkDimensions({
             dimensions: { in: null, cm: "50.8 × 61 cm" },
@@ -145,8 +148,8 @@ describe("useArtworkDimensions", () => {
       expect(result.current.dimensionText).toBe("50.8 × 61 cm")
     })
 
-    it("handles only inches in framed dimensions", () => {
-      const { result } = renderHook(
+    it("handles only inches in framed dimensions", async () => {
+      const { result } = await renderHook(
         () =>
           useArtworkDimensions({
             dimensions: { in: "20 × 24 in", cm: "50.8 × 61 cm" },
@@ -163,10 +166,10 @@ describe("useArtworkDimensions", () => {
   describe("with different user metric preferences", () => {
     const dimensions = { in: "20 × 24 in", cm: "50.8 × 61 cm" }
 
-    it("uses centimeters when user prefers cm", () => {
+    it("uses centimeters when user prefers cm", async () => {
       __globalStoreTestUtils__?.injectState({ userPrefs: { metric: "cm" } })
 
-      const { result } = renderHook(
+      const { result } = await renderHook(
         () =>
           useArtworkDimensions({ dimensions, framedDimensions: null, format: "preferred-metric" }),
         { wrapper }
@@ -175,10 +178,10 @@ describe("useArtworkDimensions", () => {
       expect(result.current.dimensionText).toBe("50.8 × 61 cm")
     })
 
-    it("uses inches when user prefers in", () => {
+    it("uses inches when user prefers in", async () => {
       __globalStoreTestUtils__?.injectState({ userPrefs: { metric: "in" } })
 
-      const { result } = renderHook(
+      const { result } = await renderHook(
         () =>
           useArtworkDimensions({ dimensions, framedDimensions: null, format: "preferred-metric" }),
         { wrapper }

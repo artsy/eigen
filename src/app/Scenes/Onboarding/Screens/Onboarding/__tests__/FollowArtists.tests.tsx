@@ -71,108 +71,108 @@ describe("FollowArtists", () => {
   })
 
   describe("default view", () => {
-    it("shows the ordered set and hides search results", () => {
-      renderWithWrappers(<FollowArtists />)
+    it("shows the ordered set and hides search results", async () => {
+      await renderWithWrappers(<FollowArtists />)
 
       expect(screen.getByText("OrderedSet")).toBeOnTheScreen()
       expect(screen.queryByText("SearchResults")).not.toBeOnTheScreen()
     })
 
-    it("does not show the Clear button when there is no query", () => {
-      renderWithWrappers(<FollowArtists />)
+    it("does not show the Clear button when there is no query", async () => {
+      await renderWithWrappers(<FollowArtists />)
 
       expect(screen.queryByText("Clear")).not.toBeOnTheScreen()
     })
   })
 
   describe("search", () => {
-    it("shows search results and hides ordered set when query has 2+ chars", () => {
-      renderWithWrappers(<FollowArtists />)
+    it("shows search results and hides ordered set when query has 2+ chars", async () => {
+      await renderWithWrappers(<FollowArtists />)
 
-      fireEvent.changeText(screen.getByPlaceholderText("Search Artists"), "Ba")
+      await fireEvent.changeText(screen.getByPlaceholderText("Search Artists"), "Ba")
 
       expect(screen.getByText("SearchResults")).toBeOnTheScreen()
       expect(screen.queryByText("OrderedSet")).not.toBeOnTheScreen()
     })
 
-    it("does not show search results for a single character query", () => {
-      renderWithWrappers(<FollowArtists />)
+    it("does not show search results for a single character query", async () => {
+      await renderWithWrappers(<FollowArtists />)
 
-      fireEvent.changeText(screen.getByPlaceholderText("Search Artists"), "B")
+      await fireEvent.changeText(screen.getByPlaceholderText("Search Artists"), "B")
 
       expect(screen.queryByText("SearchResults")).not.toBeOnTheScreen()
       expect(screen.getByText("OrderedSet")).toBeOnTheScreen()
     })
 
-    it("shows Clear button when query is non-empty", () => {
-      renderWithWrappers(<FollowArtists />)
+    it("shows Clear button when query is non-empty", async () => {
+      await renderWithWrappers(<FollowArtists />)
 
-      fireEvent.changeText(screen.getByPlaceholderText("Search Artists"), "Banksy")
+      await fireEvent.changeText(screen.getByPlaceholderText("Search Artists"), "Banksy")
 
       expect(screen.getByText("Clear")).toBeOnTheScreen()
     })
 
-    it("pressing Clear clears the query and returns to ordered set", () => {
-      renderWithWrappers(<FollowArtists />)
+    it("pressing Clear clears the query and returns to ordered set", async () => {
+      await renderWithWrappers(<FollowArtists />)
 
-      fireEvent.changeText(screen.getByPlaceholderText("Search Artists"), "Banksy")
+      await fireEvent.changeText(screen.getByPlaceholderText("Search Artists"), "Banksy")
       expect(screen.getByText("SearchResults")).toBeOnTheScreen()
 
-      fireEvent.press(screen.getByText("Clear"))
+      await fireEvent.press(screen.getByText("Clear"))
 
       expect(screen.queryByText("SearchResults")).not.toBeOnTheScreen()
       expect(screen.getByText("OrderedSet")).toBeOnTheScreen()
       expect(screen.queryByText("Clear")).not.toBeOnTheScreen()
     })
 
-    it("pressing Clear dismisses the keyboard", () => {
-      renderWithWrappers(<FollowArtists />)
+    it("pressing Clear dismisses the keyboard", async () => {
+      await renderWithWrappers(<FollowArtists />)
 
-      fireEvent.changeText(screen.getByPlaceholderText("Search Artists"), "Banksy")
-      fireEvent.press(screen.getByText("Clear"))
+      await fireEvent.changeText(screen.getByPlaceholderText("Search Artists"), "Banksy")
+      await fireEvent.press(screen.getByText("Clear"))
 
       expect(dismissSpy).toHaveBeenCalledTimes(1)
     })
   })
 
   describe("progress badge", () => {
-    it("shows 0 of 3 follows initially", () => {
-      renderWithWrappers(<FollowArtists />)
+    it("shows 0 of 3 follows initially", async () => {
+      await renderWithWrappers(<FollowArtists />)
 
       expect(screen.getByText("0")).toBeOnTheScreen()
       expect(screen.getByText("of 3 follows")).toBeOnTheScreen()
     })
 
     it("reflects the number of followed artists", async () => {
-      renderWithWrappers(<FollowArtists />)
+      await renderWithWrappers(<FollowArtists />)
 
-      fireEvent.press(screen.getByText("OrderedSet"))
-      fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
 
       expect(await screen.findByText("2")).toBeOnTheScreen()
       expect(screen.getByText("of 3 follows")).toBeOnTheScreen()
     })
 
     it("shows Complete once 3 or more artists are followed", async () => {
-      renderWithWrappers(<FollowArtists />)
+      await renderWithWrappers(<FollowArtists />)
 
-      fireEvent.press(screen.getByText("OrderedSet"))
-      fireEvent.press(screen.getByText("OrderedSet"))
-      fireEvent.press(screen.getByText("OrderedSet"))
-      fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
 
       expect(await screen.findByText("Complete")).toBeOnTheScreen()
     })
   })
 
   describe("Followed artists bank", () => {
-    it("includes every followed artist", () => {
-      renderWithWrappers(<FollowArtists />)
+    it("includes every followed artist", async () => {
+      await renderWithWrappers(<FollowArtists />)
 
-      fireEvent.press(screen.getByText("OrderedSet"))
-      fireEvent.press(screen.getByText("OrderedSet"))
-      fireEvent.press(screen.getByText("OrderedSet"))
-      fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
 
       const lastCall = (FollowedArtistsBank as jest.Mock).mock.calls.at(-1)
       expect(lastCall[0].artistRefs).toHaveLength(4)
@@ -180,33 +180,33 @@ describe("FollowArtists", () => {
   })
 
   describe("Go to Home button", () => {
-    it("is disabled when fewer than 3 artists are followed", () => {
-      renderWithWrappers(<FollowArtists />)
+    it("is disabled when fewer than 3 artists are followed", async () => {
+      await renderWithWrappers(<FollowArtists />)
 
-      fireEvent.press(screen.getByText("OrderedSet"))
-      fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
 
       expect(screen.getByTestId("continue-button")).toBeDisabled()
     })
 
-    it("is enabled when 3 or more artists are followed", () => {
-      renderWithWrappers(<FollowArtists />)
+    it("is enabled when 3 or more artists are followed", async () => {
+      await renderWithWrappers(<FollowArtists />)
 
-      fireEvent.press(screen.getByText("OrderedSet"))
-      fireEvent.press(screen.getByText("OrderedSet"))
-      fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
 
       expect(screen.getByTestId("continue-button")).not.toBeDisabled()
     })
 
-    it("sets onboardingState to complete when pressed", () => {
-      renderWithWrappers(<FollowArtists />)
+    it("sets onboardingState to complete when pressed", async () => {
+      await renderWithWrappers(<FollowArtists />)
 
-      fireEvent.press(screen.getByText("OrderedSet"))
-      fireEvent.press(screen.getByText("OrderedSet"))
-      fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
 
-      fireEvent.press(screen.getByTestId("continue-button"))
+      await fireEvent.press(screen.getByTestId("continue-button"))
 
       expect(__globalStoreTestUtils__?.getCurrentState().onboarding.onboardingState).toBe(
         "complete"
@@ -214,16 +214,16 @@ describe("FollowArtists", () => {
       expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
     })
 
-    it("defers home tooltips when pressed", () => {
-      renderWithWrappers(<FollowArtists />)
+    it("defers home tooltips when pressed", async () => {
+      await renderWithWrappers(<FollowArtists />)
 
       GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(false)
 
-      fireEvent.press(screen.getByText("OrderedSet"))
-      fireEvent.press(screen.getByText("OrderedSet"))
-      fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
+      await fireEvent.press(screen.getByText("OrderedSet"))
 
-      fireEvent.press(screen.getByTestId("continue-button"))
+      await fireEvent.press(screen.getByTestId("continue-button"))
 
       expect(
         __globalStoreTestUtils__?.getCurrentState().progressiveOnboarding.sessionState
@@ -233,10 +233,10 @@ describe("FollowArtists", () => {
   })
 
   describe("Skip button", () => {
-    it("sets onboardingState to complete", () => {
-      renderWithWrappers(<FollowArtists />)
+    it("sets onboardingState to complete", async () => {
+      await renderWithWrappers(<FollowArtists />)
 
-      fireEvent.press(screen.getByLabelText("Skip to home"))
+      await fireEvent.press(screen.getByLabelText("Skip to home"))
 
       expect(__globalStoreTestUtils__?.getCurrentState().onboarding.onboardingState).toBe(
         "complete"
@@ -244,10 +244,10 @@ describe("FollowArtists", () => {
       expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
     })
 
-    it("tracks the skip tap", () => {
-      renderWithWrappers(<FollowArtists />)
+    it("tracks the skip tap", async () => {
+      await renderWithWrappers(<FollowArtists />)
 
-      fireEvent.press(screen.getByLabelText("Skip to home"))
+      await fireEvent.press(screen.getByLabelText("Skip to home"))
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: ActionType.tappedSkip,

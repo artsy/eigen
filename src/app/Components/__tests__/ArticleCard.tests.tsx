@@ -2,7 +2,7 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ArticleCard } from "app/Components/ArticleCard"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-it("renders without throwing an error", () => {
+it("renders without throwing an error", async () => {
   const onPress = jest.fn()
   const article = {
     thumbnailTitle: "Something Happened",
@@ -13,9 +13,9 @@ it("renders without throwing an error", () => {
     },
   }
 
-  renderWithWrappers(<ArticleCard article={article as any} onPress={onPress} />)
+  await renderWithWrappers(<ArticleCard article={article as any} onPress={onPress} />)
 
-  fireEvent(screen.getByTestId("article-card"), "press")
+  await fireEvent(screen.getByTestId("article-card"), "press")
 
   expect(onPress).toHaveBeenCalled()
 })

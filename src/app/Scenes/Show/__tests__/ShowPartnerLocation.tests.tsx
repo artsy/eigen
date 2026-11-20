@@ -45,8 +45,8 @@ describe("ShowPartnerLocation", () => {
     jest.clearAllMocks()
   })
 
-  it("renders the partner name and its address", () => {
-    renderWithRelay({
+  it("renders the partner name and its address", async () => {
+    await renderWithRelay({
       Show: () => ({ partner: { name: "440 Gallery" }, location, fair: null }),
     })
 
@@ -54,27 +54,27 @@ describe("ShowPartnerLocation", () => {
     expect(screen.getByText("440 6th ave, Brooklyn, NY 11215")).toBeOnTheScreen()
   })
 
-  it("opens the directions sheet when the address is tapped", () => {
-    renderWithRelay({
+  it("opens the directions sheet when the address is tapped", async () => {
+    await renderWithRelay({
       Show: () => ({ partner: { name: "440 Gallery" }, location, fair: null }),
     })
 
-    fireEvent.press(screen.getByTestId("show-partner-location-address"))
+    await fireEvent.press(screen.getByTestId("show-partner-location-address"))
 
     expect(mockShowActionSheetWithOptions).toHaveBeenCalled()
   })
 
   // An empty grey band under the carousel reads as a rendering fault, so the whole block goes.
-  it("renders nothing without an address", () => {
-    renderWithRelay({
+  it("renders nothing without an address", async () => {
+    await renderWithRelay({
       Show: () => ({ partner: { name: "440 Gallery" }, location: null, fair: null }),
     })
 
     expect(screen.queryByText("440 Gallery")).not.toBeOnTheScreen()
   })
 
-  it("renders nothing without a partner name", () => {
-    renderWithRelay({
+  it("renders nothing without a partner name", async () => {
+    await renderWithRelay({
       Show: () => ({ partner: null, location, fair: null }),
     })
 
@@ -82,8 +82,8 @@ describe("ShowPartnerLocation", () => {
   })
 
   // A show at a fair carries the fair's location rather than its own.
-  it("falls back to the fair's location", () => {
-    renderWithRelay({
+  it("falls back to the fair's location", async () => {
+    await renderWithRelay({
       Show: () => ({
         partner: { name: "440 Gallery" },
         location: null,

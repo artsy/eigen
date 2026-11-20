@@ -46,7 +46,7 @@ describe("OrderDetailsAskSpecialistModal", () => {
   it("submits inquiry with correct parameters", async () => {
     mockSubmit.mockImplementation(({ onCompleted }) => onCompleted())
 
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({ name: "John Doe", email: "john@example.com" }),
       Artwork: () => ({ internalID: "artwork-123" }),
     })
@@ -64,8 +64,8 @@ describe("OrderDetailsAskSpecialistModal", () => {
     const messageInput = screen.getByLabelText("Your message")
     const sendButton = screen.getByText("Send")
 
-    fireEvent.changeText(messageInput, "I have a question about this artwork")
-    fireEvent.press(sendButton)
+    await fireEvent.changeText(messageInput, "I have a question about this artwork")
+    await fireEvent.press(sendButton)
 
     await waitFor(() => {
       expect(mockSubmit).toHaveBeenCalledWith(
@@ -90,7 +90,7 @@ describe("OrderDetailsAskSpecialistModal", () => {
   it("shows error message on submission error", async () => {
     mockSubmit.mockImplementation(({ onError }) => onError())
 
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({ name: "John Doe", email: "john@example.com" }),
       Artwork: () => ({ internalID: "artwork-123" }),
     })
@@ -98,8 +98,8 @@ describe("OrderDetailsAskSpecialistModal", () => {
     const messageInput = screen.getByLabelText("Your message")
     const sendButton = screen.getByText("Send")
 
-    fireEvent.changeText(messageInput, "Test message")
-    fireEvent.press(sendButton)
+    await fireEvent.changeText(messageInput, "Test message")
+    await fireEvent.press(sendButton)
 
     await waitFor(() => {
       expect(
@@ -108,20 +108,20 @@ describe("OrderDetailsAskSpecialistModal", () => {
     })
   })
 
-  it("does not submit when message is empty", () => {
-    renderWithRelay({
+  it("does not submit when message is empty", async () => {
+    await renderWithRelay({
       Me: () => ({ name: "John Doe", email: "john@example.com" }),
       Artwork: () => ({ internalID: "artwork-123" }),
     })
 
     const messageInput = screen.getByLabelText("Your message")
     const sendButton = screen.getByText("Send")
-    fireEvent.press(sendButton)
+    await fireEvent.press(sendButton)
 
     expect(mockSubmit).not.toHaveBeenCalled()
 
-    fireEvent.changeText(messageInput, "   ")
-    fireEvent.press(sendButton)
+    await fireEvent.changeText(messageInput, "   ")
+    await fireEvent.press(sendButton)
 
     expect(mockSubmit).not.toHaveBeenCalled()
   })

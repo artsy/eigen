@@ -15,7 +15,7 @@ const { renderWithRelay } = setupTestWrapper<useTrendingSearchesQuery>({
 
 describe("TrendingSearches", () => {
   it("renders trending artists and artworks without period tabs", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artist: () => ({ internalID: "banksy", name: "Banksy", href: "/artist/banksy" }),
     })
 
@@ -32,7 +32,7 @@ describe("TrendingSearches", () => {
   it("only requests the ONE_DAY trending period", async () => {
     const requestedPeriods: unknown[] = []
 
-    const { env } = renderWithRelay({
+    const { env } = await renderWithRelay({
       TrendingSearches: (context) => {
         requestedPeriods.push(context.args?.period)
         return {}
@@ -47,14 +47,14 @@ describe("TrendingSearches", () => {
   })
 
   it("tracks a tap on a trending artwork", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artist: () => ({ internalID: "banksy", name: "Banksy", href: "/artist/banksy" }),
       Artwork: () => ({ internalID: "artwork-id", slug: "artwork-slug" }),
     })
 
     await screen.findByText("Banksy")
 
-    fireEvent.press(screen.getAllByTestId("artwork-artwork-slug")[0])
+    await fireEvent.press(screen.getAllByTestId("artwork-artwork-slug")[0])
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({

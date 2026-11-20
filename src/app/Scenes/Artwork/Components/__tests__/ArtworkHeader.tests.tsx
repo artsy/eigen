@@ -25,8 +25,8 @@ describe("ArtworkHeader", () => {
     `,
   })
 
-  it("renders correctly", () => {
-    renderWithRelay({
+  it("renders correctly", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         title: "Mock Artwork Title",
         date: null,

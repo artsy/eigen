@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { getUnitedSelectedAndAppliedFilters } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
@@ -48,10 +48,10 @@ describe("ArtworkFilterOptionCheckboxItem", () => {
     )
   }
 
-  it("renders properly", () => {
-    const { queryByTestId } = renderWithWrappers(<TestWrapper />)
-    expect(queryByTestId("ArtworkFilterOptionItemRow")).toBeDefined()
-    expect(queryByTestId("ArtworkFilterOptionCheckboxItemCheckbox")).toBeDefined()
+  it("renders properly", async () => {
+    await renderWithWrappers(<TestWrapper />)
+    expect(screen.getByTestId("ArtworkFilterOptionItemRow")).toBeDefined()
+    expect(screen.getByTestId("ArtworkFilterOptionCheckboxItemCheckbox")).toBeDefined()
   })
 
   it("updates the store when pressed", async () => {
@@ -74,14 +74,14 @@ describe("ArtworkFilterOptionCheckboxItem", () => {
       filterType: "local",
     }
 
-    const { getByTestId } = renderWithWrappers(<TestWrapper filterStoreData={initialData} />)
+    await renderWithWrappers(<TestWrapper filterStoreData={initialData} />)
 
-    const FilterOptionItem = getByTestId("ArtworkFilterOptionItemRow")
+    const FilterOptionItem = screen.getByTestId("ArtworkFilterOptionItemRow")
 
     let checked = getCheckedValue()
     expect(checked).toBe(false)
 
-    fireEvent.press(FilterOptionItem)
+    await fireEvent.press(FilterOptionItem)
 
     checked = getCheckedValue()
     expect(checked).toBe(true)

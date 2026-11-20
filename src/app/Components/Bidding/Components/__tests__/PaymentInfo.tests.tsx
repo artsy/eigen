@@ -10,14 +10,14 @@ jest.useFakeTimers({
   legacyFakeTimers: true,
 })
 
-it("renders without throwing an error", () => {
-  renderWithWrappers(<PaymentInfo {...initialProps} />)
+it("renders without throwing an error", async () => {
+  await renderWithWrappers(<PaymentInfo {...initialProps} />)
 })
 
-it("shows the cc info that the user had typed into the form", () => {
-  renderWithWrappers(<PaymentInfo {...initialProps} />)
+it("shows the cc info that the user had typed into the form", async () => {
+  await renderWithWrappers(<PaymentInfo {...initialProps} />)
 
-  fireEvent.press(screen.getByText("Credit card"))
+  await fireEvent.press(screen.getByText("Credit card"))
   expect(mockNavigator.navigate).toHaveBeenCalledWith("CreditCardForm", {
     billingAddress: initialProps.billingAddress,
     onSubmit: expect.any(Function),

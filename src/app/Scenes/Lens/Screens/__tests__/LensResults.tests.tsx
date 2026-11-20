@@ -1,5 +1,5 @@
 import { bullet } from "@artsy/palette-mobile"
-import { act, fireEvent, screen, waitFor, within } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor, within } from "@testing-library/react-native"
 import {
   FilterArtworksInput,
   LensResultsTestsQuery,
@@ -78,8 +78,8 @@ describe("LensResults", () => {
     fromLibrary = false
   })
 
-  it("uses the artwork's standard link when a result is pressed", () => {
-    renderWithRelay({
+  it("uses the artwork's standard link when a result is pressed", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         title: "Cool Painting",
         slug: "some-artwork-slug",
@@ -87,23 +87,23 @@ describe("LensResults", () => {
       }),
     })
 
-    fireEvent.press(screen.getByTestId("artworkGridItem-Cool Painting"))
+    await fireEvent.press(screen.getByTestId("artworkGridItem-Cool Painting"))
 
     expect(navigate).toHaveBeenCalledExactlyOnceWith("/artwork/some-artwork-slug")
   })
 
-  it("returns to the previous screen when backing out", () => {
-    renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+  it("returns to the previous screen when backing out", async () => {
+    await renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 
-    fireEvent.press(screen.getByLabelText("Back"))
+    await fireEvent.press(screen.getByLabelText("Back"))
 
     expect(goBack).toHaveBeenCalledTimes(1)
   })
 
-  it("returns to the previous screen on Android hardware back too", () => {
+  it("returns to the previous screen on Android hardware back too", async () => {
     const addEventListener = jest.spyOn(BackHandler, "addEventListener")
 
-    renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+    await renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 
     const handler = addEventListener.mock.calls
       .filter(([event]) => event === "hardwareBackPress")
@@ -116,25 +116,25 @@ describe("LensResults", () => {
     expect(goBack).toHaveBeenCalledTimes(1)
   })
 
-  it("offers a way to search another photo when there are no matches", () => {
-    renderWithRelay({ FilterArtworksConnection: () => ({ edges: [] }) })
+  it("offers a way to search another photo when there are no matches", async () => {
+    await renderWithRelay({ FilterArtworksConnection: () => ({ edges: [] }) })
 
     expect(screen.getByText("No matches found. Please try another photo.")).toBeOnTheScreen()
     expect(screen.getByText("Try another photo")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByTestId("lensResultsSearchByPhotoButton"))
+    await fireEvent.press(screen.getByTestId("lensResultsSearchByPhotoButton"))
 
     expect(mockNavigate).toHaveBeenCalledWith("LensCamera")
   })
 
-  it("does not offer that button when there are matches to tap", () => {
-    renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+  it("does not offer that button when there are matches to tap", async () => {
+    await renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 
     expect(screen.queryByTestId("lensResultsSearchByPhotoButton")).toBeNull()
   })
 
-  it("shows the photo the search ran on", () => {
-    renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+  it("shows the photo the search ran on", async () => {
+    await renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 
     const thumbnail = within(screen.getByTestId("lensResultsPhotoThumbnail")).getByTestId(
       "fast-image"
@@ -143,14 +143,14 @@ describe("LensResults", () => {
     expect(thumbnail).toHaveProp("source", expect.objectContaining({ uri: photoUri }))
   })
 
-  it("tells the user these are matches to their photo", () => {
-    renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+  it("tells the user these are matches to their photo", async () => {
+    await renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 
     expect(screen.getByText("Great taste! Here are some matches to your photo")).toBeTruthy()
   })
 
-  it("claims no matches when there are none", () => {
-    renderWithRelay({ FilterArtworksConnection: () => ({ edges: [] }) })
+  it("claims no matches when there are none", async () => {
+    await renderWithRelay({ FilterArtworksConnection: () => ({ edges: [] }) })
 
     expect(
       screen.getByText("Unfortunately, we couldn't find great matches for that photo")
@@ -158,47 +158,51 @@ describe("LensResults", () => {
     expect(screen.queryByText("Great taste! Here are some matches to your photo")).toBeNull()
   })
 
-  it("deletes the searched photo on the way out", () => {
-    const { unmount } = renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+  it("deletes the searched photo on the way out", async () => {
+    const { unmount } = await renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 
     expect(discardTempPhotos).not.toHaveBeenCalled()
 
-    unmount()
+    await unmount()
 
     expect(discardTempPhotos).toHaveBeenCalledWith([photoUri])
   })
 
   describe("filters", () => {
     const openFilters = async () => {
-      fireEvent.press(screen.getByTestId("lensResultsFilterButton"))
+      await fireEvent.press(screen.getByTestId("lensResultsFilterButton"))
       await screen.findByText("Show Results")
     }
 
     const applyFramedFilter = async () => {
       await openFilters()
-      fireEvent.press(screen.getByText("Framed"))
-      fireEvent.press(await screen.findByText("Show only framed works"))
-      fireEvent.press(screen.getByText("Show Results"))
+      await fireEvent.press(screen.getByText("Framed"))
+      await fireEvent.press(await screen.findByText("Show only framed works"))
+      await fireEvent.press(screen.getByText("Show Results"))
     }
 
-    it("does not offer filters when the photo has no matches", () => {
-      renderWithRelay({ FilterArtworksConnection: () => ({ edges: [] }) })
+    it("does not offer filters when the photo has no matches", async () => {
+      await renderWithRelay({ FilterArtworksConnection: () => ({ edges: [] }) })
 
       expect(screen.queryByTestId("lensResultsFilterButton")).toBeNull()
     })
 
     it("shows how many filters are applied", async () => {
-      renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+      const { mockResolveLastOperation } = await renderWithRelay({
+        Artwork: () => ({ title: "Cool Painting" }),
+      })
 
       await applyFramedFilter()
+      // The filtered search suspends the results until it comes back
+      await mockResolveLastOperation({ Artwork: () => ({ title: "Cool Painting" }) })
 
-      const filterButton = screen.getByTestId("lensResultsFilterButton")
+      const filterButton = await screen.findByTestId("lensResultsFilterButton")
       expect(within(filterButton).getByText(`${bullet} 1`)).toBeOnTheScreen()
       expect(filterButton).toHaveProp("accessibilityLabel", "Filter, 1 applied")
     })
 
     it("keeps the photo on screen and retries the filtered search when it fails", async () => {
-      const { env, mockRejectLastOperation } = renderWithRelay({
+      const { env, mockRejectLastOperation } = await renderWithRelay({
         Artwork: () => ({ title: "Cool Painting" }),
       })
 
@@ -212,12 +216,12 @@ describe("LensResults", () => {
 
       try {
         await applyFramedFilter()
-        mockRejectLastOperation(new Error("Network request failed"))
+        await mockRejectLastOperation(new Error("Network request failed"))
 
         expect(await screen.findByText("Unable to load")).toBeOnTheScreen()
         expect(screen.getByTestId("lensResultsPhotoThumbnail")).toBeOnTheScreen()
 
-        fireEvent.press(screen.getByLabelText("Retry"))
+        await fireEvent.press(screen.getByLabelText("Retry"))
 
         await waitFor(() =>
           expect(env.mock.getMostRecentOperation().request.variables.input).toMatchObject({
@@ -239,7 +243,7 @@ describe("LensResults", () => {
     })
 
     it("offers filters without sort, since image search only supports one order", async () => {
-      renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+      await renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 
       await openFilters()
 
@@ -249,7 +253,7 @@ describe("LensResults", () => {
     })
 
     it("offers filters for the aggregations of the image's matches", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Artwork: () => ({ title: "Cool Painting" }),
         FilterArtworksConnection: () => ({
           aggregations: [{ slice: "MEDIUM", counts: [{ name: "Painting", value: "painting" }] }],
@@ -262,7 +266,7 @@ describe("LensResults", () => {
     })
 
     it("keeps searching by the same image when filters are applied", async () => {
-      const { env } = renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+      const { env } = await renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 
       await applyFramedFilter()
 
@@ -275,7 +279,7 @@ describe("LensResults", () => {
     })
 
     it("reports the filter change against the image search", async () => {
-      renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+      await renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 
       await applyFramedFilter()
 
@@ -289,18 +293,18 @@ describe("LensResults", () => {
     })
 
     it("offers to clear filters, not to try another photo, when filters match nothing", async () => {
-      const { mockResolveLastOperation } = renderWithRelay({
+      const { mockResolveLastOperation } = await renderWithRelay({
         Artwork: () => ({ title: "Cool Painting" }),
       })
 
       await applyFramedFilter()
-      act(() => mockResolveLastOperation({ FilterArtworksConnection: () => ({ edges: [] }) }))
+      await mockResolveLastOperation({ FilterArtworksConnection: () => ({ edges: [] }) })
 
       expect(await screen.findByText("No results found for these filters.")).toBeOnTheScreen()
       expect(screen.getByText("Great taste! Here are some matches to your photo")).toBeOnTheScreen()
       expect(screen.queryByTestId("lensResultsSearchByPhotoButton")).toBeNull()
 
-      fireEvent.press(screen.getByTestId("lensResultsClearFiltersButton"))
+      await fireEvent.press(screen.getByTestId("lensResultsClearFiltersButton"))
 
       // Unfiltered results are already in the store, so they come back without a new request
       expect(await screen.findByTestId("artworkGridItem-Cool Painting")).toBeOnTheScreen()
@@ -308,8 +312,8 @@ describe("LensResults", () => {
   })
 
   describe("tracking", () => {
-    it("reports a search that found matches", () => {
-      renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+    it("reports a search that found matches", async () => {
+      await renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 
       expect(mockTrackEvent).toHaveBeenCalledExactlyOnceWith({
         action: "searchedByImageWithResults",
@@ -318,8 +322,8 @@ describe("LensResults", () => {
       })
     })
 
-    it("reports a search that found nothing", () => {
-      renderWithRelay({ FilterArtworksConnection: () => ({ edges: [] }) })
+    it("reports a search that found nothing", async () => {
+      await renderWithRelay({ FilterArtworksConnection: () => ({ edges: [] }) })
 
       expect(mockTrackEvent).toHaveBeenCalledExactlyOnceWith({
         action: "searchedByImageWithNoResults",
@@ -328,20 +332,20 @@ describe("LensResults", () => {
       })
     })
 
-    it("separates a photo picked from the library from a capture", () => {
+    it("separates a photo picked from the library from a capture", async () => {
       fromLibrary = true
 
-      renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+      await renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 
       expect(mockTrackEvent).toHaveBeenCalledExactlyOnceWith(
         expect.objectContaining({ photo_source: "photo_library" })
       )
     })
 
-    it("attributes a tapped result to the image search, not to text search", () => {
-      renderWithRelay({ Artwork: () => ({ title: "Cool Painting", slug: "cool-painting" }) })
+    it("attributes a tapped result to the image search, not to text search", async () => {
+      await renderWithRelay({ Artwork: () => ({ title: "Cool Painting", slug: "cool-painting" }) })
 
-      fireEvent.press(screen.getByTestId("artworkGridItem-Cool Painting"))
+      await fireEvent.press(screen.getByTestId("artworkGridItem-Cool Painting"))
 
       expect(mockTrackEvent).toHaveBeenLastCalledWith(
         expect.objectContaining({

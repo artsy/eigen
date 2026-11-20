@@ -6,7 +6,7 @@ describe("ItineraryStopNote", () => {
   const { renderWithRelay } = setupTestWrapper({ Component: ItineraryStopNote })
 
   it("shows the stop's note under its heading", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       { ItineraryStop: () => ({ note: "Ask for the back room." }) },
       { stopID: "stop-1" }
     )
@@ -15,8 +15,8 @@ describe("ItineraryStopNote", () => {
     expect(screen.getByText("Ask for the back room.")).toBeOnTheScreen()
   })
 
-  it("renders nothing when the stop has no note", () => {
-    renderWithRelay({ ItineraryStop: () => ({ note: "  " }) }, { stopID: "stop-1" })
+  it("renders nothing when the stop has no note", async () => {
+    await renderWithRelay({ ItineraryStop: () => ({ note: "  " }) }, { stopID: "stop-1" })
 
     expect(screen.queryByTestId("itinerary-stop-note")).not.toBeOnTheScreen()
   })

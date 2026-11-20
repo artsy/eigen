@@ -35,11 +35,11 @@ describe("ContextMenuArtwork", () => {
     })
 
     it("shows context menu on long press", async () => {
-      renderWithRelay()
+      await renderWithRelay()
 
       const artworkCard = screen.getByTestId("android-context-menu-trigger")
 
-      fireEvent(artworkCard, "onLongPress")
+      await fireEvent(artworkCard, "onLongPress")
 
       await waitFor(() => {
         expect(screen.getByText("Create alert")).toBeOnTheScreen()
@@ -61,9 +61,9 @@ describe("ContextMenuArtwork", () => {
         mockUseExperimentFlag.mockReturnValue(false)
         __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtsyLens: true })
 
-        renderWithRelay()
+        await renderWithRelay()
 
-        fireEvent(screen.getByTestId("android-context-menu-trigger"), "onLongPress")
+        await fireEvent(screen.getByTestId("android-context-menu-trigger"), "onLongPress")
 
         await waitFor(() => {
           expect(screen.getByText("Share")).toBeOnTheScreen()
@@ -75,15 +75,15 @@ describe("ContextMenuArtwork", () => {
         mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
         __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtsyLens: true })
 
-        renderWithRelay({ Artwork: () => ({ slug: "the-artwork-slug" }) })
+        await renderWithRelay({ Artwork: () => ({ slug: "the-artwork-slug" }) })
 
-        fireEvent(screen.getByTestId("android-context-menu-trigger"), "onLongPress")
+        await fireEvent(screen.getByTestId("android-context-menu-trigger"), "onLongPress")
 
         await waitFor(() => {
           expect(screen.getByText("Find similar")).toBeOnTheScreen()
         })
 
-        fireEvent.press(screen.getByText("Find similar"))
+        await fireEvent.press(screen.getByText("Find similar"))
 
         await waitFor(() => {
           expect(navigate).toHaveBeenCalledWith("/artwork/the-artwork-slug/similar")

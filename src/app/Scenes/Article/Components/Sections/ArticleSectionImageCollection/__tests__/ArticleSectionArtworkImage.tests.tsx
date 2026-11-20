@@ -20,15 +20,15 @@ describe("ArticleSectionArtworkImage", () => {
   })
 
   it("renders", async () => {
-    renderWithRelay()
+    await renderWithRelay()
 
     expect(screen.getByLabelText(`Image of <mock-value-for-field-\"title\">`)).toBeOnTheScreen()
   })
 
   it("navigates to the artwork", async () => {
-    renderWithRelay()
+    await renderWithRelay()
 
-    fireEvent.press(screen.getByLabelText(`Image of <mock-value-for-field-\"title\">`))
+    await fireEvent.press(screen.getByLabelText(`Image of <mock-value-for-field-\"title\">`))
 
     expect(navigate).toHaveBeenCalledWith(`<mock-value-for-field-\"href\">`)
   })

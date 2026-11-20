@@ -30,8 +30,8 @@ jest.mock("app/Scenes/Onboarding/Screens/Auth/hooks/useAuthNavigation", () => ({
 const mockUseCountryCode = useCountryCode as jest.Mock
 
 describe("SignUpNameStep", () => {
-  it("renders the full name input", () => {
-    renderWithWrappers(
+  it("renders the full name input", async () => {
+    await renderWithWrappers(
       <AuthContext.Provider>
         <SignUpNameStep />
       </AuthContext.Provider>
@@ -42,8 +42,8 @@ describe("SignUpNameStep", () => {
 
   // The e2e signup flow presses this button by its accessibility label, so a rename has to
   // fail here rather than in a QA run replayed against a prebuilt app
-  it("labels the Continue button so it can be told apart from the password step's", () => {
-    renderWithWrappers(
+  it("labels the Continue button so it can be told apart from the password step's", async () => {
+    await renderWithWrappers(
       <AuthContext.Provider>
         <SignUpNameStep />
       </AuthContext.Provider>
@@ -53,8 +53,8 @@ describe("SignUpNameStep", () => {
     expect(screen.getAllByLabelText("Continue to complete sign up").length).toBeGreaterThan(0)
   })
 
-  it("renders the terms and privacy policy checkbox", () => {
-    renderWithWrappers(
+  it("renders the terms and privacy policy checkbox", async () => {
+    await renderWithWrappers(
       <AuthContext.Provider>
         <SignUpNameStep />
       </AuthContext.Provider>
@@ -65,8 +65,8 @@ describe("SignUpNameStep", () => {
     ).toBeTruthy()
   })
 
-  it("renders the email subscription checkbox", () => {
-    renderWithWrappers(
+  it("renders the email subscription checkbox", async () => {
+    await renderWithWrappers(
       <AuthContext.Provider>
         <SignUpNameStep />
       </AuthContext.Provider>
@@ -87,8 +87,8 @@ describe("SignUpNameStep", () => {
       jest.clearAllMocks()
     })
 
-    it("does not render the email opt-in checkbox if the user is automatically subscribed", () => {
-      renderWithWrappers(
+    it("does not render the email opt-in checkbox if the user is automatically subscribed", async () => {
+      await renderWithWrappers(
         <AuthContext.Provider runtimeModel={{ ...defaultState, isAutomaticallySubscribed: true }}>
           <SignUpNameStep />
         </AuthContext.Provider>
@@ -103,18 +103,18 @@ describe("SignUpNameStep", () => {
         // @ts-expect-error
         .mockImplementation(() => Promise.resolve())
 
-      renderWithWrappers(
+      await renderWithWrappers(
         <AuthContext.Provider runtimeModel={{ ...defaultState, isAutomaticallySubscribed: true }}>
           <SignUpNameStep />
         </AuthContext.Provider>
       )
 
-      fireEvent.changeText(screen.getByHintText("Enter your full name"), "Percy Cat")
-      fireEvent.press(
+      await fireEvent.changeText(screen.getByHintText("Enter your full name"), "Percy Cat")
+      await fireEvent.press(
         screen.getByHintText("Check this element to accept Artsy's terms and privacy policy")
       )
 
-      fireEvent.press(screen.getByText("Continue"))
+      await fireEvent.press(screen.getByText("Continue"))
 
       await flushPromiseQueue()
 

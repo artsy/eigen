@@ -16,9 +16,9 @@ describe("SellWorkCard", () => {
     `,
   })
 
-  it("shows the work with its auction channel", () => {
+  it("shows the work with its auction channel", async () => {
     // getSellChannel treats an odd second-last hex digit as an auction
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "id-b4",
         artistNames: "Amoako Boafo",
@@ -33,15 +33,17 @@ describe("SellWorkCard", () => {
     expect(screen.getByText("Artnet Auction")).toBeOnTheScreen()
   })
 
-  it("shows the estimate for a listing work", () => {
-    renderWithRelay({ Artwork: () => ({ internalID: "id-a2" }) })
+  it("shows the estimate for a listing work", async () => {
+    await renderWithRelay({ Artwork: () => ({ internalID: "id-a2" }) })
 
     expect(screen.getByText("Estimated Value: US$2,800–3,600")).toBeOnTheScreen()
     expect(screen.getByText("Artsy Listing")).toBeOnTheScreen()
   })
 
-  it("leaves out the date when the work has none", () => {
-    renderWithRelay({ Artwork: () => ({ internalID: "id-a2", title: "Untitled", date: null }) })
+  it("leaves out the date when the work has none", async () => {
+    await renderWithRelay({
+      Artwork: () => ({ internalID: "id-a2", title: "Untitled", date: null }),
+    })
 
     expect(screen.getByText("Untitled")).toBeOnTheScreen()
   })

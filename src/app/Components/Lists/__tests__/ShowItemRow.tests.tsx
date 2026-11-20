@@ -19,22 +19,22 @@ describe("ShowItemRow", () => {
     jest.clearAllMocks()
   })
 
-  it("offers to save a show that is not followed", () => {
-    renderWithRelay({ Show: () => ({ is_followed: false }) })
+  it("offers to save a show that is not followed", async () => {
+    await renderWithRelay({ Show: () => ({ is_followed: false }) })
 
     expect(screen.getByText("Save")).toBeTruthy()
   })
 
-  it("reflects a followed show", () => {
-    renderWithRelay({ Show: () => ({ is_followed: true }) })
+  it("reflects a followed show", async () => {
+    await renderWithRelay({ Show: () => ({ is_followed: true }) })
 
     expect(screen.getByText("Saved")).toBeTruthy()
   })
 
-  it("commits a mutation when pressed", () => {
-    const { env } = renderWithRelay({ Show: () => ({ is_followed: false }) })
+  it("commits a mutation when pressed", async () => {
+    const { env } = await renderWithRelay({ Show: () => ({ is_followed: false }) })
 
-    fireEvent.press(screen.getByText("Save"))
+    await fireEvent.press(screen.getByText("Save"))
 
     // Asserts that pressing follows, without asserting how the label behaves mid-flight.
     expect(env.mock.getAllOperations().length).toBeGreaterThan(0)

@@ -495,8 +495,8 @@ describe("useRelativeTimeOfSale", () => {
     jest.useRealTimers()
   })
 
-  it("returns null initially", () => {
-    const { result } = renderHook(() =>
+  it("returns null initially", async () => {
+    const { result } = await renderHook(() =>
       useRelativeTimeOfSale({
         startAt: times.past10,
         endAt: times.future30,
@@ -507,8 +507,8 @@ describe("useRelativeTimeOfSale", () => {
     expect(result.current).toBeNull()
   })
 
-  it("stays null after interval when endedAt is set", () => {
-    const { result } = renderHook(() =>
+  it("stays null after interval when endedAt is set", async () => {
+    const { result } = await renderHook(() =>
       useRelativeTimeOfSale({
         startAt: times.past10,
         endAt: times.future30,
@@ -516,14 +516,14 @@ describe("useRelativeTimeOfSale", () => {
         timeZone: timezones.ny,
       })
     )
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(1001)
     })
     expect(result.current).toBeNull()
   })
 
-  it("stays null after interval when endAt is missing", () => {
-    const { result } = renderHook(() =>
+  it("stays null after interval when endAt is missing", async () => {
+    const { result } = await renderHook(() =>
       useRelativeTimeOfSale({
         startAt: times.past10,
         endAt: null,
@@ -531,14 +531,14 @@ describe("useRelativeTimeOfSale", () => {
         timeZone: timezones.ny,
       })
     )
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(1001)
     })
     expect(result.current).toBeNull()
   })
 
-  it("stays null after interval when startAt is missing", () => {
-    const { result } = renderHook(() =>
+  it("stays null after interval when startAt is missing", async () => {
+    const { result } = await renderHook(() =>
       useRelativeTimeOfSale({
         startAt: null,
         endAt: times.future30,
@@ -546,14 +546,14 @@ describe("useRelativeTimeOfSale", () => {
         timeZone: timezones.ny,
       })
     )
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(1001)
     })
     expect(result.current).toBeNull()
   })
 
-  it("returns timer info after interval fires for a valid in-progress sale", () => {
-    const { result } = renderHook(() =>
+  it("returns timer info after interval fires for a valid in-progress sale", async () => {
+    const { result } = await renderHook(() =>
       useRelativeTimeOfSale({
         startAt: times.past10,
         endAt: times.future30,
@@ -561,7 +561,7 @@ describe("useRelativeTimeOfSale", () => {
         timeZone: timezones.ny,
       })
     )
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(1001)
     })
     expect(result.current).not.toBeNull()

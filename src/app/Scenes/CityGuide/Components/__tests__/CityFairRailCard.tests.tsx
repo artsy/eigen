@@ -14,25 +14,25 @@ describe("CityFairRailCard", () => {
     jest.clearAllMocks()
   })
 
-  it("renders the fair name over the image", () => {
-    renderWithWrappers(<CityFairRailCard {...props} />)
+  it("renders the fair name over the image", async () => {
+    await renderWithWrappers(<CityFairRailCard {...props} />)
 
     expect(screen.getByText("London Frieze")).toBeOnTheScreen()
   })
 
-  it("navigates to the href when tapped", () => {
-    renderWithWrappers(<CityFairRailCard {...props} />)
+  it("navigates to the href when tapped", async () => {
+    await renderWithWrappers(<CityFairRailCard {...props} />)
 
-    fireEvent.press(screen.getByText("London Frieze"))
+    await fireEvent.press(screen.getByText("London Frieze"))
 
     expect(navigate).toHaveBeenCalledWith("/fair/frieze-london-2026")
   })
 
-  it("fires onPress before navigating", () => {
+  it("fires onPress before navigating", async () => {
     const onPress = jest.fn()
-    renderWithWrappers(<CityFairRailCard {...props} onPress={onPress} />)
+    await renderWithWrappers(<CityFairRailCard {...props} onPress={onPress} />)
 
-    fireEvent.press(screen.getByText("London Frieze"))
+    await fireEvent.press(screen.getByText("London Frieze"))
 
     expect(onPress).toHaveBeenCalled()
     expect(navigate).toHaveBeenCalledWith("/fair/frieze-london-2026")

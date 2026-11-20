@@ -25,26 +25,26 @@ describe.skip("SelectArtist", () => {
 
   describe("when changing an artist from artists list", () => {
     fit("should update the selected artist", async () => {
-      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-      act(() => {
+      await act(() => {
         mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
       })
 
       // Check initial artist is selected
       await screen.findByText("Andy Warhol")
 
-      fireEvent.press(screen.getByTestId("change-artist-touchable"))
+      await fireEvent.press(screen.getByTestId("change-artist-touchable"))
 
       // Modal is visible and the list is populated
       expect(screen.getByTestId("select-artist-modal").props.visible).toBeTrue()
       expect(screen.getByTestId("select-artist-flatlist").props.data.length).toBe(3)
 
       // Press on Banksy
-      fireEvent.press(screen.getByTestId("artist-section-item-Banksy"))
+      await fireEvent.press(screen.getByTestId("artist-section-item-Banksy"))
 
       // fetch Banksy data
-      act(() => {
+      await act(() => {
         mockEnvironment.mock.resolveMostRecentOperation({
           data: {
             artist: { internalID: "artist-id", name: "Banksy", imageUrl: "image-url" },
@@ -62,14 +62,14 @@ describe.skip("SelectArtist", () => {
 
   describe("when searching for an artist in artists list", () => {
     it("should update the list of artists if the artist name is in the list", async () => {
-      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-      act(() => {
+      await act(() => {
         mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
       })
 
       await screen.findByTestId("change-artist-touchable")
-      fireEvent.press(screen.getByTestId("change-artist-touchable"))
+      await fireEvent.press(screen.getByTestId("change-artist-touchable"))
 
       // Modal is visible and the section list is populated
       expect(screen.getByTestId("select-artist-modal").props.visible).toBeTrue()
@@ -78,8 +78,8 @@ describe.skip("SelectArtist", () => {
       // Search for "Boafo"
       const searchInput = screen.getByTestId("select-artists-search-input")
 
-      fireEvent(searchInput, "focus")
-      fireEvent(searchInput, "changeText", "Boafo")
+      await fireEvent(searchInput, "focus")
+      await fireEvent(searchInput, "changeText", "Boafo")
 
       // Flatlist is showing
       expect(screen.getByTestId("select-artist-flatlist")).toBeTruthy()
@@ -89,10 +89,10 @@ describe.skip("SelectArtist", () => {
       expect(screen.getByTestId("artist-section-item-Amoako Boafo")).toBeTruthy()
 
       // Press on Amoako Boafo
-      fireEvent.press(screen.getByTestId("artist-section-item-Amoako Boafo"))
+      await fireEvent.press(screen.getByTestId("artist-section-item-Amoako Boafo"))
 
       // fetch Amoako Boafo data
-      act(() => {
+      await act(() => {
         mockEnvironment.mock.resolveMostRecentOperation({
           data: {
             artist: { internalID: "artist-id", name: "Amoako Boafo", imageUrl: "image-url" },
@@ -109,14 +109,14 @@ describe.skip("SelectArtist", () => {
     })
 
     it("should display an error message if the artist name is not in the list", async () => {
-      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-      act(() => {
+      await act(() => {
         mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
       })
 
       await screen.findByTestId("change-artist-touchable")
-      fireEvent.press(screen.getByTestId("change-artist-touchable"))
+      await fireEvent.press(screen.getByTestId("change-artist-touchable"))
 
       // Modal is visible and the section list is populated
       expect(screen.getByTestId("select-artist-modal").props.visible).toBeTrue()
@@ -125,8 +125,8 @@ describe.skip("SelectArtist", () => {
       // Search for "Artist doesn't exist"
       const searchInput = screen.getByTestId("select-artists-search-input")
 
-      fireEvent(searchInput, "focus")
-      fireEvent(searchInput, "changeText", "Artist doesn't exist")
+      await fireEvent(searchInput, "focus")
+      await fireEvent(searchInput, "changeText", "Artist doesn't exist")
 
       // Flatlist is showing
       expect(screen.getByTestId("select-artist-flatlist")).toBeTruthy()

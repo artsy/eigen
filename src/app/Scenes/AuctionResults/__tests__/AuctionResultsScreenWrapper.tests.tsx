@@ -23,8 +23,8 @@ describe("AuctionResultsForArtistsYouFollowContainer", () => {
     `,
   })
 
-  it("Renders list of auction results for artists you follow", () => {
-    renderWithRelay({
+  it("Renders list of auction results for artists you follow", async () => {
+    await renderWithRelay({
       Me: () => ({
         id: "test-id",
         auctionResultsByFollowedArtists: {

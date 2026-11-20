@@ -29,7 +29,7 @@ jest.mock("app/utils/hooks/useFeatureFlag", () => ({
 }))
 
 describe(SwitchMenu, () => {
-  it("title is set to mono100 when enabled", () => {
+  it("title is set to mono100 when enabled", async () => {
     const props = {
       onChange: jest.fn(),
       value: false,
@@ -37,14 +37,14 @@ describe(SwitchMenu, () => {
       description: "Switch Menu Description",
       disabled: false,
     }
-    renderWithWrappers(<SwitchMenu {...props} />)
+    await renderWithWrappers(<SwitchMenu {...props} />)
 
     expect(screen.getByRole("switch")).toHaveProp("disabled", false)
     // mono100
     expect(screen.getByText("SwitchMenu Test")).toHaveStyle({ color: "#000000" })
   })
 
-  it("title is set to mono60 when disabled", () => {
+  it("title is set to mono60 when disabled", async () => {
     const props = {
       onChange: jest.fn(),
       value: false,
@@ -52,7 +52,7 @@ describe(SwitchMenu, () => {
       description: "Switch Menu Description",
       disabled: true,
     }
-    renderWithWrappers(<SwitchMenu {...props} />)
+    await renderWithWrappers(<SwitchMenu {...props} />)
 
     expect(screen.getByRole("switch")).toHaveProp("disabled", true)
     // mono60
@@ -90,7 +90,7 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
         Promise.resolve(PushAuthorizationStatus.NotDetermined)
       )
 
-      renderWithRelay({ Me: () => mockNotificationsPreferences })
+      await renderWithRelay({ Me: () => mockNotificationsPreferences })
 
       expect(screen.getByText("Artsy would like to send you notifications")).toBeOnTheScreen()
       expect(
@@ -103,7 +103,7 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
         Promise.resolve(PushAuthorizationStatus.Denied)
       )
 
-      renderWithRelay({ Me: () => mockNotificationsPreferences })
+      await renderWithRelay({ Me: () => mockNotificationsPreferences })
 
       await flushPromiseQueue()
 
@@ -121,12 +121,12 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
       ;(debounce as jest.Mock).mockImplementation((func) => func)
     })
 
-    it("should NEVER show Allow Notification Banner on android", () => {
+    it("should NEVER show Allow Notification Banner on android", async () => {
       mockFetchNotificationPermissions().mockImplementationOnce(() =>
         Promise.resolve(PushAuthorizationStatus.Authorized)
       )
 
-      renderWithRelay({ Me: () => mockNotificationsPreferences })
+      await renderWithRelay({ Me: () => mockNotificationsPreferences })
 
       expect(screen.queryByText("Artsy would like to send you notifications")).toBeFalsy()
     })
@@ -137,7 +137,7 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
         Promise.resolve(PushAuthorizationStatus.Denied)
       )
 
-      renderWithRelay({ Me: () => mockNotificationsPreferences })
+      await renderWithRelay({ Me: () => mockNotificationsPreferences })
 
       expect(screen.getByText("Artsy would like to send you notifications")).toBeOnTheScreen()
 
@@ -163,7 +163,7 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
         Promise.resolve(PushAuthorizationStatus.Authorized)
       )
 
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => mockNotificationsPreferences,
       })
 
@@ -173,7 +173,7 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
 
       expect(switchElement.props.on).toBe(true)
 
-      fireEvent(switchElement, "onValueChange", false)
+      await fireEvent(switchElement, "onValueChange", false)
 
       expect(switchElement.props.on).toBe(false)
 
@@ -191,7 +191,7 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
 
       await flushPromiseQueue()
 
-      fireEvent(switchElement, "onValueChange", true)
+      await fireEvent(switchElement, "onValueChange", true)
 
       expect(switchElement.props.on).toBe(true)
 

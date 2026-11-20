@@ -64,7 +64,7 @@ describe("ProgressiveOnboardingFavoritesTab", () => {
     )
 
   it("shows popover when at least one artwork was saved during onboarding", async () => {
-    render()
+    await render()
 
     await waitFor(() => {
       expect(screen.getByText("Popover")).toBeOnTheScreen()
@@ -72,51 +72,51 @@ describe("ProgressiveOnboardingFavoritesTab", () => {
     expect(screen.getByText("Content")).toBeOnTheScreen()
   })
 
-  it("does not show popover when no artworks were saved during onboarding", () => {
+  it("does not show popover when no artworks were saved during onboarding", async () => {
     __globalStoreTestUtils__?.injectState({
       infiniteDiscovery: {
         sessionState: { newUserOnboardingSavedArtworks: [] },
       },
     })
 
-    render()
+    await render()
 
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
     expect(screen.getByText("Content")).toBeOnTheScreen()
   })
 
-  it("does not show popover when the current route is not home", () => {
+  it("does not show popover when the current route is not home", async () => {
     jest.spyOn(internal_navigationRef.current as any, "getCurrentRoute").mockReturnValue({
       name: "Search",
     })
 
-    render()
+    await render()
 
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
     expect(screen.getByText("Content")).toBeOnTheScreen()
   })
 
-  it("does not show popover when it has already been dismissed", () => {
+  it("does not show popover when it has already been dismissed", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         dismissed: [{ key: "favorites-tab", timestamp: Date.now() }],
       },
     })
 
-    render()
+    await render()
 
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
     expect(screen.getByText("Content")).toBeOnTheScreen()
   })
 
   it("dismisses the popover, switches to the favorites tab, and tracks the tap when pressed", async () => {
-    render()
+    await render()
 
     await waitFor(() => {
       expect(screen.getByText("Popover")).toBeOnTheScreen()
     })
 
-    fireEvent.press(screen.getByText("Your saves get stored here."))
+    await fireEvent.press(screen.getByText("Your saves get stored here."))
 
     expect(mockSwitchTab).toHaveBeenCalledWith("favorites")
     expect(mockTrackEvent).toHaveBeenCalledWith(expect.objectContaining({ type: "favorites-tab" }))

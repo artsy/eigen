@@ -16,8 +16,8 @@ describe("ItemArtworkFragmentContainer", () => {
     `,
   })
 
-  it("render", () => {
-    renderWithRelay({
+  it("render", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         title: "Test Artwork",
         date: "December, 2021",
@@ -40,14 +40,14 @@ describe("ItemArtworkFragmentContainer", () => {
     expect(screen.getByTestId("artworkImage")).toBeDefined()
   })
 
-  it("navigates when clicked", () => {
-    renderWithRelay({
+  it("navigates when clicked", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         href: "https://testhref",
       }),
     })
 
-    fireEvent.press(screen.getByTestId("artworkImage"))
+    await fireEvent.press(screen.getByTestId("artworkImage"))
 
     expect(navigate).toHaveBeenCalledWith("https://testhref")
   })

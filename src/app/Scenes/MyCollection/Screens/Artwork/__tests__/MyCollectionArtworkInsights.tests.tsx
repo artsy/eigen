@@ -22,7 +22,7 @@ describe("MyCollectionArtworkInsights", () => {
   })
 
   it("renders without throwing an error", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Query: () => ({
         artwork: mockArtwork,
         marketPriceInsights: mockMarketPriceInsights,

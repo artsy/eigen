@@ -46,7 +46,7 @@ describe("ProgressiveOnboardingArtAssistant", () => {
   })
 
   it("shows the two-line copy with a Beta badge and tracks the view", async () => {
-    renderTooltip()
+    await renderTooltip()
 
     expect(await screen.findByText("Art Assistant")).toBeOnTheScreen()
     expect(screen.getByText("Beta")).toBeOnTheScreen()
@@ -61,32 +61,32 @@ describe("ProgressiveOnboardingArtAssistant", () => {
   })
 
   it("remembers dismissal and does not show the tooltip again", async () => {
-    const { unmount } = renderTooltip()
+    const { unmount } = await renderTooltip()
 
-    fireEvent.press(await screen.findByText("Dismiss"))
+    await fireEvent.press(await screen.findByText("Dismiss"))
 
     expect(__globalStoreTestUtils__?.getCurrentState().progressiveOnboarding.dismissed).toEqual([
       { key: "art-assistant", timestamp: expect.any(Number) },
     ])
 
-    unmount()
-    renderTooltip()
+    await unmount()
+    await renderTooltip()
 
     expect(screen.queryByText("Art Assistant")).not.toBeOnTheScreen()
   })
 
-  it("waits while another popover is active", () => {
+  it("waits while another popover is active", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: { sessionState: { isReady: true, activePopover: "other" } },
     })
 
-    renderTooltip()
+    await renderTooltip()
 
     expect(screen.queryByText("Art Assistant")).not.toBeOnTheScreen()
   })
 
-  it("stays hidden behind the search overlay", () => {
-    renderTooltip(true)
+  it("stays hidden behind the search overlay", async () => {
+    await renderTooltip(true)
 
     expect(screen.queryByText("Art Assistant")).not.toBeOnTheScreen()
   })

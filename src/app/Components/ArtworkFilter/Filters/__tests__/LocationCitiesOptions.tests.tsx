@@ -65,8 +65,8 @@ describe(LocationCitiesOptionsScreen, () => {
   }
 
   describe("no filters are selected", () => {
-    it("renders all options present in the aggregation", () => {
-      renderWithWrappers(<MockLocationCitiesOptionsScreen initialData={initialState} />)
+    it("renders all options present in the aggregation", async () => {
+      await renderWithWrappers(<MockLocationCitiesOptionsScreen initialData={initialState} />)
 
       expect(screen.getByText("Paris, France")).toBeOnTheScreen()
       expect(screen.getByText("London, United Kingdom")).toBeOnTheScreen()
@@ -86,14 +86,14 @@ describe(LocationCitiesOptionsScreen, () => {
       ],
     }
 
-    it("displays the number of the selected filters on the filter modal screen", () => {
-      renderWithWrappers(<MockFilterScreen initialState={state} />)
+    it("displays the number of the selected filters on the filter modal screen", async () => {
+      await renderWithWrappers(<MockFilterScreen initialState={state} />)
 
       expect(screen.getByText("Artwork Location • 2")).toBeOnTheScreen()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      renderWithWrappers(<MockLocationCitiesOptionsScreen initialData={state} />)
+      await renderWithWrappers(<MockLocationCitiesOptionsScreen initialData={state} />)
 
       const options = screen.getAllByTestId("multi-select-option-button")
 

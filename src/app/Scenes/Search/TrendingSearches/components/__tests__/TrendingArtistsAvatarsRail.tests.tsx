@@ -17,14 +17,14 @@ const artist = (id: string, name: string): TrendingArtist => ({
 })
 
 describe("TrendingArtistsAvatarsRail", () => {
-  it("returns nothing when the artists array is empty", () => {
-    renderWithWrappers(<TrendingArtistsAvatarsRail artists={[]} />)
+  it("returns nothing when the artists array is empty", async () => {
+    await renderWithWrappers(<TrendingArtistsAvatarsRail artists={[]} />)
 
     expect(screen.queryByText("Trending Artists")).not.toBeOnTheScreen()
   })
 
-  it("renders the default title and each artist's name", () => {
-    renderWithWrappers(
+  it("renders the default title and each artist's name", async () => {
+    await renderWithWrappers(
       <TrendingArtistsAvatarsRail artists={[artist("banksy", "Banksy"), artist("kaws", "KAWS")]} />
     )
 

@@ -7,8 +7,8 @@ describe("AuctionsOverview", () => {
     Component: () => <AuctionsOverviewScreen />,
   })
 
-  it("renders without errors", () => {
-    renderWithRelay()
+  it("renders without errors", async () => {
+    await renderWithRelay()
 
     expect(screen.getByTestId("Auctions-Overview-Screen-ScrollView")).toBeOnTheScreen()
 

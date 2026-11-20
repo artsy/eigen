@@ -39,7 +39,7 @@ describe("useHandlePushNotifications", () => {
     jest.restoreAllMocks()
   })
 
-  it("does not navigate when user is not logged in", () => {
+  it("does not navigate when user is not logged in", async () => {
     // Mock user as not logged in but navigation ready
     // useAppState is called with different selectors, we need to handle both
     mockUseAppState.mockImplementation((selector: any) => {
@@ -60,7 +60,7 @@ describe("useHandlePushNotifications", () => {
       },
     }
 
-    renderHook(() =>
+    await renderHook(() =>
       useHandlePushNotifications({
         pushNotification: mockNotification,
         setPushNotification: mockSetPushNotification,
@@ -71,7 +71,7 @@ describe("useHandlePushNotifications", () => {
     expect(mockSetPushNotification).not.toHaveBeenCalled()
   })
 
-  it("does not navigate when navigation is not ready", () => {
+  it("does not navigate when navigation is not ready", async () => {
     // Mock user as logged in but navigation not ready
     mockUseAppState.mockImplementation((selector: any) => {
       const mockState = {
@@ -91,7 +91,7 @@ describe("useHandlePushNotifications", () => {
       },
     }
 
-    renderHook(() =>
+    await renderHook(() =>
       useHandlePushNotifications({
         pushNotification: mockNotification,
         setPushNotification: mockSetPushNotification,
@@ -102,7 +102,7 @@ describe("useHandlePushNotifications", () => {
     expect(mockSetPushNotification).not.toHaveBeenCalled()
   })
 
-  it("calls notification_tapped even if not navigating", () => {
+  it("calls notification_tapped even if not navigating", async () => {
     // Mock user as logged in but navigation not ready
     mockUseAppState.mockImplementation((selector: any) => {
       const mockState = {
@@ -122,7 +122,7 @@ describe("useHandlePushNotifications", () => {
       },
     }
 
-    renderHook(() =>
+    await renderHook(() =>
       useHandlePushNotifications({
         pushNotification: mockNotification,
         setPushNotification: mockSetPushNotification,
@@ -139,7 +139,7 @@ describe("useHandlePushNotifications", () => {
     expect(mockSetPushNotification).not.toHaveBeenCalled()
   })
 
-  it("does not navigate when there is no push notification", () => {
+  it("does not navigate when there is no push notification", async () => {
     // Mock user as logged in and navigation ready
     mockUseAppState.mockImplementation((selector: any) => {
       const mockState = {
@@ -149,7 +149,7 @@ describe("useHandlePushNotifications", () => {
       return selector(mockState)
     })
 
-    renderHook(() =>
+    await renderHook(() =>
       useHandlePushNotifications({
         pushNotification: null,
         setPushNotification: mockSetPushNotification,
@@ -161,7 +161,7 @@ describe("useHandlePushNotifications", () => {
     expect(mockSetPushNotification).not.toHaveBeenCalled()
   })
 
-  it("navigates and tracks event when all conditions are met", () => {
+  it("navigates and tracks event when all conditions are met", async () => {
     // Mock user as logged in and navigation ready
     mockUseAppState.mockImplementation((selector: any) => {
       const mockState = {
@@ -182,7 +182,7 @@ describe("useHandlePushNotifications", () => {
       },
     }
 
-    renderHook(() =>
+    await renderHook(() =>
       useHandlePushNotifications({
         pushNotification: mockNotification,
         setPushNotification: mockSetPushNotification,
@@ -215,7 +215,7 @@ describe("useHandlePushNotifications", () => {
     expect(mockSetPushNotification).toHaveBeenCalledWith(null)
   })
 
-  it("handles notification with missing data gracefully", () => {
+  it("handles notification with missing data gracefully", async () => {
     // Mock user as logged in and navigation ready
     mockUseAppState.mockImplementation((selector: any) => {
       const mockState = {
@@ -232,7 +232,7 @@ describe("useHandlePushNotifications", () => {
       data: null,
     }
 
-    renderHook(() =>
+    await renderHook(() =>
       useHandlePushNotifications({
         pushNotification: mockNotification,
         setPushNotification: mockSetPushNotification,
@@ -257,7 +257,7 @@ describe("useHandlePushNotifications", () => {
     expect(mockSetPushNotification).toHaveBeenCalledWith(null)
   })
 
-  it("responds to state changes and triggers navigation when conditions become met", () => {
+  it("responds to state changes and triggers navigation when conditions become met", async () => {
     // Track whether this is the first render or rerender
     let isFirstRender = true
 
@@ -281,7 +281,7 @@ describe("useHandlePushNotifications", () => {
       },
     }
 
-    const { rerender } = renderHook(
+    const { rerender } = await renderHook(
       ({ notification }: { notification: PushNotification | null }) =>
         useHandlePushNotifications({
           pushNotification: notification,
@@ -299,7 +299,7 @@ describe("useHandlePushNotifications", () => {
     isFirstRender = false
 
     // Rerender to trigger the effect with new state
-    rerender({ notification: mockNotification })
+    await rerender({ notification: mockNotification })
 
     // Now should navigate
     expect(mockNavigate).toHaveBeenCalledWith("https://example.com/test", {

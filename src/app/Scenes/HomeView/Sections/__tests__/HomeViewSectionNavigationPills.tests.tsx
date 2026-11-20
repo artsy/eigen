@@ -40,7 +40,7 @@ describe("HomeViewSectionNavigationPills", () => {
   })
 
   it("renders the section pills properly", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       HomeViewSectionNavigationPills: () => ({
         navigationPills: [
           {
@@ -82,7 +82,7 @@ describe("HomeViewSectionNavigationPills", () => {
     pill = screen.getByTestId("pill-Icon-less feature")
     expect(within(pill).queryAllByTestId("svg-icon")).toHaveLength(0)
 
-    fireEvent.press(screen.getByText("Follows"))
+    await fireEvent.press(screen.getByText("Follows"))
     expect(navigate).toHaveBeenCalledWith("/favorites")
   })
 })

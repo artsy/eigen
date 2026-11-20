@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import {
   ArtworkFilterBackHeader,
   ArtworkFilterBackHeaderProps,
@@ -15,39 +15,37 @@ describe("ArtworkFilterBackHeader", () => {
     return <ArtworkFilterBackHeader {...defaultProps} {...props} />
   }
 
-  it("renders without throwing an error", () => {
-    const { getByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
+  it("renders without throwing an error", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
-    expect(getByText("Title")).toBeTruthy()
-    expect(getByLabelText("Header back button")).toBeTruthy()
+    expect(screen.getByText("Title")).toBeTruthy()
+    expect(screen.getByLabelText("Header back button")).toBeTruthy()
   })
 
-  it('should call "onLeftButtonPress" handler when left button is pressed', () => {
+  it('should call "onLeftButtonPress" handler when left button is pressed', async () => {
     const onLeftButtonPressMock = jest.fn()
-    const { getByLabelText } = renderWithWrappers(
-      <TestRenderer onLeftButtonPress={onLeftButtonPressMock} />
-    )
+    await renderWithWrappers(<TestRenderer onLeftButtonPress={onLeftButtonPressMock} />)
 
-    fireEvent.press(getByLabelText("Header back button"))
+    await fireEvent.press(screen.getByLabelText("Header back button"))
 
     expect(onLeftButtonPressMock).toBeCalled()
   })
 
-  it("should render right button if all required props are passed", () => {
-    const { getByLabelText } = renderWithWrappers(
+  it("should render right button if all required props are passed", async () => {
+    await renderWithWrappers(
       <TestRenderer rightButtonText="Right button" onRightButtonPress={jest.fn} />
     )
 
-    expect(getByLabelText("Header right button")).toBeTruthy()
+    expect(screen.getByLabelText("Header right button")).toBeTruthy()
   })
 
-  it('should call "onRightButtonPress" handler when right button is pressed', () => {
+  it('should call "onRightButtonPress" handler when right button is pressed', async () => {
     const onRightButtonPressMock = jest.fn()
-    const { getByLabelText } = renderWithWrappers(
+    await renderWithWrappers(
       <TestRenderer rightButtonText="Right button" onRightButtonPress={onRightButtonPressMock} />
     )
 
-    fireEvent.press(getByLabelText("Header right button"))
+    await fireEvent.press(screen.getByLabelText("Header right button"))
 
     expect(onRightButtonPressMock).toBeCalled()
   })

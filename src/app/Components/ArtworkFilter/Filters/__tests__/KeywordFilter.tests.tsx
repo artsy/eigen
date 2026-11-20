@@ -23,8 +23,8 @@ describe("KeywordFilter", () => {
     jest.resetAllMocks()
   })
 
-  it("renders and filters when input changes", () => {
-    renderWithWrappers(
+  it("renders and filters when input changes", async () => {
+    await renderWithWrappers(
       <ArtworkFiltersStoreProvider
         runtimeModel={{
           ...getArtworkFiltersModel(),
@@ -38,7 +38,7 @@ describe("KeywordFilter", () => {
     const input = screen.getByPlaceholderText("Search by artwork title, series...")
     expect(input).toBeOnTheScreen()
 
-    fireEvent.changeText(input, "test-query")
+    await fireEvent.changeText(input, "test-query")
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action_type: "auctionResultsFilterParamsChanged",

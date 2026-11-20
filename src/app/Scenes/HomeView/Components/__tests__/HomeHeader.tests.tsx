@@ -20,7 +20,7 @@ describe("HomeHeader", () => {
         },
       })
 
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
       const indicator = screen.queryByLabelText("Unseen Notifications Indicator")
       expect(indicator).toBeNull()
@@ -37,7 +37,7 @@ describe("HomeHeader", () => {
         },
       })
 
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
       const indicator = screen.getByLabelText("Unseen Notifications Indicator")
       expect(indicator).toBeTruthy()

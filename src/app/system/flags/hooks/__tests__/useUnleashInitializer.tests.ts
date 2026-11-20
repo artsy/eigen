@@ -40,31 +40,31 @@ describe("useUnleashInitializer", () => {
     mockClient.getContext.mockReturnValue({ userId: undefined })
   })
 
-  it("does not start client when userID is not available", () => {
+  it("does not start client when userID is not available", async () => {
     mockGlobalStore.useAppState.mockImplementation((selector) => {
       const state = { auth: { userID: null, userAccessToken: null } }
       return selector(state)
     })
 
-    renderHook(() => useUnleashInitializer())
+    await renderHook(() => useUnleashInitializer())
 
     expect(mockClient.start).not.toHaveBeenCalled()
     expect(mockClient.setContextField).not.toHaveBeenCalled()
   })
 
-  it("starts client when userID becomes available", () => {
+  it("starts client when userID becomes available", async () => {
     mockGlobalStore.useAppState.mockImplementation((selector) => {
       const state = { auth: { userID: "user123", userAccessToken: null } }
       return selector(state)
     })
 
-    renderHook(() => useUnleashInitializer())
+    await renderHook(() => useUnleashInitializer())
 
     expect(mockClient.setContextField).toHaveBeenCalledWith("userId", "user123")
     expect(mockClient.start).toHaveBeenCalled()
   })
 
-  it("sets user roles from JWT token when userAccessToken is available", () => {
+  it("sets user roles from JWT token when userAccessToken is available", async () => {
     const mockToken = "<token>"
     mockGlobalStore.useAppState.mockImplementation((selector) => {
       const state = { auth: { userID: "user123", userAccessToken: mockToken } }
@@ -73,7 +73,7 @@ describe("useUnleashInitializer", () => {
 
     mockJwtDecode.mockReturnValue({ roles: "admin,user" })
 
-    renderHook(() => useUnleashInitializer())
+    await renderHook(() => useUnleashInitializer())
 
     expect(mockJwtDecode).toHaveBeenCalledWith(mockToken)
     expect(mockClient.setContextField).toHaveBeenCalledWith("userId", "user123")
@@ -81,7 +81,7 @@ describe("useUnleashInitializer", () => {
     expect(mockClient.start).toHaveBeenCalled()
   })
 
-  it("handles missing roles in JWT token", () => {
+  it("handles missing roles in JWT token", async () => {
     const mockToken = "<token>"
     mockGlobalStore.useAppState.mockImplementation((selector) => {
       const state = { auth: { userID: "user123", userAccessToken: mockToken } }
@@ -90,38 +90,38 @@ describe("useUnleashInitializer", () => {
 
     mockJwtDecode.mockReturnValue({}) // No roles field
 
-    renderHook(() => useUnleashInitializer())
+    await renderHook(() => useUnleashInitializer())
 
     expect(mockClient.setContextField).toHaveBeenCalledWith("userRoles", "")
   })
 
-  it("does not update context if userId is already set", () => {
+  it("does not update context if userId is already set", async () => {
     mockGlobalStore.useAppState.mockImplementation((selector) => {
       const state = { auth: { userID: "user123", userAccessToken: null } }
       return selector(state)
     })
     mockClient.getContext.mockReturnValue({ userId: "user123" })
 
-    renderHook(() => useUnleashInitializer())
+    await renderHook(() => useUnleashInitializer())
 
     expect(mockClient.setContextField).not.toHaveBeenCalled()
     expect(mockClient.start).toHaveBeenCalled()
   })
 
-  it("stops client on cleanup", () => {
+  it("stops client on cleanup", async () => {
     mockGlobalStore.useAppState.mockImplementation((selector) => {
       const state = { auth: { userID: "user123", userAccessToken: null } }
       return selector(state)
     })
 
-    const { unmount } = renderHook(() => useUnleashInitializer())
+    const { unmount } = await renderHook(() => useUnleashInitializer())
 
-    unmount()
+    await unmount()
 
     expect(mockClient.stop).toHaveBeenCalled()
   })
 
-  it("re-initializes when userID or userAccessToken changes", () => {
+  it("re-initializes when userID or userAccessToken changes", async () => {
     let authState: { userID: string; userAccessToken: null | string } = {
       userID: "user123",
       userAccessToken: null,
@@ -132,7 +132,7 @@ describe("useUnleashInitializer", () => {
       return selector(state)
     })
 
-    const { rerender } = renderHook(() => useUnleashInitializer())
+    const { rerender } = await renderHook(() => useUnleashInitializer())
 
     expect(mockClient.setContextField).toHaveBeenCalledTimes(1)
     expect(mockClient.start).toHaveBeenCalledTimes(1)
@@ -141,7 +141,7 @@ describe("useUnleashInitializer", () => {
     authState = { userID: "user123", userAccessToken: "new-token" }
     mockJwtDecode.mockReturnValue({ roles: "user" })
 
-    rerender(() => {})
+    await rerender(() => {})
 
     expect(mockClient.setContextField).toHaveBeenCalledTimes(3) // userId + userRoles on second call
     expect(mockClient.start).toHaveBeenCalledTimes(2)

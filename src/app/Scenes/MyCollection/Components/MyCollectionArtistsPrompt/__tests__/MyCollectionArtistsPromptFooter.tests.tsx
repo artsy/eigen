@@ -26,8 +26,10 @@ jest.mock("@gorhom/bottom-sheet", () => ({
 describe("MyCollectionArtistsPromptFooter", () => {
   const onPress = jest.fn()
 
-  const render = () => {
-    renderWithWrappers(<MyCollectionArtistsPromptFooter onPress={onPress} isLoading={false} />)
+  const render = async () => {
+    await renderWithWrappers(
+      <MyCollectionArtistsPromptFooter onPress={onPress} isLoading={false} />
+    )
   }
 
   beforeEach(() => {
@@ -38,34 +40,34 @@ describe("MyCollectionArtistsPromptFooter", () => {
     jest.clearAllMocks()
   })
 
-  it("renders", () => {
-    render()
+  it("renders", async () => {
+    await render()
 
     expect(screen.getByText("Add Selected Artist • 1")).toBeOnTheScreen()
   })
 
-  it("calls onPress when button is pressed", () => {
-    render()
+  it("calls onPress when button is pressed", async () => {
+    await render()
 
-    fireEvent.press(screen.getByText("Add Selected Artist • 1"))
+    await fireEvent.press(screen.getByText("Add Selected Artist • 1"))
 
     expect(onPress).toHaveBeenCalled()
   })
 
-  it("disables button when count is 0", () => {
+  it("disables button when count is 0", async () => {
     ;(MyCollectionAddCollectedArtistsStore.useStoreState as jest.Mock).mockImplementation(() => 0)
 
-    render()
+    await render()
 
-    fireEvent.press(screen.getByText("Add Selected Artists • 0"))
+    await fireEvent.press(screen.getByText("Add Selected Artists • 0"))
 
     expect(onPress).not.toHaveBeenCalled()
   })
 
-  it("does call close when text is pressed", () => {
-    render()
+  it("does call close when text is pressed", async () => {
+    await render()
 
-    fireEvent.press(screen.getByText("I haven’t started a collection yet"))
+    await fireEvent.press(screen.getByText("I haven’t started a collection yet"))
 
     expect(mockClose).toHaveBeenCalledTimes(1)
   })

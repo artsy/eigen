@@ -9,17 +9,17 @@ describe("Sales", () => {
     Component: () => <SalesScreen />,
   })
 
-  it("renders without Errors", () => {
-    renderWithRelay()
+  it("renders without Errors", async () => {
+    await renderWithRelay()
 
     expect(screen.getByTestId("Sales-Screen-ScrollView")).toBeOnTheScreen()
   })
 
-  it("tracks article tap with the correct event data", () => {
-    renderWithRelay()
+  it("tracks article tap with the correct event data", async () => {
+    await renderWithRelay()
 
     const learnMoreLink = screen.getByText("Learn more about bidding on Artsy.")
-    fireEvent.press(learnMoreLink)
+    await fireEvent.press(learnMoreLink)
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedLink",
