@@ -9,48 +9,69 @@ import { SellSubmittedBottomSheet } from "app/Scenes/Sell/Components/SellSubmitt
 import { SellWorkCard } from "app/Scenes/Sell/Components/SellWorkCard"
 import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { SellLocationStore } from "app/Scenes/Sell/State/SellLocationStore"
-import { getSellChannel } from "app/Scenes/Sell/utils/getSellChannel"
+import {
+  ResaleSubmissionWithChannel,
+  hasSupportedChannel,
+  toResaleSubmission,
+} from "app/Scenes/Sell/utils/resaleSubmission"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
-type Artwork = NonNullable<LocationAndContactQuery["response"]["artwork"]>
+type Artwork = NonNullable<
+  NonNullable<
+    NonNullable<LocationAndContactQuery["response"]["me"]>["resaleSubmission"]
+  >["submittedArtwork"]
+>
 type Me = NonNullable<LocationAndContactQuery["response"]["me"]>
 
 export const LocationAndContact: React.FC = () => {
-  const artworkID = SellFlowStore.useStoreState((state) => state.activeArtworkID)
+  const resaleSubmissionID = SellFlowStore.useStoreState((state) => state.activeResaleSubmissionID)
 
-  if (!artworkID) {
+  if (!resaleSubmissionID) {
     return null
   }
 
   return (
     <SellLocationStore.Provider>
-      <LocationAndContactContent artworkID={artworkID} />
+      <LocationAndContactContent resaleSubmissionID={resaleSubmissionID} />
     </SellLocationStore.Provider>
   )
 }
 
-const LocationAndContactContent: React.FC<{ artworkID: string }> = withSuspense({
-  Component: ({ artworkID }) => {
+const LocationAndContactContent: React.FC<{ resaleSubmissionID: string }> = withSuspense({
+  Component: ({ resaleSubmissionID }) => {
     const data = useLazyLoadQuery<LocationAndContactQuery>(locationAndContactQuery, {
-      artworkID,
+      resaleSubmissionID,
     })
     const [submitted, setSubmitted] = useState(false)
-    const { artwork, me } = data
+    const me = data.me
+    const artwork = me?.resaleSubmission?.submittedArtwork
 
-    if (!artwork || !me) {
+    const resaleSubmission = me?.resaleSubmission && toResaleSubmission(me.resaleSubmission)
+
+    if (!me || !resaleSubmission || !hasSupportedChannel(resaleSubmission) || !artwork) {
       return <LocationAndContactError />
     }
 
-    const isAuction = getSellChannel(artwork.internalID).kind === "AUCTION"
+    const isAuction = resaleSubmission.channel === "AUCTION"
 
     return (
       <>
         {isAuction ? (
-          <AuctionLocationForm artwork={artwork} me={me} onSubmit={() => setSubmitted(true)} />
+          <AuctionLocationForm
+            artwork={artwork}
+            me={me}
+            resaleSubmission={resaleSubmission}
+            onSubmit={() => setSubmitted(true)}
+          />
         ) : (
-          <MarketplaceShippingForm artwork={artwork} me={me} onSubmit={() => setSubmitted(true)} />
+          <MarketplaceShippingForm
+            artwork={artwork}
+            me={me}
+            resaleSubmission={resaleSubmission}
+            onSubmit={() => setSubmitted(true)}
+          />
         )}
 
         {!!submitted && (
@@ -83,10 +104,11 @@ const marketplaceConfirmation = ({ artistNames, title }: Artwork) => ({
 interface FormProps {
   artwork: Artwork
   me: Me
+  resaleSubmission: ResaleSubmissionWithChannel
   onSubmit: () => void
 }
 
-const AuctionLocationForm: React.FC<FormProps> = ({ artwork, me, onSubmit }) => {
+const AuctionLocationForm: React.FC<FormProps> = ({ artwork, me, resaleSubmission, onSubmit }) => {
   const { locationComplete, phoneNumber } = SellLocationStore.useStoreState((state) => state)
 
   return (
@@ -98,7 +120,7 @@ const AuctionLocationForm: React.FC<FormProps> = ({ artwork, me, onSubmit }) => 
       <SellStepIntro stepName="LocationAndContact" channelKind="AUCTION" px={2} />
 
       <Flex px={2} gap={4}>
-        <SellWorkCard artwork={artwork} />
+        <SellWorkCard artwork={artwork} resaleSubmission={resaleSubmission} />
 
         <Flex gap={2}>
           <Text variant="md">Location</Text>
@@ -111,7 +133,12 @@ const AuctionLocationForm: React.FC<FormProps> = ({ artwork, me, onSubmit }) => 
   )
 }
 
-const MarketplaceShippingForm: React.FC<FormProps> = ({ artwork, me, onSubmit }) => {
+const MarketplaceShippingForm: React.FC<FormProps> = ({
+  artwork,
+  me,
+  resaleSubmission,
+  onSubmit,
+}) => {
   const { locationComplete, shippingComplete, phoneNumber } = SellLocationStore.useStoreState(
     (state) => state
   )
@@ -125,7 +152,7 @@ const MarketplaceShippingForm: React.FC<FormProps> = ({ artwork, me, onSubmit })
       <SellStepIntro stepName="LocationAndContact" channelKind="MARKETPLACE" px={2} />
 
       <Flex px={2} pb={4} gap={4}>
-        <SellWorkCard artwork={artwork} />
+        <SellWorkCard artwork={artwork} resaleSubmission={resaleSubmission} />
 
         <Flex gap={2}>
           <Text variant="md">Shipping</Text>
@@ -151,15 +178,18 @@ const LocationAndContactError: React.FC = () => (
 )
 
 const locationAndContactQuery = graphql`
-  query LocationAndContactQuery($artworkID: String!) {
-    artwork(id: $artworkID) {
-      internalID
-      artistNames
-      title
-      ...SellWorkCard_artwork
-    }
+  query LocationAndContactQuery($resaleSubmissionID: String!) {
     me {
       ...SellLocationFields_me
+      resaleSubmission(id: $resaleSubmissionID) {
+        ...resaleSubmission_resaleSubmission
+        submittedArtwork {
+          internalID
+          artistNames
+          title
+          ...SellWorkCard_artwork
+        }
+      }
     }
   }
 `

@@ -1,14 +1,15 @@
 import { Action, action, createContextStore } from "easy-peasy"
 
 export interface SellFlowStoreModel {
-  activeArtworkID: string | null
-  setActiveArtworkID: Action<this, string>
+  /** The resale submission the seller is working on in steps 2 and 3 */
+  activeResaleSubmissionID: string | null
+  setActiveResaleSubmissionID: Action<this, string>
 }
 
 export const sellFlowStoreModel: SellFlowStoreModel = {
-  activeArtworkID: null,
-  setActiveArtworkID: action((state, artworkID) => {
-    state.activeArtworkID = artworkID
+  activeResaleSubmissionID: null,
+  setActiveResaleSubmissionID: action((state, resaleSubmissionID) => {
+    state.activeResaleSubmissionID = resaleSubmissionID
   }),
 }
 

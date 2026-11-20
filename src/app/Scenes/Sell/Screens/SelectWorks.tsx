@@ -10,7 +10,7 @@ import {
 } from "app/Scenes/Sell/Components/SellSelectionNoteBottomSheet"
 import { SellStepIntro } from "app/Scenes/Sell/Components/SellStepIntro"
 import { SellStepLayout } from "app/Scenes/Sell/Components/SellStepLayout"
-import { SellWorksSummary } from "app/Scenes/Sell/Components/SellWorksSummary"
+import { SellWorksSummary, SellWorksSummaryWork } from "app/Scenes/Sell/Components/SellWorksSummary"
 import { SellNavigationProp, SellNavigationRoutes } from "app/Scenes/Sell/Sell"
 import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { MAX_SELECTED_WORKS } from "app/Scenes/Sell/constants"
@@ -31,7 +31,9 @@ export const SelectWorks: React.FC = () => {
   const navigation = useNavigation<SellNavigationProp>()
   const { params } = useRoute<RouteProp<SellNavigationRoutes, "SelectWorks">>()
   const showWorksSummary = !!params?.showWorksSummary
-  const setActiveArtworkID = SellFlowStore.useStoreActions((actions) => actions.setActiveArtworkID)
+  const setActiveResaleSubmissionID = SellFlowStore.useStoreActions(
+    (actions) => actions.setActiveResaleSubmissionID
+  )
 
   const handleHardwareBack = useCallback(() => {
     if (!showWorksSummary) {
@@ -48,8 +50,8 @@ export const SelectWorks: React.FC = () => {
     <SelectWorksContent
       showWorksSummary={showWorksSummary}
       onShowWorksSummary={() => navigation.setParams({ showWorksSummary: true })}
-      onStartWork={(internalID) => {
-        setActiveArtworkID(internalID)
+      onStartSelling={({ resaleSubmission }) => {
+        setActiveResaleSubmissionID(resaleSubmission.internalID)
         navigation.navigate("Condition")
       }}
     />
@@ -59,11 +61,11 @@ export const SelectWorks: React.FC = () => {
 interface SelectWorksContentProps {
   showWorksSummary: boolean
   onShowWorksSummary: () => void
-  onStartWork: (internalID: string) => void
+  onStartSelling: (work: SellWorksSummaryWork) => void
 }
 
 const SelectWorksContent: React.FC<SelectWorksContentProps> = withSuspense({
-  Component: ({ showWorksSummary, onShowWorksSummary, onStartWork }) => {
+  Component: ({ showWorksSummary, onShowWorksSummary, onStartSelling }) => {
     const data = useLazyLoadQuery<SelectWorksQuery>(selectWorksQuery, {})
     const artworks = extractNodes(data.me?.myCollectionConnection)
     const [selectedWorkIDs, setSelectedWorkIDs] = useState<string[]>([])
@@ -162,8 +164,13 @@ const SelectWorksContent: React.FC<SelectWorksContentProps> = withSuspense({
     if (showWorksSummary) {
       return (
         <SellWorksSummary
-          works={selectedArtworks.filter((artwork) => isSellable(artwork.internalID))}
-          onStartWork={onStartWork}
+          works={selectedArtworks.flatMap((artwork) => {
+            const resaleSubmission = resaleSubmissionsByArtworkID[artwork.internalID]
+            return isResaleSubmissionSellable(resaleSubmission)
+              ? [{ artwork, resaleSubmission }]
+              : []
+          })}
+          onStartSelling={onStartSelling}
         />
       )
     }

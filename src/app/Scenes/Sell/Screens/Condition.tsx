@@ -10,38 +10,48 @@ import { SellNavigationProp } from "app/Scenes/Sell/Sell"
 import { SellConditionStore } from "app/Scenes/Sell/State/SellConditionStore"
 import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { useConfirmLeavingConditionStep } from "app/Scenes/Sell/hooks/useConfirmLeavingConditionStep"
-import { SellChannel, getSellChannel } from "app/Scenes/Sell/utils/getSellChannel"
+import {
+  ResaleSubmissionWithChannel,
+  hasSupportedChannel,
+  toResaleSubmission,
+} from "app/Scenes/Sell/utils/resaleSubmission"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
-export const Condition: React.FC = () => {
-  const artworkID = SellFlowStore.useStoreState((state) => state.activeArtworkID)
+type Artwork = NonNullable<
+  NonNullable<NonNullable<ConditionQuery["response"]["me"]>["resaleSubmission"]>["submittedArtwork"]
+>
 
-  if (!artworkID) {
+export const Condition: React.FC = () => {
+  const resaleSubmissionID = SellFlowStore.useStoreState((state) => state.activeResaleSubmissionID)
+
+  if (!resaleSubmissionID) {
     return null
   }
 
   return (
     <SellConditionStore.Provider>
-      <ConditionContent artworkID={artworkID} />
+      <ConditionContent resaleSubmissionID={resaleSubmissionID} />
     </SellConditionStore.Provider>
   )
 }
 
-const ConditionContent: React.FC<{ artworkID: string }> = withSuspense({
-  Component: ({ artworkID }) => {
+const ConditionContent: React.FC<{ resaleSubmissionID: string }> = withSuspense({
+  Component: ({ resaleSubmissionID }) => {
     const navigation = useNavigation<SellNavigationProp>()
-    const data = useLazyLoadQuery<ConditionQuery>(conditionQuery, { artworkID })
-    const artwork = data.artwork
+    const data = useLazyLoadQuery<ConditionQuery>(conditionQuery, { resaleSubmissionID })
+    const resaleSubmission =
+      data.me?.resaleSubmission && toResaleSubmission(data.me.resaleSubmission)
+    const artwork = data.me?.resaleSubmission?.submittedArtwork
 
-    if (!artwork) {
+    if (!resaleSubmission || !hasSupportedChannel(resaleSubmission) || !artwork) {
       return <ConditionError />
     }
 
     return (
       <ConditionForm
         artwork={artwork}
-        channelKind={getSellChannel(artwork.internalID).kind}
+        resaleSubmission={resaleSubmission}
         onContinue={() => navigation.navigate("LocationAndContact")}
       />
     )
@@ -51,13 +61,14 @@ const ConditionContent: React.FC<{ artworkID: string }> = withSuspense({
 })
 
 const ConditionForm: React.FC<{
-  artwork: NonNullable<ConditionQuery["response"]["artwork"]>
-  channelKind: SellChannel["kind"]
+  artwork: Artwork
+  resaleSubmission: ResaleSubmissionWithChannel
   onContinue: () => void
-}> = ({ artwork, channelKind, onContinue }) => {
+}> = ({ artwork, resaleSubmission, onContinue }) => {
   const { rating, askingPrice } = SellConditionStore.useStoreState((state) => state)
   useConfirmLeavingConditionStep()
 
+  const channelKind = resaleSubmission.channel
   const isMarketplace = channelKind === "MARKETPLACE"
   const canContinue = !!rating && (!isMarketplace || !!askingPrice)
 
@@ -70,7 +81,7 @@ const ConditionForm: React.FC<{
       <SellStepIntro stepName="Condition" channelKind={channelKind} px={2} />
 
       <Flex px={2} pb={4}>
-        <SellWorkCard artwork={artwork} />
+        <SellWorkCard artwork={artwork} resaleSubmission={resaleSubmission} />
       </Flex>
 
       <SellConditionSection />
@@ -93,11 +104,16 @@ const ConditionError: React.FC = () => (
 )
 
 const conditionQuery = graphql`
-  query ConditionQuery($artworkID: String!) {
-    artwork(id: $artworkID) {
-      internalID
-      artistNames
-      ...SellWorkCard_artwork
+  query ConditionQuery($resaleSubmissionID: String!) {
+    me {
+      resaleSubmission(id: $resaleSubmissionID) {
+        ...resaleSubmission_resaleSubmission
+        submittedArtwork {
+          internalID
+          artistNames
+          ...SellWorkCard_artwork
+        }
+      }
     }
   }
 `
