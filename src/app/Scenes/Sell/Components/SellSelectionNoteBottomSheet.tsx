@@ -11,7 +11,6 @@ import {
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { SelectionCheck } from "app/Components/SelectionCheck/SelectionCheck"
-import { isWorkSellable } from "app/Scenes/Sell/utils/isWorkSellable"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const THUMBNAIL_SIZE = 40
@@ -25,7 +24,8 @@ export interface SellSelectionWork {
 
 interface SellSelectionNoteBottomSheetProps {
   visible: boolean
-  works: readonly SellSelectionWork[]
+  sellableWorks: readonly SellSelectionWork[]
+  unsellableWorks: readonly SellSelectionWork[]
   selectedWorkIDs: string[]
   onToggleWork: (internalID: string) => void
   onProceed: () => void
@@ -34,7 +34,8 @@ interface SellSelectionNoteBottomSheetProps {
 
 export const SellSelectionNoteBottomSheet: React.FC<SellSelectionNoteBottomSheetProps> = ({
   visible,
-  works,
+  sellableWorks,
+  unsellableWorks,
   selectedWorkIDs,
   onToggleWork,
   onProceed,
@@ -44,8 +45,6 @@ export const SellSelectionNoteBottomSheet: React.FC<SellSelectionNoteBottomSheet
   const space = useSpace()
   const color = useColor()
 
-  const sellableWorks = works.filter((work) => isWorkSellable(work.internalID))
-  const unsellableWorks = works.filter((work) => !isWorkSellable(work.internalID))
   const canProceed = sellableWorks.some((work) => selectedWorkIDs.includes(work.internalID))
 
   return (
@@ -65,8 +64,9 @@ export const SellSelectionNoteBottomSheet: React.FC<SellSelectionNoteBottomSheet
             <Flex gap={1}>
               <SectionTitle>Works we can sell</SectionTitle>
               <Text variant="sm" color="mono60">
-                We can help you with {sellableWorks.length}/{works.length} of the works you
-                selected, as long as they are currently in the US.
+                We can help you with {sellableWorks.length}/
+                {sellableWorks.length + unsellableWorks.length} of the works you selected, as long
+                as they are currently in the US.
               </Text>
               <Text variant="sm" weight="medium">
                 Please untick any works which are currently outside the US.

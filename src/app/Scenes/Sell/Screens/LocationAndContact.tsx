@@ -7,9 +7,9 @@ import { SellShippingQuestions } from "app/Scenes/Sell/Components/SellShippingQu
 import { SellStepIntro } from "app/Scenes/Sell/Components/SellStepIntro"
 import { SellSubmittedBottomSheet } from "app/Scenes/Sell/Components/SellSubmittedBottomSheet"
 import { SellWorkCard } from "app/Scenes/Sell/Components/SellWorkCard"
-import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
+import { ActiveSellWork, SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { SellLocationStore } from "app/Scenes/Sell/State/SellLocationStore"
-import { getSellChannel } from "app/Scenes/Sell/utils/getSellChannel"
+import { ResaleSubmissionWithChannel } from "app/Scenes/Sell/utils/resaleSubmission"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -18,21 +18,21 @@ type Artwork = NonNullable<LocationAndContactQuery["response"]["artwork"]>
 type Me = NonNullable<LocationAndContactQuery["response"]["me"]>
 
 export const LocationAndContact: React.FC = () => {
-  const artworkID = SellFlowStore.useStoreState((state) => state.activeArtworkID)
+  const activeWork = SellFlowStore.useStoreState((state) => state.activeWork)
 
-  if (!artworkID) {
+  if (!activeWork) {
     return null
   }
 
   return (
     <SellLocationStore.Provider>
-      <LocationAndContactContent artworkID={artworkID} />
+      <LocationAndContactContent {...activeWork} />
     </SellLocationStore.Provider>
   )
 }
 
-const LocationAndContactContent: React.FC<{ artworkID: string }> = withSuspense({
-  Component: ({ artworkID }) => {
+const LocationAndContactContent: React.FC<ActiveSellWork> = withSuspense({
+  Component: ({ artworkID, resaleSubmission }) => {
     const data = useLazyLoadQuery<LocationAndContactQuery>(locationAndContactQuery, {
       artworkID,
     })
@@ -43,14 +43,24 @@ const LocationAndContactContent: React.FC<{ artworkID: string }> = withSuspense(
       return <LocationAndContactError />
     }
 
-    const isAuction = getSellChannel(artwork.internalID).kind === "AUCTION"
+    const isAuction = resaleSubmission.channel === "AUCTION"
 
     return (
       <>
         {isAuction ? (
-          <AuctionLocationForm artwork={artwork} me={me} onSubmit={() => setSubmitted(true)} />
+          <AuctionLocationForm
+            artwork={artwork}
+            me={me}
+            resaleSubmission={resaleSubmission}
+            onSubmit={() => setSubmitted(true)}
+          />
         ) : (
-          <MarketplaceShippingForm artwork={artwork} me={me} onSubmit={() => setSubmitted(true)} />
+          <MarketplaceShippingForm
+            artwork={artwork}
+            me={me}
+            resaleSubmission={resaleSubmission}
+            onSubmit={() => setSubmitted(true)}
+          />
         )}
 
         {!!submitted && (
@@ -83,10 +93,11 @@ const marketplaceConfirmation = ({ artistNames, title }: Artwork) => ({
 interface FormProps {
   artwork: Artwork
   me: Me
+  resaleSubmission: ResaleSubmissionWithChannel
   onSubmit: () => void
 }
 
-const AuctionLocationForm: React.FC<FormProps> = ({ artwork, me, onSubmit }) => {
+const AuctionLocationForm: React.FC<FormProps> = ({ artwork, me, resaleSubmission, onSubmit }) => {
   const { locationComplete, phoneNumber } = SellLocationStore.useStoreState((state) => state)
 
   return (
@@ -98,7 +109,7 @@ const AuctionLocationForm: React.FC<FormProps> = ({ artwork, me, onSubmit }) => 
       <SellStepIntro stepName="LocationAndContact" channelKind="AUCTION" px={2} />
 
       <Flex px={2} gap={4}>
-        <SellWorkCard artwork={artwork} />
+        <SellWorkCard artwork={artwork} resaleSubmission={resaleSubmission} />
 
         <Flex gap={2}>
           <Text variant="md">Location</Text>
@@ -111,7 +122,12 @@ const AuctionLocationForm: React.FC<FormProps> = ({ artwork, me, onSubmit }) => 
   )
 }
 
-const MarketplaceShippingForm: React.FC<FormProps> = ({ artwork, me, onSubmit }) => {
+const MarketplaceShippingForm: React.FC<FormProps> = ({
+  artwork,
+  me,
+  resaleSubmission,
+  onSubmit,
+}) => {
   const { locationComplete, shippingComplete, phoneNumber } = SellLocationStore.useStoreState(
     (state) => state
   )
@@ -125,7 +141,7 @@ const MarketplaceShippingForm: React.FC<FormProps> = ({ artwork, me, onSubmit })
       <SellStepIntro stepName="LocationAndContact" channelKind="MARKETPLACE" px={2} />
 
       <Flex px={2} pb={4} gap={4}>
-        <SellWorkCard artwork={artwork} />
+        <SellWorkCard artwork={artwork} resaleSubmission={resaleSubmission} />
 
         <Flex gap={2}>
           <Text variant="md">Shipping</Text>
