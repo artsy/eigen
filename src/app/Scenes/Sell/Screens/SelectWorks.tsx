@@ -64,7 +64,12 @@ interface SelectWorksContentProps {
 
 const SelectWorksContent: React.FC<SelectWorksContentProps> = withSuspense({
   Component: ({ showWorksSummary, onShowWorksSummary, onStartWork }) => {
-    const data = useLazyLoadQuery<SelectWorksQuery>(selectWorksQuery, {})
+    // Creating a submission doesn't update this query, so a cached copy would still list the work
+    const data = useLazyLoadQuery<SelectWorksQuery>(
+      selectWorksQuery,
+      {},
+      { fetchPolicy: "network-only" }
+    )
     // Works with an active resale submission are already on their way to being sold
     const artworks = extractNodes(data.me?.myCollectionConnection).filter(
       (artwork) => !artwork.activeResaleSubmission

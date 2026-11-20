@@ -241,6 +241,27 @@ describe("Sell", () => {
     expect(screen.queryByTestId("artworkGridItem-Auction Work")).not.toBeOnTheScreen()
   })
 
+  it("hides a work verified on an earlier visit when the flow opens again", async () => {
+    const view = await renderSell()
+    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
+    fireEvent.press(screen.getByText("Verify If Sellable"))
+    await resolveVerify(view)
+    view.unmount()
+
+    // Throws if the screen reads its cached copy instead of asking again
+    renderWithRelay({
+      Me: () => {
+        const me = collection.Me()
+        const [sellable, ...rest] = me.myCollectionConnection.edges
+        const verified = { ...sellable.node, activeResaleSubmission: resaleSubmissionFor("id-a2") }
+        return { ...me, myCollectionConnection: { edges: [{ node: verified }, ...rest] } }
+      },
+    })
+
+    expect(await screen.findByTestId("artworkGridItem-Auction Work")).toBeOnTheScreen()
+    expect(screen.queryByTestId("artworkGridItem-Sellable Work")).not.toBeOnTheScreen()
+  })
+
   it("keeps the verify button disabled until a work is selected", async () => {
     await renderSell()
 
