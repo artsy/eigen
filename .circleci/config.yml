@@ -341,13 +341,15 @@ jobs:
       - run:
           name: Run Jest tests
           command: |
-            # Warm workers use ~1.1GB each, so 3 fit in `large` (8GB). Cold workers peak at ~3GB
-            # while transforming, so use 2 unless the restored cache was written for exactly this
-            # Node version and manifest (a directory alone may hold entries that all miss).
+            # Warm workers use ~1.1GB each, so 4 fit in `large` (4 CPU / 8GB): ~4.4GB of workers plus
+            # the parent process leaves headroom, and --workerIdleMemoryLimit restarts any that grow.
+            # Cold workers peak at ~3GB while transforming, so use 2 unless the restored cache was
+            # written for exactly this Node version and manifest (a directory alone may hold entries
+            # that all miss).
             CACHE_ID="$(node --version)-$(sha256sum .manifests/js_transform | cut -d' ' -f1)"
             WORKERS=2
             if [ "$(cat .cache/jest/.cache-id 2>/dev/null)" = "$CACHE_ID" ]; then
-              WORKERS=3
+              WORKERS=4
             else
               echo "No warm Jest transform cache for $CACHE_ID, using 2 workers"
             fi
