@@ -2,6 +2,7 @@ import { Box, Flex, Image, Text, Touchable, useColor } from "@artsy/palette-mobi
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { BOTTOM_TABS_HEIGHT } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { internal_navigationRef } from "app/Navigation/Navigation"
+import { isModalScreen } from "app/Navigation/utils/isModalScreen"
 import { modules } from "app/Navigation/utils/modules"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -78,15 +79,33 @@ export const ToastComponent = ({
     const moduleName = internal_navigationRef?.current?.getCurrentRoute()
       ?.name as keyof typeof modules
 
-    const isBottomTabHidden = modules[moduleName]?.options?.hidesBottomTabs
+    const module = modules[moduleName]
 
     // We currently handle custom bottom padding only for when the bottom tab bar is hidden
     // We can change this later if we need to handle custom bottom padding for when the bottom tab bar is visible
-    if (isBottomTabHidden) {
+    if (module?.options?.hidesBottomTabs) {
       return bottomPadding || 0
     }
 
+    // Modal screens have no tab bar either, so a toast that brings its own padding uses it there
+    if (module && isModalScreen(module) && bottomPadding != null) {
+      return bottomPadding
+    }
+
     return BOTTOM_TABS_HEIGHT
+  }, [])
+
+  // Modal routes open as native modals on iOS, which cover a top or bottom toast rendered in the app
+  const EdgeToastOverlay = useMemo(() => {
+    if (__TEST__ || Platform.OS !== "ios") {
+      return Fragment
+    }
+
+    const moduleName = internal_navigationRef?.current?.getCurrentRoute()
+      ?.name as keyof typeof modules
+    const module = modules[moduleName]
+
+    return module && isModalScreen(module) ? FullWindowOverlay : Fragment
   }, [])
 
   if (placement === "middle") {
@@ -165,53 +184,55 @@ export const ToastComponent = ({
   )
 
   return (
-    <AnimatedFlex
-      position="absolute"
-      left="1"
-      right="1"
-      minHeight={EDGE_TOAST_HEIGHT}
-      bottom={
-        placement === "bottom"
-          ? bottomSafeAreaInset +
-            toastBottomPadding +
-            EDGE_TOAST_PADDING +
-            positionIndex * (EDGE_TOAST_HEIGHT + EDGE_TOAST_PADDING)
-          : undefined
-      }
-      top={
-        placement === "top"
-          ? NAVBAR_HEIGHT +
-            EDGE_TOAST_PADDING +
-            positionIndex * (EDGE_TOAST_HEIGHT + EDGE_TOAST_PADDING)
-          : undefined
-      }
-      backgroundColor={color(backgroundColor)}
-      borderRadius={5}
-      opacity={opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 1] })}
-      overflow="hidden"
-      zIndex={999}
-    >
-      {onPress !== undefined ? (
-        <Touchable
-          accessibilityRole="button"
-          style={{ flex: 1 }}
-          onPress={() => {
-            onPress?.({ id, showActionSheetWithOptions })
+    <EdgeToastOverlay>
+      <AnimatedFlex
+        position="absolute"
+        left="1"
+        right="1"
+        minHeight={EDGE_TOAST_HEIGHT}
+        bottom={
+          placement === "bottom"
+            ? bottomSafeAreaInset +
+              toastBottomPadding +
+              EDGE_TOAST_PADDING +
+              positionIndex * (EDGE_TOAST_HEIGHT + EDGE_TOAST_PADDING)
+            : undefined
+        }
+        top={
+          placement === "top"
+            ? NAVBAR_HEIGHT +
+              EDGE_TOAST_PADDING +
+              positionIndex * (EDGE_TOAST_HEIGHT + EDGE_TOAST_PADDING)
+            : undefined
+        }
+        backgroundColor={color(backgroundColor)}
+        borderRadius={5}
+        opacity={opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 1] })}
+        overflow="hidden"
+        zIndex={999}
+      >
+        {onPress !== undefined ? (
+          <Touchable
+            accessibilityRole="button"
+            style={{ flex: 1 }}
+            onPress={() => {
+              onPress?.({ id, showActionSheetWithOptions })
 
-            if (hideOnPress) {
-              Animated.timing(opacityAnim, {
-                toValue: 0,
-                useNativeDriver: true,
-                duration: TOAST_ANIMATION_DURATION,
-              }).start(() => GlobalStore.actions.toast.remove(id))
-            }
-          }}
-        >
-          {innerTopBottom}
-        </Touchable>
-      ) : (
-        innerTopBottom
-      )}
-    </AnimatedFlex>
+              if (hideOnPress) {
+                Animated.timing(opacityAnim, {
+                  toValue: 0,
+                  useNativeDriver: true,
+                  duration: TOAST_ANIMATION_DURATION,
+                }).start(() => GlobalStore.actions.toast.remove(id))
+              }
+            }}
+          >
+            {innerTopBottom}
+          </Touchable>
+        ) : (
+          innerTopBottom
+        )}
+      </AnimatedFlex>
+    </EdgeToastOverlay>
   )
 }
