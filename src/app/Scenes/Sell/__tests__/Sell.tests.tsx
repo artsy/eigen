@@ -217,8 +217,8 @@ describe("Sell", () => {
     expect(dismissModal).toHaveBeenCalledTimes(1)
   })
 
-  it("labels works with the status of their active resale submission", async () => {
-    renderWithRelay({
+  it("hides works that already have an active resale submission", async () => {
+    await renderSell({
       Me: () => {
         const me = collection.Me()
         const [sellable, unsellable, auction] = me.myCollectionConnection.edges
@@ -229,7 +229,7 @@ describe("Sell", () => {
               sellable,
               unsellable,
               {
-                node: { ...auction.node, activeResaleSubmission: { statusMessage: "In progress" } },
+                node: { ...auction.node, activeResaleSubmission: { internalID: "submission-id" } },
               },
             ],
           },
@@ -237,8 +237,8 @@ describe("Sell", () => {
       },
     })
 
-    expect(await screen.findByText("In progress")).toBeOnTheScreen()
-    expect(screen.getAllByText("In progress")).toHaveLength(1)
+    expect(screen.getByTestId("artworkGridItem-Sellable Work")).toBeOnTheScreen()
+    expect(screen.queryByTestId("artworkGridItem-Auction Work")).not.toBeOnTheScreen()
   })
 
   it("keeps the verify button disabled until a work is selected", async () => {
@@ -273,31 +273,6 @@ describe("Sell", () => {
     expect(screen.queryByText("Artist B")).not.toBeOnTheScreen()
     expect(screen.queryByText("Artist C")).not.toBeOnTheScreen()
     expect(screen.queryByText("Start Submission")).not.toBeOnTheScreen()
-  })
-
-  it("reuses a resale submission from an earlier visit instead of creating another", async () => {
-    const view = await renderSell({
-      Me: () => {
-        const me = collection.Me()
-        const auctionWork = me.myCollectionConnection.edges[2].node
-        return {
-          ...me,
-          myCollectionConnection: {
-            edges: [
-              ...me.myCollectionConnection.edges.slice(0, 2),
-              { node: { ...auctionWork, activeResaleSubmission: resaleSubmissionFor("id-b4") } },
-            ],
-          },
-        }
-      },
-    })
-
-    fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
-    fireEvent.press(screen.getByText("Verify If Sellable"))
-    fireEvent.press(await screen.findByText("Proceed to Listing"))
-
-    expect(await screen.findByText("Start Submission")).toBeOnTheScreen()
-    expect(operationNames(view)).not.toContain("useCreateResaleSubmissionsMutation")
   })
 
   it("sends a work only once, even when verified again", async () => {

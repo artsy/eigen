@@ -65,38 +65,21 @@ interface SelectWorksContentProps {
 const SelectWorksContent: React.FC<SelectWorksContentProps> = withSuspense({
   Component: ({ showWorksSummary, onShowWorksSummary, onStartWork }) => {
     const data = useLazyLoadQuery<SelectWorksQuery>(selectWorksQuery, {})
-    const artworks = extractNodes(data.me?.myCollectionConnection)
+    // Works with an active resale submission are already on their way to being sold
+    const artworks = extractNodes(data.me?.myCollectionConnection).filter(
+      (artwork) => !artwork.activeResaleSubmission
+    )
     const [selectedWorkIDs, setSelectedWorkIDs] = useState<string[]>([])
     const [reviewedWorks, setReviewedWorks] = useState<SellSelectionWork[]>()
     const [verifying, setVerifying] = useState(false)
     const [footerHeight, setFooterHeight] = useState(0)
 
-    // A work's resale status, like “In progress”, from its active submission
-    const artworkLabels: Record<string, string> = {}
-    artworks.forEach(({ internalID, activeResaleSubmission }) => {
-      if (activeResaleSubmission?.statusMessage) {
-        artworkLabels[internalID] = activeResaleSubmission.statusMessage
-      }
-    })
     const toast = useToast()
     const { submitMutation: createResaleSubmissions } = useCreateResaleSubmissions()
     // Submissions created on this screen; it stays mounted under steps 2 and 3
-    const [createdResaleSubmissions, setCreatedResaleSubmissions] = useState<
+    const [resaleSubmissionsByArtworkID, setResaleSubmissionsByArtworkID] = useState<
       Record<string, ResaleSubmission>
     >({})
-
-    // Submissions from an earlier visit still count: Gravity refuses a second active one per work
-    const earlierResaleSubmissions: Record<string, ResaleSubmission> = {}
-    artworks.forEach(({ internalID, activeResaleSubmission }) => {
-      if (activeResaleSubmission) {
-        earlierResaleSubmissions[internalID] = toResaleSubmission(activeResaleSubmission)
-      }
-    })
-
-    const resaleSubmissionsByArtworkID = {
-      ...earlierResaleSubmissions,
-      ...createdResaleSubmissions,
-    }
 
     const selectedArtworks = artworks.filter((artwork) =>
       selectedWorkIDs.includes(artwork.internalID)
@@ -141,7 +124,7 @@ const SelectWorksContent: React.FC<SelectWorksContentProps> = withSuspense({
               created[result.artworkID] = toResaleSubmission(result.resaleSubmission)
             }
           })
-          setCreatedResaleSubmissions((current) => ({ ...current, ...created }))
+          setResaleSubmissionsByArtworkID((current) => ({ ...current, ...created }))
 
           // Works that went through are kept, so trying again only sends the ones that failed
           if (artworkIDs.some((id) => !created[id])) {
@@ -180,7 +163,6 @@ const SelectWorksContent: React.FC<SelectWorksContentProps> = withSuspense({
           <MasonryInfiniteScrollArtworkGrid
             artworks={artworks}
             selectedArtworkIDs={selectedWorkIDs}
-            artworkLabels={artworkLabels}
             onPress={(_slug, artwork) => !!artwork && toggleWork(artwork.internalID)}
             hideSaveIcon
             hideSaleInfo
@@ -250,8 +232,7 @@ const selectWorksQuery = graphql`
             ...ArtworkGridItem_artwork
             ...SellWorkCard_artwork
             activeResaleSubmission {
-              statusMessage
-              ...resaleSubmission_resaleSubmission
+              internalID
             }
           }
         }
