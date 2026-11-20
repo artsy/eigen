@@ -41,9 +41,13 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
     medium: getVortexMedium(medium ?? null, mediumType?.name ?? null) || "",
   }
 
+  // Read out what the artwork is, like the visible caption, and leave the action to the hint
+  const accessibilityLabel = [artistNames, title, date].filter(Boolean).join(", ") || "Artwork"
+
   return (
     <RouterLink
-      accessibilityLabel="Go to artwork details"
+      accessibilityLabel={accessibilityLabel}
+      accessibilityHint="Go to artwork details"
       accessibilityRole="link"
       to={"/my-collection/artwork/" + slug}
       prefetchVariables={queryVariables}

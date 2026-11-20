@@ -104,6 +104,21 @@ describe("ArtistHeaderNavRight", () => {
     expect(screen.getByText("Follow 1.2K")).toBeOnTheScreen()
   })
 
+  it("labels the follow button with the artist's name instead of the follower count", () => {
+    renderWithRelay({
+      Artist: () => ({
+        ...mockArtist,
+        name: "Test Artist",
+        isFollowed: false,
+      }),
+    })
+
+    // Palette's Button repeats the label on an inner view, so match the button role
+    fireEvent.press(screen.getByRole("button", { name: "Follow Test Artist" }))
+
+    expect(screen.getByRole("button", { name: "Following Test Artist" })).toBeOnTheScreen()
+  })
+
   it("handles follow/follow button press", () => {
     renderWithRelay({
       Artist: () => ({
