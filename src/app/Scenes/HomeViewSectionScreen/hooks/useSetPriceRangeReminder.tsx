@@ -9,8 +9,8 @@ import { VisualCluesConstMap } from "app/store/config/visualClues"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { addClue, setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
+import { runAfterInteractions } from "app/utils/runAfterInteractions"
 import { useEffect, useRef } from "react"
-import { InteractionManager } from "react-native"
 import { useTracking } from "react-tracking"
 
 const SCROLL_THRESHOLD = 0.5
@@ -63,7 +63,7 @@ export function useSetPriceRangeReminder({
             onPress: () => {
               tracking.trackEvent(tracks.onToastPress(contextScreenOwnerType))
 
-              InteractionManager.runAfterInteractions(() => {
+              runAfterInteractions(() => {
                 navigate("my-account/edit-price-range")
               })
             },

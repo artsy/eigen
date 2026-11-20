@@ -1,5 +1,5 @@
 #!/bin/bash
-# Drive the Artsy dev app on Android (adb) or iOS (simctl + idb) the same way.
+# Drive the Artsy dev app on Android (adb) or iOS (simctl + agent-device) the same way.
 #
 # usage: sim.sh <command> [android|ios] [args...]
 #   check    [android|ios]                check Metro and required tools (both platforms if omitted)
@@ -10,6 +10,7 @@
 #   swipe    <platform> <x1> <y1> <x2> <y2>  slow swipe
 #   back     android                      hardware back
 #   restart  <platform>                   relaunch the app with fresh JS state
+#   close    ios                          end the agent-device session and release the simulator
 #   compare  <before.png> <after.png> <out.png>  labelled side-by-side
 #
 # With several Android devices connected, set ANDROID_SERIAL first.
@@ -23,11 +24,21 @@ IOS_BUNDLE="net.artsy.artsy"
 cmd="${1:-}"
 platform="${2:-}"
 
-# idb has no default target unless a companion is connected, so every iOS command targets one explicit UDID
+# Every iOS command targets one explicit UDID, so taps never land on another booted simulator
 ios_udid() {
   local udid="${IOS_UDID:-$(xcrun simctl list devices booted | grep -oE '[0-9A-F-]{36}' | head -1)}"
   [ -n "$udid" ] || echo "no booted iOS simulator (boot one, or set IOS_UDID)" >&2
   echo "$udid"
+}
+
+# agent-device only taps inside a session, so open one on first use. open doesn't relaunch the app,
+# so the current screen is kept.
+ios_ad() {
+  local sel=(--platform ios --udid "$(ios_udid)" --session screenshots)
+  if ! agent-device session list 2>/dev/null | grep -q '"name": "screenshots"'; then
+    agent-device open "$IOS_BUNDLE" "${sel[@]}" >/dev/null
+  fi
+  agent-device "$@" "${sel[@]}" >/dev/null
 }
 
 case "$cmd" in
@@ -41,7 +52,7 @@ case "$cmd" in
     if [ "$platform" != ios ]; then need adb "install Android Studio platform-tools"; fi
     if [ "$platform" != android ]; then
       need xcrun "install Xcode"
-      need idb "brew install facebook/fb/idb-companion && pip install fb-idb"
+      need agent-device "npm install -g agent-device"
     fi
     [ "$missing" = 0 ] && echo "all requirements met"
     exit "$missing"
@@ -64,11 +75,11 @@ case "$cmd" in
     ;;
   tap)
     if [ "$platform" = android ]; then adb shell input tap "$3" "$4"
-    else idb ui tap --udid "$(ios_udid)" "$3" "$4"; fi
+    else ios_ad press "$3" "$4"; fi
     ;;
   swipe)
     if [ "$platform" = android ]; then adb shell input swipe "$3" "$4" "$5" "$6" 800
-    else idb ui swipe --udid "$(ios_udid)" --duration 0.8 "$3" "$4" "$5" "$6"; fi
+    else ios_ad gesture pan "$3" "$4" "$(($5 - $3))" "$(($6 - $4))" 800; fi
     ;;
   back)
     adb shell input keyevent BACK
@@ -81,6 +92,9 @@ case "$cmd" in
       xcrun simctl terminate "$(ios_udid)" "$IOS_BUNDLE" 2>/dev/null || true
       xcrun simctl launch "$(ios_udid)" "$IOS_BUNDLE" >/dev/null
     fi
+    ;;
+  close)
+    agent-device close --session screenshots >/dev/null 2>&1 || true
     ;;
   compare)
     font=/System/Library/Fonts/Helvetica.ttc

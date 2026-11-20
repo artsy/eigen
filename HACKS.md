@@ -153,7 +153,7 @@ Two unrelated problems in one patch:
 
 The patch reworks this without touching the public API:
 
-- `ios/Keys.mm` — extracts the binding setup into a shared `installKeysBindings(jsi::Runtime&)` helper, and under `RCT_NEW_ARCH_ENABLED` adopts `RCTTurboModuleWithJSIBindings` so RN calls `installJSIBindingsWithRuntime:callInvoker:` and hands us the runtime directly (no bridge or CallInvoker hacks). The JS-callable `install()` then just returns `true` when there is no bridge, and still falls back to the legacy `RCTCxxBridge` path on the old architecture.
+- `ios/Keys.mm` — extracts the binding setup into a shared `installKeysBindings(jsi::Runtime&)` helper, and under `RCT_NEW_ARCH_ENABLED` adopts `RCTTurboModuleWithJSIBindings` so RN calls `installJSIBindingsWithRuntime:callInvoker:` and hands us the runtime directly (no bridge or CallInvoker hacks). The JS-callable `install()` then just returns `true` under the New Architecture, and only compiles the legacy `RCTCxxBridge` path on the old architecture (React Native 0.88 removed `RCTCxxBridge`, so that path no longer compiles with `RCT_NEW_ARCH_ENABLED`).
 - `android/.../KeysModule.java` — `getJavaScriptContextHolder()` is still exposed on `BridgelessReactContext` (via `@UnstableReactNativeAPI`) and returns the active `ReactInstance`'s runtime pointer, so the JSI install works; we just guard against a null/zero holder instead of crashing.
 
 ⚠️ `yarn patch <pkg>` extracts the **unpatched** source. Re-apply the existing patch before adding hunks or you will silently drop them, and run `yarn install` after `yarn patch-commit` (it does not refresh `node_modules`).
@@ -162,7 +162,7 @@ The patch reworks this without touching the public API:
 
 #### When can we remove this:
 
-When `@react-navigation/bottom-tabs` supports animating the tab bar's appearance itself. There is no upstream issue or PR tracking this yet — we should open one. Rebuild the patch on every version bump.
+When `@react-navigation/bottom-tabs` supports animating the tab bar's appearance itself. There is no upstream issue or PR tracking this yet — we should open one. Rebuild the patch on every version bump (last rebuilt for `7.22.0`).
 
 #### Explanation/Context:
 
@@ -170,21 +170,24 @@ This patch allows us to animate the appearance of the bottom tabs. This is curre
 
 See https://github.com/artsy/eigen/pull/12249 for more details.
 
-## react-native-reanimated package.json flags and react-native patch
+## react-native-reanimated `staticFeatureFlags` in package.json
 
 #### When can we remove this:
 
-When reanimated adopts these by default.
+When reanimated turns these on by default (both are still `false` by default in `4.7.1`).
 
 #### Explanation/Context:
 
-`package.json` sets the following reanimated `staticFeatureFlags` to fix scroll performance. See https://docs.swmansion.com/react-native-reanimated/docs/guides/performance/#%EF%B8%8F-lower-fps-while-scrolling
+`package.json` turns on two reanimated static feature flags. They apply non-layout style updates (`opacity`, `transform`, …) directly on the UI thread instead of committing a new shadow tree, which makes animations smoother when many run at once. See https://docs.swmansion.com/react-native-reanimated/docs/guides/feature-flags/
 
-- `DISABLE_COMMIT_PAUSING_MECHANISM`
 - `ANDROID_SYNCHRONOUSLY_UPDATE_UI_PROPS`
 - `IOS_SYNCHRONOUSLY_UPDATE_UI_PROPS`
 
-We also patch `react-native` (`ReactNativeFeatureFlagsDefaults.h`) to flip `preventShadowTreeCommitExhaustion()` to return `true`, which is required for these flags to behave correctly.
+Caveat from the reanimated docs: React Native's own `Pressable` inside an `Animated.View` can fire `onPressIn` but drop `onPress` during or right after an animation, because Fabric's touch handling doesn't see these updates. Use gesture-handler's `Pressable` / `Touchable` / `GestureDetector` there.
+
+The scroll-FPS fix the docs recommend (`USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS`) has been on by default since reanimated `4.3`, so we don't set it.
+
+**Removed in the SDK 58 upgrade — `DISABLE_COMMIT_PAUSING_MECHANISM` and the `react-native` patch.** We used to also set `DISABLE_COMMIT_PAUSING_MECHANISM` and patch `ReactNativeFeatureFlagsDefaults.h` so `preventShadowTreeCommitExhaustion()` returned `true`. The docs say the reanimated flag is only safe with that React Native flag on; otherwise React commits can be starved and the app can freeze. The patch never took effect: iOS links a prebuilt React Native (since SDK 57 / React Native 0.86), whose compiled default still returns `false`, and Android reads its defaults from the prebuilt library and `ReactNativeFeatureFlagsDefaults.kt`, never from the C++ header. So we dropped both. If sticky headers start to jitter while scrolling, the fix to watch is React Native's `enableFabricCommitBranching` flag (off by default in 0.88). Turning `preventShadowTreeCommitExhaustion` on would need a runtime override from native code at startup, not a header patch.
 
 ## react-native-webview passing constant for decelerationRate prop
 
@@ -193,7 +196,7 @@ We also patch `react-native` (`ReactNativeFeatureFlagsDefaults.h`) to flip `prev
 When this is merged and we update react-native-webview to a version that contains it:
 https://github.com/react-native-webview/react-native-webview/pull/3885
 
-Still needed as of `react-native-webview@13.16.1`.
+Still needed as of `react-native-webview@14.0.1` (only `WebView.ios.tsx` converts the string constants; Android passes the prop straight through as a number).
 
 #### Explanation/Context:
 
@@ -228,6 +231,8 @@ When https://github.com/dominicstop/react-native-ios-context-menu/pull/140 is me
 Fatal crash (EIGEN-AZB4) on New Architecture where iOS requests a `UITargetedPreview` during context menu dismissal but Fabric has already detached the underlying view from the window. The fix guards `menuTargetedPreview` to return `nil` when `window` is `nil`, letting iOS fall back to a fade-out dismissal instead of crashing.
 
 See: https://github.com/dominicstop/react-native-ios-context-menu/issues/103
+
+A second hunk (React Native 0.88): the two view managers used a quoted `#import "RCTBridge.h"`, which only resolved through React Native's old header search paths. With 0.88's prebuilt `React.framework` it fails with "'RCTBridge.h' file not found", so the patch switches to `#import <React/RCTBridge.h>`. Drop this hunk once upstream uses framework imports.
 
 ## Braze prebuilt-static podspecs in Podfile
 
@@ -279,23 +284,15 @@ Another dependency in the Expo/react-native ecosystem has brought in com.caveroc
 
 #### When can we remove this:
 
-**Hunk 1:** when the upstream expo-updates repository fixes the issue and releases a new version that properly handles crashes on Android with the new architecture. https://github.com/expo/expo/issues/41543
+When the upstream expo-updates repository fixes the issue and releases a new version that properly handles crashes on Android with the new architecture. https://github.com/expo/expo/issues/41543
 
-**Hunk 2:** when upstream fixes the `use_dev_client` detection. Still broken as of `expo-updates@57.0.21` — carry this hunk forward on every SDK bump.
+Still needed as of `expo-updates@58.0.22`.
 
 #### Explanation/Context:
 
-Two unrelated hunks:
+**`android/.../errorrecovery/ErrorRecovery.kt` — blank screens instead of crashes.** Started seeing blank screens on android when app was crashing instead of regularly crashing the app after we enabled new architecture. In bridgeless mode `onReactInstanceException` silently swallowed the exception once expo-updates had unregistered its own handler (i.e. more than ~10s after launch). The patch keeps a fallback handler around that forwards to the thread's default uncaught-exception handler, so the app crashes properly — and gets reported — instead of showing a blank screen.
 
-**1. `android/.../errorrecovery/ErrorRecovery.kt` — blank screens instead of crashes.** Started seeing blank screens on android when app was crashing instead of regularly crashing the app after we enabled new architecture. In bridgeless mode `onReactInstanceException` silently swallowed the exception once expo-updates had unregistered its own handler (i.e. more than ~10s after launch). The patch keeps a fallback handler around that forwards to the thread's default uncaught-exception handler, so the app crashes properly — and gets reported — instead of showing a blank screen.
-
-**2. `ios/EXUpdates.podspec` — `use_dev_client` wrongly enabled.** Upstream detects expo-dev-client with:
-
-```rb
-use_dev_client = File.dirname(`node --print "require.resolve('expo-dev-client/package.json', ...)"`).length > 0
-```
-
-We do not install `expo-dev-client`, so the backtick returns `""`, `File.dirname("")` is `"."`, and `".".length > 0` is **true** — so Debug builds wrongly got `-DUSE_DEV_CLIENT=1`. It also leaked a node `MODULE_NOT_FOUND` stack trace to stderr on every `pod install`. The patch checks `$?.success?` and a non-empty result instead, and silences the stderr.
+We used to carry a second hunk for `ios/EXUpdates.podspec` (`use_dev_client` wrongly detected as `true` when `expo-dev-client` is not installed). `expo-updates@58` fixed that upstream (it now silences stderr, strips the output and checks `empty?`), so the hunk was dropped.
 
 ## Patch for react-native-ios-utilities
 
@@ -311,19 +308,101 @@ The iOS build failed to link with `Undefined symbols: _OBJC_CLASS_$_RCTRootConte
 
 The patch removes the `closestParentReactContentView` helper and returns `nil` from its single consumer — the tail fallback of `closestParentReactTouchHandler`, which `react-native-ios-context-menu` uses to cancel a touch handler. This is safe because eigen runs the New Architecture: `RCTRootContentView` is never present in a Fabric view hierarchy, so that fallback was already dead code for us.
 
+A second hunk (React Native 0.88): `RNIUtilitiesModule.mm`'s `installHostObjectIfNeeded` cast `[RCTBridge currentBridge]` to `RCTCxxBridge` to reach the JS runtime, and 0.88 no longer declares `RCTCxxBridge`. The patch compiles that path only on the old architecture and returns early under `RCT_NEW_ARCH_ENABLED`. We believe the bridgeless app never had an `RCTCxxBridge` there, so the path already returned early — but if `currentBridge` used to return the bridge proxy, the host object is no longer installed. Verify context menus (zeego / `react-native-ios-context-menu`) on device.
+
+A third hunk (React Native 0.88): `RNIImageRemoteURLMaker.swift` typed its image loader as `RCTImageLoaderWithAttributionProtocol`, which 0.88 dropped from the `React` umbrella header, so Swift can't see it. The patch types it as `RCTImageLoaderProtocol`, which declares the `loadImage(with:callback:)` it actually calls.
+
+More React Native 0.88 hunks: 0.88 builds with `RCT_REMOVE_LEGACY_ARCH`, which compiles `RCTSurfacePresenterBridgeAdapter` out. `-[UIApplication reactBridgeAdapter]`, `-reactSurfacePresenter` and the New Architecture branch of `-[UIView reactGetPaperBridge]` now return `nil` under that flag. That matches what eigen could ever get: upstream's `reactBridgeAdapter` recursed into itself whenever the app delegate wasn't an `RCTAppDelegate` (ours is an `ExpoAppDelegate`), so it was never reachable without crashing. Quoted RN imports (`"RCTBridge.h"`, `"RCTFabricComponentsPlugins.h"`, `"RCTFollyConvert.h"`) are also switched to `<React/…>` framework imports for the prebuilt `React.framework`.
+
 **Failed approach — do not retry:** setting `ENV['RCT_REMOVE_LEGACY_ARCH'] = '0'` in the Podfile. A compiler flag cannot add symbols back into a prebuilt binary; it would additionally require `RCT_USE_PREBUILT_RNCORE=0`, i.e. compiling React Native from source on every clean build.
 
-## Patch for react-native-safe-area-context
+## Patch for react-native-reanimated (Jest)
 
 #### When can we remove this:
 
-When upstream drops the unused `React` import from `jest/mock.tsx`, or when our Babel/TS config no longer errors on it.
+When `JSReanimated.setCSSEventHandler` stops throwing, or `initializers.native.ts` stops calling it under Jest. Still broken in `react-native-reanimated@4.7.2`.
 
 #### Explanation/Context:
 
-`jest/mock.tsx` does `import React, { useContext } from 'react'` but never references `React` itself. Under our Jest transform this trips the unused-import/`verbatimModuleSyntax`-style handling and fails the mock. The patch is a one-liner that drops the default import and keeps `{ useContext }`.
+Under Jest, reanimated resolves `initializers.native.ts` (platform `ios`) but uses `JSReanimated` as its module (`IS_JEST`). The native initializer unconditionally calls `setCSSEventHandler`, which `JSReanimated` implements as `throw`, so every suite that imports reanimated — including through `react-native-reanimated/mock` — failed with "`setCSSEventHandler` is not available in JSReanimated". The patch makes it a no-op. The web initializer (`initializers.ts`) never calls it, so this only affects tests.
 
-Purely a test-time fix — it does not affect app code. Needs rebuilding on every `react-native-safe-area-context` version bump (it has already been carried across 5.6.2 → 5.7.0).
+## Patch for react-native-webview (types)
+
+#### When can we remove this:
+
+When `react-native-webview` changes `declare class WebView<P = undefined>` in `index.d.ts` back to a default that intersects cleanly (e.g. `{}`). Still broken in `14.0.1`.
+
+#### Explanation/Context:
+
+`14.x` declares `class WebView<P = undefined> extends Component<WebViewProps & P>`. `WebViewProps & undefined` reduces to `never`, so every `<WebView …/>` fails to type-check ("Type 'true' is not assignable to type 'never'"). The patch restores the `13.x` default `P = {}`. Types only, no runtime change.
+
+## Patch for react-native-blob-util (Android `proguard-android.txt`)
+
+#### When can we remove this:
+
+When we bump to a version whose `android/build.gradle` no longer uses `getDefaultProguardFile('proguard-android.txt')` — fixed upstream in `react-native-blob-util@0.24+`.
+
+#### Explanation/Context:
+
+AGP 9 (React Native 0.87+) refuses to configure a module that references `proguard-android.txt` ("no longer supported since it includes `-dontoptimize`"). blob-util sets `minifyEnabled false` for its own release build type, so the file is never used; the patch swaps it for `proguard-android-optimize.txt` so Gradle can configure. We didn't take the upstream fix in the SDK 58 upgrade because it's a large jump (five 0.x minors).
+
+`@rnmapbox/maps` had the same problem (plus React Native 0.88 iOS `LayoutMetrics` and Android Kotlin errors) and carried a patch for a while during the SDK 58 upgrade. We dropped it by upgrading to `10.3.18`, which has all of those fixes; that upgrade also moved the native Mapbox SDK from 11.20 to 11.33.
+
+## Android Gradle Plugin 9 opt-outs and `kspVersion` (`android/gradle.properties`, `android/build.gradle`)
+
+#### When can we remove this:
+
+- `android.builtInKotlin=false` / `android.newDsl=false`: before AGP 10, which removes both opt-outs. Every library we build must support AGP 9's built-in Kotlin and new DSL first.
+- `kspVersion`: when we apply Expo's `expo-root-project` Gradle plugin (which sets it for us), or when expo-updates stops falling back to an old KSP.
+
+#### Explanation/Context:
+
+React Native 0.87+ moves to AGP 9, which turns on built-in Kotlin and the new DSL by default. We opt out of both so the existing Gradle setup of the app and our native dependencies keeps configuring unchanged; moving to them is its own piece of work.
+
+`kspVersion` has to match `kotlinVersion` (see Expo's `KSPLookup`). We don't apply `expo-root-project`, which would set it, so without it expo-updates falls back to KSP 1.9.24 and fails to configure. Update it whenever `kotlinVersion` changes.
+
+## Jest `setImmediate` / `clearImmediate` and `requestIdleCallback` shims (`src/setupJest.tsx`)
+
+#### When can we remove this:
+
+- `setImmediate` / `clearImmediate`: when we drop legacy fake timers (see `@jest/fake-timers` above), or when the Jest environment provides both globals.
+- `requestIdleCallback`: when the Jest environment / `@react-native/jest-preset` provides it.
+
+#### Explanation/Context:
+
+React Native 0.88's `NativeAnimatedHelper` calls `clearImmediate` unconditionally. jsdom doesn't define it, and legacy fake timers capture the missing value when the environment is created and restore it as `undefined` on `useRealTimers()`. The shim makes both globals accessors that fall back to Node's `timers` whenever they're unset.
+
+React Native 0.87 removed `InteractionManager`, so app code now defers work with `requestIdleCallback` (`app/utils/runAfterInteractions`). Jest doesn't provide it, so the setup file polyfills it with `setTimeout(…, 0)`.
+
+## Patch for @stripe/stripe-react-native (Android release lint, `play-services-tapandpay`)
+
+#### When can we remove this:
+
+When we upgrade to `@stripe/stripe-react-native@0.82+`, which has the same exclude upstream (https://github.com/stripe/stripe-react-native/issues/2728). That upgrade is its own piece of work: from `0.78` the Stripe iOS SDK is resolved through Swift Package Manager and needs `use_frameworks! :linkage => :dynamic`, and `0.84` drops CocoaPods resolution entirely.
+
+#### Explanation/Context:
+
+Stripe declares `compileOnly "com.stripe:stripe-android-issuing-push-provisioning:1.1.0"`, which depends on Google's private `play-services-tapandpay` SDK (not on any public Maven repository). Android Gradle Plugin 9 resolves `compileOnly` dependencies for the release lint check (`lintVitalAnalyzeRelease`), so `assembleRelease` failed with "Could not find com.google.android.gms:play-services-tapandpay:17.1.2". The patch excludes `play-services-tapandpay` from that dependency, the same fix as upstream. We don't use push provisioning, so nothing at runtime changes.
+
+## Patch for @react-native-menu/menu (iOS imports)
+
+#### When can we remove this:
+
+When we can upgrade `@react-native-menu/menu` past `1.2.2` — zeego pins exactly `1.2.2` as a peer, so this waits on a zeego upgrade.
+
+#### Explanation/Context:
+
+`MenuViewManager.mm` and `NewArch/MenuView.mm` used quoted imports (`#import "RCTBridge.h"`, `#import "RCTFabricComponentsPlugins.h"`) that only resolved through React Native's old header search paths. With React Native 0.88's prebuilt `React.framework` they fail with "'RCTBridge.h' file not found". The patch switches them to framework imports (`<React/RCTBridge.h>`), which is where the prebuilt headers live.
+
+## Legacy React Native TypeScript types (`tsconfig.json` customConditions)
+
+#### When can we remove this:
+
+Before upgrading past React Native 0.88 — the `react-native-legacy-deep-imports` condition (and `types_DEPRECATED`) is removed after 0.88.
+
+#### Explanation/Context:
+
+React Native 0.88 makes the [Strict TypeScript API](https://reactnative.dev/docs/strict-typescript-api) the default. Our code still types refs as component names (`useRef<ScrollView>`, `useRef<TextInput>`), uses removed type exports (`ViewToken`, `ViewabilityConfig`) and `Image` style types that no longer accept view styles — about 200 errors. `"customConditions": ["react-native-legacy-deep-imports", "react-native"]` keeps the legacy types until we migrate (mostly `ScrollViewInstance` / `TextInputInstance` style refs).
 
 ## patch for AFNetworking
 

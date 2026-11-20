@@ -1,0 +1,28 @@
+diff --git a/lib/module/ReanimatedModule/js-reanimated/JSReanimated.js b/lib/module/ReanimatedModule/js-reanimated/JSReanimated.js
+index 7f3193536638d962805d80869847ac5dc0c0252f..ec698942d86baee8a64179da141912d06cd8f493 100644
+--- a/lib/module/ReanimatedModule/js-reanimated/JSReanimated.js
++++ b/lib/module/ReanimatedModule/js-reanimated/JSReanimated.js
+@@ -209,7 +209,7 @@ class JSReanimated {
+     throw new Error('[Reanimated] setViewStyle is not available in JSReanimated.');
+   }
+   setCSSEventHandler(_handler) {
+-    throw new Error('[Reanimated] `setCSSEventHandler` is not available in JSReanimated.');
++    // PATCHED: no-op. initializers.native.ts calls this unconditionally, which threw under Jest (IS_JEST uses JSReanimated).
+   }
+   markNodeAsRemovable(_shadowNodeWrapper) {
+     throw new Error('[Reanimated] markNodeAsRemovable is not available in JSReanimated.');
+diff --git a/src/ReanimatedModule/js-reanimated/JSReanimated.ts b/src/ReanimatedModule/js-reanimated/JSReanimated.ts
+index e53b3e1db10f68bb1fd0582a5f0a4f966908b1dc..e9b8dc947e3d372945ec3eeeca3f25a5b5575718 100644
+--- a/src/ReanimatedModule/js-reanimated/JSReanimated.ts
++++ b/src/ReanimatedModule/js-reanimated/JSReanimated.ts
+@@ -283,9 +283,7 @@ class JSReanimated implements IReanimatedModule {
+   }
+ 
+   setCSSEventHandler(_handler: CSSEventHandler): void {
+-    throw new Error(
+-      '[Reanimated] `setCSSEventHandler` is not available in JSReanimated.'
+-    );
++    // PATCHED: no-op. initializers.native.ts calls this unconditionally, which threw under Jest (IS_JEST uses JSReanimated).
+   }
+ 
+   markNodeAsRemovable(_shadowNodeWrapper: ShadowNodeWrapper): void {

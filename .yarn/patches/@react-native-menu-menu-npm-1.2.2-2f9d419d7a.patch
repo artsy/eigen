@@ -1,0 +1,25 @@
+diff --git a/ios/MenuViewManager.mm b/ios/MenuViewManager.mm
+index 3d149b3e7426b8f7c999603ddf1e15e12331c33a..6816e948876d6b4370e4accfe8717571a94c4812 100644
+--- a/ios/MenuViewManager.mm
++++ b/ios/MenuViewManager.mm
+@@ -1,6 +1,6 @@
+ #import <React/RCTViewManager.h>
+ #import <React/RCTUIManager.h>
+-#import "RCTBridge.h"
++#import <React/RCTBridge.h>
+ 
+ #ifdef RCT_NEW_ARCH_ENABLED
+ // NEW ARCH
+diff --git a/ios/NewArch/MenuView.mm b/ios/NewArch/MenuView.mm
+index 6e815e49d8ec5f739643a5a69bf94abf3ef4a94b..ac525063ea78bc8f956ccae3f49982af3e35bf9a 100644
+--- a/ios/NewArch/MenuView.mm
++++ b/ios/NewArch/MenuView.mm
+@@ -10,7 +10,7 @@
+ #import <react/renderer/components/RNMenuViewSpec/EventEmitters.h>
+ #import <react/renderer/components/RNMenuViewSpec/Props.h>
+ #import <react/renderer/components/RNMenuViewSpec/RCTComponentViewHelpers.h>
+-#import "RCTFabricComponentsPlugins.h"
++#import <React/RCTFabricComponentsPlugins.h>
+ 
+ using namespace facebook::react;
+ 

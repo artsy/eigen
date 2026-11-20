@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { TaskTestQuery } from "__generated__/TaskTestQuery.graphql"
 import { Task } from "app/Components/Tasks/Task"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { pressSwipeableAction } from "app/utils/tests/pressSwipeableAction"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -54,9 +55,7 @@ describe("Task Component", () => {
   it("should dismiss when the task is cleared", async () => {
     renderWithRelay({ Task: () => mockTask })
 
-    const clearButton = screen.getByText("Clear")
-
-    fireEvent.press(clearButton)
+    pressSwipeableAction(screen.getByText("Clear"))
 
     expect(mockDismissTask).toHaveBeenCalled()
     expect(mockTrackEvent).toHaveBeenCalledWith({
