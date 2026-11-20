@@ -24,6 +24,7 @@ The e2e flows run with [agent-device](https://github.com/callstack/agent-device)
   gh workflow run build-qa-ios.yml --ref <branch> -f build_name=<name>
   gh workflow run ios-e2e.yml --ref <branch> -f build_name=<name>
   ```
+
 - Only `junit.xml` and `failures.json` are attached to the run as artifacts. This repo's artifacts are public, and agent-device's logs and screenshots can show the test account.
 
 ## Layout
