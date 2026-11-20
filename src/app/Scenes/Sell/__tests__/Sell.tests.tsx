@@ -158,16 +158,25 @@ const resolveVerify = async (view: SellView, failedIDs: string[] = []) => {
 
 type ActiveArtwork = { internalID: string; artistNames: string; title?: string }
 
-// Step 2 loads the active work with its own query. Step 3 asks for the same fields, so Relay's
-// store answers it. The shared id keeps a generated one from overwriting another work in step 1.
+// Steps 2 and 3 load the active resale submission and its work. The shared ids keep generated
+// ones from overwriting another work or submission in step 1.
+const activeWorkResolvers = (artwork: ActiveArtwork) => ({
+  Me: () => ({ id: "me" }),
+  ResaleSubmission: () => ({
+    id: `submission-${artwork.internalID}`,
+    ...resaleSubmissionFor(artwork.internalID),
+  }),
+  Artwork: () => ({ id: artwork.internalID, ...artwork }),
+})
+
 const resolveActiveArtwork = (view: SellView, artwork: ActiveArtwork) => {
-  view.mockResolveLastOperation({ Artwork: () => ({ id: artwork.internalID, ...artwork }) })
+  view.mockResolveLastOperation(activeWorkResolvers(artwork))
 }
 
 // Step 3 also loads the saved addresses, which the earlier steps never asked for
 const resolveLocationStep = (view: SellView, artwork: ActiveArtwork) => {
   view.mockResolveLastOperation({
-    Artwork: () => ({ id: artwork.internalID, ...artwork }),
+    ...activeWorkResolvers(artwork),
     // A fixed id lets a saved address update this list
     Me: () => ({ id: "me", addressConnection: { edges: [{ node: SAVED_ADDRESS }] } }),
   })
