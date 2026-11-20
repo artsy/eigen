@@ -1,16 +1,5 @@
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
-import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { Artwork, ArtworkScreen } from "app/Scenes/Artwork/Artwork"
-import { ArtworkDetails } from "app/Scenes/Artwork/Components/ArtworkDetails"
-import { ArtworkHistory } from "app/Scenes/Artwork/Components/ArtworkHistory"
-import { ArtworkStickyBottomContent } from "app/Scenes/Artwork/Components/ArtworkStickyBottomContent"
-import { ArtworksInSeriesRail } from "app/Scenes/Artwork/Components/ArtworksInSeriesRail"
-import { ImageCarousel } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
-import { OtherWorksFragmentContainer } from "app/Scenes/Artwork/Components/OtherWorks/OtherWorks"
-import { PartnerCard } from "app/Scenes/Artwork/Components/PartnerCard"
-import { PrivateArtworkExclusiveAccess } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkExclusiveAccess"
-import { PrivateArtworkMetadata } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkMetadata"
-import { ShippingAndTaxesFragmentContainer } from "app/Scenes/Artwork/Components/ShippingAndTaxes"
+import { ArtworkScreen } from "app/Scenes/Artwork/Artwork"
 import {
   ArtworkFromLiveAuctionRegistrationClosed,
   ArtworkFromLiveAuctionRegistrationOpen,
@@ -24,10 +13,9 @@ import { goBack, navigate, navigationEvents } from "app/system/navigation/naviga
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { merge } from "lodash"
-import { ActivityIndicator } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
 
 jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
@@ -87,13 +75,15 @@ describe("Artwork", () => {
     renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
     // ArtworkAboveTheFoldQuery
-    resolveMostRecentRelayOperation(environment)
+    resolveMostRecentRelayOperation(environment, {
+      Artwork: () => ({ figures: [mockImageFigure], isForSale: true, isSold: false }),
+    })
 
     await flushPromiseQueue()
-    expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
-    expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
-    expect(screen.UNSAFE_queryByType(ArtworkStickyBottomContent)).toBeTruthy()
-    expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeTruthy()
+    expect(screen.getByLabelText("Image Carousel")).toBeOnTheScreen()
+    expect(screen.getByLabelText("Artwork Details")).toBeOnTheScreen()
+    expect(screen.getByLabelText("Sticky bottom commercial section")).toBeOnTheScreen()
+    expect(screen.getByTestId("below-the-fold-placeholder-loading-indicator")).toBeOnTheScreen()
   })
 
   it("renders all content after the full query has been resolved", async () => {
@@ -103,6 +93,7 @@ describe("Artwork", () => {
     resolveMostRecentRelayOperation(environment, {
       Artwork: () => ({
         isUnlisted: false,
+        figures: [mockImageFigure],
         collectorSignals: {
           runningShow: {
             name: "Art Basel",
@@ -124,10 +115,13 @@ describe("Artwork", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
-    expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
-    expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeNull()
-    expect(screen.UNSAFE_queryByType(ArtworkHistory)).toBeTruthy()
+    expect(screen.getByLabelText("Image Carousel")).toBeOnTheScreen()
+    expect(screen.getByLabelText("Artwork Details")).toBeOnTheScreen()
+    expect(
+      screen.queryByTestId("below-the-fold-placeholder-loading-indicator")
+    ).not.toBeOnTheScreen()
+    // ArtworkHistory
+    expect(screen.getByText("Bibliography")).toBeOnTheScreen()
   })
 
   describe("artist series components", () => {
@@ -166,8 +160,10 @@ describe("Artwork", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.UNSAFE_queryByType(ArtistSeriesMoreSeries)).toBeTruthy()
-      expect(screen.UNSAFE_queryByType(ArtworksInSeriesRail)).toBeTruthy()
+      // ArtistSeriesMoreSeries
+      expect(screen.getByText("Series from this artist")).toBeOnTheScreen()
+      // ArtworksInSeriesRail
+      expect(screen.getByText(/^More from this series$/i)).toBeOnTheScreen()
     })
 
     it("does not render when there are no artist series to show", async () => {
@@ -199,8 +195,10 @@ describe("Artwork", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.UNSAFE_queryByType(ArtistSeriesMoreSeries)).toBeNull()
-      expect(screen.UNSAFE_queryByType(ArtworksInSeriesRail)).toBeNull()
+      // ArtistSeriesMoreSeries
+      expect(screen.queryByText("Series from this artist")).not.toBeOnTheScreen()
+      // ArtworksInSeriesRail
+      expect(screen.queryByText(/^More from this series$/i)).not.toBeOnTheScreen()
     })
 
     it("tracks a click to an artist series item", async () => {
@@ -309,8 +307,7 @@ describe("Artwork", () => {
   })
 
   it("updates the above-the-fold content on re-appear", async () => {
-    // eslint-disable-next-line testing-library/render-result-naming-convention
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     // ArtworkAboveTheFoldQuery
     resolveMostRecentRelayOperation(environment, {
@@ -321,9 +318,7 @@ describe("Artwork", () => {
 
     await flushPromiseQueue()
 
-    // eslint-disable-next-line testing-library/await-async-queries
-    expect(tree.root.findByType(Artwork).props.artworkAboveTheFold.slug).toBe("my-special-artwork")
-
+    // Artwork received the above-the-fold slug and marks it as recently viewed
     expect(environment.mock.getMostRecentOperation()).toMatchObject({
       request: {
         node: {
@@ -360,9 +355,10 @@ describe("Artwork", () => {
       },
     })
 
-    tree.update(<TestRenderer isVisible={false} />)
-    tree.update(<TestRenderer isVisible />)
+    screen.rerender(<TestRenderer isVisible={false} />)
+    screen.rerender(<TestRenderer isVisible />)
 
+    // Artwork received the refetched above-the-fold slug and marks it as recently viewed
     expect(environment.mock.getMostRecentOperation()).toMatchObject({
       request: {
         node: {
@@ -380,11 +376,6 @@ describe("Artwork", () => {
 
     // ArtworkMarkAsRecentlyViewedQuery
     resolveMostRecentRelayOperation(environment)
-
-    // eslint-disable-next-line testing-library/await-async-queries
-    expect(tree.root.findByType(Artwork).props.artworkAboveTheFold.slug).toBe(
-      "completely-different-slug"
-    )
   })
 
   describe("Live Auction States", () => {
@@ -941,7 +932,7 @@ describe("Artwork", () => {
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
-        Artwork: () => ({ isUnlisted: true, collectorSignals: null }),
+        Artwork: () => ({ isUnlisted: true, collectorSignals: null, figures: [mockImageFigure] }),
         Me: () => ({ partnerOffersConnection: { edges: [] } }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
@@ -955,6 +946,7 @@ describe("Artwork", () => {
           collectorSignals: null,
           partner: {
             type: "foo",
+            cities: ["Unlisted Partner City"],
           },
           sale: {
             isBenefit: false,
@@ -966,18 +958,26 @@ describe("Artwork", () => {
       await flushPromiseQueue()
 
       // Hidden in unlisted private artworks
-      expect(screen.UNSAFE_queryByType(ArtworkHistory)).toBeNull()
-      expect(screen.UNSAFE_queryByType(OtherWorksFragmentContainer)).toBeNull()
-      expect(screen.UNSAFE_queryByType(ArtworksInSeriesRail)).toBeNull()
-      expect(screen.UNSAFE_queryByType(ArtistSeriesMoreSeries)).toBeNull()
+      // ArtworkHistory
+      expect(screen.queryByText("Bibliography")).not.toBeOnTheScreen()
+      // OtherWorks
+      expect(screen.queryByLabelText("Context Grid CTA")).not.toBeOnTheScreen()
+      // ArtworksInSeriesRail
+      expect(screen.queryByText(/^More from this series$/i)).not.toBeOnTheScreen()
+      // ArtistSeriesMoreSeries
+      expect(screen.queryByText("Series from this artist")).not.toBeOnTheScreen()
 
       // Displayed in unlisted private artworks
-      expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
-      expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
-      expect(screen.UNSAFE_queryByType(ShippingAndTaxesFragmentContainer)).toBeTruthy()
-      expect(screen.UNSAFE_queryByType(PrivateArtworkExclusiveAccess)).toBeTruthy()
-      expect(screen.UNSAFE_queryByType(PartnerCard)).toBeTruthy()
-      expect(screen.UNSAFE_queryByType(PrivateArtworkMetadata)).toBeTruthy()
+      expect(screen.getByLabelText("Image Carousel")).toBeOnTheScreen()
+      expect(screen.getByLabelText("Artwork Details")).toBeOnTheScreen()
+      // ShippingAndTaxes
+      expect(screen.getByText(/^Ships from /)).toBeOnTheScreen()
+      // PrivateArtworkExclusiveAccess
+      expect(screen.getByText(/This work was privately shared by/)).toBeOnTheScreen()
+      // PartnerCard
+      expect(screen.getByText("Unlisted Partner City")).toBeOnTheScreen()
+      // PrivateArtworkMetadata
+      expect(screen.getByLabelText("Condition")).toBeOnTheScreen()
 
       expect(screen.getByText("Read More")).toBeTruthy()
     })
@@ -1042,3 +1042,11 @@ describe("Artwork", () => {
     })
   })
 })
+
+const mockImageFigure = {
+  __typename: "Image",
+  url: "https://example.com/image.jpg",
+  width: 800,
+  height: 600,
+  imageVersions: ["large"],
+}

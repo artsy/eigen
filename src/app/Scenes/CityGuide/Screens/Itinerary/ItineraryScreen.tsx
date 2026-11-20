@@ -407,6 +407,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
               <DraxProvider>
                 <ScrollView
                   ref={scrollRef}
+                  testID="itinerary-scroll-view"
                   scrollEventThrottle={16}
                   onScroll={(event) => {
                     scrollHandlers.current.forEach((handlers) => handlers.onScroll(event))

@@ -10,7 +10,6 @@ import { PriceRangeOptionsScreen } from "app/Components/ArtworkFilter/Filters/Pr
 import { getEssentialProps } from "app/Components/ArtworkFilter/Filters/helper"
 import { Range } from "app/Components/ArtworkFilter/Filters/helpers"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { debounce } from "lodash"
@@ -148,8 +147,9 @@ describe("PriceRangeOptions", () => {
     fireEvent.changeText(screen.getByTestId("price-min-input"), "1111")
     fireEvent.changeText(screen.getByTestId("price-max-input"), "98765")
 
-    expect(extractText(screen.getByTestId("debug"))).toContain(
-      `{"displayText":"$1,111–98,765","paramValue":"1111-98765","paramName":"priceRange"}`
+    expect(screen.getByTestId("debug")).toHaveTextContent(
+      `{"displayText":"$1,111–98,765","paramValue":"1111-98765","paramName":"priceRange"}`,
+      { exact: false }
     )
   })
 
@@ -159,8 +159,9 @@ describe("PriceRangeOptions", () => {
     fireEvent.changeText(screen.getByTestId("price-min-input"), "1111")
     fireEvent.changeText(screen.getByTestId("price-min-input"), "2222")
 
-    expect(extractText(screen.getByTestId("debug"))).toContain(
-      `{"displayText":"$2,222+","paramValue":"2222-*","paramName":"priceRange"}`
+    expect(screen.getByTestId("debug")).toHaveTextContent(
+      `{"displayText":"$2,222+","paramValue":"2222-*","paramName":"priceRange"}`,
+      { exact: false }
     )
   })
 

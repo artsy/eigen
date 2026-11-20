@@ -1,9 +1,5 @@
-import { TouchableHighlightColor } from "@artsy/palette-mobile"
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { GeneTestsQuery } from "__generated__/GeneTestsQuery.graphql"
-import { ArtworkFilterOptionsScreen } from "app/Components/ArtworkFilter"
-import About from "app/Components/Gene/About"
-import { GeneArtworksContainer } from "app/Components/Gene/GeneArtworks"
 import { Gene } from "app/Scenes/Gene/Gene"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -53,21 +49,26 @@ describe("Gene", () => {
     resolveMostRecentRelayOperation(environment)
   })
 
-  it("returns all tabs", async () => {
+  it("returns all tabs", () => {
     renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
+    resolveMostRecentRelayOperation(environment, {
+      Gene: () => ({ description: "A gene description" }),
+      FilterArtworksConnection: () => ({ counts: { total: 10 } }),
+    })
 
-    expect(screen.UNSAFE_queryAllByType(GeneArtworksContainer)).toHaveLength(1)
-    expect(screen.UNSAFE_queryAllByType(About)).toHaveLength(1)
+    // GeneArtworks
+    expect(screen.getByText("Showing 10 works")).toBeOnTheScreen()
+    // About
+    expect(screen.getByText("A gene description")).toBeOnTheScreen()
   })
 
   it("renders filter modal", async () => {
-    const { UNSAFE_getByType, UNSAFE_getAllByType } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(environment)
 
-    await waitFor(() => expect(UNSAFE_getByType(TouchableHighlightColor)).toBeTruthy())
-    fireEvent.press(UNSAFE_getByType(TouchableHighlightColor))
+    fireEvent.press(await screen.findByTestId("sort-and-filter-button"))
 
-    expect(UNSAFE_getAllByType(ArtworkFilterOptionsScreen)).toHaveLength(1)
+    // ArtworkFilterOptionsScreen
+    expect(screen.getByText("Clear All")).toBeOnTheScreen()
   })
 })

@@ -1,11 +1,8 @@
+import { act, screen } from "@testing-library/react-native"
 import { ShowMoreInfoTestsQuery } from "__generated__/ShowMoreInfoTestsQuery.graphql"
-import { ShowHoursFragmentContainer } from "app/Scenes/Show/Components/ShowHours"
-import { ShowLocationFragmentContainer } from "app/Scenes/Show/Components/ShowLocation"
-import { ShowMoreInfo, ShowMoreInfoFragmentContainer } from "app/Scenes/Show/Screens/ShowMoreInfo"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { ShowMoreInfoFragmentContainer } from "app/Scenes/Show/Screens/ShowMoreInfo"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 describe("ShowMoreInfo", () => {
@@ -37,64 +34,59 @@ describe("ShowMoreInfo", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
     })
-    return tree
   }
 
   it("renders without throwing an error", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(ShowMoreInfo)).toHaveLength(1)
+    getWrapper()
+    expect(screen.getByText("About")).toBeOnTheScreen()
   })
 
   it("renders basic information", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       Show: () => ({
         about: "Basic information about the show",
         pressRelease: "The press release for the show",
       }),
     })
 
-    expect(wrapper.root.findAllByType(ShowMoreInfo)).toHaveLength(1)
+    expect(screen.getByText("About")).toBeOnTheScreen()
 
-    const text = extractText(wrapper.root)
-
-    expect(text).toContain("Basic information about the show")
-    expect(text).toContain("The press release for the show")
+    expect(screen.getByText(/Basic information about the show/)).toBeOnTheScreen()
+    expect(screen.getByText(/The press release for the show/)).toBeOnTheScreen()
   })
 
   it("renders the partner type", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       Partner: () => ({ type: "Institutional Seller" }),
     })
 
-    const text = extractText(wrapper.root)
-
-    expect(text).toContain("Institution")
-    expect(text).not.toContain("Institutional Seller")
+    expect(screen.getByText(/Institution/)).toBeOnTheScreen()
+    expect(screen.queryByText(/Institutional Seller/)).not.toBeOnTheScreen()
   })
 
   it("renders the hours", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(ShowHoursFragmentContainer)).toHaveLength(1)
+    getWrapper()
+    expect(screen.getByText("Hours")).toBeOnTheScreen()
   })
 
   it("does not render the hours if they are missing from the location", () => {
-    const wrapper = getWrapper({ Location: () => ({ openingHours: null }) })
-    expect(wrapper.root.findAllByType(ShowHoursFragmentContainer)).toHaveLength(0)
+    getWrapper({ Location: () => ({ openingHours: null }) })
+    expect(screen.queryByText("Hours")).not.toBeOnTheScreen()
   })
 
   it("renders the location", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(ShowLocationFragmentContainer)).toHaveLength(1)
+    getWrapper()
+    expect(screen.getByText("Location")).toBeOnTheScreen()
   })
 
   it("does not render the location if the coordinates are missing", () => {
-    const wrapper = getWrapper({ LatLng: () => ({ lat: null }) })
-    expect(wrapper.root.findAllByType(ShowLocationFragmentContainer)).toHaveLength(0)
+    getWrapper({ LatLng: () => ({ lat: null }) })
+    expect(screen.queryByText("Location")).not.toBeOnTheScreen()
   })
 })

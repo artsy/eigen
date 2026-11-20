@@ -17,7 +17,6 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Actions } from "easy-peasy"
 import { useEffect } from "react"
-import { FlatList } from "react-native"
 import { graphql } from "react-relay"
 import { MockPayloadGenerator } from "relay-test-utils"
 
@@ -185,7 +184,7 @@ describe("HomeViewSectionArtworks", () => {
     })
 
     it("tracks itemViewed events when feature flag is enabled and rail is visible", async () => {
-      const { UNSAFE_root } = renderWithRelay({
+      renderWithRelay({
         HomeViewSectionArtworks: () => ({
           internalID: "home-view-section-new-works-for-you",
           contextModule: "newWorksForYouRail",
@@ -218,16 +217,14 @@ describe("HomeViewSectionArtworks", () => {
 
       homeViewStoreActions.setViewableSections(["home-view-section-new-works-for-you"])
 
-      const artworkRail = await UNSAFE_root.findByType(FlatList)
+      const artworkRail = await screen.findByTestId("artwork-rail")
 
-      act(() => {
-        artworkRail.props.onViewableItemsChanged({
-          viewableItems: [
-            { item: { internalID: "artwork-1-id" }, index: 0 },
-            { item: { internalID: "artwork-2-id" }, index: 1 },
-          ],
-          changed: [],
-        })
+      fireEvent(artworkRail, "viewableItemsChanged", {
+        viewableItems: [
+          { item: { internalID: "artwork-1-id" }, index: 0 },
+          { item: { internalID: "artwork-2-id" }, index: 1 },
+        ],
+        changed: [],
       })
 
       // Check that itemViewed events were tracked
@@ -251,7 +248,7 @@ describe("HomeViewSectionArtworks", () => {
     })
 
     it("does not track itemViewed events when rail is not visible", async () => {
-      const { UNSAFE_root } = renderWithRelay({
+      renderWithRelay({
         HomeViewSectionArtworks: () => ({
           internalID: "home-view-section-new-works-for-you",
           contextModule: "newWorksForYouRail",
@@ -276,13 +273,11 @@ describe("HomeViewSectionArtworks", () => {
 
       homeViewStoreActions.setViewableSections([])
 
-      const artworkRail = await UNSAFE_root.findByType(FlatList)
+      const artworkRail = await screen.findByTestId("artwork-rail")
 
-      act(() => {
-        artworkRail.props.onViewableItemsChanged({
-          viewableItems: [{ item: { internalID: "artwork-1-id" }, index: 0 }],
-          changed: [],
-        })
+      fireEvent(artworkRail, "viewableItemsChanged", {
+        viewableItems: [{ item: { internalID: "artwork-1-id" }, index: 0 }],
+        changed: [],
       })
 
       // Check that no itemViewed events were tracked
@@ -294,7 +289,7 @@ describe("HomeViewSectionArtworks", () => {
     })
 
     it("does not track itemViewed events when trackItemImpressions is false", async () => {
-      const { UNSAFE_root } = renderWithRelay({
+      renderWithRelay({
         HomeViewSectionArtworks: () => ({
           internalID: "home-view-section-new-works-for-you",
           contextModule: "newWorksForYouRail",
@@ -320,7 +315,7 @@ describe("HomeViewSectionArtworks", () => {
       homeViewStoreActions.setViewableSections(["home-view-section-new-works-for-you"])
 
       // Find the ArtworkRail component
-      const artworkRail = await UNSAFE_root.findByType(FlatList)
+      const artworkRail = await screen.findByTestId("artwork-rail")
 
       // onViewableItemsChanged should be undefined when trackItemImpressions is false
       expect(artworkRail.props.onViewableItemsChanged).toBeUndefined()
@@ -334,7 +329,7 @@ describe("HomeViewSectionArtworks", () => {
     })
 
     it("tracks itemViewed events only once per artwork", async () => {
-      const { UNSAFE_root } = renderWithRelay({
+      renderWithRelay({
         HomeViewSectionArtworks: () => ({
           internalID: "home-view-section-new-works-for-you",
           contextModule: "newWorksForYouRail",
@@ -360,20 +355,18 @@ describe("HomeViewSectionArtworks", () => {
       homeViewStoreActions.setViewableSections(["home-view-section-new-works-for-you"])
 
       // Find the ArtworkRail component and trigger onViewableItemsChanged multiple times
-      const artworkRail = await UNSAFE_root.findByType(FlatList)
+      const artworkRail = await screen.findByTestId("artwork-rail")
 
-      act(() => {
-        // First time
-        artworkRail.props.onViewableItemsChanged({
-          viewableItems: [{ item: { internalID: "artwork-1-id" }, index: 0 }],
-          changed: [],
-        })
+      // First time
+      fireEvent(artworkRail, "viewableItemsChanged", {
+        viewableItems: [{ item: { internalID: "artwork-1-id" }, index: 0 }],
+        changed: [],
+      })
 
-        // Second time - should not trigger another tracking event
-        artworkRail.props.onViewableItemsChanged({
-          viewableItems: [{ item: { internalID: "artwork-1-id" }, index: 0 }],
-          changed: [],
-        })
+      // Second time - should not trigger another tracking event
+      fireEvent(artworkRail, "viewableItemsChanged", {
+        viewableItems: [{ item: { internalID: "artwork-1-id" }, index: 0 }],
+        changed: [],
       })
 
       // Check that itemViewed event was tracked only once
@@ -406,6 +399,7 @@ describe("HomeViewSectionArtworks", () => {
               slug: "artwork-1-slug",
               title: "Artwork 1",
               href: "/artwork-1-href",
+              isDisliked: false,
             },
           },
         ],
@@ -510,19 +504,19 @@ describe("HomeViewSectionArtworks", () => {
     })
 
     it("re-enables itemViewed tracking after the live refresh completes", async () => {
-      const { env, UNSAFE_root } = renderWithRelay({
+      const { env } = renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
 
       homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
 
-      const artworkRail = await UNSAFE_root.findByType(FlatList)
-      const onViewableItemsChanged = artworkRail.props.onViewableItemsChanged
+      expect(await screen.findByTestId("artwork-rail")).toBeOnTheScreen()
       const viewableItems = [{ item: { internalID: "artwork-1-id" }, index: 0 }]
 
       // Item is tracked once initially.
-      act(() => {
-        onViewableItemsChanged({ viewableItems, changed: [] })
+      fireEvent(screen.getByTestId("artwork-rail"), "viewableItemsChanged", {
+        viewableItems,
+        changed: [],
       })
 
       expect(
@@ -542,8 +536,9 @@ describe("HomeViewSectionArtworks", () => {
       })
 
       // The same item becoming viewable again should re-fire after the refresh.
-      act(() => {
-        onViewableItemsChanged({ viewableItems, changed: [] })
+      fireEvent(await screen.findByTestId("artwork-rail"), "viewableItemsChanged", {
+        viewableItems,
+        changed: [],
       })
 
       expect(
@@ -628,6 +623,7 @@ describe("HomeViewSectionArtworks", () => {
               slug: "artwork-1-slug",
               title: "Artwork 1",
               href: "/artwork-1-href",
+              isDisliked: false,
             },
           },
         ],
@@ -668,18 +664,18 @@ describe("HomeViewSectionArtworks", () => {
     })
 
     it("re-enables itemViewed tracking after the live refresh completes", async () => {
-      const { env, UNSAFE_root } = renderWithRelay({
+      const { env } = renderWithRelay({
         HomeViewSectionArtworks: () => NWFY_SECTION,
       })
 
       homeViewStoreActions.setViewableSections([NEW_WORKS_FOR_YOU_SECTION_ID])
 
-      const artworkRail = await UNSAFE_root.findByType(FlatList)
-      const onViewableItemsChanged = artworkRail.props.onViewableItemsChanged
+      expect(await screen.findByTestId("artwork-rail")).toBeOnTheScreen()
       const viewableItems = [{ item: { internalID: "artwork-1-id" }, index: 0 }]
 
-      act(() => {
-        onViewableItemsChanged({ viewableItems, changed: [] })
+      fireEvent(screen.getByTestId("artwork-rail"), "viewableItemsChanged", {
+        viewableItems,
+        changed: [],
       })
 
       expect(
@@ -697,8 +693,9 @@ describe("HomeViewSectionArtworks", () => {
         )
       })
 
-      act(() => {
-        onViewableItemsChanged({ viewableItems, changed: [] })
+      fireEvent(screen.getByTestId("artwork-rail"), "viewableItemsChanged", {
+        viewableItems,
+        changed: [],
       })
 
       expect(

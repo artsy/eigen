@@ -1,17 +1,25 @@
-import { ChevronRightIcon } from "@artsy/icons/native"
+import { screen } from "@testing-library/react-native"
 import { ArrowDetails } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArrowDetails"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { View } from "react-native"
+
+jest.mock("@artsy/icons/native", () => {
+  const { View } = jest.requireActual("react-native")
+  return {
+    ...jest.requireActual("@artsy/icons/native"),
+    ChevronRightIcon: () => <View testID="chevron-right-icon" />,
+  }
+})
 
 describe("ArrowDetails", () => {
   it("renders correct components", () => {
-    const Noop: React.FC = () => <View />
-    const wrapper = renderWithWrappersLEGACY(
+    const Noop: React.FC = () => <View testID="noop-child" />
+    renderWithWrappers(
       <ArrowDetails>
         <Noop />
       </ArrowDetails>
     )
-    expect(wrapper.root.findByType(Noop)).toBeDefined()
-    expect(wrapper.root.findByType(ChevronRightIcon)).toBeDefined()
+    expect(screen.getByTestId("noop-child")).toBeOnTheScreen()
+    expect(screen.getByTestId("chevron-right-icon")).toBeOnTheScreen()
   })
 })

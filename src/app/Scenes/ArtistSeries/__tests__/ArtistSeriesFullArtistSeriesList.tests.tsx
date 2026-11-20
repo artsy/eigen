@@ -1,11 +1,9 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { ArtistSeriesFullArtistSeriesListTestsQuery } from "__generated__/ArtistSeriesFullArtistSeriesListTestsQuery.graphql"
 import { ArtistSeriesFullArtistSeriesListFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
-import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 describe("Full Artist Series List", () => {
@@ -47,7 +45,7 @@ describe("Full Artist Series List", () => {
       })
     })
 
-    expect(screen.UNSAFE_getAllByType(ArtistSeriesListItem)).toHaveLength(6)
+    expect(screen.getAllByLabelText("Artist Series List Item")).toHaveLength(6)
   })
 
   it("tracks clicks on an artist series", async () => {

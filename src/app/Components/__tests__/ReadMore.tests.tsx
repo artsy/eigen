@@ -1,11 +1,9 @@
-import { nbsp, emdash, LinkText } from "@artsy/palette-mobile"
+import { nbsp, emdash } from "@artsy/palette-mobile"
 import { fireEvent, getDefaultNormalizer, screen, within } from "@testing-library/react-native"
 import { ReadMore } from "app/Components/ReadMore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Text as RNText } from "react-native"
 
 describe("ReadMore", () => {
   describe("when AREnableEnrichedMarkdown is disabled", () => {
@@ -42,15 +40,19 @@ describe("ReadMore", () => {
     })
 
     it("Renders an em dash if the text has line breaks when not expanded", () => {
-      const { UNSAFE_queryAllByType } = renderWithWrappers(
+      renderWithWrappers(
         <ReadMore maxChars={30} content={`Line break\n\nWhich should render an emdash`} />
       )
 
-      expect(extractText(UNSAFE_queryAllByType(RNText)[2])).toContain(` ${emdash} Which should`)
+      expect(
+        screen.getAllByText(new RegExp(`^ ${emdash} Which should`), {
+          normalizer: getDefaultNormalizer({ trim: false, collapseWhitespace: false }),
+        })[0]
+      ).toBeOnTheScreen()
     })
 
     it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
-      const { UNSAFE_queryAllByType } = renderWithWrappers(
+      renderWithWrappers(
         <ReadMore
           maxChars={7}
           textStyle="new"
@@ -58,8 +60,11 @@ describe("ReadMore", () => {
         />
       )
 
-      expect(extractText(UNSAFE_queryAllByType(RNText)[0])).toBe(`This te... Read${nbsp}more`)
-      expect(extractText(UNSAFE_queryAllByType(RNText)[1])).toBe(`Read${nbsp}more`)
+      expect(
+        screen.getByText(`This te... Read${nbsp}more`, {
+          normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+        })
+      ).toBeOnTheScreen()
 
       // Clicking "Read more" expands the text
       fireEvent.press(
@@ -72,7 +77,7 @@ describe("ReadMore", () => {
     })
 
     it("truncates correctly if there are links within the text", () => {
-      const { UNSAFE_getAllByType } = renderWithWrappers(
+      renderWithWrappers(
         <ReadMore
           maxChars={7}
           textStyle="new"
@@ -86,7 +91,9 @@ describe("ReadMore", () => {
           normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
         })
       ).toBeTruthy()
-      expect(UNSAFE_getAllByType(LinkText)).toHaveLength(2) // One for the `/artist/text` link, one for "Read more"
+      // One link for `/artist/text`, plus the "Read more" link
+      expect(screen.getAllByTestId(/^linktext-/)).toHaveLength(1)
+      expect(screen.getByRole("button", { name: `Read${nbsp}more` })).toBeOnTheScreen()
 
       // Clicking "Read more" expands the text
       fireEvent.press(
@@ -96,26 +103,28 @@ describe("ReadMore", () => {
       )
 
       expect(within(screen.getByText(/This/)).getByText(/text/)).toBeTruthy()
-      expect(within(screen.getByText(/is slightly longer than is/)).getByText(/allowed/)).toBeTruthy()
-      expect(UNSAFE_getAllByType(LinkText)).toHaveLength(2) // We still have 2 links, since we expanded to view one
+      expect(
+        within(screen.getByText(/is slightly longer than is/)).getByText(/allowed/)
+      ).toBeTruthy()
+      // We still have 2 links, since we expanded to view one and "Read more" went away
+      expect(screen.getAllByTestId(/^linktext-/)).toHaveLength(2)
+      expect(screen.queryByRole("button", { name: `Read${nbsp}more` })).not.toBeOnTheScreen()
     })
 
     it("opens links modally when specified", () => {
-      const { UNSAFE_getAllByType } = renderWithWrappers(
+      renderWithWrappers(
         <ReadMore maxChars={7} content="Small [text](/artist/andy-warhol)." presentLinksModally />
       )
 
-      fireEvent.press(UNSAFE_getAllByType(LinkText)[0])
+      fireEvent.press(screen.getAllByTestId(/^linktext-/)[0])
 
       expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol", { modal: true })
     })
 
     it("doesn't open links modally when not specified", () => {
-      const { UNSAFE_getAllByType } = renderWithWrappers(
-        <ReadMore maxChars={7} content="Small [text](/artist/andy-warhol)." />
-      )
+      renderWithWrappers(<ReadMore maxChars={7} content="Small [text](/artist/andy-warhol)." />)
 
-      fireEvent.press(UNSAFE_getAllByType(LinkText)[0])
+      fireEvent.press(screen.getAllByTestId(/^linktext-/)[0])
 
       expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
     })
@@ -168,7 +177,11 @@ describe("ReadMore", () => {
     it("expands the content when the clamped text overflows and 'Read more' is pressed", () => {
       const onExpand = jest.fn()
       renderWithWrappers(
-        <ReadMore maxChars={7} content="This text is slightly longer than is allowed." onExpand={onExpand} />
+        <ReadMore
+          maxChars={7}
+          content="This text is slightly longer than is allowed."
+          onExpand={onExpand}
+        />
       )
 
       const layout = (height: number) => ({

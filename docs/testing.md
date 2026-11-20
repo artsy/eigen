@@ -19,6 +19,17 @@ Remember in your tests to always try to **resemble how the user interacts with t
 
 You can read more on how to query on the official docs [here](https://callstack.github.io/react-native-testing-library/docs/how-should-i-query).
 
+Query priority: `getByRole` > `getByLabelText` > `getByPlaceholderText` > `getByText` > `getByTestId`. Use `queryBy*` only for checking that something is _not_ there, and `findBy*` for anything that appears asynchronously.
+
+### Staying compatible with RNTL v14
+
+We are preparing to move to `@testing-library/react-native` v14, which drops `react-test-renderer` and only exposes host elements (View, Text, TextInput…) to queries. To keep tests compatible:
+
+- Don't import `react-test-renderer`. Import `act` from `@testing-library/react-native`.
+- Don't use `UNSAFE_*` queries, `UNSAFE_root`, `*ByA11yHint`, `.root.findAllByType(...)` or `toJSON()` tree walking. ESLint flags the imports and `UNSAFE_*` queries in test files.
+- Don't call `element.props.onPress()` directly. Use `fireEvent.press(element)`.
+- Assert on what the user sees (text, role, label, `testID`) rather than on a child component's props.
+
 ## Examples
 
 ### Testing a component that has useLazyLoadQuery
@@ -57,7 +68,7 @@ it("Displays the user's profile name", async () => {
 
   await waitForElementToBeRemoved(() => screen.getByTestId("loading"))
 
-  expect(screen.queryByText("name")).toBeTruthy()
+  expect(screen.getByText("name")).toBeOnTheScreen()
 })
 ```
 
@@ -93,7 +104,7 @@ it("Displays the user's profile name", () => {
     Me: () => ({ name: "Mock Name" }),
   })
 
-  expect(screen.queryByText("name")).toEqual("Mock Name")
+  expect(screen.getByText("Mock Name")).toBeOnTheScreen()
 })
 ```
 

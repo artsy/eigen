@@ -3,16 +3,15 @@ import { ArticleSectionImageCollectionImageTestQuery } from "__generated__/Artic
 import { ArticleSectionImageCollectionImage } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionImage"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Suspense } from "react"
-import { Image } from "react-native"
 import { useLazyLoadQuery, graphql } from "react-relay"
 
-// React-test-renderer has issues with memo components, so we need to mock the palette-mobile Image component
-// Until it gets fixed
-// See https://github.com/facebook/react/issues/17301
-jest.mock("@artsy/palette-mobile", () => ({
-  ...jest.requireActual("@artsy/palette-mobile"),
-  Image: require("react-native").Image,
-}))
+jest.mock("@artsy/palette-mobile", () => {
+  const { Image } = require("react-native")
+  return {
+    ...jest.requireActual("@artsy/palette-mobile"),
+    Image: (props: any) => <Image {...props} testID="palette-image" />,
+  }
+})
 
 describe("ArticleSectionImageCollectionImage", () => {
   const Article = () => {
@@ -48,7 +47,7 @@ describe("ArticleSectionImageCollectionImage", () => {
     renderWithRelay()
 
     await waitFor(() => {
-      expect(screen.UNSAFE_queryByType(Image)).toBeTruthy()
+      expect(screen.getByTestId("palette-image")).toBeOnTheScreen()
     })
   })
 
@@ -60,7 +59,7 @@ describe("ArticleSectionImageCollectionImage", () => {
     })
 
     await waitFor(() => {
-      expect(screen.UNSAFE_queryByType(Image)).toBeTruthy()
+      expect(screen.getByTestId("palette-image")).toBeOnTheScreen()
     })
   })
 })

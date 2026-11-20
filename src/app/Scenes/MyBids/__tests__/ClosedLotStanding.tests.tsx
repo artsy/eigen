@@ -1,9 +1,16 @@
-import { StarCircleFillIcon } from "@artsy/icons/native"
+import { screen } from "@testing-library/react-native"
 import { ClosedLotStanding_saleArtwork$data } from "__generated__/ClosedLotStanding_saleArtwork.graphql"
 import { ClosedLotStanding } from "app/Scenes/MyBids/Components/ClosedLotStanding"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { merge } from "lodash"
+
+jest.mock("@artsy/icons/native", () => {
+  const { View } = require("react-native")
+  return {
+    ...jest.requireActual("@artsy/icons/native"),
+    StarCircleFillIcon: () => <View testID="star-circle-fill-icon" />,
+  }
+})
 
 const defaultSaleArtwork = {
   isHighestBidder: true,
@@ -35,7 +42,7 @@ const saleArtworkFixture = (overrides = {}) => {
 describe(ClosedLotStanding, () => {
   describe("result message", () => {
     it("says 'You won!' if the user won the lot", () => {
-      const tree = renderWithWrappersLEGACY(
+      renderWithWrappers(
         <ClosedLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
@@ -43,11 +50,11 @@ describe(ClosedLotStanding, () => {
           })}
         />
       )
-      expect(extractText(tree.root)).toContain("You won!")
+      expect(screen.root).toHaveTextContent("You won!", { exact: false })
     })
 
     it("says 'Outbid' if the the lot sold to someone else", () => {
-      const tree = renderWithWrappersLEGACY(
+      renderWithWrappers(
         <ClosedLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: false,
@@ -55,11 +62,11 @@ describe(ClosedLotStanding, () => {
           })}
         />
       )
-      expect(extractText(tree.root)).toContain("Outbid")
+      expect(screen.root).toHaveTextContent("Outbid", { exact: false })
     })
 
     it("says 'Passed' if the lot did not sell at all", () => {
-      const tree = renderWithWrappersLEGACY(
+      renderWithWrappers(
         <ClosedLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
@@ -67,40 +74,36 @@ describe(ClosedLotStanding, () => {
           })}
         />
       )
-      expect(extractText(tree.root)).toContain("Passed")
+      expect(screen.root).toHaveTextContent("Passed", { exact: false })
     })
   })
 
   describe("artwork badge", () => {
     it("has a little star badge if the user won the lot", () => {
-      expect(
-        renderWithWrappersLEGACY(
-          <ClosedLotStanding
-            saleArtwork={saleArtworkFixture({
-              isHighestBidder: true,
-              lotState: { soldStatus: "Sold" },
-            })}
-          />
-        ).root.findAllByType(StarCircleFillIcon).length
-      ).toBe(1)
+      renderWithWrappers(
+        <ClosedLotStanding
+          saleArtwork={saleArtworkFixture({
+            isHighestBidder: true,
+            lotState: { soldStatus: "Sold" },
+          })}
+        />
+      )
+
+      expect(screen.getAllByTestId("star-circle-fill-icon")).toHaveLength(1)
     })
   })
 
   describe("closing time", () => {
     it("renders the time the sale ended by default", () => {
-      const tree = renderWithWrappersLEGACY(
-        <ClosedLotStanding saleArtwork={saleArtworkFixture()} />
-      )
-      expect(extractText(tree.root)).toContain("Closed Aug 5")
+      renderWithWrappers(<ClosedLotStanding saleArtwork={saleArtworkFixture()} />)
+      expect(screen.root).toHaveTextContent("Closed Aug 5", { exact: false })
     })
   })
 
   describe("selling price", () => {
     it("shows selling price", () => {
-      const tree = renderWithWrappersLEGACY(
-        <ClosedLotStanding saleArtwork={saleArtworkFixture()} />
-      )
-      expect(extractText(tree.root)).toContain("$100")
+      renderWithWrappers(<ClosedLotStanding saleArtwork={saleArtworkFixture()} />)
+      expect(screen.root).toHaveTextContent("$100", { exact: false })
     })
   })
 })

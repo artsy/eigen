@@ -1,5 +1,6 @@
+import { fireEvent, screen } from "@testing-library/react-native"
 import ParentAwareScrollView from "app/Components/ParentAwareScrollView"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { FlatList } from "react-native"
 
 const props = {
@@ -20,17 +21,17 @@ describe("<ParentAwareScrollView>", () => {
     // react to the parent flatlist scroll by calling props.aFunc
     const AFlatList = () => (
       <FlatList
+        testID="flat-list"
         data={[
           <ParentAwareScrollView key="a" onScroll={(e: typeof scrollEvent) => props.aFunc(e)} />,
         ]}
         renderItem={({ item }) => item}
       />
     )
-    const tree = renderWithWrappersLEGACY(<AFlatList />)
-    const flatList = tree.root.findByType(FlatList)
-    flatList.instance._listRef._onScroll(scrollEvent)
+    renderWithWrappers(<AFlatList />)
+    fireEvent.scroll(screen.getByTestId("flat-list"), scrollEvent)
 
     expect(props.aFunc).toHaveBeenCalled()
-    expect(props.aFunc).toHaveBeenCalledWith(scrollEvent)
+    expect(props.aFunc).toHaveBeenCalledWith(expect.objectContaining(scrollEvent))
   })
 })

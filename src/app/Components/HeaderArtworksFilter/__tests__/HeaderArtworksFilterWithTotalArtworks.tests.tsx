@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
@@ -5,8 +6,7 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderArtworksFilterWithTotalArtworks } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("HeaderArtworksFilterWithTotalArtworks", () => {
   const onPress = jest.fn()
@@ -45,14 +45,13 @@ describe("HeaderArtworksFilterWithTotalArtworks", () => {
   }
 
   const getWrapper = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
-    const tree = renderWithWrappersLEGACY(
+    return renderWithWrappers(
       <TestHeaderArtworksFilterWithTotalArtworks initialData={initialData} />
     )
-    return tree
   }
 
   it("renders artworks filter header with correct text", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       initialData: {
         ...initialState,
         counts: {
@@ -61,16 +60,14 @@ describe("HeaderArtworksFilterWithTotalArtworks", () => {
         },
       },
     })
-    const text = extractText(wrapper.root)
-    expect(text).toContain("Showing 12 works")
-    expect(text).toContain("Sort & Filter")
+    expect(screen.getByText("Showing 12 works")).toBeOnTheScreen()
+    expect(screen.getByText("Sort & Filter")).toBeOnTheScreen()
   })
 
   it("doesn't render artworks filter header", () => {
-    const wrapper = getWrapper({})
-    const text = extractText(wrapper.root)
-    expect(text).not.toContain("Showing")
-    expect(text).not.toContain("works")
-    expect(text).not.toContain("Sort & Filter")
+    getWrapper({})
+    expect(screen.queryByText(/Showing/)).not.toBeOnTheScreen()
+    expect(screen.queryByText(/works/)).not.toBeOnTheScreen()
+    expect(screen.queryByText(/Sort & Filter/)).not.toBeOnTheScreen()
   })
 })

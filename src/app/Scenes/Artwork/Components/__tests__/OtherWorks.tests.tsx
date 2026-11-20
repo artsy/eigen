@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { OtherWorksTestsQuery } from "__generated__/OtherWorksTestsQuery.graphql"
 import { OtherWorksFragmentContainer } from "app/Scenes/Artwork/Components/OtherWorks/OtherWorks"
 import { navigate } from "app/system/navigation/navigate"
@@ -44,29 +44,29 @@ describe("OtherWorks", () => {
   })
 
   it("renders the grid if one is provided", () => {
-    const { getByText, getByLabelText } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => ({
         contextGrids: [firstArtworkGridItem],
       }),
     })
 
-    expect(getByText("Other works by Andy Warhol")).toBeTruthy()
+    expect(screen.getByText("Other works by Andy Warhol")).toBeOnTheScreen()
 
-    fireEvent.press(getByLabelText("Context Grid CTA"))
+    fireEvent.press(screen.getByLabelText("Context Grid CTA"))
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
   })
 
   it("renders the grids if multiple are provided", () => {
-    const { getByText, getAllByLabelText } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => ({
         contextGrids: [firstArtworkGridItem, secondArtworkGridItem],
       }),
     })
 
-    expect(getByText("Other works by Andy Warhol")).toBeTruthy()
-    expect(getByText("View all works from Gagosian Gallery")).toBeTruthy()
+    expect(screen.getByText("Other works by Andy Warhol")).toBeOnTheScreen()
+    expect(screen.getByText("View all works from Gagosian Gallery")).toBeOnTheScreen()
 
-    const buttons = getAllByLabelText("Context Grid CTA")
+    const buttons = screen.getAllByLabelText("Context Grid CTA")
 
     fireEvent.press(buttons[0])
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
@@ -92,15 +92,15 @@ describe("OtherWorks", () => {
       },
     ]
 
-    const { getByText, queryByText } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => ({
         contextGrids,
       }),
     })
 
-    expect(getByText("Other works by Andy Warhol")).toBeTruthy()
-    expect(queryByText("Other works from Gagosian Gallery")).toBeFalsy()
-    expect(queryByText("View all works from the booth")).toBeFalsy()
+    expect(screen.getByText("Other works by Andy Warhol")).toBeOnTheScreen()
+    expect(screen.queryByText("Other works from Gagosian Gallery")).not.toBeOnTheScreen()
+    expect(screen.queryByText("View all works from the booth")).not.toBeOnTheScreen()
   })
 })
 

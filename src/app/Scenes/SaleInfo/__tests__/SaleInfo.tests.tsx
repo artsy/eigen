@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { SaleInfoTestsQuery } from "__generated__/SaleInfoTestsQuery.graphql"
-import { RegisterToBidButton } from "app/Scenes/Sale/Components/RegisterToBidButton"
-import { SaleInfoContainer, tests } from "app/Scenes/SaleInfo/SaleInfo"
+import { SaleInfoContainer } from "app/Scenes/SaleInfo/SaleInfo"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -58,7 +57,8 @@ describe("SaleInfo", () => {
       Sale: () => mockSale,
     })
 
-    expect(screen.UNSAFE_getAllByType(RegisterToBidButton)).toBeTruthy()
+    // The button container wraps RegisterToBidButton, which renders inside it
+    expect(screen.getByTestId("register-to-bid-button")).not.toBeEmptyElement()
   })
 
   it("hides register to bid button if auction is over", () => {
@@ -78,7 +78,8 @@ describe("SaleInfo", () => {
       Sale: () => liveMockSale,
     })
 
-    expect(screen.UNSAFE_queryAllByType(tests.AuctionIsLive)).toHaveLength(1)
+    expect(screen.getAllByTestId("live-auction")).toHaveLength(1)
+    expect(screen.getByText("This is a live auction")).toBeOnTheScreen()
   })
 
   it("doesn't show Auction is live view when an auction is not live", () => {
@@ -86,7 +87,7 @@ describe("SaleInfo", () => {
       Sale: () => mockSale,
     })
 
-    expect(screen.UNSAFE_queryAllByType(tests.AuctionIsLive)).toHaveLength(0)
+    expect(screen.queryAllByTestId("live-auction")).toHaveLength(0)
   })
 
   it("shows the buyers premium correctly for a single percentage", () => {

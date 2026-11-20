@@ -1,10 +1,32 @@
 import { screen } from "@testing-library/react-native"
 import { ArticleSectionImageCollectionTestQuery } from "__generated__/ArticleSectionImageCollectionTestQuery.graphql"
 import { ArticleSectionImageCollection } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollection"
-import { ArticleSectionImageCollectionCaption } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionCaption"
-import { ArticleSectionImageCollectionImage } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionImage"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
+
+jest.mock(
+  "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionImage",
+  () => {
+    const { Text } = require("react-native")
+    return {
+      ArticleSectionImageCollectionImage: () => (
+        <Text testID="ArticleSectionImageCollectionImage">Image</Text>
+      ),
+    }
+  }
+)
+
+jest.mock(
+  "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionCaption",
+  () => {
+    const { Text } = require("react-native")
+    return {
+      ArticleSectionImageCollectionCaption: () => (
+        <Text testID="ArticleSectionImageCollectionCaption">Caption</Text>
+      ),
+    }
+  }
+)
 
 describe("ArticleSectionImageCollection", () => {
   const { renderWithRelay } = setupTestWrapper<ArticleSectionImageCollectionTestQuery>({
@@ -23,7 +45,7 @@ describe("ArticleSectionImageCollection", () => {
   it("renders", async () => {
     renderWithRelay()
 
-    expect(screen.UNSAFE_getByType(ArticleSectionImageCollectionImage)).toBeTruthy()
-    expect(screen.UNSAFE_getByType(ArticleSectionImageCollectionCaption)).toBeTruthy()
+    expect(screen.getByTestId("ArticleSectionImageCollectionImage")).toBeOnTheScreen()
+    expect(screen.getByTestId("ArticleSectionImageCollectionCaption")).toBeOnTheScreen()
   })
 })

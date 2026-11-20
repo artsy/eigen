@@ -67,7 +67,12 @@ export const ArtworkMontageStep: React.FC<ArtworkMontageStepProps> = ({ onNext }
           transition={{ type: "timing", duration: IMG_DISPLAY_DURATION, easing: Easing.linear }}
           style={{ position: "absolute", height: "100%", width: screenWidth }}
         >
-          <Image source={image} resizeMode="cover" style={{ height: "100%", width: screenWidth }} />
+          <Image
+            testID="onboarding-montage-image"
+            source={image}
+            resizeMode="cover"
+            style={{ height: "100%", width: screenWidth }}
+          />
         </MotiView>
       ))}
 

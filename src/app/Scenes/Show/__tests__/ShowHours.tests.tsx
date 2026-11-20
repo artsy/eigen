@@ -1,9 +1,8 @@
+import { act, screen } from "@testing-library/react-native"
 import { ShowHoursTestsQuery } from "__generated__/ShowHoursTestsQuery.graphql"
 import { ShowHoursFragmentContainer } from "app/Scenes/Show/Components/ShowHours"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 describe("ShowHours", () => {
@@ -35,34 +34,33 @@ describe("ShowHours", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
     })
-    return tree
   }
 
   it("renders nothing if there is no show location or fair location", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       Show: () => ({ location: null, fair: null }),
     })
 
-    expect(wrapper.toJSON()).toBe(null)
+    expect(screen.queryAllByText(/.+/)).toHaveLength(0)
   })
 
   it("renders the custom fair location if there is a fair", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       Location: () => ({ openingHours: { __typename: "OpeningHoursText" } }),
       OpeningHoursText: () => ({ text: "Custom schedule text" }),
     })
 
-    expect(extractText(wrapper.root)).toEqual("Custom schedule text")
+    expect(screen.getByText("Custom schedule text")).toBeOnTheScreen()
   })
 
   it("renders the show location schedules if there is no fair", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       Show: () => ({ fair: null }),
       OpeningHoursArray: () => ({
         schedules: [
@@ -78,9 +76,7 @@ describe("ShowHours", () => {
       }),
     })
 
-    const text = extractText(wrapper.root)
-
-    expect(text).toContain("Monday–Wednesday, Sunday, Closed")
-    expect(text).toContain("Thursday–Saturday, 11am–4pm")
+    expect(screen.getByText("Monday–Wednesday, Sunday, Closed")).toBeOnTheScreen()
+    expect(screen.getByText("Thursday–Saturday, 11am–4pm")).toBeOnTheScreen()
   })
 })

@@ -50,7 +50,7 @@ const TEXT_MARGIN = 7
 /**
  * @deprecated use `SkeletonText` from palette-mobile instead instead
  */
-export const PlaceholderText: React.FC<ViewStyle> = ({ ...props }) => (
+export const PlaceholderText: React.FC<ViewStyle & { testID?: string }> = ({ ...props }) => (
   <PlaceholderBox height={TEXT_HEIGHT} marginBottom={TEXT_MARGIN} {...props} />
 )
 
@@ -113,7 +113,11 @@ export const PlaceholderRaggedText = ({
     <View style={{ justifyContent: "flex-start" }}>
       {lengths.map((length, key) => (
         <View key={key} style={{ flexDirection: "row" }}>
-          <PlaceholderText height={textHeight} flex={length} />
+          <PlaceholderText
+            height={textHeight}
+            flex={length}
+            testID="placeholder-ragged-text-line"
+          />
         </View>
       ))}
     </View>

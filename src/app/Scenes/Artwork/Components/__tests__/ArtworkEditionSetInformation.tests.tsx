@@ -3,7 +3,6 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkEditionSetInformation_Test_Query } from "__generated__/ArtworkEditionSetInformation_Test_Query.graphql"
 import { ArtworkStore, ArtworkStoreProvider, artworkModel } from "app/Scenes/Artwork/ArtworkStore"
 import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInformation } from "app/Scenes/Artwork/Components/ArtworkEditionSetInformation"
-import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -48,10 +47,7 @@ describe("ArtworkEditionSetInformation", () => {
 
     fireEvent.press(screen.getByText("Edition Set Two"))
 
-    const artworkStateRaw = extractText(screen.getByTestId("debug"))
-    const artworkState = JSON.parse(artworkStateRaw)
-
-    expect(artworkState.selectedEditionId).toBe("edition-set-two")
+    expect(screen.getByTestId("debug")).toHaveTextContent(/"selectedEditionId":"edition-set-two"/)
   })
 })
 

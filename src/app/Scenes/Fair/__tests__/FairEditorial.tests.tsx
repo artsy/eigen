@@ -56,7 +56,7 @@ describe("FairEditorial", () => {
       }),
     })
 
-    expect(screen.toJSON()).toBeNull()
+    expect(screen.queryByText("Related Reading")).not.toBeOnTheScreen()
   })
 
   it("tracks article taps", () => {

@@ -5,6 +5,27 @@ import { requestPhotos } from "app/utils/requestPhotos"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useCameraDevice, useCameraPermission } from "react-native-vision-camera"
 
+// Same as the global mock, but the Camera renders a host element with a testID so its props can be asserted on
+jest.mock("react-native-vision-camera", () => {
+  const React = require("react")
+  const { View } = require("react-native")
+  return {
+    Camera: React.forwardRef((props: any, ref: any) => (
+      <View ref={ref} {...props} testID="lens-camera" />
+    )),
+    useCameraPermission: jest.fn(() => ({
+      hasPermission: false,
+      canRequestPermission: true,
+      requestPermission: jest.fn(),
+    })),
+    useCameraDevice: jest.fn(() => undefined),
+    usePhotoOutput: jest.fn(() => ({
+      capturePhoto: jest.fn(),
+      capturePhotoToFile: jest.fn(),
+    })),
+  }
+})
+
 jest.mock("app/utils/requestPhotos", () => ({
   requestPhotos: jest.fn(),
 }))
@@ -71,13 +92,13 @@ describe("LensCamera", () => {
 
     renderWithWrappers(<LensCamera {...navigationProps} />)
 
-    expect(screen.UNSAFE_getByType("Camera" as any).props.torchMode).toBeUndefined()
+    expect(screen.getByTestId("lens-camera").props.torchMode).toBeUndefined()
 
     fireEvent.press(screen.getByTestId("lens-torch-button"))
-    expect(screen.UNSAFE_getByType("Camera" as any).props.torchMode).toBe("on")
+    expect(screen.getByTestId("lens-camera")).toHaveProp("torchMode", "on")
 
     fireEvent.press(screen.getByTestId("lens-torch-button"))
-    expect(screen.UNSAFE_getByType("Camera" as any).props.torchMode).toBe("off")
+    expect(screen.getByTestId("lens-camera")).toHaveProp("torchMode", "off")
   })
 
   it("shows 'Go to Settings' (not another permission prompt) once camera access has been denied", () => {

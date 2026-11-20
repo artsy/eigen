@@ -1,7 +1,7 @@
+import { screen } from "@testing-library/react-native"
 import { ActiveLotStanding_saleArtwork$data } from "__generated__/ActiveLotStanding_saleArtwork.graphql"
 import { ActiveLotStanding } from "app/Scenes/MyBids/Components/ActiveLotStanding"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { merge } from "lodash"
 
 const defaultSaleArtwork = {
@@ -35,7 +35,7 @@ const saleArtworkFixture = (overrides = {}) => {
 describe(ActiveLotStanding, () => {
   describe("User winning status", () => {
     it("says 'Highest bid' if the user is winning the lot", () => {
-      const view = renderWithWrappersLEGACY(
+      renderWithWrappers(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
@@ -43,11 +43,11 @@ describe(ActiveLotStanding, () => {
           })}
         />
       )
-      expect(extractText(view.root)).toContain("Highest bid")
+      expect(screen.root).toHaveTextContent("Highest bid", { exact: false })
     })
 
     it("says 'Highest bid' if the user is has the high bid and reserveStatus is UnknownReserve", () => {
-      const view = renderWithWrappersLEGACY(
+      renderWithWrappers(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
@@ -55,13 +55,13 @@ describe(ActiveLotStanding, () => {
           })}
         />
       )
-      expect(extractText(view.root)).toContain("Highest bid")
+      expect(screen.root).toHaveTextContent("Highest bid", { exact: false })
     })
 
     it("says 'Highest bid' if the user is winning but reserveStatus is ReserveNotMet in auction with Live part", () => {
       const date = new Date()
       date.setDate(date.getDate() + 1)
-      const view = renderWithWrappersLEGACY(
+      renderWithWrappers(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
@@ -70,11 +70,11 @@ describe(ActiveLotStanding, () => {
           })}
         />
       )
-      expect(extractText(view.root)).toContain("Highest bid")
+      expect(screen.root).toHaveTextContent("Highest bid", { exact: false })
     })
 
     it("hides winning info if auction with Live part are in Live bidding", () => {
-      const view = renderWithWrappersLEGACY(
+      renderWithWrappers(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
@@ -83,11 +83,11 @@ describe(ActiveLotStanding, () => {
           })}
         />
       )
-      expect(extractText(view.root)).not.toContain("Highest bid")
+      expect(screen.root).not.toHaveTextContent("Highest bid", { exact: false })
     })
 
     it("hides winning info if auction with Live part is past open Live bidding time", () => {
-      const view = renderWithWrappersLEGACY(
+      renderWithWrappers(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
@@ -96,11 +96,11 @@ describe(ActiveLotStanding, () => {
           })}
         />
       )
-      expect(extractText(view.root)).not.toContain("Highest bid")
+      expect(screen.root).not.toHaveTextContent("Highest bid", { exact: false })
     })
 
     it("says 'Reserve not met' if the user is winning the lot, but the reserveStatus is ReserveNotMet", () => {
-      const view = renderWithWrappersLEGACY(
+      renderWithWrappers(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
@@ -108,11 +108,11 @@ describe(ActiveLotStanding, () => {
           })}
         />
       )
-      expect(extractText(view.root)).toContain("Reserve not met")
+      expect(screen.root).toHaveTextContent("Reserve not met", { exact: false })
     })
 
     it("says 'Outbid' if the user is outbid on the lot, but the reserveStatus is ReserveNotMet", () => {
-      const view = renderWithWrappersLEGACY(
+      renderWithWrappers(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: false,
@@ -120,11 +120,11 @@ describe(ActiveLotStanding, () => {
           })}
         />
       )
-      expect(extractText(view.root)).toContain("Outbid")
+      expect(screen.root).toHaveTextContent("Outbid", { exact: false })
     })
 
     it("says 'outbid' if the user is outbid on the lot and reserve is met", () => {
-      const view = renderWithWrappersLEGACY(
+      renderWithWrappers(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: false,
@@ -132,13 +132,13 @@ describe(ActiveLotStanding, () => {
           })}
         />
       )
-      expect(extractText(view.root)).toContain("Outbid")
+      expect(screen.root).toHaveTextContent("Outbid", { exact: false })
     })
   })
 
   describe("selling price", () => {
     it("shows floor selling price", () => {
-      const view = renderWithWrappersLEGACY(
+      renderWithWrappers(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
@@ -146,7 +146,7 @@ describe(ActiveLotStanding, () => {
           })}
         />
       )
-      expect(extractText(view.root)).toContain("$100")
+      expect(screen.root).toHaveTextContent("$100", { exact: false })
     })
   })
 })

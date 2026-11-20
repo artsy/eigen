@@ -76,18 +76,21 @@ export const FiveUpImageLayout: React.FC<FiveUpImageLayoutProps> = ({
           style={largeImageDimensions}
           source={{ uri: artworkImageURLs[0] }}
           resizeMode="cover"
+          testID="five-up-image"
         />
         <Flex style={{ marginLeft: GAP }}>
           <Image
             style={smallImageDimensions}
             source={{ uri: artworkImageURLs[1] }}
             resizeMode="cover"
+            testID="five-up-image"
           />
           <Box style={{ height: GAP }} />
           <Image
             style={smallImageDimensions}
             source={{ uri: artworkImageURLs[2] }}
             resizeMode="cover"
+            testID="five-up-image"
           />
         </Flex>
       </Flex>
@@ -96,12 +99,14 @@ export const FiveUpImageLayout: React.FC<FiveUpImageLayoutProps> = ({
           style={smallImageDimensions}
           source={{ uri: artworkImageURLs[3] }}
           resizeMode="cover"
+          testID="five-up-image"
         />
         <Box style={{ width: GAP }} />
         <Image
           style={horizontalImageDimensions}
           source={{ uri: artworkImageURLs[4] }}
           resizeMode="cover"
+          testID="five-up-image"
         />
       </Flex>
     </Flex>

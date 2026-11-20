@@ -1,7 +1,6 @@
-import { renderWithLayout } from "app/utils/tests/renderWithLayout"
-import "react-native"
-
+import { fireEvent, screen } from "@testing-library/react-native"
 import RelatedArtists from "app/Components/RelatedArtists/RelatedArtists"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 it("renders without throwing an error", () => {
   const artists = [
@@ -15,7 +14,12 @@ it("renders without throwing an error", () => {
     },
   ]
 
-  const layout = { width: 768 }
+  renderWithWrappers(<RelatedArtists artists={artists as any} />)
 
-  renderWithLayout(<RelatedArtists artists={artists as any} />, layout)
+  // the layout event bubbles up to the container view that handles `onLayout`
+  fireEvent(screen.getByText("Related Artists"), "layout", {
+    nativeEvent: { layout: { width: 768, height: 0, x: 0, y: 0 } },
+  })
+
+  expect(screen.getByText("Related Artists")).toBeOnTheScreen()
 })

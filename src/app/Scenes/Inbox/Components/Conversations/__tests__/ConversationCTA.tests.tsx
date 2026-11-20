@@ -1,17 +1,79 @@
-import { AlertFillIcon, MoneyFillIcon } from "@artsy/icons/native"
 import { Color } from "@artsy/palette-mobile"
 import { screen } from "@testing-library/react-native"
 import { ConversationCTATestsQuery } from "__generated__/ConversationCTATestsQuery.graphql"
-import { CTAPopUp } from "app/Scenes/Inbox/Components/Conversations/CTAPopUp"
 import { ConversationCTA } from "app/Scenes/Inbox/Components/Conversations/ConversationCTA"
-import { ConversationPartnerOfferCTA } from "app/Scenes/Inbox/Components/Conversations/ConversationPartnerOfferCTA"
-import { OpenInquiryModalButton } from "app/Scenes/Inbox/Components/Conversations/OpenInquiryModalButton"
-import { ReviewOfferButton } from "app/Scenes/Inbox/Components/Conversations/ReviewOfferButton"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { ComponentType } from "react"
 import { graphql } from "react-relay"
+
+// Wrap the CTA pieces in host views we can query, so the tests can tell which ones rendered.
+jest.mock("app/Scenes/Inbox/Components/Conversations/CTAPopUp", () => {
+  const { View } = require("react-native")
+  const actual = jest.requireActual("app/Scenes/Inbox/Components/Conversations/CTAPopUp")
+
+  return {
+    ...actual,
+    CTAPopUp: (props: any) => (
+      <View testID="cta-pop-up">
+        <actual.CTAPopUp {...props} />
+      </View>
+    ),
+  }
+})
+
+jest.mock("app/Scenes/Inbox/Components/Conversations/ReviewOfferButton", () => {
+  const { View } = require("react-native")
+  const actual = jest.requireActual("app/Scenes/Inbox/Components/Conversations/ReviewOfferButton")
+
+  return {
+    ...actual,
+    ReviewOfferButton: (props: any) => (
+      <View testID="review-offer-button">
+        <actual.ReviewOfferButton {...props} />
+      </View>
+    ),
+  }
+})
+
+jest.mock("app/Scenes/Inbox/Components/Conversations/ConversationPartnerOfferCTA", () => {
+  const { View } = require("react-native")
+  const actual = jest.requireActual(
+    "app/Scenes/Inbox/Components/Conversations/ConversationPartnerOfferCTA"
+  )
+
+  return {
+    ...actual,
+    ConversationPartnerOfferCTA: (props: any) => (
+      <View testID="conversation-partner-offer-cta">
+        <actual.ConversationPartnerOfferCTA {...props} />
+      </View>
+    ),
+  }
+})
+
+jest.mock("@artsy/icons/native", () => {
+  const { View } = require("react-native")
+  const actual = jest.requireActual("@artsy/icons/native")
+
+  return {
+    ...actual,
+    AlertFillIcon: (props: any) => (
+      <View testID="alert-fill-icon">
+        <actual.AlertFillIcon {...props} />
+      </View>
+    ),
+    MoneyFillIcon: (props: any) => (
+      <View testID="money-fill-icon">
+        <actual.MoneyFillIcon {...props} />
+      </View>
+    ),
+  }
+})
+
+// Copy only OpenInquiryModalButton renders.
+const INQUIRY_BUTTON_TEXT = "The Artsy Guarantee"
+
+const escapeRegExp = (string: string) => string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 
 const { renderWithRelay } = setupTestWrapper<ConversationCTATestsQuery>({
   Component: ({ me }) => <ConversationCTA show conversation={me!.conversation!} />,
@@ -28,8 +90,8 @@ const { renderWithRelay } = setupTestWrapper<ConversationCTATestsQuery>({
 })
 
 const assertRendersNothing = () => {
-  expect(screen.UNSAFE_queryAllByType(ReviewOfferButton)).toHaveLength(0)
-  expect(screen.UNSAFE_queryAllByType(OpenInquiryModalButton)).toHaveLength(0)
+  expect(screen.queryByTestId("review-offer-button")).not.toBeOnTheScreen()
+  expect(screen.queryByText(INQUIRY_BUTTON_TEXT)).not.toBeOnTheScreen()
 }
 
 const expectReviewOfferButton = ({
@@ -39,26 +101,23 @@ const expectReviewOfferButton = ({
   // `bg` is still accepted by callers for readability, but the background color
   // is covered by ReviewOfferButton's own test rather than via node access here.
   bg?: Color
-  Icon?: ComponentType<any>
+  Icon?: "alert-fill-icon" | "money-fill-icon"
   strings?: string[]
 }) => {
-  const cta = screen.UNSAFE_queryAllByType(ReviewOfferButton)[0]
-  expect(cta).toBeDefined()
+  const cta = screen.getByTestId("review-offer-button")
   if (strings) {
-    const textContent = extractText(cta)
     strings.forEach((string) => {
-      expect(textContent).toContain(string)
+      expect(cta).toHaveTextContent(new RegExp(escapeRegExp(string)))
     })
   }
   if (Icon) {
-    expect(screen.UNSAFE_queryAllByType(Icon)).toHaveLength(1)
+    expect(screen.getAllByTestId(Icon)).toHaveLength(1)
   }
   return cta
 }
 
 it("renders without throwing an error", () => {
-  renderWithRelay()
-  expect(screen.UNSAFE_queryAllByType(ConversationCTA)).toHaveLength(1)
+  expect(() => renderWithRelay()).not.toThrow()
 })
 
 describe("conversation about an artwork with inquiry checkout enabled", () => {
@@ -91,7 +150,7 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
   it("renders the make offer button if there is no active order", () => {
     renderWithOrders()
 
-    expect(screen.UNSAFE_queryAllByType(OpenInquiryModalButton)).toHaveLength(1)
+    expect(screen.getByText(INQUIRY_BUTTON_TEXT)).toBeOnTheScreen()
   })
 
   // The `partnerOffersConnection` query fetches both `BULK` (sent via the
@@ -134,8 +193,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
         renderWithRelay(buildPartnerOfferResolvers())
 
         // The dedicated offer banner replaces the inquiry transaction buttons.
-        expect(screen.UNSAFE_queryAllByType(OpenInquiryModalButton)).toHaveLength(0)
-        expect(screen.UNSAFE_queryAllByType(ConversationPartnerOfferCTA)).toHaveLength(1)
+        expect(screen.queryByText(INQUIRY_BUTTON_TEXT)).not.toBeOnTheScreen()
+        expect(screen.getByTestId("conversation-partner-offer-cta")).toBeOnTheScreen()
       })
 
       it("still renders the inquiry buttons when the flag is off", () => {
@@ -143,7 +202,7 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
 
         renderWithRelay(buildPartnerOfferResolvers())
 
-        expect(screen.UNSAFE_queryAllByType(OpenInquiryModalButton)).toHaveLength(1)
+        expect(screen.getByText(INQUIRY_BUTTON_TEXT)).toBeOnTheScreen()
       })
 
       it("falls back to the inquiry buttons once the offer expires", () => {
@@ -151,8 +210,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
 
         renderWithRelay(buildPartnerOfferResolvers({ endAt: pastISO() }))
 
-        expect(screen.UNSAFE_queryAllByType(ConversationPartnerOfferCTA)).toHaveLength(0)
-        expect(screen.UNSAFE_queryAllByType(OpenInquiryModalButton)).toHaveLength(1)
+        expect(screen.queryByTestId("conversation-partner-offer-cta")).not.toBeOnTheScreen()
+        expect(screen.getByText(INQUIRY_BUTTON_TEXT)).toBeOnTheScreen()
       })
     }
   )
@@ -162,7 +221,7 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
 
     expectReviewOfferButton({
       bg: "red100",
-      Icon: AlertFillIcon,
+      Icon: "alert-fill-icon",
       strings: [
         "Payment Failed",
         "Unable to process payment for accepted offer. Update payment method.",
@@ -193,7 +252,7 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     expectReviewOfferButton({
       bg: "orange150",
       strings: ["Offer Received"],
-      Icon: AlertFillIcon,
+      Icon: "alert-fill-icon",
     })
   })
 
@@ -207,7 +266,7 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     expectReviewOfferButton({
       bg: "green100",
       strings: ["Offer Accepted"],
-      Icon: MoneyFillIcon,
+      Icon: "money-fill-icon",
     })
   })
 
@@ -221,7 +280,7 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     expectReviewOfferButton({
       bg: "green100",
       strings: ["Offer Accepted"],
-      Icon: MoneyFillIcon,
+      Icon: "money-fill-icon",
     })
   })
 
@@ -235,7 +294,7 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     expectReviewOfferButton({
       bg: "orange150",
       strings: ["Counteroffer Received", "Confirm Total"],
-      Icon: AlertFillIcon,
+      Icon: "alert-fill-icon",
     })
   })
 
@@ -249,7 +308,7 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     expectReviewOfferButton({
       bg: "green100",
       strings: ["Offer Accepted"],
-      Icon: MoneyFillIcon,
+      Icon: "money-fill-icon",
     })
   })
 
@@ -263,7 +322,7 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     expectReviewOfferButton({
       bg: "orange150",
       strings: ["Offer Accepted", "Confirm total"],
-      Icon: AlertFillIcon,
+      Icon: "alert-fill-icon",
     })
   })
 
@@ -277,7 +336,7 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     expectReviewOfferButton({
       bg: "green100",
       strings: ["Offer Accepted"],
-      Icon: MoneyFillIcon,
+      Icon: "money-fill-icon",
     })
   })
 
@@ -287,7 +346,7 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
         mode: "BUY",
       })
 
-      expect(screen.UNSAFE_queryAllByType(CTAPopUp)).toHaveLength(0)
+      expect(screen.queryByTestId("cta-pop-up")).not.toBeOnTheScreen()
     })
   })
 })
