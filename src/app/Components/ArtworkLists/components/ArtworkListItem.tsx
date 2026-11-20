@@ -3,7 +3,6 @@ import { Flex, Join, Spacer, Switch, Text } from "@artsy/palette-mobile"
 import { ArtworkListItem_item$key } from "__generated__/ArtworkListItem_item.graphql"
 import { ArtworkListImagePreview } from "app/Components/ArtworkLists/components/ArtworkListImagePreview"
 import { ArtworkListItemSelectedIcon } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/components/ArtworkListItemSelectedIcon"
-import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { FC, memo } from "react"
 import { TouchableOpacity } from "react-native"
@@ -25,9 +24,8 @@ interface ArtworkListItemProps {
 
 const Item: FC<ArtworkListItemProps> = (props) => {
   const artworkList = useFragment(ArtworkListItemFragment, props.item)
-  const nodes = extractNodes(artworkList.artworksConnection)
   const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
-  const imageURL = nodes[0]?.image?.resized?.url ?? null
+  const imageURL = artworkList.representativeArtworks?.[0]?.image?.resized?.url ?? null
 
   const offerSettingsList =
     artworkList.shareableWithPartners !== undefined &&
@@ -113,14 +111,10 @@ const ArtworkListItemFragment = graphql`
     isSavedArtwork(artworkID: $artworkID) @include(if: $includeArtwork)
     shareableWithPartners
     artworksCount(onlyVisible: true)
-    artworksConnection(first: 4) {
-      edges {
-        node {
-          image {
-            resized(height: 300, width: 300, version: "normalized") {
-              url
-            }
-          }
+    representativeArtworks {
+      image {
+        resized(height: 300, width: 300, version: "normalized") {
+          url
         }
       }
     }
