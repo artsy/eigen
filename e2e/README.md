@@ -17,7 +17,13 @@ The e2e flows run with [agent-device](https://github.com/callstack/agent-device)
 - Flows run in a fixed order, set by `FIRST_FLOWS` in the runner. `login` and `signup` go first, so a freshly booted simulator's slow first minutes land on the simplest flows. Then come `deeplink-email`, `deeplink-click` and `deeplink-artist`, in that order, so a failure can be told apart from being the first deeplink of the run. Any other flow follows, alphabetically. In the iOS job, the simulator also starts booting right after checkout, so it settles during setup.
 - Each flow gets up to 3 attempts. A flow that only passes on a retry is logged as flaky, with a warning on the run summary.
 - At the end, the runner prints a summary like agent-device's own reporter. That's one `✓`/`⨯` line per flow with its time, then the flaky flows and the failures, with the error of every failed attempt. In CI it's also added to the run's summary page. Flow names come from each flow's `# @title` header.
-- Failures are posted to `#mobile-alerts` with a screenshot (uploaded to S3).
+- Failures are posted to `#mobile-alerts` with a screenshot (uploaded to S3). Only runs on `main` post; runs on other branches skip Slack.
+- To test a branch's app changes, build it under its own name, then run the suite on that build. Start `build-qa-ios.yml` (or `build-qa-android.yml`) on the branch with `build_name` set, e.g. to the branch name without slashes. It uploads `Artsy-<build_name>` instead of `Artsy-latest`, so main's build is left alone. Then start `ios-e2e.yml` (or `android-e2e.yml`) on the branch with the same `build_name`:
+
+  ```sh
+  gh workflow run build-qa-ios.yml --ref <branch> -f build_name=<name>
+  gh workflow run ios-e2e.yml --ref <branch> -f build_name=<name>
+  ```
 - Only `junit.xml` and `failures.json` are attached to the run as artifacts. This repo's artifacts are public, and agent-device's logs and screenshots can show the test account.
 
 ## Layout

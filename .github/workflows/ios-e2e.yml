@@ -9,9 +9,16 @@ on:
       AWS_SECRET_ACCESS_KEY:
         required: true
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab, on the latest QA build
+    inputs:
+      build_name:
+        description: "Tests the QA build uploaded as Artsy-<build_name>, e.g. a branch's from build-qa-ios.yml"
+        required: false
+        default: latest
 
 env:
   AGENT_DEVICE_NO_UPDATE_NOTIFIER: 1
+  # Only main's runs post failures to Slack; a branch run is someone trying out changes
+  SKIP_SLACK_REPORT: ${{ github.ref != 'refs/heads/main' && '1' || '' }}
 
 # Two runs racing to save the runner cache made one of them fail to save it, so runs on a branch take
 # turns. The group is spelled out because inside a called workflow `github.workflow` is the caller's
@@ -81,7 +88,15 @@ jobs:
         run: ./scripts/setup/setup-env-for-e2e ios
 
       - name: Download iOS App
-        run: aws s3 cp s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip ./Artsy.zip
+        # inputs is empty when nightly-qa.yml calls this, which tests Artsy-latest
+        env:
+          BUILD_NAME: ${{ inputs.build_name || 'latest' }}
+        run: |
+          if [[ ! "$BUILD_NAME" =~ ^[A-Za-z0-9._-]+$ ]]; then
+            echo "::error::build_name may only contain letters, digits, '.', '_' and '-'"
+            exit 1
+          fi
+          aws s3 cp "s3://artsy-citadel/eigen/builds/ios/Artsy-$BUILD_NAME.zip" ./Artsy.zip
 
       - name: Unzip iOS App
         run: unzip Artsy.zip
