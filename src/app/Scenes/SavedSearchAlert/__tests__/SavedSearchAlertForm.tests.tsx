@@ -41,13 +41,19 @@ describe("SavedSearchAlertForm", () => {
   const waitForPendingOperation = () =>
     waitFor(() => expect(mockEnvironment.mock.getAllOperations()).not.toHaveLength(0))
 
-  // palette's Dialog runs a 150ms fade-out on mount and hides itself when that animation ends.
-  // Opening the dialog stops the fade-out early, which ends it and hides the dialog again, so
-  // let the initial fade-out finish before opening the delete dialog.
-  const waitForDialogFadeOut = () => act(() => new Promise((resolve) => setTimeout(resolve, 200)))
+  // The palette Dialog runs a 150ms fade-out when it mounts. Opening it before that ends stops the
+  // fade-out early, whose callback then hides the dialog again, so finish it first. Call
+  // `jest.useFakeTimers()` before rendering; the rest of the test runs on real timers again.
+  const finishDialogMountAnimation = async () => {
+    await act(() => {
+      jest.advanceTimersByTime(1000)
+    })
+    jest.useRealTimers()
+  }
 
   afterEach(() => {
     jest.clearAllMocks()
+    jest.useRealTimers()
   })
 
   const withoutDuplicateAlert = async () => {
@@ -233,9 +239,10 @@ describe("SavedSearchAlertForm", () => {
       })
 
       it("tracks analytics event when `Delete Alert` button is pressed", async () => {
+        jest.useFakeTimers()
         await renderWithWrappers(<TestRenderer savedSearchAlertId="savedSearchAlertId" />)
 
-        await waitForDialogFadeOut()
+        await finishDialogMountAnimation()
 
         await fireEvent.press(screen.getByTestId("delete-alert-button"))
         await fireEvent.press(screen.getByTestId("dialog-primary-action-button"))
@@ -283,9 +290,10 @@ describe("SavedSearchAlertForm", () => {
       })
 
       it("calls delete mutation when the delete alert button is pressed", async () => {
+        jest.useFakeTimers()
         await renderWithWrappers(<TestRenderer savedSearchAlertId="savedSearchAlertId" />)
 
-        await waitForDialogFadeOut()
+        await finishDialogMountAnimation()
 
         await fireEvent.press(screen.getByTestId("delete-alert-button"))
         await fireEvent.press(screen.getByTestId("dialog-primary-action-button"))
