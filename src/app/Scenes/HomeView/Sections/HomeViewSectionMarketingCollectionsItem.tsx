@@ -5,7 +5,6 @@ import {
 } from "__generated__/HomeViewSectionMarketingCollectionsItem_marketingCollection.graphql"
 import { FiveUpImageLayout } from "app/Components/FiveUpImageLayout"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { extractNodes } from "app/utils/extractNodes"
 import { pluralize } from "app/utils/pluralize"
 import { compact } from "lodash"
 import { FC } from "react"
@@ -26,7 +25,7 @@ export const HomeViewSectionMarketingCollectionsItem: FC<
   // Collections are expected to always have >= 2 artworks, but we should
   // still be cautious to avoid crashes if this assumption is broken.
   const artworkImageURLs = compact(
-    extractNodes(marketingCollection.artworksConnection, (artwork) => artwork.image?.url)
+    (marketingCollection.representativeArtworks ?? []).map((artwork) => artwork.image?.url)
   )
 
   const artworksCount = marketingCollection.artworksConnection?.counts?.total || 0
@@ -69,16 +68,14 @@ const fragment = graphql`
     internalID
     title
     slug
-    artworksConnection(first: 5, sort: "-decayed_merch") {
+    artworksConnection(first: 0) {
       counts {
         total
       }
-      edges {
-        node {
-          image {
-            url(version: "large")
-          }
-        }
+    }
+    representativeArtworks {
+      image {
+        url(version: "large")
       }
     }
   }

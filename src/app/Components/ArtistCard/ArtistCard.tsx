@@ -3,7 +3,6 @@ import { Flex, FollowButton, Image, Text, Touchable, useColor } from "@artsy/pal
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { extractNodes } from "app/utils/extractNodes"
 import { memo } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -20,6 +19,8 @@ interface ArtistCardProps {
 
 export const IMAGE_MAX_HEIGHT = 180
 
+type ResizedImage = { height: number; src: string; width: number }
+
 export const ArtistCard: React.FC<ArtistCardProps> = memo(
   ({ artist, onDismiss, onFollow, onPress, showDefaultFollowButton = false }) => {
     const color = useColor()
@@ -33,18 +34,16 @@ export const ArtistCard: React.FC<ArtistCardProps> = memo(
       }
     }
 
-    const artistImages = extractNodes(artist.filterArtworksConnection)
-      .filter((artwork) => {
-        // Image is valid and has a width and height
-        return (
-          artwork.image?.resized?.src && artwork.image.resized.width && artwork.image.resized.height
-        )
-      })
-      .map((artwork) => artwork.image?.resized) as Array<{
-      height: number
-      src: string
-      width: number
-    }>
+    const hasValidResized = (artwork: {
+      image?: {
+        resized?: { src?: string | null; width?: number | null; height?: number | null } | null
+      } | null
+    }) =>
+      !!(artwork.image?.resized?.src && artwork.image.resized.width && artwork.image.resized.height)
+
+    const artistImages = (artist.representativeArtworks ?? [])
+      .filter(hasValidResized)
+      .map((artwork) => artwork.image?.resized) as ResizedImage[]
 
     return (
       <RouterLink onPress={onPress} to={artist.href}>
@@ -103,15 +102,7 @@ const ZOOM_IN_FACTOR = 1.5
 // Refers to the difference in height factor between two consecutive images
 const DIFFERENCE_FACTOR = 0.25
 
-const ArtworkCardImages = ({
-  images,
-}: {
-  images: Array<{
-    height: number
-    src: string
-    width: number
-  }>
-}) => {
+const ArtworkCardImages = ({ images }: { images: ResizedImage[] }) => {
   const numOfImages = images.length
 
   const imageWidth = ARTIST_CARD_WIDTH / numOfImages + IMAGE_OVERLAY
@@ -181,16 +172,12 @@ export const ArtistCardContainer = createFragmentContainer(ArtistCard, {
         name
       }
       isFollowed
-      filterArtworksConnection(first: 3, sort: "-weighted_iconicity") {
-        edges {
-          node {
-            image {
-              resized(width: 590, version: ["main", "larger", "large"]) {
-                src
-                width
-                height
-              }
-            }
+      representativeArtworks {
+        image {
+          resized(width: 590, version: ["main", "larger", "large"]) {
+            src
+            width
+            height
           }
         }
       }
