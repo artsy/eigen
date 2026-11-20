@@ -31,11 +31,13 @@ export const PaymentFailureBanner: React.FC = withSuspense({
       graphql`
         fragment PaymentFailureBanner_Fragment on Query
         @refetchable(queryName: "PaymentFailureBannerRefetchQuery") {
-          commerceMyOrders(first: 10, filters: [PAYMENT_FAILED]) {
-            edges {
-              node {
-                code
-                internalID
+          me {
+            ordersConnection(first: 10, buyerState: [PAYMENT_FAILED]) {
+              edges {
+                node {
+                  code
+                  internalID
+                }
               }
             }
           }
@@ -55,7 +57,7 @@ export const PaymentFailureBanner: React.FC = withSuspense({
       }
     }, [isFocused])
 
-    const failedPayments = extractNodes(data?.commerceMyOrders)
+    const failedPayments = extractNodes(data?.me?.ordersConnection)
 
     useEffect(() => {
       if (failedPayments.length > 0) {

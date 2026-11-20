@@ -21,11 +21,13 @@ describe("PaymentFailureBanner", () => {
     Component: PaymentFailureBanner,
     query: graphql`
       query PaymentFailureBannerTestsQuery {
-        commerceMyOrders(first: 10, filters: [PAYMENT_FAILED]) {
-          edges {
-            node {
-              code
-              internalID
+        me {
+          ordersConnection(first: 10, buyerState: [PAYMENT_FAILED]) {
+            edges {
+              node {
+                code
+                internalID
+              }
             }
           }
         }
@@ -47,7 +49,7 @@ describe("PaymentFailureBanner", () => {
 
   it("renders the error banner when a single payment has failed", () => {
     renderWithRelay({
-      CommerceOrderConnectionWithTotalCount: () => ({
+      MeOrdersConnection: () => ({
         edges: [
           {
             node: {
@@ -71,7 +73,7 @@ describe("PaymentFailureBanner", () => {
 
   it("renders the error banner when multiple payments have failed", () => {
     renderWithRelay({
-      CommerceOrderConnectionWithTotalCount: () => ({
+      MeOrdersConnection: () => ({
         edges: [
           {
             node: {
@@ -100,7 +102,7 @@ describe("PaymentFailureBanner", () => {
 
   it("does not render the banner when there are no payment failures", () => {
     renderWithRelay({
-      CommerceOrderConnectionWithTotalCount: () => ({
+      MeOrdersConnection: () => ({
         edges: [],
       }),
     })
@@ -110,7 +112,7 @@ describe("PaymentFailureBanner", () => {
 
   it("calls bannerViewed tracking event when the banner is visible", () => {
     renderWithRelay({
-      CommerceOrderConnectionWithTotalCount: () => ({
+      MeOrdersConnection: () => ({
         edges: [
           {
             node: {
@@ -127,7 +129,7 @@ describe("PaymentFailureBanner", () => {
 
   it("calls tappedChangePaymentMethod tracking event when the link is clicked", () => {
     renderWithRelay({
-      CommerceOrderConnectionWithTotalCount: () => ({
+      MeOrdersConnection: () => ({
         edges: [
           {
             node: {
@@ -142,6 +144,8 @@ describe("PaymentFailureBanner", () => {
     const link = screen.getByText("Update payment method.")
     fireEvent.press(link)
 
-    expect(mockTracking.bannerViewed).toHaveBeenCalledWith([{ code: "order-1", internalID: "1" }])
+    expect(mockTracking.tappedChangePaymentMethod).toHaveBeenCalledWith([
+      { code: "order-1", internalID: "1" },
+    ])
   })
 })
