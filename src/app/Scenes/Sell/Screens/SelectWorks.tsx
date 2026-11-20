@@ -17,7 +17,6 @@ import { MAX_SELECTED_WORKS } from "app/Scenes/Sell/constants"
 import { useCreateResaleSubmissions } from "app/Scenes/Sell/hooks/useCreateResaleSubmissions"
 import {
   ResaleSubmission,
-  isResaleSubmissionActive,
   isResaleSubmissionSellable,
   toResaleSubmission,
 } from "app/Scenes/Sell/utils/resaleSubmission"
@@ -25,7 +24,7 @@ import { toggleWorkSelection } from "app/Scenes/Sell/utils/toggleWorkSelection"
 import { extractNodes } from "app/utils/extractNodes"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const SelectWorks: React.FC = () => {
@@ -79,16 +78,12 @@ const SelectWorksContent: React.FC<SelectWorksContentProps> = withSuspense({
     >({})
 
     // Submissions from an earlier visit still count: Gravity refuses a second active one per work
-    const earlierResaleSubmissions = useMemo(() => {
-      const byArtworkID: Record<string, ResaleSubmission> = {}
-      extractNodes(data.me?.resaleSubmissionsConnection).forEach((node) => {
-        const resaleSubmission = toResaleSubmission(node)
-        if (isResaleSubmissionActive(resaleSubmission) && !byArtworkID[node.submittedArtworkID]) {
-          byArtworkID[node.submittedArtworkID] = resaleSubmission
-        }
-      })
-      return byArtworkID
-    }, [data.me?.resaleSubmissionsConnection])
+    const earlierResaleSubmissions: Record<string, ResaleSubmission> = {}
+    artworks.forEach(({ internalID, activeResaleSubmission }) => {
+      if (activeResaleSubmission) {
+        earlierResaleSubmissions[internalID] = toResaleSubmission(activeResaleSubmission)
+      }
+    })
 
     const resaleSubmissionsByArtworkID = {
       ...earlierResaleSubmissions,
@@ -250,14 +245,9 @@ const selectWorksQuery = graphql`
             }
             ...ArtworkGridItem_artwork
             ...SellWorkCard_artwork
-          }
-        }
-      }
-      resaleSubmissionsConnection(first: 100) {
-        edges {
-          node {
-            submittedArtworkID
-            ...resaleSubmission_resaleSubmission
+            activeResaleSubmission {
+              ...resaleSubmission_resaleSubmission
+            }
           }
         }
       }

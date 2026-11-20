@@ -78,7 +78,6 @@ const RESALE_SUBMISSIONS: Record<string, { state: string; channel: string | null
 
 const resaleSubmissionFor = (artworkID: string) => ({
   internalID: `resaleSubmission-${artworkID}`,
-  submittedArtworkID: artworkID,
   recommendedPriceMin: null,
   recommendedPriceMax: null,
   ...RESALE_SUBMISSIONS[artworkID],
@@ -88,7 +87,6 @@ const resaleSubmissionFor = (artworkID: string) => ({
 const collection = {
   Me: () => ({
     id: "me",
-    resaleSubmissionsConnection: { edges: [] },
     myCollectionConnection: {
       edges: [
         {
@@ -97,6 +95,7 @@ const collection = {
             internalID: "id-a2",
             title: "Sellable Work",
             artistNames: "Artist A",
+            activeResaleSubmission: null,
           },
         },
         {
@@ -105,6 +104,7 @@ const collection = {
             internalID: "id-c3",
             title: "Unsellable Work",
             artistNames: "Artist B",
+            activeResaleSubmission: null,
           },
         },
         {
@@ -113,6 +113,7 @@ const collection = {
             internalID: "id-b4",
             title: "Auction Work",
             artistNames: "Artist C",
+            activeResaleSubmission: null,
           },
         },
       ],
@@ -252,10 +253,19 @@ describe("Sell", () => {
 
   it("reuses a resale submission from an earlier visit instead of creating another", async () => {
     const view = await renderSell({
-      Me: () => ({
-        ...collection.Me(),
-        resaleSubmissionsConnection: { edges: [{ node: resaleSubmissionFor("id-b4") }] },
-      }),
+      Me: () => {
+        const me = collection.Me()
+        const auctionWork = me.myCollectionConnection.edges[2].node
+        return {
+          ...me,
+          myCollectionConnection: {
+            edges: [
+              ...me.myCollectionConnection.edges.slice(0, 2),
+              { node: { ...auctionWork, activeResaleSubmission: resaleSubmissionFor("id-b4") } },
+            ],
+          },
+        }
+      },
     })
 
     fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))

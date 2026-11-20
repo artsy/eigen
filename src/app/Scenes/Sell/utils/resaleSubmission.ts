@@ -14,12 +14,6 @@ export interface ResaleSubmission {
   estimate: string | null
 }
 
-// Gravity allows one active resale submission per work in these states, so the flow reuses it instead of creating one
-const ACTIVE_STATES: ResaleSubmission["state"][] = ["ACCEPTED", "LISTED", "AUCTION_REVIEW"]
-
-export const isResaleSubmissionActive = (resaleSubmission: ResaleSubmission) =>
-  ACTIVE_STATES.includes(resaleSubmission.state)
-
 /** A submission whose channel the app can show */
 export type ResaleSubmissionWithChannel = ResaleSubmission & { channel: SupportedSellChannel }
 
