@@ -172,7 +172,12 @@ module.exports = {
       },
     },
     {
-      files: ["*.tests.ts", "*.tests.tsx"],
+      files: [
+        "*.tests.ts",
+        "*.tests.tsx",
+        // shared test helper that isn't a test file itself
+        "src/app/Components/ArtworkFilter/Filters/AggregationOptionCommonValidation.tsx",
+      ],
       rules: {
         // App-level import restrictions don't apply to tests, but tests must not depend on
         // react-test-renderer: RNTL v14 drops it in favour of `test-renderer`.
@@ -184,6 +189,13 @@ module.exports = {
                 name: "react-test-renderer",
                 message:
                   "Use @testing-library/react-native (`renderWithWrappers`, `screen`, `act`) instead. RNTL v14 drops react-test-renderer.",
+              },
+            ],
+            patterns: [
+              {
+                group: ["react-test-renderer/*"],
+                message:
+                  "Use @testing-library/react-native instead. RNTL v14 drops react-test-renderer.",
               },
             ],
           },
