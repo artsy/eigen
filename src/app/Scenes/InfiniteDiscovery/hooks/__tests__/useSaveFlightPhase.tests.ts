@@ -14,8 +14,8 @@ describe("useSaveFlightPhase", () => {
     jest.useRealTimers()
   })
 
-  const renderPhase = (onComplete: () => void) =>
-    renderHook(() =>
+  const renderPhase = async (onComplete: () => void) =>
+    await renderHook(() =>
       useSaveFlightPhase({
         popInDuration: POP_IN_DURATION,
         flightDuration: FLIGHT_DURATION,
@@ -24,46 +24,46 @@ describe("useSaveFlightPhase", () => {
       })
     )
 
-  it("starts in the pop_in phase", () => {
-    const { result } = renderPhase(jest.fn())
+  it("starts in the pop_in phase", async () => {
+    const { result } = await renderPhase(jest.fn())
 
     expect(result.current).toBe("pop_in")
   })
 
-  it("advances to flight after popInDuration", () => {
-    const { result } = renderPhase(jest.fn())
+  it("advances to flight after popInDuration", async () => {
+    const { result } = await renderPhase(jest.fn())
 
-    act(() => jest.advanceTimersByTime(POP_IN_DURATION))
+    await act(() => jest.advanceTimersByTime(POP_IN_DURATION))
 
     expect(result.current).toBe("flight")
   })
 
-  it("advances to fade_out after flightDuration", () => {
-    const { result } = renderPhase(jest.fn())
+  it("advances to fade_out after flightDuration", async () => {
+    const { result } = await renderPhase(jest.fn())
 
-    act(() => jest.advanceTimersByTime(POP_IN_DURATION))
-    act(() => jest.advanceTimersByTime(FLIGHT_DURATION))
+    await act(() => jest.advanceTimersByTime(POP_IN_DURATION))
+    await act(() => jest.advanceTimersByTime(FLIGHT_DURATION))
 
     expect(result.current).toBe("fade_out")
   })
 
-  it("calls onComplete after fadeOutDuration, and not before", () => {
+  it("calls onComplete after fadeOutDuration, and not before", async () => {
     const onComplete = jest.fn()
-    renderPhase(onComplete)
+    await renderPhase(onComplete)
 
-    act(() => jest.advanceTimersByTime(POP_IN_DURATION))
-    act(() => jest.advanceTimersByTime(FLIGHT_DURATION))
+    await act(() => jest.advanceTimersByTime(POP_IN_DURATION))
+    await act(() => jest.advanceTimersByTime(FLIGHT_DURATION))
     expect(onComplete).not.toHaveBeenCalled()
 
-    act(() => jest.advanceTimersByTime(FADE_OUT_DURATION))
+    await act(() => jest.advanceTimersByTime(FADE_OUT_DURATION))
     expect(onComplete).toHaveBeenCalledTimes(1)
   })
 
-  it("calls the latest onComplete even if it changes mid-sequence", () => {
+  it("calls the latest onComplete even if it changes mid-sequence", async () => {
     const staleOnComplete = jest.fn()
     const freshOnComplete = jest.fn()
 
-    const { rerender } = renderHook(
+    const { rerender } = await renderHook(
       ({ onComplete }: { onComplete: () => void }) =>
         useSaveFlightPhase({
           popInDuration: POP_IN_DURATION,
@@ -74,10 +74,10 @@ describe("useSaveFlightPhase", () => {
       { initialProps: { onComplete: staleOnComplete } }
     )
 
-    act(() => jest.advanceTimersByTime(POP_IN_DURATION))
-    rerender({ onComplete: freshOnComplete })
-    act(() => jest.advanceTimersByTime(FLIGHT_DURATION))
-    act(() => jest.advanceTimersByTime(FADE_OUT_DURATION))
+    await act(() => jest.advanceTimersByTime(POP_IN_DURATION))
+    await rerender({ onComplete: freshOnComplete })
+    await act(() => jest.advanceTimersByTime(FLIGHT_DURATION))
+    await act(() => jest.advanceTimersByTime(FADE_OUT_DURATION))
 
     expect(staleOnComplete).not.toHaveBeenCalled()
     expect(freshOnComplete).toHaveBeenCalledTimes(1)

@@ -30,8 +30,8 @@ describe("Articles", () => {
     `,
   })
 
-  it("renders", () => {
-    renderWithRelay()
+  it("renders", async () => {
+    await renderWithRelay()
 
     expect(
       screen.getByText(`Artsy Editorial Featuring <mock-value-for-field-"name">`)
@@ -41,17 +41,17 @@ describe("Articles", () => {
     expect(screen.getByText(`By <mock-value-for-field-"byline">`)).toBeOnTheScreen()
   })
 
-  it("navigates to a specific article via webview", () => {
-    renderWithRelay()
+  it("navigates to a specific article via webview", async () => {
+    await renderWithRelay()
 
-    fireEvent.press(screen.getByText(`<mock-value-for-field-"thumbnailTitle">`))
+    await fireEvent.press(screen.getByText(`<mock-value-for-field-"thumbnailTitle">`))
     expect(navigate).toHaveBeenCalledWith(`<mock-value-for-field-\"href\">`)
   })
 
-  it("navigates to a specific article natively", () => {
-    renderWithRelay()
+  it("navigates to a specific article natively", async () => {
+    await renderWithRelay()
 
-    fireEvent.press(screen.getByText(`<mock-value-for-field-"thumbnailTitle">`))
+    await fireEvent.press(screen.getByText(`<mock-value-for-field-"thumbnailTitle">`))
     expect(navigate).toHaveBeenCalledWith(`<mock-value-for-field-\"href\">`)
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedArticleGroup",
@@ -66,10 +66,10 @@ describe("Articles", () => {
     })
   })
 
-  it("navigates to all articles", () => {
-    renderWithRelay()
+  it("navigates to all articles", async () => {
+    await renderWithRelay()
 
-    fireEvent.press(screen.getByText("View All"))
+    await fireEvent.press(screen.getByText("View All"))
     expect(navigate).toHaveBeenCalledWith("artist/<Artist-mock-id-1>/articles")
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedArticleGroup",

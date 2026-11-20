@@ -31,8 +31,8 @@ describe("ArtworkPartnerOfferNote", () => {
     `,
   })
 
-  it("renders the note correctly", () => {
-    renderWithRelay({
+  it("renders the note correctly", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         partner: { profile: { icon: { url: "https://testurl" } } },
       }),
@@ -48,8 +48,8 @@ describe("ArtworkPartnerOfferNote", () => {
     expect(screen.getByText("“This is a note”")).toBeOnTheScreen()
   })
 
-  it("does not render anything if there is no note", () => {
-    renderWithRelay({
+  it("does not render anything if there is no note", async () => {
+    await renderWithRelay({
       Artwork: () => ({ partner: { profile: { icon: { url: "https://testurl" } } } }),
       Me: () => ({
         partnerOffersConnection: { edges: [{ node: { note: null, isAvailable: true } }] },
@@ -61,8 +61,8 @@ describe("ArtworkPartnerOfferNote", () => {
     expect(screen.queryByText("“This is a note”")).not.toBeOnTheScreen()
   })
 
-  it("does not render the partner icon if there is none", () => {
-    renderWithRelay({
+  it("does not render the partner icon if there is none", async () => {
+    await renderWithRelay({
       Artwork: () => ({ partner: { profile: null } }),
       Me: () => ({
         partnerOffersConnection: {
@@ -76,8 +76,8 @@ describe("ArtworkPartnerOfferNote", () => {
     expect(screen.getByText("“This is a note”")).toBeOnTheScreen()
   })
 
-  it("does not render anything if there is no partner offer", () => {
-    renderWithRelay({
+  it("does not render anything if there is no partner offer", async () => {
+    await renderWithRelay({
       Artwork: () => ({ partner: { profile: { icon: { url: "https://testurl" } } } }),
       Me: () => ({ partnerOffersConnection: { edges: [] } }),
     })
@@ -87,8 +87,8 @@ describe("ArtworkPartnerOfferNote", () => {
     expect(screen.queryByText("“This is a note”")).not.toBeOnTheScreen()
   })
 
-  it("does not render anything if partner offer is not available", () => {
-    renderWithRelay({
+  it("does not render anything if partner offer is not available", async () => {
+    await renderWithRelay({
       Artwork: () => ({ partner: { profile: { icon: { url: "https://testurl" } } } }),
       Me: () => ({
         partnerOffersConnection: {

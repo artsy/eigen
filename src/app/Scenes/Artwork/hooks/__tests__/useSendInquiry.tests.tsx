@@ -43,7 +43,7 @@ describe("useSendInquiry", () => {
 
   it("sends an inquiry", async () => {
     const loader = await loaderHook()
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () =>
         useSendInquiry({
           artwork: (loader.current as any).artwork,
@@ -53,7 +53,7 @@ describe("useSendInquiry", () => {
       { wrapper }
     )
 
-    act(() => result.current.sendInquiry("message"))
+    await act(() => result.current.sendInquiry("message"))
 
     expect(result.current.error).toBe(false)
     expect(mockTrackEvent).toHaveBeenNthCalledWith(1, {
@@ -81,7 +81,7 @@ describe("useSendInquiry", () => {
     ])
 
     const loader = await loaderHook()
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () =>
         useSendInquiry({
           artwork: (loader.current as any).artwork,
@@ -91,7 +91,7 @@ describe("useSendInquiry", () => {
       { wrapper }
     )
 
-    act(() => result.current.sendInquiry("message"))
+    await act(() => result.current.sendInquiry("message"))
 
     expect(result.current.error).toBe(true)
     expect(mockTrackEvent).toHaveBeenNthCalledWith(1, {
@@ -120,7 +120,7 @@ describe("useSendInquiry", () => {
       }),
     })
 
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () =>
         useSendInquiry({
           artwork: (loader.current as any).artwork,
@@ -130,7 +130,7 @@ describe("useSendInquiry", () => {
       { wrapper }
     )
 
-    act(() => result.current.sendInquiry("message"))
+    await act(() => result.current.sendInquiry("message"))
 
     await waitFor(() =>
       expect(dispatch).toHaveBeenCalledWith({
@@ -149,7 +149,7 @@ describe("useSendInquiry", () => {
       }),
     })
 
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () =>
         useSendInquiry({
           artwork: (loader.current as any).artwork,
@@ -159,7 +159,7 @@ describe("useSendInquiry", () => {
       { wrapper }
     )
 
-    act(() => result.current.sendInquiry("message"))
+    await act(() => result.current.sendInquiry("message"))
 
     await waitFor(() =>
       expect(dispatch).toHaveBeenCalledWith({
@@ -180,7 +180,7 @@ describe("useSendInquiry", () => {
       }),
     })
 
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () =>
         useSendInquiry({
           artwork: (loader.current as any).artwork,
@@ -190,7 +190,7 @@ describe("useSendInquiry", () => {
       { wrapper }
     )
 
-    act(() => result.current.sendInquiry("message"))
+    await act(() => result.current.sendInquiry("message"))
 
     await waitFor(() =>
       expect(dispatch).toHaveBeenCalledWith({
@@ -208,7 +208,7 @@ describe("useSendInquiry", () => {
       }),
     })
 
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () =>
         useSendInquiry({
           artwork: (loader.current as any).artwork,
@@ -218,7 +218,7 @@ describe("useSendInquiry", () => {
       { wrapper }
     )
 
-    act(() => result.current.sendInquiry("message"))
+    await act(() => result.current.sendInquiry("message"))
 
     await waitFor(() => expect(mockShowPopover).toHaveBeenCalled())
   })
@@ -233,7 +233,7 @@ describe("useSendInquiry", () => {
     })
 
     const loader = await loaderHook()
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () =>
         useSendInquiry({
           artwork: loader.current!.artwork,
@@ -243,7 +243,7 @@ describe("useSendInquiry", () => {
       { wrapper }
     )
 
-    act(() => result.current.sendInquiry("message"))
+    await act(() => result.current.sendInquiry("message"))
 
     expect(result.current.error).toBe(false)
     expect(mockTrackEvent).toHaveBeenNthCalledWith(1, {
@@ -289,10 +289,10 @@ const wrapper = ({ children }: any) => (
 )
 
 const loaderHook = async (mock = {}) => {
-  act(() => {
+  await act(() => {
     env.mock.queueOperationResolver((operation) => MockPayloadGenerator.generate(operation, mock))
   })
-  const { result } = renderHook(() => useTestData(), { wrapper })
+  const { result } = await renderHook(() => useTestData(), { wrapper })
 
   await waitFor(() => expect(result.current).toBeTruthy())
 

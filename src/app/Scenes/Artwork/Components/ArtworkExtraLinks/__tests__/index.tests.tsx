@@ -21,7 +21,7 @@ const getWrapper = ({
   renderWithWrappers(<ArtworkExtraLinks artwork={artwork as any} auctionState={auctionState!} />)
 
 describe("ArtworkExtraLinks", () => {
-  it("redirects to sell tab", () => {
+  it("redirects to sell tab", async () => {
     const artwork = {
       ...ArtworkFixture,
       isForSale: true,
@@ -32,7 +32,7 @@ describe("ArtworkExtraLinks", () => {
       ],
     }
 
-    getWrapper({ artwork })
+    await getWrapper({ artwork })
   })
 
   describe("FAQ and specialist Auction links", () => {
@@ -54,8 +54,8 @@ describe("ArtworkExtraLinks", () => {
       ],
     }
 
-    it("renders Auction specific text", () => {
-      getWrapper({ artwork, auctionState: AuctionTimerState.CLOSING })
+    it("renders Auction specific text", async () => {
+      await getWrapper({ artwork, auctionState: AuctionTimerState.CLOSING })
 
       expect(screen.getByText(/By placing a bid you agree to Artsy's and Christie's/)).toBeTruthy()
       expect(screen.getByText(/Conditions of Sale/)).toBeTruthy()
@@ -63,7 +63,7 @@ describe("ArtworkExtraLinks", () => {
       expect(screen.getByText("ask a specialist")).toBeTruthy()
     })
 
-    it("hides auction links when auction work has sold via buy now", () => {
+    it("hides auction links when auction work has sold via buy now", async () => {
       const notForSaleArtwork = {
         ...ArtworkFixture,
         isInAuction: true,
@@ -83,7 +83,7 @@ describe("ArtworkExtraLinks", () => {
         ],
       }
 
-      getWrapper({ artwork: notForSaleArtwork })
+      await getWrapper({ artwork: notForSaleArtwork })
 
       expect(screen.queryByText(/By placing a bid you agree to Artsy's and Christie's/)).toBeNull()
       expect(screen.queryByText(/Conditions of Sale/)).toBeNull()
@@ -91,8 +91,8 @@ describe("ArtworkExtraLinks", () => {
       expect(screen.queryByText("ask a specialist")).toBeNull()
     })
 
-    it("hides auction links when auctionState is closed", () => {
-      getWrapper({
+    it("hides auction links when auctionState is closed", async () => {
+      await getWrapper({
         artwork,
         auctionState: AuctionTimerState.CLOSED,
       })
@@ -103,8 +103,8 @@ describe("ArtworkExtraLinks", () => {
       expect(screen.queryByText("ask a specialist")).toBeNull()
     })
 
-    it("displays auction links when auctionState is closing", () => {
-      getWrapper({
+    it("displays auction links when auctionState is closing", async () => {
+      await getWrapper({
         artwork,
         auctionState: AuctionTimerState.CLOSING,
       })
@@ -115,8 +115,8 @@ describe("ArtworkExtraLinks", () => {
       expect(screen.getByText("ask a specialist")).toBeTruthy()
     })
 
-    it("displays auction links when auctionState is live_integration_upcoming", () => {
-      getWrapper({
+    it("displays auction links when auctionState is live_integration_upcoming", async () => {
+      await getWrapper({
         artwork,
         auctionState: AuctionTimerState.LIVE_INTEGRATION_UPCOMING,
       })
@@ -127,8 +127,8 @@ describe("ArtworkExtraLinks", () => {
       expect(screen.getByText("ask a specialist")).toBeTruthy()
     })
 
-    it("displays auction links when auctionState is inProgress", () => {
-      getWrapper({
+    it("displays auction links when auctionState is inProgress", async () => {
+      await getWrapper({
         artwork,
         auctionState: AuctionTimerState.CLOSING,
       })
@@ -140,11 +140,11 @@ describe("ArtworkExtraLinks", () => {
     })
 
     describe("Analytics", () => {
-      it("posts proper event in when clicking Ask A Specialist", () => {
-        getWrapper({ artwork })
+      it("posts proper event in when clicking Ask A Specialist", async () => {
+        await getWrapper({ artwork })
 
         expect(screen.getByText("ask a specialist")).toBeTruthy()
-        fireEvent.press(screen.getByText("ask a specialist"))
+        await fireEvent.press(screen.getByText("ask a specialist"))
 
         expect(mockTrackEvent).toHaveBeenCalledTimes(1)
         expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
@@ -158,11 +158,11 @@ describe("ArtworkExtraLinks", () => {
         `)
       })
 
-      it("posts proper event in when clicking Read our auction FAQs", () => {
-        getWrapper({ artwork })
+      it("posts proper event in when clicking Read our auction FAQs", async () => {
+        await getWrapper({ artwork })
 
         expect(screen.getByText("Read our auction FAQs")).toBeTruthy()
-        fireEvent.press(screen.getByText("Read our auction FAQs"))
+        await fireEvent.press(screen.getByText("Read our auction FAQs"))
 
         expect(mockTrackEvent).toHaveBeenCalledTimes(1)
         expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
@@ -176,11 +176,11 @@ describe("ArtworkExtraLinks", () => {
         `)
       })
 
-      it("posts proper event in when clicking Conditions of Sale", () => {
-        getWrapper({ artwork })
+      it("posts proper event in when clicking Conditions of Sale", async () => {
+        await getWrapper({ artwork })
 
         expect(screen.getByText("Conditions of Sale")).toBeTruthy()
-        fireEvent.press(screen.getByText("Conditions of Sale"))
+        await fireEvent.press(screen.getByText("Conditions of Sale"))
 
         expect(mockTrackEvent).toHaveBeenCalledTimes(1)
         expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`

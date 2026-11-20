@@ -25,8 +25,8 @@ describe("Footer", () => {
     `,
   })
 
-  it("renders explore more categories text", () => {
-    renderWithRelay({
+  it("renders explore more categories text", async () => {
+    await renderWithRelay({
       DiscoveryCategoriesConnectionConnection: () => ({
         edges: [
           {
@@ -72,8 +72,8 @@ describe("Footer", () => {
     expect(screen.getByText("Explore more categories")).toBeOnTheScreen()
   })
 
-  it("renders other categories excluding current one", () => {
-    renderWithRelay({
+  it("renders other categories excluding current one", async () => {
+    await renderWithRelay({
       DiscoveryCategoriesConnectionConnection: () => ({
         edges: [
           {

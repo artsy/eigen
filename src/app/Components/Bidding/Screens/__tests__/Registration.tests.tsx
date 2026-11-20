@@ -28,22 +28,22 @@ const mockNavigator = { navigate: jest.fn() }
 
 const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager.postNotificationName
 
-it("renders properly for a user without a credit card", () => {
-  renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
+it("renders properly for a user without a credit card", async () => {
+  await renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
 
   expect(screen.getByText("A valid credit card is required.")).toBeOnTheScreen()
 })
 
 describe("User does not have a valid phone number", () => {
-  it("renders properly for a user without a phone number", () => {
-    renderWithWrappers(<Registration {...initialPropsForUserWithoutPhone} />)
+  it("renders properly for a user without a phone number", async () => {
+    await renderWithWrappers(<Registration {...initialPropsForUserWithoutPhone} />)
 
     expect(screen.getByText("A valid phone number is required.")).toBeOnTheScreen()
   })
 })
 
-it("renders properly for a user with a credit card and phone", () => {
-  renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
+it("renders properly for a user with a credit card and phone", async () => {
+  await renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
 
   expect(
     screen.getByText(
@@ -52,8 +52,8 @@ it("renders properly for a user with a credit card and phone", () => {
   ).toBeOnTheScreen()
 })
 
-it("renders properly for a verified user with a credit card and phone", () => {
-  renderWithWrappers(
+it("renders properly for a verified user with a credit card and phone", async () => {
+  await renderWithWrappers(
     <Registration
       {...initialProps}
       sale={{ ...sale, requireIdentityVerification: true }}
@@ -74,10 +74,10 @@ it("renders properly for a verified user with a credit card and phone", () => {
   expect(screen.queryByText("valid credit card")).not.toBeOnTheScreen()
 })
 
-it("shows the credit card form when the user tap the edit text in the credit card row", () => {
-  renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
+it("shows the credit card form when the user tap the edit text in the credit card row", async () => {
+  await renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
 
-  fireEvent.press(screen.getByText("Credit card"))
+  await fireEvent.press(screen.getByText("Credit card"))
 
   expect(mockNavigator.navigate).toHaveBeenCalledWith("CreditCardForm", {
     billingAddress: null,
@@ -85,15 +85,15 @@ it("shows the credit card form when the user tap the edit text in the credit car
   })
 })
 
-it("shows the option for entering payment information if the user does not have a credit card on file", () => {
-  renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
+it("shows the option for entering payment information if the user does not have a credit card on file", async () => {
+  await renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
 
   expect(screen.getAllByRole("checkbox")).toHaveLength(1)
   expect(screen.getAllByText("Credit card")).toHaveLength(1)
 })
 
-it("shows no option for entering payment information if the user has a credit card on file", () => {
-  renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
+it("shows no option for entering payment information if the user has a credit card on file", async () => {
+  await renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
 
   expect(screen.getAllByRole("checkbox")).toHaveLength(1)
   expect(screen.queryAllByText("Credit card")).toHaveLength(0)
@@ -108,8 +108,8 @@ describe("when the sale requires identity verification", () => {
     },
   }
 
-  it("displays information about IDV if the user is not verified", () => {
-    renderWithWrappers(
+  it("displays information about IDV if the user is not verified", async () => {
+    await renderWithWrappers(
       <Registration {...propsWithIDVSale} me={{ ...me, isIdentityVerified: false } as any} />
     )
 
@@ -118,8 +118,8 @@ describe("when the sale requires identity verification", () => {
     ).toBeOnTheScreen()
   })
 
-  it("does not display information about IDV if the user is verified", () => {
-    renderWithWrappers(
+  it("does not display information about IDV if the user is verified", async () => {
+    await renderWithWrappers(
       <Registration {...propsWithIDVSale} me={{ ...me, isIdentityVerified: true } as any} />
     )
 
@@ -133,22 +133,22 @@ describe("when the sale requires identity verification", () => {
  * Adds a credit card the same way the user would: by tapping the credit card row and
  * submitting the credit card form that gets pushed onto the navigator.
  */
-const addCreditCard = (
+const addCreditCard = async (
   token: any,
   address: Partial<Address> = billingAddress,
   navigator: { navigate: jest.Mock } = mockNavigator
 ) => {
-  fireEvent.press(screen.getByText("Credit card"))
+  await fireEvent.press(screen.getByText("Credit card"))
 
   const [, { onSubmit }] = navigator.navigate.mock.calls[navigator.navigate.mock.calls.length - 1]
 
-  act(() => {
+  await act(() => {
     onSubmit(token, address)
   })
 }
 
-const pressRegisterButton = () => {
-  fireEvent.press(screen.getByTestId("register-button"))
+const pressRegisterButton = async () => {
+  await fireEvent.press(screen.getByTestId("register-button"))
 }
 
 describe("when pressing register button", () => {
@@ -172,12 +172,12 @@ describe("when pressing register button", () => {
       }) as any
     ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
 
-    renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
+    await renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
 
-    addCreditCard(stripeToken.token)
-    fireEvent.press(screen.getByRole("checkbox"))
+    await addCreditCard(stripeToken.token)
+    await fireEvent.press(screen.getByRole("checkbox"))
 
-    pressRegisterButton()
+    await pressRegisterButton()
 
     await waitFor(() => expect(relay.commitMutation).toHaveBeenCalledTimes(3))
 
@@ -217,10 +217,10 @@ describe("when pressing register button", () => {
 
   it("when there is a credit card on file, it commits mutation", async () => {
     relay.commitMutation = jest.fn()
-    renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
+    await renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
 
-    fireEvent.press(screen.getByRole("checkbox"))
-    pressRegisterButton()
+    await fireEvent.press(screen.getByRole("checkbox"))
+    await pressRegisterButton()
 
     await waitFor(() => expect(relay.commitMutation).toHaveBeenCalled())
   })
@@ -229,22 +229,22 @@ describe("when pressing register button", () => {
     const navigator = { navigate: jest.fn() } as any
     relay.commitMutation = jest.fn()
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <Registration {...initialPropsForUserWithoutCreditCardOrPhone} navigation={navigator} />
     )
 
-    addCreditCard(stripeToken, billingAddress, navigator)
-    fireEvent.press(screen.getByRole("checkbox"))
+    await addCreditCard(stripeToken, billingAddress, navigator)
+    await fireEvent.press(screen.getByRole("checkbox"))
     navigator.navigate.mockClear()
 
-    pressRegisterButton()
+    await pressRegisterButton()
 
-    fireEvent.press(screen.getByText("Credit card"))
+    await fireEvent.press(screen.getByText("Credit card"))
 
     expect(navigator.navigate).not.toHaveBeenCalled()
     expect(mockNavigator.navigate).not.toHaveBeenCalled()
 
-    fireEvent.press(screen.getByText("General Terms and Conditions of Sale"))
+    await fireEvent.press(screen.getByText("General Terms and Conditions of Sale"))
 
     expect(navigate).not.toHaveBeenCalled()
     expect(screen.getByRole("checkbox")).toBeDisabled()
@@ -258,18 +258,18 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
+    await renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
 
-    addCreditCard(stripeToken)
-    fireEvent.press(screen.getByRole("checkbox"))
+    await addCreditCard(stripeToken)
+    await fireEvent.press(screen.getByRole("checkbox"))
 
-    pressRegisterButton()
+    await pressRegisterButton()
 
     expect(
       await screen.findByText("There was a problem processing your phone number, please try again.")
     ).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Ok"))
+    await fireEvent.press(screen.getByText("Ok"))
 
     // it dismisses the modal
     expect(
@@ -284,18 +284,18 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
+    await renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
 
-    addCreditCard(stripeToken)
-    fireEvent.press(screen.getByRole("checkbox"))
+    await addCreditCard(stripeToken)
+    await fireEvent.press(screen.getByRole("checkbox"))
 
-    pressRegisterButton()
+    await pressRegisterButton()
 
     expect(
       await screen.findByText("There was a problem processing your phone number, please try again.")
     ).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Ok"))
+    await fireEvent.press(screen.getByText("Ok"))
 
     expect(
       screen.queryByText("There was a problem processing your phone number, please try again.")
@@ -307,18 +307,18 @@ describe("when pressing register button", () => {
       .fn()
       .mockImplementationOnce((_, { onError }) => onError(new TypeError("Network request failed")))
 
-    renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
+    await renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
 
-    addCreditCard(stripeToken)
-    fireEvent.press(screen.getByRole("checkbox"))
+    await addCreditCard(stripeToken)
+    await fireEvent.press(screen.getByRole("checkbox"))
 
-    pressRegisterButton()
+    await pressRegisterButton()
 
     expect(
       await screen.findByText("There was a problem processing your phone number, please try again.")
     ).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Ok"))
+    await fireEvent.press(screen.getByText("Ok"))
 
     expect(
       screen.queryByText("There was a problem processing your phone number, please try again.")
@@ -326,7 +326,7 @@ describe("when pressing register button", () => {
   })
 
   it("displays an error message on a creditCardMutation failure", async () => {
-    renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
+    await renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
     console.error = jest.fn() // Silences component logging.
     ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()
@@ -339,24 +339,24 @@ describe("when pressing register button", () => {
         return null
       }) as any
 
-    addCreditCard(stripeToken)
+    await addCreditCard(stripeToken)
 
     // Check the checkbox and press the Register button
-    fireEvent.press(screen.getByRole("checkbox"))
-    fireEvent.press(screen.getByTestId("register-button"))
+    await fireEvent.press(screen.getByRole("checkbox"))
+    await fireEvent.press(screen.getByTestId("register-button"))
 
     // Wait for the error modal to be displayed
     await screen.findByText("Your card's security code is incorrect.")
 
     // press the dismiss modal button
-    fireEvent.press(screen.getByText("Ok"))
+    await fireEvent.press(screen.getByText("Ok"))
 
     // error modal is dismissed
     expect(screen.queryByText("Your card's security code is incorrect.")).not.toBeOnTheScreen()
   })
 
   it("displays the default error message if there are unhandled errors from the createCreditCard mutation", async () => {
-    renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
+    await renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
 
     const errors = [{ message: "malformed error" }]
 
@@ -373,11 +373,11 @@ describe("when pressing register button", () => {
         return null
       }) as any
 
-    addCreditCard(stripeToken)
+    await addCreditCard(stripeToken)
 
     // Check the checkbox and press the Register button
-    fireEvent.press(screen.getByRole("checkbox"))
-    fireEvent.press(screen.getByTestId("register-button"))
+    await fireEvent.press(screen.getByRole("checkbox"))
+    await fireEvent.press(screen.getByTestId("register-button"))
 
     // Wait for the error modal to be displayed
     await screen.findByText(
@@ -385,7 +385,7 @@ describe("when pressing register button", () => {
     )
 
     // press the dismiss modal button
-    fireEvent.press(screen.getByText("Ok"))
+    await fireEvent.press(screen.getByText("Ok"))
 
     // error modal is dismissed
     expect(
@@ -396,7 +396,7 @@ describe("when pressing register button", () => {
   })
 
   it("displays an error message on a createCreditCard mutation network failure", async () => {
-    renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
+    await renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
     console.error = jest.fn() // Silences component logging.
     ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()
@@ -409,11 +409,11 @@ describe("when pressing register button", () => {
         return null
       }) as any
 
-    addCreditCard(stripeToken)
+    await addCreditCard(stripeToken)
 
     // Check the checkbox and press the Register button
-    fireEvent.press(screen.getByRole("checkbox"))
-    fireEvent.press(screen.getByTestId("register-button"))
+    await fireEvent.press(screen.getByRole("checkbox"))
+    await fireEvent.press(screen.getByTestId("register-button"))
 
     // Wait for the error modal to be displayed
     await screen.findByText(
@@ -421,7 +421,7 @@ describe("when pressing register button", () => {
     )
 
     // press the dismiss modal button
-    fireEvent.press(screen.getByText("Ok"))
+    await fireEvent.press(screen.getByText("Ok"))
 
     // error modal is dismissed
     expect(
@@ -441,10 +441,10 @@ describe("when pressing register button", () => {
       .fn()
       .mockImplementation((_, { onCompleted }) => onCompleted({}, [error]))
 
-    renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
+    await renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
 
-    fireEvent.press(screen.getByRole("checkbox"))
-    pressRegisterButton()
+    await fireEvent.press(screen.getByRole("checkbox"))
+    await pressRegisterButton()
 
     expect(
       await screen.findByText(
@@ -452,7 +452,7 @@ describe("when pressing register button", () => {
       )
     ).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Ok"))
+    await fireEvent.press(screen.getByText("Ok"))
 
     expect(
       screen.queryByText(
@@ -467,10 +467,10 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
+    await renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
 
-    fireEvent.press(screen.getByRole("checkbox"))
-    pressRegisterButton()
+    await fireEvent.press(screen.getByRole("checkbox"))
+    await pressRegisterButton()
 
     expect(
       await screen.findByText(
@@ -478,7 +478,7 @@ describe("when pressing register button", () => {
       )
     ).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Ok"))
+    await fireEvent.press(screen.getByText("Ok"))
 
     expect(
       screen.queryByText(
@@ -493,10 +493,10 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
+    await renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
 
-    fireEvent.press(screen.getByRole("checkbox"))
-    pressRegisterButton()
+    await fireEvent.press(screen.getByRole("checkbox"))
+    await pressRegisterButton()
 
     await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
@@ -523,10 +523,10 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    renderWithWrappers(<Registration {...propsWithIDVSale} />)
+    await renderWithWrappers(<Registration {...propsWithIDVSale} />)
 
-    fireEvent.press(screen.getByRole("checkbox"))
-    pressRegisterButton()
+    await fireEvent.press(screen.getByRole("checkbox"))
+    await pressRegisterButton()
 
     await waitFor(() =>
       expect(mockNavigator.navigate).toHaveBeenCalledWith("RegistrationResult", expect.anything())
@@ -543,10 +543,10 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
+    await renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
 
-    fireEvent.press(screen.getByRole("checkbox"))
-    pressRegisterButton()
+    await fireEvent.press(screen.getByRole("checkbox"))
+    await pressRegisterButton()
 
     await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
@@ -574,10 +574,10 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    renderWithWrappers(<Registration {...propsWithIDVSale} />)
+    await renderWithWrappers(<Registration {...propsWithIDVSale} />)
 
-    fireEvent.press(screen.getByRole("checkbox"))
-    pressRegisterButton()
+    await fireEvent.press(screen.getByRole("checkbox"))
+    await pressRegisterButton()
 
     await waitFor(() =>
       expect(mockNavigator.navigate).toHaveBeenCalledWith("RegistrationResult", expect.anything())
@@ -589,8 +589,8 @@ describe("when pressing register button", () => {
   })
 })
 
-it("shows a checkbox for agreeing to the conditions of sale", () => {
-  renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
+it("shows a checkbox for agreeing to the conditions of sale", async () => {
+  await renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
 
   expect(
     screen.getByText(
@@ -599,15 +599,15 @@ it("shows a checkbox for agreeing to the conditions of sale", () => {
   ).toBeOnTheScreen()
 })
 
-it("navigates to the terms when the user taps the link", () => {
+it("navigates to the terms when the user taps the link", async () => {
   jest.mock("app/system/navigation/navigate", () => ({
     ...jest.requireActual("app/system/navigation/navigate"),
     navigate: jest.fn(),
   }))
 
-  renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
+  await renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
 
-  fireEvent.press(screen.getByText("General Terms and Conditions of Sale"))
+  await fireEvent.press(screen.getByText("General Terms and Conditions of Sale"))
 
   expect(navigate).toHaveBeenCalledWith("/terms")
 })

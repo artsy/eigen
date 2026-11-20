@@ -6,7 +6,7 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 describe("CategoryPicker", () => {
   it("displays and selects the correct category", async () => {
     const handleChangeMock = jest.fn()
-    renderWithWrappers(
+    await renderWithWrappers(
       <CategoryPicker
         handleChange={handleChangeMock}
         options={artworkMediumCategories}
@@ -17,12 +17,12 @@ describe("CategoryPicker", () => {
     expect(screen.queryByTestId("modal-CategorySelect")).not.toBeVisible()
 
     const SelectInput = screen.getByText("Painting")
-    fireEvent.press(SelectInput)
+    await fireEvent.press(SelectInput)
 
     // wait for modal to be visible
     await screen.findByTestId("modal-CategorySelect")
 
-    fireEvent.press(screen.getByText(artworkMediumCategories[2].label))
+    await fireEvent.press(screen.getByText(artworkMediumCategories[2].label))
 
     expect(handleChangeMock).toHaveBeenCalledWith("Photography", 2)
   })

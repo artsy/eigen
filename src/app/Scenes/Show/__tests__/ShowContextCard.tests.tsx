@@ -51,23 +51,23 @@ describe("ShowContextCard", () => {
     />
   )
 
-  const getWrapper = (mockResolvers = {}) => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+  const getWrapper = async (mockResolvers = {}) => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
     })
   }
 
-  it("renders without throwing an error", () => {
-    getWrapper()
+  it("renders without throwing an error", async () => {
+    await getWrapper()
     expect(screen.getByTestId("ShowContextCard")).toBeOnTheScreen()
   })
 
   describe("when the show is a fair booth", () => {
-    it("renders contextual info about the fair", () => {
-      getWrapper({
+    it("renders contextual info about the fair", async () => {
+      await getWrapper({
         Show: () => ({
           isFairBooth: true,
           fair: {
@@ -107,8 +107,8 @@ describe("ShowContextCard", () => {
       )
     })
 
-    it("navigates to the fair", () => {
-      getWrapper({
+    it("navigates to the fair", async () => {
+      await getWrapper({
         Show: () => ({
           isFairBooth: true,
           fair: {
@@ -117,12 +117,12 @@ describe("ShowContextCard", () => {
         }),
       })
 
-      fireEvent.press(screen.getByTestId("touchable-wrapper"))
+      await fireEvent.press(screen.getByTestId("touchable-wrapper"))
       expect(navigate).toHaveBeenCalledWith("fair/ifpda-2020")
     })
 
-    it("tracks taps", () => {
-      getWrapper({
+    it("tracks taps", async () => {
+      await getWrapper({
         Show: () => ({
           isFairBooth: true,
           internalID: "example-show-id",
@@ -136,7 +136,7 @@ describe("ShowContextCard", () => {
       })
 
       // the card itself (not the section title)
-      fireEvent.press(screen.getByText("Example Fair"))
+      await fireEvent.press(screen.getByText("Example Fair"))
 
       expect(mockTrackEvent).toBeCalledWith({
         action: "tappedFairCard",
@@ -153,8 +153,8 @@ describe("ShowContextCard", () => {
   })
 
   describe("when show is not a fair booth", () => {
-    it("renders contextual info about the partner", () => {
-      getWrapper({
+    it("renders contextual info about the partner", async () => {
+      await getWrapper({
         Show: () => ({
           isFairBooth: false,
           partner: {
@@ -180,8 +180,8 @@ describe("ShowContextCard", () => {
       expect(renderedImages).toContain("http://test.artsy.net/artwork-3.jpg")
     })
 
-    it("navigates to the partner profile", () => {
-      getWrapper({
+    it("navigates to the partner profile", async () => {
+      await getWrapper({
         Show: () => ({
           isFairBooth: false,
           partner: {
@@ -192,12 +192,12 @@ describe("ShowContextCard", () => {
         }),
       })
 
-      fireEvent.press(screen.getByTestId("touchable-wrapper"))
+      await fireEvent.press(screen.getByTestId("touchable-wrapper"))
       expect(navigate).toHaveBeenCalledWith("pace-prints")
     })
 
-    it("tracks taps", () => {
-      getWrapper({
+    it("tracks taps", async () => {
+      await getWrapper({
         Show: () => ({
           isFairBooth: false,
           internalID: "example-show-id",
@@ -211,7 +211,7 @@ describe("ShowContextCard", () => {
       })
 
       // the card itself (not the section title)
-      fireEvent.press(screen.getByText("Example Partner"))
+      await fireEvent.press(screen.getByText("Example Partner"))
 
       expect(mockTrackEvent).toBeCalledWith({
         action: "tappedPartnerCard",

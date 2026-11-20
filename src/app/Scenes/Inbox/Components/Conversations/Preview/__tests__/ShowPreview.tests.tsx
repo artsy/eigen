@@ -1,8 +1,8 @@
 import ShowPreview from "app/Scenes/Inbox/Components/Conversations/Preview/ShowPreview"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-it("renders without throwing an error", () => {
-  renderWithWrappers(<ShowPreview show={show as any} />)
+it("renders without throwing an error", async () => {
+  await renderWithWrappers(<ShowPreview show={show as any} />)
 })
 
 const show = {

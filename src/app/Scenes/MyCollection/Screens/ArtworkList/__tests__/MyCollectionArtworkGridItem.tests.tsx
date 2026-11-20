@@ -32,8 +32,8 @@ describe("MyCollectionArtworkGridItem", () => {
     `,
   })
 
-  it("renders correct fields", () => {
-    renderWithRelay({
+  it("renders correct fields", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         ...mockArtwork,
         artistNames: "artistNames",
@@ -48,14 +48,14 @@ describe("MyCollectionArtworkGridItem", () => {
     expect(screen.getByText("title")).toBeOnTheScreen()
   })
 
-  it("navigates to artwork detail on tap", () => {
-    renderWithRelay({
+  it("navigates to artwork detail on tap", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         ...mockArtwork,
       }),
     })
 
-    fireEvent.press(screen.getByLabelText("Go to artwork details"))
+    await fireEvent.press(screen.getByLabelText("Go to artwork details"))
 
     expect(navigate).toHaveBeenCalledWith("/my-collection/artwork/artwork-slug", {
       passProps: {
@@ -65,8 +65,8 @@ describe("MyCollectionArtworkGridItem", () => {
     })
   })
 
-  it("navigates to artwork detail on tap with correct meduim", () => {
-    renderWithRelay({
+  it("navigates to artwork detail on tap with correct meduim", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         ...mockArtwork,
         medium: "unknown medium",
@@ -76,7 +76,7 @@ describe("MyCollectionArtworkGridItem", () => {
       }),
     })
 
-    fireEvent.press(screen.getByLabelText("Go to artwork details"))
+    await fireEvent.press(screen.getByLabelText("Go to artwork details"))
 
     expect(navigate).toHaveBeenCalledWith("/my-collection/artwork/artwork-slug", {
       passProps: {
@@ -86,14 +86,14 @@ describe("MyCollectionArtworkGridItem", () => {
     })
   })
 
-  it("tracks analytics event on tap", () => {
-    renderWithRelay({
+  it("tracks analytics event on tap", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         ...mockArtwork,
       }),
     })
 
-    fireEvent.press(screen.getByLabelText("Go to artwork details"))
+    await fireEvent.press(screen.getByLabelText("Go to artwork details"))
 
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenCalledWith(
@@ -105,7 +105,7 @@ describe("MyCollectionArtworkGridItem", () => {
   })
 
   it("shows fallback if no image url available", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         images: [
           {
@@ -118,8 +118,8 @@ describe("MyCollectionArtworkGridItem", () => {
     expect(screen.getByTestId("Fallback")).toBeOnTheScreen()
   })
 
-  it("renders the high demand icon if artist is P1 and demand rank is over 9", () => {
-    renderWithRelay({
+  it("renders the high demand icon if artist is P1 and demand rank is over 9", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",
@@ -139,8 +139,8 @@ describe("MyCollectionArtworkGridItem", () => {
     expect(screen.getByTestId("test-high-demand-signal")).toBeTruthy()
   })
 
-  it("does not render the high demand icon if artist is P1 and artwork is submitted for sale", () => {
-    renderWithRelay({
+  it("does not render the high demand icon if artist is P1 and artwork is submitted for sale", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",

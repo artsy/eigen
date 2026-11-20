@@ -48,16 +48,16 @@ describe("BidResult component", () => {
   })
 
   describe("high bidder", () => {
-    it("renders a timer", () => {
-      renderWithRelay({ Sale: () => sale }, { bidderPositionResult: Statuses.winning })
+    it("renders a timer", async () => {
+      await renderWithRelay({ Sale: () => sale }, { bidderPositionResult: Statuses.winning })
 
       expect(screen.getByLabelText("Countdown")).toBeOnTheScreen()
     })
 
-    it("dismisses the controller when the continue button is pressed", () => {
-      renderWithRelay({ Sale: () => sale }, { bidderPositionResult: Statuses.winning })
+    it("dismisses the controller when the continue button is pressed", async () => {
+      await renderWithRelay({ Sale: () => sale }, { bidderPositionResult: Statuses.winning })
 
-      fireEvent.press(screen.getByText("Continue"))
+      await fireEvent.press(screen.getByText("Continue"))
 
       jest.runAllTicks()
 
@@ -67,16 +67,16 @@ describe("BidResult component", () => {
   })
 
   describe("low bidder", () => {
-    it("renders a timer", () => {
-      renderWithRelay({ Sale: () => sale }, { bidderPositionResult: Statuses.outbid })
+    it("renders a timer", async () => {
+      await renderWithRelay({ Sale: () => sale }, { bidderPositionResult: Statuses.outbid })
 
       expect(screen.getByLabelText("Countdown")).toBeOnTheScreen()
     })
 
-    it("pops to root when bid-again button is pressed", () => {
-      renderWithRelay({ Sale: () => sale }, { bidderPositionResult: Statuses.outbid })
+    it("pops to root when bid-again button is pressed", async () => {
+      await renderWithRelay({ Sale: () => sale }, { bidderPositionResult: Statuses.outbid })
 
-      fireEvent.press(screen.getByText("Bid again"))
+      await fireEvent.press(screen.getByText("Bid again"))
 
       expect(refreshBidderInfoMock).toHaveBeenCalled()
       expect(refreshSaleArtworkInfoMock).toHaveBeenCalled()
@@ -85,16 +85,22 @@ describe("BidResult component", () => {
   })
 
   describe("live bidding has started", () => {
-    it("doesn't render a timer", () => {
-      renderWithRelay({ Sale: () => sale }, { bidderPositionResult: Statuses.liveBiddingStarted })
+    it("doesn't render a timer", async () => {
+      await renderWithRelay(
+        { Sale: () => sale },
+        { bidderPositionResult: Statuses.liveBiddingStarted }
+      )
 
       expect(screen.queryByLabelText("Countdown")).not.toBeOnTheScreen()
     })
 
-    it("dismisses controller and presents live interface when continue button is pressed", () => {
-      renderWithRelay({ Sale: () => sale }, { bidderPositionResult: Statuses.liveBiddingStarted })
+    it("dismisses controller and presents live interface when continue button is pressed", async () => {
+      await renderWithRelay(
+        { Sale: () => sale },
+        { bidderPositionResult: Statuses.liveBiddingStarted }
+      )
 
-      fireEvent.press(screen.getByText("Continue"))
+      await fireEvent.press(screen.getByText("Continue"))
       jest.runAllTicks()
 
       expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/sale-id", {

@@ -77,7 +77,7 @@ describe("useCompleteProfile", () => {
     jest.clearAllMocks()
   })
 
-  it("should not navigate to next route if loading", () => {
+  it("should not navigate to next route if loading", async () => {
     jest
       .spyOn(require("app/utils/mutations/useUpdateMyProfile"), "useUpdateMyProfile")
       .mockReturnValue([jest.fn(), true])
@@ -85,29 +85,29 @@ describe("useCompleteProfile", () => {
       .spyOn(CompleteMyProfileStore, "useStoreState")
       .mockImplementation((callback) => callback({ ...state, isLoading: true } as any))
 
-    const { result } = renderHook(() => useCompleteProfile())
+    const { result } = await renderHook(() => useCompleteProfile())
 
-    act(() => {
+    await act(() => {
       result.current.goNext()
     })
 
     expect(mockNavigate).not.toHaveBeenCalled()
   })
 
-  it("should go back to the previous screen on goBack", () => {
+  it("should go back to the previous screen on goBack", async () => {
     jest
       .spyOn(CompleteMyProfileStore, "useStoreState")
       .mockImplementation((callback) => callback(state as any))
-    const { result } = renderHook(() => useCompleteProfile())
+    const { result } = await renderHook(() => useCompleteProfile())
 
-    act(() => {
+    await act(() => {
       result.current.goBack()
     })
 
     expect(mockGoBack).toHaveBeenCalled()
   })
 
-  it('should navigate back to "/my-profile" if cannot go back', () => {
+  it('should navigate back to "/my-profile" if cannot go back', async () => {
     useNavigationMock.mockReturnValue({
       navigate: mockNavigate,
       goBack: mockGoBack,
@@ -117,25 +117,25 @@ describe("useCompleteProfile", () => {
       .spyOn(CompleteMyProfileStore, "useStoreState")
       .mockImplementation((callback) => callback(state as any))
 
-    const { result } = renderHook(() => useCompleteProfile())
+    const { result } = await renderHook(() => useCompleteProfile())
 
-    act(() => {
+    await act(() => {
       result.current.goBack()
     })
 
     expect(ArtsyGoBack).toHaveBeenCalled()
   })
 
-  it("should save and exit correctly", () => {
+  it("should save and exit correctly", async () => {
     const location = { city: "TestCity", state: "TestState" }
     jest
       .spyOn(CompleteMyProfileStore, "useStoreState")
       .mockImplementation((callback) =>
         callback({ ...state, progressStateWithoutUndefined: { location } } as any)
       )
-    const { result } = renderHook(() => useCompleteProfile())
+    const { result } = await renderHook(() => useCompleteProfile())
 
-    act(() => {
+    await act(() => {
       result.current.saveAndExit()
     })
 
@@ -151,7 +151,7 @@ describe("useCompleteProfile", () => {
     )
   })
 
-  it("should save and exit when submitting all the 4 steps data", () => {
+  it("should save and exit when submitting all the 4 steps data", async () => {
     const location = { city: "TestCity", state: "TestState" }
     const progressStateWithoutUndefined = {
       location,
@@ -164,9 +164,9 @@ describe("useCompleteProfile", () => {
       .mockImplementation((callback) =>
         callback({ ...state, progressStateWithoutUndefined } as any)
       )
-    const { result } = renderHook(() => useCompleteProfile())
+    const { result } = await renderHook(() => useCompleteProfile())
 
-    act(() => {
+    await act(() => {
       result.current.saveAndExit()
     })
 
@@ -183,7 +183,7 @@ describe("useCompleteProfile", () => {
     )
   })
 
-  it("should show an error toast on updateProfile error", () => {
+  it("should show an error toast on updateProfile error", async () => {
     jest
       .spyOn(CompleteMyProfileStore, "useStoreState")
       .mockImplementation((callback) =>
@@ -197,23 +197,23 @@ describe("useCompleteProfile", () => {
       .spyOn(require("app/utils/mutations/useUpdateMyProfile"), "useUpdateMyProfile")
       .mockReturnValue([updateProfileMock, false])
 
-    const { result } = renderHook(() => useCompleteProfile())
+    const { result } = await renderHook(() => useCompleteProfile())
 
-    act(() => {
+    await act(() => {
       result.current.saveAndExit()
     })
 
     expect(mockShow).toHaveBeenCalledWith("An error occurred", "bottom")
   })
 
-  it("should calculate progress correctly", () => {
-    const { result } = renderHook(() => useCompleteProfile())
+  it("should calculate progress correctly", async () => {
+    const { result } = await renderHook(() => useCompleteProfile())
 
     expect(result.current.progress).toBe(50)
   })
 
   describe("editedUserProfile tracking event", () => {
-    it("should fire event when user saves with valid changes and mutation succeeds", () => {
+    it("should fire event when user saves with valid changes and mutation succeeds", async () => {
       const location = { city: "TestCity", state: "TestState" }
       jest
         .spyOn(CompleteMyProfileStore, "useStoreState")
@@ -228,9 +228,9 @@ describe("useCompleteProfile", () => {
         .spyOn(require("app/utils/mutations/useUpdateMyProfile"), "useUpdateMyProfile")
         .mockReturnValue([updateProfileMock, false])
 
-      const { result } = renderHook(() => useCompleteProfile())
+      const { result } = await renderHook(() => useCompleteProfile())
 
-      act(() => {
+      await act(() => {
         result.current.saveAndExit()
       })
 
@@ -242,23 +242,23 @@ describe("useCompleteProfile", () => {
       })
     })
 
-    it("should NOT fire event when user has no changes to save", () => {
+    it("should NOT fire event when user has no changes to save", async () => {
       jest
         .spyOn(CompleteMyProfileStore, "useStoreState")
         .mockImplementation((callback) =>
           callback({ ...state, progressStateWithoutUndefined: {} } as any)
         )
 
-      const { result } = renderHook(() => useCompleteProfile())
+      const { result } = await renderHook(() => useCompleteProfile())
 
-      act(() => {
+      await act(() => {
         result.current.saveAndExit()
       })
 
       expect(mockTrackEvent).not.toHaveBeenCalled()
     })
 
-    it("should NOT fire event when mutation completes with errors", () => {
+    it("should NOT fire event when mutation completes with errors", async () => {
       const location = { city: "TestCity", state: "TestState" }
       jest
         .spyOn(CompleteMyProfileStore, "useStoreState")
@@ -273,9 +273,9 @@ describe("useCompleteProfile", () => {
         .spyOn(require("app/utils/mutations/useUpdateMyProfile"), "useUpdateMyProfile")
         .mockReturnValue([updateProfileMock, false])
 
-      const { result } = renderHook(() => useCompleteProfile())
+      const { result } = await renderHook(() => useCompleteProfile())
 
-      act(() => {
+      await act(() => {
         result.current.saveAndExit()
       })
 
@@ -283,7 +283,7 @@ describe("useCompleteProfile", () => {
       expect(mockShow).toHaveBeenCalledWith("An error occurred", "bottom")
     })
 
-    it("should NOT fire event when mutation throws an error", () => {
+    it("should NOT fire event when mutation throws an error", async () => {
       const location = { city: "TestCity", state: "TestState" }
       jest
         .spyOn(CompleteMyProfileStore, "useStoreState")
@@ -298,9 +298,9 @@ describe("useCompleteProfile", () => {
         .spyOn(require("app/utils/mutations/useUpdateMyProfile"), "useUpdateMyProfile")
         .mockReturnValue([updateProfileMock, false])
 
-      const { result } = renderHook(() => useCompleteProfile())
+      const { result } = await renderHook(() => useCompleteProfile())
 
-      act(() => {
+      await act(() => {
         result.current.saveAndExit()
       })
 

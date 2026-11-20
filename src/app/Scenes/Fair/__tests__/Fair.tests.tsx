@@ -46,7 +46,7 @@ describe("Fair", () => {
     jest.clearAllMocks()
   })
 
-  it("renders without throwing an error", () => {
+  it("renders without throwing an error", async () => {
     TabsWithHeader.mockImplementation((props) => {
       return (
         <>
@@ -56,23 +56,23 @@ describe("Fair", () => {
         </>
       )
     })
-    renderWithRelay()
+    await renderWithRelay()
 
     expect(screen.getByText("Overview")).toBeOnTheScreen()
     expect(screen.getByText("Exhibitors")).toBeOnTheScreen()
     expect(screen.getByText("Artworks")).toBeOnTheScreen()
   })
 
-  it("defaults to the Overview tab", () => {
+  it("defaults to the Overview tab", async () => {
     TabsWithHeader.mockImplementation((props) => {
       return <Text>{props.initialTabName}</Text>
     })
-    renderWithRelay()
+    await renderWithRelay()
 
     expect(screen.getByText("Overview")).toBeOnTheScreen()
   })
 
-  it("opens the tab specified by initialTab", () => {
+  it("opens the tab specified by initialTab", async () => {
     TabsWithHeader.mockImplementation((props) => {
       return <Text>{props.initialTabName}</Text>
     })
@@ -88,12 +88,12 @@ describe("Fair", () => {
       `,
     })
 
-    renderWithInitialTab()
+    await renderWithInitialTab()
 
     expect(screen.getByText("Artworks")).toBeOnTheScreen()
   })
 
-  it("falls back to Overview when Exhibitors is requested but the fair has none", () => {
+  it("falls back to Overview when Exhibitors is requested but the fair has none", async () => {
     TabsWithHeader.mockImplementation((props) => {
       return <Text>{props.initialTabName}</Text>
     })
@@ -109,7 +109,7 @@ describe("Fair", () => {
       `,
     })
 
-    renderWithInitialTab({
+    await renderWithInitialTab({
       Fair: () => ({
         _exhibitors: { totalCount: 0 },
       }),
@@ -118,7 +118,7 @@ describe("Fair", () => {
     expect(screen.getByText("Overview")).toBeOnTheScreen()
   })
 
-  it("tracks tap navigating to the exhibitors tab", () => {
+  it("tracks tap navigating to the exhibitors tab", async () => {
     TabsWithHeader.mockImplementation((props) => {
       props.onTabChange?.({ tabName: "Exhibitors" })
 
@@ -130,9 +130,9 @@ describe("Fair", () => {
         </>
       )
     })
-    renderWithRelay()
+    await renderWithRelay()
 
-    renderWithRelay({
+    await renderWithRelay({
       Fair: () => ({
         isActive: true,
         slug: "art-basel-hong-kong-2020",
@@ -154,7 +154,7 @@ describe("Fair", () => {
     })
   })
 
-  it("tracks tap navigating to the artworks tab", () => {
+  it("tracks tap navigating to the artworks tab", async () => {
     TabsWithHeader.mockImplementation((props) => {
       props.onTabChange?.({ tabName: "Artworks" })
 
@@ -167,7 +167,7 @@ describe("Fair", () => {
       )
     })
 
-    renderWithRelay({
+    await renderWithRelay({
       Fair: () => ({
         isActive: true,
         slug: "art-basel-hong-kong-2020",

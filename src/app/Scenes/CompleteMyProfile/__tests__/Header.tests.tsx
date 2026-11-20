@@ -34,17 +34,17 @@ describe("Header", () => {
     jest.clearAllMocks()
   })
 
-  it("renders correctly", () => {
-    renderWithWrappers(<Header />)
+  it("renders correctly", async () => {
+    await renderWithWrappers(<Header />)
 
     expect(screen.getByText("1 of 3")).toBeOnTheScreen()
     expect(screen.getByText("Save & Exit")).toBeOnTheScreen()
   })
 
-  it("calls saveAndExit", () => {
-    renderWithWrappers(<Header />)
+  it("calls saveAndExit", async () => {
+    await renderWithWrappers(<Header />)
 
-    fireEvent.press(screen.getByText("Save & Exit"))
+    await fireEvent.press(screen.getByText("Save & Exit"))
 
     expect(mockSaveAndExit).toHaveBeenCalledTimes(1)
   })

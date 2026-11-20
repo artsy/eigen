@@ -48,7 +48,7 @@ describe("usePopoverCoordinator", () => {
   })
 
   it("shows and takes the lock when displayable", async () => {
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () => usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable: true }),
       { wrapper }
     )
@@ -58,13 +58,13 @@ describe("usePopoverCoordinator", () => {
   })
 
   it("refuses the lock to a second popover while one holds it", async () => {
-    const { result: holder } = renderHook(
+    const { result: holder } = await renderHook(
       () => usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable: true }),
       { wrapper }
     )
     await waitFor(() => expect(holder.current.isVisible).toBe(true))
 
-    const { result: challenger } = renderHook(
+    const { result: challenger } = await renderHook(
       () =>
         usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_OFFER_SETTINGS, isDisplayable: true }),
       { wrapper }
@@ -75,7 +75,7 @@ describe("usePopoverCoordinator", () => {
   })
 
   it("hands the lock to a waiting popover once the holder finishes closing", async () => {
-    const { result: holder, rerender: rerenderHolder } = renderHook<
+    const { result: holder, rerender: rerenderHolder } = await renderHook<
       ReturnType<typeof usePopoverCoordinator>,
       { isDisplayable: boolean }
     >(
@@ -87,8 +87,8 @@ describe("usePopoverCoordinator", () => {
 
     // The next step of a chain: it becomes displayable in the same commit the holder is
     // dismissed, while the holder still owns the lock and is animating out.
-    rerenderHolder({ isDisplayable: false })
-    const { result: next } = renderHook(
+    await rerenderHolder({ isDisplayable: false })
+    const { result: next } = await renderHook(
       () =>
         usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_OFFER_SETTINGS, isDisplayable: true }),
       { wrapper }
@@ -102,11 +102,11 @@ describe("usePopoverCoordinator", () => {
     expect(lock()).toBe(PROGRESSIVE_ONBOARDING_OFFER_SETTINGS)
   })
 
-  it("keeps the lock with the instance on top when a covered one with the same key releases", () => {
+  it("keeps the lock with the instance on top when a covered one with the same key releases", async () => {
     jest.useFakeTimers()
 
     // Artist screen A: displayable, holds the lock.
-    const { rerender: rerenderCovered } = renderHook<
+    const { rerender: rerenderCovered } = await renderHook<
       ReturnType<typeof usePopoverCoordinator>,
       { isDisplayable: boolean }
     >(
@@ -117,8 +117,8 @@ describe("usePopoverCoordinator", () => {
     const coveredOwner = owner()
 
     // Artist screen B is pushed on top: A loses focus, B mounts with the same key.
-    rerenderCovered({ isDisplayable: false })
-    const { result: onTop } = renderHook(
+    await rerenderCovered({ isDisplayable: false })
+    const { result: onTop } = await renderHook(
       () => usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable: true }),
       { wrapper }
     )
@@ -140,8 +140,8 @@ describe("usePopoverCoordinator", () => {
   })
 
   describe("when the id changes while holding the lock", () => {
-    const renderWithId = () =>
-      renderHook<
+    const renderWithId = async () =>
+      await renderHook<
         ReturnType<typeof usePopoverCoordinator>,
         { id: ProgressiveOnboardingKey; isDisplayable: boolean }
       >(({ id, isDisplayable }) => usePopoverCoordinator({ id, isDisplayable }), {
@@ -149,12 +149,12 @@ describe("usePopoverCoordinator", () => {
         initialProps: { id: PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1, isDisplayable: true },
       })
 
-    it("releases the id it acquired once it finishes closing", () => {
-      const { result, rerender } = renderWithId()
+    it("releases the id it acquired once it finishes closing", async () => {
+      const { result, rerender } = await renderWithId()
       expect(result.current.isVisible).toBe(true)
 
       // The alert reminder: dismissing reminder 1 switches the key to reminder 2.
-      rerender({ id: PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2, isDisplayable: false })
+      await rerender({ id: PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2, isDisplayable: false })
       expect(result.current.isVisible).toBe(false)
       expect(lock()).toBe(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1)
 
@@ -163,13 +163,13 @@ describe("usePopoverCoordinator", () => {
       expect(lock()).toBeUndefined()
     })
 
-    it("releases the id it acquired after the grace period", () => {
+    it("releases the id it acquired after the grace period", async () => {
       jest.useFakeTimers()
 
-      const { result, rerender } = renderWithId()
+      const { result, rerender } = await renderWithId()
       // Opened, so no open is pending and the grace period is what releases.
       act(() => result.current.onOpenComplete())
-      rerender({ id: PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2, isDisplayable: false })
+      await rerender({ id: PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2, isDisplayable: false })
 
       act(() => {
         jest.advanceTimersByTime(POPOVER_RELEASE_GRACE_MS)
@@ -180,24 +180,24 @@ describe("usePopoverCoordinator", () => {
       jest.useRealTimers()
     })
 
-    it("releases the id it acquired on unmount", () => {
-      const { rerender, unmount } = renderWithId()
-      rerender({ id: PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2, isDisplayable: false })
+    it("releases the id it acquired on unmount", async () => {
+      const { rerender, unmount } = await renderWithId()
+      await rerender({ id: PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2, isDisplayable: false })
 
-      unmount()
+      await unmount()
 
       expect(lock()).toBeUndefined()
     })
   })
 
   it("releases the lock when the holder unmounts", async () => {
-    const { result, unmount } = renderHook(
+    const { result, unmount } = await renderHook(
       () => usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable: true }),
       { wrapper }
     )
     await waitFor(() => expect(result.current.isVisible).toBe(true))
 
-    unmount()
+    await unmount()
 
     await waitFor(() => expect(lock()).toBeUndefined())
   })
@@ -205,7 +205,7 @@ describe("usePopoverCoordinator", () => {
   it("does not show while an overlay is presented above it", async () => {
     registerPresentedOverlay("some-bottom-sheet")
 
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () => usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable: true }),
       { wrapper }
     )
@@ -219,7 +219,7 @@ describe("usePopoverCoordinator", () => {
   })
 
   it("closes when an overlay is presented above it once open, and returns after", async () => {
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () => usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable: true }),
       { wrapper }
     )
@@ -240,10 +240,10 @@ describe("usePopoverCoordinator", () => {
     expect(lock()).toBe(PROGRESSIVE_ONBOARDING_SAVE_ARTWORK)
   })
 
-  it("force-releases and remounts a popover that never finishes opening", () => {
+  it("force-releases and remounts a popover that never finishes opening", async () => {
     jest.useFakeTimers()
 
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () => usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable: true }),
       { wrapper }
     )
@@ -264,10 +264,10 @@ describe("usePopoverCoordinator", () => {
     jest.useRealTimers()
   })
 
-  it("still recovers a popover hidden before it finished opening", () => {
+  it("still recovers a popover hidden before it finished opening", async () => {
     jest.useFakeTimers()
 
-    const { result, rerender } = renderHook<
+    const { result, rerender } = await renderHook<
       ReturnType<typeof usePopoverCoordinator>,
       { isDisplayable: boolean }
     >(
@@ -280,7 +280,7 @@ describe("usePopoverCoordinator", () => {
 
     // City Guide fast-scroll: the anchor leaves the view mid-open. The bubble never
     // measures, so neither `onOpenComplete` nor `onCloseComplete` ever fires.
-    rerender({ isDisplayable: false })
+    await rerender({ isDisplayable: false })
     expect(result.current.isVisible).toBe(false)
 
     // The grace period must not hand the lock on while that Modal may still be up.
@@ -299,10 +299,10 @@ describe("usePopoverCoordinator", () => {
     jest.useRealTimers()
   })
 
-  it("leaves a popover alone once it reports that it opened", () => {
+  it("leaves a popover alone once it reports that it opened", async () => {
     jest.useFakeTimers()
 
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () => usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable: true }),
       { wrapper }
     )
@@ -321,10 +321,10 @@ describe("usePopoverCoordinator", () => {
     jest.useRealTimers()
   })
 
-  it("does not loop when a popover keeps failing to open", () => {
+  it("does not loop when a popover keeps failing to open", async () => {
     jest.useFakeTimers()
 
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () => usePopoverCoordinator({ id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK, isDisplayable: true }),
       { wrapper }
     )
@@ -343,8 +343,8 @@ describe("usePopoverCoordinator", () => {
 
     jest.useRealTimers()
   })
-  it("does not show after navigating to another instance of the same route", () => {
-    const { result, rerender } = renderHook<
+  it("does not show after navigating to another instance of the same route", async () => {
+    const { result, rerender } = await renderHook<
       ReturnType<typeof usePopoverCoordinator>,
       { isDisplayable: boolean }
     >(
@@ -353,19 +353,19 @@ describe("usePopoverCoordinator", () => {
       { wrapper, initialProps: { isDisplayable: false } }
     )
 
-    rerender({ isDisplayable: true })
+    await rerender({ isDisplayable: true })
     expect(result.current.isVisible).toBe(true)
 
     // Same route name, different instance — pushing an artist screen over an artist
     // screen. A name comparison would see no change here.
     mockCurrentRoute = { name: "Home", key: "Home-2" }
-    rerender({ isDisplayable: true })
+    await rerender({ isDisplayable: true })
 
     expect(result.current.isVisible).toBe(false)
   })
 
-  it("does not revive the request when navigating back to the anchor route", () => {
-    const { result, rerender } = renderHook<
+  it("does not revive the request when navigating back to the anchor route", async () => {
+    const { result, rerender } = await renderHook<
       ReturnType<typeof usePopoverCoordinator>,
       { isDisplayable: boolean }
     >(
@@ -374,23 +374,23 @@ describe("usePopoverCoordinator", () => {
       { wrapper, initialProps: { isDisplayable: false } }
     )
 
-    rerender({ isDisplayable: true })
+    await rerender({ isDisplayable: true })
     expect(result.current.isVisible).toBe(true)
 
     mockCurrentRoute = { name: "Artwork", key: "Artwork-1" }
-    rerender({ isDisplayable: true })
+    await rerender({ isDisplayable: true })
     expect(result.current.isVisible).toBe(false)
 
     mockCurrentRoute = { name: "Home", key: "Home-1" }
-    rerender({ isDisplayable: true })
+    await rerender({ isDisplayable: true })
 
     // The moment has passed: the user is minutes and several screens past the thing
     // that made this displayable.
     expect(result.current.isVisible).toBe(false)
   })
 
-  it("re-arms on a fresh visit once it stops being displayable", () => {
-    const { result, rerender } = renderHook<
+  it("re-arms on a fresh visit once it stops being displayable", async () => {
+    const { result, rerender } = await renderHook<
       ReturnType<typeof usePopoverCoordinator>,
       { isDisplayable: boolean }
     >(
@@ -399,22 +399,22 @@ describe("usePopoverCoordinator", () => {
       { wrapper, initialProps: { isDisplayable: false } }
     )
 
-    rerender({ isDisplayable: true })
+    await rerender({ isDisplayable: true })
     mockCurrentRoute = { name: "Artwork", key: "Artwork-1" }
-    rerender({ isDisplayable: true })
+    await rerender({ isDisplayable: true })
     expect(result.current.isVisible).toBe(false)
 
     // A fresh visit to the screen: the anchor is re-captured while we are standing on
     // it, which is why the reset has to happen on the new route rather than the old one.
     mockCurrentRoute = { name: "Home", key: "Home-2" }
-    rerender({ isDisplayable: false })
-    rerender({ isDisplayable: true })
+    await rerender({ isDisplayable: false })
+    await rerender({ isDisplayable: true })
 
     expect(result.current.isVisible).toBe(true)
   })
 
-  it("shows on returning to a screen when the route and isDisplayable change together", () => {
-    const { result, rerender } = renderHook<
+  it("shows on returning to a screen when the route and isDisplayable change together", async () => {
+    const { result, rerender } = await renderHook<
       ReturnType<typeof usePopoverCoordinator>,
       { isDisplayable: boolean }
     >(
@@ -424,18 +424,18 @@ describe("usePopoverCoordinator", () => {
     )
 
     mockCurrentRoute = { name: "Search", key: "Search-1" }
-    rerender({ isDisplayable: false })
+    await rerender({ isDisplayable: false })
 
     // Route gated callers (`currentRoute === "Home"`) read the same route update we do,
     // so both arrive in one render.
     mockCurrentRoute = { name: "Home", key: "Home-1" }
-    rerender({ isDisplayable: true })
+    await rerender({ isDisplayable: true })
 
     expect(result.current.isVisible).toBe(true)
   })
 
-  it("shows on returning to a screen when focus arrives before the route hook catches up", () => {
-    const { result, rerender } = renderHook<
+  it("shows on returning to a screen when focus arrives before the route hook catches up", async () => {
+    const { result, rerender } = await renderHook<
       ReturnType<typeof usePopoverCoordinator>,
       { isDisplayable: boolean }
     >(
@@ -445,25 +445,25 @@ describe("usePopoverCoordinator", () => {
     )
 
     mockCurrentRoute = { name: "Artwork", key: "Artwork-1" }
-    rerender({ isDisplayable: false })
+    await rerender({ isDisplayable: false })
 
     // `useIsFocused` re-renders synchronously, ahead of the batched route listener.
     mockCurrentRoute = { name: "Home", key: "Home-1" }
     mockHookRoute = { name: "Artwork", key: "Artwork-1" }
-    rerender({ isDisplayable: true })
+    await rerender({ isDisplayable: true })
 
     mockHookRoute = undefined
-    rerender({ isDisplayable: true })
+    await rerender({ isDisplayable: true })
 
     expect(result.current.isVisible).toBe(true)
   })
 
-  it("still shows when the navigator resolves the route after the first render", () => {
+  it("still shows when the navigator resolves the route after the first render", async () => {
     // The ref can be empty on our first render; the real hook fills it in from a mount
     // effect. Treating that as a navigation would sink any popover displayable at launch.
     mockCurrentRoute = { name: undefined, key: undefined }
 
-    const { result, rerender } = renderHook<
+    const { result, rerender } = await renderHook<
       ReturnType<typeof usePopoverCoordinator>,
       { isDisplayable: boolean }
     >(
@@ -476,7 +476,7 @@ describe("usePopoverCoordinator", () => {
     )
 
     mockCurrentRoute = { name: "Home", key: "Home-1" }
-    rerender({ isDisplayable: true })
+    await rerender({ isDisplayable: true })
 
     expect(result.current.isVisible).toBe(true)
   })

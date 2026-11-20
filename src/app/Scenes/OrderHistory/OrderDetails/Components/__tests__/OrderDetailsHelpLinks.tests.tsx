@@ -21,14 +21,14 @@ describe("OrderDetailsHelpLinks", () => {
     `,
   })
 
-  it("navigates to the help link", () => {
-    renderWithRelay({
+  it("navigates to the help link", async () => {
+    await renderWithRelay({
       Order: () => ({ mode: "BUY", source: "PARTNER_OFFER", internalID: "order-id" }),
     })
 
     expect(screen.getByText("Visit our help center")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Visit our help center"))
+    await fireEvent.press(screen.getByText("Visit our help center"))
 
     expect(navigate).toBeCalledWith("https://support.artsy.net/s/topic/0TO3b000000UessGAC/buy")
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
@@ -47,11 +47,11 @@ describe("OrderDetailsHelpLinks", () => {
   `)
   })
 
-  it("opens ask specialist modal", () => {
-    renderWithRelay({ Order: () => ({ mode: "OFFER", internalID: "order-id" }) })
+  it("opens ask specialist modal", async () => {
+    await renderWithRelay({ Order: () => ({ mode: "OFFER", internalID: "order-id" }) })
 
     expect(screen.getByText("ask a question")).toBeOnTheScreen()
-    fireEvent.press(screen.getByText("ask a question"))
+    await fireEvent.press(screen.getByText("ask a question"))
 
     expect(
       screen.getByText(

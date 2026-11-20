@@ -23,8 +23,8 @@ const EXAMPLE_FILTER_OPTIONS: FilterData[] = [
 ]
 
 describe("MultiSelectOption", () => {
-  it("renders the options", () => {
-    renderWithWrappers(
+  it("renders the options", async () => {
+    await renderWithWrappers(
       <MultiSelectOptionScreen
         filterOptions={EXAMPLE_FILTER_OPTIONS}
         searchable
@@ -35,9 +35,9 @@ describe("MultiSelectOption", () => {
     expectOptions(["First Example", "Another One", "The Third"])
   })
 
-  it("a disabled option cannot be clicked", () => {
+  it("a disabled option cannot be clicked", async () => {
     const onSelectMock = jest.fn()
-    renderWithWrappers(
+    await renderWithWrappers(
       <MultiSelectOptionScreen
         filterOptions={EXAMPLE_FILTER_OPTIONS}
         onSelect={onSelectMock}
@@ -46,14 +46,14 @@ describe("MultiSelectOption", () => {
       />
     )
 
-    fireEvent.press(screen.getAllByTestId("multi-select-option-button")[0])
+    await fireEvent.press(screen.getAllByTestId("multi-select-option-button")[0])
 
     expect(onSelectMock).not.toBeCalled()
   })
 
   describe("searchable", () => {
-    it("filters the options with searchable", () => {
-      renderWithWrappers(
+    it("filters the options with searchable", async () => {
+      await renderWithWrappers(
         <MultiSelectOptionScreen
           filterOptions={EXAMPLE_FILTER_OPTIONS}
           searchable
@@ -63,13 +63,13 @@ describe("MultiSelectOption", () => {
 
       expectOptions(["First Example", "Another One", "The Third"])
 
-      fireEvent.changeText(screen.getByTestId("multi-select-search-input"), "another")
+      await fireEvent.changeText(screen.getByTestId("multi-select-search-input"), "another")
 
       expectOptions(["Another One"])
     })
 
-    it("displays a message indicating no results when nothing matches the search input", () => {
-      renderWithWrappers(
+    it("displays a message indicating no results when nothing matches the search input", async () => {
+      await renderWithWrappers(
         <MultiSelectOptionScreen
           filterOptions={EXAMPLE_FILTER_OPTIONS}
           searchable
@@ -79,7 +79,7 @@ describe("MultiSelectOption", () => {
 
       expectOptions(["First Example", "Another One", "The Third"])
 
-      fireEvent.changeText(screen.getByTestId("multi-select-search-input"), "garbage")
+      await fireEvent.changeText(screen.getByTestId("multi-select-search-input"), "garbage")
 
       expect(screen.getByText("No results")).toBeTruthy()
     })

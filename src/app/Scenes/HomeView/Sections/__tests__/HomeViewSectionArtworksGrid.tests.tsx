@@ -74,8 +74,8 @@ describe("HomeViewSectionArtworksGrid", () => {
     ;(useFeatureFlag as jest.Mock).mockReturnValue(true)
   })
 
-  it("tracks item_viewed only once per artwork id", () => {
-    renderComponent()
+  it("tracks item_viewed only once per artwork id", async () => {
+    await renderComponent()
 
     const onItemVisibilityChange = getVisibilityCallback()
 
@@ -105,8 +105,8 @@ describe("HomeViewSectionArtworksGrid", () => {
     )
   })
 
-  it("passes home analytics context to every artwork", () => {
-    renderComponent()
+  it("passes home analytics context to every artwork", async () => {
+    await renderComponent()
 
     expect(mockGridItem).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -116,8 +116,8 @@ describe("HomeViewSectionArtworksGrid", () => {
     )
   })
 
-  it("renders every artwork it is given, so impressions can be tracked for each", () => {
-    renderComponent(undefined, {
+  it("renders every artwork it is given, so impressions can be tracked for each", async () => {
+    await renderComponent(undefined, {
       FilterArtworksConnection: () => ({
         edges: [
           { node: { id: "artwork-1" } },
@@ -133,8 +133,8 @@ describe("HomeViewSectionArtworksGrid", () => {
     expect(mockGridItem.mock.calls.map(([props]) => props.index).sort()).toEqual([0, 1, 2, 3])
   })
 
-  it("does not track when impression tracking is disabled", () => {
-    renderComponent({ trackItemImpressions: false })
+  it("does not track when impression tracking is disabled", async () => {
+    await renderComponent({ trackItemImpressions: false })
 
     const onItemVisibilityChange = getVisibilityCallback()
     onItemVisibilityChange("artwork-1", 0, true)

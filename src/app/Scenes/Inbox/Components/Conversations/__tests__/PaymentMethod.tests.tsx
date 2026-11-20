@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { PaymentMethod_Test_Query } from "__generated__/PaymentMethod_Test_Query.graphql"
 import { PaymentMethodFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/PaymentMethod"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -29,8 +30,8 @@ describe("PaymentMethodFragmentContainer", () => {
     `,
   })
 
-  it("render", () => {
-    const { getByText } = renderWithRelay({
+  it("render", async () => {
+    await renderWithRelay({
       CommerceOrderConnectionWithTotalCount: () => ({
         edges: [
           {
@@ -46,7 +47,7 @@ describe("PaymentMethodFragmentContainer", () => {
       }),
     })
 
-    expect(getByText("Payment Method")).toBeDefined()
-    expect(getByText("•••• 1234 Exp 02/22")).toBeDefined()
+    expect(screen.getByText("Payment Method")).toBeDefined()
+    expect(screen.getByText("•••• 1234 Exp 02/22")).toBeDefined()
   })
 })

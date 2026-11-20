@@ -6,15 +6,15 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 describe("FancySwiper", () => {
   it("allows the user to swipe left", async () => {
     const mockOnSwipeLeft = jest.fn()
-    renderWithWrappers(<FancySwiper cards={cards} onSwipeLeft={mockOnSwipeLeft} />)
-    swipeLeft()
+    await renderWithWrappers(<FancySwiper cards={cards} onSwipeLeft={mockOnSwipeLeft} />)
+    await swipeLeft()
     await waitFor(() => expect(mockOnSwipeLeft).toHaveBeenCalledOnce())
   })
 
   it("allows the user to swipe right", async () => {
     const mockOnSwipeRight = jest.fn()
-    renderWithWrappers(<FancySwiper cards={cards} onSwipeRight={mockOnSwipeRight} />)
-    swipeRight()
+    await renderWithWrappers(<FancySwiper cards={cards} onSwipeRight={mockOnSwipeRight} />)
+    await swipeRight()
     await waitFor(() => expect(mockOnSwipeRight).toHaveBeenCalledOnce())
   })
 })

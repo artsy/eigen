@@ -34,29 +34,29 @@ describe("Task Component", () => {
     `,
   })
 
-  it("should render without crashing", () => {
-    renderWithRelay({ Task: () => mockTask })
+  it("should render without crashing", async () => {
+    await renderWithRelay({ Task: () => mockTask })
 
     expect(screen.getByText("Test Task")).toBeOnTheScreen()
     expect(screen.getByText("Test Message")).toBeOnTheScreen()
   })
 
   it("should call the onOpenTask function when swiped", async () => {
-    renderWithRelay({ Task: () => mockTask })
+    await renderWithRelay({ Task: () => mockTask })
 
     const taskElement = screen.getByText("Test Task") // Assuming the text is inside a parent node that handles the swipe
 
-    fireEvent(taskElement, "onSwipeableWillOpen", { direction: "right" })
+    await fireEvent(taskElement, "onSwipeableWillOpen", { direction: "right" })
 
     await waitFor(() => expect(mockOnOpenTask).toHaveBeenCalled())
   })
 
   it("should dismiss when the task is cleared", async () => {
-    renderWithRelay({ Task: () => mockTask })
+    await renderWithRelay({ Task: () => mockTask })
 
     const clearButton = screen.getByText("Clear")
 
-    fireEvent.press(clearButton)
+    await fireEvent.press(clearButton)
 
     expect(mockDismissTask).toHaveBeenCalled()
     expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -70,9 +70,9 @@ describe("Task Component", () => {
   })
 
   it("should acknowledge the task when pressed", async () => {
-    renderWithRelay({ Task: () => mockTask })
+    await renderWithRelay({ Task: () => mockTask })
 
-    fireEvent.press(screen.getByText("Test Task"))
+    await fireEvent.press(screen.getByText("Test Task"))
 
     await waitFor(() => expect(mockAcknowledgeTask).toHaveBeenCalled())
     expect(mockTrackEvent).toHaveBeenCalledWith({

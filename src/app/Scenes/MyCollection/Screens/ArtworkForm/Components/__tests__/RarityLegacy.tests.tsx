@@ -20,21 +20,21 @@ describe("Rarity", () => {
   })
 
   it("displays the correct rarity", async () => {
-    renderWithWrappers(<Rarity />)
+    await renderWithWrappers(<Rarity />)
 
-    fireEvent.press(screen.getByTestId("rarity-select"))
+    await fireEvent.press(screen.getByTestId("rarity-select"))
 
     screen.getByText("Limited Edition")
 
-    fireEvent.press(screen.getByText("Limited Edition"))
+    await fireEvent.press(screen.getByText("Limited Edition"))
 
     screen.getByLabelText("Edition number input")
   })
 
   it("displays the modal with all classification types", async () => {
-    renderWithWrappers(<Rarity />)
+    await renderWithWrappers(<Rarity />)
 
-    fireEvent.press(screen.getByText("What's this?"))
+    await fireEvent.press(screen.getByText("What's this?"))
     screen.getByText("Classifications")
 
     expect(screen.getByText("Unique")).toBeTruthy()

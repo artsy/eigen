@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { FollowArtistsOrderedSetScreen } from "app/Scenes/Onboarding/Screens/Onboarding/Components/FollowArtistsOrderedSet"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -18,7 +18,7 @@ describe("FollowArtistsOrderedSet", () => {
   })
 
   it("tracks the artist's slug when followed", async () => {
-    const { mockResolveLastOperation } = renderWithRelay(
+    const { mockResolveLastOperation } = await renderWithRelay(
       {
         Artist: () => ({
           internalID: "artist-internal-id",
@@ -29,13 +29,11 @@ describe("FollowArtistsOrderedSet", () => {
       { id: "onboarding:suggested-artists" }
     )
 
-    await waitForElementToBeRemoved(() =>
-      screen.queryByTestId("FollowArtistsOrderedSetPlaceholder")
-    )
+    expect(screen.queryByTestId("FollowArtistsOrderedSetPlaceholder")).not.toBeOnTheScreen()
 
-    fireEvent.press(screen.getAllByText("Follow")[0])
+    await fireEvent.press(screen.getAllByText("Follow")[0])
 
-    mockResolveLastOperation({})
+    await mockResolveLastOperation({})
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: ActionType.followedArtist,
@@ -49,7 +47,7 @@ describe("FollowArtistsOrderedSet", () => {
 
   describe("the 'Popular on Artsy' section", () => {
     it("shows the heading and separator when there are followed artists and artists left to follow", async () => {
-      renderWithRelay(
+      await renderWithRelay(
         {
           Artist: () => ({
             internalID: "artist-internal-id",
@@ -60,16 +58,14 @@ describe("FollowArtistsOrderedSet", () => {
         { id: "onboarding:suggested-artists", hasFollowedArtists: true, hideFollowedArtists: true }
       )
 
-      await waitForElementToBeRemoved(() =>
-        screen.queryByTestId("FollowArtistsOrderedSetPlaceholder")
-      )
+      expect(screen.queryByTestId("FollowArtistsOrderedSetPlaceholder")).not.toBeOnTheScreen()
 
       expect(screen.getByText("Popular on Artsy")).toBeOnTheScreen()
       expect(screen.getAllByTestId("separator")).toHaveLength(1)
     })
 
     it("shows the heading but not the separator when there are no followed artists yet", async () => {
-      renderWithRelay(
+      await renderWithRelay(
         {
           Artist: () => ({
             internalID: "artist-internal-id",
@@ -80,16 +76,14 @@ describe("FollowArtistsOrderedSet", () => {
         { id: "onboarding:suggested-artists", hideFollowedArtists: true }
       )
 
-      await waitForElementToBeRemoved(() =>
-        screen.queryByTestId("FollowArtistsOrderedSetPlaceholder")
-      )
+      expect(screen.queryByTestId("FollowArtistsOrderedSetPlaceholder")).not.toBeOnTheScreen()
 
       expect(screen.getByText("Popular on Artsy")).toBeOnTheScreen()
       expect(screen.queryAllByTestId("separator")).toHaveLength(0)
     })
 
     it("hides the heading and separator when every artist in the set has already been followed", async () => {
-      renderWithRelay(
+      await renderWithRelay(
         {
           Artist: () => ({
             internalID: "artist-internal-id",
@@ -100,9 +94,7 @@ describe("FollowArtistsOrderedSet", () => {
         { id: "onboarding:suggested-artists", hasFollowedArtists: true, hideFollowedArtists: true }
       )
 
-      await waitForElementToBeRemoved(() =>
-        screen.queryByTestId("FollowArtistsOrderedSetPlaceholder")
-      )
+      expect(screen.queryByTestId("FollowArtistsOrderedSetPlaceholder")).not.toBeOnTheScreen()
 
       expect(screen.queryByText("Popular on Artsy")).not.toBeOnTheScreen()
       expect(screen.queryAllByTestId("separator")).toHaveLength(0)

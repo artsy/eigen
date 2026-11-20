@@ -19,14 +19,14 @@ const TestRenderer: React.FC<{ options: PopoverMessageItem }> = (props) => {
 const POPOVER_TEST_ID = "popover-message"
 
 const pressShowButton = async () => {
-  fireEvent.press(screen.getByText("Some button text"))
+  await fireEvent.press(screen.getByText("Some button text"))
   // let the popover's async show logic settle
   await act(async () => undefined)
 }
 
 describe("PopoverMessage", () => {
   it("renders when `show` is called", async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestRenderer
         options={{
           title: "Some title",
@@ -43,7 +43,7 @@ describe("PopoverMessage", () => {
   })
 
   it("renders 1 popover message when `show` is called twice", async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestRenderer
         options={{
           title: "Some title",
@@ -61,7 +61,7 @@ describe("PopoverMessage", () => {
   })
 
   it("renders with title and message", async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestRenderer
         options={{
           title: "Some title",
@@ -79,7 +79,7 @@ describe("PopoverMessage", () => {
   })
 
   it("renders at the top", async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestRenderer
         options={{
           title: "Some title",
@@ -97,7 +97,7 @@ describe("PopoverMessage", () => {
   })
 
   it("renders at the bottom", async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestRenderer
         options={{
           title: "Some title",
@@ -119,7 +119,7 @@ describe("PopoverMessage", () => {
     jest.useFakeTimers({
       legacyFakeTimers: true,
     })
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestRenderer
         options={{
           title: "Some title",
@@ -142,7 +142,7 @@ describe("PopoverMessage", () => {
     jest.useFakeTimers({
       legacyFakeTimers: true,
     })
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestRenderer
         options={{
           title: "Some title",
@@ -166,7 +166,7 @@ describe("PopoverMessage", () => {
   })
 
   it("hides when `undo` button is pressed", async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestRenderer
         options={{
           title: "Some title",
@@ -177,7 +177,7 @@ describe("PopoverMessage", () => {
     )
 
     await pressShowButton()
-    fireEvent.press(within(screen.getByTestId(POPOVER_TEST_ID)).getByRole("button"))
+    await fireEvent.press(within(screen.getByTestId(POPOVER_TEST_ID)).getByRole("button"))
     await act(async () => undefined)
 
     jest.useRealTimers()
@@ -188,7 +188,7 @@ describe("PopoverMessage", () => {
 
   it("should call `onUndoPress` handler when `close` button is pressed", async () => {
     const onUndoMock = jest.fn()
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestRenderer
         options={{
           title: "Some title",
@@ -199,14 +199,14 @@ describe("PopoverMessage", () => {
     )
 
     await pressShowButton()
-    fireEvent.press(within(screen.getByTestId(POPOVER_TEST_ID)).getByRole("button"))
+    await fireEvent.press(within(screen.getByTestId(POPOVER_TEST_ID)).getByRole("button"))
     await act(async () => undefined)
 
     expect(onUndoMock).toBeCalled()
   })
 
   it("should hide `undo` button when `onUndoPress` is not passed", async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestRenderer
         options={{
           title: "Some title",
@@ -222,7 +222,7 @@ describe("PopoverMessage", () => {
 
   it("should call `onPress` handler when popover message is pressed", async () => {
     const onPress = jest.fn()
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestRenderer
         options={{
           title: "Some title",
@@ -233,7 +233,7 @@ describe("PopoverMessage", () => {
     )
 
     await pressShowButton()
-    fireEvent.press(within(screen.getByTestId(POPOVER_TEST_ID)).getByRole("button"))
+    await fireEvent.press(within(screen.getByTestId(POPOVER_TEST_ID)).getByRole("button"))
     await act(async () => undefined)
 
     expect(onPress).toHaveBeenCalled()

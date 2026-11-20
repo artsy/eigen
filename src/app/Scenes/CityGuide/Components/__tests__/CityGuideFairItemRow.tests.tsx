@@ -22,8 +22,8 @@ const fairData = {
 } as any as Fair
 
 describe("CityGuideFairItemRow", () => {
-  it("renders Fair properly", () => {
-    renderWithWrappers(<CityGuideFairItemRow item={fairData} />)
+  it("renders Fair properly", async () => {
+    await renderWithWrappers(<CityGuideFairItemRow item={fairData} />)
 
     expect(screen.getByText("TEFAF New York Spring 2019")).toBeTruthy()
   })

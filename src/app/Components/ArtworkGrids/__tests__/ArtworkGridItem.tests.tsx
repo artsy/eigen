@@ -28,15 +28,15 @@ describe("ArtworkGridItem", () => {
   })
 
   describe("navigation", () => {
-    it("navigates to the Artwork screen", () => {
-      renderWithRelay({
+    it("navigates to the Artwork screen", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           title: "Some Kind of Dinosaur",
           slug: "cool-artwork",
         }),
       })
 
-      fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
+      await fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
 
       expect(navigate).toHaveBeenCalledExactlyOnceWith('<mock-value-for-field-"href">')
     })
@@ -47,14 +47,17 @@ describe("ArtworkGridItem", () => {
       jest.clearAllMocks()
     })
 
-    it("shows the artwork as a checked checkbox when isSelected is true", () => {
-      renderWithRelay({ Artwork: () => ({ title: "Some Kind of Dinosaur" }) }, { isSelected: true })
+    it("shows the artwork as a checked checkbox when isSelected is true", async () => {
+      await renderWithRelay(
+        { Artwork: () => ({ title: "Some Kind of Dinosaur" }) },
+        { isSelected: true }
+      )
 
       expect(screen.getByRole("checkbox")).toBeChecked()
     })
 
-    it("shows the artwork as an unchecked checkbox when isSelected is false", () => {
-      renderWithRelay(
+    it("shows the artwork as an unchecked checkbox when isSelected is false", async () => {
+      await renderWithRelay(
         { Artwork: () => ({ title: "Some Kind of Dinosaur" }) },
         { isSelected: false }
       )
@@ -62,37 +65,37 @@ describe("ArtworkGridItem", () => {
       expect(screen.getByRole("checkbox")).not.toBeChecked()
     })
 
-    it("calls onPress without navigating when the grid selects artworks", () => {
+    it("calls onPress without navigating when the grid selects artworks", async () => {
       const onPress = jest.fn()
-      renderWithRelay(
+      await renderWithRelay(
         { Artwork: () => ({ title: "Some Kind of Dinosaur", slug: "cool-artwork" }) },
         { isSelected: false, onPress }
       )
 
-      fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
+      await fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
 
       expect(onPress).toHaveBeenCalledWith("cool-artwork", expect.anything(), undefined)
       expect(navigate).not.toHaveBeenCalled()
     })
 
-    it("turns off the long-press menu when the grid selects artworks", () => {
+    it("turns off the long-press menu when the grid selects artworks", async () => {
       const originalOS = Platform.OS
       Platform.OS = "android"
 
-      renderWithRelay(
+      await renderWithRelay(
         { Artwork: () => ({ title: "Some Kind of Dinosaur" }) },
         { isSelected: false }
       )
       expect(screen.queryByTestId("android-context-menu-trigger")).not.toBeOnTheScreen()
 
-      renderWithRelay({ Artwork: () => ({ title: "Some Kind of Dinosaur" }) })
+      await renderWithRelay({ Artwork: () => ({ title: "Some Kind of Dinosaur" }) })
       expect(screen.getByTestId("android-context-menu-trigger")).toBeOnTheScreen()
 
       Platform.OS = originalOS
     })
 
-    it("does not show the artwork as a checkbox by default", () => {
-      renderWithRelay({ Artwork: () => ({ title: "Some Kind of Dinosaur" }) })
+    it("does not show the artwork as a checkbox by default", async () => {
+      await renderWithRelay({ Artwork: () => ({ title: "Some Kind of Dinosaur" }) })
 
       expect(screen.queryByRole("checkbox")).not.toBeOnTheScreen()
     })
@@ -106,8 +109,8 @@ describe("ArtworkGridItem", () => {
       __globalStoreTestUtils__?.reset()
     })
 
-    it("sends an event when trackTap is passed", () => {
-      renderWithRelay(
+    it("sends an event when trackTap is passed", async () => {
+      await renderWithRelay(
         {
           Artwork: () => ({
             title: "Some Kind of Dinosaur",
@@ -118,13 +121,13 @@ describe("ArtworkGridItem", () => {
       )
 
       const touchableArtwork = screen.getByTestId("artworkGridItem-Some Kind of Dinosaur")
-      fireEvent.press(touchableArtwork)
+      await fireEvent.press(touchableArtwork)
 
       expect(trackTap).toBeCalledWith("cool-artwork", 1)
     })
 
-    it("sends a tracking event when contextScreenOwnerType is included", () => {
-      renderWithRelay(
+    it("sends a tracking event when contextScreenOwnerType is included", async () => {
+      await renderWithRelay(
         {
           Artwork: () => ({
             title: "Some Kind of Dinosaur",
@@ -142,7 +145,7 @@ describe("ArtworkGridItem", () => {
       )
 
       const touchableArtwork = screen.getByTestId("artworkGridItem-Some Kind of Dinosaur")
-      fireEvent.press(touchableArtwork)
+      await fireEvent.press(touchableArtwork)
 
       expect(mockTrackEvent).toBeCalledWith({
         action: "tappedMainArtworkGrid",
@@ -159,8 +162,8 @@ describe("ArtworkGridItem", () => {
       })
     })
 
-    it("sends a tracking event when partner offer is available", () => {
-      renderWithRelay(
+    it("sends a tracking event when partner offer is available", async () => {
+      await renderWithRelay(
         {
           Artwork: () => ({
             title: "Some Kind of Dinosaur",
@@ -187,7 +190,7 @@ describe("ArtworkGridItem", () => {
       )
 
       const touchableArtwork = screen.getByTestId("artworkGridItem-Some Kind of Dinosaur")
-      fireEvent.press(touchableArtwork)
+      await fireEvent.press(touchableArtwork)
 
       expect(mockTrackEvent).toBeCalledWith({
         action: "tappedMainArtworkGrid",
@@ -206,8 +209,8 @@ describe("ArtworkGridItem", () => {
     })
 
     describe("with auction signals", () => {
-      it("sends a tracking event when with time left to bid label", () => {
-        renderWithRelay(
+      it("sends a tracking event when with time left to bid label", async () => {
+        await renderWithRelay(
           {
             Artwork: () => ({
               title: "Some Kind of Dinosaur",
@@ -233,7 +236,7 @@ describe("ArtworkGridItem", () => {
         )
 
         const touchableArtwork = screen.getByTestId("artworkGridItem-Some Kind of Dinosaur")
-        fireEvent.press(touchableArtwork)
+        await fireEvent.press(touchableArtwork)
 
         expect(mockTrackEvent).toBeCalledWith({
           action: "tappedMainArtworkGrid",
@@ -253,8 +256,8 @@ describe("ArtworkGridItem", () => {
         })
       })
 
-      it("sends a tracking event when with live bidding signal", () => {
-        renderWithRelay(
+      it("sends a tracking event when with live bidding signal", async () => {
+        await renderWithRelay(
           {
             Artwork: () => ({
               title: "Some Kind of Dinosaur",
@@ -277,7 +280,7 @@ describe("ArtworkGridItem", () => {
         )
 
         const touchableArtwork = screen.getByTestId("artworkGridItem-Some Kind of Dinosaur")
-        fireEvent.press(touchableArtwork)
+        await fireEvent.press(touchableArtwork)
 
         expect(mockTrackEvent).toBeCalledWith({
           action: "tappedMainArtworkGrid",
@@ -307,8 +310,8 @@ describe("ArtworkGridItem", () => {
       __globalStoreTestUtils__?.reset()
     })
 
-    it("is updated when an artwork clicked and updateRecentSearchesOnTap is true", () => {
-      renderWithRelay(
+    it("is updated when an artwork clicked and updateRecentSearchesOnTap is true", async () => {
+      await renderWithRelay(
         {
           Artwork: () => ({
             title: "Some Kind of Dinosaur",
@@ -331,7 +334,7 @@ describe("ArtworkGridItem", () => {
         }
       )
 
-      fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
+      await fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
 
       expect(getRecentSearches()).toEqual([
         {
@@ -348,8 +351,8 @@ describe("ArtworkGridItem", () => {
       ])
     })
 
-    it("not updated when updateRecentSearchesOnTap is not passed, falling to false by default", () => {
-      renderWithRelay(
+    it("not updated when updateRecentSearchesOnTap is not passed, falling to false by default", async () => {
+      await renderWithRelay(
         {
           Artwork: () => ({ title: "Some Kind of Dinosaur" }),
         },
@@ -361,15 +364,15 @@ describe("ArtworkGridItem", () => {
         }
       )
 
-      fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
+      await fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
 
       expect(getRecentSearches()).toEqual([])
     })
   })
 
   describe("in an open sale", () => {
-    it("safely handles a missing sale_artwork", () => {
-      renderWithRelay({
+    it("safely handles a missing sale_artwork", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           saleArtwork: null,
           title: "Some Kind of Dinosaur",
@@ -381,8 +384,8 @@ describe("ArtworkGridItem", () => {
   })
 
   describe("in a closed sale", () => {
-    it("renders without throwing an error without any price information", () => {
-      renderWithRelay({
+    it("renders without throwing an error without any price information", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           sale: {
             isClosed: true,
@@ -394,8 +397,8 @@ describe("ArtworkGridItem", () => {
       expect(screen.getByText("Some Kind of Dinosaur")).toBeOnTheScreen()
     })
 
-    it("renders without throwing an error when an auction is about to open, but not closed or finished", () => {
-      renderWithRelay({
+    it("renders without throwing an error when an auction is about to open, but not closed or finished", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           title: "Some Kind of Dinosaur",
           sale: {
@@ -419,8 +422,8 @@ describe("ArtworkGridItem", () => {
       expect(screen.getByText("$200 (1 bid)")).toBeOnTheScreen()
     })
 
-    it("does not show the partner name if hidePartner is set to true", () => {
-      renderWithRelay(
+    it("does not show the partner name if hidePartner is set to true", async () => {
+      await renderWithRelay(
         {
           Artwork: () => ({
             saleArtwork: {
@@ -443,8 +446,8 @@ describe("ArtworkGridItem", () => {
       expect(() => screen.getByText("partner")).toThrow()
     })
 
-    it("shows the partner name if hidePartner is set to false", () => {
-      renderWithRelay(
+    it("shows the partner name if hidePartner is set to false", async () => {
+      await renderWithRelay(
         {
           Artwork: () => ({
             partner: {
@@ -460,8 +463,8 @@ describe("ArtworkGridItem", () => {
   })
 
   describe("cascading end times", () => {
-    it("shows the LotCloseInfo component when the sale has cascading end times", () => {
-      renderWithRelay(
+    it("shows the LotCloseInfo component when the sale has cascading end times", async () => {
+      await renderWithRelay(
         {
           Artwork: () => ({
             sale: {
@@ -484,8 +487,8 @@ describe("ArtworkGridItem", () => {
       expect(screen.getByText("Lot 1")).toBeOnTheScreen()
     })
 
-    it("does not show the LotCloseInfo component when the sale does not have cascading end times", () => {
-      renderWithRelay(
+    it("does not show the LotCloseInfo component when the sale does not have cascading end times", async () => {
+      await renderWithRelay(
         {
           Artwork: () => ({
             sale: {
@@ -507,22 +510,22 @@ describe("ArtworkGridItem", () => {
 
   describe("Save and Follow CTAs", () => {
     describe("Save CTA when ff and experiment are disabled", () => {
-      it("renders Save old CTA", () => {
-        renderWithRelay({
+      it("renders Save old CTA", async () => {
+        await renderWithRelay({
           Artwork: () => artwork,
         })
 
         expect(screen.getByTestId("empty-heart-icon")).toBeOnTheScreen()
         expect(screen.queryByTestId("filled-heart-icon")).not.toBeOnTheScreen()
 
-        fireEvent.press(screen.getByTestId("save-artwork-icon"))
+        await fireEvent.press(screen.getByTestId("save-artwork-icon"))
 
         expect(screen.getByTestId("filled-heart-icon")).toBeOnTheScreen()
         expect(screen.queryByTestId("empty-heart-icon")).not.toBeOnTheScreen()
       })
 
-      it("tracks save with artwork entity id, slug, and context", () => {
-        const { mockResolveLastOperation } = renderWithRelay(
+      it("tracks save with artwork entity id, slug, and context", async () => {
+        const { mockResolveLastOperation } = await renderWithRelay(
           {
             Artwork: () => ({
               ...artwork,
@@ -539,9 +542,9 @@ describe("ArtworkGridItem", () => {
           }
         )
 
-        fireEvent.press(screen.getByTestId("save-artwork-icon"))
+        await fireEvent.press(screen.getByTestId("save-artwork-icon"))
 
-        mockResolveLastOperation({
+        await mockResolveLastOperation({
           SaveArtworkPayload: () => ({
             artwork: {
               id: artwork.id,
@@ -572,15 +575,15 @@ describe("ArtworkGridItem", () => {
         `)
       })
 
-      it("does not render Save CTA if hideSaveIcon is true", () => {
-        renderWithRelay({}, { hideSaveIcon: true })
+      it("does not render Save CTA if hideSaveIcon is true", async () => {
+        await renderWithRelay({}, { hideSaveIcon: true })
 
         expect(screen.queryByTestId("empty-heart-icon")).not.toBeOnTheScreen()
         expect(screen.queryByTestId("filled-heart-icon")).not.toBeOnTheScreen()
       })
 
-      it("does not render new Save and Follow CTAs", () => {
-        renderWithRelay({}, { hideSaveIcon: false })
+      it("does not render new Save and Follow CTAs", async () => {
+        await renderWithRelay({}, { hideSaveIcon: false })
 
         expect(screen.queryByTestId("heart-icon-empty")).not.toBeOnTheScreen()
         expect(screen.queryByTestId("heart-icon-filled")).not.toBeOnTheScreen()
@@ -596,16 +599,16 @@ describe("ArtworkGridItem", () => {
           __globalStoreTestUtils__?.injectFeatureFlags({ ARDefaultToLastSavedList: true })
         })
 
-        it("saves to the last-used list instead of the default collection", () => {
+        it("saves to the last-used list instead of the default collection", async () => {
           __globalStoreTestUtils__?.injectState({
             lastSavedList: {
               lastSavedList: { internalID: "list-123", name: "My List", default: false },
             },
           })
 
-          const { env } = renderWithRelay({ Artwork: () => artwork })
+          const { env } = await renderWithRelay({ Artwork: () => artwork })
 
-          fireEvent.press(screen.getByTestId("save-artwork-icon"))
+          await fireEvent.press(screen.getByTestId("save-artwork-icon"))
 
           const operation = env.mock.getMostRecentOperation()
           expect(operation.request.node.operation.name).toBe(
@@ -617,18 +620,18 @@ describe("ArtworkGridItem", () => {
           expect(screen.getByTestId("filled-heart-icon")).toBeOnTheScreen()
         })
 
-        it("forgets the remembered list when the server rejects the save", () => {
+        it("forgets the remembered list when the server rejects the save", async () => {
           __globalStoreTestUtils__?.injectState({
             lastSavedList: {
               lastSavedList: { internalID: "list-123", name: "My List", default: false },
             },
           })
 
-          const { mockResolveLastOperation } = renderWithRelay({ Artwork: () => artwork })
+          const { mockResolveLastOperation } = await renderWithRelay({ Artwork: () => artwork })
 
-          fireEvent.press(screen.getByTestId("save-artwork-icon"))
+          await fireEvent.press(screen.getByTestId("save-artwork-icon"))
 
-          mockResolveLastOperation({
+          await mockResolveLastOperation({
             Mutation: () => ({
               artworksCollectionsBatchUpdate: {
                 responseOrError: {
@@ -642,36 +645,36 @@ describe("ArtworkGridItem", () => {
           expect(__globalStoreTestUtils__?.getCurrentState().lastSavedList.lastSavedList).toBeNull()
         })
 
-        it("falls back to the default collection when the last-used list is the default", () => {
+        it("falls back to the default collection when the last-used list is the default", async () => {
           __globalStoreTestUtils__?.injectState({
             lastSavedList: {
               lastSavedList: { internalID: "some-id", name: "Saved Artworks", default: true },
             },
           })
 
-          const { env } = renderWithRelay({ Artwork: () => artwork })
+          const { env } = await renderWithRelay({ Artwork: () => artwork })
 
-          fireEvent.press(screen.getByTestId("save-artwork-icon"))
+          await fireEvent.press(screen.getByTestId("save-artwork-icon"))
 
           const operation = env.mock.getMostRecentOperation()
           expect(operation.request.node.operation.name).toBe("useSaveArtworkMutation")
         })
 
-        it("saves to the default collection when there is no last-used list", () => {
+        it("saves to the default collection when there is no last-used list", async () => {
           __globalStoreTestUtils__?.injectState({
             lastSavedList: { lastSavedList: null },
           })
 
-          const { env } = renderWithRelay({ Artwork: () => artwork })
+          const { env } = await renderWithRelay({ Artwork: () => artwork })
 
-          fireEvent.press(screen.getByTestId("save-artwork-icon"))
+          await fireEvent.press(screen.getByTestId("save-artwork-icon"))
 
           const operation = env.mock.getMostRecentOperation()
           expect(operation.request.node.operation.name).toBe("useSaveArtworkMutation")
         })
       })
 
-      it("uses the default collection when the flag is off, even with a last-used list", () => {
+      it("uses the default collection when the flag is off, even with a last-used list", async () => {
         __globalStoreTestUtils__?.injectFeatureFlags({ ARDefaultToLastSavedList: false })
         __globalStoreTestUtils__?.injectState({
           lastSavedList: {
@@ -679,9 +682,9 @@ describe("ArtworkGridItem", () => {
           },
         })
 
-        const { env } = renderWithRelay({ Artwork: () => artwork })
+        const { env } = await renderWithRelay({ Artwork: () => artwork })
 
-        fireEvent.press(screen.getByTestId("save-artwork-icon"))
+        await fireEvent.press(screen.getByTestId("save-artwork-icon"))
 
         const operation = env.mock.getMostRecentOperation()
         expect(operation.request.node.operation.name).toBe("useSaveArtworkMutation")
@@ -690,8 +693,8 @@ describe("ArtworkGridItem", () => {
   })
 
   describe("unlisted artworks", () => {
-    it("shows exclusive access", () => {
-      renderWithRelay({
+    it("shows exclusive access", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           isUnlisted: true,
         }),
@@ -715,8 +718,8 @@ describe("ArtworkGridItem", () => {
         },
       }
 
-      it("shows the limited-time offer signal for non-auction artworks", () => {
-        renderWithRelay({
+      it("shows the limited-time offer signal for non-auction artworks", async () => {
+        await renderWithRelay({
           Artwork: () => ({
             ...artwork,
             saleMessage: "$120,500",
@@ -729,8 +732,8 @@ describe("ArtworkGridItem", () => {
         expect(screen.getByText("Offer Expires 1d 12h")).toBeOnTheScreen()
       })
 
-      it("doesn't show the limited-time offer signal for auction artworks", () => {
-        renderWithRelay({
+      it("doesn't show the limited-time offer signal for auction artworks", async () => {
+        await renderWithRelay({
           // artwork is by default an auction
           Artwork: () => ({ ...artwork, collectorSignals }),
         })
@@ -739,8 +742,8 @@ describe("ArtworkGridItem", () => {
         expect(screen.queryByText("Exp. 1d 12h")).not.toBeOnTheScreen()
       })
 
-      it("doesn't show the limited-time offer signal if priceOfferMessage is present", () => {
-        renderWithRelay(
+      it("doesn't show the limited-time offer signal if priceOfferMessage is present", async () => {
+        await renderWithRelay(
           {
             Artwork: () => ({
               ...artwork,
@@ -763,8 +766,8 @@ describe("ArtworkGridItem", () => {
 
     describe("auction signals", () => {
       describe("live auction", () => {
-        it("shows the bidding live now signal", () => {
-          renderWithRelay({
+        it("shows the bidding live now signal", async () => {
+          await renderWithRelay({
             Artwork: () => ({
               ...artwork,
               sale: { ...artwork.sale, isClosed: false },
@@ -775,8 +778,8 @@ describe("ArtworkGridItem", () => {
           expect(screen.getByText("Bidding live now")).toBeOnTheScreen()
         })
 
-        it("shows the bidding closed signal", () => {
-          renderWithRelay({
+        it("shows the bidding closed signal", async () => {
+          await renderWithRelay({
             Artwork: () => ({
               ...artwork,
               sale: { ...artwork.sale, isClosed: false },
@@ -793,10 +796,10 @@ describe("ArtworkGridItem", () => {
       })
 
       describe("bidding timers", () => {
-        it("shows the Register by date", () => {
+        it("shows the Register by date", async () => {
           const registerDate = DateTime.fromMillis(Date.now()).plus({ days: 1 })
 
-          renderWithRelay({
+          await renderWithRelay({
             Artwork: () => ({
               ...artwork,
               sale: { ...artwork.sale, isClosed: false },
@@ -810,8 +813,8 @@ describe("ArtworkGridItem", () => {
           ).toBeOnTheScreen()
         })
 
-        it("shows the time left to bid", () => {
-          renderWithRelay({
+        it("shows the time left to bid", async () => {
+          await renderWithRelay({
             Artwork: () => ({
               ...artwork,
               sale: { ...artwork.sale, isClosed: false },
@@ -826,8 +829,8 @@ describe("ArtworkGridItem", () => {
           expect(screen.getByText("23h 59m left to bid")).toBeOnTheScreen()
         })
 
-        it("shows the extended left to bid in minutes", () => {
-          renderWithRelay({
+        it("shows the extended left to bid in minutes", async () => {
+          await renderWithRelay({
             Artwork: () => ({
               ...artwork,
               sale: { ...artwork.sale, isClosed: false },
@@ -844,8 +847,8 @@ describe("ArtworkGridItem", () => {
         })
       })
 
-      it("shows number of bids", () => {
-        renderWithRelay({
+      it("shows number of bids", async () => {
+        await renderWithRelay({
           Artwork: () => ({
             ...artwork,
             sale: { ...artwork.sale, isClosed: false },
@@ -859,8 +862,8 @@ describe("ArtworkGridItem", () => {
     })
 
     describe("social signal", () => {
-      it("renders the increased interest signal", () => {
-        renderWithRelay({
+      it("renders the increased interest signal", async () => {
+        await renderWithRelay({
           Artwork: () => ({
             collectorSignals: {
               increasedInterest: true,
@@ -872,8 +875,8 @@ describe("ArtworkGridItem", () => {
         expect(screen.getByText("Increased Interest")).toBeOnTheScreen()
       })
 
-      it("renders the curators' pick signal even when there's a increased interest signal", () => {
-        renderWithRelay({
+      it("renders the curators' pick signal even when there's a increased interest signal", async () => {
+        await renderWithRelay({
           Artwork: () => ({
             collectorSignals: {
               increasedInterest: true,
@@ -886,8 +889,8 @@ describe("ArtworkGridItem", () => {
         expect(screen.queryByText("Increased Interest")).not.toBeOnTheScreen()
       })
 
-      it("renders the curators pick signal", () => {
-        renderWithRelay({
+      it("renders the curators pick signal", async () => {
+        await renderWithRelay({
           Artwork: () => ({
             collectorSignals: {
               increasedInterest: false,

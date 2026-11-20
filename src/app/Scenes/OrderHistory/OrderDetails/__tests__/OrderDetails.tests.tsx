@@ -20,8 +20,8 @@ describe("OrderDetail", () => {
     `,
   })
 
-  it("renders order details screen", () => {
-    renderWithRelay({
+  it("renders order details screen", async () => {
+    await renderWithRelay({
       Order: () => ({
         internalID: "order-id",
         code: "1231231234",
@@ -34,8 +34,8 @@ describe("OrderDetail", () => {
   })
 
   describe("tracking", () => {
-    it("tracks orderDetailsViewed event", () => {
-      renderWithRelay({
+    it("tracks orderDetailsViewed event", async () => {
+      await renderWithRelay({
         Order: () => ({
           internalID: "order-id",
           code: "1231231234",
@@ -59,15 +59,15 @@ describe("OrderDetail", () => {
     `)
     })
 
-    it("does not call tracking when order data is not available", () => {
-      renderWithRelay({ Me: () => ({ order: null }) })
+    it("does not call tracking when order data is not available", async () => {
+      await renderWithRelay({ Me: () => ({ order: null }) })
 
       expect(screen.queryByText(/Order #/)).not.toBeOnTheScreen()
       expect(mockTrackEvent).not.toHaveBeenCalled()
     })
 
-    it("calls tracking with correct parameters for different message types", () => {
-      renderWithRelay({
+    it("calls tracking with correct parameters for different message types", async () => {
+      await renderWithRelay({
         Order: () => ({
           internalID: "order-id",
           code: "45645645678",

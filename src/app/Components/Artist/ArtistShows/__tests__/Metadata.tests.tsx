@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react-native"
 import Metadata from "app/Components/Artist/ArtistShows/Metadata"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-it("renders properly", () => {
+it("renders properly", async () => {
   const show = {
     kind: "solo",
     name: "Expansive Exhibition",
@@ -16,7 +16,7 @@ it("renders properly", () => {
       city: "Berlin",
     },
   }
-  renderWithWrappers(<Metadata show={show as any} />)
+  await renderWithWrappers(<Metadata show={show as any} />)
 
   expect(screen.getByText("Gallery")).toBeOnTheScreen()
   expect(screen.getByText("Expansive Exhibition")).toBeOnTheScreen()

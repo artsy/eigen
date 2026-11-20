@@ -54,14 +54,14 @@ describe("CityGuideEventArticles", () => {
   })
 
   it("renders an unpressable section title when there are 4 or fewer articles", async () => {
-    renderWithRelay(cityArticles([article("An Art Lover's Guide to London")]))
+    await renderWithRelay(cityArticles([article("An Art Lover's Guide to London")]))
 
     expect(await screen.findByText("Artsy Editorial")).toBeOnTheScreen()
     expect(screen.queryByTestId("touchable-wrapper")).not.toBeOnTheScreen()
   })
 
   it("caps the section at 4 articles", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       cityArticles([0, 1, 2, 3, 4].map((position) => article(`Article ${position}`, position)))
     )
 
@@ -69,7 +69,7 @@ describe("CityGuideEventArticles", () => {
   })
 
   it("gives the section title a chevron only when there are more than 4 articles", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       cityArticles([0, 1, 2, 3, 4].map((position) => article(`Article ${position}`, position)))
     )
 
@@ -77,21 +77,21 @@ describe("CityGuideEventArticles", () => {
   })
 
   it("navigates to the full article list when the chevron is tapped", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       cityArticles([0, 1, 2, 3, 4].map((position) => article(`Article ${position}`, position)))
     )
 
-    fireEvent.press(await screen.findByTestId("touchable-wrapper"))
+    await fireEvent.press(await screen.findByTestId("touchable-wrapper"))
 
     expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/articles")
   })
 
   it("tracks the chevron tap", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       cityArticles([0, 1, 2, 3, 4].map((position) => article(`Article ${position}`, position)))
     )
 
-    fireEvent.press(await screen.findByTestId("touchable-wrapper"))
+    await fireEvent.press(await screen.findByTestId("touchable-wrapper"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -114,7 +114,7 @@ describe("CityGuideEventArticles", () => {
   })
 
   it("renders each article's thumbnail, title, byline and date", async () => {
-    renderWithRelay(cityArticles([article("An Art Lover's Guide to London")]))
+    await renderWithRelay(cityArticles([article("An Art Lover's Guide to London")]))
 
     expect(await screen.findByTestId("event-article-image")).toHaveProp(
       "src",
@@ -128,7 +128,7 @@ describe("CityGuideEventArticles", () => {
   })
 
   it("orders rows by the attachment's position, not the order the field returned", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       cityArticles([
         article("10 Exhibitions to see in London this summer", 1),
         article("An Art Lover's Guide to London", 0),
@@ -142,17 +142,17 @@ describe("CityGuideEventArticles", () => {
   })
 
   it("navigates to the article when a row is tapped", async () => {
-    renderWithRelay(cityArticles([article("An Art Lover's Guide to London")]))
+    await renderWithRelay(cityArticles([article("An Art Lover's Guide to London")]))
 
-    fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
+    await fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
 
     expect(navigate).toHaveBeenCalledWith("/article/An Art Lover's Guide to London")
   })
 
   it("tracks the tap on an article row", async () => {
-    renderWithRelay(cityArticles([article("An Art Lover's Guide to London")]))
+    await renderWithRelay(cityArticles([article("An Art Lover's Guide to London")]))
 
-    fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
+    await fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -168,7 +168,7 @@ describe("CityGuideEventArticles", () => {
   })
 
   it("falls back to a placeholder for an article with no thumbnail", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       cityArticles([article("An Art Lover's Guide to London", 0, { thumbnailImage: null })])
     )
 
@@ -177,22 +177,22 @@ describe("CityGuideEventArticles", () => {
   })
 
   it("renders a row per article attached to the city", async () => {
-    renderWithRelay(cityArticles([article("First"), article("Second", 1)]))
+    await renderWithRelay(cityArticles([article("First"), article("Second", 1)]))
 
     expect(await screen.findAllByTestId("event-article-row")).toHaveLength(2)
   })
 
   // Metaphysics drops attachments whose article is unpublished or deleted, so this arrives as
   // an empty list rather than as no field at all.
-  it("renders nothing, heading included, when no article resolved", () => {
-    renderWithRelay(cityArticles([]))
+  it("renders nothing, heading included, when no article resolved", async () => {
+    await renderWithRelay(cityArticles([]))
 
     expect(screen.queryByTestId("city-guide-event-articles")).not.toBeOnTheScreen()
     expect(screen.queryByText("Artsy Editorial")).not.toBeOnTheScreen()
   })
 
-  it("does not render recommended articles when the flag is off, even if the server returns them", () => {
-    renderWithRelay({
+  it("does not render recommended articles when the flag is off, even if the server returns them", async () => {
+    await renderWithRelay({
       City: () => ({
         cityArticles: [article("An Art Lover's Guide to London")],
         recommendedArticlesConnection: {
@@ -265,7 +265,7 @@ describe("CityGuideEventArticles, recommended for you", () => {
   })
 
   it("renders the connection's rows, in the order Metaphysics returns them", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       cityData(["Curated 1", "Curated 2"], ["Curated 1", "Curated 2", "Recommended 1"])
     )
 
@@ -276,7 +276,7 @@ describe("CityGuideEventArticles, recommended for you", () => {
   })
 
   it("gives the section title a chevron when totalCount exceeds 4", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       cityData(["Curated 1"], ["Curated 1", "Rec 1", "Rec 2", "Rec 3"], { totalCount: 5 })
     )
 
@@ -285,35 +285,35 @@ describe("CityGuideEventArticles, recommended for you", () => {
   })
 
   it("gives the section title a chevron when the connection has a next page", async () => {
-    renderWithRelay(cityData(["Curated 1"], ["Curated 1"], { hasNextPage: true }))
+    await renderWithRelay(cityData(["Curated 1"], ["Curated 1"], { hasNextPage: true }))
 
     expect(await screen.findByTestId("touchable-wrapper")).toBeOnTheScreen()
   })
 
   it("gives no chevron when totalCount is 4 or fewer and there's no next page", async () => {
-    renderWithRelay(cityData(["Curated 1"], ["Curated 1", "Rec 1"]))
+    await renderWithRelay(cityData(["Curated 1"], ["Curated 1", "Rec 1"]))
 
     expect(await screen.findAllByTestId("event-article-row")).toHaveLength(2)
     expect(screen.queryByTestId("touchable-wrapper")).not.toBeOnTheScreen()
   })
 
   it("shows the section with only recommendations when there are no curated articles", async () => {
-    renderWithRelay(cityData([], ["A recommended read"]))
+    await renderWithRelay(cityData([], ["A recommended read"]))
 
     expect(await screen.findByText("Artsy Editorial")).toBeOnTheScreen()
     expect(screen.getByText("A recommended read")).toBeOnTheScreen()
   })
 
-  it("renders nothing when the connection is empty", () => {
-    renderWithRelay(cityData([], []))
+  it("renders nothing when the connection is empty", async () => {
+    await renderWithRelay(cityData([], []))
 
     expect(screen.queryByTestId("city-guide-event-articles")).not.toBeOnTheScreen()
   })
 
   it("tracks a tap on a curated row with the curated context_module", async () => {
-    renderWithRelay(cityData(["Curated read"], ["Curated read"]))
+    await renderWithRelay(cityData(["Curated read"], ["Curated read"]))
 
-    fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
+    await fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -325,9 +325,9 @@ describe("CityGuideEventArticles, recommended for you", () => {
   })
 
   it("tracks a tap on a recommended row with a distinct context_module", async () => {
-    renderWithRelay(cityData([], ["A recommended read"]))
+    await renderWithRelay(cityData([], ["A recommended read"]))
 
-    fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
+    await fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
 
     expect(navigate).toHaveBeenCalledWith("/article/A recommended read")
     expect(mockTrackEvent).toHaveBeenCalledWith(

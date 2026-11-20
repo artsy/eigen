@@ -3,27 +3,29 @@ import { Field } from "app/Scenes/MyCollection/Screens/Artwork/Components/Field"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("Field", () => {
-  it("Value is truncated when truncateLimit is set", () => {
-    renderWithWrappers(<Field label="Test" value={longText} truncateLimit={5} />)
+  it("Value is truncated when truncateLimit is set", async () => {
+    await renderWithWrappers(<Field label="Test" value={longText} truncateLimit={5} />)
 
     expect(screen.queryByText(longText)).not.toBeOnTheScreen()
     expect(screen.getByText("Lorem")).toBeOnTheScreen()
   })
 
-  it("Value is NOT truncated when truncateLimit is not given", () => {
-    renderWithWrappers(<Field label="Test" value={longText} />)
+  it("Value is NOT truncated when truncateLimit is not given", async () => {
+    await renderWithWrappers(<Field label="Test" value={longText} />)
 
     expect(screen.getByText(longText)).toBeOnTheScreen()
   })
 
   describe("Read More button is only present if value can be expanded", () => {
-    it("Read More button is not present if truncateLimit is not given", () => {
-      renderWithWrappers(<Field label="Test" value={longText} truncateLimit={longText.length} />)
+    it("Read More button is not present if truncateLimit is not given", async () => {
+      await renderWithWrappers(
+        <Field label="Test" value={longText} truncateLimit={longText.length} />
+      )
       expect(screen.queryByText("Read More")).not.toBeOnTheScreen()
     })
 
-    it("Read More button is not present if truncateLimit is given", () => {
-      renderWithWrappers(
+    it("Read More button is not present if truncateLimit is given", async () => {
+      await renderWithWrappers(
         <Field label="Test" value={longText} truncateLimit={longText.length - 20} />
       )
       expect(screen.getByText("Read More")).toBeOnTheScreen()
@@ -31,13 +33,13 @@ describe("Field", () => {
   })
 
   it('Pressing "Read More" expands the text value', async () => {
-    renderWithWrappers(<Field label="Test" value={longText} truncateLimit={10} />)
+    await renderWithWrappers(<Field label="Test" value={longText} truncateLimit={10} />)
 
     expect(screen.queryByText(longText)).not.toBeOnTheScreen()
 
     const button = screen.getByTestId("ReadMoreButton")
 
-    fireEvent.press(button)
+    await fireEvent.press(button)
     expect(screen.getByText(longText)).toBeOnTheScreen()
   })
 })

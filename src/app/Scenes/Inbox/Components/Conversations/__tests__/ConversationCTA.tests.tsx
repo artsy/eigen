@@ -116,8 +116,8 @@ const expectReviewOfferButton = ({
   return cta
 }
 
-it("renders without throwing an error", () => {
-  expect(() => renderWithRelay()).not.toThrow()
+it("renders without throwing an error", async () => {
+  await expect(renderWithRelay()).resolves.not.toThrow()
 })
 
 describe("conversation about an artwork with inquiry checkout enabled", () => {
@@ -147,8 +147,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     })
   }
 
-  it("renders the make offer button if there is no active order", () => {
-    renderWithOrders()
+  it("renders the make offer button if there is no active order", async () => {
+    await renderWithOrders()
 
     expect(screen.getByText(INQUIRY_BUTTON_TEXT)).toBeOnTheScreen()
   })
@@ -187,28 +187,28 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
         Artwork: () => ({ internalID: "123", href: "/artwork/foo", isOfferableFromInquiry: true }),
       })
 
-      it("replaces the inquiry buttons with the offer banner when the flag is on", () => {
+      it("replaces the inquiry buttons with the offer banner when the flag is on", async () => {
         __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationPartnerOffers: true })
 
-        renderWithRelay(buildPartnerOfferResolvers())
+        await renderWithRelay(buildPartnerOfferResolvers())
 
         // The dedicated offer banner replaces the inquiry transaction buttons.
         expect(screen.queryByText(INQUIRY_BUTTON_TEXT)).not.toBeOnTheScreen()
         expect(screen.getByTestId("conversation-partner-offer-cta")).toBeOnTheScreen()
       })
 
-      it("still renders the inquiry buttons when the flag is off", () => {
+      it("still renders the inquiry buttons when the flag is off", async () => {
         __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationPartnerOffers: false })
 
-        renderWithRelay(buildPartnerOfferResolvers())
+        await renderWithRelay(buildPartnerOfferResolvers())
 
         expect(screen.getByText(INQUIRY_BUTTON_TEXT)).toBeOnTheScreen()
       })
 
-      it("falls back to the inquiry buttons once the offer expires", () => {
+      it("falls back to the inquiry buttons once the offer expires", async () => {
         __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationPartnerOffers: true })
 
-        renderWithRelay(buildPartnerOfferResolvers({ endAt: pastISO() }))
+        await renderWithRelay(buildPartnerOfferResolvers({ endAt: pastISO() }))
 
         expect(screen.queryByTestId("conversation-partner-offer-cta")).not.toBeOnTheScreen()
         expect(screen.getByText(INQUIRY_BUTTON_TEXT)).toBeOnTheScreen()
@@ -216,8 +216,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     }
   )
 
-  it("renders the payment failed message if the payment failed", () => {
-    renderWithOrders({ lastTransactionFailed: true, mode: "OFFER" })
+  it("renders the payment failed message if the payment failed", async () => {
+    await renderWithOrders({ lastTransactionFailed: true, mode: "OFFER" })
 
     expectReviewOfferButton({
       bg: "red100",
@@ -229,8 +229,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     })
   })
 
-  it("doesn't render when the last offer is from a buyer and it has not been accepted or rejected by the seller", () => {
-    renderWithOrders({
+  it("doesn't render when the last offer is from a buyer and it has not been accepted or rejected by the seller", async () => {
+    await renderWithOrders({
       mode: "OFFER",
       state: "SUBMITTED",
       lastOffer: {
@@ -240,8 +240,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     assertRendersNothing()
   })
 
-  it("renders the pending offer when the last offer is from the seller", () => {
-    renderWithOrders({
+  it("renders the pending offer when the last offer is from the seller", async () => {
+    await renderWithOrders({
       mode: "OFFER",
       state: "SUBMITTED",
       lastOffer: {
@@ -256,8 +256,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     })
   })
 
-  it("shows correct message for an offer accepted by the buyer", () => {
-    renderWithOrders({
+  it("shows correct message for an offer accepted by the buyer", async () => {
+    await renderWithOrders({
       mode: "OFFER",
       state: "APPROVED",
       lastOffer: { fromParticipant: "BUYER" },
@@ -270,8 +270,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     })
   })
 
-  it("shows correct message for an offer accepted by the seller that does not define total (change amount)", () => {
-    renderWithOrders({
+  it("shows correct message for an offer accepted by the seller that does not define total (change amount)", async () => {
+    await renderWithOrders({
       mode: "OFFER",
       state: "APPROVED",
       lastOffer: { fromParticipant: "SELLER", definesTotal: false },
@@ -284,8 +284,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     })
   })
 
-  it("shows counter received - confirm total when offer defines total and amount changes", () => {
-    renderWithOrders({
+  it("shows counter received - confirm total when offer defines total and amount changes", async () => {
+    await renderWithOrders({
       mode: "OFFER",
       state: "SUBMITTED",
       lastOffer: { fromParticipant: "SELLER", offerAmountChanged: true, definesTotal: true },
@@ -298,8 +298,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     })
   })
 
-  it("shows the 'approved' banner for fulfilled offers", () => {
-    renderWithOrders({
+  it("shows the 'approved' banner for fulfilled offers", async () => {
+    await renderWithOrders({
       mode: "OFFER",
       state: "FULFILLED",
       lastOffer: { fromParticipant: "BUYER" },
@@ -312,8 +312,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     })
   })
 
-  it("shows accepted  - confirm total when offer defines total and amount stays the same", () => {
-    renderWithOrders({
+  it("shows accepted  - confirm total when offer defines total and amount stays the same", async () => {
+    await renderWithOrders({
       mode: "OFFER",
       state: "SUBMITTED",
       lastOffer: { fromParticipant: "SELLER", offerAmountChanged: false, definesTotal: true },
@@ -326,8 +326,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     })
   })
 
-  it("shows offer accepted when buyer also approves the provisional offer", () => {
-    renderWithOrders({
+  it("shows offer accepted when buyer also approves the provisional offer", async () => {
+    await renderWithOrders({
       mode: "OFFER",
       state: "APPROVED",
       lastOffer: { fromParticipant: "SELLER", definesTotal: true },
@@ -341,8 +341,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
   })
 
   describe("given BUY mode", () => {
-    it("doesn't render anything", () => {
-      renderWithOrders({
+    it("doesn't render anything", async () => {
+      await renderWithOrders({
         mode: "BUY",
       })
 

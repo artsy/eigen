@@ -21,13 +21,15 @@ describe("CityGuideRailSentinel", () => {
   const setVisible = (visible: boolean) =>
     fireEvent(screen.getByTestId("rail-sentinel"), "change", visible)
 
-  it("tracks railViewed once, the first time the rail is on screen", () => {
-    renderWithWrappers(<CityGuideRailSentinel contextModule={ContextModule.cityGuideGuidesRail} />)
+  it("tracks railViewed once, the first time the rail is on screen", async () => {
+    await renderWithWrappers(
+      <CityGuideRailSentinel contextModule={ContextModule.cityGuideGuidesRail} />
+    )
 
-    setVisible(false)
+    await setVisible(false)
     expect(mockTrackEvent).not.toHaveBeenCalled()
 
-    setVisible(true)
+    await setVisible(true)
 
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenCalledWith({

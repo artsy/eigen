@@ -51,8 +51,8 @@ describe("PushNotification", () => {
   })
 
   describe("saveToken", () => {
-    afterEach(() => {
-      AsyncStorage.clear()
+    afterEach(async () => {
+      await AsyncStorage.clear()
     })
 
     it("should save token successfully in production", async () => {

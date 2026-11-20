@@ -22,11 +22,11 @@ describe("useStableShuffle", () => {
     Date.now = originalDateNow
   })
 
-  it("should shuffle items with a provided seed", () => {
+  it("should shuffle items with a provided seed", async () => {
     const items = [1, 2, 3, 4, 5]
     const seed = "test-seed"
 
-    const { result } = renderHook(() => useStableShuffle({ items, seed }))
+    const { result } = await renderHook(() => useStableShuffle({ items, seed }))
 
     // Check that the result contains both shuffled array and seed
     expect(result.current).toHaveProperty("shuffled")
@@ -37,21 +37,21 @@ describe("useStableShuffle", () => {
     expect(result.current.shuffled).not.toEqual(items)
   })
 
-  it("should produce the same shuffled order for the same seed", () => {
+  it("should produce the same shuffled order for the same seed", async () => {
     const items = ["apple", "banana", "cherry", "date", "elderberry"]
     const seed = "consistent-seed"
 
-    const { result: result1 } = renderHook(() => useStableShuffle({ items, seed }))
-    const { result: result2 } = renderHook(() => useStableShuffle({ items, seed }))
+    const { result: result1 } = await renderHook(() => useStableShuffle({ items, seed }))
+    const { result: result2 } = await renderHook(() => useStableShuffle({ items, seed }))
 
     // Both hooks should return the same shuffled order
     expect(result1.current.shuffled).toEqual(result2.current.shuffled)
   })
 
-  it("should use a daily seed when no seed is provided", () => {
+  it("should use a daily seed when no seed is provided", async () => {
     const items = ["red", "green", "blue", "yellow"]
 
-    const { result } = renderHook(() => useStableShuffle({ items }))
+    const { result } = await renderHook(() => useStableShuffle({ items }))
 
     // The hook should use the daily seed format (based on our mocked date)
     expect(result.current.seed).toEqual("01/01/2023")
@@ -61,11 +61,11 @@ describe("useStableShuffle", () => {
     expect(result.current.shuffled.sort()).toEqual(items.sort())
   })
 
-  it("should produce the same shuffled order on the same day", () => {
+  it("should produce the same shuffled order on the same day", async () => {
     const items = [10, 20, 30, 40, 50]
 
-    const { result: result1 } = renderHook(() => useStableShuffle({ items }))
-    const { result: result2 } = renderHook(() => useStableShuffle({ items }))
+    const { result: result1 } = await renderHook(() => useStableShuffle({ items }))
+    const { result: result2 } = await renderHook(() => useStableShuffle({ items }))
 
     // Both hooks should use the same daily seed
     expect(result1.current.seed).toEqual(result2.current.seed)
@@ -74,24 +74,24 @@ describe("useStableShuffle", () => {
     expect(result1.current.shuffled).toEqual(result2.current.shuffled)
   })
 
-  it("should handle empty arrays", () => {
+  it("should handle empty arrays", async () => {
     const items: number[] = []
 
-    const { result } = renderHook(() => useStableShuffle({ items }))
+    const { result } = await renderHook(() => useStableShuffle({ items }))
 
     // The shuffled array should also be empty
     expect(result.current.shuffled).toEqual([])
   })
 
-  it("should memoize results for the same inputs", () => {
+  it("should memoize results for the same inputs", async () => {
     const items = [1, 2, 3, 4, 5]
     const seed = "test-seed"
 
-    const { result, rerender } = renderHook(() => useStableShuffle({ items, seed }))
+    const { result, rerender } = await renderHook(() => useStableShuffle({ items, seed }))
     const firstResult = result.current.shuffled
 
     // Rerender with the same inputs
-    rerender(() => {})
+    await rerender(() => {})
 
     // The shuffled array should be the same object (memoized)
     expect(result.current.shuffled).toBe(firstResult)

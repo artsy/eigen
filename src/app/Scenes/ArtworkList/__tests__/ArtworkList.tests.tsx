@@ -28,18 +28,18 @@ describe("ArtworkList", () => {
   })
 
   it("renders ArtworkList", async () => {
-    const { mockResolveLastOperation } = renderWithRelay()
+    const { mockResolveLastOperation } = await renderWithRelay()
 
-    mockResolveLastOperation({ Me: () => me })
+    await mockResolveLastOperation({ Me: () => me })
 
     expect(screen.getByText("Saved Artworks")).toBeOnTheScreen()
     expect(screen.getByText("2 Artworks")).toBeOnTheScreen()
   })
 
   it("displays the artworks", async () => {
-    const { mockResolveLastOperation } = renderWithRelay()
+    const { mockResolveLastOperation } = await renderWithRelay()
 
-    mockResolveLastOperation({ Me: () => me })
+    await mockResolveLastOperation({ Me: () => me })
 
     expect(screen.getByText("Artwork Title 1")).toBeOnTheScreen()
     expect(screen.getByText("Artwork Title 2")).toBeOnTheScreen()
@@ -61,17 +61,17 @@ describe("ArtworkList", () => {
      * (see the `@gorhom/bottom-sheet` mock in `setupJest`), which is what triggers the refetch,
      * so callers need to await the resulting operation.
      */
-    const selectSortOption = (optionText: string) => {
-      fireEvent.press(screen.getByText("Sort"))
-      fireEvent.press(screen.getByText(optionText))
+    const selectSortOption = async (optionText: string) => {
+      await fireEvent.press(screen.getByText("Sort"))
+      await fireEvent.press(screen.getByText(optionText))
     }
 
     it("refetches with the picked sort value when the sheet is dismissed", async () => {
-      const { env, mockResolveLastOperation } = renderWithRelay()
+      const { env, mockResolveLastOperation } = await renderWithRelay()
 
-      mockResolveLastOperation({ Me: () => me })
+      await mockResolveLastOperation({ Me: () => me })
 
-      selectSortOption("First Added")
+      await selectSortOption("First Added")
 
       await waitFor(() => {
         expect(env.mock.getMostRecentOperation().request.variables.sort).toBe("SAVED_AT_ASC")
@@ -79,19 +79,19 @@ describe("ArtworkList", () => {
     })
 
     it("refetches again when the sort value is changed a second time", async () => {
-      const { env, mockResolveLastOperation } = renderWithRelay()
+      const { env, mockResolveLastOperation } = await renderWithRelay()
 
-      mockResolveLastOperation({ Me: () => me })
+      await mockResolveLastOperation({ Me: () => me })
 
-      selectSortOption("First Added")
+      await selectSortOption("First Added")
 
       await waitFor(() => {
         expect(env.mock.getMostRecentOperation().request.variables.sort).toBe("SAVED_AT_ASC")
       })
 
-      mockResolveLastOperation({ Me: () => me })
+      await mockResolveLastOperation({ Me: () => me })
 
-      selectSortOption("Recently Added")
+      await selectSortOption("Recently Added")
 
       await waitFor(() => {
         expect(env.mock.getMostRecentOperation().request.variables.sort).toBe("SAVED_AT_DESC")
@@ -99,14 +99,14 @@ describe("ArtworkList", () => {
     })
 
     it("does not refetch when re-selecting the already-selected sort value", async () => {
-      const { env, mockResolveLastOperation } = renderWithRelay()
+      const { env, mockResolveLastOperation } = await renderWithRelay()
 
-      mockResolveLastOperation({ Me: () => me })
+      await mockResolveLastOperation({ Me: () => me })
 
       const operationCountBefore = env.mock.getAllOperations().length
 
       // "Recently Added" (SAVED_AT_DESC) is already the selected value
-      selectSortOption("Recently Added")
+      await selectSortOption("Recently Added")
 
       // Give the sheet's asynchronous dismissal a chance to trigger a refetch it shouldn't
       await waitFor(() => {
@@ -119,14 +119,14 @@ describe("ArtworkList", () => {
 
   describe("Contextual menu button", () => {
     it("shows a share icon for the default list that opens the share sheet directly", async () => {
-      const { mockResolveLastOperation } = renderWithRelay()
+      const { mockResolveLastOperation } = await renderWithRelay()
 
-      mockResolveLastOperation({ Me: () => me })
+      await mockResolveLastOperation({ Me: () => me })
 
       expect(screen.getByLabelText("Share List")).toBeOnTheScreen()
       expect(screen.queryByLabelText(CONTEXTUAL_MENU_LABEL)).not.toBeOnTheScreen()
 
-      fireEvent.press(screen.getByTestId("fancy-modal-header-right-button"))
+      await fireEvent.press(screen.getByTestId("fancy-modal-header-right-button"))
 
       // Drops straight into the share sheet, skipping the manage-list menu
       expect(
@@ -137,17 +137,17 @@ describe("ArtworkList", () => {
     })
 
     it("should be displayed custom artwork list", async () => {
-      const { mockResolveLastOperation } = renderWithRelay()
+      const { mockResolveLastOperation } = await renderWithRelay()
 
-      mockResolveLastOperation({ Me: () => ({ ...me, artworkList: customArtworkList }) })
+      await mockResolveLastOperation({ Me: () => ({ ...me, artworkList: customArtworkList }) })
 
       expect(screen.getByLabelText(CONTEXTUAL_MENU_LABEL)).toBeOnTheScreen()
     })
 
     it("should be displayed for custom artwork list empty state", async () => {
-      const { mockResolveLastOperation } = renderWithRelay()
+      const { mockResolveLastOperation } = await renderWithRelay()
 
-      mockResolveLastOperation({
+      await mockResolveLastOperation({
         Me: () => ({
           ...me,
           artworkList: {
@@ -167,9 +167,9 @@ describe("ArtworkList", () => {
     })
 
     it("should display the HideIcon if not shareable with partners", async () => {
-      const { mockResolveLastOperation } = renderWithRelay()
+      const { mockResolveLastOperation } = await renderWithRelay()
 
-      mockResolveLastOperation({
+      await mockResolveLastOperation({
         Me: () => ({ artworkList: { ...defaultArtworkList, shareableWithPartners: false } }),
       })
 
@@ -177,9 +177,9 @@ describe("ArtworkList", () => {
     })
 
     it("should NOT display the HideIcon if shareable with partners", async () => {
-      const { mockResolveLastOperation } = renderWithRelay()
+      const { mockResolveLastOperation } = await renderWithRelay()
 
-      mockResolveLastOperation({
+      await mockResolveLastOperation({
         Me: () => ({ artworkList: { ...defaultArtworkList, shareableWithPartners: true } }),
       })
 
@@ -187,13 +187,13 @@ describe("ArtworkList", () => {
     })
 
     it("should display the Popover when user clicks the HideIcon", async () => {
-      const { mockResolveLastOperation } = renderWithRelay()
+      const { mockResolveLastOperation } = await renderWithRelay()
 
-      mockResolveLastOperation({
+      await mockResolveLastOperation({
         Me: () => ({ artworkList: { ...defaultArtworkList, shareableWithPartners: false } }),
       })
 
-      fireEvent.press(screen.getByLabelText("HideIcon"))
+      await fireEvent.press(screen.getByLabelText("HideIcon"))
 
       expect(
         screen.getByText(
@@ -203,13 +203,13 @@ describe("ArtworkList", () => {
     })
 
     it("should dismiss the Popover when the user clicks the HideIcon", async () => {
-      const { mockResolveLastOperation } = renderWithRelay()
+      const { mockResolveLastOperation } = await renderWithRelay()
 
-      mockResolveLastOperation({
+      await mockResolveLastOperation({
         Me: () => ({ artworkList: { ...defaultArtworkList, shareableWithPartners: false } }),
       })
 
-      fireEvent.press(screen.getByLabelText("HideIcon"))
+      await fireEvent.press(screen.getByLabelText("HideIcon"))
 
       expect(
         screen.getByText(
@@ -217,7 +217,7 @@ describe("ArtworkList", () => {
         )
       ).toBeOnTheScreen()
 
-      fireEvent.press(screen.getByLabelText("HideIcon"))
+      await fireEvent.press(screen.getByLabelText("HideIcon"))
 
       expect(
         screen.queryByText(

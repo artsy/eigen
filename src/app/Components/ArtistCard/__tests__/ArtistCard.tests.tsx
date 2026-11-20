@@ -33,25 +33,25 @@ describe("ArtistCard", () => {
     `,
   })
 
-  it("renders the artist meta", () => {
-    renderWithRelay({ Artist: () => mockArtist })
+  it("renders the artist meta", async () => {
+    await renderWithRelay({ Artist: () => mockArtist })
 
     expect(screen.getByText("Juan Gris")).toBeOnTheScreen()
     expect(screen.getByText("Spanish, 1887–1927")).toBeOnTheScreen()
   })
 
-  it("navigates to the artist page when tapped", () => {
-    renderWithRelay({ Artist: () => mockArtist })
+  it("navigates to the artist page when tapped", async () => {
+    await renderWithRelay({ Artist: () => mockArtist })
 
-    fireEvent.press(screen.getByText("Juan Gris"))
+    await fireEvent.press(screen.getByText("Juan Gris"))
 
     expect(navigate).toHaveBeenCalledWith("/artist/juan-gris")
   })
 
-  it("follows the artist when tapped", () => {
-    renderWithRelay({ Artist: () => mockArtist })
+  it("follows the artist when tapped", async () => {
+    await renderWithRelay({ Artist: () => mockArtist })
 
-    fireEvent.press(screen.getByText("Follow"))
+    await fireEvent.press(screen.getByText("Follow"))
 
     expect(mockCommit).toHaveBeenCalledWith(
       expect.objectContaining({

@@ -5,8 +5,8 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 describe("PhoneNumberForm component", () => {
   const onSubmitMock = jest.fn()
 
-  it("correctly populates relevant inputs with the passed address fields", () => {
-    renderWithWrappers(
+  it("correctly populates relevant inputs with the passed address fields", async () => {
+    await renderWithWrappers(
       <PhoneNumberForm
         navigation={null!}
         route={

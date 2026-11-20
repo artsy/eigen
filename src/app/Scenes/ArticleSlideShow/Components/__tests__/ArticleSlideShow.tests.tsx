@@ -22,18 +22,18 @@ describe("ArticleSlideShow", () => {
     coverId = "image-1"
   })
 
-  it("renders", () => {
-    renderWithRelay({ Article: () => article })
+  it("renders", async () => {
+    await renderWithRelay({ Article: () => article })
 
     expect(screen.getByLabelText("Image and description rail")).toBeOnTheScreen()
     expect(screen.queryByText("Test Title")).not.toBeOnTheScreen()
   })
 
-  it("shows the title for a given slide with a title", () => {
+  it("shows the title for a given slide with a title", async () => {
     coverId = "image-2"
-    renderWithRelay({ Article: () => article })
+    await renderWithRelay({ Article: () => article })
 
-    expect(screen.queryByText("Test Title")).toBeOnTheScreen()
+    expect(screen.getByText("Test Title")).toBeOnTheScreen()
   })
 })
 

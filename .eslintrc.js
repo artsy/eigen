@@ -215,11 +215,26 @@ module.exports = {
       },
     },
     {
-      files: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+      files: [
+        "**/__tests__/**/*.[jt]s?(x)",
+        "**/?(*.)+(spec|test).[jt]s?(x)",
+        "src/**/*.tests.ts",
+        "src/**/*.tests.tsx",
+        "src/app/Components/ArtworkFilter/Filters/AggregationOptionCommonValidation.tsx",
+      ],
       extends: ["plugin:testing-library/react"],
+      parserOptions: {
+        project: "./tsconfig.json",
+        tsconfigRootDir: __dirname,
+      },
       rules: {
         // RNTL v14 makes fireEvent async (and userEvent already is), so awaiting them must be allowed.
         "testing-library/no-await-sync-events": OFF,
+        // render, fireEvent, act and our test helpers are async: a missing `await` lets the test
+        // continue before React has flushed.
+        "@typescript-eslint/no-floating-promises": ERR,
+        // fdescribe/fit/.only silently skip every other test in the file
+        "jest/no-focused-tests": ERR,
       },
     },
   ],

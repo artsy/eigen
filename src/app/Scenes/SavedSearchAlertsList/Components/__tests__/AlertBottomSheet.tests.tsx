@@ -10,8 +10,8 @@ describe("AlertBottomSheet", () => {
     artworksCount: 10,
   }
 
-  it("renders correctly", () => {
-    renderWithWrappers(<AlertBottomSheet alert={alert} onDismiss={jest.fn()} />)
+  it("renders correctly", async () => {
+    await renderWithWrappers(<AlertBottomSheet alert={alert} onDismiss={jest.fn()} />)
 
     expect(screen.getByText("Banksy")).toBeTruthy()
     expect(screen.getByText("Edit Alert")).toBeTruthy()
@@ -19,10 +19,10 @@ describe("AlertBottomSheet", () => {
     expect(screen.getByText(/10/)).toBeTruthy()
   })
 
-  it("edit alert button navigates to the edit screen", () => {
-    renderWithWrappers(<AlertBottomSheet alert={alert} onDismiss={jest.fn()} />)
+  it("edit alert button navigates to the edit screen", async () => {
+    await renderWithWrappers(<AlertBottomSheet alert={alert} onDismiss={jest.fn()} />)
 
-    fireEvent.press(screen.getByText("Edit Alert"))
+    await fireEvent.press(screen.getByText("Edit Alert"))
 
     expect(navigate).toHaveBeenCalledWith("favorites/alerts/123/edit")
   })

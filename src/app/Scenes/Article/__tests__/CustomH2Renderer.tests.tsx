@@ -41,37 +41,37 @@ describe("CustomH2Renderer", () => {
     mockPartnerFollowButtonQueryRenderer.mockReturnValue(<Text>Partner Follow Button</Text>)
   })
 
-  it("renders default renderer when no href is provided", () => {
+  it("renders default renderer when no href is provided", async () => {
     const tnode = createMockTNode()
 
-    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
+    await renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
   })
 
-  it("renders default renderer when href is malformed", () => {
+  it("renders default renderer when href is malformed", async () => {
     const tnode = createMockTNode("invalid-url")
 
-    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
+    await renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
   })
 
-  it("renders default renderer when href does not contain entity and id", () => {
+  it("renders default renderer when href does not contain entity and id", async () => {
     const tnode = createMockTNode("https://artsy.net/some")
 
-    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
+    await renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
   })
 
-  it("renders artist follow button when href contains artist entity", () => {
+  it("renders artist follow button when href contains artist entity", async () => {
     const tnode = createMockTNode("https://artsy.net/artist/banksy")
 
-    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
+    await renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
@@ -82,10 +82,10 @@ describe("CustomH2Renderer", () => {
     )
   })
 
-  it("renders partner follow button when href contains partner entity", () => {
+  it("renders partner follow button when href contains partner entity", async () => {
     const tnode = createMockTNode("https://artsy.net/partner/gagosian")
 
-    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
+    await renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
@@ -96,29 +96,29 @@ describe("CustomH2Renderer", () => {
     )
   })
 
-  it("renders default renderer when entity is not artist or partner", () => {
+  it("renders default renderer when entity is not artist or partner", async () => {
     const tnode = createMockTNode("/artwork/some-artwork-id")
 
-    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
+    await renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
   })
 
-  it("handles complex href paths correctly", () => {
+  it("handles complex href paths correctly", async () => {
     const tnode = createMockTNode("https://artsy.net/some/prefix/artist/jean-michel-basquiat")
 
-    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
+    await renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
     expect(mockArtistFollowButtonQueryRenderer).not.toHaveBeenCalled()
   })
 
-  it("handles href with domain correctly", () => {
+  it("handles href with domain correctly", async () => {
     const tnode = createMockTNode("https://artsy.net/artist/kaws")
 
-    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
+    await renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
@@ -129,30 +129,30 @@ describe("CustomH2Renderer", () => {
     )
   })
 
-  it("renders default renderer when isBigH2 is true with artist link", () => {
+  it("renders default renderer when isBigH2 is true with artist link", async () => {
     const tnode = createMockTNodeWithComma("https://artsy.net/artist/banksy")
 
-    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
+    await renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
     expect(mockArtistFollowButtonQueryRenderer).not.toHaveBeenCalled()
   })
 
-  it("renders default renderer when isBigH2 is true with partner link", () => {
+  it("renders default renderer when isBigH2 is true with partner link", async () => {
     const tnode = createMockTNodeWithComma("https://artsy.net/partner/gagosian")
 
-    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
+    await renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
     expect(mockPartnerFollowButtonQueryRenderer).not.toHaveBeenCalled()
   })
 
-  it("renders follow button when multiple children but no comma in text", () => {
+  it("renders follow button when multiple children but no comma in text", async () => {
     const tnode = createMockTNodeWithMultipleChildren("https://artsy.net/artist/banksy")
 
-    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
+    await renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()

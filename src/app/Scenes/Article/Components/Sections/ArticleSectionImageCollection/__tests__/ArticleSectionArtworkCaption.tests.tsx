@@ -20,7 +20,7 @@ describe("ArticleSectionArtworkCaption", () => {
   })
 
   it("renders", async () => {
-    renderWithRelay({ Artwork: () => artwork })
+    await renderWithRelay({ Artwork: () => artwork })
 
     expect(screen.getByText("Test Artwork, 2023")).toBeOnTheScreen()
     expect(screen.getByText("Test Partner")).toBeOnTheScreen()
@@ -29,15 +29,15 @@ describe("ArticleSectionArtworkCaption", () => {
   })
 
   it("navigates", async () => {
-    renderWithRelay({ Artwork: () => artwork })
+    await renderWithRelay({ Artwork: () => artwork })
 
-    fireEvent.press(screen.getByText("Test Artwork, 2023"))
+    await fireEvent.press(screen.getByText("Test Artwork, 2023"))
     expect(navigate).toHaveBeenCalledWith("artwork-href")
 
-    fireEvent.press(screen.getByText("Test Partner"))
+    await fireEvent.press(screen.getByText("Test Partner"))
     expect(navigate).toHaveBeenCalledWith("partner-href")
 
-    fireEvent.press(screen.getByText("Test Artist"))
+    await fireEvent.press(screen.getByText("Test Artist"))
     expect(navigate).toHaveBeenCalledWith("artist-href")
   })
 })

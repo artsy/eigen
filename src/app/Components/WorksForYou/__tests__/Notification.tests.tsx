@@ -23,15 +23,15 @@ describe("Notification", () => {
       }
     `,
   })
-  it("renders notification properly", () => {
-    renderWithRelay({
+  it("renders notification properly", async () => {
+    await renderWithRelay({
       FollowedArtistsArtworksGroup: () => notification(),
     })
 
     expect(screen.getByText("Jean-Michel Basquiat")).toBeTruthy()
   })
 
-  it("renders without throwing an error if no avatar image exists", () => {
+  it("renders without throwing an error if no avatar image exists", async () => {
     const props = notification()
     const convertedProps = {
       ...props,
@@ -42,7 +42,7 @@ describe("Notification", () => {
       },
     }
 
-    renderWithRelay({
+    await renderWithRelay({
       FollowedArtistsArtworksGroup: () => convertedProps,
     })
   })

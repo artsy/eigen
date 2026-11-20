@@ -15,9 +15,9 @@ describe("DurationProvider", () => {
     Date.now = () => 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
   })
 
-  it("provides a duration", () => {
+  it("provides a duration", async () => {
     const startAt = new Date(Date.now() + 1000).toISOString()
-    renderWithWrappers(
+    await renderWithWrappers(
       <DurationProvider startAt={startAt}>
         <DurationConsumer />
       </DurationProvider>
@@ -26,15 +26,15 @@ describe("DurationProvider", () => {
     expect(screen.getByText("PT1S")).toBeTruthy()
   })
 
-  it("updates duration every second", () => {
+  it("updates duration every second", async () => {
     const startAt = new Date(Date.now() + 1000).toISOString()
-    renderWithWrappers(
+    await renderWithWrappers(
       <DurationProvider startAt={startAt}>
         <DurationConsumer />
       </DurationProvider>
     )
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(1000)
     })
 

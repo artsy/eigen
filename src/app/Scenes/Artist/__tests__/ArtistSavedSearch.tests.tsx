@@ -33,9 +33,9 @@ describe("Artist", () => {
     jest.clearAllMocks()
   })
 
-  function mockMostRecentOperation(name: ArtistQueries, mockResolvers: MockResolvers = {}) {
+  async function mockMostRecentOperation(name: ArtistQueries, mockResolvers: MockResolvers = {}) {
     expect(mockEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(name)
-    act(() => {
+    await act(() => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
           ID({ path }) {
@@ -56,15 +56,17 @@ describe("Artist", () => {
   )
 
   it("should render all tabs", async () => {
-    renderWithHookWrappersTL(<TestWrapper />, getRelayEnvironment(), { includeNavigation: true })
+    await renderWithHookWrappersTL(<TestWrapper />, getRelayEnvironment(), {
+      includeNavigation: true,
+    })
 
-    mockMostRecentOperation("ArtistAboveTheFoldQuery")
-    mockMostRecentOperation("ArtistBelowTheFoldQuery", {
+    await mockMostRecentOperation("ArtistAboveTheFoldQuery")
+    await mockMostRecentOperation("ArtistBelowTheFoldQuery", {
       ArtistInsight() {
         return { entities: ["test"] }
       },
     })
-    mockMostRecentOperation("ArtistAboutQuery")
+    await mockMostRecentOperation("ArtistAboutQuery")
 
     await flushPromiseQueue()
 
@@ -74,9 +76,11 @@ describe("Artist", () => {
   })
 
   it("tracks a page view", async () => {
-    renderWithHookWrappersTL(<TestWrapper />, getRelayEnvironment(), { includeNavigation: true })
+    await renderWithHookWrappersTL(<TestWrapper />, getRelayEnvironment(), {
+      includeNavigation: true,
+    })
 
-    mockMostRecentOperation("ArtistAboveTheFoldQuery")
+    await mockMostRecentOperation("ArtistAboveTheFoldQuery")
 
     await flushPromiseQueue()
 

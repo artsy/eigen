@@ -14,8 +14,8 @@ describe("SearchEmptyResultsArtAssistantCTA", () => {
     jest.clearAllMocks()
   })
 
-  it("opens Art Assistant, sends the search query and tracks the tap", () => {
-    renderWithWrappers(
+  it("opens Art Assistant, sends the search query and tracks the tap", async () => {
+    await renderWithWrappers(
       <SearchEmptyResultsArtAssistantCTA
         contextModule={ContextModule.artworksTab}
         query=" moody seascapes "
@@ -24,7 +24,7 @@ describe("SearchEmptyResultsArtAssistantCTA", () => {
 
     expect(screen.getByText("Not finding what you’re looking for?")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Ask Art Assistant"))
+    await fireEvent.press(screen.getByText("Ask Art Assistant"))
 
     expect(navigate).toHaveBeenCalledWith("/art-assistant", {
       passProps: { initialPrompt: "moody seascapes", sendInitialPrompt: true },

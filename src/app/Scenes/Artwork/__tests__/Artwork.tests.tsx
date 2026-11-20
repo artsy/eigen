@@ -73,10 +73,10 @@ describe("Artwork", () => {
   })
 
   it("renders above the fold content before the full query has been resolved", async () => {
-    renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+    await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
     // ArtworkAboveTheFoldQuery
-    resolveMostRecentRelayOperation(environment, {
+    await resolveMostRecentRelayOperation(environment, {
       Artwork: () => ({ figures: [mockImageFigure], isForSale: true, isSold: false }),
     })
 
@@ -88,10 +88,10 @@ describe("Artwork", () => {
   })
 
   it("renders all content after the full query has been resolved", async () => {
-    renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+    await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
     // ArtworkAboveTheFoldQuery
-    resolveMostRecentRelayOperation(environment, {
+    await resolveMostRecentRelayOperation(environment, {
       Artwork: () => ({
         isUnlisted: false,
         figures: [mockImageFigure],
@@ -106,9 +106,9 @@ describe("Artwork", () => {
       }),
     })
     // ArtworkMarkAsRecentlyViewedQuery
-    resolveMostRecentRelayOperation(environment)
+    await resolveMostRecentRelayOperation(environment)
     // ArtworkBelowTheFoldQuery
-    resolveMostRecentRelayOperation(environment, {
+    await resolveMostRecentRelayOperation(environment, {
       Artwork: () => ({
         isUnlisted: false,
       }),
@@ -127,10 +127,10 @@ describe("Artwork", () => {
 
   describe("artist series components", () => {
     it("renders when there are artist series to show", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           collectorSignals: null,
@@ -138,9 +138,9 @@ describe("Artwork", () => {
         Me: () => ({ partnerOffersConnection: { edges: [] } }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork() {
           return {
             isUnlisted: false,
@@ -168,14 +168,14 @@ describe("Artwork", () => {
     })
 
     it("does not render when there are no artist series to show", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           artist: {
@@ -203,10 +203,10 @@ describe("Artwork", () => {
     })
 
     it("tracks a click to an artist series item", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork() {
           return {
             isUnlisted: false,
@@ -217,9 +217,9 @@ describe("Artwork", () => {
         Me: () => ({ partnerOffersConnection: { edges: [] } }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork() {
           return {
             isUnlisted: false,
@@ -258,7 +258,7 @@ describe("Artwork", () => {
 
       const artistSeriesButton = screen.getByLabelText("Artist Series List Item")
 
-      fireEvent.press(artistSeriesButton)
+      await fireEvent.press(artistSeriesButton)
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: "tappedArtistSeriesGroup",
@@ -277,14 +277,14 @@ describe("Artwork", () => {
   })
 
   it("renders the ArtworkDetails component when conditionDescription is null but canRequestLotConditionsReport is true", async () => {
-    renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+    await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
     // ArtworkAboveTheFoldQuery
-    resolveMostRecentRelayOperation(environment)
+    await resolveMostRecentRelayOperation(environment)
     // ArtworkMarkAsRecentlyViewedQuery
-    resolveMostRecentRelayOperation(environment)
+    await resolveMostRecentRelayOperation(environment)
     // ArtworkBelowTheFoldQuery
-    resolveMostRecentRelayOperation(environment, {
+    await resolveMostRecentRelayOperation(environment, {
       Artwork() {
         return {
           category: null,
@@ -308,10 +308,10 @@ describe("Artwork", () => {
   })
 
   it("updates the above-the-fold content on re-appear", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
 
     // ArtworkAboveTheFoldQuery
-    resolveMostRecentRelayOperation(environment, {
+    await resolveMostRecentRelayOperation(environment, {
       Artwork() {
         return { slug: "my-special-artwork" }
       },
@@ -336,10 +336,10 @@ describe("Artwork", () => {
     })
 
     // ArtworkMarkAsRecentlyViewedQuery
-    resolveMostRecentRelayOperation(environment)
+    await resolveMostRecentRelayOperation(environment)
 
     // ArtworkBelowTheFoldQuery
-    resolveMostRecentRelayOperation(environment, {
+    await resolveMostRecentRelayOperation(environment, {
       Artwork() {
         return { slug: "my-special-artwork" }
       },
@@ -350,14 +350,14 @@ describe("Artwork", () => {
     await flushPromiseQueue()
 
     // ArtworkRefetchQuery
-    resolveMostRecentRelayOperation(environment, {
+    await resolveMostRecentRelayOperation(environment, {
       Artwork() {
         return { slug: "completely-different-slug" }
       },
     })
 
-    screen.rerender(<TestRenderer isVisible={false} />)
-    screen.rerender(<TestRenderer isVisible />)
+    await screen.rerender(<TestRenderer isVisible={false} />)
+    await screen.rerender(<TestRenderer isVisible />)
 
     // Artwork received the refetched above-the-fold slug and marks it as recently viewed
     expect(environment.mock.getMostRecentOperation()).toMatchObject({
@@ -376,16 +376,16 @@ describe("Artwork", () => {
     })
 
     // ArtworkMarkAsRecentlyViewedQuery
-    resolveMostRecentRelayOperation(environment)
+    await resolveMostRecentRelayOperation(environment)
   })
 
   describe("Live Auction States", () => {
     describe("has the correct state for a work that is in an auction that is currently live", () => {
-      it("for which I am registered", () => {
-        renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      it("for which I am registered", async () => {
+        await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
         // ArtworkAboveTheFoldQuery
-        resolveMostRecentRelayOperation(environment, {
+        await resolveMostRecentRelayOperation(environment, {
           Artwork() {
             return merge(
               {},
@@ -400,10 +400,10 @@ describe("Artwork", () => {
       })
 
       it("for which I am not registered and registration is open", async () => {
-        renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+        await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
         // ArtworkAboveTheFoldQuery
-        resolveMostRecentRelayOperation(environment, {
+        await resolveMostRecentRelayOperation(environment, {
           Artwork() {
             return merge(
               {},
@@ -420,11 +420,11 @@ describe("Artwork", () => {
         expect(screen.getByText("Registration closed")).toBeOnTheScreen()
       })
 
-      it("for which I am not registered and registration is closed", () => {
-        renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      it("for which I am not registered and registration is closed", async () => {
+        await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
         // ArtworkAboveTheFoldQuery
-        resolveMostRecentRelayOperation(environment, {
+        await resolveMostRecentRelayOperation(environment, {
           Artwork() {
             return merge(
               {},
@@ -441,11 +441,11 @@ describe("Artwork", () => {
   })
 
   describe("Partner Section", () => {
-    it("should display contact gallery button when partner is inquireable", () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+    it("should display contact gallery button when partner is inquireable", async () => {
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork() {
           return {
             isUnlisted: false,
@@ -456,10 +456,10 @@ describe("Artwork", () => {
       })
 
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
 
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           collectorSignals: null,
           isUnlisted: false,
@@ -482,11 +482,11 @@ describe("Artwork", () => {
       expect(screen.getByText("Contact Gallery")).toBeOnTheScreen()
     })
 
-    it("should not display contact gallery button when partner is not inquireable", () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+    it("should not display contact gallery button when partner is not inquireable", async () => {
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork() {
           return {
             isUnlisted: false,
@@ -497,10 +497,10 @@ describe("Artwork", () => {
       })
 
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
 
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           context: {
@@ -525,19 +525,19 @@ describe("Artwork", () => {
 
   describe("Shipping and taxes", () => {
     it("should be rendered when the work has `for sale` availability", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           collectorSignals: null,
         }),
         Me: () => ({ partnerOffersConnection: { edges: [] } }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           isInAuction: false,
@@ -550,14 +550,14 @@ describe("Artwork", () => {
       expect(screen.getByText("Shipping and taxes")).toBeOnTheScreen()
     })
 
-    it("should NOT be rendered if the work has any other availability", () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+    it("should NOT be rendered if the work has any other availability", async () => {
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           isForSale: false,
@@ -567,20 +567,20 @@ describe("Artwork", () => {
       expect(screen.queryByText("Shipping and taxes")).not.toBeOnTheScreen()
     })
 
-    it("should NOT be rendered if the work is in auction", () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+    it("should NOT be rendered if the work is in auction", async () => {
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           isInAuction: true,
         }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           isForSale: false,
@@ -593,10 +593,10 @@ describe("Artwork", () => {
 
   describe("Artsy Guarantee section", () => {
     it("should be displayed when eligible for artsy guarantee", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           collectorSignals: null,
           isUnlisted: false,
@@ -608,9 +608,9 @@ describe("Artwork", () => {
         Me: () => ({ partnerOffersConnection: { edges: [] } }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           isEligibleForArtsyGuarantee: true,
@@ -628,14 +628,14 @@ describe("Artwork", () => {
     })
 
     it("should not be displayed when ineligible for artsy guarantee", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           isEligibleForArtsyGuarantee: false,
@@ -652,16 +652,16 @@ describe("Artwork", () => {
 
   describe("Context Card", () => {
     it("should NOT be displayed if the work is in a non-auction sale", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Me: () => ({ partnerOffersConnection: { edges: [] } }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           isForSale: false,
@@ -677,19 +677,19 @@ describe("Artwork", () => {
     })
 
     it("should be displayed if the work is in an auction", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           slug: "/whatever",
         }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           exhibitionHistory: null,
@@ -712,14 +712,14 @@ describe("Artwork", () => {
 
   describe("About the work section", () => {
     it("should NOT be rendered", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           description: null,
@@ -733,14 +733,14 @@ describe("Artwork", () => {
     })
 
     it("should be rendered", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           description: "Artwork Description",
@@ -755,14 +755,14 @@ describe("Artwork", () => {
 
   describe("Provenance/Exhibition history/Bibliography", () => {
     it("should NOT be rendered", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           provenance: null,
@@ -779,14 +779,14 @@ describe("Artwork", () => {
     })
 
     it("should be rendered", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           provenance: "Text",
@@ -805,14 +805,14 @@ describe("Artwork", () => {
 
   describe("About the artist", () => {
     it("should NOT be rendered", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           artist: null,
@@ -825,14 +825,14 @@ describe("Artwork", () => {
     })
 
     it("should be rendered", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           artist: {
@@ -851,14 +851,14 @@ describe("Artwork", () => {
 
   describe("Other works", () => {
     it("should NOT be rendered", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           contextGrids: [
@@ -878,10 +878,10 @@ describe("Artwork", () => {
     })
 
     it("should be rendered", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork() {
           return {
             collectorSignals: null,
@@ -893,9 +893,9 @@ describe("Artwork", () => {
         Me: () => ({ partnerOffersConnection: { edges: [] } }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: false,
           // skip about the artist section
@@ -929,17 +929,17 @@ describe("Artwork", () => {
 
   describe("Unlisted Private Artworks", () => {
     it("renders correct components for unlisted private artworks", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({ isUnlisted: true, collectorSignals: null, figures: [mockImageFigure] }),
         Me: () => ({ partnerOffersConnection: { edges: [] } }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: true,
           isForSale: true,
@@ -984,18 +984,18 @@ describe("Artwork", () => {
     })
 
     it("tracks partner name taps", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: true,
         }),
       })
       // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isUnlisted: true,
           isForSale: true,
@@ -1013,7 +1013,7 @@ describe("Artwork", () => {
 
       await flushPromiseQueue()
 
-      fireEvent.press(screen.getByTestId("test-partner-button"))
+      await fireEvent.press(screen.getByTestId("test-partner-button"))
 
       expect(mockTrackEvent).toBeCalledWith(
         expect.objectContaining({
@@ -1029,11 +1029,11 @@ describe("Artwork", () => {
 
   describe("Order webview callbacks", () => {
     it("triggers navigating to the order details on Order Submission event", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+      await renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
-      resolveMostRecentRelayOperation(environment)
+      await resolveMostRecentRelayOperation(environment)
 
-      act(() => callback?.({ orderId: "order-id", isPurchase: false }))
+      await act(() => callback?.({ orderId: "order-id", isPurchase: false }))
 
       await flushPromiseQueue()
 

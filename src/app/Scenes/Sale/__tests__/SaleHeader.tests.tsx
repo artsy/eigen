@@ -31,8 +31,8 @@ describe("SaleHeader", () => {
     Settings.defaultZone = "local"
   })
 
-  it("renders without throwing an error", () => {
-    renderWithRelay({
+  it("renders without throwing an error", async () => {
+    await renderWithRelay({
       Sale: () => ({
         endAt: "2020-11-01T15:00:00",
         startAt: "2020-10-01T15:00:00",
@@ -50,8 +50,8 @@ describe("SaleHeader", () => {
     expect(screen.getAllByText("More info about this auction")).toHaveLength(1)
   })
 
-  it("does not render auction is closed when cascading end time is enabled", () => {
-    renderWithRelay({
+  it("does not render auction is closed when cascading end time is enabled", async () => {
+    await renderWithRelay({
       Sale: () => ({
         endAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
         startAt: "2020-09-01T15:00:00",
@@ -69,8 +69,8 @@ describe("SaleHeader", () => {
     expect(screen.queryByText("Auction closed")).not.toBeOnTheScreen()
   })
 
-  it("does not render auction is closed when an auction is still active", () => {
-    renderWithRelay({
+  it("does not render auction is closed when an auction is still active", async () => {
+    await renderWithRelay({
       Sale: () => ({
         endAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
         startAt: "2020-09-01T15:00:00",
@@ -109,8 +109,8 @@ describe("SaleHeader", () => {
         })
       })
 
-      it("shows the cascading end time label", () => {
-        renderWithRelay({
+      it("shows the cascading end time label", async () => {
+        await renderWithRelay({
           Sale: () => ({
             endAt: "2018-05-16T15:00:00",
             startAt: "2018-05-13T15:00:00",
@@ -125,8 +125,8 @@ describe("SaleHeader", () => {
       })
 
       describe("absolute date label", () => {
-        it("shows the start date if the sale has not started", () => {
-          renderWithRelay({
+        it("shows the start date if the sale has not started", async () => {
+          await renderWithRelay({
             Sale: () => ({
               endAt: "2018-05-16T15:00:00",
               startAt: "2018-05-11T15:00:00",
@@ -140,8 +140,8 @@ describe("SaleHeader", () => {
           expect(absoluteTime).toBeOnTheScreen()
         })
 
-        it("shows the end date if the sale has started", () => {
-          renderWithRelay({
+        it("shows the end date if the sale has started", async () => {
+          await renderWithRelay({
             Sale: () => ({
               endAt: "2018-05-16T15:00:00",
               startAt: "2018-05-09T15:00:00",
@@ -157,10 +157,10 @@ describe("SaleHeader", () => {
       })
 
       describe("relative date label", () => {
-        it("shows minutes and seconds left until bidding starts", () => {
+        it("shows minutes and seconds left until bidding starts", async () => {
           jest.useFakeTimers({ legacyFakeTimers: true })
 
-          renderWithRelay({
+          await renderWithRelay({
             Sale: () => ({
               endAt: "2018-05-16T15:00:00",
               startAt: new Date(Date.now() + 1000 * 60 * 10).toISOString(),
@@ -171,7 +171,7 @@ describe("SaleHeader", () => {
             }),
           })
 
-          act(() => {
+          await act(() => {
             jest.advanceTimersByTime(1000)
           })
 
@@ -179,8 +179,8 @@ describe("SaleHeader", () => {
           expect(relativeTime).toBeOnTheScreen()
         })
 
-        it("shows Days left until bidding starts", () => {
-          renderWithRelay({
+        it("shows Days left until bidding starts", async () => {
+          await renderWithRelay({
             Sale: () => ({
               endAt: "2018-05-16T15:00:00",
               startAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3).toISOString(),
@@ -190,7 +190,7 @@ describe("SaleHeader", () => {
             }),
           })
 
-          act(() => {
+          await act(() => {
             jest.advanceTimersByTime(1000)
           })
 
@@ -198,8 +198,8 @@ describe("SaleHeader", () => {
           expect(relativeTime).toBeOnTheScreen()
         })
 
-        it("shows 6 Days Until Lots Start Closing if the sale started and ends in 6+ days", () => {
-          renderWithRelay({
+        it("shows 6 Days Until Lots Start Closing if the sale started and ends in 6+ days", async () => {
+          await renderWithRelay({
             Sale: () => ({
               endAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 6.5).toISOString(),
               startAt: "2018-05-09T15:00:00",
@@ -209,7 +209,7 @@ describe("SaleHeader", () => {
             }),
           })
 
-          act(() => {
+          await act(() => {
             jest.advanceTimersByTime(1000)
           })
 
@@ -217,9 +217,9 @@ describe("SaleHeader", () => {
           expect(relativeTime).toBeOnTheScreen()
         })
 
-        it("shows 9h37m if the sale started and ends in less than 24 hours but > 1 hour", () => {
+        it("shows 9h37m if the sale started and ends in less than 24 hours but > 1 hour", async () => {
           const nineHoursAndThirtySevenMins = 1000 * 60 * 60 * 9 + 1000 * 60 * 37
-          renderWithRelay({
+          await renderWithRelay({
             Sale: () => ({
               endAt: new Date(Date.now() + nineHoursAndThirtySevenMins).toISOString(),
               startAt: "2018-05-09T20:00:00",
@@ -229,7 +229,7 @@ describe("SaleHeader", () => {
             }),
           })
 
-          act(() => {
+          await act(() => {
             jest.advanceTimersByTime(1000)
           })
 
@@ -237,10 +237,10 @@ describe("SaleHeader", () => {
           expect(relativeTime).toBeOnTheScreen()
         })
 
-        it("shows 37m28s if the sale started and ends in 37+ minutes", () => {
+        it("shows 37m28s if the sale started and ends in 37+ minutes", async () => {
           const ThirtySevenMinsAndTwentyEightSecs = 1000 * 60 * 37 + 28 * 1000
 
-          renderWithRelay({
+          await renderWithRelay({
             Sale: () => ({
               endAt: new Date(Date.now() + ThirtySevenMinsAndTwentyEightSecs).toISOString(),
               startAt: "2018-05-09T15:00:00",
@@ -250,7 +250,7 @@ describe("SaleHeader", () => {
             }),
           })
 
-          act(() => {
+          await act(() => {
             jest.advanceTimersByTime(1000)
           })
 
@@ -258,8 +258,8 @@ describe("SaleHeader", () => {
           expect(relativeTime).toBeOnTheScreen()
         })
 
-        it("shows Lots are closing the sale started and the sale end date has passed", () => {
-          renderWithRelay({
+        it("shows Lots are closing the sale started and the sale end date has passed", async () => {
+          await renderWithRelay({
             Sale: () => ({
               endAt: "2018-05-09T18:00:00",
               startAt: "2018-05-08T15:00:00",
@@ -269,7 +269,7 @@ describe("SaleHeader", () => {
             }),
           })
 
-          act(() => {
+          await act(() => {
             jest.advanceTimersByTime(1000)
           })
 
@@ -277,8 +277,8 @@ describe("SaleHeader", () => {
           expect(relativeTime).toBeOnTheScreen()
         })
 
-        it("shows Closed date if the last lots closed", () => {
-          renderWithRelay({
+        it("shows Closed date if the last lots closed", async () => {
+          await renderWithRelay({
             Sale: () => ({
               endAt: "2018-05-09T18:00:00",
               endedAt: "2018-05-08T18:00:00",

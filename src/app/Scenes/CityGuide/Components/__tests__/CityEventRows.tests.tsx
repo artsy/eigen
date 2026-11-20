@@ -21,8 +21,8 @@ const makeFair = (overrides: Partial<Fair> = {}): Fair =>
   }) as unknown as Fair
 
 describe("renderFairRow", () => {
-  it("renders a plus for a fair with an address", () => {
-    renderWithWrappers(
+  it("renders a plus for a fair with an address", async () => {
+    await renderWithWrappers(
       <AddToItineraryProvider citySlug="london-united-kingdom" cityName="London">
         {renderFairRow(makeFair(), TEST_CONTEXT)}
       </AddToItineraryProvider>
@@ -32,8 +32,8 @@ describe("renderFairRow", () => {
   })
 
   // A stop needs a place to go, same rule the Fair page header's own plus follows.
-  it("renders no plus for a fair with no address", () => {
-    renderWithWrappers(
+  it("renders no plus for a fair with no address", async () => {
+    await renderWithWrappers(
       <AddToItineraryProvider citySlug="london-united-kingdom" cityName="London">
         {renderFairRow(makeFair({ location: null }), TEST_CONTEXT)}
       </AddToItineraryProvider>

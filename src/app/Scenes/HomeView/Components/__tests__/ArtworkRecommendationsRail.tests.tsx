@@ -26,7 +26,7 @@ describe("ArtworkRecommendationsRail", () => {
   })
 
   it("Renders list of recommended artworks without throwing an error", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => mockMe,
     })
 

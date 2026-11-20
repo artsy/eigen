@@ -11,8 +11,8 @@ describe("FiveUpImageLayout", () => {
     "https://example.com/image5.jpg",
   ]
 
-  it("renders five images with the provided URLs", () => {
-    renderWithWrappers(<FiveUpImageLayout imageURLs={mockImageURLs} />)
+  it("renders five images with the provided URLs", async () => {
+    await renderWithWrappers(<FiveUpImageLayout imageURLs={mockImageURLs} />)
 
     // Verify all 5 images are rendered
     const images = screen.getAllByTestId("five-up-image")
@@ -24,9 +24,9 @@ describe("FiveUpImageLayout", () => {
     })
   })
 
-  it("handles less than 5 images by reusing images", () => {
+  it("handles less than 5 images by reusing images", async () => {
     const threeImages = mockImageURLs.slice(0, 3)
-    renderWithWrappers(<FiveUpImageLayout imageURLs={threeImages} />)
+    await renderWithWrappers(<FiveUpImageLayout imageURLs={threeImages} />)
 
     const images = screen.getAllByTestId("five-up-image")
     expect(images).toHaveLength(5)

@@ -28,8 +28,8 @@ describe("SavedSearches", () => {
     `,
   })
 
-  it("renders correctly", () => {
-    renderWithRelay({
+  it("renders correctly", async () => {
+    await renderWithRelay({
       Me: () => ({
         alertsConnection: {
           edges: [
@@ -54,8 +54,8 @@ describe("SavedSearches", () => {
     expect(screen.getByText("KAWS")).toBeTruthy()
   })
 
-  it("renders an empty message if there are no saved search alerts", () => {
-    renderWithRelay({
+  it("renders an empty message if there are no saved search alerts", async () => {
+    await renderWithRelay({
       Me: () => ({
         alertsConnection: {
           edges: [],
@@ -66,8 +66,8 @@ describe("SavedSearches", () => {
     expect(screen.getByText("Get notifications when there’s a match.")).toBeTruthy()
   })
 
-  it("renders the default name placeholder if there is no name for saved search alert", () => {
-    renderWithRelay({
+  it("renders the default name placeholder if there is no name for saved search alert", async () => {
+    await renderWithRelay({
       Me: () => ({
         alertsConnection: {
           edges: [
@@ -91,16 +91,16 @@ describe("SavedSearches", () => {
     expect(screen.getByText("Untitled Alert")).toBeTruthy()
   })
 
-  it("should display Sort By button", () => {
-    renderWithRelay()
+  it("should display Sort By button", async () => {
+    await renderWithRelay()
 
     expect(screen.getByTestId("sortButton")).toBeTruthy()
   })
 
   it("should display sort options when Sort By button is pressed", async () => {
-    renderWithRelay()
+    await renderWithRelay()
 
-    fireEvent.press(screen.getByTestId("sortButton"))
+    await fireEvent.press(screen.getByTestId("sortButton"))
 
     // Wait for the modal to show up
     await flushPromiseQueue()
@@ -110,14 +110,14 @@ describe("SavedSearches", () => {
   })
 
   it("should pass selected sort option to query variables", async () => {
-    const { env } = renderWithRelay()
+    const { env } = await renderWithRelay()
 
-    fireEvent.press(screen.getByTestId("sortButton"))
+    await fireEvent.press(screen.getByTestId("sortButton"))
 
     // Wait for the modal to show up
     await flushPromiseQueue()
 
-    fireEvent.press(screen.getByText("Recently Added"))
+    await fireEvent.press(screen.getByText("Recently Added"))
 
     await waitFor(() => {
       const operation = env.mock.getMostRecentOperation()
@@ -126,10 +126,10 @@ describe("SavedSearches", () => {
   })
 
   describe("tapping on an alert", () => {
-    it("opens the bottom sheet", () => {
+    it("opens the bottom sheet", async () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAlertBottomSheet: true })
 
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({
           alertsConnection: {
             edges: [
@@ -149,7 +149,7 @@ describe("SavedSearches", () => {
         }),
       })
 
-      fireEvent.press(screen.getByText("Banksy"))
+      await fireEvent.press(screen.getByText("Banksy"))
 
       expect(screen.getByText("Edit Alert")).toBeTruthy()
       expect(screen.getByText(/View Artworks/)).toBeTruthy()
@@ -158,8 +158,8 @@ describe("SavedSearches", () => {
   })
 
   describe("swipe to delete", () => {
-    it("shows delete button and delete alert dialog when clicking on the button", () => {
-      renderWithRelay({
+    it("shows delete button and delete alert dialog when clicking on the button", async () => {
+      await renderWithRelay({
         Me: () => ({
           alertsConnection: {
             edges: [
@@ -180,7 +180,7 @@ describe("SavedSearches", () => {
       ])
 
       expect(screen.getByTestId(`delete-button-banksy`)).toBeVisible()
-      fireEvent.press(screen.getByTestId(`delete-button-banksy`))
+      await fireEvent.press(screen.getByTestId(`delete-button-banksy`))
 
       expect(Alert.alert).toHaveBeenCalled()
     })

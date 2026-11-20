@@ -25,16 +25,16 @@ describe("CustomStopSaveControl", () => {
       </AddToItineraryProvider>
     )
 
-  it("offers to add the custom stop to an itinerary", () => {
-    renderIt()
+  it("offers to add the custom stop to an itinerary", async () => {
+    await renderIt()
 
     expect(screen.getByLabelText("Add A Cafe to an itinerary")).toBeTruthy()
   })
 
-  it("tracks the cohesion tappedAddToItinerary event, with no destination entity", () => {
-    renderIt()
+  it("tracks the cohesion tappedAddToItinerary event, with no destination entity", async () => {
+    await renderIt()
 
-    fireEvent.press(screen.getByTestId("custom-stop-save-button"))
+    await fireEvent.press(screen.getByTestId("custom-stop-save-button"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -50,17 +50,17 @@ describe("CustomStopSaveControl", () => {
     )
   })
 
-  it("marks is_curated_guide when rendered on a curated guide's own stop list", () => {
-    renderIt({ isCuratedGuide: true })
+  it("marks is_curated_guide when rendered on a curated guide's own stop list", async () => {
+    await renderIt({ isCuratedGuide: true })
 
-    fireEvent.press(screen.getByTestId("custom-stop-save-button"))
+    await fireEvent.press(screen.getByTestId("custom-stop-save-button"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(expect.objectContaining({ is_curated_guide: true }))
   })
 
   // A plus that did nothing when tapped would be worse than none at all.
-  it("renders nothing without a provider", () => {
-    renderWithWrappers(
+  it("renders nothing without a provider", async () => {
+    await renderWithWrappers(
       <CustomStopSaveControl
         stop={{ title: "A Cafe" }}
         citySlug="london-united-kingdom"

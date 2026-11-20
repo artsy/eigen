@@ -22,8 +22,8 @@ describe("ArticleSectionImageSet", () => {
     `,
   })
 
-  it("renders MINI layout", () => {
-    renderWithRelay({
+  it("renders MINI layout", async () => {
+    await renderWithRelay({
       Article: () => ({
         internalID: "article-id",
         sections: [
@@ -38,15 +38,15 @@ describe("ArticleSectionImageSet", () => {
     expect(screen.getByText("View Slideshow")).toBeOnTheScreen()
     expect(screen.getByTestId("small-image-slideshow")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("View Slideshow"))
+    await fireEvent.press(screen.getByText("View Slideshow"))
 
     expect(navigate).toHaveBeenCalledWith("article/article-id/slideshow", {
       passProps: { coverId: "cover-id" },
     })
   })
 
-  it("renders FULL layout", () => {
-    renderWithRelay({
+  it("renders FULL layout", async () => {
+    await renderWithRelay({
       Article: () => ({
         internalID: "article-id",
         sections: [
@@ -62,7 +62,7 @@ describe("ArticleSectionImageSet", () => {
     expect(screen.queryByTestId("small-image-slideshow")).not.toBeOnTheScreen()
     expect(screen.getByTestId("image-slideshow")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("View Slideshow"))
+    await fireEvent.press(screen.getByText("View Slideshow"))
 
     expect(navigate).toHaveBeenCalledWith("article/article-id/slideshow", {
       passProps: { coverId: "cover-id" },

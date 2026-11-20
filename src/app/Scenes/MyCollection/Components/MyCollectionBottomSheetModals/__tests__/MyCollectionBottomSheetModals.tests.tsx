@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import {
   MyCollectionBottomSheetModalKind,
   MyCollectionBottomSheetModals,
@@ -22,13 +23,13 @@ describe("MyCollectionBottomSheetModals", () => {
     </MyCollectionTabsStoreProvider>
   )
 
-  it("renders nothing", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    expect(() => getByText("Add to My Collection")).toThrow()
+  it("renders nothing", async () => {
+    await renderWithWrappers(<TestRenderer />)
+    expect(() => screen.getByText("Add to My Collection")).toThrow()
   })
 
-  it("renders Add to my collection when the Add view is specified", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer viewKind="Add" />)
-    expect(getByText("Add to My Collection")).toBeTruthy()
+  it("renders Add to my collection when the Add view is specified", async () => {
+    await renderWithWrappers(<TestRenderer viewKind="Add" />)
+    expect(screen.getByText("Add to My Collection")).toBeTruthy()
   })
 })

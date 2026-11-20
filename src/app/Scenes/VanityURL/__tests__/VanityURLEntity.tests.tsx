@@ -51,13 +51,13 @@ describe("VanityURLEntity", () => {
     env = getMockRelayEnvironment()
   })
 
-  it("renders a VanityURLPossibleRedirect when 404", () => {
+  it("renders a VanityURLPossibleRedirect when 404", async () => {
     if (__renderWithPlaceholderTestUtils__) {
       __renderWithPlaceholderTestUtils__.allowFallbacksAtTestTime = true
     }
-    renderWithWrappers(<TestRenderer entity="unknown" slug="a-cool-new-url" />)
+    await renderWithWrappers(<TestRenderer entity="unknown" slug="a-cool-new-url" />)
 
-    act(() => {
+    await act(() => {
       env.mock.resolveMostRecentOperation({ data: undefined, errors: [{ message: "404" }] })
     })
 
@@ -65,31 +65,37 @@ describe("VanityURLEntity", () => {
   })
 
   describe("rendering a profile", () => {
-    it("shows a fair placeholder when entityType is fair", () => {
-      renderWithWrappers(<TestRenderer entity="fair" slugType="profileID" slug="some-fair" />)
+    it("shows a fair placeholder when entityType is fair", async () => {
+      await renderWithWrappers(<TestRenderer entity="fair" slugType="profileID" slug="some-fair" />)
 
       expect(screen.getByTestId("FairPlaceholder")).toBeOnTheScreen()
     })
 
-    it("shows a partner placeholder when entityType is partner", () => {
-      renderWithWrappers(<TestRenderer entity="partner" slugType="profileID" slug="some-partner" />)
+    it("shows a partner placeholder when entityType is partner", async () => {
+      await renderWithWrappers(
+        <TestRenderer entity="partner" slugType="profileID" slug="some-partner" />
+      )
 
       expect(screen.getByTestId("PartnerPlaceholder")).toBeOnTheScreen()
     })
 
-    it("shows a spinner when entityType is unknown", () => {
-      renderWithWrappers(<TestRenderer entity="unknown" slugType="profileID" slug="some-partner" />)
+    it("shows a spinner when entityType is unknown", async () => {
+      await renderWithWrappers(
+        <TestRenderer entity="unknown" slugType="profileID" slug="some-partner" />
+      )
 
       expect(screen.getByTestId("LoadingSpinner")).toBeOnTheScreen()
     })
 
-    it("renders a partner when a partner is returned", () => {
-      renderWithWrappers(<TestRenderer entity="partner" slugType="profileID" slug="some-gallery" />)
+    it("renders a partner when a partner is returned", async () => {
+      await renderWithWrappers(
+        <TestRenderer entity="partner" slugType="profileID" slug="some-gallery" />
+      )
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
         "VanityURLEntityQuery"
       )
 
-      act(() => {
+      await act(() => {
         env.mock.resolveMostRecentOperation((operation) =>
           MockPayloadGenerator.generate(operation, {
             Query: () => ({
@@ -107,12 +113,12 @@ describe("VanityURLEntity", () => {
       expect(screen.getByTestId("PartnerContainer")).toBeOnTheScreen()
     })
 
-    it("renders a fair when a fair is returned", () => {
-      renderWithWrappers(<TestRenderer entity="fair" slugType="profileID" slug="some-fair" />)
+    it("renders a fair when a fair is returned", async () => {
+      await renderWithWrappers(<TestRenderer entity="fair" slugType="profileID" slug="some-fair" />)
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
         "VanityURLEntityQuery"
       )
-      act(() => {
+      await act(() => {
         env.mock.resolveMostRecentOperation((operation) =>
           MockPayloadGenerator.generate(operation, {
             Query: () => ({
@@ -129,14 +135,14 @@ describe("VanityURLEntity", () => {
       expect(screen.getByTestId("Fair")).toBeOnTheScreen()
     })
 
-    it("renders a webview when an unknown profile type is returned", () => {
-      renderWithWrappers(
+    it("renders a webview when an unknown profile type is returned", async () => {
+      await renderWithWrappers(
         <TestRenderer entity="unknown" slugType="profileID" slug="some-unknown-id" />
       )
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
         "VanityURLEntityQuery"
       )
-      act(() => {
+      await act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
           data: {

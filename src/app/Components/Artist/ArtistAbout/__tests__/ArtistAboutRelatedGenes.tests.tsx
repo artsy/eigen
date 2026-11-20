@@ -29,18 +29,18 @@ describe("ArtistAboutRelatedGenes", () => {
     `,
   })
 
-  it("renders", () => {
-    renderWithRelay({ GeneConnection: () => ({ edges: genes }) })
+  it("renders", async () => {
+    await renderWithRelay({ GeneConnection: () => ({ edges: genes }) })
 
     expect(screen.getByText("Related Categories")).toBeOnTheScreen()
     expect(screen.getByText("Gene1")).toBeOnTheScreen()
     expect(screen.getByText("Gene2")).toBeOnTheScreen()
   })
 
-  it("navigates to the gene", () => {
-    renderWithRelay({ GeneConnection: () => ({ edges: genes }) })
+  it("navigates to the gene", async () => {
+    await renderWithRelay({ GeneConnection: () => ({ edges: genes }) })
 
-    fireEvent.press(screen.getByText("Gene2"))
+    await fireEvent.press(screen.getByText("Gene2"))
     expect(navigate).toHaveBeenCalledWith("href2")
   })
 })

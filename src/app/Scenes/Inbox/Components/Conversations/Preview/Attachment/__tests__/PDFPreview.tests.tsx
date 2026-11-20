@@ -2,8 +2,8 @@ import PDFPreview from "app/Scenes/Inbox/Components/Conversations/Preview/Attach
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import "react-native"
 
-it("renders without throwing an error", () => {
-  renderWithWrappers(
+it("renders without throwing an error", async () => {
+  await renderWithWrappers(
     <PDFPreview
       attachment={attachment as any}
       url="/path/to/cats.pdf"

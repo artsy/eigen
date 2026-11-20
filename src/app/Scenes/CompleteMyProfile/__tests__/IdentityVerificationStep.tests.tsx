@@ -45,7 +45,7 @@ describe("IdentityVerificationStep", () => {
   })
 
   it("renders", async () => {
-    renderWithRelay({ Me: () => user })
+    await renderWithRelay({ Me: () => user })
 
     expect(await screen.findByText("Verify your ID")).toBeOnTheScreen()
     expect(
@@ -58,9 +58,9 @@ describe("IdentityVerificationStep", () => {
 
   it("calls handleSendVerification on Send verification button press", async () => {
     const IDVerficationSpy = jest.spyOn(useHandleVerification, "useHandleIDVerification")
-    renderWithRelay({ Me: () => user })
+    await renderWithRelay({ Me: () => user })
 
-    fireEvent.press(await screen.findByText("Send verification Email"))
+    await fireEvent.press(await screen.findByText("Send verification Email"))
 
     expect(setProgressState).toHaveBeenCalledWith({ type: "isIdentityVerified", value: true })
     expect(IDVerficationSpy).toHaveBeenCalledWith(user.internalID)
@@ -68,7 +68,7 @@ describe("IdentityVerificationStep", () => {
 
   it("renders given email already sent", async () => {
     progressState = { isIdentityVerified: true }
-    renderWithRelay({ Me: () => user })
+    await renderWithRelay({ Me: () => user })
 
     expect(await screen.findByText("Email sent")).toBeOnTheScreen()
     expect(screen.getByText(/test@mail.com/)).toBeOnTheScreen()

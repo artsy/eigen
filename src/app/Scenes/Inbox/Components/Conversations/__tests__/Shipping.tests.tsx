@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { Shipping_Test_Query } from "__generated__/Shipping_Test_Query.graphql"
 import { ShippingFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/Shipping"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -27,8 +28,8 @@ describe("ShippingFragmentContainer", () => {
     `,
   })
 
-  it("render CommerceShip", () => {
-    const { getByText } = renderWithRelay({
+  it("render CommerceShip", async () => {
+    await renderWithRelay({
       CommerceOrderConnectionWithTotalCount: () => ({
         edges: [
           {
@@ -47,14 +48,14 @@ describe("ShippingFragmentContainer", () => {
       }),
     })
 
-    expect(getByText("Ship to")).toBeDefined()
-    expect(getByText("Test User")).toBeDefined()
-    expect(getByText("Test Street")).toBeDefined()
-    expect(getByText("City, Country, 5012")).toBeDefined()
+    expect(screen.getByText("Ship to")).toBeDefined()
+    expect(screen.getByText("Test User")).toBeDefined()
+    expect(screen.getByText("Test Street")).toBeDefined()
+    expect(screen.getByText("City, Country, 5012")).toBeDefined()
   })
 
-  it("render CommerceShipArta", () => {
-    const { getByText } = renderWithRelay({
+  it("render CommerceShipArta", async () => {
+    await renderWithRelay({
       CommerceOrderConnectionWithTotalCount: () => ({
         edges: [
           {
@@ -73,14 +74,14 @@ describe("ShippingFragmentContainer", () => {
       }),
     })
 
-    expect(getByText("Ship to")).toBeDefined()
-    expect(getByText("Test User")).toBeDefined()
-    expect(getByText("Test Street")).toBeDefined()
-    expect(getByText("City, Country, 5012")).toBeDefined()
+    expect(screen.getByText("Ship to")).toBeDefined()
+    expect(screen.getByText("Test User")).toBeDefined()
+    expect(screen.getByText("Test Street")).toBeDefined()
+    expect(screen.getByText("City, Country, 5012")).toBeDefined()
   })
 
-  it("render CommercePickup", () => {
-    const { getByText } = renderWithRelay({
+  it("render CommercePickup", async () => {
+    await renderWithRelay({
       CommerceOrderConnectionWithTotalCount: () => ({
         edges: [
           {
@@ -105,9 +106,9 @@ describe("ShippingFragmentContainer", () => {
       }),
     })
 
-    expect(getByText("Pick up (City, State, Country)")).toBeDefined()
+    expect(screen.getByText("Pick up (City, State, Country)")).toBeDefined()
     expect(
-      getByText(
+      screen.getByText(
         "After your order is confirmed, a specialist will contact you within 2 business days to coordinate pickup."
       )
     ).toBeDefined()

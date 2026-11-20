@@ -57,16 +57,16 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("ComponentName", () => {
-  it("renders correctly", () => {
-    renderWithWrappers(<Component prop="value" />)
+  it("renders correctly", async () => {
+    await renderWithWrappers(<Component prop="value" />)
 
     expect(screen.getByText("Expected Text")).toBeOnTheScreen()
   })
 
-  it("handles user interaction", () => {
-    renderWithWrappers(<Component />)
+  it("handles user interaction", async () => {
+    await renderWithWrappers(<Component />)
 
-    fireEvent.press(screen.getByTestId("button-id"))
+    await fireEvent.press(screen.getByTestId("button-id"))
 
     expect(mockNavigate).toHaveBeenCalledWith("/path")
   })
@@ -76,7 +76,7 @@ describe("ComponentName", () => {
 **Wrapper Props:**
 
 ```typescript
-renderWithWrappers(<Component />, {
+await renderWithWrappers(<Component />, {
   skipRelay: true,           // Skip Relay environment provider
   includeNavigation: true,   // Include navigation context
   includeArtworkLists: true  // Include artwork lists context
@@ -104,8 +104,8 @@ describe("RelayComponent", () => {
     `,
   })
 
-  it("renders data from GraphQL", () => {
-    renderWithRelay({
+  it("renders data from GraphQL", async () => {
+    await renderWithRelay({
       Me: () => ({
         name: "John Doe",
         email: "john@example.com",
@@ -115,10 +115,10 @@ describe("RelayComponent", () => {
     expect(screen.getByText("John Doe")).toBeOnTheScreen()
   })
 
-  it("handles error states", () => {
-    const { mockRejectLastOperation } = renderWithRelay()
+  it("handles error states", async () => {
+    const { mockRejectLastOperation } = await renderWithRelay()
 
-    mockRejectLastOperation(new Error("Network error"))
+    await mockRejectLastOperation(new Error("Network error"))
 
     expect(screen.getByText("Error message")).toBeOnTheScreen()
   })
@@ -131,7 +131,7 @@ describe("RelayComponent", () => {
 import { mockEdges } from "app/utils/tests/mockEdges"
 
 // Mock paginated data
-renderWithRelay({
+await renderWithRelay({
   Me: () => ({
     artworks: {
       edges: mockEdges(10), // Creates 10 edge nodes
@@ -149,10 +149,10 @@ Navigation is globally mocked. Use `mockNavigate`:
 ```typescript
 import { navigate } from "app/system/navigation/navigate"
 
-it("navigates on button press", () => {
-  renderWithWrappers(<Component />)
+it("navigates on button press", async () => {
+  await renderWithWrappers(<Component />)
 
-  fireEvent.press(screen.getByText("View Details"))
+  await fireEvent.press(screen.getByText("View Details"))
 
   expect(navigate).toHaveBeenCalledWith("/artwork/artwork-slug")
 })
@@ -165,10 +165,10 @@ To test these, the best way is something like the following:
 ```ts
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 
-it("tracks analytics event when button is tapped", () => {
-  const { getByText } = renderWithWrappers(<TestScreen />)
+it("tracks analytics event when button is tapped", async () => {
+  await renderWithWrappers(<TestScreen />)
 
-  fireEvent.press(getByText("my button"))
+  await fireEvent.press(screen.getByText("my button"))
 
   expect(mockTrackEvent).toHaveBeenCalledTimes(1)
   expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
@@ -196,7 +196,7 @@ Use `findBy*` for async operations:
 
 ```typescript
 it("loads data asynchronously", async () => {
-  renderWithRelay()
+  await renderWithRelay()
 
   expect(await screen.findByText("Loaded Data")).toBeOnTheScreen()
 })
@@ -221,13 +221,15 @@ These are still around but deprecated, so avoid them in new tests:
 - `resolveMostRecentRelayOperation` → use `setupTestWrapper`
 - `flushPromiseQueue` → use `findBy*`
 
-### 3. Keep tests ready for React Native Testing Library v14
+### 3. Await rendering and events (React Native Testing Library v14)
 
-v14 drops `react-test-renderer`, and queries only see host elements (View, Text, TextInput…), never composite components. ESLint enforces the first two rules below in test files.
+Rendering and events are async, and queries only see host elements (View, Text, TextInput…), never composite components.
 
+- `await` every `renderWithWrappers`, `renderWithRelay`, `renderHook`, `rerender`, `unmount`, `fireEvent.*` and `act` call, plus `mockResolveLastOperation` / `mockRejectLastOperation`. `@typescript-eslint/no-floating-promises` flags a missing `await` in test files.
+- Don't wrap `mockResolveLastOperation` / `mockRejectLastOperation` in `act` (they already use it), and don't call them inside a `waitFor` callback, because `waitFor` retries it. Wait for the operation, then resolve it.
 - Never import from `react-test-renderer`. Import `act` from `@testing-library/react-native`.
-- Never use `UNSAFE_getByType`, `UNSAFE_*ByProps`, `UNSAFE_root`, or `*ByA11yHint` (use `*ByHintText`).
-- Don't walk the tree (`.root`, `findAllByType`, `toJSON()`) or call `element.props.onPress()` directly. Use `fireEvent`.
+- Never use `UNSAFE_getByType`, `UNSAFE_*ByProps`, `UNSAFE_root`, or `*ByA11yHint` (use `*ByHintText`). ESLint flags these in test files.
+- Don't walk the tree (`.root`, `findAllByType`) or call `element.props.onPress()` directly. Use `fireEvent`.
 - Assert on what the user sees, not on a child component's props. Query priority: `getByRole` > `getByLabelText` > `getByPlaceholderText` > `getByText` > `getByTestId`.
 - When asserting on handler arguments from `fireEvent.press` / `fireEvent.scroll`, use `expect.objectContaining(...)`.
 - Text in mocks must be wrapped in `<Text>`.
@@ -273,13 +275,13 @@ describe("Component/Feature Name", () => {
   })
 
   describe("specific functionality", () => {
-    it("does something specific", () => {
+    it("does something specific", async () => {
       // Arrange: Set up test data and render component
       const props = { title: "Test" }
-      renderWithWrappers(<Component {...props} />)
+      await renderWithWrappers(<Component {...props} />)
 
       // Act: Perform user action or trigger behavior
-      fireEvent.press(screen.getByTestId("button"))
+      await fireEvent.press(screen.getByTestId("button"))
 
       // Assert: Verify expected outcome
       expect(mockNavigate).toHaveBeenCalledWith("/path")

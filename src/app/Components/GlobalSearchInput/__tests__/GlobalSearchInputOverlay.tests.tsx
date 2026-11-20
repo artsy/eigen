@@ -48,32 +48,32 @@ describe("GlobalSearchInputOverlay", () => {
   })
 
   describe("the Art Assistant entry point", () => {
-    it("is hidden when its experiment is off", () => {
+    it("is hidden when its experiment is off", async () => {
       mockUseExperimentFlag.mockReturnValue(false)
 
-      renderOverlay()
+      await renderOverlay()
 
       expect(screen.queryByTestId("art-assistant-search-overlay-button")).not.toBeOnTheScreen()
     })
 
-    it("dismisses the overlay and navigates to Art Assistant", () => {
+    it("dismisses the overlay and navigates to Art Assistant", async () => {
       jest.mocked(useEnableArtAssistant).mockReturnValue(true)
       const hideModal = jest.fn()
 
-      renderOverlay({ hideModal })
+      await renderOverlay({ hideModal })
 
-      fireEvent.press(screen.getByTestId("art-assistant-search-overlay-button"))
+      await fireEvent.press(screen.getByTestId("art-assistant-search-overlay-button"))
 
       expect(hideModal).toHaveBeenCalledTimes(1)
       expect(navigate).toHaveBeenCalledWith("/art-assistant")
     })
 
-    it("stays available while the user types a search query", () => {
+    it("stays available while the user types a search query", async () => {
       jest.mocked(useEnableArtAssistant).mockReturnValue(true)
 
-      renderOverlay()
+      await renderOverlay()
 
-      fireEvent.changeText(
+      await fireEvent.changeText(
         screen.getByLabelText("Search artists, artworks, galleries etc."),
         "banksy"
       )
@@ -83,29 +83,29 @@ describe("GlobalSearchInputOverlay", () => {
   })
 
   describe("the camera icon inside the input", () => {
-    it("carries the icon over from the collapsed search bar", () => {
+    it("carries the icon over from the collapsed search bar", async () => {
       mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
 
-      renderOverlay()
+      await renderOverlay()
 
       expect(screen.getByTestId("search-overlay-camera-icon")).toBeOnTheScreen()
     })
 
-    it("hides the icon when onyx_artsy-lens is off", () => {
+    it("hides the icon when onyx_artsy-lens is off", async () => {
       mockUseExperimentFlag.mockReturnValue(false)
 
-      renderOverlay()
+      await renderOverlay()
 
       expect(screen.queryByTestId("search-overlay-camera-icon")).not.toBeOnTheScreen()
     })
 
     // iOS draws its own clear button in this exact spot once there's text.
-    it("yields the slot once there is a query for the clear button to clear", () => {
+    it("yields the slot once there is a query for the clear button to clear", async () => {
       mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
 
-      renderOverlay()
+      await renderOverlay()
 
-      fireEvent.changeText(
+      await fireEvent.changeText(
         screen.getByLabelText("Search artists, artworks, galleries etc."),
         "banksy"
       )
@@ -113,24 +113,24 @@ describe("GlobalSearchInputOverlay", () => {
       expect(screen.queryByTestId("search-overlay-camera-icon")).not.toBeOnTheScreen()
     })
 
-    it("dismisses the overlay and navigates to /lens on press", () => {
+    it("dismisses the overlay and navigates to /lens on press", async () => {
       mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
       const hideModal = jest.fn()
 
-      renderOverlay({ hideModal })
+      await renderOverlay({ hideModal })
 
-      fireEvent.press(screen.getByTestId("search-overlay-camera-icon"))
+      await fireEvent.press(screen.getByTestId("search-overlay-camera-icon"))
 
       expect(hideModal).toHaveBeenCalledTimes(1)
       expect(navigate).toHaveBeenCalledWith("/lens")
     })
 
-    it("reports the tap against the overlay, not the search bar", () => {
+    it("reports the tap against the overlay, not the search bar", async () => {
       mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
 
-      renderOverlay()
+      await renderOverlay()
 
-      fireEvent.press(screen.getByTestId("search-overlay-camera-icon"))
+      await fireEvent.press(screen.getByTestId("search-overlay-camera-icon"))
 
       expect(mockTrackEvent).toHaveBeenCalledExactlyOnceWith({
         action: "tappedSearchByImage",
@@ -150,35 +150,35 @@ describe("GlobalSearchInputOverlay — Art Assistant entry point", () => {
     jest.mocked(useEnableArtAssistant).mockReturnValue(true)
   })
 
-  it("dismisses the overlay and navigates to the Art Assistant on press", () => {
+  it("dismisses the overlay and navigates to the Art Assistant on press", async () => {
     const hideModal = jest.fn()
 
-    renderOverlay({ hideModal })
+    await renderOverlay({ hideModal })
 
-    fireEvent.press(screen.getByTestId("art-assistant-search-overlay-button"))
+    await fireEvent.press(screen.getByTestId("art-assistant-search-overlay-button"))
 
     expect(hideModal).toHaveBeenCalledTimes(1)
     expect(navigate).toHaveBeenCalledWith("/art-assistant")
   })
 
-  it("prefills Art Assistant with the search query", () => {
-    renderOverlay()
+  it("prefills Art Assistant with the search query", async () => {
+    await renderOverlay()
 
-    fireEvent.changeText(
+    await fireEvent.changeText(
       screen.getByLabelText("Search artists, artworks, galleries etc."),
       " moody seascapes "
     )
-    fireEvent.press(screen.getByTestId("art-assistant-search-overlay-button"))
+    await fireEvent.press(screen.getByTestId("art-assistant-search-overlay-button"))
 
     expect(navigate).toHaveBeenCalledWith("/art-assistant", {
       passProps: { initialPrompt: "moody seascapes" },
     })
   })
 
-  it("reports the tap against the overlay, not the search bar", () => {
-    renderOverlay()
+  it("reports the tap against the overlay, not the search bar", async () => {
+    await renderOverlay()
 
-    fireEvent.press(screen.getByTestId("art-assistant-search-overlay-button"))
+    await fireEvent.press(screen.getByTestId("art-assistant-search-overlay-button"))
 
     expect(mockTrackEvent).toHaveBeenCalledExactlyOnceWith({
       action: "tappedArtAssistant",

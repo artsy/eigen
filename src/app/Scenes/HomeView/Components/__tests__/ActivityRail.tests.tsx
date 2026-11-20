@@ -20,8 +20,8 @@ describe("ActivityRail", () => {
     `,
   })
 
-  it("renders", () => {
-    renderWithRelay({
+  it("renders", async () => {
+    await renderWithRelay({
       Viewer: () => ({
         notificationsConnection: {
           edges: [{ node: { internalID: "id-1", notificationType: "ARTWORK_ALERT" } }],
@@ -33,8 +33,8 @@ describe("ActivityRail", () => {
     expect(screen.getByText(/mock-value-for-field-"headline"/)).toBeOnTheScreen()
   })
 
-  it("handles header press", () => {
-    renderWithRelay({
+  it("handles header press", async () => {
+    await renderWithRelay({
       Viewer: () => ({
         notificationsConnection: {
           edges: [{ node: { internalID: "id-1", notificationType: "ARTWORK_ALERT" } }],
@@ -42,7 +42,7 @@ describe("ActivityRail", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("Latest Activity Rail"))
+    await fireEvent.press(screen.getByText("Latest Activity Rail"))
 
     expect(navigate).toHaveBeenCalledWith("/notifications")
 
@@ -61,8 +61,8 @@ describe("ActivityRail", () => {
     })
   })
 
-  it("handles See All press", () => {
-    renderWithRelay({
+  it("handles See All press", async () => {
+    await renderWithRelay({
       Viewer: () => ({
         notificationsConnection: {
           edges: [{ node: { internalID: "id-1", notificationType: "ARTWORK_ALERT" } }],
@@ -70,7 +70,7 @@ describe("ActivityRail", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("See All"))
+    await fireEvent.press(screen.getByText("See All"))
 
     expect(navigate).toHaveBeenCalledWith("/notifications")
 
@@ -89,8 +89,8 @@ describe("ActivityRail", () => {
     })
   })
 
-  it("handles item press", () => {
-    renderWithRelay({
+  it("handles item press", async () => {
+    await renderWithRelay({
       Viewer: () => ({
         notificationsConnection: {
           edges: [{ node: { internalID: "id-1", notificationType: "ARTWORK_ALERT" } }],
@@ -99,7 +99,7 @@ describe("ActivityRail", () => {
     })
     ;(navigate as jest.Mock).mockClear()
 
-    fireEvent.press(screen.getByText(/mock-value-for-field-"headline"/))
+    await fireEvent.press(screen.getByText(/mock-value-for-field-"headline"/))
 
     expect(navigate).toHaveBeenCalledWith("/notification/id-1")
 
@@ -115,8 +115,8 @@ describe("ActivityRail", () => {
   })
 
   describe("when there are no notifications", () => {
-    it("does not render", () => {
-      renderWithRelay({
+    it("does not render", async () => {
+      await renderWithRelay({
         Viewer: () => ({
           notificationsConnection: { edges: [] },
         }),

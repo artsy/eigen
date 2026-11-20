@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { screen, waitFor } from "@testing-library/react-native"
 import { ArticlesScreen } from "app/Scenes/Articles/Articles"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
@@ -8,7 +8,7 @@ describe("Articles", () => {
   })
 
   it("renders articles", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Query: () => ({
         articlesConnection: {
           edges: [
@@ -29,9 +29,10 @@ describe("Articles", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("articles-screen-placeholder"), {
-      timeout: 15000,
-    })
+    await waitFor(
+      () => expect(screen.queryByTestId("articles-screen-placeholder")).not.toBeOnTheScreen(),
+      { timeout: 15000 }
+    )
 
     expect(screen.getByText("Sebastián Meltz-Collazo")).toBeTruthy()
     expect(

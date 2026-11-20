@@ -1,9 +1,10 @@
+import { screen } from "@testing-library/react-native"
 import { EntityList } from "app/Components/EntityList/EntityList"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("EntityList", () => {
-  it("correctly renders one item", () => {
-    const { queryByText } = renderWithWrappers(
+  it("correctly renders one item", async () => {
+    await renderWithWrappers(
       <EntityList
         prefix="Works by"
         list={[
@@ -20,12 +21,12 @@ describe("EntityList", () => {
       />
     )
 
-    expect(queryByText("Works by")).toBeTruthy()
-    expect(queryByText("Foxy Production")).toBeTruthy()
+    expect(screen.getByText("Works by")).toBeTruthy()
+    expect(screen.getByText("Foxy Production")).toBeTruthy()
   })
 
-  it("correctly renders multiple items", () => {
-    const { queryByText } = renderWithWrappers(
+  it("correctly renders multiple items", async () => {
+    await renderWithWrappers(
       <EntityList
         prefix="Works by"
         list={[
@@ -50,7 +51,7 @@ describe("EntityList", () => {
 
     const textArr = ["Works by", "Zarouhie Abdalian,", "Derya Akay", "and", "18 others"]
     textArr.forEach((text) => {
-      expect(queryByText(text)).toBeTruthy()
+      expect(screen.getByText(text)).toBeTruthy()
     })
   })
 })

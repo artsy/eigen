@@ -27,10 +27,10 @@ describe("SearchArtworksGrid", () => {
     },
   })
 
-  it("tracks filter modal opening", () => {
-    renderWithRelay()
+  it("tracks filter modal opening", async () => {
+    await renderWithRelay()
 
-    fireEvent.press(screen.getByText("Sort & Filter"))
+    await fireEvent.press(screen.getByText("Sort & Filter"))
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       [
         {
@@ -45,14 +45,14 @@ describe("SearchArtworksGrid", () => {
     `)
   })
 
-  it("tracks filter modal closing", () => {
-    renderWithRelay()
+  it("tracks filter modal closing", async () => {
+    await renderWithRelay()
 
     // Open the filter modal first so that it is mounted, then dismiss it
-    fireEvent.press(screen.getByText("Sort & Filter"))
+    await fireEvent.press(screen.getByText("Sort & Filter"))
     mockTrackEvent.mockClear()
 
-    fireEvent(screen.getByTestId("artwork-filter-navigator"), "dismiss")
+    await fireEvent(screen.getByTestId("artwork-filter-navigator"), "dismiss")
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       [
@@ -68,8 +68,8 @@ describe("SearchArtworksGrid", () => {
     `)
   })
 
-  it('should display "Sort & Filter" label by default', () => {
-    renderWithRelay()
+  it('should display "Sort & Filter" label by default', async () => {
+    await renderWithRelay()
 
     expect(screen.getByText("Sort & Filter")).toBeOnTheScreen()
   })

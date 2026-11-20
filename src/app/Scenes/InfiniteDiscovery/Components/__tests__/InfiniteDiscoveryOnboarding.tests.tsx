@@ -32,22 +32,22 @@ describe("InfiniteDiscoveryOnboarding", () => {
       GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     })
 
-    it("shows the overlay immediately", () => {
-      renderWithWrappers(<InfiniteDiscoveryOnboarding artworks={[]} />)
+    it("shows the overlay immediately", async () => {
+      await renderWithWrappers(<InfiniteDiscoveryOnboarding artworks={[]} />)
 
       expect(screen.getByText("Tap to start swiping")).toBeOnTheScreen()
     })
 
-    it("tracks the onboarding view", () => {
-      renderWithWrappers(<InfiniteDiscoveryOnboarding artworks={[]} />)
+    it("tracks the onboarding view", async () => {
+      await renderWithWrappers(<InfiniteDiscoveryOnboarding artworks={[]} />)
 
       expect(mockTrack.onboardingView).toHaveBeenCalled()
     })
 
-    it("shows the onboarding-specific instructions", () => {
-      renderWithWrappers(<InfiniteDiscoveryOnboarding artworks={[]} />)
+    it("shows the onboarding-specific instructions", async () => {
+      await renderWithWrappers(<InfiniteDiscoveryOnboarding artworks={[]} />)
 
-      act(() => {
+      await act(() => {
         jest.runAllTimers()
       })
 
@@ -57,23 +57,23 @@ describe("InfiniteDiscoveryOnboarding", () => {
   })
 
   describe("when not in new user onboarding session", () => {
-    it("shows the overlay after 1 second on first visit", () => {
-      renderWithWrappers(<InfiniteDiscoveryOnboarding artworks={[]} />)
+    it("shows the overlay after 1 second on first visit", async () => {
+      await renderWithWrappers(<InfiniteDiscoveryOnboarding artworks={[]} />)
 
       expect(screen.queryByText("Tap to get started")).not.toBeOnTheScreen()
 
-      act(() => {
+      await act(() => {
         jest.advanceTimersByTime(1000)
       })
 
       expect(screen.getByText("Tap to get started")).toBeOnTheScreen()
     })
 
-    it("does not show the overlay for a returning visitor", () => {
+    it("does not show the overlay for a returning visitor", async () => {
       GlobalStore.actions.infiniteDiscovery.setHasInteractedWithOnboarding(true)
-      renderWithWrappers(<InfiniteDiscoveryOnboarding artworks={[]} />)
+      await renderWithWrappers(<InfiniteDiscoveryOnboarding artworks={[]} />)
 
-      act(() => {
+      await act(() => {
         jest.runAllTimers()
       })
 

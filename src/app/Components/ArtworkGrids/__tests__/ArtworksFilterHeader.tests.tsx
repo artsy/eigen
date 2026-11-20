@@ -5,22 +5,26 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 describe("ArtistSeriesFilterHeader", () => {
   const onPress = jest.fn()
 
-  it("renders without throwing an error and shows correct artworks count", () => {
-    renderWithWrappers(<ArtworksFilterHeader selectedFiltersCount={3} onFilterPress={onPress} />)
+  it("renders without throwing an error and shows correct artworks count", async () => {
+    await renderWithWrappers(
+      <ArtworksFilterHeader selectedFiltersCount={3} onFilterPress={onPress} />
+    )
 
     expect(screen.getByText("Sort & Filter")).toBeOnTheScreen()
     expect(screen.getByText("• 3")).toBeOnTheScreen()
   })
 
-  it("should call `onFilterPress` when `sort & filter` button is pressed", () => {
-    renderWithWrappers(<ArtworksFilterHeader selectedFiltersCount={3} onFilterPress={onPress} />)
+  it("should call `onFilterPress` when `sort & filter` button is pressed", async () => {
+    await renderWithWrappers(
+      <ArtworksFilterHeader selectedFiltersCount={3} onFilterPress={onPress} />
+    )
 
-    fireEvent.press(screen.getByText("Sort & Filter"))
+    await fireEvent.press(screen.getByText("Sort & Filter"))
     expect(onPress).toBeCalled()
   })
 
-  it("Should render the custom title text if passed as prop", () => {
-    renderWithWrappers(
+  it("Should render the custom title text if passed as prop", async () => {
+    await renderWithWrappers(
       <ArtworksFilterHeader selectedFiltersCount={3} onFilterPress={onPress} title="Custom title" />
     )
 

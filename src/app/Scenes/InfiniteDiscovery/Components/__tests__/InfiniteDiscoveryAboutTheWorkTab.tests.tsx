@@ -31,10 +31,10 @@ describe("AboutTheWorkTab", () => {
     preloaded: true,
   })
 
-  it("renders all artwork details when available", () => {
-    const { mockResolveLastOperation } = renderWithRelay()
+  it("renders all artwork details when available", async () => {
+    const { mockResolveLastOperation } = await renderWithRelay()
 
-    mockResolveLastOperation({ Artwork: () => artwork })
+    await mockResolveLastOperation({ Artwork: () => artwork })
 
     expect(screen.getByText("Oil on canvas")).toBeOnTheScreen()
     expect(screen.getByText("20 × 24 in | 50.8 × 61 cm")).toBeOnTheScreen()
@@ -48,9 +48,9 @@ describe("AboutTheWorkTab", () => {
   })
 
   it("renders certificate of authenticity section when available", async () => {
-    const { mockResolveLastOperation } = renderWithRelay()
+    const { mockResolveLastOperation } = await renderWithRelay()
 
-    mockResolveLastOperation({ Artwork: () => artwork })
+    await mockResolveLastOperation({ Artwork: () => artwork })
 
     const container = await screen.findByTestId("authenticity-certificate")
     expect(within(container).getByText("Includes a")).toBeOnTheScreen()
@@ -58,9 +58,9 @@ describe("AboutTheWorkTab", () => {
   })
 
   it("does not render optional fields when data is missing", async () => {
-    const { mockResolveLastOperation } = renderWithRelay()
+    const { mockResolveLastOperation } = await renderWithRelay()
 
-    mockResolveLastOperation({
+    await mockResolveLastOperation({
       Artwork: () => ({
         ...artwork,
         hasCertificateOfAuthenticity: false,
@@ -80,19 +80,19 @@ describe("AboutTheWorkTab", () => {
     expect(screen.queryByText("Publisher")).not.toBeOnTheScreen()
   })
 
-  it("shows frame not included when isFramed is false", () => {
-    const { mockResolveLastOperation } = renderWithRelay()
+  it("shows frame not included when isFramed is false", async () => {
+    const { mockResolveLastOperation } = await renderWithRelay()
 
-    mockResolveLastOperation({ Artwork: () => ({ ...artwork, isFramed: false }) })
+    await mockResolveLastOperation({ Artwork: () => ({ ...artwork, isFramed: false }) })
 
     expect(screen.getByText("Frame not included")).toBeOnTheScreen()
   })
 
   describe("framed dimensions", () => {
-    it("shows framed dimensions when data is available", () => {
-      const { mockResolveLastOperation } = renderWithRelay()
+    it("shows framed dimensions when data is available", async () => {
+      const { mockResolveLastOperation } = await renderWithRelay()
 
-      mockResolveLastOperation({
+      await mockResolveLastOperation({
         Artwork: () => ({ ...artwork, framedDimensions: { in: "24 × 28 in", cm: "61 × 71.1 cm" } }),
       })
 
@@ -100,10 +100,10 @@ describe("AboutTheWorkTab", () => {
       expect(screen.getByText("24 × 28 in | 61 × 71.1 cm")).toBeOnTheScreen()
     })
 
-    it("does not show framed dimensions section when framed dimensions data is missing", () => {
-      const { mockResolveLastOperation } = renderWithRelay()
+    it("does not show framed dimensions section when framed dimensions data is missing", async () => {
+      const { mockResolveLastOperation } = await renderWithRelay()
 
-      mockResolveLastOperation({
+      await mockResolveLastOperation({
         Artwork: () => ({ ...artwork, framedDimensions: null }),
       })
 
@@ -114,8 +114,8 @@ describe("AboutTheWorkTab", () => {
 
   describe("classification and authenticity section", () => {
     it("shows attribution class when available", async () => {
-      const { mockResolveLastOperation } = renderWithRelay()
-      mockResolveLastOperation({ Artwork: () => artwork })
+      const { mockResolveLastOperation } = await renderWithRelay()
+      await mockResolveLastOperation({ Artwork: () => artwork })
 
       // Ditto
       // mockResolveLastOperation({})
@@ -127,8 +127,8 @@ describe("AboutTheWorkTab", () => {
     })
 
     it("shows certificate icon when work has certificate and is not biddable", async () => {
-      const { mockResolveLastOperation } = renderWithRelay()
-      mockResolveLastOperation({ Artwork: () => artwork })
+      const { mockResolveLastOperation } = await renderWithRelay()
+      await mockResolveLastOperation({ Artwork: () => artwork })
 
       // Ditto
       // mockResolveLastOperation({})
@@ -137,18 +137,18 @@ describe("AboutTheWorkTab", () => {
       expect(screen.getByTestId("certificate-icon")).toBeOnTheScreen()
     })
 
-    it("does not show certificate icon for biddable works", () => {
-      renderWithRelay({ Artwork: () => ({ ...artwork, isBiddable: true }) })
+    it("does not show certificate icon for biddable works", async () => {
+      await renderWithRelay({ Artwork: () => ({ ...artwork, isBiddable: true }) })
 
       expect(screen.queryByTestId("certificate-icon")).not.toBeOnTheScreen()
     })
   })
 
   describe("artist follow tracking", () => {
-    it("tracks the artwork's context when an artist is followed", () => {
-      const { mockResolveLastOperation } = renderWithRelay()
+    it("tracks the artwork's context when an artist is followed", async () => {
+      const { mockResolveLastOperation } = await renderWithRelay()
 
-      mockResolveLastOperation({
+      await mockResolveLastOperation({
         Artwork: () => ({ ...artwork, internalID: "artwork-internal-id", slug: "artwork-slug" }),
         Artist: () => ({
           internalID: "artist-internal-id",
@@ -157,9 +157,9 @@ describe("AboutTheWorkTab", () => {
         }),
       })
 
-      fireEvent.press(screen.getByText("Follow"))
+      await fireEvent.press(screen.getByText("Follow"))
 
-      mockResolveLastOperation({
+      await mockResolveLastOperation({
         Artist: () => ({ isFollowed: true }),
       })
 

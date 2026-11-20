@@ -3,16 +3,16 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ComponentName } from "../ComponentName"
 
 describe("ComponentName", () => {
-  it("renders correctly", () => {
-    renderWithWrappers(<ComponentName />)
+  it("renders correctly", async () => {
+    await renderWithWrappers(<ComponentName />)
 
     expect(screen.getByText("Expected Text")).toBeOnTheScreen()
   })
 
-  it("handles user interaction", () => {
-    renderWithWrappers(<ComponentName />)
+  it("handles user interaction", async () => {
+    await renderWithWrappers(<ComponentName />)
 
-    fireEvent.press(screen.getByTestId("button-id"))
+    await fireEvent.press(screen.getByTestId("button-id"))
 
     // Add assertions here
   })

@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import {
   SavedSearchButtonV2,
   SavedSearchButtonV2Props,
@@ -18,23 +18,23 @@ describe("SavedSearchButtonV2", () => {
     )
   }
 
-  it("renders without error", () => {
-    renderWithWrappers(<TestWrapper />)
+  it("renders without error", async () => {
+    await renderWithWrappers(<TestWrapper />)
   })
 
-  it('should call "onPress" handler when it is pressed', () => {
+  it('should call "onPress" handler when it is pressed', async () => {
     const onPressMock = jest.fn()
-    const { getByText } = renderWithWrappers(<TestWrapper onPress={onPressMock} />)
+    await renderWithWrappers(<TestWrapper onPress={onPressMock} />)
 
-    fireEvent.press(getByText("Create Alert"))
+    await fireEvent.press(screen.getByText("Create Alert"))
 
     expect(onPressMock).toBeCalled()
   })
 
-  it("should correctly track event", () => {
-    const { getByText } = renderWithWrappers(<TestWrapper />)
+  it("should correctly track event", async () => {
+    await renderWithWrappers(<TestWrapper />)
 
-    fireEvent.press(getByText("Create Alert"))
+    await fireEvent.press(screen.getByText("Create Alert"))
 
     expect(mockTrackEvent).toBeCalledWith({
       action: "tappedCreateAlert",

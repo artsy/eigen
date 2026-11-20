@@ -24,13 +24,13 @@ describe("ArtworkTombstone", () => {
   })
 
   it("renders fields correctly", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         ...artworkTombstoneArtwork,
       }),
     })
 
-    expect(screen.queryByText("Hello im a title, 1992")).toBeTruthy()
+    expect(screen.getByText("Hello im a title, 1992")).toBeTruthy()
 
     expect(screen.queryByText("Lot 8")).toBeNull()
     expect(screen.queryByText("Cool Auction")).toBeNull()
@@ -38,8 +38,8 @@ describe("ArtworkTombstone", () => {
   })
 
   describe("for an artwork in a sale without cascading end times", () => {
-    it("renders the notification banner", () => {
-      renderWithRelay({
+    it("renders the notification banner", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           ...artworkTombstoneArtwork,
         }),
@@ -50,19 +50,19 @@ describe("ArtworkTombstone", () => {
   })
 
   describe("Sale Message for not for sale artworks", () => {
-    it("should render the sale message when artwork is not for sale", () => {
-      renderWithRelay({
+    it("should render the sale message when artwork is not for sale", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           isForSale: false,
           saleMessage: "On loan",
         }),
       })
 
-      expect(screen.queryByText("On loan")).toBeTruthy()
+      expect(screen.getByText("On loan")).toBeTruthy()
     })
 
-    it("should not render the sale message when artwork is not for sale", () => {
-      renderWithRelay({
+    it("should not render the sale message when artwork is not for sale", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           isForSale: true,
           saleMessage: "For sale",

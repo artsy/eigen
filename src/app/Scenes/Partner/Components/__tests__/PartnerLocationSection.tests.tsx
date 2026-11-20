@@ -21,7 +21,7 @@ describe("PartnerLoationSection", () => {
   })
 
   it("renders the locations text correctly", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Partner: () => ({
         name: "Gagosian",
         locations: {

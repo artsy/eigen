@@ -33,60 +33,60 @@ describe("SellPriceSection", () => {
     jest.restoreAllMocks()
   })
 
-  it("shows the recommended range for the artwork", () => {
-    renderWithWrappers(<TestPriceSection />)
+  it("shows the recommended range for the artwork", async () => {
+    await renderWithWrappers(<TestPriceSection />)
 
     expect(screen.getByText("US$3,000–3,400")).toBeOnTheScreen()
     expect(screen.getByText("Based on comparable sales by Theo Bardsley")).toBeOnTheScreen()
   })
 
-  it("formats the asking price and updates the payout", () => {
-    renderWithWrappers(<TestPriceSection />)
+  it("formats the asking price and updates the payout", async () => {
+    await renderWithWrappers(<TestPriceSection />)
 
-    fireEvent.changeText(screen.getByLabelText("Asking price"), "03,200")
+    await fireEvent.changeText(screen.getByLabelText("Asking price"), "03,200")
 
     expect(screen.getByLabelText("Asking price")).toHaveDisplayValue("3,200")
     expect(screen.getByText("−US$480")).toBeOnTheScreen()
     expect(screen.getByText("US$2,720")).toBeOnTheScreen()
   })
 
-  it("drops the cents from a pasted price", () => {
-    renderWithWrappers(<TestPriceSection />)
+  it("drops the cents from a pasted price", async () => {
+    await renderWithWrappers(<TestPriceSection />)
 
-    fireEvent.changeText(screen.getByLabelText("Asking price"), "3,200.50")
+    await fireEvent.changeText(screen.getByLabelText("Asking price"), "3,200.50")
 
     expect(screen.getByLabelText("Asking price")).toHaveDisplayValue("3,200")
   })
 
-  it("keeps the price under a billion dollars", () => {
-    renderWithWrappers(<TestPriceSection />)
+  it("keeps the price under a billion dollars", async () => {
+    await renderWithWrappers(<TestPriceSection />)
 
     expect(screen.getByLabelText("Asking price")).toHaveProp("maxLength", "999,999,999".length)
   })
 
-  it("locks the price until a condition is picked, and says why", () => {
-    renderWithWrappers(<TestPriceSection rating={null} />)
+  it("locks the price until a condition is picked, and says why", async () => {
+    await renderWithWrappers(<TestPriceSection rating={null} />)
 
     expect(screen.getByLabelText("Asking price")).toHaveProp("editable", false)
     expect(screen.getByText("Pick a condition to set your price.")).toBeOnTheScreen()
   })
 
-  it("says the insights link isn’t built yet", () => {
+  it("says the insights link isn’t built yet", async () => {
     const alertSpy = jest.spyOn(Alert, "alert")
-    renderWithWrappers(<TestPriceSection />)
+    await renderWithWrappers(<TestPriceSection />)
 
-    fireEvent.press(screen.getByText("See more Insights >"))
+    await fireEvent.press(screen.getByText("See more Insights >"))
 
     expect(alertSpy).toHaveBeenCalledWith("See more Insights", "Not yet implemented.")
   })
 
   it("explains Artsy’s fee", async () => {
-    renderWithWrappers(<TestPriceSection />)
+    await renderWithWrappers(<TestPriceSection />)
 
-    fireEvent.press(screen.getByLabelText("About Artsy’s fee"))
+    await fireEvent.press(screen.getByLabelText("About Artsy’s fee"))
     expect(await screen.findByText(/flat 15% fee/)).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Got it"))
+    await fireEvent.press(screen.getByText("Got it"))
     await waitFor(() => expect(screen.queryByText(/flat 15% fee/)).not.toBeOnTheScreen())
   })
 })

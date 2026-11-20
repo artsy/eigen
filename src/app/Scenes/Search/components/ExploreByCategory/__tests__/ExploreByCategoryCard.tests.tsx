@@ -58,8 +58,8 @@ describe("ExploreByCategoryCard", () => {
     jest.clearAllMocks()
   })
 
-  it("renders the card title", () => {
-    renderWithRelay({
+  it("renders the card title", async () => {
+    await renderWithRelay({
       DiscoveryCategoriesConnectionConnection: () => ({
         edges: [{ node: mockCategory }],
       }),
@@ -69,8 +69,8 @@ describe("ExploreByCategoryCard", () => {
     expect(screen.getByText("Medium")).toBeOnTheScreen()
   })
 
-  it("renders with correct RouterLink href", () => {
-    renderWithRelay({
+  it("renders with correct RouterLink href", async () => {
+    await renderWithRelay({
       DiscoveryCategoriesConnectionConnection: () => ({
         edges: [{ node: mockCategory }],
       }),
@@ -83,8 +83,8 @@ describe("ExploreByCategoryCard", () => {
     expect(mockRouterLinkProps.to).toBe("/collections-by-category/medium")
   })
 
-  it("sets correct prefetch variables", () => {
-    renderWithRelay({
+  it("sets correct prefetch variables", async () => {
+    await renderWithRelay({
       DiscoveryCategoriesConnectionConnection: () => ({
         edges: [{ node: mockCategory }],
       }),
@@ -94,8 +94,8 @@ describe("ExploreByCategoryCard", () => {
     expect(mockRouterLinkProps.prefetchVariables).toEqual({ categorySlug: "medium" })
   })
 
-  it("sets correct navigation props", () => {
-    renderWithRelay({
+  it("sets correct navigation props", async () => {
+    await renderWithRelay({
       DiscoveryCategoriesConnectionConnection: () => ({
         edges: [{ node: mockCategory }],
       }),
@@ -105,8 +105,8 @@ describe("ExploreByCategoryCard", () => {
     expect(mockRouterLinkProps.navigationProps).toEqual({ title: "Medium" })
   })
 
-  it("tracks card press event", () => {
-    renderWithRelay({
+  it("tracks card press event", async () => {
+    await renderWithRelay({
       DiscoveryCategoriesConnectionConnection: () => ({
         edges: [{ node: mockCategory }],
       }),
@@ -117,7 +117,7 @@ describe("ExploreByCategoryCard", () => {
     })
 
     const routerLink = screen.getByTestId("router-link")
-    fireEvent.press(routerLink)
+    await fireEvent.press(routerLink)
 
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -132,7 +132,7 @@ describe("ExploreByCategoryCard", () => {
     })
   })
 
-  it("handles different card categories", () => {
+  it("handles different card categories", async () => {
     const colorCard = {
       slug: "collect-by-color",
       title: "Color",
@@ -140,7 +140,7 @@ describe("ExploreByCategoryCard", () => {
       href: "/collections-by-category/collect-by-color",
     }
 
-    renderWithRelay({
+    await renderWithRelay({
       DiscoveryCategoriesConnectionConnection: () => ({
         edges: [{ node: colorCard }],
       }),
@@ -153,7 +153,7 @@ describe("ExploreByCategoryCard", () => {
     expect(mockRouterLinkProps.navigationProps).toEqual({ title: "Color" })
   })
 
-  it("tracks with correct index position", () => {
+  it("tracks with correct index position", async () => {
     const { renderWithRelay: renderWithDifferentIndex } =
       setupTestWrapper<ExploreByCategoryCardTestQuery>({
         Component: ({ categories }) => {
@@ -174,7 +174,7 @@ describe("ExploreByCategoryCard", () => {
         `,
       })
 
-    renderWithDifferentIndex({
+    await renderWithDifferentIndex({
       DiscoveryCategoriesConnectionConnection: () => ({
         edges: [{ node: mockCategory }],
       }),
@@ -182,7 +182,7 @@ describe("ExploreByCategoryCard", () => {
     })
 
     const routerLink = screen.getByTestId("router-link")
-    fireEvent.press(routerLink)
+    await fireEvent.press(routerLink)
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({

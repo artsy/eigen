@@ -17,7 +17,7 @@ describe("PartnerOverview", () => {
   })
 
   it("renders the about text", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Partner: () => ({
         profile: {
           bio: "About the gallery",

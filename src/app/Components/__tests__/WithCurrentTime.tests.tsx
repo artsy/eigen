@@ -4,8 +4,8 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
 
 describe("WithCurrentTime", () => {
-  it("renders correctly", () => {
-    renderWithWrappers(
+  it("renders correctly", async () => {
+    await renderWithWrappers(
       <WithCurrentTime>
         {(currentTime) => <Text testID="current-time">Time: {currentTime}</Text>}
       </WithCurrentTime>

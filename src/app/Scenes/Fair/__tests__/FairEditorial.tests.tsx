@@ -18,8 +18,8 @@ describe("FairEditorial", () => {
     variables: { fairID: "art-basel-hong-kong-2020" },
   })
 
-  it("renders the 2 articles", () => {
-    renderWithRelay({
+  it("renders the 2 articles", async () => {
+    await renderWithRelay({
       Fair: () => ({
         articles: {
           totalCount: 2,
@@ -47,8 +47,8 @@ describe("FairEditorial", () => {
     ).toBeOnTheScreen()
   })
 
-  it("renders null if there are no articles", () => {
-    renderWithRelay({
+  it("renders null if there are no articles", async () => {
+    await renderWithRelay({
       Fair: () => ({
         articles: {
           edges: [],
@@ -59,8 +59,8 @@ describe("FairEditorial", () => {
     expect(screen.queryByText("Related Reading")).not.toBeOnTheScreen()
   })
 
-  it("tracks article taps", () => {
-    renderWithRelay({
+  it("tracks article taps", async () => {
+    await renderWithRelay({
       Fair: () => ({
         internalID: "def123",
         slug: "art-basel-hong-kong-2020",
@@ -80,7 +80,7 @@ describe("FairEditorial", () => {
     })
 
     const article = screen.getByText("What Sold at Art Basel in Hong Kong’s Online Viewing Rooms")
-    fireEvent.press(article)
+    await fireEvent.press(article)
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedArticleGroup",

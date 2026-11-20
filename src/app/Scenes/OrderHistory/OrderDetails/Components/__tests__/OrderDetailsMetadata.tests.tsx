@@ -18,8 +18,8 @@ describe("OrderDetailsMetadata", () => {
     `,
   })
 
-  it("renders artwork image and metadata", () => {
-    renderWithRelay({
+  it("renders artwork image and metadata", async () => {
+    await renderWithRelay({
       Order: () => ({
         totalListPrice: { display: "€1,242" },
         lineItems: [
@@ -56,8 +56,8 @@ describe("OrderDetailsMetadata", () => {
     expect(screen.getByText("24 × 36 in | 61 × 91.4 cm")).toBeOnTheScreen()
   })
 
-  it("renders single dimension when only inches are provided", () => {
-    renderWithRelay({
+  it("renders single dimension when only inches are provided", async () => {
+    await renderWithRelay({
       Order: () => ({
         lineItems: [
           {
@@ -83,8 +83,8 @@ describe("OrderDetailsMetadata", () => {
     expect(screen.queryByText(/\|/)).not.toBeOnTheScreen()
   })
 
-  it("renders single dimension when only cm are provided", () => {
-    renderWithRelay({
+  it("renders single dimension when only cm are provided", async () => {
+    await renderWithRelay({
       Order: () => ({
         lineItems: [
           {
@@ -110,8 +110,8 @@ describe("OrderDetailsMetadata", () => {
     expect(screen.queryByText(/\|/)).not.toBeOnTheScreen()
   })
 
-  it("does not render dimensions when both are null", () => {
-    renderWithRelay({
+  it("does not render dimensions when both are null", async () => {
+    await renderWithRelay({
       Order: () => ({
         lineItems: [
           {
@@ -138,8 +138,8 @@ describe("OrderDetailsMetadata", () => {
     expect(screen.queryByText(/\|/)).not.toBeOnTheScreen()
   })
 
-  it("navigates to the artwork screen", () => {
-    renderWithRelay({
+  it("navigates to the artwork screen", async () => {
+    await renderWithRelay({
       Order: () => ({
         lineItems: [
           {
@@ -152,13 +152,13 @@ describe("OrderDetailsMetadata", () => {
 
     expect(screen.getByRole("image")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByRole("image"))
+    await fireEvent.press(screen.getByRole("image"))
     expect(navigate).toBeCalledWith("/artwork/artwork-id")
   })
 
   describe("framed dimensions", () => {
-    it("prioritizes framed dimensions over regular dimensions", () => {
-      renderWithRelay({
+    it("prioritizes framed dimensions over regular dimensions", async () => {
+      await renderWithRelay({
         Order: () => ({
           lineItems: [
             {
@@ -179,8 +179,8 @@ describe("OrderDetailsMetadata", () => {
       expect(screen.queryByText("20 × 30 in | 50 × 76 cm")).not.toBeOnTheScreen()
     })
 
-    it("falls back to regular dimensions when framed dimensions are not available", () => {
-      renderWithRelay({
+    it("falls back to regular dimensions when framed dimensions are not available", async () => {
+      await renderWithRelay({
         Order: () => ({
           lineItems: [
             {
@@ -200,8 +200,8 @@ describe("OrderDetailsMetadata", () => {
       expect(screen.getByText("18 × 24 in | 45 × 61 cm")).toBeOnTheScreen()
     })
 
-    it("renders single framed dimension when only one unit is provided", () => {
-      renderWithRelay({
+    it("renders single framed dimension when only one unit is provided", async () => {
+      await renderWithRelay({
         Order: () => ({
           lineItems: [
             {

@@ -1,4 +1,4 @@
-import { act, fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ArtAssistantArtistRailQuery } from "__generated__/ArtAssistantArtistRailQuery.graphql"
 import { ArtAssistantArtistRail } from "app/Scenes/ArtAssistant/Components/ArtAssistantArtistRail"
 import { navigate } from "app/system/navigation/navigate"
@@ -13,9 +13,11 @@ describe("ArtAssistantArtistRail", () => {
   })
 
   it("renders artist cards", async () => {
-    renderReadyRail()
+    await renderReadyRail()
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("art-assistant-artist-rail-loading"))
+    await waitFor(() =>
+      expect(screen.queryByTestId("art-assistant-artist-rail-loading")).not.toBeOnTheScreen()
+    )
 
     expect(screen.getByTestId("art-assistant-artist-rail")).toBeOnTheScreen()
     expect(screen.getByText("Jean-Michel Basquiat")).toBeOnTheScreen()
@@ -23,9 +25,11 @@ describe("ArtAssistantArtistRail", () => {
   })
 
   it("keeps the order the answer chose, whatever order the server answered in", async () => {
-    renderReadyRail()
+    await renderReadyRail()
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("art-assistant-artist-rail-loading"))
+    await waitFor(() =>
+      expect(screen.queryByTestId("art-assistant-artist-rail-loading")).not.toBeOnTheScreen()
+    )
 
     // The mocked response comes back reversed, so this order can only come from the rail.
     expect(screen.getByTestId("art-assistant-artist-rail")).toHaveTextContent(
@@ -34,21 +38,25 @@ describe("ArtAssistantArtistRail", () => {
   })
 
   it("navigates to the artist", async () => {
-    renderReadyRail()
+    await renderReadyRail()
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("art-assistant-artist-rail-loading"))
+    await waitFor(() =>
+      expect(screen.queryByTestId("art-assistant-artist-rail-loading")).not.toBeOnTheScreen()
+    )
 
-    fireEvent.press(screen.getByText("Andy Warhol"))
+    await fireEvent.press(screen.getByText("Andy Warhol"))
 
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
   })
 
   it("reports the tapped artist against the Art Assistant results", async () => {
-    renderReadyRail()
+    await renderReadyRail()
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("art-assistant-artist-rail-loading"))
+    await waitFor(() =>
+      expect(screen.queryByTestId("art-assistant-artist-rail-loading")).not.toBeOnTheScreen()
+    )
 
-    fireEvent.press(screen.getByText("Andy Warhol"))
+    await fireEvent.press(screen.getByText("Andy Warhol"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedArtistGroup",
@@ -62,14 +70,14 @@ describe("ArtAssistantArtistRail", () => {
     })
   })
 
-  it("renders a skeleton while the query is pending", () => {
-    renderWithWrappers(<ArtAssistantArtistRail artistIDs={ARTIST_IDS} />)
+  it("renders a skeleton while the query is pending", async () => {
+    await renderWithWrappers(<ArtAssistantArtistRail artistIDs={ARTIST_IDS} />)
 
     expect(screen.getByTestId("art-assistant-artist-rail-loading")).toBeOnTheScreen()
   })
 
-  it("renders empty state for a section with no artists", () => {
-    renderWithWrappers(<ArtAssistantArtistRail artistIDs={[]} />)
+  it("renders empty state for a section with no artists", async () => {
+    await renderWithWrappers(<ArtAssistantArtistRail artistIDs={[]} />)
 
     expect(screen.getByText("No matching artists found.")).toBeOnTheScreen()
   })
@@ -79,17 +87,19 @@ describe("ArtAssistantArtistRail", () => {
       Component: () => <ArtAssistantArtistRail artistIDs={ARTIST_IDS} />,
     })
 
-    renderWithRelay({ Query: () => ({ artistsConnection: { edges: [] } }) })
+    await renderWithRelay({ Query: () => ({ artistsConnection: { edges: [] } }) })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("art-assistant-artist-rail-loading"))
+    await waitFor(() =>
+      expect(screen.queryByTestId("art-assistant-artist-rail-loading")).not.toBeOnTheScreen()
+    )
 
     expect(screen.getByText("No matching artists found.")).toBeOnTheScreen()
   })
 
   it("renders an error state when the query fails", async () => {
-    renderWithWrappers(<ArtAssistantArtistRail artistIDs={ARTIST_IDS} />)
+    await renderWithWrappers(<ArtAssistantArtistRail artistIDs={ARTIST_IDS} />)
 
-    act(() => {
+    await act(() => {
       getMockRelayEnvironment().mock.rejectMostRecentOperation(new Error("Artists unavailable"))
     })
 

@@ -30,8 +30,8 @@ describe("ConversationPartnerOfferUpdate", () => {
     isPurchased = false
   })
 
-  it("renders the offer message with the discounted price", () => {
-    renderWithRelay({
+  it("renders the offer message with the discounted price", async () => {
+    await renderWithRelay({
       PartnerOfferToCollector: () => ({
         createdAt: "2026-06-15T12:00:00Z",
         priceWithDiscount: { display: "US$450" },
@@ -41,8 +41,8 @@ describe("ConversationPartnerOfferUpdate", () => {
     expect(screen.getByText("You received an offer for US$450")).toBeTruthy()
   })
 
-  it("falls back to a generic message when there is no discounted price", () => {
-    renderWithRelay({
+  it("falls back to a generic message when there is no discounted price", async () => {
+    await renderWithRelay({
       PartnerOfferToCollector: () => ({
         createdAt: "2026-06-15T12:00:00Z",
         priceWithDiscount: null,
@@ -52,10 +52,10 @@ describe("ConversationPartnerOfferUpdate", () => {
     expect(screen.getByText("You received an offer")).toBeTruthy()
   })
 
-  it("renders a purchase confirmation when the offer was fulfilled", () => {
+  it("renders a purchase confirmation when the offer was fulfilled", async () => {
     isPurchased = true
 
-    renderWithRelay({
+    await renderWithRelay({
       PartnerOfferToCollector: () => ({
         createdAt: "2026-06-15T12:00:00Z",
         priceWithDiscount: { display: "US$450" },

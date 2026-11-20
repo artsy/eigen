@@ -18,8 +18,8 @@ describe("OrderDetailsFulfillment", () => {
     `,
   })
 
-  it("renders shipping section with complete address", () => {
-    renderWithRelay({
+  it("renders shipping section with complete address", async () => {
+    await renderWithRelay({
       Order: () => ({
         fulfillmentDetails: {
           name: "Percy",
@@ -43,8 +43,8 @@ describe("OrderDetailsFulfillment", () => {
     expect(screen.getByText("(123) 456-7890")).toBeOnTheScreen()
   })
 
-  it("renders pickup section with pickup location", () => {
-    renderWithRelay({
+  it("renders pickup section with pickup location", async () => {
+    await renderWithRelay({
       Order: () => ({
         selectedFulfillmentOption: { type: "PICKUP" },
         shippingOrigin: "Gagosian Gallery, 980 Madison Avenue, New York, NY 10075",

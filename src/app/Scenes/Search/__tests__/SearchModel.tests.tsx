@@ -108,7 +108,7 @@ describe(useRecentSearches, () => {
     expect(localRecentSearches.length).toBe(0)
     expect(globalRecentSearches.length).toBe(0)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <GlobalStoreProvider>
         <TestComponent />
       </GlobalStoreProvider>

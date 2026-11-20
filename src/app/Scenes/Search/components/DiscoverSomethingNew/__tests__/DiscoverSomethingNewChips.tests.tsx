@@ -24,8 +24,8 @@ describe("DiscoverSomethingNewChips", () => {
     jest.clearAllMocks()
   })
 
-  it("renders the section title and collection chips", () => {
-    renderWithRelay({
+  it("renders the section title and collection chips", async () => {
+    await renderWithRelay({
       MarketingCollection: () => ({
         internalID: "test-collection",
         slug: "test-collection",
@@ -41,8 +41,8 @@ describe("DiscoverSomethingNewChips", () => {
     expect(chips.length).toBeGreaterThan(0)
   })
 
-  it("handles chip interactions", () => {
-    renderWithRelay({
+  it("handles chip interactions", async () => {
+    await renderWithRelay({
       MarketingCollection: () => ({
         internalID: "test-collection",
         slug: "test-collection",
@@ -55,7 +55,7 @@ describe("DiscoverSomethingNewChips", () => {
     expect(chips.length).toBeGreaterThan(0)
 
     // Test chip press functionality
-    fireEvent.press(chips[0])
+    await fireEvent.press(chips[0])
 
     expect(navigate).toHaveBeenCalled()
     expect(mockTrackEvent).toHaveBeenCalledWith(
@@ -68,8 +68,8 @@ describe("DiscoverSomethingNewChips", () => {
     )
   })
 
-  it("returns null when no collections are provided", () => {
-    renderWithRelay({
+  it("returns null when no collections are provided", async () => {
+    await renderWithRelay({
       Query: () => ({
         collections: null,
       }),
@@ -78,8 +78,8 @@ describe("DiscoverSomethingNewChips", () => {
     expect(screen.queryByText("Discover Something New")).not.toBeOnTheScreen()
   })
 
-  it("returns null when collections array is empty", () => {
-    renderWithRelay({
+  it("returns null when collections array is empty", async () => {
+    await renderWithRelay({
       Query: () => ({
         collections: [],
       }),
@@ -89,8 +89,8 @@ describe("DiscoverSomethingNewChips", () => {
   })
 
   describe("DiscoverSomethingNewChipsPlaceholder", () => {
-    it("renders the placeholder component with skeleton elements", () => {
-      renderWithWrappers(<DiscoverSomethingNewChipsPlaceholder />)
+    it("renders the placeholder component with skeleton elements", async () => {
+      await renderWithWrappers(<DiscoverSomethingNewChipsPlaceholder />)
 
       expect(screen.getByText("Discover Something New")).toBeOnTheScreen()
       expect(screen.getByTestId("DiscoverSomethingNewChipsPlaceholder")).toBeOnTheScreen()

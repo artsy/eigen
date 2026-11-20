@@ -3,14 +3,14 @@ import { BrowsePromptStep } from "app/Scenes/Onboarding/Screens/Onboarding/Compo
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("BrowsePromptStep", () => {
-  it("renders the prompt and calls onNext", () => {
+  it("renders the prompt and calls onNext", async () => {
     const onNext = jest.fn()
-    renderWithWrappers(<BrowsePromptStep onNext={onNext} />)
+    await renderWithWrappers(<BrowsePromptStep onNext={onNext} />)
 
     expect(screen.getByText("What art are you drawn to?")).toBeOnTheScreen()
     expect(screen.getByText("Save the works that catch your eye.")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Start Swiping"))
+    await fireEvent.press(screen.getByText("Start Swiping"))
     expect(onNext).toHaveBeenCalled()
   })
 })

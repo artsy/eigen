@@ -34,17 +34,17 @@ describe("DarkModeSettings", () => {
     GlobalStore.actions.devicePrefs.setDarkModeOption("system")
   })
 
-  it("renders dark mode settings options", () => {
-    renderWithWrappers(<TestWrapper />)
+  it("renders dark mode settings options", async () => {
+    await renderWithWrappers(<TestWrapper />)
 
     expect(screen.getByText("Sync with system")).toBeOnTheScreen()
     expect(screen.getByText("On")).toBeOnTheScreen()
     expect(screen.getByText("Off")).toBeOnTheScreen()
   })
 
-  it("shows correct initial state from GlobalStore", () => {
+  it("shows correct initial state from GlobalStore", async () => {
     GlobalStore.actions.devicePrefs.setDarkModeOption("on")
-    renderWithWrappers(<TestWrapper />)
+    await renderWithWrappers(<TestWrapper />)
 
     // The "On" option's radio button should be selected, not the others
     const radioButtons = screen.getAllByTestId("radio-button")
@@ -55,38 +55,38 @@ describe("DarkModeSettings", () => {
     expect(radioButtons[2]).not.toBeChecked() // "Off"
   })
 
-  it("changes dark mode option to 'on' when 'On' is pressed", () => {
+  it("changes dark mode option to 'on' when 'On' is pressed", async () => {
     const setDarkModeOptionSpy = jest.spyOn(GlobalStore.actions.devicePrefs, "setDarkModeOption")
-    renderWithWrappers(<TestWrapper />)
+    await renderWithWrappers(<TestWrapper />)
 
-    fireEvent.press(screen.getByText("On"))
+    await fireEvent.press(screen.getByText("On"))
 
     expect(setDarkModeOptionSpy).toHaveBeenCalledWith("on")
   })
 
-  it("changes dark mode option to 'off' when 'Off' is pressed", () => {
+  it("changes dark mode option to 'off' when 'Off' is pressed", async () => {
     const setDarkModeOptionSpy = jest.spyOn(GlobalStore.actions.devicePrefs, "setDarkModeOption")
-    renderWithWrappers(<TestWrapper />)
+    await renderWithWrappers(<TestWrapper />)
 
-    fireEvent.press(screen.getByText("Off"))
+    await fireEvent.press(screen.getByText("Off"))
 
     expect(setDarkModeOptionSpy).toHaveBeenCalledWith("off")
   })
 
-  it("changes dark mode option to 'system' when 'Sync with system' is pressed", () => {
+  it("changes dark mode option to 'system' when 'Sync with system' is pressed", async () => {
     // First set a different option so we can test changing back to system
     GlobalStore.actions.devicePrefs.setDarkModeOption("off")
     const setDarkModeOptionSpy = jest.spyOn(GlobalStore.actions.devicePrefs, "setDarkModeOption")
 
-    renderWithWrappers(<TestWrapper />)
+    await renderWithWrappers(<TestWrapper />)
 
-    fireEvent.press(screen.getByText("Sync with system"))
+    await fireEvent.press(screen.getByText("Sync with system"))
 
     expect(setDarkModeOptionSpy).toHaveBeenCalledWith("system")
   })
 
-  it("updates UI state when dark mode option changes", () => {
-    renderWithWrappers(<TestWrapper />)
+  it("updates UI state when dark mode option changes", async () => {
+    await renderWithWrappers(<TestWrapper />)
 
     // Initially "System" should be selected
     let radioButtons = screen.getAllByTestId("radio-button")
@@ -95,7 +95,7 @@ describe("DarkModeSettings", () => {
     expect(radioButtons[2]).not.toBeChecked() // "Off"
 
     // Change selection to "On"
-    fireEvent.press(screen.getByText("On"))
+    await fireEvent.press(screen.getByText("On"))
 
     // Now "On" should be selected
     radioButtons = screen.getAllByTestId("radio-button")

@@ -8,8 +8,10 @@ Date.now = () => 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in m
 const duration = Duration.fromMillis(1000)
 
 describe("SimpleTicker", () => {
-  it("renders properly", () => {
-    renderWithWrappers(<SimpleTicker duration={duration} separator="  " variant="sm-display" />)
+  it("renders properly", async () => {
+    await renderWithWrappers(
+      <SimpleTicker duration={duration} separator="  " variant="sm-display" />
+    )
 
     expect(
       screen.getByText("00d  00h  00m  01s", {
@@ -18,9 +20,11 @@ describe("SimpleTicker", () => {
     ).toBeTruthy()
   })
 
-  it("renders properly when duration is over", () => {
+  it("renders properly when duration is over", async () => {
     const zeroDuration = Duration.fromMillis(0)
-    renderWithWrappers(<SimpleTicker duration={zeroDuration} separator="  " variant="sm-display" />)
+    await renderWithWrappers(
+      <SimpleTicker duration={zeroDuration} separator="  " variant="sm-display" />
+    )
 
     expect(
       screen.getByText("00d  00h  00m  00s", {
@@ -29,10 +33,10 @@ describe("SimpleTicker", () => {
     ).toBeTruthy()
   })
 
-  it("renders properly with days overflowing a single month", () => {
+  it("renders properly with days overflowing a single month", async () => {
     // 2 years
     const farOutDuration = Duration.fromMillis(63113904000)
-    renderWithWrappers(
+    await renderWithWrappers(
       <SimpleTicker duration={farOutDuration} separator="  " variant="sm-display" />
     )
 
@@ -43,10 +47,12 @@ describe("SimpleTicker", () => {
     ).toBeTruthy()
   })
 
-  it("does not render fractional seconds / milliseconds", () => {
+  it("does not render fractional seconds / milliseconds", async () => {
     // 1s + 789ms — the fractional remainder that used to leak through
     const fractional = Duration.fromMillis(1789)
-    renderWithWrappers(<SimpleTicker duration={fractional} separator="  " variant="sm-display" />)
+    await renderWithWrappers(
+      <SimpleTicker duration={fractional} separator="  " variant="sm-display" />
+    )
 
     expect(
       screen.getByText("00d  00h  00m  01s", {
@@ -57,8 +63,10 @@ describe("SimpleTicker", () => {
 })
 
 describe("LabeledTicker", () => {
-  it("renders properly", () => {
-    renderWithWrappers(<LabeledTicker duration={duration} renderSeparator={() => <Text>:</Text>} />)
+  it("renders properly", async () => {
+    await renderWithWrappers(
+      <LabeledTicker duration={duration} renderSeparator={() => <Text>:</Text>} />
+    )
     expect(screen.getByText("00d")).toBeTruthy()
     expect(screen.getByText("00h")).toBeTruthy()
     expect(screen.getByText("00m")).toBeTruthy()
@@ -69,10 +77,10 @@ describe("LabeledTicker", () => {
 
 describe("ModernTicker", () => {
   describe("when the sale has not started", () => {
-    it("When Bidding in less than 1 day: it shows hours and minutes left", () => {
+    it("When Bidding in less than 1 day: it shows hours and minutes left", async () => {
       const twentyHrsFiveMins = 1000 * 60 * 60 * 20 + 1000 * 60 * 5
       const todayDuration = Duration.fromMillis(twentyHrsFiveMins)
-      renderWithWrappers(<ModernTicker duration={todayDuration} />)
+      await renderWithWrappers(<ModernTicker duration={todayDuration} />)
 
       const timerText = screen.getByText("20h 5m Until Bidding Starts")
 
@@ -80,10 +88,10 @@ describe("ModernTicker", () => {
       expect(timerText.props.color).toEqual("blue100")
     })
 
-    it("When Bidding in less than 1 hour: it shows minutes and seconds left", () => {
+    it("When Bidding in less than 1 hour: it shows minutes and seconds left", async () => {
       const twentyMinsTenSecs = 1000 * 60 * 20 + 1000 * 10
       const todayDuration = Duration.fromMillis(twentyMinsTenSecs)
-      renderWithWrappers(<ModernTicker duration={todayDuration} />)
+      await renderWithWrappers(<ModernTicker duration={todayDuration} />)
 
       const timerText = screen.getByText("20m 10s Until Bidding Starts")
 
@@ -91,10 +99,10 @@ describe("ModernTicker", () => {
       expect(timerText.props.color).toEqual("blue100")
     })
 
-    it("renders 1 Day Until Bidding Starts in blue when start time is >24 hours but less than 2 days away", () => {
+    it("renders 1 Day Until Bidding Starts in blue when start time is >24 hours but less than 2 days away", async () => {
       // 28 hours
       const dayDuration = Duration.fromMillis(100800000)
-      renderWithWrappers(<ModernTicker duration={dayDuration} />)
+      await renderWithWrappers(<ModernTicker duration={dayDuration} />)
 
       const timerText = screen.getByText("1 Day Until Bidding Starts")
 
@@ -102,10 +110,10 @@ describe("ModernTicker", () => {
       expect(timerText.props.color).toEqual("blue100")
     })
 
-    it("renders 4 Days Until Bidding Starts in blue when start time is >2 days away", () => {
+    it("renders 4 Days Until Bidding Starts in blue when start time is >2 days away", async () => {
       // 3 days, 23 hours
       const daysDuration = Duration.fromMillis(342000000)
-      renderWithWrappers(<ModernTicker duration={daysDuration} />)
+      await renderWithWrappers(<ModernTicker duration={daysDuration} />)
 
       const timerText = screen.getByText("3 Days Until Bidding Starts")
 
@@ -115,10 +123,10 @@ describe("ModernTicker", () => {
   })
 
   describe("when the sale is open", () => {
-    it("renders 3d23h in blue when end time is days away", () => {
+    it("renders 3d23h in blue when end time is days away", async () => {
       // 3 days, 23 hours
       const daysDuration = Duration.fromMillis(342000000)
-      renderWithWrappers(<ModernTicker duration={daysDuration} hasStarted />)
+      await renderWithWrappers(<ModernTicker duration={daysDuration} hasStarted />)
 
       const timerText = screen.getByText("3d 23h")
 
@@ -126,10 +134,10 @@ describe("ModernTicker", () => {
       expect(timerText.props.color).toEqual("blue100")
     })
 
-    it("renders 10h3m in blue when end time is hours away", () => {
+    it("renders 10h3m in blue when end time is hours away", async () => {
       // 10 hours, 3 mins
       const hoursDuration = Duration.fromMillis(36180000)
-      renderWithWrappers(<ModernTicker duration={hoursDuration} hasStarted />)
+      await renderWithWrappers(<ModernTicker duration={hoursDuration} hasStarted />)
 
       const timerText = screen.getByText("10h 3m")
 
@@ -137,10 +145,10 @@ describe("ModernTicker", () => {
       expect(timerText.props.color).toEqual("blue100")
     })
 
-    it("renders 45m 30s in red when end time is minutes away", () => {
+    it("renders 45m 30s in red when end time is minutes away", async () => {
       // 45 minutes,  30 seconds
       const minutesDuration = Duration.fromMillis(2730000)
-      renderWithWrappers(<ModernTicker duration={minutesDuration} hasStarted />)
+      await renderWithWrappers(<ModernTicker duration={minutesDuration} hasStarted />)
 
       const timerText = screen.getByText("45m 30s")
 
@@ -148,10 +156,10 @@ describe("ModernTicker", () => {
       expect(timerText.props.color).toEqual("red100")
     })
 
-    it("renders 30s in red when end time is seconds away", () => {
+    it("renders 30s in red when end time is seconds away", async () => {
       // 30 seconds
       const secondsDuration = Duration.fromMillis(30000)
-      renderWithWrappers(<ModernTicker duration={secondsDuration} hasStarted />)
+      await renderWithWrappers(<ModernTicker duration={secondsDuration} hasStarted />)
 
       const timerText = screen.getByText("0m 30s")
 
@@ -159,9 +167,9 @@ describe("ModernTicker", () => {
       expect(timerText.props.color).toEqual("red100")
     })
 
-    it('prefixes "Extended: " when when sale is extended', () => {
+    it('prefixes "Extended: " when when sale is extended', async () => {
       const momentDuration = Duration.fromMillis(1000 * 90) // 1m 30s
-      renderWithWrappers(<ModernTicker duration={momentDuration} hasStarted isExtended />)
+      await renderWithWrappers(<ModernTicker duration={momentDuration} hasStarted isExtended />)
       const timerTextBlock = screen.getByText("Extended: 1m 30s")
 
       expect(timerTextBlock).toBeTruthy()

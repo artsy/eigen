@@ -30,7 +30,7 @@ describe("HomeViewSectionHeroUnits", () => {
   })
 
   it("renders the section properly", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       HomeViewSectionHeroUnits: () => ({
         internalID: "home-view-section-hero-units",
         heroUnitsConnection: {
@@ -64,8 +64,8 @@ describe("HomeViewSectionHeroUnits", () => {
     expect(screen.getByText("See Collection")).toBeOnTheScreen()
   })
 
-  it("navigates and tracks hero unit taps", () => {
-    renderWithRelay({
+  it("navigates and tracks hero unit taps", async () => {
+    await renderWithRelay({
       HomeViewSectionHeroUnits: () => ({
         internalID: "home-view-section-hero-units",
         heroUnitsConnection: {
@@ -94,7 +94,7 @@ describe("HomeViewSectionHeroUnits", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("See Collection"))
+    await fireEvent.press(screen.getByText("See Collection"))
 
     expect(navigate).toHaveBeenCalledWith("/collection/collection-1")
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`

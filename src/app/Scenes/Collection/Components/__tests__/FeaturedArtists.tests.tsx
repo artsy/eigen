@@ -162,9 +162,9 @@ describe("FeaturedArtists", () => {
   }
 
   it("renders an EntityHeader for each featured artist", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(env, {
+    await resolveMostRecentRelayOperation(env, {
       MarketingCollection: () => ({ ...FeaturedArtistCollectionFixture }),
     })
 
@@ -177,9 +177,9 @@ describe("FeaturedArtists", () => {
   })
 
   it("does not render an EntityHeader for excluded artists", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(env, {
+    await resolveMostRecentRelayOperation(env, {
       MarketingCollection: () => ({
         ...FeaturedArtistCollectionFixture,
         featuredArtistExclusionIds: ["34534-andy-warhols-id", "2342-pablo-picassos-id"],
@@ -197,9 +197,9 @@ describe("FeaturedArtists", () => {
 
   describe("when artist ids are explicitly requested", () => {
     it("does not render an EntityHeader for any non-requested artists", async () => {
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(env, {
+      await resolveMostRecentRelayOperation(env, {
         MarketingCollection: () => ({
           ...FeaturedArtistCollectionFixture,
           query: { id: "some-id", artistIDs: ["34534-andy-warhols-id"] },
@@ -214,9 +214,9 @@ describe("FeaturedArtists", () => {
 
   describe("View all", () => {
     it("shows more artists when 'View more' is tapped", async () => {
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(env, {
+      await resolveMostRecentRelayOperation(env, {
         MarketingCollection: () => ({
           ...FeaturedArtistCollectionFixture,
         }),
@@ -226,21 +226,21 @@ describe("FeaturedArtists", () => {
       expect(screen.queryByText("Jean-Michel Basquiat")).toBeNull()
       expect(screen.queryByText("Kenny Scharf")).toBeNull()
 
-      fireEvent.press(screen.getByText("View all"))
+      await fireEvent.press(screen.getByText("View all"))
       expect(navigate).toHaveBeenCalledWith("/collection/some-collection/artists")
     })
 
     it("tracks an event when 'View more' is tapped", async () => {
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(env, {
+      await resolveMostRecentRelayOperation(env, {
         MarketingCollection: () => ({
           ...FeaturedArtistCollectionFixture,
         }),
       })
 
       expect(screen.getByText("View all")).toBeOnTheScreen()
-      fireEvent.press(screen.getByText("View all"))
+      await fireEvent.press(screen.getByText("View all"))
 
       expect(postEventToProviders).toHaveBeenCalledWith({
         action_type: "tap",

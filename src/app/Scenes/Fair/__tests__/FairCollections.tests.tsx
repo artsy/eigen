@@ -17,8 +17,8 @@ describe("FairCollections", () => {
     `,
   })
 
-  it("renders the 2 collections", () => {
-    renderWithRelay({
+  it("renders the 2 collections", async () => {
+    await renderWithRelay({
       Fair: () => ({
         marketingCollections: [
           {
@@ -39,8 +39,8 @@ describe("FairCollections", () => {
     expect(screen.getByText("Subtitle 2")).toBeOnTheScreen()
   })
 
-  it("tracks taps on collections", () => {
-    renderWithRelay({
+  it("tracks taps on collections", async () => {
+    await renderWithRelay({
       Fair: () => ({
         internalID: "abc123",
         slug: "art-basel-hong-kong-2020",
@@ -54,7 +54,7 @@ describe("FairCollections", () => {
     })
 
     const collection = screen.getByText("Big Artists, Small Sculptures")
-    fireEvent.press(collection)
+    await fireEvent.press(collection)
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedCollectionGroup",
@@ -69,8 +69,8 @@ describe("FairCollections", () => {
     })
   })
 
-  it("renders null if there are no collections", () => {
-    renderWithRelay({
+  it("renders null if there are no collections", async () => {
+    await renderWithRelay({
       Fair: () => ({
         marketingCollections: [],
       }),

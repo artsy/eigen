@@ -49,12 +49,12 @@ const { renderWithRelay } = setupTestWrapper<MessagesTestsQuery>({
 
 const getWrapper = (mockResolvers = {}) => renderWithRelay(mockResolvers)
 
-it("renders without throwing an error", () => {
-  getWrapper()
+it("renders without throwing an error", async () => {
+  await getWrapper()
 })
 
-it("calls onRefresh prop when the messages are refreshed", () => {
-  getWrapper()
+it("calls onRefresh prop when the messages are refreshed", async () => {
+  await getWrapper()
 
   expect(onRefresh).not.toHaveBeenCalled()
   pullToRefresh()
@@ -95,8 +95,8 @@ const withConversationItems = (
 }
 
 describe("messages with order updates", () => {
-  it("shows a submitted offer", () => {
-    withConversationItems(getWrapper, {
+  it("shows a submitted offer", async () => {
+    await withConversationItems(getWrapper, {
       events: [
         {
           __typename: "CommerceOfferSubmittedEvent",
@@ -111,8 +111,8 @@ describe("messages with order updates", () => {
     expect(screen.getByText(/You sent an offer for/)).toBeOnTheScreen()
   })
 
-  it("shows a toast message", () => {
-    withConversationItems(getWrapper, {
+  it("shows a toast message", async () => {
+    await withConversationItems(getWrapper, {
       events: [
         {
           __typename: "CommerceOfferSubmittedEvent",
@@ -132,13 +132,13 @@ describe("messages with order updates", () => {
     ).toBeOnTheScreen()
   })
 
-  it("sorts interleaved items by date", () => {
+  it("sorts interleaved items by date", async () => {
     const day1Time1 = "2020-03-18T02:58:37.699Z"
     const day1Time2 = "2020-03-18T02:59:37.699Z"
     const day2Time1 = "2020-03-19T01:58:37.699Z"
     const day2Time2 = "2020-03-19T01:59:37.699Z"
 
-    withConversationItems(getWrapper, {
+    await withConversationItems(getWrapper, {
       messages: [
         { createdAt: day1Time1, body: "Day 1 message", attachments: [] },
         { createdAt: day2Time1, body: "Day 2 message", attachments: [] },
@@ -181,11 +181,11 @@ describe("messages with order updates", () => {
     expect(messagesAndUpdates[0]).toHaveTextContent(/You received a counteroffer/)
   })
 
-  it("removes 'Offer accepted' events when payment fails", () => {
+  it("removes 'Offer accepted' events when payment fails", async () => {
     const day1Time1 = "2020-03-18T02:58:37.699Z"
     const day1Time2 = "2020-03-18T02:59:37.699Z"
 
-    withConversationItems(getWrapper, {
+    await withConversationItems(getWrapper, {
       events: [
         // this event should be omitted from the output because it is irrelevant
         {
@@ -203,10 +203,10 @@ describe("messages with order updates", () => {
     expect(screen.queryByText("Offer Accepted")).not.toBeOnTheScreen()
   })
 
-  it("does not remove 'Offer accepted' events when payment succeeds", () => {
+  it("does not remove 'Offer accepted' events when payment succeeds", async () => {
     const day1Time1 = "2020-03-18T02:58:37.699Z"
     const day1Time2 = "2020-03-18T02:59:37.699Z"
-    withConversationItems(getWrapper, {
+    await withConversationItems(getWrapper, {
       events: [
         {
           __typename: "CommerceOrderStateChangedEvent",
@@ -227,13 +227,13 @@ describe("messages with order updates", () => {
   })
 
   // We fetch all order updates but only paginated messages, so this is to avoid a smooshed list of updates at the top.
-  it("shows order updates before the currently-available messages", () => {
+  it("shows order updates before the currently-available messages", async () => {
     const beforeLastMessageTime = "2020-03-18T02:58:37.699Z"
     const beforeLastMessageTime2 = "2020-03-18T02:59:37.699Z"
     const lastMessageTime = "2020-03-19T01:58:37.699Z"
     const afterLastMessageTime = "2020-03-19T01:59:37.699Z"
 
-    withConversationItems(getWrapper, {
+    await withConversationItems(getWrapper, {
       messages: [{ createdAt: lastMessageTime, body: "Last Message", attachments: [] }],
       events: [
         {

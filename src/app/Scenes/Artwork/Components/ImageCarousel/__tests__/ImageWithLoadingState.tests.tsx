@@ -15,7 +15,7 @@ jest.mock("@artsy/palette-mobile", () => ({
 
 describe("ImageWithLoadingState", () => {
   it("renders the image", async () => {
-    renderWithWrappers(<ImageWithLoadingState imageURL={imageURL} {...style} />)
+    await renderWithWrappers(<ImageWithLoadingState imageURL={imageURL} {...style} />)
     const images = screen.getAllByLabelText("Image with Loading State")
 
     expect(images).toHaveLength(1)

@@ -16,8 +16,8 @@ interface SetupTestWrapper<T extends OperationType, ComponentProps> {
 
 type RenderWithRelay = RenderResult & {
   env: ReturnType<typeof createMockEnvironment>
-  mockResolveLastOperation: (mockResolvers: MockResolvers) => void
-  mockRejectLastOperation: (error: Error) => void
+  mockResolveLastOperation: (mockResolvers: MockResolvers) => Promise<void>
+  mockRejectLastOperation: (error: Error) => Promise<void>
 }
 
 /**
@@ -42,8 +42,8 @@ type RenderWithRelay = RenderResult & {
  *   Component: () => <Suspense><Foo /></Suspense>
  * })
  *
- * it('works', () => {
- *   renderWithRelay({
+ * it('works', async () => {
+ *   await renderWithRelay({
  *     Me: () => ({ name: "name" })
  *   })
  *   expect(screen.getByText('name')).toBeOnTheScreen()
@@ -72,8 +72,8 @@ type RenderWithRelay = RenderResult & {
  *   `
  * })
  *
- * it('works', () => {
- *   renderWithRelay({
+ * it('works', async () => {
+ *   await renderWithRelay({
  *     Me: () => ({ name: 'Mock Name' })
  *   })
  *
@@ -87,7 +87,10 @@ export const setupTestWrapper = <T extends OperationType, ComponentProps = {}>({
   variables = {},
   wrapperProps = {},
 }: SetupTestWrapper<T, ComponentProps>) => {
-  const renderWithRelay = (mockResolvers: MockResolvers = {}, props: any = {}): RenderWithRelay => {
+  const renderWithRelay = async (
+    mockResolvers: MockResolvers = {},
+    props: any = {}
+  ): Promise<RenderWithRelay> => {
     const env = getMockRelayEnvironment()
 
     const TestRenderer = () => {
@@ -109,9 +112,9 @@ export const setupTestWrapper = <T extends OperationType, ComponentProps = {}>({
       )
     }
 
-    const view = renderWithWrappers(<TestRenderer />, wrapperProps)
+    const view = await renderWithWrappers(<TestRenderer />, wrapperProps)
 
-    act(() => {
+    await act(() => {
       const resolve = preloaded
         ? env.mock.queueOperationResolver
         : env.mock.resolveMostRecentOperation
@@ -128,16 +131,16 @@ export const setupTestWrapper = <T extends OperationType, ComponentProps = {}>({
       })
     })
 
-    const mockResolveLastOperation = (mockResolvers: MockResolvers) => {
-      act(() => {
+    const mockResolveLastOperation = async (mockResolvers: MockResolvers) => {
+      await act(() => {
         env.mock.resolveMostRecentOperation((operation) => {
           return MockPayloadGenerator.generate(operation, mockResolvers)
         })
       })
     }
 
-    const mockRejectLastOperation = (error: Error) => {
-      act(() => {
+    const mockRejectLastOperation = async (error: Error) => {
+      await act(() => {
         env.mock.rejectMostRecentOperation(error)
       })
     }

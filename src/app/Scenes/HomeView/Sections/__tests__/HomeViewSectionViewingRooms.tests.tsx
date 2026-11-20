@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { HomeViewSectionViewingRoomsTestsQuery } from "__generated__/HomeViewSectionViewingRoomsTestsQuery.graphql"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionViewingRooms } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
@@ -33,15 +33,16 @@ describe("HomeViewSectionViewingRooms", () => {
   })
 
   it("renders the section properly", async () => {
-    const { mockResolveLastOperation } = renderWithRelay({
+    const { mockResolveLastOperation } = await renderWithRelay({
       HomeViewComponent: () => ({
         title: "Viewing Rooms",
       }),
     })
 
     expect(screen.getByText("Viewing Rooms")).toBeOnTheScreen()
+    expect(screen.getByTestId("viewing-room-rail-placeholder")).toBeOnTheScreen()
 
-    mockResolveLastOperation({
+    await mockResolveLastOperation({
       ViewingRoomsConnection: () => ({
         edges: [
           {
@@ -64,14 +65,16 @@ describe("HomeViewSectionViewingRooms", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("viewing-room-rail-placeholder"))
+    await waitFor(() =>
+      expect(screen.queryByTestId("viewing-room-rail-placeholder")).not.toBeOnTheScreen()
+    )
 
     expect(screen.getByText("viewing room 1")).toBeOnTheScreen()
     expect(screen.getByText("viewing room 2")).toBeOnTheScreen()
   })
 
   it("navigates and tracks individual viewing room taps", async () => {
-    const { mockResolveLastOperation } = renderWithRelay({
+    const { mockResolveLastOperation } = await renderWithRelay({
       HomeViewSectionViewingRooms: () => ({
         internalID: "home-view-section-viewing-rooms",
         component: {
@@ -87,8 +90,9 @@ describe("HomeViewSectionViewingRooms", () => {
     })
 
     expect(screen.getByText("Viewing Rooms")).toBeOnTheScreen()
+    expect(screen.getByTestId("viewing-room-rail-placeholder")).toBeOnTheScreen()
 
-    mockResolveLastOperation({
+    await mockResolveLastOperation({
       ViewingRoomsConnection: () => ({
         edges: [
           {
@@ -111,9 +115,11 @@ describe("HomeViewSectionViewingRooms", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("viewing-room-rail-placeholder"))
+    await waitFor(() =>
+      expect(screen.queryByTestId("viewing-room-rail-placeholder")).not.toBeOnTheScreen()
+    )
 
-    fireEvent.press(screen.getByText("viewing room 1"))
+    await fireEvent.press(screen.getByText("viewing room 1"))
 
     expect(mockTrackEvent.mock.calls[0]).toEqual([
       {
@@ -134,7 +140,7 @@ describe("HomeViewSectionViewingRooms", () => {
   })
 
   it("navigates and tracks view-all taps when href is provided", async () => {
-    const { mockResolveLastOperation } = renderWithRelay({
+    const { mockResolveLastOperation } = await renderWithRelay({
       HomeViewSectionViewingRooms: () => ({
         internalID: "home-view-section-viewing-rooms",
         contextModule: "viewingRoomsRail",
@@ -152,8 +158,9 @@ describe("HomeViewSectionViewingRooms", () => {
     })
 
     expect(screen.getByText("Viewing Rooms")).toBeOnTheScreen()
+    expect(screen.getByTestId("viewing-room-rail-placeholder")).toBeOnTheScreen()
 
-    mockResolveLastOperation({
+    await mockResolveLastOperation({
       ViewingRoomsConnection: () => ({
         edges: [
           {
@@ -170,9 +177,11 @@ describe("HomeViewSectionViewingRooms", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("viewing-room-rail-placeholder"))
+    await waitFor(() =>
+      expect(screen.queryByTestId("viewing-room-rail-placeholder")).not.toBeOnTheScreen()
+    )
 
-    fireEvent.press(screen.getByText("Viewing Rooms"))
+    await fireEvent.press(screen.getByText("Viewing Rooms"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedViewingRoomGroup",

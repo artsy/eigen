@@ -27,17 +27,17 @@ describe("CityEventSaveControl", () => {
 
   // The plus no longer follows, so it has no saved state of its own: which itineraries hold
   // the entity is the sheet's business.
-  it("offers to add the entity to an itinerary", () => {
-    renderIt()
+  it("offers to add the entity to an itinerary", async () => {
+    await renderIt()
 
     expect(screen.getByLabelText("Add Frida Kahlo to an itinerary")).toBeTruthy()
     expect(screen.getByTestId("city-guide-save-button-add-icon")).toBeTruthy()
   })
 
-  it("tracks the tap against the entity", () => {
-    renderIt()
+  it("tracks the tap against the entity", async () => {
+    await renderIt()
 
-    fireEvent.press(screen.getByTestId("city-guide-save-button"))
+    await fireEvent.press(screen.getByTestId("city-guide-save-button"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -48,10 +48,10 @@ describe("CityEventSaveControl", () => {
     )
   })
 
-  it("tracks a fair and a gallery under their own names", () => {
-    renderIt({ itemType: "FAIR", itemID: "fair-1", name: "Frieze" })
+  it("tracks a fair and a gallery under their own names", async () => {
+    await renderIt({ itemType: "FAIR", itemID: "fair-1", name: "Frieze" })
 
-    fireEvent.press(screen.getByTestId("city-guide-save-button"))
+    await fireEvent.press(screen.getByTestId("city-guide-save-button"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -61,10 +61,10 @@ describe("CityEventSaveControl", () => {
     )
   })
 
-  it("tracks the cohesion tappedAddToItinerary event, with the entity as the destination", () => {
-    renderIt({ itemType: "SHOW", itemID: "show-internal-id", itemSlug: "frida-kahlo" })
+  it("tracks the cohesion tappedAddToItinerary event, with the entity as the destination", async () => {
+    await renderIt({ itemType: "SHOW", itemID: "show-internal-id", itemSlug: "frida-kahlo" })
 
-    fireEvent.press(screen.getByTestId("city-guide-save-button"))
+    await fireEvent.press(screen.getByTestId("city-guide-save-button"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -79,34 +79,34 @@ describe("CityEventSaveControl", () => {
     )
   })
 
-  it("tracks a fair's destination as OwnerType.fair and a location's as OwnerType.partner", () => {
-    renderIt({ itemType: "FAIR", itemID: "fair-1" })
-    fireEvent.press(screen.getByTestId("city-guide-save-button"))
+  it("tracks a fair's destination as OwnerType.fair and a location's as OwnerType.partner", async () => {
+    await renderIt({ itemType: "FAIR", itemID: "fair-1" })
+    await fireEvent.press(screen.getByTestId("city-guide-save-button"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({ destination_screen_owner_type: OwnerType.fair })
     )
 
     jest.clearAllMocks()
-    renderIt({ itemType: "LOCATION", itemID: "location-1" })
-    fireEvent.press(screen.getByTestId("city-guide-save-button"))
+    await renderIt({ itemType: "LOCATION", itemID: "location-1" })
+    await fireEvent.press(screen.getByTestId("city-guide-save-button"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({ destination_screen_owner_type: OwnerType.partner })
     )
   })
 
-  it("marks is_curated_guide when rendered on a curated guide's own stop list", () => {
-    renderIt({ isCuratedGuide: true })
+  it("marks is_curated_guide when rendered on a curated guide's own stop list", async () => {
+    await renderIt({ isCuratedGuide: true })
 
-    fireEvent.press(screen.getByTestId("city-guide-save-button"))
+    await fireEvent.press(screen.getByTestId("city-guide-save-button"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(expect.objectContaining({ is_curated_guide: true }))
   })
 
   // A plus that did nothing when tapped would be worse than none at all.
-  it("renders nothing without a provider", () => {
-    renderWithWrappers(
+  it("renders nothing without a provider", async () => {
+    await renderWithWrappers(
       <CityEventSaveControl
         itemType="SHOW"
         itemID="show-internal-id"

@@ -23,7 +23,7 @@ const resolveCityGuideCities = async (cities: unknown[] = mockCities) => {
     await flushPromiseQueue()
   })
 
-  act(() => {
+  await act(() => {
     getMockRelayEnvironment().mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         ...DefaultMockResolvers,
@@ -47,7 +47,7 @@ describe("CityGuideNew", () => {
       userPrefs: { previouslySelectedCitySlug: "berlin-germany" },
     })
 
-    renderWithWrappers(<CityGuideNew />)
+    await renderWithWrappers(<CityGuideNew />)
     await resolveCityGuideCities()
 
     // Queried inside the switcher: the picker's list is mounted too, so the city name
@@ -63,7 +63,7 @@ describe("CityGuideNew", () => {
       userPrefs: { previouslySelectedCitySlug: null },
     })
 
-    renderWithWrappers(<CityGuideNew />)
+    await renderWithWrappers(<CityGuideNew />)
     await resolveCityGuideCities()
 
     expect(
@@ -76,10 +76,10 @@ describe("CityGuideNew", () => {
       userPrefs: { previouslySelectedCitySlug: "berlin-germany" },
     })
 
-    renderWithWrappers(<CityGuideNew />)
+    await renderWithWrappers(<CityGuideNew />)
     await resolveCityGuideCities()
 
-    fireEvent.press(screen.getByTestId("city-guide-city-switcher"))
+    await fireEvent.press(screen.getByTestId("city-guide-city-switcher"))
 
     // Berlin is selected, so these two only appear in the picker's rows.
     expect(screen.getByText("New York")).toBeOnTheScreen()
@@ -87,25 +87,25 @@ describe("CityGuideNew", () => {
   })
 
   it("leaves a city without coordinates out of the picker", async () => {
-    renderWithWrappers(<CityGuideNew />)
+    await renderWithWrappers(<CityGuideNew />)
     await resolveCityGuideCities([
       ...mockCities,
       { slug: "nowhere", name: "Nowhere", coordinates: null },
     ])
 
-    fireEvent.press(screen.getByTestId("city-guide-city-switcher"))
+    await fireEvent.press(screen.getByTestId("city-guide-city-switcher"))
 
     expect(screen.getByText("London")).toBeOnTheScreen()
     expect(screen.queryByText("Nowhere")).not.toBeOnTheScreen()
   })
 
   it("shows the error view with a back button when the city list fails to load", async () => {
-    renderWithWrappers(<CityGuideNew />)
+    await renderWithWrappers(<CityGuideNew />)
 
     await act(async () => {
       await flushPromiseQueue()
     })
-    act(() => {
+    await act(() => {
       getMockRelayEnvironment().mock.rejectMostRecentOperation(new Error("network is down"))
     })
 
@@ -114,17 +114,17 @@ describe("CityGuideNew", () => {
   })
 
   it("shows the error view when the query returns no cities", async () => {
-    renderWithWrappers(<CityGuideNew />)
+    await renderWithWrappers(<CityGuideNew />)
     await resolveCityGuideCities([])
 
     expect(await screen.findByText("Unable to load")).toBeOnTheScreen()
   })
 
   it("refetches the city list on retry after an empty response", async () => {
-    renderWithWrappers(<CityGuideNew />)
+    await renderWithWrappers(<CityGuideNew />)
     await resolveCityGuideCities([])
 
-    fireEvent.press(await screen.findByLabelText("Retry"))
+    await fireEvent.press(await screen.findByLabelText("Retry"))
     await resolveCityGuideCities()
 
     expect(
@@ -141,7 +141,7 @@ describe("CityGuideNew", () => {
       userPrefs: { previouslySelectedCitySlug: "berlin-germany" },
     })
 
-    renderWithWrappers(<CityGuideNew citySlug="london-united-kingdom" />)
+    await renderWithWrappers(<CityGuideNew citySlug="london-united-kingdom" />)
     await resolveCityGuideCities()
 
     expect(
@@ -154,7 +154,7 @@ describe("CityGuideNew", () => {
       userPrefs: { previouslySelectedCitySlug: "berlin-germany" },
     })
 
-    renderWithWrappers(<CityGuideNew citySlug="not-a-real-city" />)
+    await renderWithWrappers(<CityGuideNew citySlug="not-a-real-city" />)
     await resolveCityGuideCities()
 
     expect(
@@ -167,7 +167,7 @@ describe("CityGuideNew", () => {
       userPrefs: { previouslySelectedCitySlug: "berlin-germany" },
     })
 
-    renderWithWrappers(<CityGuideNew />)
+    await renderWithWrappers(<CityGuideNew />)
     await resolveCityGuideCities()
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -185,7 +185,7 @@ describe("CityGuideNew", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: false })
       __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
 
-      renderWithWrappers(<CityGuideNew />)
+      await renderWithWrappers(<CityGuideNew />)
       await resolveCityGuideCities()
 
       expect(mostRecentVariables().forYou).toBe(false)
@@ -195,7 +195,7 @@ describe("CityGuideNew", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
       __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: null } })
 
-      renderWithWrappers(<CityGuideNew />)
+      await renderWithWrappers(<CityGuideNew />)
       await resolveCityGuideCities()
 
       expect(mostRecentVariables().forYou).toBe(false)
@@ -205,7 +205,7 @@ describe("CityGuideNew", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
       __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
 
-      renderWithWrappers(<CityGuideNew />)
+      await renderWithWrappers(<CityGuideNew />)
       await resolveCityGuideCities()
 
       expect(mostRecentVariables().forYou).toBe(true)
@@ -213,17 +213,17 @@ describe("CityGuideNew", () => {
   })
 
   describe("the loading placeholder", () => {
-    it("shows a spinner before the query resolves", () => {
-      renderWithWrappers(<CityGuideNew />)
+    it("shows a spinner before the query resolves", async () => {
+      await renderWithWrappers(<CityGuideNew />)
 
       expect(screen.getByTestId("city-guide-new-placeholder")).toBeOnTheScreen()
     })
 
     it("replaces the spinner with the real sections once the query resolves", async () => {
-      renderWithWrappers(<CityGuideNew />)
+      await renderWithWrappers(<CityGuideNew />)
       await resolveCityGuideCities()
 
-      act(() => {
+      await act(() => {
         getMockRelayEnvironment().mock.resolveMostRecentOperation((operation) =>
           MockPayloadGenerator.generate(operation, {
             ...DefaultMockResolvers,
@@ -250,7 +250,7 @@ describe("CityGuideNew", () => {
     const resolveWithEditorialContent = async ({ withVideo = true } = {}) => {
       await resolveCityGuideCities()
 
-      act(() => {
+      await act(() => {
         getMockRelayEnvironment().mock.resolveMostRecentOperation((operation) =>
           MockPayloadGenerator.generate(operation, {
             ...DefaultMockResolvers,
@@ -295,7 +295,7 @@ describe("CityGuideNew", () => {
     it("shows the videos and Artsy Editorial sections when the flag is on", async () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideEditorialContent: true })
 
-      renderWithWrappers(<CityGuideNew />)
+      await renderWithWrappers(<CityGuideNew />)
       await resolveWithEditorialContent()
 
       expect(screen.getByTestId("city-guide-event-videos")).toBeOnTheScreen()
@@ -310,7 +310,7 @@ describe("CityGuideNew", () => {
     it("hides both sections when the flag is off", async () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideEditorialContent: false })
 
-      renderWithWrappers(<CityGuideNew />)
+      await renderWithWrappers(<CityGuideNew />)
       await resolveWithEditorialContent()
 
       expect(screen.getByText("City Guides")).toBeOnTheScreen()
@@ -321,7 +321,7 @@ describe("CityGuideNew", () => {
     it("shows nothing for the videos section when the city has no video", async () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideEditorialContent: true })
 
-      renderWithWrappers(<CityGuideNew />)
+      await renderWithWrappers(<CityGuideNew />)
       await resolveWithEditorialContent({ withVideo: false })
 
       expect(screen.queryByTestId("city-guide-event-videos")).not.toBeOnTheScreen()

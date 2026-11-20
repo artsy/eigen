@@ -59,8 +59,8 @@ describe("AdditionalGeneIDsOptions Screen", () => {
     )
   }
 
-  it("renders the options", () => {
-    renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={initialState} />)
+  it("renders the options", async () => {
+    await renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={initialState} />)
 
     expect(screen.getByText("Prints")).toBeTruthy()
     expect(screen.getByText("Design")).toBeTruthy()
@@ -72,7 +72,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
     expect(screen.getByText("Photography")).toBeTruthy()
   })
 
-  it("displays the number of the selected filters on the filter modal screen", () => {
+  it("displays the number of the selected filters on the filter modal screen", async () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
@@ -94,12 +94,12 @@ describe("AdditionalGeneIDsOptions Screen", () => {
       sizeMetric: "cm",
     }
 
-    renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
+    await renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
     expect(screen.getByText("Medium • 2")).toBeOnTheScreen()
   })
 
-  it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
+  it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
@@ -121,7 +121,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
       sizeMetric: "cm",
     }
 
-    renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={injectedState} />)
+    await renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={injectedState} />)
     const option1 = screen.getByText("Prints")
     const option2 = screen.getByText("Sculpture")
 
@@ -134,7 +134,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
     expect(checkbox[2]).toHaveProp("selected", true)
   })
 
-  it("clears all when clear button is tapped", () => {
+  it("clears all when clear button is tapped", async () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
@@ -156,14 +156,14 @@ describe("AdditionalGeneIDsOptions Screen", () => {
       sizeMetric: "cm",
     }
 
-    renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={injectedState} />)
+    await renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={injectedState} />)
 
     const checkbox = screen.getAllByRole("checkbox")
 
     expect(checkbox[0]).toBeChecked()
     expect(checkbox[2]).toBeChecked()
 
-    fireEvent.press(screen.getByText("Clear"))
+    await fireEvent.press(screen.getByText("Clear"))
 
     expect(checkbox[0]).not.toBeChecked()
     expect(checkbox[2]).not.toBeChecked()

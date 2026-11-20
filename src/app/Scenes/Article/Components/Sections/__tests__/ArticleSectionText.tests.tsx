@@ -21,8 +21,8 @@ describe("ArticleSectionText", () => {
     `,
   })
 
-  it("renders", () => {
-    renderWithRelay({
+  it("renders", async () => {
+    await renderWithRelay({
       Article: () => ({
         sections: [
           {

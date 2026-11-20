@@ -33,7 +33,7 @@ describe("HomeViewSectionSales", () => {
   })
 
   it("renders the section properly", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       HomeViewSectionSales: () => ({
         component: {
           title: "Auctions",
@@ -68,7 +68,7 @@ describe("HomeViewSectionSales", () => {
   })
 
   it("tracks item presses properly", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       HomeViewSectionSales: () => ({
         internalID: "home-view-section-sales",
         contextModule: "auctionRail",
@@ -106,7 +106,7 @@ describe("HomeViewSectionSales", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("sale 2"))
+    await fireEvent.press(screen.getByText("sale 2"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -126,7 +126,7 @@ describe("HomeViewSectionSales", () => {
   })
 
   it("tracks view-all properly", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       HomeViewSectionSales: () => ({
         internalID: "home-view-section-sales",
         contextModule: "auctionRail",
@@ -165,7 +165,7 @@ describe("HomeViewSectionSales", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("Browse All Auctions"))
+    await fireEvent.press(screen.getByText("Browse All Auctions"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({

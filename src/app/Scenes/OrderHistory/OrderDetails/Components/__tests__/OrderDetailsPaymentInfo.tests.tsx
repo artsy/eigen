@@ -17,22 +17,22 @@ describe("OrderDetailsPaymentInfo", () => {
     `,
   })
 
-  it("renders Apple Pay payment method", () => {
-    renderWithRelay({ Order: () => ({ creditCardWalletType: "APPLE_PAY" }) })
+  it("renders Apple Pay payment method", async () => {
+    await renderWithRelay({ Order: () => ({ creditCardWalletType: "APPLE_PAY" }) })
 
     expect(screen.getByText("Payment method")).toBeOnTheScreen()
     expect(screen.getByText("Apple Pay")).toBeOnTheScreen()
   })
 
-  it("renders Google Pay payment method", () => {
-    renderWithRelay({ Order: () => ({ creditCardWalletType: "GOOGLE_PAY" }) })
+  it("renders Google Pay payment method", async () => {
+    await renderWithRelay({ Order: () => ({ creditCardWalletType: "GOOGLE_PAY" }) })
 
     expect(screen.getByText("Payment method")).toBeOnTheScreen()
     expect(screen.getByText("Google Pay")).toBeOnTheScreen()
   })
 
-  it("prioritizes wallet type over payment method details", () => {
-    renderWithRelay({
+  it("prioritizes wallet type over payment method details", async () => {
+    await renderWithRelay({
       Order: () => ({
         creditCardWalletType: "APPLE_PAY",
         paymentMethodDetails: {
@@ -49,8 +49,8 @@ describe("OrderDetailsPaymentInfo", () => {
     expect(screen.queryByText("•••• 1234  Exp 03/28")).not.toBeOnTheScreen()
   })
 
-  it("renders credit card payment method with formatted expiration date", () => {
-    renderWithRelay({
+  it("renders credit card payment method with formatted expiration date", async () => {
+    await renderWithRelay({
       Order: () => ({
         creditCardWalletType: null,
         paymentMethodDetails: {
@@ -67,8 +67,8 @@ describe("OrderDetailsPaymentInfo", () => {
     expect(screen.getByText("•••• 4242  Exp 03/25")).toBeOnTheScreen()
   })
 
-  it("renders bank account payment method", () => {
-    renderWithRelay({
+  it("renders bank account payment method", async () => {
+    await renderWithRelay({
       Order: () => ({
         creditCardWalletType: null,
         paymentMethodDetails: { __typename: "BankAccount", last4: "5678" },
@@ -79,8 +79,8 @@ describe("OrderDetailsPaymentInfo", () => {
     expect(screen.getByText("Bank transfer •••• 5678")).toBeOnTheScreen()
   })
 
-  it("renders wire transfer payment method", () => {
-    renderWithRelay({
+  it("renders wire transfer payment method", async () => {
+    await renderWithRelay({
       Order: () => ({
         creditCardWalletType: null,
         paymentMethodDetails: { __typename: "WireTransfer" },

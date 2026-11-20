@@ -1,4 +1,4 @@
-import { act, fireEvent } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { InquiryPurchaseButtonTestsQuery } from "__generated__/InquiryPurchaseButtonTestsQuery.graphql"
 import { InquiryPurchaseButtonFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/InquiryPurchaseButton"
 import { navigate } from "app/system/navigation/navigate"
@@ -43,9 +43,9 @@ const TestRenderer = () => {
   )
 }
 
-const getWrapper = (mockResolvers = {}) => {
-  const view = renderWithWrappers(<TestRenderer />)
-  act(() => {
+const getWrapper = async (mockResolvers = {}) => {
+  const view = await renderWithWrappers(<TestRenderer />)
+  await act(() => {
     environment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, mockResolvers)
     )
@@ -58,14 +58,14 @@ describe("InquiryPurchaseButton", () => {
     environment = getMockRelayEnvironment()
   })
 
-  it("navigates to the order webview when button is tapped", () => {
-    const { getByText } = getWrapper({
+  it("navigates to the order webview when button is tapped", async () => {
+    await getWrapper({
       Artwork: () => ({
         internalID: "test-id",
       }),
     })
 
-    fireEvent.press(getByText("Purchase"))
+    await fireEvent.press(screen.getByText("Purchase"))
     environment.mock.resolveMostRecentOperation((operation) => {
       return MockPayloadGenerator.generate(operation, {
         Mutation: () => {
@@ -88,14 +88,14 @@ describe("InquiryPurchaseButton", () => {
     })
   })
 
-  it("presents an error dialogue if mutation returns an error response", () => {
-    const { getByText } = getWrapper({
+  it("presents an error dialogue if mutation returns an error response", async () => {
+    await getWrapper({
       Artwork: () => ({
         internalID: "test-id",
       }),
     })
 
-    fireEvent.press(getByText("Purchase"))
+    await fireEvent.press(screen.getByText("Purchase"))
     environment.mock.resolveMostRecentOperation((operation) => {
       return MockPayloadGenerator.generate(operation, {
         Mutation: () => {

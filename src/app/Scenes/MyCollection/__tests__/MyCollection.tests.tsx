@@ -89,8 +89,8 @@ describe("MyCollection", () => {
   })
 
   describe("collection is empty", () => {
-    it("shows zerostate", () => {
-      renderWithRelay({
+    it("shows zerostate", async () => {
+      await renderWithRelay({
         Me: () => ({
           myCollectionConnection: {
             edges: [],
@@ -111,8 +111,8 @@ describe("MyCollection", () => {
       ).toBeTruthy()
     })
 
-    it("tracks analytics event when Add Artwork is pressed", () => {
-      renderWithRelay({
+    it("tracks analytics event when Add Artwork is pressed", async () => {
+      await renderWithRelay({
         Me: () => ({
           myCollectionConnection: {
             edges: [],
@@ -127,7 +127,7 @@ describe("MyCollection", () => {
         }),
       })
 
-      fireEvent.press(screen.getByTestId("add-artwork-button-zero-state"))
+      await fireEvent.press(screen.getByTestId("add-artwork-button-zero-state"))
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
@@ -144,8 +144,8 @@ describe("MyCollection", () => {
   })
 
   describe("collection contains some artists and no artworks", () => {
-    it("shows collected artists rail", () => {
-      renderWithRelay({
+    it("shows collected artists rail", async () => {
+      await renderWithRelay({
         Me: () => ({
           myCollectionConnection: { edges: [] },
           myCollectionInfo: {
@@ -161,8 +161,8 @@ describe("MyCollection", () => {
       expect(screen.getByTestId("my-collection-collected-artists-rail")).toBeTruthy()
     })
 
-    it("shows zero artworks state", () => {
-      renderWithRelay({
+    it("shows zero artworks state", async () => {
+      await renderWithRelay({
         Me: () => ({
           myCollectionConnection: { edges: [] },
           myCollectionInfo: {
@@ -183,8 +183,8 @@ describe("MyCollection", () => {
       ).toBeTruthy()
     })
 
-    it("navigates to MyCollectionArtworkForm when Add Artwork is pressed", () => {
-      renderWithRelay({
+    it("navigates to MyCollectionArtworkForm when Add Artwork is pressed", async () => {
+      await renderWithRelay({
         Me: () => ({
           myCollectionConnection: { edges: [] },
           myCollectionInfo: {
@@ -197,7 +197,7 @@ describe("MyCollection", () => {
         }),
       })
 
-      fireEvent.press(screen.getByTestId("add-artwork-button-zero-artworks-state"))
+      await fireEvent.press(screen.getByTestId("add-artwork-button-zero-artworks-state"))
 
       expect(navigate).toHaveBeenCalledWith(
         "my-collection/artworks/new",
@@ -207,8 +207,8 @@ describe("MyCollection", () => {
       )
     })
 
-    it("tracks analytics event when Add Artwork is pressed", () => {
-      renderWithRelay({
+    it("tracks analytics event when Add Artwork is pressed", async () => {
+      await renderWithRelay({
         Me: () => ({
           myCollectionConnection: { edges: [] },
           myCollectionInfo: {
@@ -221,7 +221,7 @@ describe("MyCollection", () => {
         }),
       })
 
-      fireEvent.press(screen.getByTestId("add-artwork-button-zero-artworks-state"))
+      await fireEvent.press(screen.getByTestId("add-artwork-button-zero-artworks-state"))
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
@@ -238,15 +238,15 @@ describe("MyCollection", () => {
   })
 
   describe("collection is not empty", () => {
-    it("renders without throwing an error", () => {
-      renderWithRelay()
+    it("renders without throwing an error", async () => {
+      await renderWithRelay()
       expect(screen.getByLabelText("Artworks Content View")).toBeOnTheScreen()
     })
   })
 
   describe("sorting and filtering", () => {
     it.skip("filters and sorts without crashing", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({
           myCollectionConnection,
         }),
@@ -268,8 +268,8 @@ describe("MyCollection with AREnableSellMyCollectionArtwork", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSellMyCollectionArtwork: false })
     })
 
-    it("shows the Artists tab and no Listings tab", () => {
-      renderWithWrappers(<MyCollectionQueryRenderer />)
+    it("shows the Artists tab and no Listings tab", async () => {
+      await renderWithWrappers(<MyCollectionQueryRenderer />)
 
       expect(screen.getByText("Artworks")).toBeOnTheScreen()
       expect(screen.getByText("Artists")).toBeOnTheScreen()
@@ -283,8 +283,8 @@ describe("MyCollection with AREnableSellMyCollectionArtwork", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSellMyCollectionArtwork: true })
     })
 
-    it("shows the Listings tab and no Artists tab", () => {
-      renderWithWrappers(<MyCollectionQueryRenderer />)
+    it("shows the Listings tab and no Artists tab", async () => {
+      await renderWithWrappers(<MyCollectionQueryRenderer />)
 
       expect(screen.getByText("Artworks")).toBeOnTheScreen()
       expect(screen.getByText("Insights")).toBeOnTheScreen()
@@ -296,10 +296,10 @@ describe("MyCollection with AREnableSellMyCollectionArtwork", () => {
 
 const applyFilter = async (filterName: string, filterOption: string) => {
   await flushPromiseQueue()
-  fireEvent.press(screen.getByTestId("sort-and-filter-button"))
-  fireEvent.press(screen.getByText(filterName))
-  fireEvent.press(screen.getByText(filterOption))
-  fireEvent.press(screen.getByText("Show Results"))
+  await fireEvent.press(screen.getByTestId("sort-and-filter-button"))
+  await fireEvent.press(screen.getByText(filterName))
+  await fireEvent.press(screen.getByText(filterOption))
+  await fireEvent.press(screen.getByText("Show Results"))
 }
 
 const myCollectionConnection = {

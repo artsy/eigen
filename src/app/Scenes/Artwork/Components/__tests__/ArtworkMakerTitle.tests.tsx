@@ -19,7 +19,7 @@ describe("ArtworkMakerTitle", () => {
   })
 
   it("renders fields correctly", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         artists: [
           { name: "Andy Warhol", href: "https://testhref" },
@@ -42,7 +42,7 @@ describe("ArtworkMakerTitle", () => {
   })
 
   it("redirects to artist page when artist name is clicked", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         artists: [{ name: "Andy Warhol", href: "/artist/andy-warhol" }],
       }),
@@ -51,7 +51,7 @@ describe("ArtworkMakerTitle", () => {
     await flushPromiseQueue()
 
     expect(screen.getByText(/Andy Warhol/)).toBeOnTheScreen()
-    fireEvent.press(screen.getByText(/Andy Warhol/))
+    await fireEvent.press(screen.getByText(/Andy Warhol/))
 
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol", {
       passProps: { verifiedRepresentativesCount: 1 },
@@ -60,7 +60,7 @@ describe("ArtworkMakerTitle", () => {
 
   describe("for an artwork with more than 3 artists", () => {
     it("truncates artist names", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Artwork: () => ({
           artists: [
             { name: "Andy Warhol", href: "https://testhref" },
@@ -84,8 +84,8 @@ describe("ArtworkMakerTitle", () => {
       expect(screen.queryByText("Wes Borland")).not.toBeOnTheScreen()
     })
 
-    it("shows truncated artist names when 'x more' is clicked", () => {
-      renderWithRelay({
+    it("shows truncated artist names when 'x more' is clicked", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           artists: [
             { name: "Andy Warhol", href: "https://testhref" },
@@ -99,7 +99,7 @@ describe("ArtworkMakerTitle", () => {
         }),
       })
 
-      fireEvent.press(screen.getByText("3 more"))
+      await fireEvent.press(screen.getByText("3 more"))
 
       expect(screen.queryByText("3 more")).not.toBeOnTheScreen()
       expect(screen.getByText(/Another Artist/)).toBeOnTheScreen()
@@ -109,8 +109,8 @@ describe("ArtworkMakerTitle", () => {
   })
 
   describe("for an artwork with less than 4 artists but more than 1", () => {
-    it("doesn't truncate artist names", () => {
-      renderWithRelay({
+    it("doesn't truncate artist names", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           artists: [
             { name: "Andy Warhol", href: "https://testhref" },
@@ -129,8 +129,8 @@ describe("ArtworkMakerTitle", () => {
   })
 
   describe("for an artwork with one artist", () => {
-    it("renders artist name", () => {
-      renderWithRelay({
+    it("renders artist name", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           artists: [{ name: "Andy Warhol", href: "https://testhref" }],
           culturalMaker: null,
@@ -140,8 +140,8 @@ describe("ArtworkMakerTitle", () => {
       expect(screen.getByText(/Andy Warhol/)).toBeOnTheScreen()
     })
 
-    it("Artist name is not clickable if no href provided", () => {
-      renderWithRelay({
+    it("Artist name is not clickable if no href provided", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           artists: [{ name: "Andy Warhol", href: null }],
           culturalMaker: null,
@@ -154,8 +154,8 @@ describe("ArtworkMakerTitle", () => {
   })
 
   describe("for an artwork with no artists but a cultural maker", () => {
-    it("renders artist name", () => {
-      renderWithRelay({
+    it("renders artist name", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           artists: [],
           culturalMaker: "18th century American",

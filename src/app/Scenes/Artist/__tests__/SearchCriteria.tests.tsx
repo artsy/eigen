@@ -11,10 +11,10 @@ describe("SearchCriteria", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  it("should not query the search criteria when searchCriteriaId is not passed", () => {
+  it("should not query the search criteria when searchCriteriaId is not passed", async () => {
     const mockRenderComponent = jest.fn(() => <></>)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <SearchCriteriaQueryRenderer
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
       />
@@ -26,10 +26,10 @@ describe("SearchCriteria", () => {
     })
   })
 
-  it("should query the search criteria", () => {
+  it("should query the search criteria", async () => {
     const mockRenderComponent = jest.fn(() => <></>)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <SearchCriteriaQueryRenderer
         alertId="alert-id"
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
@@ -37,7 +37,7 @@ describe("SearchCriteria", () => {
       />
     )
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    await resolveMostRecentRelayOperation(mockEnvironment)
 
     expect(mockRenderComponent).toBeCalledWith({
       fetchCriteriaError: null,
@@ -45,10 +45,10 @@ describe("SearchCriteria", () => {
     })
   })
 
-  it("should call renderPlaceholder when query is loading", () => {
+  it("should call renderPlaceholder when query is loading", async () => {
     const mockRenderPlaceholder = jest.fn(() => <></>)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <SearchCriteriaQueryRenderer
         alertId="alert-id"
         render={{ renderComponent: jest.fn(() => <></>), renderPlaceholder: mockRenderPlaceholder }}
@@ -59,10 +59,10 @@ describe("SearchCriteria", () => {
     expect(mockRenderPlaceholder).toBeCalled()
   })
 
-  it("should return error if something went wrong during query", () => {
+  it("should return error if something went wrong during query", async () => {
     const mockRenderComponent = jest.fn(() => <></>)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <SearchCriteriaQueryRenderer
         alertId="alert-id"
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
@@ -70,7 +70,7 @@ describe("SearchCriteria", () => {
       />
     )
 
-    rejectMostRecentRelayOperation(mockEnvironment, new Error())
+    await rejectMostRecentRelayOperation(mockEnvironment, new Error())
 
     expect(mockRenderComponent).toBeCalledWith({
       fetchCriteriaError: new Error(),

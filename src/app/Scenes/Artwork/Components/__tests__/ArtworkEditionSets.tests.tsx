@@ -24,8 +24,8 @@ describe("ArtworkEditionSets", () => {
     jest.clearAllMocks()
   })
 
-  it("should render all edition sets", () => {
-    renderWithRelay({ Artwork: () => artwork })
+  it("should render all edition sets", async () => {
+    await renderWithRelay({ Artwork: () => artwork })
 
     expect(screen.getByText("Edition Set One")).toBeOnTheScreen()
     expect(screen.getByText("Edition Set Two")).toBeOnTheScreen()
@@ -35,22 +35,22 @@ describe("ArtworkEditionSets", () => {
     expect(onSelectEditionMock).toBeCalledWith("edition-set-two")
   })
 
-  it("should call `onSelectEdition` handler with the selected edition set id if acquireable or offerable", () => {
-    renderWithRelay({ Artwork: () => artwork })
+  it("should call `onSelectEdition` handler with the selected edition set id if acquireable or offerable", async () => {
+    await renderWithRelay({ Artwork: () => artwork })
 
-    fireEvent.press(screen.getByText("Edition Set Three"))
+    await fireEvent.press(screen.getByText("Edition Set Three"))
 
     expect(onSelectEditionMock).toBeCalledWith("edition-set-three")
 
-    fireEvent.press(screen.getByText("Edition Set Two"))
+    await fireEvent.press(screen.getByText("Edition Set Two"))
 
     expect(onSelectEditionMock).toBeCalledWith("edition-set-two")
   })
 
-  it("should not call `onSelectEdition` handler when the edition set is not acquireable or offerable", () => {
-    renderWithRelay({ Artwork: () => artwork })
+  it("should not call `onSelectEdition` handler when the edition set is not acquireable or offerable", async () => {
+    await renderWithRelay({ Artwork: () => artwork })
 
-    fireEvent.press(screen.getByText("Edition Set One"))
+    await fireEvent.press(screen.getByText("Edition Set One"))
 
     expect(onSelectEditionMock).not.toBeCalledWith("edition-set-one")
   })

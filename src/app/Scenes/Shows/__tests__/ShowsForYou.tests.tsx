@@ -3,6 +3,7 @@ import { ShowsForYouQuery } from "__generated__/ShowsForYouQuery.graphql"
 import { ShowsForYouList, ShowsForYouScreen } from "app/Scenes/Shows/ShowsForYou"
 import { goBack } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -19,18 +20,15 @@ describe("ShowsForYouScreen", () => {
     Component: ShowsForYouScreen,
   })
 
-  it("renders loading placeholder initially", () => {
-    renderWithRelay({
-      Query: () => ({
-        me: null,
-      }),
-    })
+  it("renders loading placeholder initially", async () => {
+    // Render without resolving the query so the screen stays in its loading state
+    await renderWithWrappers(<ShowsForYouScreen />)
 
     expect(screen.getByTestId("shows-for-you-screen-placeholder")).toBeOnTheScreen()
   })
 
   it("renders shows list after loading", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Query: () => ({
         me: {
           showsConnection: mockShowsConnection,
@@ -39,8 +37,10 @@ describe("ShowsForYouScreen", () => {
     })
 
     await waitFor(() => {
-      expect(screen.getByText("Shows for You")).toBeOnTheScreen()
+      expect(screen.queryByTestId("shows-for-you-screen-placeholder")).not.toBeOnTheScreen()
     })
+    // The title shows in both the animated header and the sticky sub-header
+    expect(screen.getAllByText("Shows for You")[0]).toBeOnTheScreen()
   })
 })
 
@@ -56,8 +56,8 @@ describe("ShowsForYouList", () => {
     `,
   })
 
-  it("renders multiple show items", () => {
-    renderWithRelay({
+  it("renders multiple show items", async () => {
+    await renderWithRelay({
       Me: () => ({
         showsConnection: {
           edges: [
@@ -83,21 +83,21 @@ describe("ShowsForYouList", () => {
     expect(screen.getByTestId("shows-for-you-flat-list")).toBeOnTheScreen()
   })
 
-  it("handles navigation back", () => {
-    renderWithRelay({
+  it("handles navigation back", async () => {
+    await renderWithRelay({
       Me: () => ({
         showsConnection: mockShowsConnection,
       }),
     })
 
     const backButton = screen.getByLabelText("Back")
-    fireEvent.press(backButton)
+    await fireEvent.press(backButton)
 
     expect(goBack).toHaveBeenCalled()
   })
 
-  it("displays activity indicator when loading more shows", () => {
-    renderWithRelay({
+  it("displays activity indicator when loading more shows", async () => {
+    await renderWithRelay({
       Me: () => ({
         showsConnection: {
           edges: mockShowsConnection.edges,
@@ -112,15 +112,15 @@ describe("ShowsForYouList", () => {
     const flatList = screen.getByTestId("shows-for-you-flat-list")
 
     // Trigger onEndReached to load more
-    fireEvent(flatList, "onEndReached")
+    await fireEvent(flatList, "onEndReached")
 
     // Activity indicator should be visible when loading
     const activityIndicator = screen.getByTestId("activity-indicator")
     expect(activityIndicator).toBeOnTheScreen()
   })
 
-  it("tracks screen view", () => {
-    renderWithRelay({
+  it("tracks screen view", async () => {
+    await renderWithRelay({
       Me: () => ({
         showsConnection: mockShowsConnection,
       }),
@@ -136,8 +136,8 @@ describe("ShowsForYouList", () => {
     `)
   })
 
-  it("does not load more when already loading", () => {
-    const { env } = renderWithRelay({
+  it("does not load more when already loading", async () => {
+    const { env } = await renderWithRelay({
       Me: () => ({
         showsConnection: {
           edges: mockShowsConnection.edges,
@@ -152,8 +152,8 @@ describe("ShowsForYouList", () => {
     const flatList = screen.getByTestId("shows-for-you-flat-list")
 
     // Trigger onEndReached multiple times rapidly
-    fireEvent(flatList, "onEndReached")
-    fireEvent(flatList, "onEndReached")
+    await fireEvent(flatList, "onEndReached")
+    await fireEvent(flatList, "onEndReached")
 
     // Should only trigger one pagination request
     expect(env.mock.getMostRecentOperation()).toBeTruthy()

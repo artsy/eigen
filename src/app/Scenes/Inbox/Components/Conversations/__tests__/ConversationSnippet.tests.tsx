@@ -1,25 +1,25 @@
 import ConversationSnippet from "app/Scenes/Inbox/Components/Conversations/ConversationSnippet"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-it("renders with an artwork without throwing an error", () => {
-  renderWithWrappers(
+it("renders with an artwork without throwing an error", async () => {
+  await renderWithWrappers(
     <ConversationSnippet conversation={artworkConversation as any} onSelected={undefined} />
   )
 })
 
-it("renders with an unlisted artwork without throwing an error", () => {
+it("renders with an unlisted artwork without throwing an error", async () => {
   const unlistedArtworkConversation = {
     ...artworkConversation,
     items: [{ ...artwork, isUnlisted: true }],
   }
 
-  renderWithWrappers(
+  await renderWithWrappers(
     <ConversationSnippet conversation={unlistedArtworkConversation as any} onSelected={undefined} />
   )
 })
 
-it("renders with a show without throwing an error", () => {
-  renderWithWrappers(
+it("renders with a show without throwing an error", async () => {
+  await renderWithWrappers(
     <ConversationSnippet conversation={showConversation as any} onSelected={undefined} />
   )
 })

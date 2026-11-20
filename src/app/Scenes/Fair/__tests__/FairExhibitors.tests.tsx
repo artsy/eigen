@@ -6,10 +6,10 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 describe("FairExhibitors", () => {
-  const getWrapper = (mockResolvers = {}) => {
+  const getWrapper = async (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <QueryRenderer<FairExhibitorsTestsQuery>
         environment={env}
         query={graphql`
@@ -35,7 +35,7 @@ describe("FairExhibitors", () => {
       />
     )
 
-    act(() => {
+    await act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
@@ -45,7 +45,7 @@ describe("FairExhibitors", () => {
   }
 
   it("renders the rails from exhibitors that have artworks", async () => {
-    const { env } = getWrapper({
+    const { env } = await getWrapper({
       Fair: () => ({
         exhibitors: {
           edges: [
@@ -78,8 +78,8 @@ describe("FairExhibitors", () => {
     expect(screen.getAllByText("Arwtworks Rail")).toHaveLength(2)
   })
 
-  it("skips over any partners with no artworks", () => {
-    getWrapper()
+  it("skips over any partners with no artworks", async () => {
+    await getWrapper()
     expect(screen.queryByText(/Partner Without Artworks/)).not.toBeOnTheScreen()
   })
 })

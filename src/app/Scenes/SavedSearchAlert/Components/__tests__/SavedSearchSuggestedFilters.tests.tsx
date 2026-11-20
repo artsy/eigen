@@ -37,7 +37,7 @@ describe("SavedSearchSuggestedFilters", () => {
 
   describe("when there are suggested filters", () => {
     it("show Add Filters Menu", async () => {
-      renderWithRelay({ PreviewSavedSearch: () => ({ suggestedFilters: [] }) })
+      await renderWithRelay({ PreviewSavedSearch: () => ({ suggestedFilters: [] }) })
 
       await act(async () => {
         await flushPromiseQueue()
@@ -48,7 +48,9 @@ describe("SavedSearchSuggestedFilters", () => {
   })
   describe("when there are suggested filters", () => {
     it("shows all suggested filters unselected", async () => {
-      renderWithRelay({ PreviewSavedSearch: () => ({ suggestedFilters: mockSuggestedFilters }) })
+      await renderWithRelay({
+        PreviewSavedSearch: () => ({ suggestedFilters: mockSuggestedFilters }),
+      })
 
       await act(async () => {
         await flushPromiseQueue()
@@ -76,7 +78,7 @@ describe("SavedSearchSuggestedFilters", () => {
         },
       ]
 
-      renderWithRelay({
+      await renderWithRelay({
         PreviewSavedSearch: () => ({
           suggestedFilters: [...mockSuggestedFilters, ...notSupportedFilters],
         }),
@@ -96,14 +98,16 @@ describe("SavedSearchSuggestedFilters", () => {
     })
 
     it("navigates to filters screen on See More press", async () => {
-      renderWithRelay({ PreviewSavedSearch: () => ({ suggestedFilters: mockSuggestedFilters }) })
+      await renderWithRelay({
+        PreviewSavedSearch: () => ({ suggestedFilters: mockSuggestedFilters }),
+      })
 
       await act(async () => {
         await flushPromiseQueue()
       })
 
       const moreFiltersButton = screen.getByText("More Filters")
-      fireEvent(moreFiltersButton, "onPress")
+      await fireEvent(moreFiltersButton, "onPress")
 
       expect(mockNavigate).toHaveBeenCalledWith("SavedSearchFilterScreen")
     })

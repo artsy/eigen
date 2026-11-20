@@ -30,7 +30,7 @@ describe(FeaturedRail, () => {
   })
 
   it("shows some cards", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
 
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>

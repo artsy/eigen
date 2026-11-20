@@ -61,8 +61,8 @@ describe("usePushNotifications", () => {
       })
     })
 
-    it("calls Android-specific hooks when on Android", () => {
-      renderHook(() => usePushNotifications())
+    it("calls Android-specific hooks when on Android", async () => {
+      await renderHook(() => usePushNotifications())
 
       // Should call common hooks
       expect(mockUseAndroidCreatePushNotificationChannels).toHaveBeenCalledTimes(1)
@@ -86,8 +86,8 @@ describe("usePushNotifications", () => {
       })
     })
 
-    it("calls iOS-specific hooks when on iOS", () => {
-      renderHook(() => usePushNotifications())
+    it("calls iOS-specific hooks when on iOS", async () => {
+      await renderHook(() => usePushNotifications())
 
       // Should call common hooks
       expect(mockUseRegisterForPushNotifications).toHaveBeenCalledTimes(1)

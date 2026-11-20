@@ -49,7 +49,7 @@ describe(navigate, () => {
 
   describe("routes to various screens", () => {
     it("like artwork", async () => {
-      navigate("/artwork/josef-albers-homage-to-the-square")
+      await navigate("/artwork/josef-albers-homage-to-the-square")
       await flushPromiseQueue()
       expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledWith({
         payload: { name: "Artwork", params: { artworkID: "josef-albers-homage-to-the-square" } },
@@ -57,7 +57,7 @@ describe(navigate, () => {
       })
     })
     it("like artist", async () => {
-      navigate("/artist/banksy")
+      await navigate("/artist/banksy")
       await flushPromiseQueue()
       expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledWith({
         payload: { name: "Artist", params: { artistID: "banksy" } },
@@ -65,7 +65,7 @@ describe(navigate, () => {
       })
     })
     it("like vanity urls", async () => {
-      navigate("/artsy-vanguard-2019")
+      await navigate("/artsy-vanguard-2019")
       await flushPromiseQueue()
       expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledWith({
         payload: { name: "VanityURLEntity", params: { slug: "artsy-vanguard-2019" } },
@@ -75,7 +75,7 @@ describe(navigate, () => {
   })
 
   it("opens external urls with Linking", async () => {
-    navigate("https://google.com/banana")
+    await navigate("https://google.com/banana")
     await flushPromiseQueue()
     expect(Linking.openURL).toHaveBeenCalledWith("https://google.com/banana")
   })

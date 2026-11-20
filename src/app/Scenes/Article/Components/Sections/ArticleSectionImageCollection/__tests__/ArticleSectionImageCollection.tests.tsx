@@ -43,7 +43,7 @@ describe("ArticleSectionImageCollection", () => {
   })
 
   it("renders", async () => {
-    renderWithRelay()
+    await renderWithRelay()
 
     expect(screen.getByTestId("ArticleSectionImageCollectionImage")).toBeOnTheScreen()
     expect(screen.getByTestId("ArticleSectionImageCollectionCaption")).toBeOnTheScreen()

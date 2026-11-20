@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { SavedSearchFilterArtistSeriesQR } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterArtistSeries"
 import {
   SavedSearchModel,
@@ -19,7 +19,7 @@ describe("SavedSearchFilterArtistSeriesQR", () => {
         </SavedSearchStoreProvider>
       ),
     })
-    renderWithRelay({
+    await renderWithRelay({
       FilterArtworksConnection: () => ({
         aggregations: [
           {
@@ -38,7 +38,7 @@ describe("SavedSearchFilterArtistSeriesQR", () => {
         ],
       }),
     })
-    await waitForElementToBeRemoved(() => screen.queryByTestId("loading-skeleton"))
+    await waitFor(() => expect(screen.queryByTestId("loading-skeleton")).not.toBeOnTheScreen())
     expect(screen.getByText("Artist Series")).toBeOnTheScreen()
     expect(screen.getByText("Series 1")).toBeOnTheScreen()
     expect(screen.getByText("Series 2")).toBeOnTheScreen()
@@ -52,7 +52,7 @@ describe("SavedSearchFilterArtistSeriesQR", () => {
         </SavedSearchStoreProvider>
       ),
     })
-    renderWithRelay({
+    await renderWithRelay({
       FilterArtworksConnection: () => ({
         aggregations: [
           {
@@ -62,7 +62,7 @@ describe("SavedSearchFilterArtistSeriesQR", () => {
         ],
       }),
     })
-    await waitForElementToBeRemoved(() => screen.queryByTestId("loading-skeleton"))
+    await waitFor(() => expect(screen.queryByTestId("loading-skeleton")).not.toBeOnTheScreen())
     expect(screen.queryByText("Artist Series")).not.toBeOnTheScreen()
   })
 
@@ -81,7 +81,7 @@ describe("SavedSearchFilterArtistSeriesQR", () => {
         </SavedSearchStoreProvider>
       ),
     })
-    renderWithRelay({
+    await renderWithRelay({
       FilterArtworksConnection: () => ({
         aggregations: [
           {
@@ -100,13 +100,13 @@ describe("SavedSearchFilterArtistSeriesQR", () => {
         ],
       }),
     })
-    await waitForElementToBeRemoved(() => screen.queryByTestId("loading-skeleton"))
+    await waitFor(() => expect(screen.queryByTestId("loading-skeleton")).not.toBeOnTheScreen())
 
     expect(screen.getByText("Series 1")).not.toHaveStyle({ color: mono100Hex })
     expect(screen.getByText("Series 2")).toHaveStyle({ color: mono100Hex })
 
-    fireEvent(screen.getByText("Series 1"), "onPress")
-    fireEvent(screen.getByText("Series 2"), "onPress")
+    await fireEvent(screen.getByText("Series 1"), "onPress")
+    await fireEvent(screen.getByText("Series 2"), "onPress")
 
     expect(screen.getByText("Series 1")).toHaveStyle({ color: mono100Hex })
     expect(screen.getByText("Series 2")).not.toHaveStyle({ color: mono100Hex })
@@ -120,7 +120,7 @@ describe("SavedSearchFilterArtistSeriesQR", () => {
         </SavedSearchStoreProvider>
       ),
     })
-    renderWithRelay({
+    await renderWithRelay({
       FilterArtworksConnection: () => ({
         aggregations: [
           {
@@ -139,7 +139,7 @@ describe("SavedSearchFilterArtistSeriesQR", () => {
         ],
       }),
     })
-    await waitForElementToBeRemoved(() => screen.queryByTestId("loading-skeleton"))
+    await waitFor(() => expect(screen.queryByTestId("loading-skeleton")).not.toBeOnTheScreen())
     expect(screen.getByText("Artist Series")).toBeOnTheScreen()
     expect(screen.getByText("Series 1")).toBeOnTheScreen()
     expect(screen.getByText("Series 7")).toBeOnTheScreen()
@@ -147,9 +147,9 @@ describe("SavedSearchFilterArtistSeriesQR", () => {
     expect(screen.getByText("Show more")).toBeOnTheScreen()
 
     // toggling
-    fireEvent(screen.getByText("Show more"), "onPress")
+    await fireEvent(screen.getByText("Show more"), "onPress")
     expect(screen.getByText("Series 8")).toBeOnTheScreen()
-    fireEvent(screen.getByText("Show less"), "onPress")
+    await fireEvent(screen.getByText("Show less"), "onPress")
     expect(screen.queryByText("Series 8")).not.toBeOnTheScreen()
   })
 
@@ -161,7 +161,7 @@ describe("SavedSearchFilterArtistSeriesQR", () => {
         </SavedSearchStoreProvider>
       ),
     })
-    renderWithRelay({
+    await renderWithRelay({
       FilterArtworksConnection: () => ({
         aggregations: [
           {
@@ -175,7 +175,7 @@ describe("SavedSearchFilterArtistSeriesQR", () => {
         ],
       }),
     })
-    await waitForElementToBeRemoved(() => screen.queryByTestId("loading-skeleton"))
+    await waitFor(() => expect(screen.queryByTestId("loading-skeleton")).not.toBeOnTheScreen())
     expect(screen.getByText("Artist Series")).toBeOnTheScreen()
     expect(screen.queryByText("Show more")).not.toBeOnTheScreen()
   })

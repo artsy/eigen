@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { AlertArtworksGridQuery } from "__generated__/AlertArtworksGridQuery.graphql"
 import {
   AlertArtworksGrid,
@@ -20,7 +20,7 @@ describe("AlertArtworksGrid", () => {
 
   describe("no artworks matches", () => {
     it("shows no matches message and edit alert button", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({
           alert: {
             artistIDs: ["banksy"],
@@ -30,7 +30,9 @@ describe("AlertArtworksGrid", () => {
         FilterArtworksConnection: () => ({ counts: { total: 0 } }),
       })
 
-      await waitForElementToBeRemoved(() => screen.queryByTestId("alert-artworks-grid-placeholder"))
+      await waitFor(() =>
+        expect(screen.queryByTestId("alert-artworks-grid-placeholder")).not.toBeOnTheScreen()
+      )
 
       expect(screen.getByText("No matches")).toBeOnTheScreen()
       expect(
@@ -38,7 +40,7 @@ describe("AlertArtworksGrid", () => {
       ).toBeOnTheScreen()
       expect(screen.getByText("Edit Alert")).toBeOnTheScreen()
 
-      fireEvent.press(screen.getByText("Edit Alert"))
+      await fireEvent.press(screen.getByText("Edit Alert"))
       await flushPromiseQueue()
 
       expect(navigate).toHaveBeenCalledWith("favorites/alerts/alert-id/edit")
@@ -47,7 +49,7 @@ describe("AlertArtworksGrid", () => {
 
   describe("with artworks matches", () => {
     it("shows artworks grid and both buttons", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({
           alert: {
             artistIDs: ["banksy"],
@@ -56,7 +58,9 @@ describe("AlertArtworksGrid", () => {
         FilterArtworksConnection: () => artworksConnection,
       })
 
-      await waitForElementToBeRemoved(() => screen.queryByTestId("alert-artworks-grid-placeholder"))
+      await waitFor(() =>
+        expect(screen.queryByTestId("alert-artworks-grid-placeholder")).not.toBeOnTheScreen()
+      )
 
       expect(screen.getByText("Untitled #1")).toBeOnTheScreen()
       expect(screen.getByText("Untitled #2")).toBeOnTheScreen()
@@ -66,7 +70,7 @@ describe("AlertArtworksGrid", () => {
     })
 
     it("edit alert button navigates to the edit screen", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({
           alert: {
             artistIDs: ["banksy"],
@@ -75,16 +79,18 @@ describe("AlertArtworksGrid", () => {
         FilterArtworksConnection: () => artworksConnection,
       })
 
-      await waitForElementToBeRemoved(() => screen.queryByTestId("alert-artworks-grid-placeholder"))
+      await waitFor(() =>
+        expect(screen.queryByTestId("alert-artworks-grid-placeholder")).not.toBeOnTheScreen()
+      )
 
-      fireEvent.press(screen.getByText("Edit Alert"))
+      await fireEvent.press(screen.getByText("Edit Alert"))
       await flushPromiseQueue()
 
       expect(navigate).toHaveBeenCalledWith("favorites/alerts/alert-id/edit")
     })
 
     it("see all matching works button navigates to the artist screen", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({
           alert: {
             artistIDs: ["banksy"],
@@ -93,9 +99,11 @@ describe("AlertArtworksGrid", () => {
         FilterArtworksConnection: () => artworksConnection,
       })
 
-      await waitForElementToBeRemoved(() => screen.queryByTestId("alert-artworks-grid-placeholder"))
+      await waitFor(() =>
+        expect(screen.queryByTestId("alert-artworks-grid-placeholder")).not.toBeOnTheScreen()
+      )
 
-      fireEvent.press(screen.getByText("See all Matching Works"))
+      await fireEvent.press(screen.getByText("See all Matching Works"))
       await flushPromiseQueue()
 
       expect(navigate).toHaveBeenCalledWith("/artist/banksy", {

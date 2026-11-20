@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import {
   CategoryPill,
   LineGraphCategoryPicker,
@@ -11,19 +11,19 @@ describe("LineGraphCategoryPicker", () => {
     { name: "Cat2", color: "#000" },
   ]
   it("renders without errors", async () => {
-    const { findByTestId } = renderWithWrappers(
+    await renderWithWrappers(
       <LineGraphCategoryPicker
         categories={categories}
         selectedCategory="Cat1"
         onCategorySelected={jest.fn()}
       />
     )
-    expect(await findByTestId("line-graph-category-picker")).toBeTruthy()
+    expect(await screen.findByTestId("line-graph-category-picker")).toBeTruthy()
   })
 
   it("onCategorySelected callback is fired onPress", async () => {
     const onCategorySelected = jest.fn()
-    const { findByTestId } = renderWithWrappers(
+    await renderWithWrappers(
       <CategoryPill
         category="Cat1"
         onLayout={jest.fn()}
@@ -31,9 +31,9 @@ describe("LineGraphCategoryPicker", () => {
         onCategorySelected={onCategorySelected}
       />
     )
-    const categoryPill = await findByTestId("categoryPill")
+    const categoryPill = await screen.findByTestId("categoryPill")
 
-    fireEvent(categoryPill, "onPress")
+    await fireEvent(categoryPill, "onPress")
     expect(onCategorySelected).toHaveBeenCalledWith(categories[0].name)
   })
 })

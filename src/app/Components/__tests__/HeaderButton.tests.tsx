@@ -4,8 +4,8 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
 
 describe("HeaderButton", () => {
-  it("renders children correctly", () => {
-    renderWithWrappers(
+  it("renders children correctly", async () => {
+    await renderWithWrappers(
       <HeaderButton position="left" onPress={jest.fn()}>
         <Text>Button Content</Text>
       </HeaderButton>
@@ -14,21 +14,21 @@ describe("HeaderButton", () => {
     expect(screen.getByText("Button Content")).toBeTruthy()
   })
 
-  it("handles onPress event", () => {
+  it("handles onPress event", async () => {
     const onPressMock = jest.fn()
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <HeaderButton position="right" onPress={onPressMock}>
         <Text>Clickable Button</Text>
       </HeaderButton>
     )
 
-    fireEvent.press(screen.getByText("Clickable Button"))
+    await fireEvent.press(screen.getByText("Clickable Button"))
     expect(onPressMock).toHaveBeenCalledTimes(1)
   })
 
-  it("does not render when shouldHide is true", () => {
-    renderWithWrappers(
+  it("does not render when shouldHide is true", async () => {
+    await renderWithWrappers(
       <HeaderButton position="left" onPress={jest.fn()} shouldHide>
         <Text>Hidden Button</Text>
       </HeaderButton>
