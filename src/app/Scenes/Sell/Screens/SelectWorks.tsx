@@ -31,7 +31,9 @@ export const SelectWorks: React.FC = () => {
   const navigation = useNavigation<SellNavigationProp>()
   const { params } = useRoute<RouteProp<SellNavigationRoutes, "SelectWorks">>()
   const showWorksSummary = !!params?.showWorksSummary
-  const setActiveWork = SellFlowStore.useStoreActions((actions) => actions.setActiveWork)
+  const setActiveResaleSubmissionID = SellFlowStore.useStoreActions(
+    (actions) => actions.setActiveResaleSubmissionID
+  )
 
   const handleHardwareBack = useCallback(() => {
     if (!showWorksSummary) {
@@ -48,8 +50,8 @@ export const SelectWorks: React.FC = () => {
     <SelectWorksContent
       showWorksSummary={showWorksSummary}
       onShowWorksSummary={() => navigation.setParams({ showWorksSummary: true })}
-      onStartSelling={({ artwork, resaleSubmission }) => {
-        setActiveWork({ artworkID: artwork.internalID, resaleSubmission })
+      onStartSelling={({ resaleSubmission }) => {
+        setActiveResaleSubmissionID(resaleSubmission.internalID)
         navigation.navigate("Condition")
       }}
     />
