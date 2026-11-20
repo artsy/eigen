@@ -156,21 +156,22 @@ describe("RouterLink", () => {
       it("does not prefetch", async () => {
         await renderWithWrappers(<TestComponent disablePrefetch />)
 
-        expect(mockPrefetch).not.toHaveBeenCalledWith("/test-route", expect.any(Function))
+        expect(mockPrefetch).not.toHaveBeenCalled()
       })
     })
 
     describe("when AREnableViewPortPrefetching is disabled", () => {
-      beforeAll(() => {
+      // beforeEach, not beforeAll: setupJest resets the global store before every test
+      beforeEach(() => {
         __globalStoreTestUtils__?.injectFeatureFlags({
           AREnableViewPortPrefetching: false,
         })
       })
 
       it("does not prefetch", async () => {
-        await renderWithWrappers(<TestComponent disablePrefetch />)
+        await renderWithWrappers(<TestComponent />)
 
-        expect(mockPrefetch).not.toHaveBeenCalledWith("/test-route")
+        expect(mockPrefetch).not.toHaveBeenCalled()
       })
     })
   })
