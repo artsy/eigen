@@ -62,6 +62,7 @@ wait 'text="Account deletion request submitted!" || label="Account deletion requ
 alert accept
 # iOS offers to save the typed password once the form goes away. The sheet is drawn by the system over
 # the app and hides it from agent-device until it's dismissed.
-wait 'label="Not Now"' 30000
-press 'label="Not Now"'
+# On CI the sheet has more than one "Not Now" element, so press the button
+wait 'role="button" label="Not Now"' 30000
+press 'role="button" label="Not Now"'
 wait 'label="Sign up or log in" || text="Sign up or log in"' 30000

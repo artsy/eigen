@@ -52,7 +52,9 @@ press 'label="Delete My Account" || text="Delete My Account"'
 # The fields have no accessibility label, so they match by placeholder while empty.
 # Type the password first: the reason field is multiline, so once it's focused the keyboard can't be
 # closed and swallows the tap meant for the password field. The Delete button sits above the keyboard.
-wait 'text="Enter your password to continue"' 30000
+# The password field sits below the fold on the CI emulator, and Android leaves off-screen views out of the tree
+wait 'text="Please share with us why you are leaving"' 30000
+scroll down --until 'text="Enter your password to continue"'
 press 'text="Enter your password to continue"'
 type "${SIGNUP_PASSWORD}"
 fill 'text="Please share with us why you are leaving"' "E2E test account"
