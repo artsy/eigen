@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { ArtworkHistory_artwork$data } from "__generated__/ArtworkHistory_artwork.graphql"
 import { ArtworkHistory } from "app/Scenes/Artwork/Components/ArtworkHistory"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -11,11 +12,11 @@ describe("Artwork History", () => {
       literature: "bibliography",
     }
 
-    const { queryByText } = renderWithWrappers(<ArtworkHistory artwork={artworkHistoryInfo} />)
+    renderWithWrappers(<ArtworkHistory artwork={artworkHistoryInfo} />)
 
-    expect(queryByText("Provenance")).toBeTruthy()
-    expect(queryByText("Exhibition history")).toBeTruthy()
-    expect(queryByText("Bibliography")).toBeTruthy()
+    expect(screen.getByText("Provenance")).toBeOnTheScreen()
+    expect(screen.getByText("Exhibition history")).toBeOnTheScreen()
+    expect(screen.getByText("Bibliography")).toBeOnTheScreen()
   })
 
   it("renders only set keys", () => {
@@ -26,11 +27,11 @@ describe("Artwork History", () => {
       literature: "bibliography",
     }
 
-    const { queryByText } = renderWithWrappers(<ArtworkHistory artwork={artworkHistoryInfo} />)
+    renderWithWrappers(<ArtworkHistory artwork={artworkHistoryInfo} />)
 
-    expect(queryByText("Provenance")).toBeTruthy()
-    expect(queryByText("Exhibition history")).toBeNull()
-    expect(queryByText("Bibliography")).toBeTruthy()
+    expect(screen.getByText("Provenance")).toBeOnTheScreen()
+    expect(screen.queryByText("Exhibition history")).not.toBeOnTheScreen()
+    expect(screen.getByText("Bibliography")).toBeOnTheScreen()
   })
 
   it("doesn't render anything without data", () => {
@@ -41,13 +42,11 @@ describe("Artwork History", () => {
       literature: null,
     }
 
-    const { toJSON, queryByText } = renderWithWrappers(
-      <ArtworkHistory artwork={artworkHistoryInfo} />
-    )
+    const { toJSON } = renderWithWrappers(<ArtworkHistory artwork={artworkHistoryInfo} />)
 
-    expect(queryByText("Provenance")).toBeNull()
-    expect(queryByText("Exhibition history")).toBeNull()
-    expect(queryByText("Bibliography")).toBeNull()
+    expect(screen.queryByText("Provenance")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Exhibition history")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Bibliography")).not.toBeOnTheScreen()
     expect(toJSON()).toBeNull()
   })
 })

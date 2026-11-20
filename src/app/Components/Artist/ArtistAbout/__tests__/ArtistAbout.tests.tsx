@@ -1,9 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { ArtistAboutTestsQuery } from "__generated__/ArtistAboutTestsQuery.graphql"
 import { ArtistAbout } from "app/Components/Artist/ArtistAbout/ArtistAbout"
-import { ArtistAboutShowsFragmentContainer } from "app/Components/Artist/ArtistAbout/ArtistAboutShows"
-import { ArtistCareerHighlights } from "app/Components/Artist/ArtistAbout/ArtistCareerHighlights"
-import { Biography } from "app/Components/Artist/Biography"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -49,7 +46,8 @@ describe("ArtistAbout", () => {
         },
       })
 
-      expect(screen.UNSAFE_queryAllByType(Biography)).toHaveLength(1)
+      expect(screen.getByText("Biography")).toBeOnTheScreen()
+      expect(screen.getByText(/a biography/)).toBeOnTheScreen()
     })
 
     it("is hidden when the artist has metadata", () => {
@@ -61,7 +59,7 @@ describe("ArtistAbout", () => {
         },
       })
 
-      expect(screen.UNSAFE_queryAllByType(Biography)).toHaveLength(0)
+      expect(screen.queryByText("Biography")).not.toBeOnTheScreen()
     })
   })
 
@@ -73,7 +71,8 @@ describe("ArtistAbout", () => {
         },
       })
 
-      expect(screen.UNSAFE_queryAllByType(ArtistCareerHighlights)).toHaveLength(1)
+      expect(screen.getByText("Highlights and Achievements")).toBeOnTheScreen()
+      expect(screen.getByText("Fancy pants")).toBeOnTheScreen()
     })
 
     it("is hidden when there are no insights", () => {
@@ -83,15 +82,15 @@ describe("ArtistAbout", () => {
         },
       })
 
-      expect(screen.UNSAFE_queryAllByType(ArtistCareerHighlights)).toHaveLength(0)
+      expect(screen.queryByText("Highlights and Achievements")).not.toBeOnTheScreen()
     })
   })
 
   describe("ArtistAboutShows", () => {
     it("is rendered by default", () => {
-      renderWithRelay()
+      renderWithRelay({ Artist: () => ({ name: "Andy Warhol" }) })
 
-      expect(screen.UNSAFE_queryByType(ArtistAboutShowsFragmentContainer)).toBeTruthy()
+      expect(screen.getByText("Shows Featuring Andy Warhol")).toBeOnTheScreen()
     })
   })
 

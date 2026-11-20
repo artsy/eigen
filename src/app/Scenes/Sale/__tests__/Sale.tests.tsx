@@ -1,6 +1,4 @@
-import { act, waitFor } from "@testing-library/react-native"
-import { CascadingEndTimesBanner } from "app/Scenes/Artwork/Components/CascadingEndTimesBanner"
-import { RegisterToBidButtonContainer } from "app/Scenes/Sale/Components/RegisterToBidButton"
+import { act, screen, waitFor } from "@testing-library/react-native"
 import { SaleQueryRenderer } from "app/Scenes/Sale/Sale"
 import { navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -8,6 +6,13 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { DateTime } from "luxon"
 import { Suspense } from "react"
 import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
+
+jest.mock("app/Scenes/Sale/Components/RegisterToBidButton", () => {
+  const { View } = jest.requireActual("react-native")
+  return {
+    RegisterToBidButtonContainer: () => <View testID="register-to-bid-button" />,
+  }
+})
 
 describe("Sale", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -102,7 +107,7 @@ describe("Sale", () => {
   })
 
   it("renders a Register button when registrations are open", async () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    renderWithWrappers(<TestRenderer />)
 
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -120,12 +125,11 @@ describe("Sale", () => {
       await flushPromiseQueue()
     })
 
-    const registerButton = await tree.findAllByType(RegisterToBidButtonContainer)
-    expect(registerButton).toHaveLength(1)
+    expect(await screen.findAllByTestId("register-to-bid-button")).toHaveLength(1)
   })
 
   it("doesn't render a Register button when registrations ended", async () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    renderWithWrappers(<TestRenderer />)
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
@@ -142,12 +146,11 @@ describe("Sale", () => {
       await flushPromiseQueue()
     })
 
-    const registerButton = await tree.findAllByType(RegisterToBidButtonContainer)
-    expect(registerButton).toHaveLength(0)
+    expect(screen.queryAllByTestId("register-to-bid-button")).toHaveLength(0)
   })
 
   it("doesn't render a Register button when it's closed", async () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    renderWithWrappers(<TestRenderer />)
 
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -164,12 +167,11 @@ describe("Sale", () => {
       await flushPromiseQueue()
     })
 
-    const registerButton = await tree.findAllByType(RegisterToBidButtonContainer)
-    expect(registerButton).toHaveLength(0)
+    expect(screen.queryAllByTestId("register-to-bid-button")).toHaveLength(0)
   })
 
   it("renders the banner when the sale has cascading end times", async () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    renderWithWrappers(<TestRenderer />)
 
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -188,12 +190,11 @@ describe("Sale", () => {
       await flushPromiseQueue()
     })
 
-    const cascadingEndTimesBanner = await tree.findAllByType(CascadingEndTimesBanner)
-    expect(cascadingEndTimesBanner).toHaveLength(1)
+    expect(await screen.findAllByText("Learn more about cascading end times")).toHaveLength(1)
   })
 
   it("doesn't render the banner when the sale does not have cascading end times", async () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    renderWithWrappers(<TestRenderer />)
 
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -212,12 +213,11 @@ describe("Sale", () => {
       await flushPromiseQueue()
     })
 
-    const cascadingEndTimesBanner = await tree.findAllByType(CascadingEndTimesBanner)
-    expect(cascadingEndTimesBanner).toHaveLength(0)
+    expect(screen.queryAllByText("Learn more about cascading end times")).toHaveLength(0)
   })
 
   it("doesn't render the banner when the sale has cascading end times but the sale is closed", async () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    renderWithWrappers(<TestRenderer />)
 
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -236,7 +236,6 @@ describe("Sale", () => {
       await flushPromiseQueue()
     })
 
-    const cascadingEndTimesBanner = await tree.findAllByType(CascadingEndTimesBanner)
-    expect(cascadingEndTimesBanner).toHaveLength(0)
+    expect(screen.queryAllByText("Learn more about cascading end times")).toHaveLength(0)
   })
 })

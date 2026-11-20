@@ -1,9 +1,7 @@
-import { Touchable } from "@artsy/palette-mobile"
 import { fireEvent, screen, within } from "@testing-library/react-native"
 import { Select } from "app/Components/Select/Select"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Modal } from "react-native"
 
 jest.mock("react-native/Libraries/Interaction/InteractionManager", () => ({
   ...jest.requireActual("react-native/Libraries/Interaction/InteractionManager"),
@@ -42,6 +40,7 @@ it("selects correct value", async () => {
 
   renderWithWrappers(
     <Select
+      testID="select"
       title="Title"
       subTitle="Subtitle"
       options={options}
@@ -54,13 +53,13 @@ it("selects correct value", async () => {
 
   await flushPromiseQueue()
 
-  fireEvent.press(screen.UNSAFE_getAllByType(Touchable)[0])
+  fireEvent.press(screen.getByTestId("select"))
 
   await flushPromiseQueue()
 
-  const selectModal = screen.UNSAFE_getAllByType(Modal)[0]
-  // eslint-disable-next-line testing-library/await-async-queries
-  await selectModal.findAllByType(Touchable)[1].props.onPress()
+  const selectModal = within(screen.getByTestId("modal-select"))
+  fireEvent.press(selectModal.getAllByRole("button")[2])
+  await flushPromiseQueue()
 
   expect(onSelectValue).toHaveBeenCalledWith("option-2", 1)
 })
@@ -70,6 +69,7 @@ it("filters on search", async () => {
 
   renderWithWrappers(
     <Select
+      testID="select"
       title="Title"
       subTitle="Subtitle"
       enableSearch
@@ -79,13 +79,13 @@ it("filters on search", async () => {
     />
   )
 
-  fireEvent.press(screen.UNSAFE_getAllByType(Touchable)[0])
+  fireEvent.press(screen.getByTestId("select"))
 
   const input = await screen.findByPlaceholderText("Type to search...")
 
   fireEvent.changeText(input, "Option 2")
 
-  const selectModal = within(screen.UNSAFE_getAllByType(Modal)[0])
+  const selectModal = within(screen.getByTestId("modal-select"))
 
   expect(selectModal.getByText("Option 2")).toBeOnTheScreen()
 })

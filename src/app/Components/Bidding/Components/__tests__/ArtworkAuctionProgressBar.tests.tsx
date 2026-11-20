@@ -1,4 +1,4 @@
-import { ProgressBar } from "@artsy/palette-mobile"
+import { screen } from "@testing-library/react-native"
 import {
   ArtworkAuctionProgressBar,
   ArtworkAuctionProgressBarProps,
@@ -16,9 +16,9 @@ describe("ArtworkAuctionProgressBar", () => {
         hasBeenExtended: false,
       }
 
-      const wrapper = renderWithWrappers(<ArtworkAuctionProgressBar {...props} />)
+      renderWithWrappers(<ArtworkAuctionProgressBar {...props} />)
 
-      expect(wrapper.UNSAFE_queryAllByType(ProgressBar).length).toBe(0)
+      expect(screen.queryByTestId("progress-bar-track")).not.toBeOnTheScreen()
     })
   })
 
@@ -32,9 +32,9 @@ describe("ArtworkAuctionProgressBar", () => {
         hasBeenExtended: true,
       }
 
-      const wrapper = renderWithWrappers(<ArtworkAuctionProgressBar {...props} />)
+      renderWithWrappers(<ArtworkAuctionProgressBar {...props} />)
 
-      expect(wrapper.UNSAFE_queryAllByType(ProgressBar).length).toBe(1)
+      expect(screen.getByTestId("progress-bar-track")).toBeOnTheScreen()
     })
   })
 
@@ -48,9 +48,9 @@ describe("ArtworkAuctionProgressBar", () => {
         hasBeenExtended: false,
       }
 
-      const wrapper = renderWithWrappers(<ArtworkAuctionProgressBar {...props} />)
+      renderWithWrappers(<ArtworkAuctionProgressBar {...props} />)
 
-      expect(wrapper.UNSAFE_queryAllByType(ProgressBar).length).toBe(1)
+      expect(screen.getByTestId("progress-bar-track")).toBeOnTheScreen()
     })
   })
 })

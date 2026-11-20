@@ -172,6 +172,7 @@ export const Conversation: React.FC<Props> = ({
       right={
         <Touchable
           accessibilityRole="button"
+          testID="conversation-details-button"
           onPress={() => {
             navigate(`/conversation/${conversation?.internalID}/details`)
           }}

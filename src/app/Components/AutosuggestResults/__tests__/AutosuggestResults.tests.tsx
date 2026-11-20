@@ -1,15 +1,11 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { AutosuggestResultsPaginationQuery$rawResponse } from "__generated__/AutosuggestResultsPaginationQuery.graphql"
 import { AutosuggestResultsQuery$rawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AutosuggestResults } from "app/Components/AutosuggestResults/AutosuggestResults"
-import { InfiniteScrollFlashList } from "app/Components/InfiniteScrollFlashList"
-import Spinner from "app/Components/Spinner"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
-import { AutosuggestSearchResult } from "app/Scenes/Search/components/AutosuggestSearchResult"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 const FixturePage1: AutosuggestResultsQuery$rawResponse = {
@@ -98,6 +94,8 @@ const FixtureEmpty: AutosuggestResultsQuery$rawResponse = {
 
 const inputBlurMock = jest.fn()
 
+const RESULT_TEST_ID = /^autosuggest-search-result-/
+
 const TestWrapper: typeof AutosuggestResults = (props) => (
   <SearchContext.Provider
     value={{ inputRef: { current: { blur: inputBlurMock } as any }, queryRef: { current: "" } }}
@@ -157,13 +155,13 @@ describe("AutosuggestResults", () => {
   it(`has no elements to begin with`, async () => {
     renderWithWrappers(<TestWrapper query="" />)
 
-    expect(screen.UNSAFE_queryByType(AutosuggestSearchResult)).not.toBeOnTheScreen()
+    expect(screen.queryAllByTestId(RESULT_TEST_ID)).toHaveLength(0)
   })
 
   it(`has some elements to begin with if you give it some`, async () => {
     renderWithWrappers(<TestWrapper query="michael" />)
 
-    expect(screen.UNSAFE_queryByType(AutosuggestSearchResult)).toBeFalsy()
+    expect(screen.queryAllByTestId(RESULT_TEST_ID)).toHaveLength(0)
 
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
       "AutosuggestResultsQuery"
@@ -174,7 +172,7 @@ describe("AutosuggestResults", () => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
     })
 
-    expect(screen.UNSAFE_getByType(AutosuggestSearchResult)).toBeTruthy()
+    expect(screen.getAllByTestId(RESULT_TEST_ID)).toHaveLength(1)
   })
 
   it(`doesn't call loadMore until you start scrolling`, () => {
@@ -183,16 +181,16 @@ describe("AutosuggestResults", () => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
     })
 
-    expect(screen.UNSAFE_getByType(AutosuggestSearchResult)).toBeTruthy()
+    expect(screen.getAllByTestId(RESULT_TEST_ID)).toHaveLength(1)
 
     expect(env.mock.getAllOperations()).toHaveLength(0)
 
     // even if InfiniteScrollFlashList calls onEndReached, we ignore it until the user explicitly scrolls
-    fireEvent(screen.UNSAFE_getByType(InfiniteScrollFlashList), "onEndReached")
+    fireEvent(screen.getByTestId("autosuggest-results-list"), "onEndReached")
 
     expect(env.mock.getAllOperations()).toHaveLength(0)
 
-    fireEvent(screen.UNSAFE_getByType(InfiniteScrollFlashList), "onScrollBeginDrag")
+    fireEvent(screen.getByTestId("autosuggest-results-list"), "scrollBeginDrag")
 
     expect(env.mock.getAllOperations()).toHaveLength(1)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
@@ -204,12 +202,12 @@ describe("AutosuggestResults", () => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage2 })
     })
 
-    expect(screen.UNSAFE_queryAllByType(AutosuggestSearchResult)).toHaveLength(2)
+    expect(screen.getAllByTestId(RESULT_TEST_ID)).toHaveLength(2)
     expect(screen.getByText("Banksy")).toBeOnTheScreen()
     expect(screen.getByText("Andy Warhol")).toBeOnTheScreen()
 
     // and it works if onEndReached is called now
-    fireEvent(screen.UNSAFE_getByType(InfiniteScrollFlashList), "onEndReached")
+    fireEvent(screen.getByTestId("autosuggest-results-list"), "onEndReached")
     expect(env.mock.getAllOperations()).toHaveLength(1)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
       "AutosuggestResultsPaginationQuery"
@@ -220,7 +218,7 @@ describe("AutosuggestResults", () => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage3 })
     })
 
-    expect(screen.UNSAFE_queryAllByType(AutosuggestSearchResult)).toHaveLength(3)
+    expect(screen.getAllByTestId(RESULT_TEST_ID)).toHaveLength(3)
 
     expect(screen.getByText("Andy Warhol")).toBeOnTheScreen()
     expect(screen.getByText("Alex Katz")).toBeOnTheScreen()
@@ -231,24 +229,24 @@ describe("AutosuggestResults", () => {
     renderWithWrappers(<TestWrapper query="michael" />)
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
 
-    expect(screen.UNSAFE_getByType(Spinner)).toBeTruthy()
+    expect(screen.getByTestId("autosuggest-results-spinner")).toBeOnTheScreen()
 
-    fireEvent(screen.UNSAFE_getByType(InfiniteScrollFlashList), "onScrollBeginDrag")
+    fireEvent(screen.getByTestId("autosuggest-results-list"), "scrollBeginDrag")
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage2 }))
 
-    expect(screen.UNSAFE_getByType(Spinner)).toBeTruthy()
+    expect(screen.getByTestId("autosuggest-results-spinner")).toBeOnTheScreen()
 
-    fireEvent(screen.UNSAFE_getByType(InfiniteScrollFlashList), "onEndReached")
+    fireEvent(screen.getByTestId("autosuggest-results-list"), "onEndReached")
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage3 }))
 
-    expect(screen.UNSAFE_queryByType(Spinner)).toBeFalsy()
+    expect(screen.queryByTestId("autosuggest-results-spinner")).not.toBeOnTheScreen()
   })
 
   it(`gives an appropriate message when there's no search results`, () => {
     renderWithWrappers(<TestWrapper query="michael" />)
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixtureEmpty }))
 
-    expect(screen.UNSAFE_queryByType(AutosuggestSearchResult)).toBeFalsy()
+    expect(screen.queryAllByTestId(RESULT_TEST_ID)).toHaveLength(0)
     expect(screen.getByText("Sorry, we couldn’t find anything for “michael.”")).toBeOnTheScreen()
     expect(
       screen.getByText("Please try searching again with a different spelling.")
@@ -267,8 +265,8 @@ describe("AutosuggestResults", () => {
     renderWithWrappers(<TestWrapper query="michael" showResultType={false} onResultPress={spy} />)
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
 
-    fireEvent(screen.UNSAFE_getByType(AutosuggestSearchResult), "onResultPress")
-    expect(spy).toHaveBeenCalled()
+    fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
+    expect(spy).toHaveBeenCalledWith(expect.objectContaining({ displayLabel: "Banksy" }))
   })
 
   it("should show the loading placeholder ", () => {

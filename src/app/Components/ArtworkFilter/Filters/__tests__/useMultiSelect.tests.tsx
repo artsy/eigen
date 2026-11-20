@@ -1,3 +1,4 @@
+import { fireEvent, screen } from "@testing-library/react-native"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
@@ -7,10 +8,8 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { getEssentialProps } from "app/Components/ArtworkFilter/Filters/helper"
 import { useMultiSelect } from "app/Components/ArtworkFilter/Filters/useMultiSelect"
-import { extractText } from "app/utils/tests/extractText"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { act } from "react"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text, TouchableHighlight, TouchableWithoutFeedback, View } from "react-native"
 
 describe("useMultiSelect", () => {
@@ -81,80 +80,68 @@ describe("useMultiSelect", () => {
   }
 
   it("manages the nextParamValues", async () => {
-    const tree = renderWithWrappersLEGACY(<MockComponent initialData={initialState} />)
+    renderWithWrappers(<MockComponent initialData={initialState} />)
 
-    expect(extractText(tree.root.findByProps({ testID: "nextParamValues" }))).toEqual("[]")
+    expect(screen.getByTestId("nextParamValues")).toHaveTextContent("[]")
 
-    const buttons = tree.root.findAllByType(TouchableWithoutFeedback)
+    fireEvent.press(screen.getByText("Example 1"))
 
-    await act(async () => {
-      buttons[0].props.onPress()
-    })
+    expect(screen.getByTestId("nextParamValues")).toHaveTextContent('["example-1"]')
 
-    expect(extractText(tree.root.findByProps({ testID: "nextParamValues" }))).toEqual(
-      '["example-1"]'
-    )
+    fireEvent.press(screen.getByText("Example 3"))
 
-    await act(async () => {
-      buttons[2].props.onPress()
-    })
+    expect(screen.getByTestId("nextParamValues")).toHaveTextContent('["example-1","example-3"]')
 
-    expect(extractText(tree.root.findByProps({ testID: "nextParamValues" }))).toEqual(
-      '["example-1","example-3"]'
-    )
+    fireEvent.press(screen.getByText("Example 1"))
 
-    await act(async () => {
-      buttons[0].props.onPress()
-    })
-
-    expect(extractText(tree.root.findByProps({ testID: "nextParamValues" }))).toEqual(
-      '["example-3"]'
-    )
+    expect(screen.getByTestId("nextParamValues")).toHaveTextContent('["example-3"]')
   })
 
   it("dispatches filter updates", async () => {
-    const tree = renderWithWrappersLEGACY(<MockComponent initialData={initialState} />)
-    const buttons = tree.root.findAllByType(TouchableWithoutFeedback)
+    renderWithWrappers(<MockComponent initialData={initialState} />)
 
-    buttons[0].props.onPress()
+    fireEvent.press(screen.getByText("Example 1"))
     await flushPromiseQueue()
 
-    expect(extractText(tree.root.findByProps({ testID: "selectedOptions" }))).toContain(
-      '{"paramName":"colors","displayText":"Example 1","paramValue":["example-1"]}'
+    expect(screen.getByTestId("selectedOptions")).toHaveTextContent(
+      '{"paramName":"colors","displayText":"Example 1","paramValue":["example-1"]}',
+      { exact: false }
     )
 
-    buttons[2].props.onPress()
+    fireEvent.press(screen.getByText("Example 3"))
     await flushPromiseQueue()
 
-    expect(extractText(tree.root.findByProps({ testID: "selectedOptions" }))).toContain(
-      '{"paramName":"colors","displayText":"Example 1, Example 3","paramValue":["example-1","example-3"]}'
+    expect(screen.getByTestId("selectedOptions")).toHaveTextContent(
+      '{"paramName":"colors","displayText":"Example 1, Example 3","paramValue":["example-1","example-3"]}',
+      { exact: false }
     )
 
-    buttons[1].props.onPress()
+    fireEvent.press(screen.getByText("Example 2"))
     await flushPromiseQueue()
 
-    expect(extractText(tree.root.findByProps({ testID: "selectedOptions" }))).toContain(
-      '{"paramName":"colors","displayText":"Example 1, Example 3, Example 2","paramValue":["example-1","example-3","example-2"]}'
+    expect(screen.getByTestId("selectedOptions")).toHaveTextContent(
+      '{"paramName":"colors","displayText":"Example 1, Example 3, Example 2","paramValue":["example-1","example-3","example-2"]}',
+      { exact: false }
     )
   })
 
   it("resets the state when cleared", async () => {
-    const tree = renderWithWrappersLEGACY(<MockComponent initialData={initialState} />)
-    const buttons = tree.root.findAllByType(TouchableWithoutFeedback)
-    const clear = tree.root.findByType(TouchableHighlight)
+    renderWithWrappers(<MockComponent initialData={initialState} />)
 
-    buttons[0].props.onPress()
+    fireEvent.press(screen.getByText("Example 1"))
     await flushPromiseQueue()
 
-    expect(extractText(tree.root.findByProps({ testID: "selectedOptions" }))).toContain(
-      '{"paramName":"colors","displayText":"Example 1","paramValue":["example-1"]}'
+    expect(screen.getByTestId("selectedOptions")).toHaveTextContent(
+      '{"paramName":"colors","displayText":"Example 1","paramValue":["example-1"]}',
+      { exact: false }
     )
 
-    clear.props.onPress()
+    fireEvent.press(screen.getByText("Clear"))
     await flushPromiseQueue()
 
-    expect(extractText(tree.root.findByProps({ testID: "selectedOptions" }))).toContain(
-      '{"paramName":"colors","displayText":"All"}'
+    expect(screen.getByTestId("selectedOptions")).toHaveTextContent(
+      '{"paramName":"colors","displayText":"All"}',
+      { exact: false }
     )
   })
 })

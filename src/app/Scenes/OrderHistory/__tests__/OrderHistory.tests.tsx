@@ -1,22 +1,19 @@
+import { act, screen } from "@testing-library/react-native"
 import { OrderHistoryTestsQuery } from "__generated__/OrderHistoryTestsQuery.graphql"
 import {
   OrderHistoryContainer,
   OrderHistoryQueryRender,
   OrderHistoryPlaceholder,
 } from "app/Scenes/OrderHistory/OrderHistory"
-import { OrderHistoryRowContainer } from "app/Scenes/OrderHistory/OrderHistoryRow"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { FlatList } from "react-native"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 describe(OrderHistoryQueryRender, () => {
   it("Loads OrderHistoryQueryRender", () => {
-    const tree = renderWithWrappersLEGACY(<OrderHistoryQueryRender />)
-    expect(tree.root.findAllByType(OrderHistoryPlaceholder)).toHaveLength(1)
+    renderWithWrappers(<OrderHistoryQueryRender />)
+    expect(screen.getAllByTestId("order-history-placeholder")).toHaveLength(1)
   })
 })
 
@@ -45,7 +42,7 @@ describe("Order history container", () => {
   })
 
   it("Render empty order list", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -58,11 +55,11 @@ describe("Order history container", () => {
         },
       })
     })
-    expect(extractText(tree.root.findByType(FlatList))).toContain("No orders")
+    expect(screen.getByText("No orders")).toBeOnTheScreen()
   })
 
   it("Render not empty order list", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
@@ -90,6 +87,6 @@ describe("Order history container", () => {
         })
       )
     })
-    expect(tree.root.findAllByType(OrderHistoryRowContainer)).toHaveLength(3)
+    expect(screen.getAllByTestId("order-container")).toHaveLength(3)
   })
 })

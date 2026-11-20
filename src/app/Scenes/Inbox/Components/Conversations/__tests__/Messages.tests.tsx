@@ -1,12 +1,13 @@
-import { Text } from "@artsy/palette-mobile"
 import { screen } from "@testing-library/react-native"
 import { MessagesTestsQuery } from "__generated__/MessagesTestsQuery.graphql"
-import { ToastComponent } from "app/Components/Toast/ToastComponent"
 import Messages from "app/Scenes/Inbox/Components/Conversations/Messages"
-import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { RefreshControl } from "react-native"
 import { graphql } from "react-relay"
+
+// The React Native jest preset's RefreshControl mock keeps a reference to the last mounted
+// instance, which lets us pull to refresh without walking the render tree.
+const pullToRefresh = () => (RefreshControl as any).latestRef.props.onRefresh()
 
 jest.mock("@react-native-community/netinfo", () => {
   return {
@@ -56,7 +57,7 @@ it("calls onRefresh prop when the messages are refreshed", () => {
   getWrapper()
 
   expect(onRefresh).not.toHaveBeenCalled()
-  screen.UNSAFE_getByType(RefreshControl).props.onRefresh()
+  pullToRefresh()
   expect(onRefresh).toHaveBeenCalled()
 })
 
@@ -107,7 +108,7 @@ describe("messages with order updates", () => {
       ],
     })
 
-    expect(extractText(screen.UNSAFE_root)).toMatch("You sent an offer for")
+    expect(screen.getByText(/You sent an offer for/)).toBeOnTheScreen()
   })
 
   it("shows a toast message", () => {
@@ -123,12 +124,12 @@ describe("messages with order updates", () => {
       ],
     })
 
-    expect(extractText(screen.UNSAFE_root)).toMatch(
-      "To be covered by the Artsy Guarantee, always communicate and pay through the Artsy platform."
-    )
-
-    const toast = screen.UNSAFE_getAllByType(ToastComponent)[0]
-    expect(toast).toBeDefined()
+    // The toast is what renders this message.
+    expect(
+      screen.getByText(
+        "To be covered by the Artsy Guarantee, always communicate and pay through the Artsy platform."
+      )
+    ).toBeOnTheScreen()
   })
 
   it("sorts interleaved items by date", () => {
@@ -167,17 +168,17 @@ describe("messages with order updates", () => {
         },
       ],
     })
-    // get all elements and remove timestamps
-    const messagesAndUpdates = screen
-      .UNSAFE_getAllByType(Text)
-      .filter((element) => element.props.color !== "mono60")
-      .map((element) => extractText(element))
+    // messages and updates, in the order they are rendered (timestamps excluded)
+    const messagesAndUpdates = screen.getAllByText(
+      /Day 1 message|You sent an offer|Day 2 message|You received a counteroffer/
+    )
 
     // messages print in reverse order because FlatList is inverted
-    expect(messagesAndUpdates[5]).toContain("Day 1 message")
-    expect(messagesAndUpdates[3]).toContain("You sent an offer")
-    expect(messagesAndUpdates[2]).toContain("Day 2 message")
-    expect(messagesAndUpdates[1]).toContain("You received a counteroffer")
+    expect(messagesAndUpdates).toHaveLength(4)
+    expect(messagesAndUpdates[3]).toHaveTextContent(/Day 1 message/)
+    expect(messagesAndUpdates[2]).toHaveTextContent(/You sent an offer/)
+    expect(messagesAndUpdates[1]).toHaveTextContent(/Day 2 message/)
+    expect(messagesAndUpdates[0]).toHaveTextContent(/You received a counteroffer/)
   })
 
   it("removes 'Offer accepted' events when payment fails", () => {
@@ -199,13 +200,7 @@ describe("messages with order updates", () => {
         },
       ],
     })
-    // get all elements and remove timestamps
-    const messagesAndUpdates = screen
-      .UNSAFE_getAllByType(Text)
-      .filter((element) => element.props.color !== "mono30")
-      .map((element) => extractText(element))
-
-    expect(messagesAndUpdates).not.toContain("Offer Accepted")
+    expect(screen.queryByText("Offer Accepted")).not.toBeOnTheScreen()
   })
 
   it("does not remove 'Offer accepted' events when payment succeeds", () => {
@@ -228,12 +223,7 @@ describe("messages with order updates", () => {
         },
       ],
     })
-    // get all elements and remove timestamps
-    const messagesAndUpdates = screen
-      .UNSAFE_getAllByType(Text)
-      .filter((element) => element.props.color !== "mono30")
-      .map((element) => extractText(element))
-    expect(messagesAndUpdates).toContain("Offer Accepted")
+    expect(screen.getByText("Offer Accepted")).toBeOnTheScreen()
   })
 
   // We fetch all order updates but only paginated messages, so this is to avoid a smooshed list of updates at the top.
@@ -275,8 +265,8 @@ describe("messages with order updates", () => {
         },
       ],
     })
-    expect(extractText(screen.UNSAFE_root)).toContain("You sent an offer for 10")
-    expect(extractText(screen.UNSAFE_root)).toContain("You received a counteroffer for 11")
-    expect(extractText(screen.UNSAFE_root)).toContain("You sent a counteroffer for 12")
+    expect(screen.getByText(/You sent an offer for 10/)).toBeOnTheScreen()
+    expect(screen.getByText(/You received a counteroffer for 11/)).toBeOnTheScreen()
+    expect(screen.getByText(/You sent a counteroffer for 12/)).toBeOnTheScreen()
   })
 })

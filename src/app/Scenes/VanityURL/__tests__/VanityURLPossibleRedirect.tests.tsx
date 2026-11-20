@@ -1,6 +1,4 @@
-import { Spinner } from "@artsy/palette-mobile"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
-import { ArtsyWebView, ArtsyWebViewPage } from "app/Components/ArtsyWebView"
 import { VanityURLPossibleRedirect } from "app/Scenes/VanityURL/VanityURLPossibleRedirect"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
@@ -8,6 +6,23 @@ import { fetchMockResponseOnce } from "app/utils/tests/fetchMockHelpers"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import fetchMock from "jest-fetch-mock"
 import { Linking } from "react-native"
+
+jest.mock("@artsy/palette-mobile", () => {
+  const { View } = require("react-native")
+  return {
+    ...jest.requireActual("@artsy/palette-mobile"),
+    Spinner: () => <View testID="spinner" />,
+  }
+})
+
+// ArtsyWebViewPage renders an ArtsyWebView for the given url
+jest.mock("app/Components/ArtsyWebView", () => {
+  const { Text } = require("react-native")
+  return {
+    ...jest.requireActual("app/Components/ArtsyWebView"),
+    ArtsyWebViewPage: ({ url }: { url: string }) => <Text testID="ArtsyWebViewPage">{url}</Text>,
+  }
+})
 
 beforeEach(() => {
   __globalStoreTestUtils__?.setProductionMode()
@@ -20,7 +35,7 @@ describe(VanityURLPossibleRedirect, () => {
     fetchMockResponseOnce({ status: 200, url: "https://artsy.net/test" })
 
     renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
-    expect(screen.UNSAFE_getAllByType(Spinner)).toHaveLength(1)
+    expect(screen.getAllByTestId("spinner")).toHaveLength(1)
   })
 
   it("sends a fetch request", () => {
@@ -99,13 +114,17 @@ describe(VanityURLPossibleRedirect, () => {
     fetchMockResponseOnce({ status: 200, url: "https://artsy.net/no-redirect" })
     renderWithWrappers(<VanityURLPossibleRedirect slug="no-redirect" />)
 
-    await waitFor(() => expect(screen.UNSAFE_getAllByType(ArtsyWebView)).toHaveLength(1))
+    await waitFor(() => expect(screen.getAllByTestId("ArtsyWebViewPage")).toHaveLength(1))
+    expect(screen.getByTestId("ArtsyWebViewPage")).toHaveTextContent(
+      "https://artsy.net/no-redirect"
+    )
   })
 
   it("shows an internal web view when there is a redirect to a page that is supposed to be shown in a web view", async () => {
     fetchMockResponseOnce({ status: 200, url: "https://artsy.net/categories" })
     renderWithWrappers(<VanityURLPossibleRedirect slug="genes" />)
 
-    await waitFor(() => expect(screen.UNSAFE_getAllByType(ArtsyWebViewPage)).toHaveLength(1))
+    await waitFor(() => expect(screen.getAllByTestId("ArtsyWebViewPage")).toHaveLength(1))
+    expect(screen.getByTestId("ArtsyWebViewPage")).toHaveTextContent("https://artsy.net/categories")
   })
 })

@@ -1,11 +1,10 @@
-import { CheckmarkIcon } from "@artsy/icons/native"
-import { Box } from "@artsy/palette-mobile"
+import { screen } from "@testing-library/react-native"
 import { ColorsSwatch } from "app/Components/ArtworkFilter/Filters/ColorsSwatch"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("Colors swatch", () => {
   it("adds a check icon when selected", () => {
-    const selectedTree = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <ColorsSwatch
         width={30}
         backgroundColor="mono100"
@@ -14,10 +13,11 @@ describe("Colors swatch", () => {
         selected
       />
     )
-    const selectedCheckIcon = selectedTree.root.findByType(CheckmarkIcon)
-    expect(selectedCheckIcon.props.fill).toMatch("#fff")
+    expect(screen.getByTestId("check-icon-blue")).toHaveProp("fill", "#fff")
 
-    const unselectedTree = renderWithWrappersLEGACY(
+    screen.unmount()
+
+    renderWithWrappers(
       <ColorsSwatch
         width={30}
         backgroundColor="mono100"
@@ -26,12 +26,11 @@ describe("Colors swatch", () => {
         selected={false}
       />
     )
-    const unselectedCheckIcon = unselectedTree.root.findAllByType(CheckmarkIcon)
-    expect(unselectedCheckIcon.length).toEqual(0)
+    expect(screen.queryByTestId("check-icon-blue")).not.toBeOnTheScreen()
   })
 
   it("has correct background color for passed in color", () => {
-    const blue = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <ColorsSwatch
         width={30}
         backgroundColor="#435EA9"
@@ -40,10 +39,9 @@ describe("Colors swatch", () => {
         selected
       />
     )
-    const darkBlueView = blue.root.findAllByType(Box)[1]
-    expect(darkBlueView.props.bg).toMatch("#435EA9")
+    expect(screen.getByTestId("color-swatch-blue")).toHaveStyle({ backgroundColor: "#435EA9" })
 
-    const blackAndWhite = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <ColorsSwatch
         width={30}
         backgroundColor="#595A5B"
@@ -52,11 +50,11 @@ describe("Colors swatch", () => {
         selected={false}
       />
     )
-    const blackAndWhiteView = blackAndWhite.root.findAllByType(Box)[1]
+    expect(screen.getByTestId("color-swatch-black-and-white")).toHaveStyle({
+      backgroundColor: "#595A5B",
+    })
 
-    expect(blackAndWhiteView.props.bg).toMatch("#595A5B")
-
-    const orange = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <ColorsSwatch
         width={30}
         backgroundColor="#F1572C"
@@ -65,7 +63,6 @@ describe("Colors swatch", () => {
         selected={false}
       />
     )
-    const orangeView = orange.root.findAllByType(Box)[1]
-    expect(orangeView.props.bg).toMatch("#F1572C")
+    expect(screen.getByTestId("color-swatch-orange")).toHaveStyle({ backgroundColor: "#F1572C" })
   })
 })

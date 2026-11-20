@@ -1,36 +1,35 @@
+import { screen } from "@testing-library/react-native"
 import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Text } from "react-native"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+
+// palette colors
+const GREEN_100 = "#00674A"
+const RED_100 = "#D71023"
+const MONO_60 = "#707070"
 
 describe("AuctionResultMidEstimate", () => {
   it("renders the short description", () => {
-    const tree = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <AuctionResultsMidEstimate value="25%" shortDescription="short description" />
     )
-    expect(extractText(tree.root.findAllByType(Text)[0])).toContain("short description")
+    expect(screen.getByText(/short description/)).toBeOnTheScreen()
   })
+
   it("renders properly when the percentage is greater than 5", () => {
-    const tree = renderWithWrappersLEGACY(<AuctionResultsMidEstimate value="25%" />)
-    expect(extractText(tree.root.findAllByType(Text)[0])).toEqual("(+25%)")
-    expect(tree.root.findAllByType(Text)[0].props.color).toEqual("green100")
+    renderWithWrappers(<AuctionResultsMidEstimate value="25%" />)
+    expect(screen.getByText("(+25%)")).toHaveStyle({ color: GREEN_100 })
   })
 
   it("renders properly when the percentage is less than -5", () => {
-    const tree = renderWithWrappersLEGACY(<AuctionResultsMidEstimate value="-25%" />)
-    expect(extractText(tree.root.findAllByType(Text)[0])).toEqual("(-25%)")
-    expect(tree.root.findAllByType(Text)[0].props.color).toEqual("red100")
+    renderWithWrappers(<AuctionResultsMidEstimate value="-25%" />)
+    expect(screen.getByText("(-25%)")).toHaveStyle({ color: RED_100 })
   })
 
   it("renders properly when the percentage is between -5 and 5", () => {
-    const instance1 = renderWithWrappersLEGACY(<AuctionResultsMidEstimate value="2%" />)
-    const instance2 = renderWithWrappersLEGACY(<AuctionResultsMidEstimate value="2%" />)
-    const instance3 = renderWithWrappersLEGACY(<AuctionResultsMidEstimate value="-2%" />)
-    expect(instance1.root.findAllByType(Text)[0].props.color).toEqual("mono60")
-    expect(instance2.root.findAllByType(Text)[0].props.color).toEqual("mono60")
-    expect(instance3.root.findAllByType(Text)[0].props.color).toEqual("mono60")
-    expect(extractText(instance1.root.findAllByType(Text)[0])).toEqual("(+2%)")
-    expect(extractText(instance2.root.findAllByType(Text)[0])).toEqual("(+2%)")
-    expect(extractText(instance3.root.findAllByType(Text)[0])).toEqual("(-2%)")
+    renderWithWrappers(<AuctionResultsMidEstimate value="2%" />)
+    expect(screen.getByText("(+2%)")).toHaveStyle({ color: MONO_60 })
+
+    renderWithWrappers(<AuctionResultsMidEstimate value="-2%" />)
+    expect(screen.getByText("(-2%)")).toHaveStyle({ color: MONO_60 })
   })
 })

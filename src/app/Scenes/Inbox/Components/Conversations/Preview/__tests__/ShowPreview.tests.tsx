@@ -1,10 +1,8 @@
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import "react-native"
-
 import ShowPreview from "app/Scenes/Inbox/Components/Conversations/Preview/ShowPreview"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 it("renders without throwing an error", () => {
-  renderWithWrappersLEGACY(<ShowPreview show={show as any} />)
+  renderWithWrappers(<ShowPreview show={show as any} />)
 })
 
 const show = {

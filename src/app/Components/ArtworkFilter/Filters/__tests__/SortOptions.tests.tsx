@@ -1,19 +1,13 @@
-import { RadioDot } from "@artsy/palette-mobile"
+import { screen } from "@testing-library/react-native"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersStoreProvider,
   ArtworkFiltersState,
   getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import {
-  InnerOptionListItem,
-  OptionListItem,
-} from "app/Components/ArtworkFilter/Filters/SingleSelectOption"
 import { SortOptionsScreen } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { getEssentialProps } from "app/Components/ArtworkFilter/Filters/helper"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { ReactTestRenderer } from "react-test-renderer"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("Sort Options Screen", () => {
   const initialState: ArtworkFiltersState = {
@@ -46,24 +40,24 @@ describe("Sort Options Screen", () => {
     </ArtworkFiltersStoreProvider>
   )
 
-  const selectedSortOption = (componentTree: ReactTestRenderer) => {
-    const innerOptions = componentTree.root.findAllByType(InnerOptionListItem)
-    const selectedOption = innerOptions.filter(
-      (item) => item.findByType(RadioDot).props.selected
-    )[0]
-    return selectedOption
+  const selectedSortOption = () => {
+    const selectedOptions = screen
+      .getAllByTestId("single-select-option")
+      .filter((row) => !!row.props.accessibilityState?.selected)
+    expect(selectedOptions).toHaveLength(1)
+    return selectedOptions[0]
   }
 
   it("renders the correct number of sort options", () => {
-    const tree = renderWithWrappersLEGACY(<MockSortScreen initialData={initialState} />)
-    expect(tree.root.findAllByType(OptionListItem)).toHaveLength(7)
+    renderWithWrappers(<MockSortScreen initialData={initialState} />)
+    expect(screen.getAllByTestId("single-select-option")).toHaveLength(7)
   })
 
   describe("selectedSortOption", () => {
     it("returns the default option if there are no selected or applied filters", () => {
-      const tree = renderWithWrappersLEGACY(<MockSortScreen initialData={initialState} />)
-      const selectedOption = selectedSortOption(tree)
-      expect(extractText(selectedOption)).toContain("Recommended")
+      renderWithWrappers(<MockSortScreen initialData={initialState} />)
+      const selectedOption = selectedSortOption()
+      expect(selectedOption).toHaveTextContent("Recommended", { exact: false })
     })
 
     it("prefers an applied filter over the default filter", () => {
@@ -96,10 +90,10 @@ describe("Sort Options Screen", () => {
         sizeMetric: "cm",
       }
 
-      const tree = renderWithWrappersLEGACY(<MockSortScreen initialData={injectedState} />)
+      renderWithWrappers(<MockSortScreen initialData={injectedState} />)
 
-      const selectedOption = selectedSortOption(tree)
-      expect(extractText(selectedOption)).toContain("Recently Added")
+      const selectedOption = selectedSortOption()
+      expect(selectedOption).toHaveTextContent("Recently Added", { exact: false })
     })
 
     it("prefers the selected filter over the default filter", () => {
@@ -125,10 +119,10 @@ describe("Sort Options Screen", () => {
         sizeMetric: "cm",
       }
 
-      const tree = renderWithWrappersLEGACY(<MockSortScreen initialData={injectedState} />)
+      renderWithWrappers(<MockSortScreen initialData={injectedState} />)
 
-      const selectedOption = selectedSortOption(tree)
-      expect(extractText(selectedOption)).toContain("Recently Added")
+      const selectedOption = selectedSortOption()
+      expect(selectedOption).toHaveTextContent("Recently Added", { exact: false })
     })
 
     it("prefers the selected filter over an applied filter", () => {
@@ -168,10 +162,10 @@ describe("Sort Options Screen", () => {
         sizeMetric: "cm",
       }
 
-      const tree = renderWithWrappersLEGACY(<MockSortScreen initialData={injectedState} />)
+      renderWithWrappers(<MockSortScreen initialData={injectedState} />)
 
-      const selectedOption = selectedSortOption(tree)
-      expect(extractText(selectedOption)).toContain("Recently Added")
+      const selectedOption = selectedSortOption()
+      expect(selectedOption).toHaveTextContent("Recently Added", { exact: false })
     })
   })
 
@@ -204,11 +198,11 @@ describe("Sort Options Screen", () => {
       sizeMetric: "cm",
     }
 
-    const tree = renderWithWrappersLEGACY(<MockSortScreen initialData={injectedState} />)
+    renderWithWrappers(<MockSortScreen initialData={injectedState} />)
 
-    const selectedRow = selectedSortOption(tree)
-    expect(extractText(selectedRow)).toEqual("Price (High to Low)")
-    expect(selectedRow.findByType(RadioDot).props.selected).toEqual(true)
+    const selectedRow = selectedSortOption()
+    expect(selectedRow).toHaveTextContent("Price (High to Low)")
+    expect(selectedRow).toBeSelected()
   })
 
   describe("filterType of showArtwork", () => {
@@ -228,12 +222,12 @@ describe("Sort Options Screen", () => {
         sizeMetric: "cm",
       }
 
-      const tree = renderWithWrappersLEGACY(<MockSortScreen initialData={injectedState} />)
+      renderWithWrappers(<MockSortScreen initialData={injectedState} />)
 
-      const selectedRow = selectedSortOption(tree)
+      const selectedRow = selectedSortOption()
 
-      expect(extractText(selectedRow)).toEqual("Gallery Curated")
-      expect(selectedRow.findByType(RadioDot).props.selected).toEqual(true)
+      expect(selectedRow).toHaveTextContent("Gallery Curated")
+      expect(selectedRow).toBeSelected()
     })
   })
 
@@ -254,12 +248,12 @@ describe("Sort Options Screen", () => {
         sizeMetric: "cm",
       }
 
-      const tree = renderWithWrappersLEGACY(<MockSortScreen initialData={injectedState} />)
+      renderWithWrappers(<MockSortScreen initialData={injectedState} />)
 
-      const selectedRow = selectedSortOption(tree)
+      const selectedRow = selectedSortOption()
 
-      expect(extractText(selectedRow)).toEqual("Most Recent Sale Date")
-      expect(selectedRow.findByType(RadioDot).props.selected).toEqual(true)
+      expect(selectedRow).toHaveTextContent("Most Recent Sale Date")
+      expect(selectedRow).toBeSelected()
     })
   })
 })

@@ -41,6 +41,7 @@ export const SeparatorWithSmoothOpacity: React.FC<SeparatorWithSmoothOpacityProp
 }) => {
   return (
     <Animated.View
+      testID="header-artworks-filter-separator"
       style={{
         opacity:
           animationValue?.interpolate({

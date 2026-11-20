@@ -1,5 +1,5 @@
 import Header from "app/Components/Gene/Header"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 it("renders without throwing a error", () => {
   const gene = {
@@ -9,5 +9,5 @@ it("renders without throwing a error", () => {
     name: "Deep Time",
   }
 
-  renderWithWrappersLEGACY(<Header gene={gene as any} shortForm={false} />)
+  expect(() => renderWithWrappers(<Header gene={gene as any} shortForm={false} />)).not.toThrow()
 })

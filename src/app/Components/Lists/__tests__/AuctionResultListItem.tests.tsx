@@ -1,15 +1,18 @@
-/* eslint-disable testing-library/await-async-queries, testing-library/no-node-access */
 import { fireEvent, screen } from "@testing-library/react-native"
 import { AuctionResultListItemTestsQuery } from "__generated__/AuctionResultListItemTestsQuery.graphql"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import * as navigation from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
+
+jest.mock("app/system/navigation/RouterLink", () => {
+  const { RouterLink } = jest.requireActual("app/system/navigation/RouterLink")
+  return { RouterLink: jest.fn(RouterLink) }
+})
 
 describe("AuctionResults", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -18,6 +21,9 @@ describe("AuctionResults", () => {
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
     jest.clearAllMocks()
+    ;(RouterLink as unknown as jest.Mock).mockImplementation(
+      jest.requireActual("app/system/navigation/RouterLink").RouterLink
+    )
   })
 
   const TestRenderer = ({ onPress }: { onPress?: () => void }) => (
@@ -51,7 +57,7 @@ describe("AuctionResults", () => {
   )
 
   it("renders auction result when auction results are available", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+    renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -78,12 +84,12 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(extractText(tree.findByProps({ testID: "price" }))).toBe("$one gazillion")
-    expect(tree.findAllByProps({ testID: "priceUSD" }).length).toBe(0)
+    expect(screen.getByTestId("price")).toHaveTextContent("$one gazillion")
+    expect(screen.queryByTestId("priceUSD")).not.toBeOnTheScreen()
   })
 
   it("renders price in USD when currency is not USD", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+    renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -110,14 +116,12 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(extractText(tree.findByProps({ testID: "price" }))).toBe(
-      "€one gazillion • $one gazillion"
-    )
-    expect(extractText(tree.findByProps({ testID: "priceUSD" }))).toBe("$one gazillion")
+    expect(screen.getByTestId("price")).toHaveTextContent("€one gazillion • $one gazillion")
+    expect(screen.getByTestId("priceUSD")).toHaveTextContent("$one gazillion")
   })
 
   it("renders auction result when auction results are not available yet", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+    renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -140,12 +144,12 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "price" }).props.children).toBe("Awaiting results")
-    expect(tree.findAllByProps({ testID: "priceUSD" }).length).toBe(0)
+    expect(screen.getByTestId("price")).toHaveTextContent("Awaiting results")
+    expect(screen.queryByTestId("priceUSD")).not.toBeOnTheScreen()
   })
 
   it("renders auction result when auction result is `bought in`", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+    renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -169,12 +173,12 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "price" }).props.children).toBe("Bought in")
-    expect(tree.findAllByProps({ testID: "priceUSD" }).length).toBe(0)
+    expect(screen.getByTestId("price")).toHaveTextContent("Bought in")
+    expect(screen.queryByTestId("priceUSD")).not.toBeOnTheScreen()
   })
 
   it("renders sale date correctly", () => {
-    const view = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -190,7 +194,7 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(view.root.findByProps({ testID: "saleInfo" }).props.children).toContain("Jan 12, 2021")
+    expect(screen.getByTestId("saleInfo")).toHaveTextContent(/Jan 12, 2021/)
   })
   it("navigates to the lot screen for upcoming auction results happening in ", async () => {
     renderWithWrappers(<TestRenderer />)
@@ -220,8 +224,17 @@ describe("AuctionResults", () => {
   })
 
   it("triggers on press when specfied", () => {
+    // Render RouterLink as a plain pressable host so we only exercise the item's own press handler
+    ;(RouterLink as unknown as jest.Mock).mockImplementation(({ onPress, children }) => {
+      const { View } = jest.requireActual("react-native")
+      return (
+        <View testID="router-link" onPress={onPress}>
+          {children}
+        </View>
+      )
+    })
     const mockOnPress = jest.fn()
-    const view = renderWithWrappersLEGACY(<TestRenderer onPress={mockOnPress} />)
+    renderWithWrappers(<TestRenderer onPress={mockOnPress} />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -240,9 +253,7 @@ describe("AuctionResults", () => {
       }),
     })
 
-    const button = view.root.findAllByType(RouterLink)[0]
-
-    button.props.onPress()
+    fireEvent.press(screen.getAllByTestId("router-link")[0])
 
     expect(mockOnPress).toHaveBeenCalled()
     expect(navigate).not.toHaveBeenCalled()

@@ -6,9 +6,8 @@ import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import { ReactTestInstance } from "react-test-renderer"
 
-const swipeTaskOpen = async (task: ReactTestInstance) => {
+const swipeTaskOpen = async (task: ReturnType<typeof screen.getByTestId>) => {
   fireEvent(task, "onSwipeableWillOpen", { direction: "right" })
 }
 

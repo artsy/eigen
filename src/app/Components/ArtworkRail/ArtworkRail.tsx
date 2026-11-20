@@ -105,6 +105,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
 
     return (
       <FlatList
+        testID="artwork-rail"
         data={artworks}
         horizontal
         keyExtractor={(item: Artwork) => item.internalID}

@@ -1,3 +1,4 @@
+import { screen, within } from "@testing-library/react-native"
 import { combineProviders } from "app/utils/combineProviders"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { View } from "react-native"
@@ -13,29 +14,24 @@ describe("combineProviders", () => {
     const Providers = ({ children }: { children?: React.ReactNode }) =>
       combineProviders([ProviderA, ProviderB, ProviderC], children)
 
-    const { toJSON } = renderWithWrappers(
+    renderWithWrappers(
       <Providers>
         <Child />
       </Providers>
     )
 
-    expect(toJSON()).toMatchInlineSnapshot(`
-      <View
-        testID="A"
-      >
-        <View
-          testID="B"
-        >
-          <View
-            needed="special"
-            testID="C"
-          >
-            <View
-              testID="child"
-            />
-          </View>
-        </View>
-      </View>
-    `)
+    // providers are nested in order A > B > C > child
+    const providerA = screen.getByTestId("A")
+    const providerB = within(providerA).getByTestId("B")
+    const providerC = within(providerB).getByTestId("C")
+
+    expect(providerC).toHaveProp("needed", "special")
+    expect(within(providerC).getByTestId("child")).toBeOnTheScreen()
+
+    // each provider is rendered exactly once
+    expect(screen.getAllByTestId("A")).toHaveLength(1)
+    expect(screen.getAllByTestId("B")).toHaveLength(1)
+    expect(screen.getAllByTestId("C")).toHaveLength(1)
+    expect(screen.getAllByTestId("child")).toHaveLength(1)
   })
 })

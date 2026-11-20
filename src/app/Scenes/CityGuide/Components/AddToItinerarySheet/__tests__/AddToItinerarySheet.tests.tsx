@@ -1,5 +1,4 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { BottomSheetModal } from "@gorhom/bottom-sheet"
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { AddToItinerarySheet } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItinerarySheet"
 import { navigate } from "app/system/navigation/navigate"
@@ -11,18 +10,35 @@ import { KeyboardController } from "react-native-keyboard-controller"
 import { MockPayloadGenerator } from "relay-test-utils"
 
 let mockContentGeneration = 0
+const mockSheetInstances = new Set<any>()
 const mockShowToast = jest.fn()
 jest.mock("app/Components/Toast/toastHook", () => ({
   useToast: () => ({ show: mockShowToast }),
 }))
 
 // Simulate a modal content remount while the context provider keeps its session state.
+// The host view exposes the sheet's name, `onDismiss` and `stackBehavior` so tests can query it.
 jest.mock("@gorhom/bottom-sheet", () => {
   const { View } = require("react-native")
   const mock = require("@gorhom/bottom-sheet/mock")
   class BottomSheetModal extends mock.BottomSheetModal {
+    componentDidMount() {
+      mockSheetInstances.add(this)
+    }
+    componentWillUnmount() {
+      mockSheetInstances.delete(this)
+    }
     render() {
-      return <View key={mockContentGeneration}>{super.render()}</View>
+      return (
+        <View
+          key={mockContentGeneration}
+          testID={`bottom-sheet-modal-${this.props.name}`}
+          onDismiss={this.props.onDismiss}
+          stackBehavior={this.props.stackBehavior}
+        >
+          {super.render()}
+        </View>
+      )
     }
   }
   return {
@@ -131,7 +147,7 @@ describe("AddToItinerarySheet", () => {
   })
 
   it("preserves a quick selection when the modal remounts its content", async () => {
-    const view = renderWithWrappers(<AddToItinerarySheet {...props} />)
+    renderWithWrappers(<AddToItinerarySheet {...props} />)
     const environment = getMockRelayEnvironment()
     const resolveItineraries = () => {
       environment.mock.getAllOperations().forEach((operation) => {
@@ -149,7 +165,7 @@ describe("AddToItinerarySheet", () => {
     // Remount only the modal content, keeping the surrounding sheet provider mounted.
     act(() => {
       mockContentGeneration += 1
-      view.UNSAFE_getByType(BottomSheetModal).instance.forceUpdate()
+      mockSheetInstances.forEach((sheet) => sheet.forceUpdate())
     })
     expect(screen.getByTestId("add-to-itinerary-done")).toBeEnabled()
     act(resolveItineraries)
@@ -769,7 +785,7 @@ describe("AddToItinerarySheet", () => {
 
       await waitFor(() => expect(props.onClose).toHaveBeenCalled())
       // The modal reports its own dismiss once Done has closed it.
-      act(() => screen.UNSAFE_getByProps({ name: "AddToItinerary" }).props.onDismiss())
+      fireEvent(screen.getByTestId("bottom-sheet-modal-AddToItinerary"), "dismiss")
 
       const closes = mockTrackEvent.mock.calls.filter(
         ([event]: any[]) => event.action === ActionType.closedAddToItinerary
@@ -833,7 +849,7 @@ describe("AddToItinerarySheet", () => {
 
       await screen.findByText("First")
 
-      act(() => screen.UNSAFE_getByProps({ name: "AddToItinerary" }).props.onDismiss())
+      fireEvent(screen.getByTestId("bottom-sheet-modal-AddToItinerary"), "dismiss")
 
       expect(mockTrackEvent).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -964,7 +980,7 @@ describe("AddToItinerarySheet", () => {
       await screen.findByText("0 selected")
       fireEvent.press(screen.getByTestId("add-to-itinerary-create"))
 
-      const [createSheet] = screen.UNSAFE_getAllByProps({ name: "CreateItinerary" })
+      const createSheet = screen.getByTestId("bottom-sheet-modal-CreateItinerary")
       expect(createSheet.props.stackBehavior).toBeUndefined()
     })
 

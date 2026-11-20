@@ -1,13 +1,9 @@
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { MakeOfferModalTestsQuery } from "__generated__/MakeOfferModalTestsQuery.graphql"
-import { CollapsibleArtworkDetails } from "app/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
-import { EditionSelectBox } from "app/Scenes/Inbox/Components/Conversations/EditionSelectBox"
-import { InquiryMakeOfferButton } from "app/Scenes/Inbox/Components/Conversations/InquiryMakeOfferButton"
 import { MakeOfferModalFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/MakeOfferModal"
-import { extractText } from "app/utils/tests/extractText"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { act, ReactTestInstance } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 let env: ReturnType<typeof createMockEnvironment>
@@ -107,14 +103,40 @@ const mockSingleEditionResolver = {
   }),
 }
 
-const getWrapper = (mockResolvers = mockResolver, renderer = renderComponent) => {
-  const tree = renderWithWrappersLEGACY(<TestRenderer renderer={renderer} />)
+const renderAndResolve = (mockResolvers = mockResolver, renderer = renderComponent) => {
+  renderWithWrappers(<TestRenderer renderer={renderer} />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) => {
       return MockPayloadGenerator.generate(operation, mockResolvers)
     })
   })
-  return tree
+}
+
+/** Presses Confirm and returns the edition set the make offer mutation was sent with. */
+const confirmAndGetEditionSetID = () => {
+  fireEvent.press(screen.getByText("Confirm"))
+  const operation = env.mock.getMostRecentOperation()
+  expect(operation.request.node.params.name).toBe("InquiryMakeOfferButtonOrderMutation")
+  const editionSetID = operation.request.variables.input.editionSetId
+
+  // Let the mutation finish, so the button accepts the next press.
+  act(() => {
+    env.mock.resolve(
+      operation,
+      MockPayloadGenerator.generate(operation, {
+        Mutation: () => ({
+          createInquiryOfferOrder: {
+            orderOrError: {
+              __typename: "CommerceOrderWithMutationSuccess",
+              order: { internalID: "order-id" },
+            },
+          },
+        }),
+      })
+    )
+  })
+
+  return editionSetID
 }
 
 beforeEach(() => {
@@ -123,76 +145,55 @@ beforeEach(() => {
 
 describe("<MakeOfferModal />", () => {
   it("renders the modal", () => {
-    const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Select edition set")
+    renderAndResolve()
+    expect(screen.getByText("Select edition set")).toBeOnTheScreen()
   })
   it("displays the correct artwork", () => {
-    const wrapper = getWrapper()
-    const details = wrapper.root.findByType(CollapsibleArtworkDetails)
-    expect(details.props.artwork.title).toBe("test-artwork")
+    renderAndResolve()
+    expect(screen.getByText(/^test-artwork/)).toBeOnTheScreen()
   })
   it("doesn't display edition checkboxes and can be confirmed", () => {
-    const wrapper = getWrapper()
-    const confirmBtn = wrapper.root.findByType(InquiryMakeOfferButton)
-    const editions = wrapper.root.findAllByType(EditionSelectBox)
-    expect(editions).toHaveLength(0)
-    expect(confirmBtn.props.disabled).not.toBeTruthy()
+    renderAndResolve()
+    expect(screen.queryAllByRole("radio")).toHaveLength(0)
+    expect(screen.getByText("Confirm")).toBeEnabled()
   })
   // EDITIONS
   describe("when artwork is edition set", () => {
-    const tapOn = (edition: ReactTestInstance) => {
-      edition.props.onPress(
-        edition.props.editionSet.internalID,
-        edition.props.editionSet.isOfferableFromInquiry
-      )
-    }
     it("shows edition selection when it's an edition", () => {
-      const wrapper = getWrapper(mockEditionsResolver)
-      const editions = wrapper.root.findAllByType(EditionSelectBox)
-      expect(editions).toHaveLength(3)
+      renderAndResolve(mockEditionsResolver)
+      expect(screen.getAllByRole("radio")).toHaveLength(3)
     })
     it("disables the confirm button until an edition is selected", () => {
-      const wrapper = getWrapper(mockEditionsResolver)
-      const confirmBtn = wrapper.root.findByType(InquiryMakeOfferButton)
-      expect(confirmBtn.props.disabled).toBeTruthy()
+      renderAndResolve(mockEditionsResolver)
+      expect(screen.getByText("Confirm")).toBeDisabled()
     })
 
     it("doesn't disable the confirm button if an editioned work only has one edition", () => {
-      const wrapper = getWrapper(mockSingleEditionResolver)
-      const confirmBtn = wrapper.root.findByType(InquiryMakeOfferButton)
-      expect(confirmBtn.props.disabled).toBeFalsy()
+      renderAndResolve(mockSingleEditionResolver)
+      expect(screen.getByText("Confirm")).toBeEnabled()
     })
 
     it("shows unavailable editions as unavailable and doesn't allow selection", async () => {
-      const wrapper = getWrapper(mockEditionsResolver)
-      const selection = wrapper.root
-        .findAllByType(EditionSelectBox)
-        .find((edtn) => edtn.props.editionSet.internalID === "edition-2")!
-      const text = extractText(selection)
-      expect(text).toContain("Unavailable")
-      expect(text).not.toContain("€200")
-      tapOn(selection)
+      renderAndResolve(mockEditionsResolver)
+      expect(screen.getByText("Unavailable")).toBeOnTheScreen()
+      expect(screen.queryByText("€200")).not.toBeOnTheScreen()
+      fireEvent.press(screen.getByText("Unavailable"))
       await flushPromiseQueue()
-      const confirmBtn = wrapper.root.findByType(InquiryMakeOfferButton)
-      expect(confirmBtn.props.disabled).toBeTruthy()
-      expect(confirmBtn.props.editionSetID).toBeNull()
+      expect(screen.getByText("Confirm")).toBeDisabled()
+      // Nothing was selected, so pressing Confirm doesn't create an order.
+      fireEvent.press(screen.getByText("Confirm"))
+      expect(env.mock.getAllOperations()).toHaveLength(0)
     })
     it("allows the user to toggle between available editions and confirm", async () => {
-      const wrapper = getWrapper(mockEditionsResolver)
-      const editions = wrapper.root.findAllByType(EditionSelectBox)
-      const selection = editions.find((edtn) => edtn.props.editionSet.internalID === "edition-1")!
-      const selectionAlt = editions.find(
-        (edtn) => edtn.props.editionSet.internalID === "edition-3"
-      )!
-      tapOn(selection)
-      const confirmBtn = wrapper.root.findByType(InquiryMakeOfferButton)
+      renderAndResolve(mockEditionsResolver)
+      fireEvent.press(screen.getByText("€100"))
       await flushPromiseQueue()
-      expect(confirmBtn.props.disabled).not.toBeTruthy()
-      expect(confirmBtn.props.editionSetID).toBe("edition-1")
-      tapOn(selectionAlt)
+      expect(screen.getByText("Confirm")).toBeEnabled()
+      expect(confirmAndGetEditionSetID()).toBe("edition-1")
+      fireEvent.press(screen.getByText("€300"))
       await flushPromiseQueue()
-      expect(confirmBtn.props.disabled).not.toBeTruthy()
-      expect(confirmBtn.props.editionSetID).toBe("edition-3")
+      expect(screen.getByText("Confirm")).toBeEnabled()
+      expect(confirmAndGetEditionSetID()).toBe("edition-3")
     })
   })
 })

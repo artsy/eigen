@@ -32,6 +32,6 @@ describe("PlaceholderRaggedText", () => {
       </ProvidePlaceholderContext>
     )
 
-    expect(screen.UNSAFE_queryAllByType(PlaceholderBox)).toHaveLength(4)
+    expect(screen.getAllByTestId("placeholder-ragged-text-line")).toHaveLength(4)
   })
 })

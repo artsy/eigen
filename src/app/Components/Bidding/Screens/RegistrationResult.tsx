@@ -187,7 +187,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
         <View style={{ padding: 20 }}>
           <Flex alignItems="center">
             {status !== RegistrationStatus.RegistrationStatusPending && (
-              <Icon20 source={Icons[status]} />
+              <Icon20 source={Icons[status]} testID="registration-result-icon" />
             )}
             <Title mt={2} mb={4}>
               {title}

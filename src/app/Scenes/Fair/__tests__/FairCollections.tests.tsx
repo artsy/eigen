@@ -1,4 +1,3 @@
-import { TouchableWithScale } from "@artsy/palette-mobile"
 import { screen, fireEvent } from "@testing-library/react-native"
 import { FairCollectionsTestsQuery } from "__generated__/FairCollectionsTestsQuery.graphql"
 import { FairCollectionsFragmentContainer } from "app/Scenes/Fair/Components/FairCollections"
@@ -48,12 +47,13 @@ describe("FairCollections", () => {
         marketingCollections: [
           {
             slug: "collectible-sculptures",
+            title: "Big Artists, Small Sculptures",
           },
         ],
       }),
     })
 
-    const collection = screen.UNSAFE_getAllByType(TouchableWithScale)[0]
+    const collection = screen.getByText("Big Artists, Small Sculptures")
     fireEvent.press(collection)
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -76,6 +76,6 @@ describe("FairCollections", () => {
       }),
     })
 
-    expect(screen.toJSON()).toBeNull()
+    expect(screen.queryByText("Curated Highlights")).not.toBeOnTheScreen()
   })
 })

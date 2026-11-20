@@ -1,10 +1,8 @@
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { FairFollowedArtistsRailTestsQuery } from "__generated__/FairFollowedArtistsRailTestsQuery.graphql"
-import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { FairFollowedArtistsRailFragmentContainer } from "app/Scenes/Fair/Components/FairFollowedArtistsRail"
-import { RouterLink } from "app/system/navigation/RouterLink"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
@@ -55,17 +53,16 @@ describe("FairFollowedArtistsRail", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const { root } = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
     })
-    return { root }
   }
 
   it("tracks taps on artworks", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
@@ -75,9 +72,7 @@ describe("FairFollowedArtistsRail", () => {
       }),
     })
 
-    const artwork = wrapper.root.findAllByType(ArtworkRailCard)
-
-    act(() => artwork[0].props.onPress())
+    fireEvent.press(screen.getByTestId("artwork-some-artwork"))
 
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
@@ -94,7 +89,7 @@ describe("FairFollowedArtistsRail", () => {
   })
 
   it("tracks taps on artworks with partner offers", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
@@ -112,9 +107,7 @@ describe("FairFollowedArtistsRail", () => {
       }),
     })
 
-    const artwork = wrapper.root.findAllByType(ArtworkRailCard)
-
-    act(() => artwork[0].props.onPress())
+    fireEvent.press(screen.getByTestId("artwork-some-artwork"))
 
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
@@ -132,7 +125,7 @@ describe("FairFollowedArtistsRail", () => {
   })
 
   it("tracks taps on artworks with auction signals", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
@@ -153,9 +146,7 @@ describe("FairFollowedArtistsRail", () => {
       }),
     })
 
-    const artwork = wrapper.root.findAllByType(ArtworkRailCard)
-
-    act(() => artwork[0].props.onPress())
+    fireEvent.press(screen.getByTestId("artwork-some-artwork"))
 
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
@@ -174,8 +165,8 @@ describe("FairFollowedArtistsRail", () => {
     })
   })
 
-  it("displays the '>' button if there are 3 or more artworks", async () => {
-    const wrapper = getWrapper({
+  it("displays the '>' button if there are 3 or more artworks", () => {
+    getWrapper({
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
@@ -190,14 +181,17 @@ describe("FairFollowedArtistsRail", () => {
       }),
     })
 
-    const routerLinkButtons = await wrapper.root.findAllByType(RouterLink)
-
     // 4 artworks + view all button + browse all button
-    expect(routerLinkButtons.length).toBe(6)
+    expect(screen.getByTestId("artwork-some-artwork-1")).toBeOnTheScreen()
+    expect(screen.getByTestId("artwork-some-artwork-2")).toBeOnTheScreen()
+    expect(screen.getByTestId("artwork-some-artwork-3")).toBeOnTheScreen()
+    expect(screen.getByTestId("artwork-some-artwork-4")).toBeOnTheScreen()
+    expect(screen.getByTestId("touchable-wrapper")).toBeOnTheScreen()
+    expect(screen.getByText("Browse All Artworks")).toBeOnTheScreen()
   })
 
-  it("doesn't display the '>' button if there are less than 3 artworks to show", async () => {
-    const wrapper = getWrapper({
+  it("doesn't display the '>' button if there are less than 3 artworks to show", () => {
+    getWrapper({
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
@@ -210,13 +204,15 @@ describe("FairFollowedArtistsRail", () => {
       }),
     })
 
-    const viewAllButton = await wrapper.root.findAllByType(RouterLink)
-
-    expect(viewAllButton.length).toBe(3)
+    // 2 artworks + browse all button, no view all button
+    expect(screen.getByTestId("artwork-some-artwork-1")).toBeOnTheScreen()
+    expect(screen.getByTestId("artwork-some-artwork-2")).toBeOnTheScreen()
+    expect(screen.queryByTestId("touchable-wrapper")).not.toBeOnTheScreen()
+    expect(screen.getByText("Browse All Artworks")).toBeOnTheScreen()
   })
 
   it("tracks taps on the rails header", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
@@ -230,8 +226,7 @@ describe("FairFollowedArtistsRail", () => {
         },
       }),
     })
-    const viewAllButton = wrapper.root.findAllByType(RouterLink)
-    act(() => viewAllButton[0].props.onPress())
+    fireEvent.press(screen.getByTestId("touchable-wrapper"))
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "worksByArtistsYouFollowRail",

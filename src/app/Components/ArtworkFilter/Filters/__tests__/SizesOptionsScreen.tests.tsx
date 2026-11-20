@@ -18,14 +18,12 @@ import {
 } from "app/Components/ArtworkFilter/Filters/SizesOptionsScreen"
 import { getEssentialProps } from "app/Components/ArtworkFilter/Filters/helper"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
-import { ReactTestInstance } from "react-test-renderer"
 
 // Helpers
-const getFilters = (element: ReactTestInstance) => {
-  return JSON.parse(extractText(element)) as FilterArray
+const getFilters = (element: ReturnType<typeof screen.getByTestId>) => {
+  return JSON.parse(element.props.accessibilityLabel) as FilterArray
 }
 
 const getFilterOptionByName = (filters: FilterArray, filterName: FilterParamName) => {
@@ -64,7 +62,9 @@ describe("SizesOptionsScreen", () => {
     const selected = useSelectedOptionsDisplay()
     return (
       <>
-        <Text testID="debug">{JSON.stringify(selected)}</Text>
+        <Text testID="debug" accessibilityLabel={JSON.stringify(selected)}>
+          {JSON.stringify(selected)}
+        </Text>
         <SizesOptionsScreen {...getEssentialProps()} />
       </>
     )

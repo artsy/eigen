@@ -1,4 +1,3 @@
-import { CheckmarkFillIcon, CheckmarkIcon } from "@artsy/icons/native"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { CityGuideSaveButton } from "app/Scenes/CityGuide/Components/CityGuideSaveButton"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -7,6 +6,26 @@ import Haptic from "react-native-haptic-feedback"
 jest.mock("react-native-haptic-feedback", () => ({
   trigger: jest.fn(),
 }))
+
+// Wrap the checkmark icons in host views we can query, so the test can tell which one rendered.
+jest.mock("@artsy/icons/native", () => {
+  const { View } = require("react-native")
+  const actual = jest.requireActual("@artsy/icons/native")
+
+  return {
+    ...actual,
+    CheckmarkFillIcon: (props: any) => (
+      <View testID="mock-checkmark-fill-icon">
+        <actual.CheckmarkFillIcon {...props} />
+      </View>
+    ),
+    CheckmarkIcon: (props: any) => (
+      <View testID="mock-checkmark-icon">
+        <actual.CheckmarkIcon {...props} />
+      </View>
+    ),
+  }
+})
 
 describe("CityGuideSaveButton", () => {
   it("renders the add icon when not saved", () => {
@@ -26,8 +45,8 @@ describe("CityGuideSaveButton", () => {
   it("renders a filled checkmark when saved", () => {
     renderWithWrappers(<CityGuideSaveButton isSaved onPress={jest.fn()} />)
 
-    expect(screen.UNSAFE_getByType(CheckmarkFillIcon)).toBeTruthy()
-    expect(screen.UNSAFE_queryAllByType(CheckmarkIcon)).toHaveLength(0)
+    expect(screen.getByTestId("mock-checkmark-fill-icon")).toBeOnTheScreen()
+    expect(screen.queryByTestId("mock-checkmark-icon")).not.toBeOnTheScreen()
   })
 
   it("calls onPress when tapped", () => {
@@ -72,8 +91,9 @@ describe("CityGuideSaveButton", () => {
   it("exposes its saved state for accessibility", () => {
     renderWithWrappers(<CityGuideSaveButton isSaved onPress={jest.fn()} />)
 
-    expect(screen.getByTestId("city-guide-save-button").props.accessibilityState.selected).toBe(
-      true
+    expect(screen.getByTestId("city-guide-save-button")).toHaveProp(
+      "accessibilityState",
+      expect.objectContaining({ selected: true })
     )
   })
 })

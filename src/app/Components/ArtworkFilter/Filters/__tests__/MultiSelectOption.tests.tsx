@@ -1,9 +1,16 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { FilterData, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { MultiSelectOptionScreen } from "app/Components/ArtworkFilter/Filters/MultiSelectOption"
 import { getEssentialProps } from "app/Components/ArtworkFilter/Filters/helper"
-import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+
+const expectOptions = (names: string[]) => {
+  const buttons = screen.getAllByTestId("multi-select-option-button")
+  expect(buttons).toHaveLength(names.length)
+  buttons.forEach((button, index) => {
+    expect(button).toHaveTextContent(names[index])
+  })
+}
 
 const EXAMPLE_FILTER_OPTIONS: FilterData[] = [
   {
@@ -17,7 +24,7 @@ const EXAMPLE_FILTER_OPTIONS: FilterData[] = [
 
 describe("MultiSelectOption", () => {
   it("renders the options", () => {
-    const { getAllByTestId } = renderWithWrappers(
+    renderWithWrappers(
       <MultiSelectOptionScreen
         filterOptions={EXAMPLE_FILTER_OPTIONS}
         searchable
@@ -25,16 +32,12 @@ describe("MultiSelectOption", () => {
       />
     )
 
-    expect(getAllByTestId("multi-select-option-button").map(extractText)).toEqual([
-      "First Example",
-      "Another One",
-      "The Third",
-    ])
+    expectOptions(["First Example", "Another One", "The Third"])
   })
 
   it("a disabled option cannot be clicked", () => {
     const onSelectMock = jest.fn()
-    const { getAllByTestId } = renderWithWrappers(
+    renderWithWrappers(
       <MultiSelectOptionScreen
         filterOptions={EXAMPLE_FILTER_OPTIONS}
         onSelect={onSelectMock}
@@ -43,14 +46,14 @@ describe("MultiSelectOption", () => {
       />
     )
 
-    fireEvent.press(getAllByTestId("multi-select-option-button")[0])
+    fireEvent.press(screen.getAllByTestId("multi-select-option-button")[0])
 
     expect(onSelectMock).not.toBeCalled()
   })
 
   describe("searchable", () => {
     it("filters the options with searchable", () => {
-      const { getAllByTestId, getByTestId } = renderWithWrappers(
+      renderWithWrappers(
         <MultiSelectOptionScreen
           filterOptions={EXAMPLE_FILTER_OPTIONS}
           searchable
@@ -58,19 +61,15 @@ describe("MultiSelectOption", () => {
         />
       )
 
-      expect(getAllByTestId("multi-select-option-button").map(extractText)).toEqual([
-        "First Example",
-        "Another One",
-        "The Third",
-      ])
+      expectOptions(["First Example", "Another One", "The Third"])
 
-      fireEvent.changeText(getByTestId("multi-select-search-input"), "another")
+      fireEvent.changeText(screen.getByTestId("multi-select-search-input"), "another")
 
-      expect(getAllByTestId("multi-select-option-button").map(extractText)).toEqual(["Another One"])
+      expectOptions(["Another One"])
     })
 
     it("displays a message indicating no results when nothing matches the search input", () => {
-      const { getAllByTestId, getByTestId, getByText } = renderWithWrappers(
+      renderWithWrappers(
         <MultiSelectOptionScreen
           filterOptions={EXAMPLE_FILTER_OPTIONS}
           searchable
@@ -78,15 +77,11 @@ describe("MultiSelectOption", () => {
         />
       )
 
-      expect(getAllByTestId("multi-select-option-button").map(extractText)).toEqual([
-        "First Example",
-        "Another One",
-        "The Third",
-      ])
+      expectOptions(["First Example", "Another One", "The Third"])
 
-      fireEvent.changeText(getByTestId("multi-select-search-input"), "garbage")
+      fireEvent.changeText(screen.getByTestId("multi-select-search-input"), "garbage")
 
-      expect(getByText("No results")).toBeTruthy()
+      expect(screen.getByText("No results")).toBeTruthy()
     })
   })
 })

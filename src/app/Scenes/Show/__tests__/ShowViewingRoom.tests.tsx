@@ -1,11 +1,9 @@
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { ShowViewingRoomTestsQuery } from "__generated__/ShowViewingRoomTestsQuery.graphql"
 import { ShowViewingRoomFragmentContainer } from "app/Scenes/Show/Components/ShowViewingRoom"
-import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { TouchableOpacity } from "react-native"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 describe("ShowViewingRoom", () => {
@@ -37,39 +35,35 @@ describe("ShowViewingRoom", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
     })
-    return tree
   }
 
   it("renders the viewing room card", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       Partner: () => ({ name: "Example Partner" }),
       ViewingRoom: () => ({ title: "Example Viewing Room" }),
     })
 
-    const text = extractText(wrapper.root)
-
-    expect(text).toContain("Example Partner")
-    expect(text).toContain("Example Viewing Room")
+    expect(screen.getByText(/Example Partner/)).toBeOnTheScreen()
+    expect(screen.getByText(/Example Viewing Room/)).toBeOnTheScreen()
   })
 
   it("tracks taps", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       Show: () => ({ internalID: "example-show-id", slug: "example-slug" }),
       ViewingRoom: () => ({
         internalID: "example-viewing-room-id",
         slug: "example-viewing-room-slug",
+        title: "Example Viewing Room",
       }),
     })
 
-    act(() => {
-      wrapper.root.findAllByType(TouchableOpacity)[0].props.onPress()
-    })
+    fireEvent.press(screen.getByText("Example Viewing Room"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedViewingRoomCard",

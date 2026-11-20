@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Text, Button } from "@artsy/palette-mobile"
+import { screen } from "@testing-library/react-native"
 import { RegisterToBidButtonTestsQuery } from "__generated__/RegisterToBidButtonTestsQuery.graphql"
 import { RegisterToBidButtonContainer } from "app/Scenes/Sale/Components/RegisterToBidButton"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -33,7 +33,7 @@ describe("RegisterToBidButton", () => {
   })
 
   it("shows button when not registered", () => {
-    const tree = renderWithRelay({
+    renderWithRelay({
       Sale: () => ({
         startAt: null,
         endAt: null,
@@ -42,11 +42,11 @@ describe("RegisterToBidButton", () => {
       }),
     })
 
-    expect(tree.UNSAFE_getAllByType(Button)[0].props.children).toMatch("Register to bid")
+    expect(screen.getByText("Register to bid")).toBeOnTheScreen()
   })
 
   it("shows green checkmark when registered", () => {
-    const tree = renderWithRelay({
+    renderWithRelay({
       Sale: () => ({
         startAt: null,
         endAt: null,
@@ -60,11 +60,11 @@ describe("RegisterToBidButton", () => {
       }),
     })
 
-    expect(tree.UNSAFE_getAllByType(Text)[0].props.children).toMatch("You're approved to bid")
+    expect(screen.getByText("You're approved to bid")).toBeOnTheScreen()
   })
 
   it("hides the approve to bid hint if the user has active lots standing", () => {
-    const tree = renderWithRelay({
+    renderWithRelay({
       Sale: () => ({
         startAt: null,
         endAt: null,
@@ -84,6 +84,6 @@ describe("RegisterToBidButton", () => {
       }),
     })
 
-    expect(tree.queryByText("You're approved to bid")).toBeNull()
+    expect(screen.queryByText("You're approved to bid")).not.toBeOnTheScreen()
   })
 })

@@ -1,9 +1,8 @@
+import { screen } from "@testing-library/react-native"
 import { SaleActiveBidsTestsQuery } from "__generated__/SaleActiveBidsTestsQuery.graphql"
-import { SaleActiveBidItemContainer } from "app/Scenes/Sale/Components/SaleActiveBidItem"
 import { SaleActiveBidsContainer } from "app/Scenes/Sale/Components/SaleActiveBids"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 
@@ -35,7 +34,7 @@ describe("SaleActiveBids", () => {
   })
 
   it("renders no items if the user has no active lots standing", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     const mockProps = {
       Me: () => ({
@@ -44,11 +43,12 @@ describe("SaleActiveBids", () => {
     }
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
-    expect(tree.root.findAllByType(FlatList)).toHaveLength(0)
+    expect(screen.queryByText("Your Active Bids")).not.toBeOnTheScreen()
+    expect(screen.queryAllByRole("button")).toHaveLength(0)
   })
 
   it("renders list of lots if the user has active lots standing", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     const mockProps = {
       Me: () => ({
@@ -57,8 +57,9 @@ describe("SaleActiveBids", () => {
     }
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
-    expect(tree.root.findAllByType(FlatList)).toHaveLength(1)
-    expect(tree.root.findAllByType(SaleActiveBidItemContainer)).toHaveLength(10)
+    expect(screen.getByText("Your Active Bids")).toBeOnTheScreen()
+    // Each SaleActiveBidItem renders a single pressable row
+    expect(screen.getAllByRole("button")).toHaveLength(10)
   })
 })
 

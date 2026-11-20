@@ -35,10 +35,10 @@ describe("ArtworkMakerTitle", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.queryByText("Andy Warhol,")).toBeTruthy()
-    expect(screen.queryByText("Jeff Koons,")).toBeTruthy()
-    expect(screen.queryByText("Damien Hirst,")).toBeTruthy()
-    expect(screen.queryByText("3 more")).toBeTruthy()
+    expect(screen.getByText("Andy Warhol,")).toBeOnTheScreen()
+    expect(screen.getByText("Jeff Koons,")).toBeOnTheScreen()
+    expect(screen.getByText("Damien Hirst,")).toBeOnTheScreen()
+    expect(screen.getByText("3 more")).toBeOnTheScreen()
   })
 
   it("redirects to artist page when artist name is clicked", async () => {
@@ -50,7 +50,7 @@ describe("ArtworkMakerTitle", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.queryByText(/Andy Warhol/)).toBeTruthy()
+    expect(screen.getByText(/Andy Warhol/)).toBeOnTheScreen()
     fireEvent.press(screen.getByText(/Andy Warhol/))
 
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol", {
@@ -75,13 +75,13 @@ describe("ArtworkMakerTitle", () => {
       })
 
       await flushPromiseQueue()
-      expect(screen.queryByText("Andy Warhol,")).toBeTruthy()
-      expect(screen.queryByText("Jeff Koons,")).toBeTruthy()
-      expect(screen.queryByText("Damien Hirst,")).toBeTruthy()
-      expect(screen.queryByText("3 more")).toBeTruthy()
-      expect(screen.queryByText("Another Artist")).toBeNull()
-      expect(screen.queryByText("Bruce Kurtman")).toBeNull()
-      expect(screen.queryByText("Wes Borland")).toBeNull()
+      expect(screen.getByText("Andy Warhol,")).toBeOnTheScreen()
+      expect(screen.getByText("Jeff Koons,")).toBeOnTheScreen()
+      expect(screen.getByText("Damien Hirst,")).toBeOnTheScreen()
+      expect(screen.getByText("3 more")).toBeOnTheScreen()
+      expect(screen.queryByText("Another Artist")).not.toBeOnTheScreen()
+      expect(screen.queryByText("Bruce Kurtman")).not.toBeOnTheScreen()
+      expect(screen.queryByText("Wes Borland")).not.toBeOnTheScreen()
     })
 
     it("shows truncated artist names when 'x more' is clicked", () => {
@@ -101,10 +101,10 @@ describe("ArtworkMakerTitle", () => {
 
       fireEvent.press(screen.getByText("3 more"))
 
-      expect(screen.queryByText("3 more")).toBeNull()
-      expect(screen.queryByText(/Another Artist/)).toBeTruthy()
-      expect(screen.queryByText(/Bruce Kurtman/)).toBeTruthy()
-      expect(screen.queryByText(/Wes Borland/)).toBeTruthy()
+      expect(screen.queryByText("3 more")).not.toBeOnTheScreen()
+      expect(screen.getByText(/Another Artist/)).toBeOnTheScreen()
+      expect(screen.getByText(/Bruce Kurtman/)).toBeOnTheScreen()
+      expect(screen.getByText(/Wes Borland/)).toBeOnTheScreen()
     })
   })
 
@@ -121,10 +121,10 @@ describe("ArtworkMakerTitle", () => {
         }),
       })
 
-      expect(screen.queryByText("Andy Warhol,")).toBeTruthy()
-      expect(screen.queryByText("Jeff Koons,")).toBeTruthy()
-      expect(screen.queryByText("Damien Hirst")).toBeTruthy()
-      expect(screen.queryByText(/more/)).toBeNull()
+      expect(screen.getByText("Andy Warhol,")).toBeOnTheScreen()
+      expect(screen.getByText("Jeff Koons,")).toBeOnTheScreen()
+      expect(screen.getByText("Damien Hirst")).toBeOnTheScreen()
+      expect(screen.queryByText(/more/)).not.toBeOnTheScreen()
     })
   })
 
@@ -137,7 +137,7 @@ describe("ArtworkMakerTitle", () => {
         }),
       })
 
-      expect(screen.queryByText(/Andy Warhol/)).toBeTruthy()
+      expect(screen.getByText(/Andy Warhol/)).toBeOnTheScreen()
     })
 
     it("Artist name is not clickable if no href provided", () => {
@@ -148,8 +148,8 @@ describe("ArtworkMakerTitle", () => {
         }),
       })
 
-      expect(screen.queryByText(/Andy Warhol/)).toBeTruthy()
-      expect(screen.getByA11yHint("Go to artist page")).toBeDisabled()
+      expect(screen.getByText(/Andy Warhol/)).toBeOnTheScreen()
+      expect(screen.getByHintText("Go to artist page")).toBeDisabled()
     })
   })
 
@@ -162,7 +162,7 @@ describe("ArtworkMakerTitle", () => {
         }),
       })
 
-      expect(screen.queryByText("18th century American")).toBeTruthy()
+      expect(screen.getByText("18th century American")).toBeOnTheScreen()
     })
   })
 })

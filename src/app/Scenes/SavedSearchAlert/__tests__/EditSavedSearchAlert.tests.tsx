@@ -4,7 +4,6 @@ import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchP
 import { goBack } from "app/system/navigation/navigate"
 import { PushAuthorizationStatus } from "app/system/notifications/getNotificationsPermissions"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { extractText } from "app/utils/tests/extractText"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -47,12 +46,12 @@ describe("EditSavedSearchAlert", () => {
 
     resolveMostRecentRelayOperation(mockEnvironment)
 
-    expect(screen.getAllByTestId("alert-pill").map(extractText)).toEqual([
-      "Banksy",
-      "Monkeys",
-      "Lithograph",
-      "Paper",
-    ])
+    const alertPills = screen.getAllByTestId("alert-pill")
+    expect(alertPills).toHaveLength(4)
+    expect(alertPills[0]).toHaveTextContent("Banksy")
+    expect(alertPills[1]).toHaveTextContent("Monkeys")
+    expect(alertPills[2]).toHaveTextContent("Lithograph")
+    expect(alertPills[3]).toHaveTextContent("Paper")
   })
 
   // TODO: fix this test

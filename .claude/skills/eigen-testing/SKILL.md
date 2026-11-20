@@ -31,9 +31,10 @@ import { graphql } from "react-relay"
 
 1. **File Location**: Always place tests in `__tests__` directories colocated with source files
 2. **File Naming**: Use `.tests.tsx` (not `.test.tsx` or `.spec.tsx`)
-3. **Never Use Deprecated Utilities**: Avoid `renderWithWrappersLEGACY`, `setupTestWrapper_LEGACY`, `resolveMostRecentRelayOperation`, `flushPromiseQueue`, `waitUntil`, `extractText`, `renderWithLayout`
-4. **Analytics Testing**: Always use `toMatchInlineSnapshot()` pattern for tracking events
-5. **Async Operations**: Use `findBy*` queries, not `waitUntil` or promise flushing
+3. **Never Use Deprecated Utilities**: Avoid `resolveMostRecentRelayOperation` and `flushPromiseQueue` (the LEGACY helpers, `extractText`, `waitUntil` and `renderWithLayout` have been removed)
+4. **Stay RNTL v14-compatible**: no `react-test-renderer` imports (import `act` from RNTL), no `UNSAFE_*` queries / `UNSAFE_root`, no `*ByA11yHint` (use `*ByHintText`), no `.root.findAllByType` / `toJSON()` tree walking, and no calling `element.props.onPress()` directly — use `fireEvent`. Assert on what the user sees, not on child component props
+5. **Analytics Testing**: Always use `toMatchInlineSnapshot()` pattern for tracking events
+6. **Async Operations**: Use `findBy*` queries, not `waitUntil` or promise flushing
 
 ## Test Structure Pattern
 

@@ -1,19 +1,19 @@
+import { screen } from "@testing-library/react-native"
 import ActiveBid from "app/Scenes/Inbox/Components/ActiveBids/ActiveBid"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 it("renders without throwing a error", () => {
-  renderWithWrappersLEGACY(<ActiveBid bid={bid()} />)
+  renderWithWrappers(<ActiveBid bid={bid()} />)
 })
 
 it("looks right for bids in live open auctions", () => {
-  const view = renderWithWrappersLEGACY(<ActiveBid bid={bid(true, true)} />)
-  expect(extractText(view.root)).toMatch("Live bidding now open")
+  renderWithWrappers(<ActiveBid bid={bid(true, true)} />)
+  expect(screen.getByText(/Live bidding now open/)).toBeOnTheScreen()
 })
 
 it("looks right for bids in live closed auctions", () => {
-  const view = renderWithWrappersLEGACY(<ActiveBid bid={bid(false, true)} />)
-  expect(extractText(view.root)).toMatch("Live auction")
+  renderWithWrappers(<ActiveBid bid={bid(false, true)} />)
+  expect(screen.getByText(/Live auction/)).toBeOnTheScreen()
 })
 
 const bid = (isLiveOpen?: boolean, isLiveOpenHappened?: boolean) => {

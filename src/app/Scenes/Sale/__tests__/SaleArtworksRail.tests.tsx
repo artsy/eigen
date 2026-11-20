@@ -1,12 +1,10 @@
-import { Flex } from "@artsy/palette-mobile"
+import { screen } from "@testing-library/react-native"
 import { SaleArtworksRailTestsQuery } from "__generated__/SaleArtworksRailTestsQuery.graphql"
-import { SaleArtworkTileRailCardContainer } from "app/Components/SaleArtworkTileRailCard"
-import { SectionTitle } from "app/Components/SectionTitle"
 import {
   INITIAL_NUMBER_TO_RENDER,
   SaleArtworksRailContainer,
 } from "app/Scenes/Sale/Components/SaleArtworksRail"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -39,20 +37,17 @@ describe("SaleArtworksRail", () => {
   })
 
   it("Renders list of sale artworks without throwing an error", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
-    expect(tree.root.findAllByType(SectionTitle)[0].props.title).toEqual(
-      "Lots by artists you follow"
-    )
-    expect(tree.root.findAllByType(SaleArtworkTileRailCardContainer)).toHaveLength(
-      INITIAL_NUMBER_TO_RENDER
-    )
+    expect(screen.getByText("Lots by Artists You Follow")).toBeOnTheScreen()
+    // Each rendered SaleArtworkTileRailCard shows the artist name once
+    expect(screen.getAllByText("Banksy")).toHaveLength(INITIAL_NUMBER_TO_RENDER)
   })
 
   it("returns null if there are no artworks", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     const noArtworksProps = {
       Me: () => ({
@@ -62,8 +57,8 @@ describe("SaleArtworksRail", () => {
       }),
     }
     resolveMostRecentRelayOperation(mockEnvironment, noArtworksProps)
-    // React-test-renderer has no isEmptyComponent or isNullComponent therefore I am testing for the container
-    expect(tree.root.findAllByType(Flex)).toHaveLength(0)
+    expect(screen.queryByText("Lots by Artists You Follow")).not.toBeOnTheScreen()
+    expect(screen.queryAllByText("Banksy")).toHaveLength(0)
   })
 })
 

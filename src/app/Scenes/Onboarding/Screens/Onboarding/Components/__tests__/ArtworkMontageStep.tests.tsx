@@ -4,7 +4,6 @@ import {
   ArtworkMontageStep,
 } from "app/Scenes/Onboarding/Screens/Onboarding/Components/ArtworkMontageStep"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Image } from "react-native"
 import { useReducedMotion } from "react-native-reanimated"
 
 jest.mock("react-native-reanimated", () => ({
@@ -26,7 +25,7 @@ describe("ArtworkMontageStep", () => {
   it("renders all 5 onboarding images", () => {
     renderWithWrappers(<ArtworkMontageStep onNext={jest.fn()} />)
 
-    expect(screen.UNSAFE_getAllByType(Image)).toHaveLength(5)
+    expect(screen.getAllByTestId("onboarding-montage-image")).toHaveLength(5)
   })
 
   it("does not call onNext before the montage duration elapses, and does so right after", () => {
@@ -66,6 +65,6 @@ describe("ArtworkMontageStep", () => {
     renderWithWrappers(<ArtworkMontageStep onNext={onNext} />)
 
     expect(onNext).toHaveBeenCalledTimes(1)
-    expect(screen.UNSAFE_queryAllByType(Image)).toHaveLength(0)
+    expect(screen.queryAllByTestId("onboarding-montage-image")).toHaveLength(0)
   })
 })
