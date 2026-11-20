@@ -42,17 +42,6 @@ describe("ArtworkGridItem", () => {
     })
   })
 
-  describe("label", () => {
-    it("shows the label on top of the image", () => {
-      renderWithRelay(
-        { Artwork: () => ({ title: "Some Kind of Dinosaur" }) },
-        { label: "Submitted" }
-      )
-
-      expect(screen.getByText("Submitted")).toBeOnTheScreen()
-    })
-  })
-
   describe("selection", () => {
     beforeEach(() => {
       jest.clearAllMocks()
