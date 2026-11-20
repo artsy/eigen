@@ -96,6 +96,8 @@ wait 'role="button" label="Follow Test Artist"' 30000
 press 'label="Saves"'
 wait 'label="Saved Artworks"' 30000
 press 'label="Saved Artworks"'
-wait 'label="Sort"' 30000
+# A new account's list is empty once the artwork is unsaved, which shows an empty state instead of the Sort
+# button. Until the list refetches it can still show the grid, so wait for either before checking the artwork's gone.
+wait 'label="Sort" || label="Keep track of artworks you love" || text="Keep track of artworks you love"' 30000
 wait absent 'id="artworkGridItem-Maestro Test Artwork"' 30000
 close ${APP_ID}
