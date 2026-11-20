@@ -41,14 +41,14 @@ describe("CollectContent", () => {
     jest.clearAllMocks()
   })
 
-  it("renders a filter button", () => {
-    renderWithRelay()
+  it("renders a filter button", async () => {
+    await renderWithRelay()
 
     expect(screen.getByText("Sort & Filter")).toBeOnTheScreen()
   })
 
-  it("shows an empty state when no artworks are available", () => {
-    renderWithRelay({
+  it("shows an empty state when no artworks are available", async () => {
+    await renderWithRelay({
       Viewer: () => ({
         artworksConnection: {
           edges: [],
@@ -60,10 +60,10 @@ describe("CollectContent", () => {
   })
 
   it("opens the filter modal when filter button is pressed", async () => {
-    renderWithRelay()
+    await renderWithRelay()
 
     const filterButton = screen.getByText("Sort & Filter")
-    fireEvent.press(filterButton)
+    await fireEvent.press(filterButton)
 
     // The ArtworkFilterNavigator should be visible after pressing the filter button
     await waitFor(() => {
@@ -97,8 +97,8 @@ describe("CollectContent", () => {
     })
   })
 
-  it("renders artworks when data is available", () => {
-    renderWithRelay({
+  it("renders artworks when data is available", async () => {
+    await renderWithRelay({
       Viewer: () => ({
         artworksConnection: {
           edges: [
@@ -130,8 +130,8 @@ describe("CollectContent", () => {
     expect(screen.getByTestId("masonry-artwork-grid")).toBeOnTheScreen()
   })
 
-  it("handles load more when scrolling", () => {
-    const { mockResolveLastOperation } = renderWithRelay({
+  it("handles load more when scrolling", async () => {
+    const { mockResolveLastOperation } = await renderWithRelay({
       Viewer: () => ({
         artworksConnection: {
           edges: [
@@ -157,10 +157,10 @@ describe("CollectContent", () => {
     const grid = screen.getByTestId("masonry-artwork-grid")
 
     // Simulate reaching the end of the list
-    fireEvent(grid, "onEndReached")
+    await fireEvent(grid, "onEndReached")
 
     // Verify that a new relay operation was triggered for pagination
-    mockResolveLastOperation({
+    await mockResolveLastOperation({
       Viewer: () => ({
         artworksConnection: {
           edges: [
@@ -187,7 +187,7 @@ describe("CollectContent", () => {
   })
 
   it("uses artworks filter aggregations", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Viewer: () => ({
         artworksConnectionAggregations: {
           aggregations: [
@@ -211,7 +211,7 @@ describe("CollectContent", () => {
     })
 
     const filterButton = screen.getByText("Sort & Filter")
-    fireEvent.press(filterButton)
+    await fireEvent.press(filterButton)
 
     // Verify filter modal opens
     await waitFor(() => {

@@ -16,8 +16,8 @@ describe("My Bids", () => {
     `,
   })
 
-  it("renders a lot standing from a closed sale in the closed section", () => {
-    renderWithRelay({
+  it("renders a lot standing from a closed sale in the closed section", async () => {
+    await renderWithRelay({
       Me: () => ({
         myBids: {
           closed: [
@@ -43,8 +43,8 @@ describe("My Bids", () => {
     expect(screen.getByText("Closed Aug 13")).toBeOnTheScreen()
   })
 
-  it("renders a completed lot in an ongoing live sale in the 'active' section", () => {
-    renderWithRelay({
+  it("renders a completed lot in an ongoing live sale in the 'active' section", async () => {
+    await renderWithRelay({
       Me: () => ({
         myBids: {
           active: [
@@ -68,8 +68,8 @@ describe("My Bids", () => {
     expect(screen.getByText("Passed")).toBeOnTheScreen()
   })
 
-  it("renders the empty state when there are no lots to show", () => {
-    renderWithRelay({ Me: () => ({ myBids: { active: [], closed: [] } }) })
+  it("renders the empty state when there are no lots to show", async () => {
+    await renderWithRelay({ Me: () => ({ myBids: { active: [], closed: [] } }) })
 
     expect(screen.getByText("Discover works for you at auction.")).toBeOnTheScreen()
     expect(
@@ -79,8 +79,8 @@ describe("My Bids", () => {
     ).toBeOnTheScreen()
   })
 
-  it("renders no bids message on a registered sale", () => {
-    renderWithRelay({ Me: () => ({ myBids: { active: [{ saleArtworks: [] }] } }) })
+  it("renders no bids message on a registered sale", async () => {
+    await renderWithRelay({ Me: () => ({ myBids: { active: [{ saleArtworks: [] }] } }) })
 
     expect(screen.getByText("You haven't placed any bids on this sale")).toBeOnTheScreen()
   })

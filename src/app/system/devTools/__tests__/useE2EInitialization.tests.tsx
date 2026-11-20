@@ -21,22 +21,22 @@ describe("useE2EInitialization", () => {
   const localOverrides = () =>
     __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.localOverrides
 
-  it("turns on the feature flags named in enableFeatureFlags", () => {
+  it("turns on the feature flags named in enableFeatureFlags", async () => {
     mockLaunchArguments({
       useE2EInit: true,
       enableFeatureFlags: "AREnableShareShowPartnerFeature, NotARealFlag",
     })
 
-    renderWithWrappers(<TestComponent />)
+    await renderWithWrappers(<TestComponent />)
 
     expect(localOverrides()).toMatchObject({ AREnableShareShowPartnerFeature: true })
     expect(localOverrides()).not.toHaveProperty("NotARealFlag")
   })
 
-  it("ignores enableFeatureFlags outside e2e runs", () => {
+  it("ignores enableFeatureFlags outside e2e runs", async () => {
     mockLaunchArguments({ enableFeatureFlags: "AREnableShareShowPartnerFeature" })
 
-    renderWithWrappers(<TestComponent />)
+    await renderWithWrappers(<TestComponent />)
 
     expect(localOverrides()).not.toHaveProperty("AREnableShareShowPartnerFeature")
   })

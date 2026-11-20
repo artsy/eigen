@@ -131,10 +131,10 @@ describe("CityGuideMap", () => {
     FairConnection: () => ({ edges: [] }),
   }
 
-  it("tracks a filter pill tap the same way CityGuideTabs tracks a tab tap", () => {
-    renderWithRelay(cityResolvers)
+  it("tracks a filter pill tap the same way CityGuideTabs tracks a tab tap", async () => {
+    await renderWithRelay(cityResolvers)
 
-    fireEvent.press(screen.getByTestId("city-filter-pill-museums"))
+    await fireEvent.press(screen.getByTestId("city-filter-pill-museums"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -145,20 +145,20 @@ describe("CityGuideMap", () => {
     )
   })
 
-  it("does not track a tap event before a pill is pressed", () => {
-    renderWithRelay(cityResolvers)
+  it("does not track a tap event before a pill is pressed", async () => {
+    await renderWithRelay(cityResolvers)
 
     expect(mockTrackEvent).not.toHaveBeenCalledWith(expect.objectContaining({ action_type: "tap" }))
   })
 
-  it("flies to a picked city and shows its name before its data loads", () => {
+  it("flies to a picked city and shows its name before its data loads", async () => {
     __globalStoreTestUtils__?.injectState({
       userPrefs: { previouslySelectedCitySlug: "new-york-ny-usa" },
     })
-    const { mockResolveLastOperation } = renderWithRelay(cityResolvers)
+    const { mockResolveLastOperation } = await renderWithRelay(cityResolvers)
 
-    fireEvent.press(screen.getByTestId("city-guide-city-switcher"))
-    fireEvent.press(screen.getByText("London"))
+    await fireEvent.press(screen.getByTestId("city-guide-city-switcher"))
+    await fireEvent.press(screen.getByText("London"))
 
     expect(mockSetCamera).toHaveBeenCalledWith(
       expect.objectContaining({ centerCoordinate: [-0.1276, 51.5072], animationMode: "flyTo" })
@@ -170,7 +170,7 @@ describe("CityGuideMap", () => {
       __globalStoreTestUtils__?.getCurrentState().userPrefs.previouslySelectedCitySlug
     ).toEqual("new-york-ny-usa")
 
-    mockResolveLastOperation({
+    await mockResolveLastOperation({
       City: () => ({ ...cityResolvers.City(), name: "London", slug: "london-united-kingdom" }),
     })
 
@@ -181,9 +181,9 @@ describe("CityGuideMap", () => {
 
   describe("pin card", () => {
     it("offers add-to-itinerary above the map's logo when itineraries are enabled", async () => {
-      renderWithRelay(cityResolvers)
+      await renderWithRelay(cityResolvers)
 
-      fireEvent.press(screen.getByText("tap pin"))
+      await fireEvent.press(screen.getByText("tap pin"))
 
       const card = await screen.findByTestId("city-guide-map-preview")
       expect(within(card).getByText("Frida Kahlo")).toBeOnTheScreen()
@@ -192,11 +192,11 @@ describe("CityGuideMap", () => {
     })
 
     it("updates a selected card when Relay updates its itinerary membership", async () => {
-      const { env } = renderWithRelay(cityResolvers)
-      fireEvent.press(screen.getByText("tap pin"))
+      const { env } = await renderWithRelay(cityResolvers)
+      await fireEvent.press(screen.getByText("tap pin"))
       await screen.findByLabelText("Add Frida Kahlo to an itinerary")
 
-      act(() =>
+      await act(() =>
         env.commitUpdate((store) => {
           store.get("show-ny")?.setValue(true, "isOnMyItineraries")
         })
@@ -206,7 +206,7 @@ describe("CityGuideMap", () => {
     })
 
     it("shows fair pins with the same StopCard layout", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         ...cityResolvers,
         ShowConnection: () => ({ edges: [] }),
         FairConnection: () => ({
@@ -226,7 +226,7 @@ describe("CityGuideMap", () => {
           ],
         }),
       })
-      fireEvent.press(screen.getByText("tap pin"))
+      await fireEvent.press(screen.getByText("tap pin"))
 
       const card = await screen.findByTestId("city-guide-map-preview")
       expect(within(card).getByTestId("stop-card")).toBeOnTheScreen()
@@ -235,7 +235,7 @@ describe("CityGuideMap", () => {
     })
 
     it("shows every cluster place as a StopCard", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         ...cityResolvers,
         FairConnection: () => ({
           edges: [
@@ -250,7 +250,7 @@ describe("CityGuideMap", () => {
           ],
         }),
       })
-      fireEvent.press(screen.getByText("tap cluster"))
+      await fireEvent.press(screen.getByText("tap cluster"))
 
       const card = await screen.findByTestId("city-guide-map-preview")
       expect(within(card).getAllByTestId("stop-card")).toHaveLength(2)
@@ -260,9 +260,9 @@ describe("CityGuideMap", () => {
 
     it("shows the card without add-to-itinerary, above the collapsed sheet, when disabled", async () => {
       mockItinerariesEnabled = false
-      renderWithRelay(cityResolvers)
+      await renderWithRelay(cityResolvers)
 
-      fireEvent.press(screen.getByText("tap pin"))
+      await fireEvent.press(screen.getByText("tap pin"))
 
       const card = await screen.findByTestId("city-guide-map-preview")
       expect(within(card).getByText("Frida Kahlo")).toBeOnTheScreen()

@@ -8,7 +8,7 @@ describe("AuctionResultsForArtistsYouCollect", () => {
   })
 
   it("renders auction results", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         myCollectionAuctionResults: {
           edges: [

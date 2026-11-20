@@ -10,27 +10,27 @@ describe("PrivacyRequest", () => {
     jest.spyOn(Linking, "openURL").mockImplementation(() => Promise.resolve())
   })
 
-  it("handles privacy policy link taps", () => {
-    renderWithWrappers(<PrivacyRequest />)
+  it("handles privacy policy link taps", async () => {
+    await renderWithWrappers(<PrivacyRequest />)
 
-    fireEvent.press(screen.getByText("Privacy Policy"))
+    await fireEvent.press(screen.getByText("Privacy Policy"))
 
     expect(navigate).toHaveBeenCalledWith("/privacy")
   })
 
-  it("handles email link taps", () => {
-    renderWithWrappers(<PrivacyRequest />)
-    fireEvent.press(screen.getByText("privacy@artsy.net."))
+  it("handles email link taps", async () => {
+    await renderWithWrappers(<PrivacyRequest />)
+    await fireEvent.press(screen.getByText("privacy@artsy.net."))
 
     expect(Linking.openURL).toHaveBeenCalledWith(
       expect.stringMatching(/^mailto:privacy@artsy.net\?subject=Personal%20Data%20Request*$/)
     )
   })
 
-  it("handles CCPA button presses", () => {
-    renderWithWrappers(<PrivacyRequest />)
+  it("handles CCPA button presses", async () => {
+    await renderWithWrappers(<PrivacyRequest />)
 
-    fireEvent.press(screen.getByText("Do not sell my personal information"))
+    await fireEvent.press(screen.getByText("Do not sell my personal information"))
 
     expect(Linking.openURL).toHaveBeenCalledWith(
       expect.stringMatching(

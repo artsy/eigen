@@ -1,14 +1,14 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 
-export const swipeLeft = () => {
-  swipe(-100)
+export const swipeLeft = async () => {
+  await swipe(-100)
 }
 
-export const swipeRight = () => {
-  swipe(100)
+export const swipeRight = async () => {
+  await swipe(100)
 }
 
-const swipe = (moveX: number) => {
+const swipe = async (moveX: number) => {
   const topCard = screen.getByTestId("top-fancy-swiper-card")
 
   const startX = 0
@@ -17,7 +17,7 @@ const swipe = (moveX: number) => {
   const moveTimeStamp = Date.now()
   const releaseTimeStamp = Date.now()
 
-  fireEvent(topCard, "responderStart", {
+  await fireEvent(topCard, "responderStart", {
     touchHistory: {
       indexOfSingleActiveTouch: 1,
       mostRecentTimeStamp: startTimeStamp,
@@ -40,7 +40,7 @@ const swipe = (moveX: number) => {
     },
   })
 
-  fireEvent(topCard, "responderMove", {
+  await fireEvent(topCard, "responderMove", {
     touchHistory: {
       indexOfSingleActiveTouch: 1,
       mostRecentTimeStamp: moveTimeStamp,
@@ -63,7 +63,7 @@ const swipe = (moveX: number) => {
     },
   })
 
-  fireEvent(topCard, "responderRelease", {
+  await fireEvent(topCard, "responderRelease", {
     touchHistory: {
       indexOfSingleActiveTouch: 1,
       mostRecentTimeStamp: releaseTimeStamp,

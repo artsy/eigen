@@ -21,8 +21,8 @@ describe("FeatureVideo", () => {
     carrying the `h` hash from the player url. Dropping it makes the player answer
     "Sorry, we're having a little trouble" while the same url plays in a browser.
   */
-  it("passes an unlisted video's hash through to the player", () => {
-    renderWithWrappers(
+  it("passes an unlisted video's hash through to the player", async () => {
+    await renderWithWrappers(
       <FeatureVideo
         videoUrl="https://player.vimeo.com/video/1227796325?h=e76414347e&width=400&height=300"
         width={400}
@@ -36,8 +36,8 @@ describe("FeatureVideo", () => {
   })
 
   // A public video has no hash, so the player keeps the bare url it had before.
-  it("sends no hash for a video without one", () => {
-    renderWithWrappers(
+  it("sends no hash for a video without one", async () => {
+    await renderWithWrappers(
       <FeatureVideo videoUrl="https://player.vimeo.com/video/76979871" width={400} height={300} />
     )
 
@@ -46,8 +46,8 @@ describe("FeatureVideo", () => {
     expect(propsFor(0).hash).toBeUndefined()
   })
 
-  it("renders nothing for a url the player cannot handle", () => {
-    renderWithWrappers(
+  it("renders nothing for a url the player cannot handle", async () => {
+    await renderWithWrappers(
       <FeatureVideo videoUrl="https://example.com/clip.mp4" width={400} height={300} />
     )
 

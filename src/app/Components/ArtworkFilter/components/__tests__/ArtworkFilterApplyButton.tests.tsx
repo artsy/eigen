@@ -15,28 +15,28 @@ describe("ArtworkFilterApplyButton", () => {
     return <ArtworkFilterApplyButton {...defaultProps} {...props} />
   }
 
-  it('should call "onPress" handler when it is pressed', () => {
+  it('should call "onPress" handler when it is pressed', async () => {
     const onPressMock = jest.fn()
-    renderWithWrappers(<TestWrapper onPress={onPressMock} />)
+    await renderWithWrappers(<TestWrapper onPress={onPressMock} />)
 
-    fireEvent.press(screen.getByText("Show Results"))
+    await fireEvent.press(screen.getByText("Show Results"))
 
     expect(onPressMock).toBeCalled()
   })
 
-  it('should show "Create Alert" button only when shouldShowCreateAlertButton prop is specified', () => {
-    renderWithWrappers(<TestWrapper shouldShowCreateAlertButton />)
+  it('should show "Create Alert" button only when shouldShowCreateAlertButton prop is specified', async () => {
+    await renderWithWrappers(<TestWrapper shouldShowCreateAlertButton />)
 
     expect(screen.getByText("Create Alert")).toBeTruthy()
   })
 
-  it('should call "onCreateAlertPress" handler when "Create Alert" is pressed', () => {
+  it('should call "onCreateAlertPress" handler when "Create Alert" is pressed', async () => {
     const onCreateAlertPressMock = jest.fn()
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestWrapper shouldShowCreateAlertButton onCreateAlertPress={onCreateAlertPressMock} />
     )
 
-    fireEvent.press(screen.getByText("Create Alert"))
+    await fireEvent.press(screen.getByText("Create Alert"))
 
     expect(onCreateAlertPressMock).toBeCalled()
   })

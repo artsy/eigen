@@ -40,14 +40,14 @@ describe(CareerHighlightBottomSheet, () => {
     )
   }
 
-  it("renders nothing if there is no data", () => {
-    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+  it("renders nothing if there is no data", async () => {
+    await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     expect(screen.queryByTestId("BottomSheetFlatlist")).toBe(null)
   })
 
   it("renders BottomSheet if there is data and selectedXAxisHighlight", async () => {
-    renderWithHookWrappersTL(
+    await renderWithHookWrappersTL(
       <TestRenderer contextProps={{ selectedXAxisHighlight: 2015 }} />,
       mockEnvironment
     )

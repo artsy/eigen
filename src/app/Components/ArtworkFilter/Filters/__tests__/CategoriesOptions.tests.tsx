@@ -41,10 +41,12 @@ describe("Categories options screen", () => {
     sizeMetric: "cm",
   }
 
-  it("selects only the option that is selected", () => {
-    renderWithWrappers(<MockCategoryScreen {...getEssentialProps()} initialData={initialState} />)
+  it("selects only the option that is selected", async () => {
+    await renderWithWrappers(
+      <MockCategoryScreen {...getEssentialProps()} initialData={initialState} />
+    )
 
-    fireEvent.press(screen.getByText("Painting"))
+    await fireEvent.press(screen.getByText("Painting"))
 
     const options = screen.getAllByTestId("multi-select-option-button")
     const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
@@ -61,10 +63,12 @@ describe("Categories options screen", () => {
     expect(screen.getByText("Clear")).toBeTruthy()
   })
 
-  it("allows multiple categories to be selected", () => {
-    renderWithWrappers(<MockCategoryScreen {...getEssentialProps()} initialData={initialState} />)
-    fireEvent.press(screen.getByText("Painting"))
-    fireEvent.press(screen.getByText("Work on Paper"))
+  it("allows multiple categories to be selected", async () => {
+    await renderWithWrappers(
+      <MockCategoryScreen {...getEssentialProps()} initialData={initialState} />
+    )
+    await fireEvent.press(screen.getByText("Painting"))
+    await fireEvent.press(screen.getByText("Work on Paper"))
 
     const options = screen.getAllByTestId("multi-select-option-button")
 

@@ -62,7 +62,7 @@ describe("ProgressiveOnboardingPriceRangeHome", () => {
   })
 
   it("shows popover when all conditions are met", async () => {
-    renderWithRelay(mockProps)
+    await renderWithRelay(mockProps)
 
     await waitFor(() => {
       expect(screen.getByText("Popover")).toBeOnTheScreen()
@@ -75,7 +75,7 @@ describe("ProgressiveOnboardingPriceRangeHome", () => {
       name: "Search",
     })
 
-    renderWithRelay(mockProps)
+    await renderWithRelay(mockProps)
 
     await waitFor(() => {
       expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
@@ -84,7 +84,7 @@ describe("ProgressiveOnboardingPriceRangeHome", () => {
   })
 
   it("does not show popover when the user has a price range", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         hasPriceRange: true,
       }),
@@ -106,7 +106,7 @@ describe("ProgressiveOnboardingPriceRangeHome", () => {
       },
     })
 
-    renderWithRelay(mockProps)
+    await renderWithRelay(mockProps)
 
     await waitFor(() => {
       expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
@@ -125,7 +125,7 @@ describe("ProgressiveOnboardingPriceRangeHome", () => {
       },
     })
 
-    renderWithRelay(mockProps)
+    await renderWithRelay(mockProps)
 
     await waitFor(() => {
       expect(screen.queryByText("Popover")).not.toBeOnTheScreen()

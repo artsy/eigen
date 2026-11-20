@@ -31,7 +31,7 @@ xdescribe("InfiniteDiscovery", () => {
   it("shows the back icon if the current artwork is not the first artwork", async () => {
     await renderAndFetchFirstBatch(mockFetchQuery)
 
-    swipeLeft()
+    await swipeLeft()
 
     await screen.findByTestId("back-icon")
   })
@@ -40,18 +40,18 @@ xdescribe("InfiniteDiscovery", () => {
     await renderAndFetchFirstBatch(mockFetchQuery)
 
     expect(screen.queryByTestId("back-icon")).not.toBeOnTheScreen()
-    swipeLeft()
+    await swipeLeft()
 
     await screen.findByTestId("back-icon")
 
-    fireEvent.press(screen.getByTestId("back-icon"))
+    await fireEvent.press(screen.getByTestId("back-icon"))
     expect(screen.queryByTestId("back-icon")).not.toBeOnTheScreen()
   })
 
   it("navigates to home view when the close icon is pressed", async () => {
     await renderAndFetchFirstBatch(mockFetchQuery)
 
-    fireEvent.press(screen.getByTestId("close-icon"))
+    await fireEvent.press(screen.getByTestId("close-icon"))
     expect(goBack).toHaveBeenCalledTimes(1)
   })
 })
@@ -77,6 +77,6 @@ const renderAndFetchFirstBatch = async (mockFetchQuery: jest.MockedFunction<type
       })
     )
   )
-  renderWithWrappers(<InfiniteDiscoveryQueryRenderer />)
+  await renderWithWrappers(<InfiniteDiscoveryQueryRenderer />)
   await screen.findByTestId("top-fancy-swiper-card")
 }

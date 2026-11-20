@@ -25,14 +25,14 @@ describe("collection header", () => {
       })
     })
 
-    it("doesn't render the collection header image url to collection header", () => {
-      renderWithRelay({ MarketingCollection: () => CollectionFixture })
+    it("doesn't render the collection header image url to collection header", async () => {
+      await renderWithRelay({ MarketingCollection: () => CollectionFixture })
 
       expect(screen.queryByTestId("header-image")).not.toBeOnTheScreen()
     })
 
-    it("doesn't render the image of the most marketable artwork in the collection to the collection header when there is no headerImage value present", () => {
-      renderWithRelay({
+    it("doesn't render the image of the most marketable artwork in the collection to the collection header when there is no headerImage value present", async () => {
+      await renderWithRelay({
         MarketingCollection: () => ({
           ...CollectionFixture,
           headerImage: null,
@@ -50,14 +50,14 @@ describe("collection header", () => {
       })
     })
 
-    it("passes the collection header image url to collection header", () => {
-      renderWithRelay({ MarketingCollection: () => CollectionFixture })
+    it("passes the collection header image url to collection header", async () => {
+      await renderWithRelay({ MarketingCollection: () => CollectionFixture })
 
       expect(screen.getByTestId("header-image")).toBeOnTheScreen()
     })
 
-    it("renders the image of the most marketable artwork in the collection to the collection header when there is no headerImage value present", () => {
-      renderWithRelay({
+    it("renders the image of the most marketable artwork in the collection to the collection header when there is no headerImage value present", async () => {
+      await renderWithRelay({
         MarketingCollection: () => ({
           ...CollectionFixture,
           headerImage: null,
@@ -68,8 +68,8 @@ describe("collection header", () => {
     })
   })
 
-  it("passes the collection header title to collection header", () => {
-    renderWithRelay({ MarketingCollection: () => CollectionFixture })
+  it("passes the collection header title to collection header", async () => {
+    await renderWithRelay({ MarketingCollection: () => CollectionFixture })
 
     expect(screen.getByText("Street Art Now")).toBeOnTheScreen()
   })

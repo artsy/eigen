@@ -18,10 +18,10 @@ jest.mock("react", () => {
 
 describe("FairExhibitors", () => {
   const trackEvent = useTracking().trackEvent
-  const getWrapper = (mockResolvers = {}) => {
+  const getWrapper = async (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <QueryRenderer<FairExhibitorRailTestsQuery>
         environment={env}
         query={graphql`
@@ -48,15 +48,15 @@ describe("FairExhibitors", () => {
     )
 
     // Resolve the mock operation and trigger re-render
-    act(() => {
+    await act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
     })
   }
 
-  it("renders an exhibitor rail", () => {
-    getWrapper({
+  it("renders an exhibitor rail", async () => {
+    await getWrapper({
       Show: () => ({
         partner: {
           name: "First Partner Has Artworks",
@@ -66,8 +66,8 @@ describe("FairExhibitors", () => {
     expect(screen.getByText("First Partner Has Artworks")).toBeOnTheScreen()
   })
 
-  it("tracks taps on artworks in the rail", () => {
-    getWrapper({
+  it("tracks taps on artworks in the rail", async () => {
+    await getWrapper({
       Show: () => ({
         fair: {
           internalID: "abc123",
@@ -86,7 +86,7 @@ describe("FairExhibitors", () => {
         },
       }),
     })
-    fireEvent.press(screen.getByTestId("artwork-cool-artwork-1"))
+    await fireEvent.press(screen.getByTestId("artwork-cool-artwork-1"))
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "galleryBoothRail",
@@ -101,8 +101,8 @@ describe("FairExhibitors", () => {
     })
   })
 
-  it("tracks taps on artworks with partner offer in the rail", () => {
-    getWrapper({
+  it("tracks taps on artworks with partner offer in the rail", async () => {
+    await getWrapper({
       Show: () => ({
         fair: {
           internalID: "abc123",
@@ -121,7 +121,7 @@ describe("FairExhibitors", () => {
         },
       }),
     })
-    fireEvent.press(screen.getByTestId("artwork-cool-artwork-1"))
+    await fireEvent.press(screen.getByTestId("artwork-cool-artwork-1"))
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "galleryBoothRail",
@@ -137,8 +137,8 @@ describe("FairExhibitors", () => {
     })
   })
 
-  it("tracks taps on artworks with auction signals in the rail", () => {
-    getWrapper({
+  it("tracks taps on artworks with auction signals in the rail", async () => {
+    await getWrapper({
       Show: () => ({
         fair: {
           internalID: "abc123",
@@ -160,7 +160,7 @@ describe("FairExhibitors", () => {
         },
       }),
     })
-    fireEvent.press(screen.getByTestId("artwork-cool-artwork-1"))
+    await fireEvent.press(screen.getByTestId("artwork-cool-artwork-1"))
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "galleryBoothRail",
@@ -178,8 +178,8 @@ describe("FairExhibitors", () => {
     })
   })
 
-  it("tracks taps on the show", () => {
-    getWrapper({
+  it("tracks taps on the show", async () => {
+    await getWrapper({
       Show: () => ({
         internalID: "xxx-2",
         slug: "example-2",
@@ -189,7 +189,7 @@ describe("FairExhibitors", () => {
         },
       }),
     })
-    fireEvent.press(screen.getAllByTestId("touchable-wrapper")[0])
+    await fireEvent.press(screen.getAllByTestId("touchable-wrapper")[0])
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "galleryBoothRail",

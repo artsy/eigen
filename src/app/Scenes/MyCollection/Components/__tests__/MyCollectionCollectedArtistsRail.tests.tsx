@@ -24,7 +24,7 @@ describe("MyCollectionCollectedArtistsRail", () => {
   })
 
   it("renders collected artist", async () => {
-    renderWithRelay({ Me: () => mockCollectedArtist })
+    await renderWithRelay({ Me: () => mockCollectedArtist })
 
     expect(screen.getByText("Rhombie Sandoval")).toBeOnTheScreen()
     expect(screen.getByText("Banksy")).toBeOnTheScreen()

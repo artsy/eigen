@@ -7,11 +7,11 @@ import { createMockEnvironment } from "relay-test-utils"
  * Please use `setupTestWrapper` and destrucure
  * const { mockRejectLastOperation } = renderWithRelay() instead
  */
-export function rejectMostRecentRelayOperation(
+export async function rejectMostRecentRelayOperation(
   mockEnvironment: ReturnType<typeof createMockEnvironment>,
   error: Error | ((operation: OperationDescriptor) => Error)
 ) {
-  act(() => {
+  await act(() => {
     mockEnvironment.mock.rejectMostRecentOperation(error)
   })
 }

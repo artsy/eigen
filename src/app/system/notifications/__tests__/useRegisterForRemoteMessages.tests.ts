@@ -84,7 +84,7 @@ describe("useRegisterForPushNotifications", () => {
         const mockToken = "android-fcm-token-123"
         mockGetToken.mockResolvedValue(mockToken)
 
-        renderHook(() => useRegisterForPushNotifications())
+        await renderHook(() => useRegisterForPushNotifications())
 
         // Wait for the async operations to complete
         await waitForAsync()
@@ -103,7 +103,7 @@ describe("useRegisterForPushNotifications", () => {
         mockGetToken.mockResolvedValue(mockToken)
         mockOnTokenRefresh.mockReturnValue(mockUnsubscribe)
 
-        renderHook(() => useRegisterForPushNotifications())
+        await renderHook(() => useRegisterForPushNotifications())
 
         await waitForAsync()
 
@@ -127,7 +127,7 @@ describe("useRegisterForPushNotifications", () => {
         const mockToken = "ios-apns-token-123"
         mockGetPushToken.mockResolvedValue(mockToken)
 
-        renderHook(() => useRegisterForPushNotifications())
+        await renderHook(() => useRegisterForPushNotifications())
 
         await waitForAsync()
 
@@ -141,7 +141,7 @@ describe("useRegisterForPushNotifications", () => {
         mockGetPushToken.mockResolvedValue(null)
         const consoleSpy = jest.spyOn(console, "error").mockImplementation()
 
-        renderHook(() => useRegisterForPushNotifications())
+        await renderHook(() => useRegisterForPushNotifications())
 
         await waitForAsync()
 
@@ -158,7 +158,7 @@ describe("useRegisterForPushNotifications", () => {
         mockRegisterDeviceForRemoteMessages.mockRejectedValue(mockError)
         const consoleSpy = jest.spyOn(console, "error").mockImplementation()
 
-        renderHook(() => useRegisterForPushNotifications())
+        await renderHook(() => useRegisterForPushNotifications())
 
         await waitForAsync()
 
@@ -174,7 +174,7 @@ describe("useRegisterForPushNotifications", () => {
         mockGetToken.mockResolvedValue("")
         const consoleSpy = jest.spyOn(console, "error").mockImplementation()
 
-        renderHook(() => useRegisterForPushNotifications())
+        await renderHook(() => useRegisterForPushNotifications())
 
         await waitForAsync()
 
@@ -191,7 +191,7 @@ describe("useRegisterForPushNotifications", () => {
     })
 
     it("should not register for push notifications", async () => {
-      renderHook(() => useRegisterForPushNotifications())
+      await renderHook(() => useRegisterForPushNotifications())
 
       // Wait a bit to ensure no async operations are triggered
       await new Promise((resolve) => setTimeout(resolve, 50))
@@ -203,13 +203,13 @@ describe("useRegisterForPushNotifications", () => {
     })
 
     it("should register when user logs in", async () => {
-      const { rerender } = renderHook(() => useRegisterForPushNotifications())
+      const { rerender } = await renderHook(() => useRegisterForPushNotifications())
 
       expect(mockRegisterDeviceForRemoteMessages).not.toHaveBeenCalled()
 
       // User logs in
       mockUseAppState.mockReturnValue(true)
-      rerender(() => {})
+      await rerender(() => {})
 
       await waitForAsync()
 
@@ -222,7 +222,7 @@ describe("useRegisterForPushNotifications", () => {
       const mockUnsubscribe = jest.fn()
       mockOnTokenRefresh.mockReturnValue(mockUnsubscribe)
 
-      renderHook(() => useRegisterForPushNotifications())
+      await renderHook(() => useRegisterForPushNotifications())
 
       await waitForAsync()
 

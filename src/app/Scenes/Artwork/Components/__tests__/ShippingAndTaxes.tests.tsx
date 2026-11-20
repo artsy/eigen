@@ -38,10 +38,10 @@ describe("ShippingAndTaxes", () => {
     )
   }
 
-  it("should render all information", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("should render all information", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(env, {
+    await resolveMostRecentRelayOperation(env, {
       Artwork: () => artwork,
     })
 
@@ -57,14 +57,14 @@ describe("ShippingAndTaxes", () => {
 
   describe("Analytics", () => {
     it("tracks event", async () => {
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(env, {
+      await resolveMostRecentRelayOperation(env, {
         Artwork: () => artwork,
       })
       const link = screen.getByText(/Link Button/)
 
-      fireEvent.press(link)
+      await fireEvent.press(link)
       await flushPromiseQueue()
 
       expect(mockTrackEvent).toHaveBeenCalled()
@@ -78,10 +78,10 @@ describe("ShippingAndTaxes", () => {
     })
   })
 
-  it("should NOT render shipping information if it is not available", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("should NOT render shipping information if it is not available", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(env, {
+    await resolveMostRecentRelayOperation(env, {
       Artwork: () => ({
         shippingOrigin: null,
         shippingInfo: null,

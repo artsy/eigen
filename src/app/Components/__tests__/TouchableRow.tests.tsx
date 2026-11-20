@@ -4,8 +4,8 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
 
 describe("TouchableRow", () => {
-  it("renders children correctly", () => {
-    renderWithWrappers(
+  it("renders children correctly", async () => {
+    await renderWithWrappers(
       <TouchableRow>
         <Text>Row Content</Text>
       </TouchableRow>
@@ -14,30 +14,30 @@ describe("TouchableRow", () => {
     expect(screen.getByText("Row Content")).toBeTruthy()
   })
 
-  it("handles onPress event", () => {
+  it("handles onPress event", async () => {
     const onPressMock = jest.fn()
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <TouchableRow onPress={onPressMock}>
         <Text>Clickable Row</Text>
       </TouchableRow>
     )
 
-    fireEvent.press(screen.getByText("Clickable Row"))
+    await fireEvent.press(screen.getByText("Clickable Row"))
     expect(onPressMock).toHaveBeenCalledTimes(1)
   })
 
-  it("renders as disabled", () => {
+  it("renders as disabled", async () => {
     const onPressMock = jest.fn()
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <TouchableRow onPress={onPressMock} disabled>
         <Text>Disabled Row</Text>
       </TouchableRow>
     )
 
     // The disabled prop prevents onPress from being called
-    fireEvent.press(screen.getByText("Disabled Row"))
+    await fireEvent.press(screen.getByText("Disabled Row"))
     expect(onPressMock).not.toHaveBeenCalled()
   })
 })

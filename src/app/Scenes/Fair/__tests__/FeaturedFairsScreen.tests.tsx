@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { FeaturedFairsScreen } from "app/Scenes/Fair/FeaturedFairsScreen"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -10,7 +10,7 @@ describe("FeaturedFairsScreen", () => {
   })
 
   it("renders fairs", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Query: () => ({
         viewer: {
           featuredFairs: mockFairsData,
@@ -18,14 +18,14 @@ describe("FeaturedFairsScreen", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("featured-fairs-screen-placeholder"))
+    expect(screen.queryByTestId("featured-fairs-screen-placeholder")).not.toBeOnTheScreen()
 
     expect(screen.getByText("Art Saloon International")).toBeTruthy()
     expect(screen.getByText("Art Saloon II")).toBeTruthy()
   })
 
   it("opens fair screen and tracks on press", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Query: () => ({
         viewer: {
           featuredFairs: mockFairsData,
@@ -33,9 +33,9 @@ describe("FeaturedFairsScreen", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("featured-fairs-screen-placeholder"))
+    expect(screen.queryByTestId("featured-fairs-screen-placeholder")).not.toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Art Saloon International"))
+    await fireEvent.press(screen.getByText("Art Saloon International"))
 
     expect(useTracking().trackEvent).toHaveBeenCalledWith({
       action: "tappedFairGroup",

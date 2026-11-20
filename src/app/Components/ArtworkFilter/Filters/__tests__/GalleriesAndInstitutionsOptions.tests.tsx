@@ -65,8 +65,8 @@ describe("Galleries and Institutions Options Screen", () => {
   }
 
   describe("before any filters are selected", () => {
-    it("renders all options present in the aggregation", () => {
-      renderWithWrappers(<MockGalleriesAndInstitutionsScreen initialData={initialState} />)
+    it("renders all options present in the aggregation", async () => {
+      await renderWithWrappers(<MockGalleriesAndInstitutionsScreen initialData={initialState} />)
 
       expect(screen.getByText("Musée Picasso Paris")).toBeOnTheScreen()
       expect(screen.getByText("Gagosian")).toBeOnTheScreen()
@@ -86,14 +86,14 @@ describe("Galleries and Institutions Options Screen", () => {
       ],
     }
 
-    it("displays the number of the selected filters on the filter modal screen", () => {
-      renderWithWrappers(<MockFilterScreen initialState={state} />)
+    it("displays the number of the selected filters on the filter modal screen", async () => {
+      await renderWithWrappers(<MockFilterScreen initialState={state} />)
 
       expect(screen.getByText("Galleries & Institutions • 1")).toBeOnTheScreen()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      renderWithWrappers(<MockGalleriesAndInstitutionsScreen initialData={state} />)
+      await renderWithWrappers(<MockGalleriesAndInstitutionsScreen initialData={state} />)
 
       const options = screen.getAllByTestId("multi-select-option-button")
 

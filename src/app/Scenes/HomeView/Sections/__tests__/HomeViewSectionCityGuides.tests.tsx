@@ -92,8 +92,8 @@ describe("HomeViewSectionCityGuides", () => {
     },
   }
 
-  it("renders the section and the centered card", () => {
-    renderWithRelay({ HomeViewSectionCityGuides: () => section })
+  it("renders the section and the centered card", async () => {
+    await renderWithRelay({ HomeViewSectionCityGuides: () => section })
 
     expect(screen.getByText("Discover the art that makes your city special")).toBeOnTheScreen()
     expect(screen.getByText("Then create your own way to experience it")).toBeOnTheScreen()
@@ -104,22 +104,22 @@ describe("HomeViewSectionCityGuides", () => {
     expect(screen.getAllByText("89 Shows").length).toBeGreaterThan(0)
   })
 
-  it("has a dark background behind the backdrop images", () => {
-    renderWithRelay({ HomeViewSectionCityGuides: () => section })
+  it("has a dark background behind the backdrop images", async () => {
+    await renderWithRelay({ HomeViewSectionCityGuides: () => section })
 
     expect(screen.getByTestId("city-guides-section")).toHaveStyle({ backgroundColor: "#000000" })
   })
 
-  it("renders one blurred backdrop layer per card", () => {
-    renderWithRelay({ HomeViewSectionCityGuides: () => section })
+  it("renders one blurred backdrop layer per card", async () => {
+    await renderWithRelay({ HomeViewSectionCityGuides: () => section })
 
     expect(screen.getAllByTestId("city-guides-backdrop-image")).toHaveLength(3)
   })
 
-  it("opens the centered card's City Guide and tracks it", () => {
-    renderWithRelay({ HomeViewSectionCityGuides: () => section })
+  it("opens the centered card's City Guide and tracks it", async () => {
+    await renderWithRelay({ HomeViewSectionCityGuides: () => section })
 
-    fireEvent.press(screen.getByLabelText("Open the London City Guide"))
+    await fireEvent.press(screen.getByLabelText("Open the London City Guide"))
 
     expect(navigate).toHaveBeenCalledWith("/city-guide?citySlug=london-united-kingdom")
     expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -134,19 +134,19 @@ describe("HomeViewSectionCityGuides", () => {
     })
   })
 
-  it("doesn't navigate when tapping a side card", () => {
-    renderWithRelay({ HomeViewSectionCityGuides: () => section })
+  it("doesn't navigate when tapping a side card", async () => {
+    await renderWithRelay({ HomeViewSectionCityGuides: () => section })
 
-    fireEvent.press(screen.getAllByLabelText("Show New York")[0])
+    await fireEvent.press(screen.getAllByLabelText("Show New York")[0])
 
     expect(navigate).not.toHaveBeenCalled()
     expect(mockTrackEvent).not.toHaveBeenCalled()
   })
 
-  it("opens the City Guide from the button and tracks it", () => {
-    renderWithRelay({ HomeViewSectionCityGuides: () => section })
+  it("opens the City Guide from the button and tracks it", async () => {
+    await renderWithRelay({ HomeViewSectionCityGuides: () => section })
 
-    fireEvent.press(screen.getByText("City Guide"))
+    await fireEvent.press(screen.getByText("City Guide"))
 
     expect(navigate).toHaveBeenCalledWith("/city-guide")
     expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -160,24 +160,24 @@ describe("HomeViewSectionCityGuides", () => {
 
   describe("Explore city near me", () => {
     /** The near-me card sits left of the first card: tapping it once brings it to the center */
-    const centerNearMeCard = () => {
-      fireEvent.press(screen.getAllByLabelText("Show Explore city near me")[0])
+    const centerNearMeCard = async () => {
+      await fireEvent.press(screen.getAllByLabelText("Show Explore city near me")[0])
     }
 
     const nearMeCard = () =>
       screen.getByLabelText("Open the City Guide for the city nearest to you")
 
-    it("is shown regardless of location access", () => {
-      renderWithRelay({ HomeViewSectionCityGuides: () => section })
+    it("is shown regardless of location access", async () => {
+      await renderWithRelay({ HomeViewSectionCityGuides: () => section })
 
       expect(screen.getAllByText("Explore city near me").length).toBeGreaterThan(0)
       expect(screen.getAllByTestId("city-guides-backdrop-image")).toHaveLength(3)
     })
 
-    it("doesn't ask for the location until it's tapped", () => {
-      renderWithRelay({ HomeViewSectionCityGuides: () => section })
+    it("doesn't ask for the location until it's tapped", async () => {
+      await renderWithRelay({ HomeViewSectionCityGuides: () => section })
 
-      centerNearMeCard()
+      await centerNearMeCard()
 
       expect(mockFindNearestCityGuide).not.toHaveBeenCalled()
       expect(navigate).not.toHaveBeenCalled()
@@ -188,10 +188,10 @@ describe("HomeViewSectionCityGuides", () => {
         status: "granted",
         href: "/city-guide?citySlug=new-york-ny-usa",
       })
-      renderWithRelay({ HomeViewSectionCityGuides: () => section })
+      await renderWithRelay({ HomeViewSectionCityGuides: () => section })
 
-      centerNearMeCard()
-      fireEvent.press(nearMeCard())
+      await centerNearMeCard()
+      await fireEvent.press(nearMeCard())
 
       await waitFor(() =>
         expect(navigate).toHaveBeenCalledWith("/city-guide?citySlug=new-york-ny-usa")
@@ -210,10 +210,10 @@ describe("HomeViewSectionCityGuides", () => {
     it("does nothing when the user declines the location prompt", async () => {
       mockFindNearestCityGuide.mockResolvedValue({ status: "denied" })
       const alertSpy = jest.spyOn(Alert, "alert")
-      renderWithRelay({ HomeViewSectionCityGuides: () => section })
+      await renderWithRelay({ HomeViewSectionCityGuides: () => section })
 
-      centerNearMeCard()
-      fireEvent.press(nearMeCard())
+      await centerNearMeCard()
+      await fireEvent.press(nearMeCard())
 
       // Done locating once the spinner is gone
       await waitFor(() =>
@@ -230,10 +230,10 @@ describe("HomeViewSectionCityGuides", () => {
       mockFindNearestCityGuide.mockResolvedValue({ status: "blocked" })
       const alertSpy = jest.spyOn(Alert, "alert")
       const openSettingsSpy = jest.spyOn(Linking, "openSettings").mockResolvedValue()
-      renderWithRelay({ HomeViewSectionCityGuides: () => section })
+      await renderWithRelay({ HomeViewSectionCityGuides: () => section })
 
-      centerNearMeCard()
-      fireEvent.press(nearMeCard())
+      await centerNearMeCard()
+      await fireEvent.press(nearMeCard())
 
       await waitFor(() => expect(alertSpy).toHaveBeenCalledTimes(1))
       expect(navigate).not.toHaveBeenCalled()
@@ -253,16 +253,16 @@ describe("HomeViewSectionCityGuides", () => {
           resolveResult = resolve
         })
       )
-      renderWithRelay({ HomeViewSectionCityGuides: () => section })
+      await renderWithRelay({ HomeViewSectionCityGuides: () => section })
 
-      centerNearMeCard()
-      fireEvent.press(nearMeCard())
+      await centerNearMeCard()
+      await fireEvent.press(nearMeCard())
 
       expect(
         screen.getAllByTestId("city-guide-near-me-spinner", { includeHiddenElements: true }).length
       ).toBeGreaterThan(0)
 
-      fireEvent.press(nearMeCard())
+      await fireEvent.press(nearMeCard())
       expect(mockFindNearestCityGuide).toHaveBeenCalledTimes(1)
 
       await act(async () => {
@@ -276,8 +276,8 @@ describe("HomeViewSectionCityGuides", () => {
     })
   })
 
-  it("renders nothing without cards", () => {
-    renderWithRelay({
+  it("renders nothing without cards", async () => {
+    await renderWithRelay({
       HomeViewSectionCityGuides: () => ({ ...section, cardsConnection: { edges: [] } }),
     })
 

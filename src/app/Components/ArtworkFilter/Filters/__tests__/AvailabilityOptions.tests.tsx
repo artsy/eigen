@@ -45,8 +45,8 @@ describe(AvailabilityOptionsScreen, () => {
   }
 
   describe("no filters are selected", () => {
-    it("renders all options", () => {
-      renderWithWrappers(<MockAvailabilityOptionsScreen initialData={initialState} />)
+    it("renders all options", async () => {
+      await renderWithWrappers(<MockAvailabilityOptionsScreen initialData={initialState} />)
 
       expect(screen.getByText("Only works for sale")).toBeTruthy()
     })
@@ -64,14 +64,14 @@ describe(AvailabilityOptionsScreen, () => {
       ],
     }
 
-    it("displays the number of the selected filters on the filter modal screen", () => {
-      renderWithWrappers(<MockFilterScreen initialState={state} />)
+    it("displays the number of the selected filters on the filter modal screen", async () => {
+      await renderWithWrappers(<MockFilterScreen initialState={state} />)
 
       expect(screen.getByText("Availability • 1")).toBeTruthy()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      renderWithWrappers(<MockAvailabilityOptionsScreen initialData={state} />)
+      await renderWithWrappers(<MockAvailabilityOptionsScreen initialData={state} />)
 
       const options = screen.getAllByTestId("multi-select-option-button")
       const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
@@ -81,11 +81,11 @@ describe(AvailabilityOptionsScreen, () => {
 
       expect(checkboxes[0]).toHaveProp("selected", true)
 
-      fireEvent.press(options[0])
+      await fireEvent.press(options[0])
 
       expect(checkboxes[0]).toHaveProp("selected", false)
 
-      fireEvent.press(options[0])
+      await fireEvent.press(options[0])
 
       expect(checkboxes[0]).toHaveProp("selected", true)
     })

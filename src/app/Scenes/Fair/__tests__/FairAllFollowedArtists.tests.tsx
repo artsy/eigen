@@ -26,7 +26,7 @@ describe("FairAllFollowedArtists", () => {
   })
 
   it("shows empty state when there are no artworks", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       FilterArtworksConnection() {
         return {
           counts: {

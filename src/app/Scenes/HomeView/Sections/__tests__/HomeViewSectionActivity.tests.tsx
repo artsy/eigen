@@ -32,8 +32,8 @@ describe("HomeViewSectionActivity", () => {
     `,
   })
 
-  it("is not rendered when there are no activities", () => {
-    const { toJSON } = renderWithRelay({
+  it("is not rendered when there are no activities", async () => {
+    const { toJSON } = await renderWithRelay({
       HomeViewComponent: () => ({
         title: "Latest Activity",
       }),
@@ -45,8 +45,8 @@ describe("HomeViewSectionActivity", () => {
     expect(toJSON()).toBeNull()
   })
 
-  it("renders header and handles header press", () => {
-    renderWithRelay({
+  it("renders header and handles header press", async () => {
+    await renderWithRelay({
       HomeViewSectionActivity: () => ({
         ...latestActivitySection,
         notificationsConnection: {
@@ -57,7 +57,7 @@ describe("HomeViewSectionActivity", () => {
 
     expect(screen.getByText("Latest Activity")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Latest Activity"))
+    await fireEvent.press(screen.getByText("Latest Activity"))
 
     expect(navigate).toHaveBeenCalledWith('<mock-value-for-field-"href">')
     expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -69,8 +69,8 @@ describe("HomeViewSectionActivity", () => {
     })
   })
 
-  it("renders a list of activities", () => {
-    renderWithRelay({
+  it("renders a list of activities", async () => {
+    await renderWithRelay({
       HomeViewSectionActivity: () => ({
         ...latestActivitySection,
         notificationsConnection: {
@@ -92,7 +92,7 @@ describe("HomeViewSectionActivity", () => {
     expect(screen.getByText(/artwork alert/)).toBeOnTheScreen()
     expect(screen.getByText(/viewing room published/)).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText(/viewing room published/))
+    await fireEvent.press(screen.getByText(/viewing room published/))
 
     expect(navigate).toHaveBeenCalledWith("/notification/id-2")
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
@@ -110,8 +110,8 @@ describe("HomeViewSectionActivity", () => {
       `)
   })
 
-  it("navigates to the notification screen when an article activity is pressed", () => {
-    renderWithRelay({
+  it("navigates to the notification screen when an article activity is pressed", async () => {
+    await renderWithRelay({
       HomeViewSectionActivity: () => ({
         ...latestActivitySection,
         notificationsConnection: {
@@ -131,7 +131,7 @@ describe("HomeViewSectionActivity", () => {
 
     expect(screen.getByText(/Example Article Title/)).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText(/Example Article Title/))
+    await fireEvent.press(screen.getByText(/Example Article Title/))
 
     expect(navigate).toHaveBeenCalledWith("/notification/id-1")
   })

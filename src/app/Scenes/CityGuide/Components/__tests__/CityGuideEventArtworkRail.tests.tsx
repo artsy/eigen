@@ -17,8 +17,8 @@ describe("CityGuideEventArtworkRail", () => {
     `,
   })
 
-  it("renders artworks from the show", () => {
-    renderWithRelay({
+  it("renders artworks from the show", async () => {
+    await renderWithRelay({
       Show: () => ({
         artworksConnection: {
           edges: [
@@ -35,8 +35,8 @@ describe("CityGuideEventArtworkRail", () => {
     expect(screen.getByText("Pacita Abad")).toBeTruthy()
   })
 
-  it("tracks taps on artworks in the rail", () => {
-    renderWithRelay({
+  it("tracks taps on artworks in the rail", async () => {
+    await renderWithRelay({
       Show: () => ({
         internalID: "show-id",
         slug: "some-show",
@@ -54,7 +54,7 @@ describe("CityGuideEventArtworkRail", () => {
       }),
     })
 
-    fireEvent.press(screen.getByTestId("artwork-cool-artwork-1"))
+    await fireEvent.press(screen.getByTestId("artwork-cool-artwork-1"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({

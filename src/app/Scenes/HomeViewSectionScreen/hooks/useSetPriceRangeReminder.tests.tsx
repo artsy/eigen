@@ -43,7 +43,7 @@ describe("useSetPriceRangeReminder", () => {
   it("shows toast when all conditions are met", async () => {
     ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockHasStaleArtworkBudget)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestComponent
         artworksLength={6}
         totalCount={10}
@@ -64,7 +64,7 @@ describe("useSetPriceRangeReminder", () => {
   it("tracks toast viewed event", async () => {
     ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockHasStaleArtworkBudget)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestComponent
         artworksLength={6}
         totalCount={10}
@@ -85,7 +85,7 @@ describe("useSetPriceRangeReminder", () => {
   it("tracks toast tapped event and navigate", async () => {
     ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockHasStaleArtworkBudget)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestComponent
         artworksLength={6}
         totalCount={10}
@@ -125,7 +125,7 @@ describe("useSetPriceRangeReminder", () => {
   it("does not show toast if sectionInternalID is incorrect", async () => {
     ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockHasStaleArtworkBudget)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestComponent artworksLength={6} totalCount={10} sectionInternalID="other-section" />
     )
 
@@ -135,7 +135,7 @@ describe("useSetPriceRangeReminder", () => {
   it("does not show toast if user hasn't scrolled enough", async () => {
     ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockHasStaleArtworkBudget)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestComponent
         artworksLength={2}
         totalCount={10}
@@ -149,7 +149,7 @@ describe("useSetPriceRangeReminder", () => {
   it("does not show toast if 3 months haven't passed", async () => {
     ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockRecentlyUpdatedArtworkBudget)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestComponent
         artworksLength={6}
         totalCount={10}
@@ -163,7 +163,7 @@ describe("useSetPriceRangeReminder", () => {
   it("does not show toast if hasPriceRange is false", async () => {
     ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockNoPriceRange)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestComponent
         artworksLength={10}
         totalCount={10}
@@ -177,7 +177,7 @@ describe("useSetPriceRangeReminder", () => {
   it("does not show toast if price range has not been updated", async () => {
     ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockPriceRangeNotUpdated)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestComponent
         artworksLength={10}
         totalCount={10}

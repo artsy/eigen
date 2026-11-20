@@ -15,8 +15,8 @@ describe("ShareHeaderButton", () => {
     mockShowShareSheet.mockClear()
   })
 
-  it("opens the app's share sheet for the page", () => {
-    renderWithWrappers(
+  it("opens the app's share sheet for the page", async () => {
+    await renderWithWrappers(
       <ShareHeaderButton
         href="/show/the-big-show"
         internalID="show-id"
@@ -27,7 +27,7 @@ describe("ShareHeaderButton", () => {
       />
     )
 
-    fireEvent.press(screen.getByLabelText("Share Show"))
+    await fireEvent.press(screen.getByLabelText("Share Show"))
 
     expect(mockShowShareSheet).toHaveBeenCalledWith({
       type: "default",

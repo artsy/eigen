@@ -9,8 +9,8 @@ const { renderWithRelay } = setupTestWrapper<FairArticlesQuery>({
 })
 
 describe("FairArticles", () => {
-  it("renders an empty message if there are no articles", () => {
-    renderWithRelay({
+  it("renders an empty message if there are no articles", async () => {
+    await renderWithRelay({
       Fair: () => ({
         articlesConnection: {
           totalCount: 0,
@@ -22,8 +22,8 @@ describe("FairArticles", () => {
     expect(screen.getByText(/There aren’t any articles at this time./)).toBeOnTheScreen()
   })
 
-  it("renders articles", () => {
-    renderWithRelay({
+  it("renders articles", async () => {
+    await renderWithRelay({
       Article: () => ({ title: "Example Article" }),
       Author: () => ({ name: "Example Author" }),
     })

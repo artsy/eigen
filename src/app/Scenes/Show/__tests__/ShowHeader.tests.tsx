@@ -15,8 +15,8 @@ describe("ShowHeader", () => {
     `,
   })
 
-  it("renders a 'Show' eyebrow above the title", () => {
-    renderWithRelay({
+  it("renders a 'Show' eyebrow above the title", async () => {
+    await renderWithRelay({
       Show: () => ({ name: "Splash: Sea, Beach, and Pool" }),
     })
 

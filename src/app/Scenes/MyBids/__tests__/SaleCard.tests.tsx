@@ -38,22 +38,22 @@ describe("SaleCard", () => {
     />
   )
 
-  const getWrapper = (mockResolvers = {}) => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+  const getWrapper = async (mockResolvers = {}) => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
     })
   }
 
-  it("renders without throwing an error", () => {
-    getWrapper({ Sale: () => ({ name: "Test Sale" }) })
+  it("renders without throwing an error", async () => {
+    await getWrapper({ Sale: () => ({ name: "Test Sale" }) })
     expect(screen.getByText("Test Sale")).toBeOnTheScreen()
   })
 
-  it("doesn't render a registration CTA when a user is qualified for bidding", () => {
-    getWrapper({
+  it("doesn't render a registration CTA when a user is qualified for bidding", async () => {
+    await getWrapper({
       Sale: () => ({
         registrationStatus: { qualifiedForBidding: true },
       }),
@@ -63,8 +63,8 @@ describe("SaleCard", () => {
     expect(screen.queryByText("Registration pending")).not.toBeOnTheScreen()
   })
 
-  it("renders a link to user's pending identity verification", () => {
-    getWrapper({
+  it("renders a link to user's pending identity verification", async () => {
+    await getWrapper({
       Sale: () => ({
         internalID: "sale-id",
         registrationStatus: { qualifiedForBidding: false },
@@ -78,7 +78,7 @@ describe("SaleCard", () => {
 
     expect(screen.getAllByText("Complete registration")).toHaveLength(1)
 
-    fireEvent.press(screen.getByText("Complete registration"))
+    await fireEvent.press(screen.getByText("Complete registration"))
 
     expect(navigate).toHaveBeenCalledWith("/identity-verification/idv-id")
     // Only CompleteRegistrationCTAWrapper tracks the identity verification tap
@@ -87,8 +87,8 @@ describe("SaleCard", () => {
     )
   })
 
-  it("renders a notice that registration is pending when identity verification is not required, but the user is not yet qualified for bidding", () => {
-    getWrapper({
+  it("renders a notice that registration is pending when identity verification is not required, but the user is not yet qualified for bidding", async () => {
+    await getWrapper({
       Sale: () => ({
         registrationStatus: { qualifiedForBidding: false },
         requireIdentityVerification: false,
@@ -99,8 +99,8 @@ describe("SaleCard", () => {
     expect(screen.queryByText("Complete registration")).not.toBeOnTheScreen()
   })
 
-  it("renders a link to register for the auction when there's no registration status present", () => {
-    getWrapper({
+  it("renders a link to register for the auction when there's no registration status present", async () => {
+    await getWrapper({
       Sale: () => ({
         registrationStatus: null,
         slug: "test-sale",
@@ -109,7 +109,7 @@ describe("SaleCard", () => {
 
     expect(screen.getAllByText("Complete registration")).toHaveLength(1)
 
-    fireEvent.press(screen.getByText("Complete registration"))
+    await fireEvent.press(screen.getByText("Complete registration"))
 
     expect(navigate).toHaveBeenCalledWith("/auction-registration/test-sale")
     expect(mockTrackEvent).not.toHaveBeenCalledWith(

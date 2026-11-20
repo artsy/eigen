@@ -35,13 +35,13 @@ const Wrappers: React.FC<React.PropsWithChildren<WrappersProps>> = ({
  *
  * @param component
  */
-export const renderWithWrappers = (component: ReactElement, wrapperProps?: WrappersProps) => {
+export const renderWithWrappers = async (component: ReactElement, wrapperProps?: WrappersProps) => {
   try {
     const wrapper = (props: RenderOptions["wrapper"]) => {
       return <Wrappers {...wrapperProps} {...props} />
     }
 
-    return render(component, { wrapper })
+    return await render(component, { wrapper })
   } catch (error: any) {
     throw new Error(error.stack)
   }
@@ -51,7 +51,7 @@ export const renderWithWrappers = (component: ReactElement, wrapperProps?: Wrapp
  * @deprecated Use `setupTestWrapper` instead.
  *
  */
-export const renderWithHookWrappersTL = (
+export const renderWithHookWrappersTL = async (
   component: ReactElement,
   environment: Environment = getRelayEnvironment(),
   wrapperProps?: WrappersProps
@@ -61,5 +61,5 @@ export const renderWithHookWrappersTL = (
       <Suspense fallback={<Text>Loading...</Text>}>{component}</Suspense>
     </RelayEnvironmentProvider>
   )
-  return renderWithWrappers(jsx, wrapperProps)
+  return await renderWithWrappers(jsx, wrapperProps)
 }

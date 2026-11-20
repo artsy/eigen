@@ -48,19 +48,19 @@ describe("Sort Options Screen", () => {
     return selectedOptions[0]
   }
 
-  it("renders the correct number of sort options", () => {
-    renderWithWrappers(<MockSortScreen initialData={initialState} />)
+  it("renders the correct number of sort options", async () => {
+    await renderWithWrappers(<MockSortScreen initialData={initialState} />)
     expect(screen.getAllByTestId("single-select-option")).toHaveLength(7)
   })
 
   describe("selectedSortOption", () => {
-    it("returns the default option if there are no selected or applied filters", () => {
-      renderWithWrappers(<MockSortScreen initialData={initialState} />)
+    it("returns the default option if there are no selected or applied filters", async () => {
+      await renderWithWrappers(<MockSortScreen initialData={initialState} />)
       const selectedOption = selectedSortOption()
       expect(selectedOption).toHaveTextContent("Recommended", { exact: false })
     })
 
-    it("prefers an applied filter over the default filter", () => {
+    it("prefers an applied filter over the default filter", async () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [],
         appliedFilters: [
@@ -90,13 +90,13 @@ describe("Sort Options Screen", () => {
         sizeMetric: "cm",
       }
 
-      renderWithWrappers(<MockSortScreen initialData={injectedState} />)
+      await renderWithWrappers(<MockSortScreen initialData={injectedState} />)
 
       const selectedOption = selectedSortOption()
       expect(selectedOption).toHaveTextContent("Recently Added", { exact: false })
     })
 
-    it("prefers the selected filter over the default filter", () => {
+    it("prefers the selected filter over the default filter", async () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [
           {
@@ -119,13 +119,13 @@ describe("Sort Options Screen", () => {
         sizeMetric: "cm",
       }
 
-      renderWithWrappers(<MockSortScreen initialData={injectedState} />)
+      await renderWithWrappers(<MockSortScreen initialData={injectedState} />)
 
       const selectedOption = selectedSortOption()
       expect(selectedOption).toHaveTextContent("Recently Added", { exact: false })
     })
 
-    it("prefers the selected filter over an applied filter", () => {
+    it("prefers the selected filter over an applied filter", async () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [
           {
@@ -162,14 +162,14 @@ describe("Sort Options Screen", () => {
         sizeMetric: "cm",
       }
 
-      renderWithWrappers(<MockSortScreen initialData={injectedState} />)
+      await renderWithWrappers(<MockSortScreen initialData={injectedState} />)
 
       const selectedOption = selectedSortOption()
       expect(selectedOption).toHaveTextContent("Recently Added", { exact: false })
     })
   })
 
-  it("allows only one sort filter to be selected at a time", () => {
+  it("allows only one sort filter to be selected at a time", async () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
@@ -198,7 +198,7 @@ describe("Sort Options Screen", () => {
       sizeMetric: "cm",
     }
 
-    renderWithWrappers(<MockSortScreen initialData={injectedState} />)
+    await renderWithWrappers(<MockSortScreen initialData={injectedState} />)
 
     const selectedRow = selectedSortOption()
     expect(selectedRow).toHaveTextContent("Price (High to Low)")
@@ -206,7 +206,7 @@ describe("Sort Options Screen", () => {
   })
 
   describe("filterType of showArtwork", () => {
-    it("has the correct options", () => {
+    it("has the correct options", async () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [],
         appliedFilters: [],
@@ -222,7 +222,7 @@ describe("Sort Options Screen", () => {
         sizeMetric: "cm",
       }
 
-      renderWithWrappers(<MockSortScreen initialData={injectedState} />)
+      await renderWithWrappers(<MockSortScreen initialData={injectedState} />)
 
       const selectedRow = selectedSortOption()
 
@@ -232,7 +232,7 @@ describe("Sort Options Screen", () => {
   })
 
   describe("filterType of auctionResults", () => {
-    it("has the correct options", () => {
+    it("has the correct options", async () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [],
         appliedFilters: [],
@@ -248,7 +248,7 @@ describe("Sort Options Screen", () => {
         sizeMetric: "cm",
       }
 
-      renderWithWrappers(<MockSortScreen initialData={injectedState} />)
+      await renderWithWrappers(<MockSortScreen initialData={injectedState} />)
 
       const selectedRow = selectedSortOption()
 

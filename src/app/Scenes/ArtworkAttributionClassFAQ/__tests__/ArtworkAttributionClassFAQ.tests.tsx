@@ -12,28 +12,28 @@ const { renderWithRelay } = setupTestWrapper({
 })
 
 describe("ArtworkAttributionClassFAQ", () => {
-  it("renders the header", () => {
-    renderWithRelay()
+  it("renders the header", async () => {
+    await renderWithRelay()
 
-    expect(screen.queryByText("Artwork classifications")).toBeOnTheScreen()
+    expect(screen.getByText("Artwork classifications")).toBeOnTheScreen()
   })
 
-  it("renders the OK button", () => {
-    renderWithRelay()
-    expect(screen.queryByText("OK")).toBeOnTheScreen()
+  it("renders the OK button", async () => {
+    await renderWithRelay()
+    expect(screen.getByText("OK")).toBeOnTheScreen()
   })
 
   it("renders attribution classes", async () => {
-    renderWithRelay()
+    await renderWithRelay()
 
-    expect(screen.queryByText(/mock-value-for-field-"name"/)).toBeOnTheScreen()
-    expect(screen.queryByText(/mock-value-for-field-"longDescription"/)).toBeOnTheScreen()
+    expect(screen.getByText(/mock-value-for-field-"name"/)).toBeOnTheScreen()
+    expect(screen.getByText(/mock-value-for-field-"longDescription"/)).toBeOnTheScreen()
   })
 
-  it("returns to previous page when ok button is clicked", () => {
-    renderWithRelay()
+  it("returns to previous page when ok button is clicked", async () => {
+    await renderWithRelay()
 
-    fireEvent.press(screen.getByText("OK"))
+    await fireEvent.press(screen.getByText("OK"))
 
     expect(goBack).toHaveBeenCalledTimes(1)
   })

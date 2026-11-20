@@ -17,9 +17,9 @@ describe("ArtworkDetailSection", () => {
     preloaded: true,
   })
 
-  it("renders all fields when data is available", () => {
-    const { mockResolveLastOperation } = renderWithRelay()
-    mockResolveLastOperation({ Artwork: () => artwork })
+  it("renders all fields when data is available", async () => {
+    const { mockResolveLastOperation } = await renderWithRelay()
+    await mockResolveLastOperation({ Artwork: () => artwork })
 
     expect(screen.getByText("Oil on canvas")).toBeOnTheScreen()
     expect(screen.getByText("20 × 24 in | 50.8 × 61 cm")).toBeOnTheScreen()
@@ -32,9 +32,9 @@ describe("ArtworkDetailSection", () => {
     expect(screen.getByText("Frame included")).toBeOnTheScreen()
   })
 
-  it("does not render optional rows when data is missing", () => {
-    const { mockResolveLastOperation } = renderWithRelay()
-    mockResolveLastOperation({
+  it("does not render optional rows when data is missing", async () => {
+    const { mockResolveLastOperation } = await renderWithRelay()
+    await mockResolveLastOperation({
       Artwork: () => ({
         ...artwork,
         mediumType: null,
@@ -54,17 +54,17 @@ describe("ArtworkDetailSection", () => {
     expect(screen.queryByText("Publisher")).not.toBeOnTheScreen()
   })
 
-  it("shows 'Frame not included' when isFramed is false", () => {
-    const { mockResolveLastOperation } = renderWithRelay()
-    mockResolveLastOperation({ Artwork: () => ({ ...artwork, isFramed: false }) })
+  it("shows 'Frame not included' when isFramed is false", async () => {
+    const { mockResolveLastOperation } = await renderWithRelay()
+    await mockResolveLastOperation({ Artwork: () => ({ ...artwork, isFramed: false }) })
 
     expect(screen.getByText("Frame not included")).toBeOnTheScreen()
   })
 
   describe("framed dimensions", () => {
-    it("shows framed dimensions row when data is available", () => {
-      const { mockResolveLastOperation } = renderWithRelay()
-      mockResolveLastOperation({
+    it("shows framed dimensions row when data is available", async () => {
+      const { mockResolveLastOperation } = await renderWithRelay()
+      await mockResolveLastOperation({
         Artwork: () => ({
           ...artwork,
           framedDimensions: { in: "24 × 28 in", cm: "61 × 71.1 cm" },
@@ -75,9 +75,9 @@ describe("ArtworkDetailSection", () => {
       expect(screen.getByText("24 × 28 in | 61 × 71.1 cm")).toBeOnTheScreen()
     })
 
-    it("does not show framed dimensions row when data is missing", () => {
-      const { mockResolveLastOperation } = renderWithRelay()
-      mockResolveLastOperation({ Artwork: () => ({ ...artwork, framedDimensions: null }) })
+    it("does not show framed dimensions row when data is missing", async () => {
+      const { mockResolveLastOperation } = await renderWithRelay()
+      await mockResolveLastOperation({ Artwork: () => ({ ...artwork, framedDimensions: null }) })
 
       expect(screen.getByText("20 × 24 in | 50.8 × 61 cm")).toBeOnTheScreen()
 

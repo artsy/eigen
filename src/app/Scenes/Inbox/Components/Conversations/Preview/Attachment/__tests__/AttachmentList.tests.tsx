@@ -18,8 +18,8 @@ describe("AttachmentListFragmentContainer", () => {
     `,
   })
 
-  it("render attachments", () => {
-    renderWithRelay({
+  it("render attachments", async () => {
+    await renderWithRelay({
       Conversation: () => ({
         messagesConnection: {
           edges: [
@@ -47,8 +47,8 @@ describe("AttachmentListFragmentContainer", () => {
     expect(screen.getByText("testfile2.webp")).toBeDefined()
   })
 
-  it("does not render given no attachment", () => {
-    renderWithRelay({
+  it("does not render given no attachment", async () => {
+    await renderWithRelay({
       Conversation: () => ({
         messagesConnection: {
           edges: [{ node: null }],

@@ -29,8 +29,8 @@ jest.mock("@react-navigation/native", () => {
 describe("AddMyCollectionArtist", () => {
   const TestRenderer = () => <AddMyCollectionArtist />
 
-  it("renders the form with the right name", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("renders the form with the right name", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     expect(screen.getByText("Add New Artist")).toBeTruthy()
 
@@ -55,15 +55,15 @@ describe("AddMyCollectionArtist", () => {
   })
 
   it("displays error message for name", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
 
     const nameInput = screen.getByTestId("artist-input")
 
-    fireEvent.changeText(nameInput, "Artist Name")
+    await fireEvent.changeText(nameInput, "Artist Name")
     await flushPromiseQueue()
     expect(nameInput).toHaveProp("value", "Artist Name")
 
-    fireEvent.changeText(nameInput, "")
+    await fireEvent.changeText(nameInput, "")
     await flushPromiseQueue()
     expect(nameInput).toHaveProp("value", "")
 
@@ -71,7 +71,7 @@ describe("AddMyCollectionArtist", () => {
   })
 
   it("can successfully create a new artist", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
 
     const submitButton = screen.getByText("Add Artist")
     expect(submitButton).toBeTruthy()
@@ -79,13 +79,13 @@ describe("AddMyCollectionArtist", () => {
     const nameInput = screen.getByTestId("artist-input")
     expect(nameInput).toHaveProp("value", "")
 
-    fireEvent.changeText(nameInput, "Artist Name")
+    await fireEvent.changeText(nameInput, "Artist Name")
 
     await flushPromiseQueue()
 
     expect(submitButton).not.toBeDisabled()
 
-    fireEvent.press(screen.getByTestId("submit-add-artist-button"))
+    await fireEvent.press(screen.getByTestId("submit-add-artist-button"))
 
     // TODO: add tests later
   })

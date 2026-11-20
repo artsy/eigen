@@ -25,28 +25,28 @@ describe("MyCollectionArtistsAutosuggestListHeader", () => {
       />
     )
 
-  it("renders given results", () => {
-    render({ resultsLength: 1 })
+  it("renders given results", async () => {
+    await render({ resultsLength: 1 })
 
     expect(screen.getByText("Can't find the artist?")).toBeOnTheScreen()
   })
 
-  it("triggers navigation when 'Add their name' is pressed", () => {
-    render({ resultsLength: 1 })
+  it("triggers navigation when 'Add their name' is pressed", async () => {
+    await render({ resultsLength: 1 })
 
-    fireEvent.press(screen.getByText("Add their name."))
+    await fireEvent.press(screen.getByText("Add their name."))
 
     expect(navigate).toHaveBeenCalledWith("/my-collection/artists/new", expect.anything())
   })
 
-  it("renders given no results", () => {
-    render({ resultsLength: 0 })
+  it("renders given no results", async () => {
+    await render({ resultsLength: 0 })
 
     expect(screen.getByText(`No results for "abc"`, { exact: false })).toBeOnTheScreen()
   })
 
-  it("renders given no results and empty debouncedQuery", () => {
-    render({ resultsLength: 0, debouncedQuery: "" })
+  it("renders given no results and empty debouncedQuery", async () => {
+    await render({ resultsLength: 0, debouncedQuery: "" })
 
     expect(
       screen.getByText(

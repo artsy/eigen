@@ -93,25 +93,25 @@ describe("InfiniteDiscoveryHeader", () => {
     ;(RNShare.open as jest.Mock).mockResolvedValue({ success: true, message: "shared" })
   })
 
-  it("renders more button when topArtwork has required data", () => {
-    renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
+  it("renders more button when topArtwork has required data", async () => {
+    await renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
 
     const moreButton = screen.getByTestId("top-right-icon")
     expect(moreButton).toBeOnTheScreen()
     expect(moreButton).toHaveAccessibleName("Share Artwork")
   })
 
-  it("shows the Discover Daily title outside of new user onboarding", () => {
-    renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
+  it("shows the Discover Daily title outside of new user onboarding", async () => {
+    await renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
 
     expect(screen.getByText("Discover Daily")).toBeOnTheScreen()
   })
 
-  it("shows toast when exiting with saved artworks", () => {
+  it("shows toast when exiting with saved artworks", async () => {
     GlobalStore.actions.infiniteDiscovery.incrementSavedArtworksCount()
     GlobalStore.actions.infiniteDiscovery.incrementSavedArtworksCount()
     GlobalStore.actions.infiniteDiscovery.incrementSavedArtworksCount()
-    renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
+    await renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
 
     // Simulate the navigation beforeRemove event that triggers the toast
     ;(mockAddListener as any).beforeRemoveCallback()
@@ -133,21 +133,21 @@ describe("InfiniteDiscoveryHeader", () => {
       GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     })
 
-    it("hides the Discover Daily title", () => {
-      renderWithWrappers(<InfiniteDiscoveryHeader />)
+    it("hides the Discover Daily title", async () => {
+      await renderWithWrappers(<InfiniteDiscoveryHeader />)
 
       expect(screen.queryByText("Discover Daily")).not.toBeOnTheScreen()
     })
 
-    it("shows the progress badge instead of the exit chevron", () => {
-      renderWithWrappers(<InfiniteDiscoveryHeader />)
+    it("shows the progress badge instead of the exit chevron", async () => {
+      await renderWithWrappers(<InfiniteDiscoveryHeader />)
 
       expect(screen.getByText("0")).toBeOnTheScreen()
       expect(screen.getByText("of 5 saves")).toBeOnTheScreen()
       expect(screen.queryByTestId("close-icon")).not.toBeOnTheScreen()
     })
 
-    it("reflects the current saved artworks count in the badge", () => {
+    it("reflects the current saved artworks count in the badge", async () => {
       GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
         internalID: "artwork-1",
         url: "https://example.com/1.jpg",
@@ -156,37 +156,37 @@ describe("InfiniteDiscoveryHeader", () => {
         internalID: "artwork-2",
         url: "https://example.com/2.jpg",
       })
-      renderWithWrappers(<InfiniteDiscoveryHeader />)
+      await renderWithWrappers(<InfiniteDiscoveryHeader />)
 
       expect(screen.getByText("2")).toBeOnTheScreen()
       expect(screen.getByText("of 5 saves")).toBeOnTheScreen()
     })
 
-    it("shows a Skip button instead of the share/more button", () => {
-      renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
+    it("shows a Skip button instead of the share/more button", async () => {
+      await renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
 
       expect(screen.getByText("Skip to home")).toBeOnTheScreen()
       expect(screen.queryByTestId("top-right-icon")).not.toBeOnTheScreen()
     })
 
-    it("exits onboarding when Skip is pressed", () => {
+    it("exits onboarding when Skip is pressed", async () => {
       const setOnboardingStateSpy = jest.spyOn(GlobalStore.actions.onboarding, "setOnboardingState")
 
-      renderWithWrappers(<InfiniteDiscoveryHeader />)
+      await renderWithWrappers(<InfiniteDiscoveryHeader />)
 
-      fireEvent.press(screen.getByLabelText("Skip to home"))
+      await fireEvent.press(screen.getByLabelText("Skip to home"))
 
       expect(setOnboardingStateSpy).toHaveBeenCalledWith("complete")
       expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
     })
 
-    it("does not defer Home tooltips when Skip is pressed without any saves", () => {
+    it("does not defer Home tooltips when Skip is pressed without any saves", async () => {
       GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
       GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(false)
 
-      renderWithWrappers(<InfiniteDiscoveryHeader />)
+      await renderWithWrappers(<InfiniteDiscoveryHeader />)
 
-      fireEvent.press(screen.getByLabelText("Skip to home"))
+      await fireEvent.press(screen.getByLabelText("Skip to home"))
 
       expect(
         __globalStoreTestUtils__?.getCurrentState().progressiveOnboarding.sessionState
@@ -194,7 +194,7 @@ describe("InfiniteDiscoveryHeader", () => {
       ).toBe(false)
     })
 
-    it("defers Home tooltips to the next session when Skip is pressed after saving at least one", () => {
+    it("defers Home tooltips to the next session when Skip is pressed after saving at least one", async () => {
       GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
       GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(false)
       GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
@@ -202,9 +202,9 @@ describe("InfiniteDiscoveryHeader", () => {
         url: "https://example.com/1.jpg",
       })
 
-      renderWithWrappers(<InfiniteDiscoveryHeader />)
+      await renderWithWrappers(<InfiniteDiscoveryHeader />)
 
-      fireEvent.press(screen.getByLabelText("Skip to home"))
+      await fireEvent.press(screen.getByLabelText("Skip to home"))
 
       expect(
         __globalStoreTestUtils__?.getCurrentState().progressiveOnboarding.sessionState
@@ -212,10 +212,10 @@ describe("InfiniteDiscoveryHeader", () => {
       ).toBe(true)
     })
 
-    it("tracks the skip tap", () => {
-      renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
+    it("tracks the skip tap", async () => {
+      await renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
 
-      fireEvent.press(screen.getByLabelText("Skip to home"))
+      await fireEvent.press(screen.getByLabelText("Skip to home"))
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: ActionType.tappedSkip,
@@ -225,9 +225,9 @@ describe("InfiniteDiscoveryHeader", () => {
       })
     })
 
-    it("suppresses the save summary toast when navigating away", () => {
+    it("suppresses the save summary toast when navigating away", async () => {
       GlobalStore.actions.infiniteDiscovery.incrementSavedArtworksCount()
-      renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
+      await renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
       ;(mockAddListener as any).beforeRemoveCallback()
 
       expect(mockUseToast.show).not.toHaveBeenCalled()
@@ -243,18 +243,18 @@ describe("InfiniteDiscoveryHeader", () => {
         }
       })
 
-      it("keeps showing Skip to home, with the badge frozen at Complete, until the user chooses to continue browsing", () => {
-        renderWithWrappers(<InfiniteDiscoveryHeader />)
+      it("keeps showing Skip to home, with the badge frozen at Complete, until the user chooses to continue browsing", async () => {
+        await renderWithWrappers(<InfiniteDiscoveryHeader />)
 
         expect(screen.getByText("Complete")).toBeOnTheScreen()
         expect(screen.getByText("Skip to home")).toBeOnTheScreen()
         expect(screen.queryByText("Go to home")).not.toBeOnTheScreen()
       })
 
-      it("keeps the badge and progress bar frozen at Complete even if a saved artwork is removed", () => {
+      it("keeps the badge and progress bar frozen at Complete even if a saved artwork is removed", async () => {
         GlobalStore.actions.infiniteDiscovery.removeNewUserOnboardingSavedArtwork("artwork-1")
 
-        renderWithWrappers(<InfiniteDiscoveryHeader />)
+        await renderWithWrappers(<InfiniteDiscoveryHeader />)
 
         expect(screen.getByText("Complete")).toBeOnTheScreen()
         expect(screen.getByTestId("step-progress-bar-checkmark")).toBeOnTheScreen()
@@ -267,14 +267,14 @@ describe("InfiniteDiscoveryHeader", () => {
           )
         })
 
-        it("shows a Go to home button instead of Skip", () => {
-          renderWithWrappers(<InfiniteDiscoveryHeader />)
+        it("shows a Go to home button instead of Skip", async () => {
+          await renderWithWrappers(<InfiniteDiscoveryHeader />)
 
           expect(screen.getByText("Go to home")).toBeOnTheScreen()
           expect(screen.queryByText("Skip to home")).not.toBeOnTheScreen()
         })
 
-        it("keeps the badge and progress bar frozen at Complete even after unsaving and resaving artworks", () => {
+        it("keeps the badge and progress bar frozen at Complete even after unsaving and resaving artworks", async () => {
           GlobalStore.actions.infiniteDiscovery.removeNewUserOnboardingSavedArtwork("artwork-1")
           GlobalStore.actions.infiniteDiscovery.removeNewUserOnboardingSavedArtwork("artwork-2")
           GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
@@ -282,21 +282,21 @@ describe("InfiniteDiscoveryHeader", () => {
             url: "https://example.com/6.jpg",
           })
 
-          renderWithWrappers(<InfiniteDiscoveryHeader />)
+          await renderWithWrappers(<InfiniteDiscoveryHeader />)
 
           expect(screen.getByText("Complete")).toBeOnTheScreen()
           expect(screen.getByTestId("step-progress-bar-checkmark")).toBeOnTheScreen()
         })
 
-        it("exits onboarding when Exit is pressed, without tracking a skip tap", () => {
+        it("exits onboarding when Exit is pressed, without tracking a skip tap", async () => {
           const setOnboardingStateSpy = jest.spyOn(
             GlobalStore.actions.onboarding,
             "setOnboardingState"
           )
 
-          renderWithWrappers(<InfiniteDiscoveryHeader />)
+          await renderWithWrappers(<InfiniteDiscoveryHeader />)
 
-          fireEvent.press(screen.getByLabelText("Go to home"))
+          await fireEvent.press(screen.getByLabelText("Go to home"))
 
           expect(setOnboardingStateSpy).toHaveBeenCalledWith("complete")
           expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
@@ -309,24 +309,24 @@ describe("InfiniteDiscoveryHeader", () => {
   })
 
   describe("when negative signals feature flag is enabled", () => {
-    it("renders more icon and sets more info sheet visible when right button is pressed", () => {
+    it("renders more icon and sets more info sheet visible when right button is pressed", async () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnabledDiscoverDailyNegativeSignals: true })
       const setMoreInfoSheetVisibleSpy = jest.spyOn(
         GlobalStore.actions.infiniteDiscovery,
         "setMoreInfoSheetVisible"
       )
 
-      renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
+      await renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
 
       const rightButton = screen.getByTestId("top-right-icon")
-      fireEvent.press(rightButton)
+      await fireEvent.press(rightButton)
 
       expect(mockTrack.tappedMore).toHaveBeenCalledWith("artwork-id", "test-artwork")
       expect(setMoreInfoSheetVisibleSpy).toHaveBeenCalledWith(true)
     })
 
-    it("renders more icon when feature flag is enabled", () => {
-      renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
+    it("renders more icon when feature flag is enabled", async () => {
+      await renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
 
       const rightButton = screen.getByTestId("top-right-icon")
       expect(rightButton).toBeOnTheScreen()
@@ -334,13 +334,13 @@ describe("InfiniteDiscoveryHeader", () => {
   })
 
   describe("when negative signals feature flag is disabled", () => {
-    it("renders share icon and calls share function when right button is pressed", () => {
+    it("renders share icon and calls share function when right button is pressed", async () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnabledDiscoverDailyNegativeSignals: false })
 
-      renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
+      await renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
 
       const rightButton = screen.getByTestId("top-right-icon")
-      fireEvent.press(rightButton)
+      await fireEvent.press(rightButton)
 
       expect(mockTrack.tappedShare).toHaveBeenCalledWith("artwork-id", "test-artwork", "artwork")
       expect(RNShare.open).toHaveBeenCalledWith({

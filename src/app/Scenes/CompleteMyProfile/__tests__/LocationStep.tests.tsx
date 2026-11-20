@@ -32,8 +32,8 @@ describe("LocationStep", () => {
     jest.clearAllMocks()
   })
 
-  it("renders", () => {
-    renderWithWrappers(<LocationStep />)
+  it("renders", async () => {
+    await renderWithWrappers(<LocationStep />)
 
     expect(screen.getByText("Add your primary location")).toBeOnTheScreen()
     expect(
@@ -45,16 +45,16 @@ describe("LocationStep", () => {
   })
 
   it("calls setProgressState on input change", async () => {
-    renderWithWrappers(<LocationStep />)
+    await renderWithWrappers(<LocationStep />)
 
     const input = screen.getByLabelText("Enter your primary location")
 
-    fireEvent(input, "focus")
-    fireEvent(input, "changeText", "Busy")
+    await fireEvent(input, "focus")
+    await fireEvent(input, "changeText", "Busy")
 
     await screen.findByTestId("autocomplete-location-prediction-a")
 
-    fireEvent.press(screen.getByTestId("autocomplete-location-prediction-a"))
+    await fireEvent.press(screen.getByTestId("autocomplete-location-prediction-a"))
 
     await waitFor(() =>
       expect(setProgressState).toHaveBeenCalledWith({
@@ -64,12 +64,12 @@ describe("LocationStep", () => {
     )
   })
 
-  it("shows the input value from field state", () => {
+  it("shows the input value from field state", async () => {
     stateSpy.mockImplementation((callback) =>
       callback({ progressState: { location: locationDetails } } as any)
     )
 
-    renderWithWrappers(<LocationStep />)
+    await renderWithWrappers(<LocationStep />)
 
     expect(screen.getByLabelText("Enter your primary location").props.value).toBe(
       "Busytown, CA, USA"

@@ -48,8 +48,8 @@ describe("ProgressiveOnboardingCityGuide", () => {
     })
   })
 
-  it("shows the title and description", () => {
-    renderTooltip()
+  it("shows the title and description", async () => {
+    await renderTooltip()
 
     expect(screen.getByText("City Guides")).toBeOnTheScreen()
     expect(screen.getByText("Expert-curated Guides")).toBeOnTheScreen()
@@ -58,10 +58,10 @@ describe("ProgressiveOnboardingCityGuide", () => {
     ).toBeOnTheScreen()
   })
 
-  it("remembers the dismissal", () => {
-    renderTooltip()
+  it("remembers the dismissal", async () => {
+    await renderTooltip()
 
-    fireEvent.press(screen.getByText("Dismiss"))
+    await fireEvent.press(screen.getByText("Dismiss"))
 
     const state = __globalStoreTestUtils__?.getCurrentState()
     expect(state?.progressiveOnboarding.dismissed).toStrictEqual([
@@ -69,23 +69,23 @@ describe("ProgressiveOnboardingCityGuide", () => {
     ])
   })
 
-  it("stays hidden once dismissed", () => {
+  it("stays hidden once dismissed", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         dismissed: [{ key: "city-guide-curated-guides", timestamp: Date.now() }],
       },
     })
 
-    renderTooltip()
+    await renderTooltip()
 
     expect(screen.getByText("City Guides")).toBeOnTheScreen()
     expect(screen.queryByText("Expert-curated Guides")).not.toBeOnTheScreen()
   })
 
-  it("stays hidden while the screen is not focused", () => {
+  it("stays hidden while the screen is not focused", async () => {
     mockUseIsFocused.mockReturnValue(false)
 
-    renderTooltip()
+    await renderTooltip()
 
     expect(screen.queryByText("Expert-curated Guides")).not.toBeOnTheScreen()
   })

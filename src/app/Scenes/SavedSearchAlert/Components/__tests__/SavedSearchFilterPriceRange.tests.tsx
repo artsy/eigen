@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { SavedSearchFilterPriceRangeQR } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPriceRange"
 import {
   SavedSearchModel,
@@ -18,14 +18,14 @@ describe("SavedSearchFilterPriceRange", () => {
       ),
     })
 
-    renderWithRelay({
+    await renderWithRelay({
       Artist: () => ({
         internalID: "artistID",
         name: "Banksy",
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("loading-skeleton"))
+    await waitFor(() => expect(screen.queryByTestId("loading-skeleton")).not.toBeOnTheScreen())
 
     expect(screen.getByLabelText("Minimum Price Range Input")).toHaveProp("value", "200")
     expect(screen.getByLabelText("Maximum Price Range Input")).toHaveProp("value", "3000")
@@ -40,20 +40,20 @@ describe("SavedSearchFilterPriceRange", () => {
       ),
     })
 
-    renderWithRelay({
+    await renderWithRelay({
       Artist: () => ({
         internalID: "artistID",
         name: "Banksy",
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("loading-skeleton"))
+    await waitFor(() => expect(screen.queryByTestId("loading-skeleton")).not.toBeOnTheScreen())
 
     expect(screen.getByLabelText("Minimum Price Range Input")).toHaveProp("value", "200")
     expect(screen.getByLabelText("Maximum Price Range Input")).toHaveProp("value", "3000")
 
-    fireEvent.changeText(screen.getByTestId("price-min-input"), "300")
-    fireEvent.changeText(screen.getByTestId("price-max-input"), "5000")
+    await fireEvent.changeText(screen.getByTestId("price-min-input"), "300")
+    await fireEvent.changeText(screen.getByTestId("price-max-input"), "5000")
 
     expect(screen.getByLabelText("Minimum Price Range Input")).toHaveProp("value", "300")
     expect(screen.getByLabelText("Maximum Price Range Input")).toHaveProp("value", "5000")

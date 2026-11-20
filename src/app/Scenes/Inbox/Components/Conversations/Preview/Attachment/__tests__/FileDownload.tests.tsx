@@ -7,8 +7,8 @@ import { Linking } from "react-native"
 
 Linking.openURL = jest.fn()
 it("opens file url when it is selected", async () => {
-  renderWithWrappers(<FileDownload attachment={attachment as any} />)
-  fireEvent.press(screen.getByRole("button"))
+  await renderWithWrappers(<FileDownload attachment={attachment as any} />)
+  await fireEvent.press(screen.getByRole("button"))
   expect(Linking.openURL).toBeCalledWith(attachment.downloadURL)
 })
 

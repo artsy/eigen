@@ -41,8 +41,8 @@ const saleArtworkFixture = (overrides = {}) => {
 
 describe(ClosedLotStanding, () => {
   describe("result message", () => {
-    it("says 'You won!' if the user won the lot", () => {
-      renderWithWrappers(
+    it("says 'You won!' if the user won the lot", async () => {
+      await renderWithWrappers(
         <ClosedLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
@@ -53,8 +53,8 @@ describe(ClosedLotStanding, () => {
       expect(screen.root).toHaveTextContent("You won!", { exact: false })
     })
 
-    it("says 'Outbid' if the the lot sold to someone else", () => {
-      renderWithWrappers(
+    it("says 'Outbid' if the the lot sold to someone else", async () => {
+      await renderWithWrappers(
         <ClosedLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: false,
@@ -65,8 +65,8 @@ describe(ClosedLotStanding, () => {
       expect(screen.root).toHaveTextContent("Outbid", { exact: false })
     })
 
-    it("says 'Passed' if the lot did not sell at all", () => {
-      renderWithWrappers(
+    it("says 'Passed' if the lot did not sell at all", async () => {
+      await renderWithWrappers(
         <ClosedLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
@@ -79,8 +79,8 @@ describe(ClosedLotStanding, () => {
   })
 
   describe("artwork badge", () => {
-    it("has a little star badge if the user won the lot", () => {
-      renderWithWrappers(
+    it("has a little star badge if the user won the lot", async () => {
+      await renderWithWrappers(
         <ClosedLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
@@ -94,15 +94,15 @@ describe(ClosedLotStanding, () => {
   })
 
   describe("closing time", () => {
-    it("renders the time the sale ended by default", () => {
-      renderWithWrappers(<ClosedLotStanding saleArtwork={saleArtworkFixture()} />)
+    it("renders the time the sale ended by default", async () => {
+      await renderWithWrappers(<ClosedLotStanding saleArtwork={saleArtworkFixture()} />)
       expect(screen.root).toHaveTextContent("Closed Aug 5", { exact: false })
     })
   })
 
   describe("selling price", () => {
-    it("shows selling price", () => {
-      renderWithWrappers(<ClosedLotStanding saleArtwork={saleArtworkFixture()} />)
+    it("shows selling price", async () => {
+      await renderWithWrappers(<ClosedLotStanding saleArtwork={saleArtworkFixture()} />)
       expect(screen.root).toHaveTextContent("$100", { exact: false })
     })
   })

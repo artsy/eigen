@@ -19,8 +19,8 @@ describe("SaleArtworkTileRailCard", () => {
     `,
   })
 
-  it("renders sale artwork without throwing an error", () => {
-    renderWithRelay({ SaleArtwork: () => mockSaleArtwork })
+  it("renders sale artwork without throwing an error", async () => {
+    await renderWithRelay({ SaleArtwork: () => mockSaleArtwork })
 
     // Render the sale artwork fields
     expect(screen.getByText("Banksy")).toBeOnTheScreen()
@@ -33,14 +33,14 @@ describe("SaleArtworkTileRailCard", () => {
     expect(image.props.style[1].width).toBe(CONTAINER_HEIGHT * 0.75) // The mock image aspect ratio is 0.75
   })
 
-  it("renders custom sale artwork message when useCustomSaleMessage is set to true", () => {
-    renderWithRelay({ SaleArtwork: () => mockSaleArtwork }, { useCustomSaleMessage: true })
+  it("renders custom sale artwork message when useCustomSaleMessage is set to true", async () => {
+    await renderWithRelay({ SaleArtwork: () => mockSaleArtwork }, { useCustomSaleMessage: true })
 
     expect(screen.getByText(/(14 bids)/)).toBeOnTheScreen()
   })
 
-  it("renders square image when useSquareAspectRatio is set to true", () => {
-    renderWithRelay({ SaleArtwork: () => mockSaleArtwork }, { useSquareAspectRatio: true })
+  it("renders square image when useSquareAspectRatio is set to true", async () => {
+    await renderWithRelay({ SaleArtwork: () => mockSaleArtwork }, { useSquareAspectRatio: true })
 
     const image = screen.getByTestId("sale-artwork-image")
     expect(image.props.style[1].height).toBe(CONTAINER_HEIGHT)

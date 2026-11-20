@@ -23,28 +23,28 @@ describe("RelatedArtistsRail", () => {
     `,
   })
 
-  it("renders", () => {
-    renderWithRelay({ Artist: () => artist })
+  it("renders", async () => {
+    await renderWithRelay({ Artist: () => artist })
 
     expect(screen.getByText("Andy Warhol")).toBeOnTheScreen()
     expect(screen.getByText("American, 01-01-01")).toBeOnTheScreen()
     expect(screen.getByText("Follow")).toBeOnTheScreen()
   })
 
-  it("navigates to the artist href", () => {
-    renderWithRelay({ Artist: () => artist })
+  it("navigates to the artist href", async () => {
+    await renderWithRelay({ Artist: () => artist })
 
-    fireEvent.press(screen.getByText("Andy Warhol"))
+    await fireEvent.press(screen.getByText("Andy Warhol"))
 
     expect(navigate).toHaveBeenCalledWith("artist-href")
   })
 
-  it("follows the artist", () => {
-    const { mockResolveLastOperation } = renderWithRelay({ Artist: () => artist })
+  it("follows the artist", async () => {
+    const { mockResolveLastOperation } = await renderWithRelay({ Artist: () => artist })
 
-    fireEvent.press(screen.getByText("Follow"))
+    await fireEvent.press(screen.getByText("Follow"))
 
-    mockResolveLastOperation({
+    await mockResolveLastOperation({
       Artist: () => ({
         ...artist,
         isFollowed: true,
@@ -54,25 +54,25 @@ describe("RelatedArtistsRail", () => {
     expect(screen.getByText("Following")).toBeOnTheScreen()
   })
 
-  it("unfollows the artist", () => {
-    const { mockResolveLastOperation } = renderWithRelay({
+  it("unfollows the artist", async () => {
+    const { mockResolveLastOperation } = await renderWithRelay({
       Artist: () => ({
         ...artist,
         isFollowed: true,
       }),
     })
 
-    fireEvent.press(screen.getByText("Following"))
+    await fireEvent.press(screen.getByText("Following"))
 
-    mockResolveLastOperation({ Artist: () => artist })
+    await mockResolveLastOperation({ Artist: () => artist })
 
     expect(screen.getByText("Follow")).toBeOnTheScreen()
   })
 
-  it("navigates to the artist", () => {
-    renderWithRelay({ Artist: () => artist })
+  it("navigates to the artist", async () => {
+    await renderWithRelay({ Artist: () => artist })
 
-    fireEvent.press(screen.getByTestId("related-artist-cover"))
+    await fireEvent.press(screen.getByTestId("related-artist-cover"))
 
     expect(navigate).toHaveBeenCalledWith("artist-href")
     expect(mockTrackEvent).toHaveBeenCalledWith(tracks.tappedArtistGroup(artist, artist, 0))

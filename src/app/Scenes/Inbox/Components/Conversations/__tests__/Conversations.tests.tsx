@@ -33,23 +33,23 @@ describe("messaging inbox", () => {
     />
   )
 
-  const renderAndResolve = (mockResolvers = {}) => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+  const renderAndResolve = async (mockResolvers = {}) => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
     })
   }
 
-  it("renders without throwing an error", () => {
-    renderAndResolve()
+  it("renders without throwing an error", async () => {
+    await renderAndResolve()
     // The inbox header is the first thing ConversationsContainer renders.
     expect(screen.getByText(/^Inbox/)).toBeOnTheScreen()
   })
 
-  it("renders the no messages notice when there are no messages", () => {
-    renderAndResolve({
+  it("renders the no messages notice when there are no messages", async () => {
+    await renderAndResolve({
       Me: () => ({
         conversations: {
           pageInfo: {

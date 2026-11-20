@@ -11,14 +11,14 @@ describe("Other Collections Rail", () => {
     />
   )
 
-  it("renders a title", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("renders a title", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     expect(screen.getByText("Browse by Movement")).toBeOnTheScreen()
   })
 
-  it("renders the other collection pills", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("renders the other collection pills", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     expect(screen.getByText("Browse by Movement")).toBeOnTheScreen()
     expect(screen.getByText("Abstract Expressionist Art")).toBeOnTheScreen()
@@ -26,10 +26,10 @@ describe("Other Collections Rail", () => {
     expect(screen.getByText("Black Arts Movement")).toBeOnTheScreen()
   })
 
-  it("navigates to a new collection when a pill is tapped", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("navigates to a new collection when a pill is tapped", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
-    fireEvent.press(screen.getByText("Abstract Expressionist Art"))
+    await fireEvent.press(screen.getByText("Abstract Expressionist Art"))
 
     expect(navigate).toHaveBeenCalledWith("/collection/abstract-expressionism")
   })

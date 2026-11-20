@@ -19,10 +19,10 @@ describe("ForgotPasswordStep", () => {
   const mockUseAuthScreen = useAuthScreen as jest.Mock
 
   it("disables the 'send reset link' button when the email address is invalid", async () => {
-    renderWithWrappers(<ForgotPasswordStep />)
+    await renderWithWrappers(<ForgotPasswordStep />)
     expect(screen.getByDisplayValue("foo@bar.baz")).toBeOnTheScreen()
     expect(screen.getByText("Send Reset Link")).toBeEnabled()
-    fireEvent.changeText(screen.getByHintText("Enter your email address"), "invalid-email")
+    await fireEvent.changeText(screen.getByHintText("Enter your email address"), "invalid-email")
     await waitFor(() => expect(screen.getByText("Send Reset Link")).toBeDisabled())
   })
 
@@ -55,8 +55,8 @@ describe("ForgotPasswordStep", () => {
     })
 
     it("shows a confirmation message", async () => {
-      renderWithWrappers(<ForgotPasswordStep />)
-      fireEvent.press(screen.getByText("Send Reset Link"))
+      await renderWithWrappers(<ForgotPasswordStep />)
+      await fireEvent.press(screen.getByText("Send Reset Link"))
       await waitFor(() => expect(screen.queryByHintText("Enter your email address")).toBeNull())
       expect(
         screen.getByText(
@@ -77,10 +77,10 @@ describe("ForgotPasswordStep", () => {
     // })
 
     it("returns to the login screen when the 'return to login' button is pressed", async () => {
-      renderWithWrappers(<ForgotPasswordStep />)
-      fireEvent.press(screen.getByText("Send Reset Link"))
+      await renderWithWrappers(<ForgotPasswordStep />)
+      await fireEvent.press(screen.getByText("Send Reset Link"))
       await waitFor(() => expect(screen.queryByHintText("Enter your email address")).toBeNull())
-      fireEvent.press(screen.getByText("Return to Login"))
+      await fireEvent.press(screen.getByText("Return to Login"))
       await waitFor(() =>
         expect(mockUseAuthNavigation().navigate).toHaveBeenCalledWith({
           name: "LoginWelcomeStep",
@@ -91,8 +91,8 @@ describe("ForgotPasswordStep", () => {
 
   it("displays an error message if the reset link could not be sent", async () => {
     jest.spyOn(GlobalStore.actions.auth, "forgotPassword").mockResolvedValue(false)
-    renderWithWrappers(<ForgotPasswordStep />)
-    fireEvent.press(screen.getByText("Send Reset Link"))
+    await renderWithWrappers(<ForgotPasswordStep />)
+    await fireEvent.press(screen.getByText("Send Reset Link"))
     await screen.findByText(
       "Couldn't send reset password link. Please try again, or contact support@artsy.net"
     )

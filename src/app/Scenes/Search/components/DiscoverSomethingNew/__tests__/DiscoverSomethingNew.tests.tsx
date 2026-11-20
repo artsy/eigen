@@ -18,8 +18,8 @@ describe("DiscoverSomethingNew", () => {
     `,
   })
 
-  it("does not render when no collections are available", () => {
-    renderWithRelay({
+  it("does not render when no collections are available", async () => {
+    await renderWithRelay({
       Query: () => ({
         collections: null,
       }),
@@ -28,8 +28,8 @@ describe("DiscoverSomethingNew", () => {
     expect(screen.queryByText("Discover Something New")).not.toBeOnTheScreen()
   })
 
-  it("does not render when collections array is empty", () => {
-    renderWithRelay({
+  it("does not render when collections array is empty", async () => {
+    await renderWithRelay({
       Query: () => ({
         collections: [],
       }),
@@ -38,8 +38,8 @@ describe("DiscoverSomethingNew", () => {
     expect(screen.queryByText("Discover Something New")).not.toBeOnTheScreen()
   })
 
-  it("renders collections with mock data", () => {
-    renderWithRelay({
+  it("renders collections with mock data", async () => {
+    await renderWithRelay({
       MarketingCollection: () => ({
         internalID: "test-collection",
         slug: "test-collection",
@@ -55,8 +55,8 @@ describe("DiscoverSomethingNew", () => {
     expect(chips.length).toBeGreaterThan(0)
   })
 
-  it("handles navigation and tracking setup", () => {
-    renderWithRelay({
+  it("handles navigation and tracking setup", async () => {
+    await renderWithRelay({
       MarketingCollection: () => ({
         internalID: "test-collection",
         slug: "test-collection",
@@ -76,7 +76,7 @@ describe("DiscoverSomethingNew", () => {
     expect(chips.length).toBeGreaterThan(0)
 
     // Chips should be pressable
-    fireEvent.press(chips[0])
+    await fireEvent.press(chips[0])
 
     // Should call navigation (specific URL may vary due to mocking)
     expect(navigate).toHaveBeenCalled()

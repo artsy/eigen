@@ -27,11 +27,11 @@ describe("MyCollectionBottomSheetModalProfile", () => {
 
   describe("Edit Profile", () => {
     it("navigates the user to edit profile screen", async () => {
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
       const addArtistsButton = screen.getByText("Edit Profile")
 
-      fireEvent.press(addArtistsButton)
+      await fireEvent.press(addArtistsButton)
 
       await waitFor(() => expect(navigate).toHaveBeenCalledWith("/my-profile/edit"))
     })
@@ -39,11 +39,11 @@ describe("MyCollectionBottomSheetModalProfile", () => {
 
   describe("Add Artists", () => {
     it("navigates the user to add artists screen", async () => {
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
       const addArtistsButton = screen.getByText("Add Artist")
 
-      fireEvent.press(addArtistsButton)
+      await fireEvent.press(addArtistsButton)
 
       await waitFor(() => {
         expect(navigate).toHaveBeenCalledWith("my-collection/collected-artists/new", {
@@ -57,11 +57,11 @@ describe("MyCollectionBottomSheetModalProfile", () => {
 
   describe("Add Artworks", () => {
     it("navigates the user to add artwork screen", async () => {
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
       const addArworksButton = screen.getByText("Add Artwork")
 
-      fireEvent.press(addArworksButton)
+      await fireEvent.press(addArworksButton)
 
       await waitFor(() => {
         expect(navigate).toHaveBeenCalledWith("my-collection/artworks/new", {

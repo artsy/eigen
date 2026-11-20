@@ -21,14 +21,16 @@ You can read more on how to query on the official docs [here](https://callstack.
 
 Query priority: `getByRole` > `getByLabelText` > `getByPlaceholderText` > `getByText` > `getByTestId`. Use `queryBy*` only for checking that something is _not_ there, and `findBy*` for anything that appears asynchronously.
 
-### Staying compatible with RNTL v14
+### Async rendering and events (RNTL v14)
 
-We are preparing to move to `@testing-library/react-native` v14, which drops `react-test-renderer` and only exposes host elements (View, Text, TextInput…) to queries. To keep tests compatible:
+We use `@testing-library/react-native` v14. Rendering and events are async, and queries only see host elements (View, Text, TextInput…):
 
+- `await` every `renderWithWrappers`, `renderWithRelay`, `renderHook`, `rerender`, `unmount`, `fireEvent.*` and `act` call, and `await` the `mockResolveLastOperation` / `mockRejectLastOperation` helpers. ESLint's `no-floating-promises` catches a missing `await` in test files.
+- Don't wrap `mockResolveLastOperation` / `mockRejectLastOperation` in `act` (they already use it), and don't call them inside a `waitFor` callback (`waitFor` retries it). Wait for the operation first, then resolve it.
 - Don't import `react-test-renderer`. Import `act` from `@testing-library/react-native`.
-- Don't use `UNSAFE_*` queries, `UNSAFE_root`, `*ByA11yHint`, `.root.findAllByType(...)` or `toJSON()` tree walking. ESLint flags the imports and `UNSAFE_*` queries in test files.
-- Don't call `element.props.onPress()` directly. Use `fireEvent.press(element)`.
+- Don't use `UNSAFE_*` queries, `UNSAFE_root`, `*ByA11yHint`, or tree walking. Don't call `element.props.onPress()` directly. Use `fireEvent.press(element)`.
 - Assert on what the user sees (text, role, label, `testID`) rather than on a child component's props.
+- Text has to be rendered inside `<Text>`, including in mocks.
 
 ## Examples
 
@@ -62,13 +64,12 @@ const { renderWithRelay } = setupTestWrapper<FooQuery>({
 })
 
 it("Displays the user's profile name", async () => {
-  renderWithRelay({
+  await renderWithRelay({
     Me: () => ({ name: "name" }),
   })
 
-  await waitForElementToBeRemoved(() => screen.getByTestId("loading"))
-
-  expect(screen.getByText("name")).toBeOnTheScreen()
+  expect(await screen.findByText("name")).toBeOnTheScreen()
+  expect(screen.queryByTestId("loading")).not.toBeOnTheScreen()
 })
 ```
 
@@ -99,8 +100,8 @@ const { renderWithRelay } = setupTestWrapper<BarTestQuery>({
   `,
 })
 
-it("Displays the user's profile name", () => {
-  renderWithRelay({
+it("Displays the user's profile name", async () => {
+  await renderWithRelay({
     Me: () => ({ name: "Mock Name" }),
   })
 
@@ -139,7 +140,7 @@ const { renderWithRelay } = setupTestWrapper({
   `,
 })
 
-const { env, mockResolveLastOperation, mockRejectLastOperation } = renderWithRelay()
+const { env, mockResolveLastOperation, mockRejectLastOperation } = await renderWithRelay()
 ```
 
 #### `renderWithRelay params`

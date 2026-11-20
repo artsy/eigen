@@ -37,19 +37,19 @@ describe("ArtworkEditionSetItem", () => {
   })
 
   describe("Dimensions", () => {
-    it("display dimension in inches when if it is selected as the preferred metric", () => {
+    it("display dimension in inches when if it is selected as the preferred metric", async () => {
       __globalStoreTestUtils__?.injectState({ userPrefs: { metric: "in" } })
 
-      renderWithRelay({ Artwork: () => artwork })
+      await renderWithRelay({ Artwork: () => artwork })
 
       expect(screen.getByText("10 x 10 in")).toBeOnTheScreen()
       expect(screen.queryByText("15 x 15 cm")).not.toBeOnTheScreen()
     })
 
-    it("display dimension in centimeters when if it is selected as the preferred metric", () => {
+    it("display dimension in centimeters when if it is selected as the preferred metric", async () => {
       __globalStoreTestUtils__?.injectState({ userPrefs: { metric: "cm" } })
 
-      renderWithRelay({
+      await renderWithRelay({
         Artwork: () => artwork,
       })
 
@@ -57,10 +57,10 @@ describe("ArtworkEditionSetItem", () => {
       expect(screen.queryByText("10 x 10 in")).not.toBeOnTheScreen()
     })
 
-    it("display the first available dimension", () => {
+    it("display the first available dimension", async () => {
       __globalStoreTestUtils__?.injectState({ userPrefs: { metric: "cm" } })
 
-      renderWithRelay({
+      await renderWithRelay({
         Artwork: () => ({
           editionSets: [
             {
@@ -77,28 +77,28 @@ describe("ArtworkEditionSetItem", () => {
   })
 
   describe("OnPress", () => {
-    it("should call `onPress` handler with the selected edition set id", () => {
-      renderWithRelay({ Artwork: () => artwork })
+    it("should call `onPress` handler with the selected edition set id", async () => {
+      await renderWithRelay({ Artwork: () => artwork })
 
-      fireEvent.press(screen.getByText("Edition Set One"))
+      await fireEvent.press(screen.getByText("Edition Set One"))
 
       expect(onSelectEditionMock).toBeCalledWith("edition-set-one")
     })
 
-    it("should not call `onPress` handler when is disabled", () => {
-      renderWithRelay({ Artwork: () => artwork }, { disabled: true })
+    it("should not call `onPress` handler when is disabled", async () => {
+      await renderWithRelay({ Artwork: () => artwork }, { disabled: true })
 
-      fireEvent.press(screen.getByText("Edition Set One"))
+      await fireEvent.press(screen.getByText("Edition Set One"))
 
       expect(onSelectEditionMock).not.toBeCalledWith("edition-set-one")
     })
   })
 
   describe("framed dimensions", () => {
-    it("displays framed dimension with 'with frame included' text when framed dimensions exist", () => {
+    it("displays framed dimension with 'with frame included' text when framed dimensions exist", async () => {
       __globalStoreTestUtils__?.injectState({ userPrefs: { metric: "in" } })
 
-      renderWithRelay({
+      await renderWithRelay({
         Artwork: () => ({
           editionSets: [
             { ...editionSet, framedDimensions: { in: "14 x 14 in", cm: "20 x 20 cm" } },
@@ -110,10 +110,10 @@ describe("ArtworkEditionSetItem", () => {
       expect(screen.queryByText("10 x 10 in")).not.toBeOnTheScreen()
     })
 
-    it("displays framed dimension in cm when selected as preferred metric", () => {
+    it("displays framed dimension in cm when selected as preferred metric", async () => {
       __globalStoreTestUtils__?.injectState({ userPrefs: { metric: "cm" } })
 
-      renderWithRelay({
+      await renderWithRelay({
         Artwork: () => ({
           editionSets: [
             {
@@ -128,10 +128,10 @@ describe("ArtworkEditionSetItem", () => {
       expect(screen.queryByText("15 x 15 cm")).not.toBeOnTheScreen()
     })
 
-    it("falls back to regular dimensions when no framed dimensions", () => {
+    it("falls back to regular dimensions when no framed dimensions", async () => {
       __globalStoreTestUtils__?.injectState({ userPrefs: { metric: "in" } })
 
-      renderWithRelay({ Artwork: () => artwork })
+      await renderWithRelay({ Artwork: () => artwork })
 
       expect(screen.getByText("10 x 10 in")).toBeOnTheScreen()
       expect(screen.queryByText("with frame included")).not.toBeOnTheScreen()

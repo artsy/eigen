@@ -21,8 +21,8 @@ describe("MyCollectionPreview", () => {
     `,
   })
 
-  it("renders empty state when no artworks", () => {
-    renderWithRelay({
+  it("renders empty state when no artworks", async () => {
+    await renderWithRelay({
       Me: () => ({
         myCollectionConnection: {
           edges: [],
@@ -32,8 +32,8 @@ describe("MyCollectionPreview", () => {
     expect(screen.getByTestId("my-collection-banner-empty-state")).toBeTruthy()
   })
 
-  it("renders correctly", () => {
-    renderWithRelay({
+  it("renders correctly", async () => {
+    await renderWithRelay({
       Me: () => myCollectionPreviewMock,
     })
 

@@ -9,44 +9,44 @@ describe("useShowDelay", () => {
   beforeEach(() => jest.useFakeTimers())
   afterEach(() => jest.useRealTimers())
 
-  it("shows only after the delay", () => {
-    const { result } = renderHook(() => useShowDelay(() => true, 500))
+  it("shows only after the delay", async () => {
+    const { result } = await renderHook(() => useShowDelay(() => true, 500))
 
     expect(result.current).toBe(false)
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(500)
     })
 
     expect(result.current).toBe(true)
   })
 
-  it("re-checks the predicate when the timer fires, rather than using the captured value", () => {
+  it("re-checks the predicate when the timer fires, rather than using the captured value", async () => {
     let shouldShow = true
-    const { result, rerender } = renderHook(() => useShowDelay(() => shouldShow, 500))
+    const { result, rerender } = await renderHook(() => useShowDelay(() => shouldShow, 500))
 
     // The condition stops holding during the delay — this is the navigate-away case.
     shouldShow = false
-    rerender({})
+    await rerender({})
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(500)
     })
 
     expect(result.current).toBe(false)
   })
 
-  it("hides immediately, without delay", () => {
+  it("hides immediately, without delay", async () => {
     let shouldShow = true
-    const { result, rerender } = renderHook(() => useShowDelay(() => shouldShow, 500))
+    const { result, rerender } = await renderHook(() => useShowDelay(() => shouldShow, 500))
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(500)
     })
     expect(result.current).toBe(true)
 
     shouldShow = false
-    rerender({})
+    await rerender({})
 
     expect(result.current).toBe(false)
   })

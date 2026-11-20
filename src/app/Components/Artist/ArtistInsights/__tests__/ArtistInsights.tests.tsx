@@ -45,9 +45,9 @@ describe("ArtistInsights", () => {
   )
 
   it("renders list auction results", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         internalID: "artist-id",
         slug: "artist-slug",
@@ -62,9 +62,9 @@ describe("ArtistInsights", () => {
   })
 
   it("tracks an auction page view when artist insights is current tab", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    await resolveMostRecentRelayOperation(mockEnvironment)
 
     await flushPromiseQueue()
 

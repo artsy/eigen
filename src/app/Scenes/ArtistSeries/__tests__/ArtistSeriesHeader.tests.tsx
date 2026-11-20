@@ -18,8 +18,8 @@ describe("Artist Series Header", () => {
     `,
   })
 
-  it("renders the Artist Series header", () => {
-    renderWithRelay({
+  it("renders the Artist Series header", async () => {
+    await renderWithRelay({
       ArtistSeries: () => ({
         title: "Pumpkins",
         image: {

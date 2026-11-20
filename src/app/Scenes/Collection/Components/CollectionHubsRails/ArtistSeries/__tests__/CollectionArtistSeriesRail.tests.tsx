@@ -16,19 +16,19 @@ describe("Artist Series Rail", () => {
       } as unknown as ComponentProps<typeof CollectionArtistSeriesRail>
     })
 
-    it("renders without throwing an error", () => {
-      renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
+    it("renders without throwing an error", async () => {
+      await renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       // GenericArtistSeriesRail renders the linked collections
       expect(screen.getByText("Cindy Sherman: Untitled Film Stills")).toBeOnTheScreen()
     })
 
-    it("correctly tracks when a collection is tapped", () => {
-      renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
+    it("correctly tracks when a collection is tapped", async () => {
+      await renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       const railCard = screen.getByText("Cindy Sherman: Untitled Film Stills")
 
-      fireEvent.press(railCard)
+      await fireEvent.press(railCard)
 
       expect(mockTrackEvent).toBeCalledWith({
         action_type: "tappedCollectionGroup",
@@ -44,16 +44,16 @@ describe("Artist Series Rail", () => {
       })
     })
 
-    it("renders three artist series in the Trending Artists Series", () => {
-      renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
+    it("renders three artist series in the Trending Artists Series", async () => {
+      await renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       expect(screen.getByText("Cindy Sherman: Untitled Film Stills")).toBeOnTheScreen()
       expect(screen.getByText("Damien Hirst: Butterflies")).toBeOnTheScreen()
       expect(screen.getByText("Hunt Slonem: Bunnies")).toBeOnTheScreen()
     })
 
-    it("renders three images in an artist series", () => {
-      renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
+    it("renders three images in an artist series", async () => {
+      await renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       const img1 = screen.getAllByTestId("image-1")[0]
       const img2 = screen.getAllByTestId("image-2")[0]
@@ -64,38 +64,38 @@ describe("Artist Series Rail", () => {
       expect(img3).toBeOnTheScreen()
     })
 
-    it("renders the collection hub rail title", () => {
-      renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
+    it("renders the collection hub rail title", async () => {
+      await renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       expect(screen.getByText("Trending Artist Series")).toBeOnTheScreen()
     })
 
-    it("renders each artist series' title", () => {
-      renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
+    it("renders each artist series' title", async () => {
+      await renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       expect(screen.getByText("Cindy Sherman: Untitled Film Stills")).toBeOnTheScreen()
       expect(screen.getByText("Damien Hirst: Butterflies")).toBeOnTheScreen()
       expect(screen.getByText("Hunt Slonem: Bunnies")).toBeOnTheScreen()
     })
 
-    it("renders each artist series' metadata", () => {
-      renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
+    it("renders each artist series' metadata", async () => {
+      await renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       expect(screen.getByText("From $20,000")).toBeOnTheScreen()
       expect(screen.getByText("From $7,500")).toBeOnTheScreen()
       expect(screen.getByText("From $2,000")).toBeOnTheScreen()
     })
 
-    it("navigates to a new collection when a series is tapped", () => {
-      renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
+    it("navigates to a new collection when a series is tapped", async () => {
+      await renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
-      fireEvent.press(screen.getByText("Cindy Sherman: Untitled Film Stills"))
+      await fireEvent.press(screen.getByText("Cindy Sherman: Untitled Film Stills"))
       expect(navigate).toHaveBeenCalledWith("/collection/cindy-sherman-untitled-film-stills")
 
-      fireEvent.press(screen.getByText("Damien Hirst: Butterflies"))
+      await fireEvent.press(screen.getByText("Damien Hirst: Butterflies"))
       expect(navigate).toHaveBeenCalledWith("/collection/damien-hirst-butterflies")
 
-      fireEvent.press(screen.getByText("Hunt Slonem: Bunnies"))
+      await fireEvent.press(screen.getByText("Hunt Slonem: Bunnies"))
       expect(navigate).toHaveBeenCalledWith("/collection/hunt-slonem-bunnies")
     })
   })

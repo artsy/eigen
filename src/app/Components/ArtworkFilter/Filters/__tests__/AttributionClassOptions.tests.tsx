@@ -28,8 +28,8 @@ describe("AttributionClassOptions Screen", () => {
     )
   }
 
-  it("renders the options", () => {
-    renderWithWrappers(<MockAttributionClassOptionsScreen />)
+  it("renders the options", async () => {
+    await renderWithWrappers(<MockAttributionClassOptionsScreen />)
 
     expect(screen.getByText("Unique")).toBeOnTheScreen()
     expect(screen.getByText("Limited Edition")).toBeOnTheScreen()
@@ -37,7 +37,7 @@ describe("AttributionClassOptions Screen", () => {
     expect(screen.getByText("Unknown Edition")).toBeOnTheScreen()
   })
 
-  it("displays all the selected filters on the filter modal screen", () => {
+  it("displays all the selected filters on the filter modal screen", async () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
@@ -59,12 +59,12 @@ describe("AttributionClassOptions Screen", () => {
       sizeMetric: "cm",
     }
 
-    renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
+    await renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
     expect(screen.getByText("Rarity • 2")).toBeTruthy()
   })
 
-  it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
+  it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
@@ -86,7 +86,7 @@ describe("AttributionClassOptions Screen", () => {
       sizeMetric: "cm",
     }
 
-    renderWithWrappers(<MockAttributionClassOptionsScreen initialData={injectedState} />)
+    await renderWithWrappers(<MockAttributionClassOptionsScreen initialData={injectedState} />)
     const options = screen.getAllByTestId("multi-select-option-button")
 
     expect(options).toHaveLength(4)

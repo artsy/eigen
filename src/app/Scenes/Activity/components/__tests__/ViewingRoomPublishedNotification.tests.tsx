@@ -38,7 +38,7 @@ describe("ViewingRoomPublishedNotification", () => {
   })
 
   it("renders all elements", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         notification,
       }),
@@ -56,7 +56,7 @@ describe("ViewingRoomPublishedNotification", () => {
 
   describe("'View Works CTA", () => {
     it("links to the Viewing Room page", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({
           notification,
         }),
@@ -68,7 +68,7 @@ describe("ViewingRoomPublishedNotification", () => {
 
       const viewAllWorksByLink = screen.getByText("View Works")
 
-      fireEvent.press(viewAllWorksByLink)
+      await fireEvent.press(viewAllWorksByLink)
 
       await act(async () => {
         await flushPromiseQueue()

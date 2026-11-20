@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { screen, waitFor } from "@testing-library/react-native"
 import { RecentlyViewedArtworksQR } from "app/Scenes/RecentlyViewed/Components/RecentlyViewedArtworks"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
@@ -8,11 +8,13 @@ describe("RecentlyViewed", () => {
       Component: () => <RecentlyViewedArtworksQR />,
     })
 
-    renderWithRelay({
+    await renderWithRelay({
       Query: () => mockResponse,
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("RecentlyViewedScreenPlaceholder"))
+    await waitFor(() =>
+      expect(screen.queryByTestId("RecentlyViewedScreenPlaceholder")).not.toBeOnTheScreen()
+    )
 
     expect(screen.getByText("Sunflower Seeds Exhibition")).toBeOnTheScreen()
     expect(

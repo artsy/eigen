@@ -58,39 +58,39 @@ describe("ArtistListItem", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  it("renders without feedback without throwing an error", () => {
-    renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment)
+  it("renders without feedback without throwing an error", async () => {
+    await renderWithWrappers(<TestRenderer />)
+    await resolveMostRecentRelayOperation(mockEnvironment)
     expect(screen.getByTestId("router-link")).toHaveProp("noFeedback", true)
   })
 
-  it("renders with feedback without throwing an error", () => {
-    renderWithWrappers(<TestRenderer withFeedback />)
-    resolveMostRecentRelayOperation(mockEnvironment)
+  it("renders with feedback without throwing an error", async () => {
+    await renderWithWrappers(<TestRenderer withFeedback />)
+    await resolveMostRecentRelayOperation(mockEnvironment)
     expect(screen.getByTestId("router-link")).toHaveProp("noFeedback", false)
   })
 
-  it("shows uploaded artworks counts when specified", () => {
-    renderWithWrappers(<TestRenderer withFeedback uploadsCount={3} />)
-    resolveMostRecentRelayOperation(mockEnvironment)
+  it("shows uploaded artworks counts when specified", async () => {
+    await renderWithWrappers(<TestRenderer withFeedback uploadsCount={3} />)
+    await resolveMostRecentRelayOperation(mockEnvironment)
     expect(screen.getByText("3 artworks uploaded")).toBeTruthy()
   })
 
-  it("shows uploaded artworks counts when no count is specified", () => {
-    renderWithWrappers(<TestRenderer withFeedback />)
-    resolveMostRecentRelayOperation(mockEnvironment)
+  it("shows uploaded artworks counts when no count is specified", async () => {
+    await renderWithWrappers(<TestRenderer withFeedback />)
+    await resolveMostRecentRelayOperation(mockEnvironment)
     expect(() => screen.getByText("uploaded")).toThrow()
   })
 
-  it("shows the MoreIcon", () => {
-    renderWithWrappers(<TestRenderer withFeedback showMoreIcon />)
-    resolveMostRecentRelayOperation(mockEnvironment)
+  it("shows the MoreIcon", async () => {
+    await renderWithWrappers(<TestRenderer withFeedback showMoreIcon />)
+    await resolveMostRecentRelayOperation(mockEnvironment)
     expect(() => screen.getByTestId("more-icon")).toBeTruthy()
   })
 
-  it("shows the FollowButton", () => {
-    renderWithWrappers(<TestRenderer withFeedback showFollowButton />)
-    resolveMostRecentRelayOperation(mockEnvironment)
+  it("shows the FollowButton", async () => {
+    await renderWithWrappers(<TestRenderer withFeedback showFollowButton />)
+    await resolveMostRecentRelayOperation(mockEnvironment)
     expect(() => screen.getByTestId("follow-artist-button")).toBeTruthy()
   })
 

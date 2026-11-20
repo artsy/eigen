@@ -56,43 +56,43 @@ describe("ProgressiveOnboardingSaveArtwork", () => {
     mockAddListener.mockClear()
   })
 
-  it("renders", () => {
-    renderWithRelay({ MeCounts: () => ({ savedArtworks: 1 }) })
+  it("renders", async () => {
+    await renderWithRelay({ MeCounts: () => ({ savedArtworks: 1 }) })
 
     expect(screen.getByText("Test Children")).toBeOnTheScreen()
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
   })
 
-  it("dismisses the save-artwork popover from store", () => {
+  it("dismisses the save-artwork popover from store", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         sessionState: { isReady: true },
       },
     })
-    renderWithRelay({ MeCounts: () => ({ savedArtworks: 0 }) })
+    await renderWithRelay({ MeCounts: () => ({ savedArtworks: 0 }) })
 
     expect(screen.getByText("Test Children")).toBeOnTheScreen()
 
     expect(screen.getByText("Popover")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Popover"))
+    await fireEvent.press(screen.getByText("Popover"))
 
     expect(__globalStoreTestUtils__?.getLastAction().type).toContain(
       "progressiveOnboarding.dismiss"
     )
   })
 
-  it("does not show the popover given isReady false", () => {
+  it("does not show the popover given isReady false", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: { sessionState: { isReady: false } },
     })
 
-    renderWithRelay({ MeCounts: () => ({ savedArtworks: 1 }) })
+    await renderWithRelay({ MeCounts: () => ({ savedArtworks: 1 }) })
     expect(screen.getByText("Test Children")).toBeOnTheScreen()
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
   })
 
-  it("does not show the popover when screen is not focused", () => {
+  it("does not show the popover when screen is not focused", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         sessionState: { isReady: true },
@@ -106,7 +106,7 @@ describe("ProgressiveOnboardingSaveArtwork", () => {
       return jest.fn() // return a function to mimic the unsubscribe function
     })
 
-    renderWithRelay({ MeCounts: () => ({ savedArtworks: 1 }) })
+    await renderWithRelay({ MeCounts: () => ({ savedArtworks: 1 }) })
     expect(screen.getByText("Test Children")).toBeOnTheScreen()
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
   })

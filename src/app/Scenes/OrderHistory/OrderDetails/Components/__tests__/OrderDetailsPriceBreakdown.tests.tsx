@@ -19,8 +19,8 @@ describe("OrderDetailsPriceBreakdown", () => {
     `,
   })
 
-  it("renders pricing breakdown lines", () => {
-    renderWithRelay({
+  it("renders pricing breakdown lines", async () => {
+    await renderWithRelay({
       Order: () => ({
         pricingBreakdownLines: [
           {
@@ -64,15 +64,15 @@ describe("OrderDetailsPriceBreakdown", () => {
     expect(screen.getByText("US$1052.57")).toBeOnTheScreen()
   })
 
-  it("renders import tax disclaimer with link", () => {
-    renderWithRelay({
+  it("renders import tax disclaimer with link", async () => {
+    await renderWithRelay({
       Order: () => ({ mode: "OFFER", internalID: "order-id" }),
     })
 
     expect(screen.getByText("*Additional duties and taxes may apply at import.")).toBeOnTheScreen()
     expect(screen.getByText("may apply at import")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("may apply at import"))
+    await fireEvent.press(screen.getByText("may apply at import"))
 
     expect(navigate).toHaveBeenCalledWith(
       "https://support.artsy.net/s/article/How-are-taxes-and-customs-fees-calculated"

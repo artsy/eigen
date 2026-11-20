@@ -24,8 +24,8 @@ describe("ItineraryHeader", () => {
     `,
   })
 
-  it("renders the title, subtitle, author and description", () => {
-    renderWithRelay({
+  it("renders the title, subtitle, author and description", async () => {
+    await renderWithRelay({
       Itinerary: () => ({
         title: "Chill Vibes Only",
         subtitle: "Top picks",
@@ -41,8 +41,8 @@ describe("ItineraryHeader", () => {
     expect(screen.getByText("Our list of recommendations.")).toBeTruthy()
   })
 
-  it("renders a scrim behind the hero text", () => {
-    renderWithRelay({
+  it("renders a scrim behind the hero text", async () => {
+    await renderWithRelay({
       Itinerary: () => ({
         title: "Chill Vibes Only",
         isCurated: true,
@@ -55,8 +55,8 @@ describe("ItineraryHeader", () => {
 
   // With no hero image, the title has nothing else pushing it below the floating back
   // button (ItineraryScreen.tsx), which is absolutely positioned outside the scroll view.
-  it("clears the floating back button with no hero image", () => {
-    renderWithRelay({
+  it("clears the floating back button with no hero image", async () => {
+    await renderWithRelay({
       Itinerary: () => ({ title: "Chill Vibes Only", isCurated: true, heroImage: null }),
     })
 
@@ -70,7 +70,7 @@ describe("ItineraryHeader", () => {
       height: 800,
     })
 
-    renderWithRelay({
+    await renderWithRelay({
       Itinerary: () => ({
         internalID: "itinerary-1",
         isCurated: false,

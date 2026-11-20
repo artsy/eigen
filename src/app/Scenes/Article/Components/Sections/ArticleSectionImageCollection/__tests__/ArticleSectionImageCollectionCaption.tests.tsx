@@ -36,7 +36,7 @@ describe("ArticleSectionImageCollectionCaption", () => {
   })
 
   it("renders", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       ArticleImageSection: () => ({
         __typename: "ArticleImageSection",
         caption: "Example Caption",
@@ -49,7 +49,7 @@ describe("ArticleSectionImageCollectionCaption", () => {
   })
 
   it("renders Artwork type", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       ArticleSectionImageCollection: () => ({
         figures: [{ __typename: "Artwork" }],
       }),

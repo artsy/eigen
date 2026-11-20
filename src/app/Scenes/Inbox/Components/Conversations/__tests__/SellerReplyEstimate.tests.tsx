@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { SellerReplyEstimate_Test_Query } from "__generated__/SellerReplyEstimate_Test_Query.graphql"
 import { SellerReplyEstimateFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/SellerReplyEstimate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -29,8 +30,8 @@ describe("SellerReplyEstimateFragmentContainer", () => {
     `,
   })
 
-  it("render given order state submitted", () => {
-    const { getByText } = renderWithRelay({
+  it("render given order state submitted", async () => {
+    await renderWithRelay({
       CommerceOrderConnectionWithTotalCount: () => ({
         edges: [
           {
@@ -44,14 +45,14 @@ describe("SellerReplyEstimateFragmentContainer", () => {
     })
 
     expect(
-      getByText(
+      screen.getByText(
         "The seller will respond to your offer by Dec 5. Keep in mind making an offer doesn’t guarantee you the work."
       )
     ).toBeDefined()
   })
 
-  it("render given order state approved", () => {
-    const { getByText } = renderWithRelay({
+  it("render given order state approved", async () => {
+    await renderWithRelay({
       CommerceOrderConnectionWithTotalCount: () => ({
         edges: [
           {
@@ -64,14 +65,14 @@ describe("SellerReplyEstimateFragmentContainer", () => {
     })
 
     expect(
-      getByText(
+      screen.getByText(
         "Thank you for your purchase. You will be notified when the work has shipped, typically within 5–7 business days."
       )
     ).toBeDefined()
   })
 
-  it("render given order state processing and displayName Rush", () => {
-    const { getByText } = renderWithRelay({
+  it("render given order state processing and displayName Rush", async () => {
+    await renderWithRelay({
       CommerceOrderConnectionWithTotalCount: () => ({
         edges: [
           {
@@ -95,14 +96,14 @@ describe("SellerReplyEstimateFragmentContainer", () => {
     })
 
     expect(
-      getByText(
+      screen.getByText(
         "Your order will be delivered in 1 business day once shipped, plus up to 7 days processing time."
       )
     ).toBeDefined()
   })
 
-  it("render given order state processing and displayName Express", () => {
-    const { getByText } = renderWithRelay({
+  it("render given order state processing and displayName Express", async () => {
+    await renderWithRelay({
       CommerceOrderConnectionWithTotalCount: () => ({
         edges: [
           {
@@ -126,14 +127,14 @@ describe("SellerReplyEstimateFragmentContainer", () => {
     })
 
     expect(
-      getByText(
+      screen.getByText(
         "Your order will be delivered in 2 business days once shipped, plus up to 7 days processing time."
       )
     ).toBeDefined()
   })
 
-  it("render given order state processing and displayName Standard", () => {
-    const { getByText } = renderWithRelay({
+  it("render given order state processing and displayName Standard", async () => {
+    await renderWithRelay({
       CommerceOrderConnectionWithTotalCount: () => ({
         edges: [
           {
@@ -157,14 +158,14 @@ describe("SellerReplyEstimateFragmentContainer", () => {
     })
 
     expect(
-      getByText(
+      screen.getByText(
         "Your order will be delivered in 3-5 business days once shipped, plus up to 7 days processing time."
       )
     ).toBeDefined()
   })
 
-  it("does not render given unsupported order state", () => {
-    const { queryAllByText } = renderWithRelay({
+  it("does not render given unsupported order state", async () => {
+    await renderWithRelay({
       CommerceOrderConnectionWithTotalCount: () => ({
         edges: [
           {
@@ -176,6 +177,6 @@ describe("SellerReplyEstimateFragmentContainer", () => {
       }),
     })
 
-    expect(queryAllByText(/./)).toHaveLength(0)
+    expect(screen.queryAllByText(/./)).toHaveLength(0)
   })
 })

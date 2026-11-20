@@ -49,26 +49,26 @@ describe("RouterLink", () => {
     )
   }
 
-  it("renders", () => {
-    renderWithWrappers(<TestComponent />)
+  it("renders", async () => {
+    await renderWithWrappers(<TestComponent />)
 
     expect(screen.getByText("Test Link")).toBeDefined()
   })
 
   it("navigates to route on press (with prefetching)", async () => {
-    renderWithWrappers(<TestComponent />)
+    await renderWithWrappers(<TestComponent />)
 
-    fireEvent.press(screen.getByText("Test Link"))
+    await fireEvent.press(screen.getByText("Test Link"))
 
     expect(navigate).toHaveBeenCalledExactlyOnceWith("/test-route", {
       passProps: { id: "test-id" },
     })
   })
 
-  it("navigates to route on press (without prefetching)", () => {
-    renderWithWrappers(<TestComponent disablePrefetch />)
+  it("navigates to route on press (without prefetching)", async () => {
+    await renderWithWrappers(<TestComponent disablePrefetch />)
 
-    fireEvent.press(screen.getByText("Test Link"))
+    await fireEvent.press(screen.getByText("Test Link"))
 
     expect(navigate).toHaveBeenCalledExactlyOnceWith("/test-route", {
       passProps: { id: "test-id" },
@@ -76,39 +76,39 @@ describe("RouterLink", () => {
   })
 
   describe("when disableNavigation is true", () => {
-    it("does not navigate on press", () => {
-      renderWithWrappers(<TestComponent disableNavigation />)
+    it("does not navigate on press", async () => {
+      await renderWithWrappers(<TestComponent disableNavigation />)
 
-      fireEvent.press(screen.getByText("Test Link"))
+      await fireEvent.press(screen.getByText("Test Link"))
 
       expect(navigate).not.toHaveBeenCalled()
     })
 
-    it("still calls onPress", () => {
+    it("still calls onPress", async () => {
       const onPress = jest.fn()
-      renderWithWrappers(<TestComponent disableNavigation onPress={onPress} />)
+      await renderWithWrappers(<TestComponent disableNavigation onPress={onPress} />)
 
-      fireEvent.press(screen.getByText("Test Link"))
+      await fireEvent.press(screen.getByText("Test Link"))
 
       expect(onPress).toHaveBeenCalledTimes(1)
     })
   })
 
   describe("with hasChildTouchable", () => {
-    it("navigates and calls onPress on press", () => {
-      renderWithWrappers(<TestTouchableComponent hasChildTouchable />)
+    it("navigates and calls onPress on press", async () => {
+      await renderWithWrappers(<TestTouchableComponent hasChildTouchable />)
 
-      fireEvent.press(screen.getByText("Test Link"))
+      await fireEvent.press(screen.getByText("Test Link"))
 
       expect(navigate).toHaveBeenCalled()
       expect(touchableOnPress).toHaveBeenCalled()
     })
 
     describe("when prefetching is disabled", () => {
-      it("calls onPress, navigates and does not prefetch", () => {
-        renderWithWrappers(<TestTouchableComponent hasChildTouchable disablePrefetch />)
+      it("calls onPress, navigates and does not prefetch", async () => {
+        await renderWithWrappers(<TestTouchableComponent hasChildTouchable disablePrefetch />)
 
-        fireEvent.press(screen.getByText("Test Link"))
+        await fireEvent.press(screen.getByText("Test Link"))
 
         expect(touchableOnPress).toHaveBeenCalled()
         expect(navigate).toHaveBeenCalled()
@@ -117,10 +117,10 @@ describe("RouterLink", () => {
       })
 
       describe("when `to` is `undefined`", () => {
-        it("calls onPress and does not navigate or prefetch", () => {
-          renderWithWrappers(<TestTouchableComponent hasChildTouchable to={undefined} />)
+        it("calls onPress and does not navigate or prefetch", async () => {
+          await renderWithWrappers(<TestTouchableComponent hasChildTouchable to={undefined} />)
 
-          fireEvent.press(screen.getByText("Test Link"))
+          await fireEvent.press(screen.getByText("Test Link"))
 
           expect(touchableOnPress).toHaveBeenCalled()
 
@@ -133,7 +133,7 @@ describe("RouterLink", () => {
 
   describe("prefetching", () => {
     it("prefetches", async () => {
-      renderWithWrappers(<TestComponent />)
+      await renderWithWrappers(<TestComponent />)
 
       await waitFor(() => {
         expect(mockPrefetch).toHaveBeenCalledWith("/test-route", undefined, expect.any(Function))
@@ -141,7 +141,7 @@ describe("RouterLink", () => {
     })
 
     it("prefetches given prefetchVariables", async () => {
-      renderWithWrappers(<TestComponent prefetchVariables={{ slug: "banksy" }} />)
+      await renderWithWrappers(<TestComponent prefetchVariables={{ slug: "banksy" }} />)
 
       await waitFor(() => {
         expect(mockPrefetch).toHaveBeenCalledWith(
@@ -153,9 +153,9 @@ describe("RouterLink", () => {
     })
 
     describe("when disablePrefetch is true", () => {
-      renderWithWrappers(<TestComponent disablePrefetch />)
+      it("does not prefetch", async () => {
+        await renderWithWrappers(<TestComponent disablePrefetch />)
 
-      it("does not prefetch", () => {
         expect(mockPrefetch).not.toHaveBeenCalledWith("/test-route", expect.any(Function))
       })
     })
@@ -167,9 +167,9 @@ describe("RouterLink", () => {
         })
       })
 
-      renderWithWrappers(<TestComponent disablePrefetch />)
+      it("does not prefetch", async () => {
+        await renderWithWrappers(<TestComponent disablePrefetch />)
 
-      it("does not prefetch", () => {
         expect(mockPrefetch).not.toHaveBeenCalledWith("/test-route")
       })
     })

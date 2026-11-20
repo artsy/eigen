@@ -36,16 +36,16 @@ describe("ArtworkEditionSetInformation", () => {
     `,
   })
 
-  it("the sale message for the selected edition set should NOT be rendered", () => {
-    renderWithRelay({ Artwork: () => artwork })
+  it("the sale message for the selected edition set should NOT be rendered", async () => {
+    await renderWithRelay({ Artwork: () => artwork })
 
     expect(screen.queryByLabelText("Selected edition set")).not.toBeOnTheScreen()
   })
 
-  it("should keep the selected edtion set id in artwork store", () => {
-    renderWithRelay({ Artwork: () => artwork })
+  it("should keep the selected edtion set id in artwork store", async () => {
+    await renderWithRelay({ Artwork: () => artwork })
 
-    fireEvent.press(screen.getByText("Edition Set Two"))
+    await fireEvent.press(screen.getByText("Edition Set Two"))
 
     expect(screen.getByTestId("debug")).toHaveTextContent(/"selectedEditionId":"edition-set-two"/)
   })

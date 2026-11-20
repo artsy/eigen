@@ -6,8 +6,8 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Linking, Text } from "react-native"
 
 describe("Markdown", () => {
-  it("renders multiple paragraphs as Text elements", () => {
-    renderWithWrappers(
+  it("renders multiple paragraphs as Text elements", async () => {
+    await renderWithWrappers(
       <Markdown>
         paragraph 1 has some text.
         {"\n"}
@@ -21,8 +21,8 @@ describe("Markdown", () => {
     expect(screen.getAllByText(/.*/)[2]).toHaveTextContent(/paragraph 2 also has text/)
   })
 
-  it("renders links as LinkText", () => {
-    renderWithWrappers(
+  it("renders links as LinkText", async () => {
+    await renderWithWrappers(
       <Markdown>
         Sorry, your bid wasn’t received before
         {"\n"}
@@ -35,7 +35,7 @@ describe("Markdown", () => {
     expect(screen.getAllByTestId(/^linktext-/)).toHaveLength(1)
     expect(screen.getAllByTestId(/^linktext-/)[0]).toHaveTextContent("join the live auction")
 
-    fireEvent.press(screen.getAllByTestId(/^linktext-/)[0])
+    await fireEvent.press(screen.getAllByTestId(/^linktext-/)[0])
 
     expect(navigate).toHaveBeenCalledWith("http://www.artsy.net", { modal: true })
   })
@@ -44,7 +44,7 @@ describe("Markdown", () => {
     Linking.canOpenURL = jest.fn().mockReturnValue(Promise.resolve(true))
     Linking.openURL = jest.fn()
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <Markdown>
         Your bid can’t be placed at this time.
         {"\n"}
@@ -57,11 +57,11 @@ describe("Markdown", () => {
     expect(screen.getAllByTestId(/^linktext-/)).toHaveLength(1)
     expect(screen.getAllByTestId(/^linktext-/)[0]).toHaveTextContent("support@artsy.net")
 
-    fireEvent.press(screen.getAllByTestId(/^linktext-/)[0])
+    await fireEvent.press(screen.getAllByTestId(/^linktext-/)[0])
     await waitFor(() => expect(Linking.openURL).toBeCalledWith("mailto:support@artsy.net"))
   })
 
-  it("accepts a rules prop", () => {
+  it("accepts a rules prop", async () => {
     const basicRules = defaultRules({ modal: true })
     const rules = {
       ...basicRules,
@@ -70,7 +70,7 @@ describe("Markdown", () => {
         react: (node, output, state) => <Text testID="foobar">{output(node.content, state)}</Text>,
       },
     } as MarkdownRules
-    renderWithWrappers(<Markdown rules={rules}>Paragraph 1 has some text</Markdown>)
+    await renderWithWrappers(<Markdown rules={rules}>Paragraph 1 has some text</Markdown>)
 
     expect(screen.getAllByText(/.*/)[0]).toHaveProp("testID", "foobar")
     expect(screen.getByTestId("foobar")).toHaveTextContent("Paragraph 1 has some text")

@@ -41,8 +41,8 @@ describe("Ways to Buy Options Screen", () => {
     </ArtworkFiltersStoreProvider>
   )
 
-  it("renders the correct ways to buy options", () => {
-    renderWithWrappers(<MockWaysToBuyScreen initialData={initialState} />)
+  it("renders the correct ways to buy options", async () => {
+    await renderWithWrappers(<MockWaysToBuyScreen initialData={initialState} />)
 
     expect(screen.getByText("Purchase")).toBeTruthy()
     expect(screen.getByText("Make Offer")).toBeTruthy()
@@ -50,7 +50,7 @@ describe("Ways to Buy Options Screen", () => {
     expect(screen.getByText("Contact Gallery")).toBeTruthy()
   })
 
-  it("does not display the default text when no filter selected on the filter modal screen", () => {
+  it("does not display the default text when no filter selected on the filter modal screen", async () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [],
       appliedFilters: [],
@@ -66,12 +66,12 @@ describe("Ways to Buy Options Screen", () => {
       sizeMetric: "cm",
     }
 
-    renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
+    await renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
     expect(screen.getByText("Ways to Buy")).toBeOnTheScreen()
   })
 
-  it("displays the number of the selected filters on the filter modal screen", () => {
+  it("displays the number of the selected filters on the filter modal screen", async () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
@@ -103,12 +103,12 @@ describe("Ways to Buy Options Screen", () => {
       sizeMetric: "cm",
     }
 
-    renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
+    await renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
     expect(screen.getByText("Ways to Buy • 3")).toBeOnTheScreen()
   })
 
-  it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
+  it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
@@ -130,7 +130,7 @@ describe("Ways to Buy Options Screen", () => {
       sizeMetric: "cm",
     }
 
-    renderWithWrappers(<MockWaysToBuyScreen initialData={injectedState} />)
+    await renderWithWrappers(<MockWaysToBuyScreen initialData={injectedState} />)
 
     const options = screen.getAllByTestId("multi-select-option-button")
     const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
@@ -149,7 +149,7 @@ describe("Ways to Buy Options Screen", () => {
     expect(checkboxes[3]).toHaveProp("selected", false)
   })
 
-  it("it toggles applied filters 'ON' and unapplied filters 'OFF", () => {
+  it("it toggles applied filters 'ON' and unapplied filters 'OFF", async () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [],
       appliedFilters: [
@@ -177,7 +177,7 @@ describe("Ways to Buy Options Screen", () => {
       sizeMetric: "cm",
     }
 
-    renderWithWrappers(<MockWaysToBuyScreen initialData={injectedState} />)
+    await renderWithWrappers(<MockWaysToBuyScreen initialData={injectedState} />)
 
     const options = screen.getAllByTestId("multi-select-option-button")
     const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")

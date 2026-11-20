@@ -87,8 +87,8 @@ describe("ItineraryEditSheet", () => {
     await AsyncStorage.clear()
   })
 
-  it("prefills the name and notes", () => {
-    renderWithRelay({})
+  it("prefills the name and notes", async () => {
+    await renderWithRelay({})
 
     expect(screen.getByTestId("itinerary-edit-name")).toHaveProp("defaultValue", "London Oct 2026")
     expect(screen.getByTestId("itinerary-edit-notes")).toHaveProp(
@@ -97,37 +97,37 @@ describe("ItineraryEditSheet", () => {
     )
   })
 
-  it("counts the notes against the limit the designs specify", () => {
-    renderWithRelay({})
+  it("counts the notes against the limit the designs specify", async () => {
+    await renderWithRelay({})
 
     // "If time, check out Borough Market" is 33 characters.
     expect(screen.getByText("33 / 200")).toBeOnTheScreen()
 
-    fireEvent.changeText(screen.getByTestId("itinerary-edit-notes"), "Short")
+    await fireEvent.changeText(screen.getByTestId("itinerary-edit-notes"), "Short")
 
     expect(screen.getByText("5 / 200")).toBeOnTheScreen()
   })
 
-  it("caps the notes field at the limit", () => {
-    renderWithRelay({})
+  it("caps the notes field at the limit", async () => {
+    await renderWithRelay({})
 
     expect(screen.getByTestId("itinerary-edit-notes")).toHaveProp("maxLength", 200)
   })
 
   // Saving an itinerary with no name would leave it unlabelled everywhere it is listed.
-  it("will not save an empty name", () => {
-    renderWithRelay({})
+  it("will not save an empty name", async () => {
+    await renderWithRelay({})
 
-    fireEvent.changeText(screen.getByTestId("itinerary-edit-name"), "   ")
+    await fireEvent.changeText(screen.getByTestId("itinerary-edit-name"), "   ")
 
     expect(screen.getByTestId("itinerary-edit-save")).toBeDisabled()
   })
 
-  it("sends the edited title and notes when saved", () => {
-    const { env } = renderWithRelay({})
+  it("sends the edited title and notes when saved", async () => {
+    const { env } = await renderWithRelay({})
 
-    fireEvent.changeText(screen.getByTestId("itinerary-edit-name"), "London November")
-    fireEvent.press(screen.getByTestId("itinerary-edit-save"))
+    await fireEvent.changeText(screen.getByTestId("itinerary-edit-name"), "London November")
+    await fireEvent.press(screen.getByTestId("itinerary-edit-save"))
 
     expect(env.mock.getMostRecentOperation().request.variables.input).toEqual({
       id: "itinerary-1",
@@ -136,10 +136,10 @@ describe("ItineraryEditSheet", () => {
     })
   })
 
-  it("deletes by id, then tells the caller", () => {
-    const { env } = renderWithRelay({})
+  it("deletes by id, then tells the caller", async () => {
+    const { env } = await renderWithRelay({})
 
-    fireEvent.press(screen.getByTestId("itinerary-edit-delete"))
+    await fireEvent.press(screen.getByTestId("itinerary-edit-delete"))
 
     expect(env.mock.getMostRecentOperation().request.variables.input).toEqual({
       id: "itinerary-1",
@@ -149,8 +149,8 @@ describe("ItineraryEditSheet", () => {
   // A successful delete leaves this itinerary's own screen, but the itineraries list's Relay
   // connection is a separate record this component doesn't own — without evicting it there,
   // the list would keep showing an itinerary that no longer exists until pulled to refresh.
-  it("evicts the deleted itinerary from the itineraries list's connection", () => {
-    const { mockResolveLastOperation } = renderWithRelay({
+  it("evicts the deleted itinerary from the itineraries list's connection", async () => {
+    const { mockResolveLastOperation } = await renderWithRelay({
       Me: () => ({
         itinerariesConnection: {
           edges: [
@@ -163,11 +163,11 @@ describe("ItineraryEditSheet", () => {
 
     expect(screen.getByTestId("remaining-itineraries")).toHaveTextContent("itinerary-1,itinerary-2")
 
-    fireEvent.press(screen.getByTestId("itinerary-edit-delete"))
+    await fireEvent.press(screen.getByTestId("itinerary-edit-delete"))
 
     // Matches the connection's first node by `id` — the delete mutation itself is keyed by
     // `internalID`, but the Relay store identifies (and so evicts) records by `id`.
-    mockResolveLastOperation({
+    await mockResolveLastOperation({
       deleteItineraryPayload: () => ({
         responseOrError: {
           __typename: "ItineraryMutationSuccess",
@@ -181,8 +181,8 @@ describe("ItineraryEditSheet", () => {
   })
 
   // The list pages by offset: without a reload, its next page would start one itinerary late.
-  it("reloads the itineraries list's first page after a delete", () => {
-    const { env, mockResolveLastOperation } = renderWithRelay({
+  it("reloads the itineraries list's first page after a delete", async () => {
+    const { env, mockResolveLastOperation } = await renderWithRelay({
       Me: () => ({
         itinerariesConnection: {
           edges: [{ node: { id: "itinerary-id-1", internalID: "itinerary-1" } }],
@@ -190,9 +190,9 @@ describe("ItineraryEditSheet", () => {
       }),
     })
 
-    fireEvent.press(screen.getByTestId("itinerary-edit-delete"))
+    await fireEvent.press(screen.getByTestId("itinerary-edit-delete"))
 
-    mockResolveLastOperation({
+    await mockResolveLastOperation({
       deleteItineraryPayload: () => ({
         responseOrError: {
           __typename: "ItineraryMutationSuccess",
@@ -208,12 +208,12 @@ describe("ItineraryEditSheet", () => {
   })
 
   // Deleting the only itinerary used to leave the city guide's "Your Itineraries" rail showing it.
-  it("refetches the itineraries rail after a delete", () => {
-    const { env, mockResolveLastOperation } = renderWithRelay({})
+  it("refetches the itineraries rail after a delete", async () => {
+    const { env, mockResolveLastOperation } = await renderWithRelay({})
 
-    fireEvent.press(screen.getByTestId("itinerary-edit-delete"))
+    await fireEvent.press(screen.getByTestId("itinerary-edit-delete"))
 
-    mockResolveLastOperation({
+    await mockResolveLastOperation({
       deleteItineraryPayload: () => ({
         responseOrError: {
           __typename: "ItineraryMutationSuccess",
@@ -228,12 +228,12 @@ describe("ItineraryEditSheet", () => {
     expect(railQuery?.request.variables).toEqual({ citySlug: "london", first: 10 })
   })
 
-  it("tracks which fields a save changed", () => {
-    const { mockResolveLastOperation } = renderWithRelay({})
+  it("tracks which fields a save changed", async () => {
+    const { mockResolveLastOperation } = await renderWithRelay({})
 
-    fireEvent.changeText(screen.getByTestId("itinerary-edit-name"), "London November")
-    fireEvent.press(screen.getByTestId("itinerary-edit-save"))
-    mockResolveLastOperation({})
+    await fireEvent.changeText(screen.getByTestId("itinerary-edit-name"), "London November")
+    await fireEvent.press(screen.getByTestId("itinerary-edit-save"))
+    await mockResolveLastOperation({})
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "editedItinerary",
@@ -244,22 +244,22 @@ describe("ItineraryEditSheet", () => {
     })
   })
 
-  it("tracks nothing when a save changed nothing", () => {
-    const { mockResolveLastOperation } = renderWithRelay({})
+  it("tracks nothing when a save changed nothing", async () => {
+    const { mockResolveLastOperation } = await renderWithRelay({})
 
-    fireEvent.press(screen.getByTestId("itinerary-edit-save"))
-    mockResolveLastOperation({})
+    await fireEvent.press(screen.getByTestId("itinerary-edit-save"))
+    await mockResolveLastOperation({})
 
     expect(mockTrackEvent).not.toHaveBeenCalledWith(
       expect.objectContaining({ action: "editedItinerary" })
     )
   })
 
-  it("tracks the delete once it succeeds", () => {
-    const { mockResolveLastOperation } = renderWithRelay({})
+  it("tracks the delete once it succeeds", async () => {
+    const { mockResolveLastOperation } = await renderWithRelay({})
 
-    fireEvent.press(screen.getByTestId("itinerary-edit-delete"))
-    mockResolveLastOperation({
+    await fireEvent.press(screen.getByTestId("itinerary-edit-delete"))
+    await mockResolveLastOperation({
       deleteItineraryPayload: () => ({
         responseOrError: {
           __typename: "ItineraryMutationSuccess",
@@ -276,12 +276,12 @@ describe("ItineraryEditSheet", () => {
     })
   })
 
-  it("stays open and tracks nothing when the save comes back as a failure", () => {
-    const { mockResolveLastOperation } = renderWithRelay({})
+  it("stays open and tracks nothing when the save comes back as a failure", async () => {
+    const { mockResolveLastOperation } = await renderWithRelay({})
 
-    fireEvent.changeText(screen.getByTestId("itinerary-edit-name"), "London November")
-    fireEvent.press(screen.getByTestId("itinerary-edit-save"))
-    mockResolveLastOperation({
+    await fireEvent.changeText(screen.getByTestId("itinerary-edit-name"), "London November")
+    await fireEvent.press(screen.getByTestId("itinerary-edit-save"))
+    await mockResolveLastOperation({
       updateItineraryPayload: () => ({
         responseOrError: {
           __typename: "ItineraryMutationFailure",
@@ -297,11 +297,11 @@ describe("ItineraryEditSheet", () => {
     )
   })
 
-  it("stays open and tracks nothing when the delete comes back as a failure", () => {
-    const { mockResolveLastOperation } = renderWithRelay({})
+  it("stays open and tracks nothing when the delete comes back as a failure", async () => {
+    const { mockResolveLastOperation } = await renderWithRelay({})
 
-    fireEvent.press(screen.getByTestId("itinerary-edit-delete"))
-    mockResolveLastOperation({
+    await fireEvent.press(screen.getByTestId("itinerary-edit-delete"))
+    await mockResolveLastOperation({
       deleteItineraryPayload: () => ({
         responseOrError: {
           __typename: "ItineraryMutationFailure",
@@ -323,14 +323,14 @@ describe("ItineraryEditSheet", () => {
 
     const pickPhoto = async () => {
       jest.mocked(showPhotoActionSheet).mockResolvedValue([photo] as any)
-      fireEvent.press(screen.getByTestId("itinerary-edit-cover"))
+      await fireEvent.press(screen.getByTestId("itinerary-edit-cover"))
       await waitFor(() =>
         expect(screen.getByTestId("itinerary-edit-cover-image")).toHaveProp("src", photo.path)
       )
     }
 
-    it("shows the current cover", () => {
-      renderWithRelay({})
+    it("shows the current cover", async () => {
+      await renderWithRelay({})
 
       expect(screen.getByTestId("itinerary-edit-cover-image")).toHaveProp(
         "src",
@@ -341,10 +341,10 @@ describe("ItineraryEditSheet", () => {
 
     it("uploads a picked photo, sends its URL, then keeps it on the device", async () => {
       jest.mocked(getConvertedImageUrlFromS3).mockResolvedValue("https://s3.example.com/new.jpg")
-      const { env, mockResolveLastOperation } = renderWithRelay({})
+      const { env, mockResolveLastOperation } = await renderWithRelay({})
 
       await pickPhoto()
-      fireEvent.press(screen.getByTestId("itinerary-edit-save"))
+      await fireEvent.press(screen.getByTestId("itinerary-edit-save"))
 
       await waitFor(() =>
         expect(env.mock.getMostRecentOperation().request.variables.input).toEqual({
@@ -356,7 +356,7 @@ describe("ItineraryEditSheet", () => {
       )
       expect(getConvertedImageUrlFromS3).toHaveBeenCalledWith(photo.path)
 
-      mockResolveLastOperation({})
+      await mockResolveLastOperation({})
 
       await waitFor(() => expect(onCoverSaved).toHaveBeenCalled())
       expect(onClose).toHaveBeenCalled()
@@ -366,10 +366,10 @@ describe("ItineraryEditSheet", () => {
 
     it("sends nothing and says so when the upload fails", async () => {
       jest.mocked(getConvertedImageUrlFromS3).mockRejectedValue(new Error("S3 is down"))
-      const { env } = renderWithRelay({})
+      const { env } = await renderWithRelay({})
 
       await pickPhoto()
-      fireEvent.press(screen.getByTestId("itinerary-edit-save"))
+      await fireEvent.press(screen.getByTestId("itinerary-edit-save"))
 
       await waitFor(() =>
         expect(mockShowToast).toHaveBeenCalledWith("Could not save your changes", "bottom")

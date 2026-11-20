@@ -18,7 +18,7 @@ describe("MyCollectionCollectedArtistsPrivacy", () => {
   })
 
   it("shows a list of collected artists", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         userInterestsConnection: {
           edges: times(5).map((i) => ({

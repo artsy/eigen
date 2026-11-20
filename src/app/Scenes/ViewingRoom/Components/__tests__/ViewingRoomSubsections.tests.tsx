@@ -25,9 +25,9 @@ describe("ViewingRoomSubsections", () => {
   )
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
-  it("renders a Box for each subsection", () => {
-    renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment)
+  it("renders a Box for each subsection", async () => {
+    await renderWithWrappers(<TestRenderer />)
+    await resolveMostRecentRelayOperation(mockEnvironment)
 
     expect(screen.getAllByTestId("subsection")).toHaveLength(1)
   })

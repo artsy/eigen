@@ -251,22 +251,22 @@ describe("useArtAssistantConversation", () => {
     })
   })
 
-  it("does not touch the message list while only text deltas arrive", () => {
-    const { environment, result } = renderConversation()
+  it("does not touch the message list while only text deltas arrive", async () => {
+    const { environment, result } = await renderConversation()
 
-    act(() => result.current.submit("blue painting"))
+    await act(() => result.current.submit("blue painting"))
 
     const operation = environment.mock.getMostRecentOperation()
     const messagesAfterSubmit = result.current.messages
 
-    act(() => {
+    await act(() => {
       emit(environment, operation, { __typename: "AIAgentTextDelta", text: "A partial " })
       emit(environment, operation, { __typename: "AIAgentTextDelta", text: "answer" })
     })
 
     expect(result.current.messages).toBe(messagesAfterSubmit)
 
-    act(() => {
+    await act(() => {
       emit(
         environment,
         operation,
@@ -281,10 +281,10 @@ describe("useArtAssistantConversation", () => {
     })
   })
 
-  it("declares the section types this build can render", () => {
-    const { environment, result } = renderConversation()
+  it("declares the section types this build can render", async () => {
+    const { environment, result } = await renderConversation()
 
-    act(() => result.current.submit("blue painting"))
+    await act(() => result.current.submit("blue painting"))
 
     // Metaphysics defaults an omitted list to [ARTWORKS], so sending it is what opts this build
     // into artist sections at all — and what keeps prose from promising cards we can't render.
@@ -293,16 +293,16 @@ describe("useArtAssistantConversation", () => {
     })
   })
 
-  it("ends the turn on the terminal event instead of waiting for the stream to close", () => {
-    const { environment, result } = renderConversation()
+  it("ends the turn on the terminal event instead of waiting for the stream to close", async () => {
+    const { environment, result } = await renderConversation()
 
-    act(() => result.current.submit("blue painting"))
+    await act(() => result.current.submit("blue painting"))
 
     expect(result.current.isResponding).toBe(true)
 
     const operation = environment.mock.getMostRecentOperation()
 
-    act(() => {
+    await act(() => {
       emit(
         environment,
         operation,
@@ -317,11 +317,11 @@ describe("useArtAssistantConversation", () => {
   describe("feedback", () => {
     const SAVED = { createAIAgentFeedback: { success: true } }
 
-    const answerWithFeedback = () => {
-      const { environment, result } = renderConversation()
+    const answerWithFeedback = async () => {
+      const { environment, result } = await renderConversation()
 
-      act(() => result.current.submit("blue painting"))
-      act(() =>
+      await act(() => result.current.submit("blue painting"))
+      await act(() =>
         emit(
           environment,
           environment.mock.getMostRecentOperation(),
@@ -334,10 +334,10 @@ describe("useArtAssistantConversation", () => {
       return { environment, result, answerID }
     }
 
-    it("sends the rating and lets a later vote replace it", () => {
-      const { environment, result, answerID } = answerWithFeedback()
+    it("sends the rating and lets a later vote replace it", async () => {
+      const { environment, result, answerID } = await answerWithFeedback()
 
-      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      await act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
 
       expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_UP" })
       const operation = environment.mock.getMostRecentOperation()
@@ -346,7 +346,7 @@ describe("useArtAssistantConversation", () => {
         rating: "THUMBS_UP",
       })
       expect(trackedEventsOfType("tappedArtAssistantFeedback")).toEqual([])
-      act(() =>
+      await act(() =>
         environment.mock.resolve(operation, {
           data: { createAIAgentFeedback: { success: true } },
         })
@@ -361,7 +361,7 @@ describe("useArtAssistantConversation", () => {
         response_message_id: answerID,
       })
 
-      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+      await act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
 
       expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_DOWN" })
       expect(environment.mock.getMostRecentOperation().request.variables.input).toMatchObject({
@@ -369,11 +369,11 @@ describe("useArtAssistantConversation", () => {
       })
     })
 
-    it("reverts the rating when Metaphysics does not record it", () => {
-      const { environment, result, answerID } = answerWithFeedback()
+    it("reverts the rating when Metaphysics does not record it", async () => {
+      const { environment, result, answerID } = await answerWithFeedback()
 
-      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
-      act(() =>
+      await act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+      await act(() =>
         environment.mock.resolve(environment.mock.getMostRecentOperation(), {
           data: { createAIAgentFeedback: { success: false } },
         })
@@ -383,19 +383,19 @@ describe("useArtAssistantConversation", () => {
       expect(trackedEventsOfType("tappedArtAssistantFeedback")).toEqual([])
     })
 
-    it("holds a vote tapped while another is saving, then sends it", () => {
-      const { environment, result, answerID } = answerWithFeedback()
+    it("holds a vote tapped while another is saving, then sends it", async () => {
+      const { environment, result, answerID } = await answerWithFeedback()
 
-      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
-      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+      await act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      await act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
 
       expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_DOWN" })
       expect(environment.mock.getAllOperations()).toHaveLength(1)
 
-      act(() => environment.mock.resolveMostRecentOperation({ data: SAVED }))
+      await act(() => environment.mock.resolveMostRecentOperation({ data: SAVED }))
       const thumbsDown = environment.mock.getMostRecentOperation()
       expect(thumbsDown.request.variables.input).toMatchObject({ rating: "THUMBS_DOWN" })
-      act(() => environment.mock.resolve(thumbsDown, { data: SAVED }))
+      await act(() => environment.mock.resolve(thumbsDown, { data: SAVED }))
 
       expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_DOWN" })
       expect(trackedEventsOfType("tappedArtAssistantFeedback")).toEqual([
@@ -404,49 +404,49 @@ describe("useArtAssistantConversation", () => {
       ])
     })
 
-    it("sends the held vote when the earlier one fails", () => {
-      const { environment, result, answerID } = answerWithFeedback()
+    it("sends the held vote when the earlier one fails", async () => {
+      const { environment, result, answerID } = await answerWithFeedback()
 
-      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
-      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
-      act(() => environment.mock.rejectMostRecentOperation(new Error("network")))
-      act(() => environment.mock.resolveMostRecentOperation({ data: SAVED }))
+      await act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      await act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+      await act(() => environment.mock.rejectMostRecentOperation(new Error("network")))
+      await act(() => environment.mock.resolveMostRecentOperation({ data: SAVED }))
 
       expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_DOWN" })
     })
 
-    it("reverts to the last saved rating, not an unsaved one", () => {
-      const { environment, result, answerID } = answerWithFeedback()
+    it("reverts to the last saved rating, not an unsaved one", async () => {
+      const { environment, result, answerID } = await answerWithFeedback()
 
-      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
-      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
-      act(() => environment.mock.resolveMostRecentOperation({ data: SAVED }))
-      act(() => environment.mock.rejectMostRecentOperation(new Error("network")))
+      await act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      await act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+      await act(() => environment.mock.resolveMostRecentOperation({ data: SAVED }))
+      await act(() => environment.mock.rejectMostRecentOperation(new Error("network")))
 
       expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_UP" })
     })
 
-    it("doesn't resend a held vote that matches the one that saved", () => {
-      const { environment, result, answerID } = answerWithFeedback()
+    it("doesn't resend a held vote that matches the one that saved", async () => {
+      const { environment, result, answerID } = await answerWithFeedback()
 
-      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
-      act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
-      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
-      act(() => environment.mock.resolveMostRecentOperation({ data: SAVED }))
+      await act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      await act(() => result.current.rateMessage(answerID, "THUMBS_DOWN"))
+      await act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      await act(() => environment.mock.resolveMostRecentOperation({ data: SAVED }))
 
       expect(environment.mock.getAllOperations()).toHaveLength(0)
       expect(result.current.messages.at(-1)).toMatchObject({ feedbackRating: "THUMBS_UP" })
       expect(trackedEventsOfType("tappedArtAssistantFeedback")).toHaveLength(1)
     })
 
-    it("tracks a vote under the conversation it was cast in", () => {
-      const { environment, result, answerID } = answerWithFeedback()
+    it("tracks a vote under the conversation it was cast in", async () => {
+      const { environment, result, answerID } = await answerWithFeedback()
       const ratedConversationID = trackedEventsOfType("sentArtAssistantMessage")[0].conversation_id
 
-      act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
+      await act(() => result.current.rateMessage(answerID, "THUMBS_UP"))
       const operation = environment.mock.getMostRecentOperation()
-      act(() => result.current.startNewConversation())
-      act(() =>
+      await act(() => result.current.startNewConversation())
+      await act(() =>
         environment.mock.resolve(operation, { data: { createAIAgentFeedback: { success: true } } })
       )
 
@@ -457,7 +457,7 @@ describe("useArtAssistantConversation", () => {
   })
 })
 
-const renderConversation = () => {
+const renderConversation = async () => {
   const environment = createMockEnvironment()
   const wrapper = ({ children }: { children: ReactNode }) =>
     createElement(
@@ -466,7 +466,7 @@ const renderConversation = () => {
       createElement(RelayEnvironmentProvider, { environment, children })
     )
 
-  const { result } = renderHook(() => useArtAssistantConversation(), { wrapper })
+  const { result } = await renderHook(() => useArtAssistantConversation(), { wrapper })
 
   return { environment, result }
 }
@@ -514,10 +514,10 @@ describe("useArtAssistantConversation tracking", () => {
     })
   })
 
-  it("reports the sent message and the answer it received", () => {
-    const { environment, result } = renderConversation()
+  it("reports the sent message and the answer it received", async () => {
+    const { environment, result } = await renderConversation()
 
-    act(() => result.current.submit("blue painting", { type: "suggestion" }))
+    await act(() => result.current.submit("blue painting", { type: "suggestion" }))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -532,7 +532,7 @@ describe("useArtAssistantConversation tracking", () => {
 
     const operation = environment.mock.getMostRecentOperation()
 
-    act(() => {
+    await act(() => {
       emit(environment, operation, { __typename: "AIAgentTextDelta", text: "A partial answer" })
       emit(environment, operation, {
         __typename: "AIAgentTurnComplete",
@@ -616,14 +616,14 @@ describe("useArtAssistantConversation tracking", () => {
         artworks: [],
         expected: { item_count: 0, item_ids: [], item_type: undefined },
       },
-    ])("counts $name", ({ sections, artworks, expected }) => {
-      const { environment, result } = renderConversation()
+    ])("counts $name", async ({ sections, artworks, expected }) => {
+      const { environment, result } = await renderConversation()
 
-      act(() => result.current.submit("who should I look at"))
+      await act(() => result.current.submit("who should I look at"))
 
       const operation = environment.mock.getMostRecentOperation()
 
-      act(() => {
+      await act(() => {
         emit(environment, operation, {
           __typename: "AIAgentTurnComplete",
           message: "Here is what I found.",
@@ -644,14 +644,14 @@ describe("useArtAssistantConversation tracking", () => {
     })
   })
 
-  it("keeps the message and the answer out of Segment while the content experiment is off", () => {
-    const { environment, result } = renderConversation()
+  it("keeps the message and the answer out of Segment while the content experiment is off", async () => {
+    const { environment, result } = await renderConversation()
 
-    act(() => result.current.submit("blue painting"))
+    await act(() => result.current.submit("blue painting"))
 
     const operation = environment.mock.getMostRecentOperation()
 
-    act(() => {
+    await act(() => {
       emit(environment, operation, {
         __typename: "AIAgentTurnComplete",
         message: "I found two works for you.",
@@ -673,18 +673,18 @@ describe("useArtAssistantConversation tracking", () => {
     expect(received.item_count).toBe(0)
   })
 
-  it("sends the message and the answer while the content experiment is on", () => {
+  it("sends the message and the answer while the content experiment is on", async () => {
     jest
       .mocked(useExperimentFlag)
       .mockImplementation((name) => name === "onyx_send-art-assistant-messages-to-segment")
 
-    const { environment, result } = renderConversation()
+    const { environment, result } = await renderConversation()
 
-    act(() => result.current.submit("blue painting"))
+    await act(() => result.current.submit("blue painting"))
 
     const operation = environment.mock.getMostRecentOperation()
 
-    act(() => {
+    await act(() => {
       emit(environment, operation, {
         __typename: "AIAgentTurnComplete",
         message: "I found two works for you.",
@@ -703,14 +703,14 @@ describe("useArtAssistantConversation tracking", () => {
     expect(received.response).toBe("I found two works for you.")
   })
 
-  it("reports a turn the agent stopped without an answer instead of a response", () => {
-    const { environment, result } = renderConversation()
+  it("reports a turn the agent stopped without an answer instead of a response", async () => {
+    const { environment, result } = await renderConversation()
 
-    act(() => result.current.submit("blue painting"))
+    await act(() => result.current.submit("blue painting"))
 
     const operation = environment.mock.getMostRecentOperation()
 
-    act(() => {
+    await act(() => {
       emit(environment, operation, { __typename: "AIAgentTextDelta", text: "An unfinished answer" })
       emit(environment, operation, {
         __typename: "AIAgentTurnComplete",
@@ -738,12 +738,12 @@ describe("useArtAssistantConversation tracking", () => {
     expect(trackedEventsOfType("receivedArtAssistantResponse")).toHaveLength(0)
   })
 
-  it("reports a broken stream", () => {
-    const { environment, result } = renderConversation()
+  it("reports a broken stream", async () => {
+    const { environment, result } = await renderConversation()
 
-    act(() => result.current.submit("blue painting"))
+    await act(() => result.current.submit("blue painting"))
 
-    act(() =>
+    await act(() =>
       environment.mock.rejectMostRecentOperation(
         new MetaphysicsSubscriptionError("Too many requests", { status: 429 })
       )
@@ -763,12 +763,12 @@ describe("useArtAssistantConversation tracking", () => {
     })
   })
 
-  it("uses the generic error when the stream ends without an answer", () => {
-    const { environment, result } = renderConversation()
+  it("uses the generic error when the stream ends without an answer", async () => {
+    const { environment, result } = await renderConversation()
 
-    act(() => result.current.submit("blue painting"))
+    await act(() => result.current.submit("blue painting"))
 
-    act(() => environment.mock.complete(environment.mock.getMostRecentOperation()))
+    await act(() => environment.mock.complete(environment.mock.getMostRecentOperation()))
 
     expect(result.current.messages.at(-1)).toMatchObject({
       phase: "error",
@@ -777,12 +777,12 @@ describe("useArtAssistantConversation tracking", () => {
     })
   })
 
-  it("reports a message sent without a valid session", () => {
+  it("reports a message sent without a valid session", async () => {
     __globalStoreTestUtils__?.injectState({ auth: { userID: null, userAccessToken: null } })
 
-    const { result } = renderConversation()
+    const { result } = await renderConversation()
 
-    act(() => result.current.submit("blue painting"))
+    await act(() => result.current.submit("blue painting"))
 
     const [sent, failed] = trackedEvents(["sentArtAssistantMessage", "artAssistantTurnFailed"])
 
@@ -795,15 +795,15 @@ describe("useArtAssistantConversation tracking", () => {
     })
   })
 
-  it("reports the conversation that was discarded for a new chat", () => {
-    const { environment, result } = renderConversation()
+  it("reports the conversation that was discarded for a new chat", async () => {
+    const { environment, result } = await renderConversation()
 
-    act(() => result.current.submit("blue painting"))
+    await act(() => result.current.submit("blue painting"))
 
     const conversationID =
       environment.mock.getMostRecentOperation().request.variables.input.conversationID
 
-    act(() => result.current.startNewConversation())
+    await act(() => result.current.startNewConversation())
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedArtAssistantNewChat",
@@ -814,15 +814,15 @@ describe("useArtAssistantConversation tracking", () => {
     })
   })
 
-  it("reports a tapped suggested reply without its text while the content experiment is off", () => {
-    const { environment, result } = renderConversation()
+  it("reports a tapped suggested reply without its text while the content experiment is off", async () => {
+    const { environment, result } = await renderConversation()
 
-    act(() => result.current.submit("blue painting"))
+    await act(() => result.current.submit("blue painting"))
 
     const conversationID =
       environment.mock.getMostRecentOperation().request.variables.input.conversationID
 
-    act(() => result.current.trackSuggestedReplyTapped("Only paintings", 1, "assistant-1"))
+    await act(() => result.current.trackSuggestedReplyTapped("Only paintings", 1, "assistant-1"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedArtAssistantSuggestedReply",
@@ -834,26 +834,26 @@ describe("useArtAssistantConversation tracking", () => {
     })
   })
 
-  it("reports the tapped suggested reply text while the content experiment is on", () => {
+  it("reports the tapped suggested reply text while the content experiment is on", async () => {
     jest
       .mocked(useExperimentFlag)
       .mockImplementation((name) => name === "onyx_send-art-assistant-messages-to-segment")
 
-    const { result } = renderConversation()
+    const { result } = await renderConversation()
 
-    act(() => result.current.trackSuggestedReplyTapped("Only paintings", 1, "assistant-1"))
+    await act(() => result.current.trackSuggestedReplyTapped("Only paintings", 1, "assistant-1"))
 
     const [tapped] = trackedEvents(["tappedArtAssistantSuggestedReply"])
 
     expect(tapped.reply).toBe("Only paintings")
   })
 
-  it("tells the collector to come back later when they ran out of turns", () => {
-    const { environment, result } = renderConversation()
+  it("tells the collector to come back later when they ran out of turns", async () => {
+    const { environment, result } = await renderConversation()
 
-    act(() => result.current.submit("blue painting"))
+    await act(() => result.current.submit("blue painting"))
 
-    act(() =>
+    await act(() =>
       emit(environment, environment.mock.getMostRecentOperation(), {
         __typename: "AIAgentTurnComplete",
         message: null,
@@ -870,12 +870,12 @@ describe("useArtAssistantConversation tracking", () => {
     })
   })
 
-  it("offers a new chat when Metaphysics rejects the conversation as too large", () => {
-    const { environment, result } = renderConversation()
+  it("offers a new chat when Metaphysics rejects the conversation as too large", async () => {
+    const { environment, result } = await renderConversation()
 
-    act(() => result.current.submit("blue painting"))
+    await act(() => result.current.submit("blue painting"))
 
-    act(() =>
+    await act(() =>
       environment.mock.rejectMostRecentOperation(
         new MetaphysicsSubscriptionError("Conversation input is too large (max 100000 bytes)", {
           status: 200,
@@ -890,13 +890,13 @@ describe("useArtAssistantConversation tracking", () => {
     })
   })
 
-  it("does not send a turn once the history is longer than Metaphysics accepts", () => {
-    const { environment, result } = renderConversation()
+  it("does not send a turn once the history is longer than Metaphysics accepts", async () => {
+    const { environment, result } = await renderConversation()
 
     // 20 answered turns are 40 history messages, the most Metaphysics accepts.
     for (let turn = 0; turn <= 20; turn++) {
-      act(() => result.current.submit(`prompt ${turn}`))
-      act(() =>
+      await act(() => result.current.submit(`prompt ${turn}`))
+      await act(() =>
         emit(environment, environment.mock.getMostRecentOperation(), {
           __typename: "AIAgentTurnComplete",
           message: `answer ${turn}`,
@@ -910,7 +910,7 @@ describe("useArtAssistantConversation tracking", () => {
     const operationCount = environment.mock.getAllOperations().length
     jest.mocked(mockTrackEvent).mockClear()
 
-    act(() => result.current.submit("one more"))
+    await act(() => result.current.submit("one more"))
 
     expect(environment.mock.getAllOperations()).toHaveLength(operationCount)
     expect(trackedEventsOfType("sentArtAssistantMessage")).toHaveLength(0)
@@ -921,13 +921,13 @@ describe("useArtAssistantConversation tracking", () => {
     ])
   })
 
-  it("asks the failed prompt again in place of the failed exchange", () => {
-    const { environment, result } = renderConversation()
+  it("asks the failed prompt again in place of the failed exchange", async () => {
+    const { environment, result } = await renderConversation()
 
-    act(() => result.current.submit("blue painting"))
-    act(() => environment.mock.complete(environment.mock.getMostRecentOperation()))
+    await act(() => result.current.submit("blue painting"))
+    await act(() => environment.mock.complete(environment.mock.getMostRecentOperation()))
 
-    act(() => result.current.retry())
+    await act(() => result.current.retry())
 
     const { input } = environment.mock.getMostRecentOperation().request.variables
 
@@ -939,15 +939,15 @@ describe("useArtAssistantConversation tracking", () => {
     ])
   })
 
-  it("sends an attached image without text and replays it on the next turn", () => {
+  it("sends an attached image without text and replays it on the next turn", async () => {
     const image = { s3Bucket: "bucket", s3Key: "key", uri: "file:///photo.jpg" }
-    const { environment, result } = renderConversation()
+    const { environment, result } = await renderConversation()
 
-    act(() => result.current.submit("  "))
+    await act(() => result.current.submit("  "))
 
     expect(environment.mock.getAllOperations()).toHaveLength(0)
 
-    act(() => result.current.submit("", { image }))
+    await act(() => result.current.submit("", { image }))
 
     const operation = environment.mock.getMostRecentOperation()
 
@@ -958,14 +958,14 @@ describe("useArtAssistantConversation tracking", () => {
     expect(operation.request.variables.input.image).not.toHaveProperty("uri")
     expect(result.current.messages[0]).toEqual(expect.objectContaining({ role: "user", image }))
 
-    act(() =>
+    await act(() =>
       emit(
         environment,
         operation,
         terminalEvent({ message: "Here are similar works.", sections: [], artworks: [] })
       )
     )
-    act(() => result.current.submit("cheaper"))
+    await act(() => result.current.submit("cheaper"))
 
     const { input } = environment.mock.getMostRecentOperation().request.variables
 
@@ -977,14 +977,14 @@ describe("useArtAssistantConversation tracking", () => {
     })
   })
 
-  it("asks the failed prompt again with the same image", () => {
+  it("asks the failed prompt again with the same image", async () => {
     const image = { s3Bucket: "bucket", s3Key: "key", uri: "file:///photo.jpg" }
-    const { environment, result } = renderConversation()
+    const { environment, result } = await renderConversation()
 
-    act(() => result.current.submit("like this", { image }))
-    act(() => environment.mock.complete(environment.mock.getMostRecentOperation()))
+    await act(() => result.current.submit("like this", { image }))
+    await act(() => environment.mock.complete(environment.mock.getMostRecentOperation()))
 
-    act(() => result.current.retry())
+    await act(() => result.current.retry())
 
     expect(environment.mock.getMostRecentOperation().request.variables.input).toMatchObject({
       message: "like this",
@@ -993,11 +993,11 @@ describe("useArtAssistantConversation tracking", () => {
     expect(result.current.messages[0]).toEqual(expect.objectContaining({ image }))
   })
 
-  it("does not retry an answer that did not fail", () => {
-    const { environment, result } = renderConversation()
+  it("does not retry an answer that did not fail", async () => {
+    const { environment, result } = await renderConversation()
 
-    act(() => result.current.submit("blue painting"))
-    act(() =>
+    await act(() => result.current.submit("blue painting"))
+    await act(() =>
       emit(environment, environment.mock.getMostRecentOperation(), {
         __typename: "AIAgentTurnComplete",
         message: "I found two works for you.",
@@ -1009,16 +1009,16 @@ describe("useArtAssistantConversation tracking", () => {
 
     const operationCount = environment.mock.getAllOperations().length
 
-    act(() => result.current.retry())
+    await act(() => result.current.retry())
 
     expect(environment.mock.getAllOperations()).toHaveLength(operationCount)
     expect(result.current.messages).toHaveLength(2)
   })
 
-  it("does not report a new chat when there is nothing to discard", () => {
-    const { result } = renderConversation()
+  it("does not report a new chat when there is nothing to discard", async () => {
+    const { result } = await renderConversation()
 
-    act(() => result.current.startNewConversation())
+    await act(() => result.current.startNewConversation())
 
     expect(trackedEventsOfType("tappedArtAssistantNewChat")).toHaveLength(0)
   })

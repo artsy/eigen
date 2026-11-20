@@ -34,17 +34,17 @@ describe("ShowViewingRoom", () => {
     />
   )
 
-  const getWrapper = (mockResolvers = {}) => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+  const getWrapper = async (mockResolvers = {}) => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
     })
   }
 
-  it("renders the viewing room card", () => {
-    getWrapper({
+  it("renders the viewing room card", async () => {
+    await getWrapper({
       Partner: () => ({ name: "Example Partner" }),
       ViewingRoom: () => ({ title: "Example Viewing Room" }),
     })
@@ -53,8 +53,8 @@ describe("ShowViewingRoom", () => {
     expect(screen.getByText(/Example Viewing Room/)).toBeOnTheScreen()
   })
 
-  it("tracks taps", () => {
-    getWrapper({
+  it("tracks taps", async () => {
+    await getWrapper({
       Show: () => ({ internalID: "example-show-id", slug: "example-slug" }),
       ViewingRoom: () => ({
         internalID: "example-viewing-room-id",
@@ -63,7 +63,7 @@ describe("ShowViewingRoom", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("Example Viewing Room"))
+    await fireEvent.press(screen.getByText("Example Viewing Room"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedViewingRoomCard",

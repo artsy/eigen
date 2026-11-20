@@ -52,9 +52,9 @@ describe("Featured Collections Rail", () => {
     />
   )
 
-  const renderWithRelayFixture = () => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+  const renderWithRelayFixture = async () => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
         data: {
@@ -64,15 +64,15 @@ describe("Featured Collections Rail", () => {
     })
   }
 
-  it("renders without throwing an error", () => {
-    renderWithRelayFixture()
+  it("renders without throwing an error", async () => {
+    await renderWithRelayFixture()
     expect(screen.getByTestId("group")).toHaveTextContent("Curated Highlights")
     expect(screen.getAllByRole("button")).toHaveLength(3)
   })
 
-  it("correctly tracks when a collection is tapped", () => {
-    renderWithRelayFixture()
-    fireEvent.press(screen.getAllByRole("button")[0])
+  it("correctly tracks when a collection is tapped", async () => {
+    await renderWithRelayFixture()
+    await fireEvent.press(screen.getAllByRole("button")[0])
 
     expect(mockTrackEvent).toBeCalledWith({
       action_type: "tappedCollectionGroup",
@@ -97,19 +97,19 @@ describe("Featured Collections Rail", () => {
       } as unknown as ComponentProps<typeof FeaturedCollectionsRail>
     })
 
-    it("renders three collections in the Featured Collections Series", () => {
-      renderWithWrappers(<FeaturedCollectionsRail {...props} />)
+    it("renders three collections in the Featured Collections Series", async () => {
+      await renderWithWrappers(<FeaturedCollectionsRail {...props} />)
 
       expect(screen.getAllByRole("button")).toHaveLength(3)
     })
 
-    it("renders the collection hub rail title", () => {
-      renderWithWrappers(<FeaturedCollectionsRail {...props} />)
+    it("renders the collection hub rail title", async () => {
+      await renderWithWrappers(<FeaturedCollectionsRail {...props} />)
       expect(screen.getByTestId("group")).toHaveTextContent("Curated Highlights", { exact: true })
     })
 
-    it("renders each Featured Collection's title", () => {
-      renderWithWrappers(<FeaturedCollectionsRail {...props} />)
+    it("renders each Featured Collection's title", async () => {
+      await renderWithWrappers(<FeaturedCollectionsRail {...props} />)
 
       expect(screen.getByTestId("title-0")).toHaveTextContent("First Featured Collection", {
         exact: true,
@@ -122,18 +122,18 @@ describe("Featured Collections Rail", () => {
       })
     })
 
-    it("renders each Featured Collection's price guidance metadata", () => {
-      renderWithWrappers(<FeaturedCollectionsRail {...props} />)
+    it("renders each Featured Collection's price guidance metadata", async () => {
+      await renderWithWrappers(<FeaturedCollectionsRail {...props} />)
 
       expect(screen.getByTestId("price-0")).toHaveTextContent("From $15,000", { exact: true })
       expect(screen.getByTestId("price-1")).toHaveTextContent("From $25,000", { exact: true })
       expect(screen.getByTestId("price-2")).toHaveTextContent("From $35,000", { exact: true })
     })
 
-    it("navigates to a new collection when tapped", () => {
-      renderWithWrappers(<FeaturedCollectionsRail {...props} />)
+    it("navigates to a new collection when tapped", async () => {
+      await renderWithWrappers(<FeaturedCollectionsRail {...props} />)
 
-      fireEvent.press(screen.getAllByRole("button")[0])
+      await fireEvent.press(screen.getAllByRole("button")[0])
 
       expect(navigate).toHaveBeenCalledWith("/collection/featured-collection-1")
     })

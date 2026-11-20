@@ -13,18 +13,18 @@ describe("CollectionsChips", () => {
     { title: "Street Art", slug: "street-art", href: "/collection/street-art" },
   ]
 
-  it("renders", () => {
-    renderWithWrappers(<CollectionsChips chips={mockChips} />)
+  it("renders", async () => {
+    await renderWithWrappers(<CollectionsChips chips={mockChips} />)
 
     expect(screen.getByText("Contemporary")).toBeOnTheScreen()
     expect(screen.getByText("Modern")).toBeOnTheScreen()
     expect(screen.getByText("Street Art")).toBeOnTheScreen()
   })
 
-  it("when tapping on a chip", () => {
-    renderWithWrappers(<CollectionsChips chips={mockChips} />)
+  it("when tapping on a chip", async () => {
+    await renderWithWrappers(<CollectionsChips chips={mockChips} />)
 
-    fireEvent.press(screen.getByText("Contemporary"))
+    await fireEvent.press(screen.getByText("Contemporary"))
 
     expect(navigate).toHaveBeenCalledWith("/collection/contemporary")
     expect(trackEvent).toHaveBeenCalledWith({

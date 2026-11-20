@@ -27,8 +27,8 @@ describe("FollowedGalleries", () => {
     `,
   })
 
-  it("renders empty state screen when the user has no saved galleries", () => {
-    renderWithRelay({
+  it("renders empty state screen when the user has no saved galleries", async () => {
+    await renderWithRelay({
       FollowedGalleryConnection: () => ({
         edges: [],
       }),
@@ -38,7 +38,7 @@ describe("FollowedGalleries", () => {
   })
 
   it("renders a list of galleries", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       FollowedGalleryConnection: () => ({
         edges: [
           {

@@ -34,7 +34,7 @@ describe("MyCollectionInsights", () => {
 
   describe("when the step 1 of phase 1 feature flag is enabled ", () => {
     it("shows insights overview", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({
           myCollectionConnection: myCollectionConnectionMock,
           myCollectionAuctionResults: myCollectionAuctionResultsMock,
@@ -50,7 +50,7 @@ describe("MyCollectionInsights", () => {
   })
 
   it("shows empty state when the user has no artworks in their collection", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         myCollectionConnection: { edges: [] },
         myCollectionAuctionResults: myCollectionAuctionResultsMock,

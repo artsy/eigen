@@ -27,8 +27,8 @@ describe("ArtworkScreenHeader", () => {
     `,
   })
 
-  it("renders the header", () => {
-    renderWithRelay({
+  it("renders the header", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         isEligibleToCreateAlert: true,
       }),
@@ -39,8 +39,8 @@ describe("ArtworkScreenHeader", () => {
   })
 
   describe("Create alert button", () => {
-    it("renders the header but not the create alert button if the artwork isn't eligible", () => {
-      renderWithRelay({
+    it("renders the header but not the create alert button if the artwork isn't eligible", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           isEligibleToCreateAlert: false,
         }),
@@ -49,8 +49,8 @@ describe("ArtworkScreenHeader", () => {
       expect(screen.queryByText("Create Alert")).toBeFalsy()
     })
 
-    it("should correctly track event when `Create Alert` button is pressed", () => {
-      renderWithRelay({
+    it("should correctly track event when `Create Alert` button is pressed", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           internalID: "internalID-1",
           slug: "slug-1",
@@ -58,7 +58,7 @@ describe("ArtworkScreenHeader", () => {
         }),
       })
 
-      fireEvent.press(screen.getByText("Create Alert"))
+      await fireEvent.press(screen.getByText("Create Alert"))
 
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
         [

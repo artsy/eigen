@@ -16,15 +16,18 @@ describe("ArtistAboutShows", () => {
     `,
   })
 
-  it("returns nothing if the user has no past/running/upcoming events", () => {
-    renderWithRelay({ ShowConnection: () => ({ edges: [] }) })
+  it("returns nothing if the user has no past/running/upcoming events", async () => {
+    await renderWithRelay({ ShowConnection: () => ({ edges: [] }) })
 
     // component doesn't render anything
     expect(screen.toJSON()).toBe(null)
   })
 
-  it("returns list of shows if the user has running events", () => {
-    renderWithRelay({ Artist: () => ({ name: "Andy Warhol" }), ShowConnection: () => mockShows })
+  it("returns list of shows if the user has running events", async () => {
+    await renderWithRelay({
+      Artist: () => ({ name: "Andy Warhol" }),
+      ShowConnection: () => mockShows,
+    })
 
     expect(screen.getByText("Shows Featuring Andy Warhol")).toBeOnTheScreen()
     expect(screen.getAllByTestId("show-item-visit-show-link").length).toBeGreaterThan(0)

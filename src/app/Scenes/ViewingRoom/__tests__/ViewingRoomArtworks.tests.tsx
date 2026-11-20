@@ -26,8 +26,8 @@ describe("ViewingRoom", () => {
     `,
   })
 
-  it("renders a flatlist with one artwork", () => {
-    renderWithRelay({
+  it("renders a flatlist with one artwork", async () => {
+    await renderWithRelay({
       Artwork: () => ({ title: "Artwork 1" }),
     })
 
@@ -35,8 +35,8 @@ describe("ViewingRoom", () => {
     expect(screen.getAllByText("Artwork 1")).toHaveLength(1)
   })
 
-  it("renders additional information if it exists", () => {
-    renderWithRelay({
+  it("renders additional information if it exists", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         additionalInformation: "additionalInformation-1",
       }),
@@ -45,8 +45,8 @@ describe("ViewingRoom", () => {
     expect(screen.getByText("additionalInformation-1")).toBeOnTheScreen()
   })
 
-  it("navigates to artwork screen + calls tracking on press", () => {
-    renderWithRelay({
+  it("navigates to artwork screen + calls tracking on press", async () => {
+    await renderWithRelay({
       ViewingRoom: () => ({
         internalID: "viewing-room-internalID-1",
         slug: "slug-1",
@@ -59,7 +59,7 @@ describe("ViewingRoom", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("Artwork 1"))
+    await fireEvent.press(screen.getByText("Artwork 1"))
 
     expect(navigate).toHaveBeenCalledWith("/viewing-room/slug-1/artwork-slug-1")
 

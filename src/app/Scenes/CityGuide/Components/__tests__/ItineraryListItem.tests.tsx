@@ -26,55 +26,55 @@ describe("ItineraryListItem", () => {
     jest.clearAllMocks()
   })
 
-  it("renders the name and the stop count", () => {
-    renderWithWrappers(<ItineraryListItem {...props} />)
+  it("renders the name and the stop count", async () => {
+    await renderWithWrappers(<ItineraryListItem {...props} />)
 
     expect(screen.getByText("London Oct 2026")).toBeOnTheScreen()
     expect(screen.getByText("16 stops")).toBeOnTheScreen()
   })
 
-  it("says one stop rather than 1 stops", () => {
-    renderWithWrappers(<ItineraryListItem {...props} stopsCount={1} />)
+  it("says one stop rather than 1 stops", async () => {
+    await renderWithWrappers(<ItineraryListItem {...props} stopsCount={1} />)
 
     expect(screen.getByText("1 stop")).toBeOnTheScreen()
   })
 
-  it("navigates to the itinerary when tapped", () => {
-    renderWithWrappers(<ItineraryListItem {...props} />)
+  it("navigates to the itinerary when tapped", async () => {
+    await renderWithWrappers(<ItineraryListItem {...props} />)
 
-    fireEvent.press(screen.getByText("London Oct 2026"))
+    await fireEvent.press(screen.getByText("London Oct 2026"))
 
     expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/itinerary/abc")
   })
 
-  it("fires onPress before navigating", () => {
+  it("fires onPress before navigating", async () => {
     const onPress = jest.fn()
-    renderWithWrappers(<ItineraryListItem {...props} onPress={onPress} />)
+    await renderWithWrappers(<ItineraryListItem {...props} onPress={onPress} />)
 
-    fireEvent.press(screen.getByText("London Oct 2026"))
+    await fireEvent.press(screen.getByText("London Oct 2026"))
 
     expect(onPress).toHaveBeenCalled()
     expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/itinerary/abc")
   })
 
-  it("renders a right slot when given one", () => {
-    renderWithWrappers(<ItineraryListItem {...props} rightSlot={<Text>share</Text>} />)
+  it("renders a right slot when given one", async () => {
+    await renderWithWrappers(<ItineraryListItem {...props} rightSlot={<Text>share</Text>} />)
 
     expect(screen.getByText("share")).toBeOnTheScreen()
   })
 
   // The rail's cards round their image's left corners so it meets the card edge; the list
   // screen's rows are square.
-  it("rounds the image's left corners only as a card", () => {
-    renderWithWrappers(<ItineraryListItem {...props} variant="card" />)
+  it("rounds the image's left corners only as a card", async () => {
+    await renderWithWrappers(<ItineraryListItem {...props} variant="card" />)
 
     expect(screen.getByTestId("itinerary-list-item-image")).toHaveStyle({
       borderTopLeftRadius: 8,
       borderBottomLeftRadius: 8,
     })
 
-    screen.unmount()
-    renderWithWrappers(<ItineraryListItem {...props} />)
+    await screen.unmount()
+    await renderWithWrappers(<ItineraryListItem {...props} />)
 
     expect(screen.getByTestId("itinerary-list-item-image")).toHaveStyle({
       borderTopLeftRadius: 0,
@@ -83,44 +83,44 @@ describe("ItineraryListItem", () => {
   })
 
   // RNTL performs no layout, so the guard is that a width is declared at all.
-  it("gives the card an explicit width rather than relying on flex", () => {
-    renderWithWrappers(<ItineraryListItem {...props} variant="card" />)
+  it("gives the card an explicit width rather than relying on flex", async () => {
+    await renderWithWrappers(<ItineraryListItem {...props} variant="card" />)
 
     expect(screen.getByTestId("itinerary-list-item")).toHaveStyle({ width: 240 })
   })
 
-  it("renders the title and count as a card, not just the image", () => {
-    renderWithWrappers(<ItineraryListItem {...props} variant="card" />)
+  it("renders the title and count as a card, not just the image", async () => {
+    await renderWithWrappers(<ItineraryListItem {...props} variant="card" />)
 
     expect(screen.getByText("London Oct 2026")).toBeOnTheScreen()
     expect(screen.getByText("16 stops")).toBeOnTheScreen()
   })
 
   // Both the row and the card show a placeholder instead of an empty box.
-  it("shows a placeholder for a row with no image", () => {
-    renderWithWrappers(<ItineraryListItem {...props} imageUrl={null} />)
+  it("shows a placeholder for a row with no image", async () => {
+    await renderWithWrappers(<ItineraryListItem {...props} imageUrl={null} />)
 
     expect(screen.getByText("London Oct 2026")).toBeOnTheScreen()
     expect(screen.queryByTestId("itinerary-list-item-image")).not.toBeOnTheScreen()
     expect(screen.getByTestId("itinerary-list-item-no-image")).toBeOnTheScreen()
   })
 
-  it("shows a placeholder for a card with no image", () => {
-    renderWithWrappers(<ItineraryListItem {...props} variant="card" imageUrl={null} />)
+  it("shows a placeholder for a card with no image", async () => {
+    await renderWithWrappers(<ItineraryListItem {...props} variant="card" imageUrl={null} />)
 
     expect(screen.getByTestId("itinerary-list-item-no-image")).toBeOnTheScreen()
     expect(screen.queryByTestId("itinerary-list-item-image")).not.toBeOnTheScreen()
   })
 
-  it("shows the image when there is one", () => {
-    renderWithWrappers(<ItineraryListItem {...props} />)
+  it("shows the image when there is one", async () => {
+    await renderWithWrappers(<ItineraryListItem {...props} />)
 
     expect(screen.getByTestId("itinerary-list-item-image")).toBeOnTheScreen()
   })
 
   describe("first stop fallback", () => {
-    const resolveFallback = (stops: object[]) => {
-      act(() => {
+    const resolveFallback = async (stops: object[]) => {
+      await act(() => {
         getMockRelayEnvironment().mock.resolveMostRecentOperation((operation) => {
           expect(operation.request.node.params.name).toBe("useItineraryFallbackImageQuery")
           return MockPayloadGenerator.generate(operation, {
@@ -130,10 +130,10 @@ describe("ItineraryListItem", () => {
       })
     }
 
-    it("shows the first stop's image when the itinerary has no cover", () => {
-      renderWithWrappers(<ItineraryListItem {...props} itineraryID="abc" imageUrl={null} />)
+    it("shows the first stop's image when the itinerary has no cover", async () => {
+      await renderWithWrappers(<ItineraryListItem {...props} itineraryID="abc" imageUrl={null} />)
 
-      resolveFallback([
+      await resolveFallback([
         { internalID: "stop-1", image: { url: "https://example.com/stop-1.jpg" }, item: null },
         { internalID: "stop-2", image: { url: "https://example.com/stop-2.jpg" }, item: null },
       ])
@@ -144,10 +144,10 @@ describe("ItineraryListItem", () => {
       )
     })
 
-    it("keeps the placeholder when the first stop has no image", () => {
-      renderWithWrappers(<ItineraryListItem {...props} itineraryID="abc" imageUrl={null} />)
+    it("keeps the placeholder when the first stop has no image", async () => {
+      await renderWithWrappers(<ItineraryListItem {...props} itineraryID="abc" imageUrl={null} />)
 
-      resolveFallback([
+      await resolveFallback([
         { internalID: "stop-1", image: null, item: null },
         { internalID: "stop-2", image: { url: "https://example.com/stop-2.jpg" }, item: null },
       ])
@@ -165,7 +165,7 @@ describe("ItineraryListItem", () => {
       )
     }
 
-    it("shows the stored image straight away, then the network's", () => {
+    it("shows the stored image straight away, then the network's", async () => {
       seedStore([
         {
           id: "section-1",
@@ -181,14 +181,14 @@ describe("ItineraryListItem", () => {
         },
       ])
 
-      renderWithWrappers(<ItineraryListItem {...props} itineraryID="abc" imageUrl={null} />)
+      await renderWithWrappers(<ItineraryListItem {...props} itineraryID="abc" imageUrl={null} />)
 
       expect(screen.getByTestId("itinerary-list-item-image")).toHaveProp(
         "src",
         "https://example.com/cached.jpg"
       )
 
-      resolveFallback([
+      await resolveFallback([
         { internalID: "stop-1", image: { url: "https://example.com/fresh.jpg" }, item: null },
       ])
 
@@ -200,14 +200,14 @@ describe("ItineraryListItem", () => {
 
     // The sheet reads a brand new itinerary's sections while it's still empty, and adding the
     // stop afterwards doesn't update that list in the store.
-    it("still asks the network when the store's copy is stale", () => {
+    it("still asks the network when the store's copy is stale", async () => {
       seedStore([])
 
-      renderWithWrappers(<ItineraryListItem {...props} itineraryID="abc" imageUrl={null} />)
+      await renderWithWrappers(<ItineraryListItem {...props} itineraryID="abc" imageUrl={null} />)
 
       expect(screen.getByTestId("itinerary-list-item-no-image")).toBeOnTheScreen()
 
-      resolveFallback([
+      await resolveFallback([
         { internalID: "stop-1", image: { url: "https://example.com/stop-1.jpg" }, item: null },
       ])
 
@@ -217,8 +217,8 @@ describe("ItineraryListItem", () => {
       )
     })
 
-    it("shows the uploaded cover without fetching the stops", () => {
-      renderWithWrappers(<ItineraryListItem {...props} itineraryID="abc" />)
+    it("shows the uploaded cover without fetching the stops", async () => {
+      await renderWithWrappers(<ItineraryListItem {...props} itineraryID="abc" />)
 
       expect(getMockRelayEnvironment().mock.getAllOperations()).toHaveLength(0)
       expect(screen.getByTestId("itinerary-list-item-image")).toHaveProp(

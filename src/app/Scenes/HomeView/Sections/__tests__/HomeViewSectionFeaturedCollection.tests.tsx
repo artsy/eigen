@@ -32,8 +32,8 @@ describe("HomeViewSectionFeaturedCollection", () => {
     `,
   })
 
-  it("does not render the section if no artworks are available", () => {
-    renderWithRelay({
+  it("does not render the section if no artworks are available", async () => {
+    await renderWithRelay({
       HomeViewComponent: () => ({
         title: "The Foo Bar Collection",
       }),
@@ -48,8 +48,8 @@ describe("HomeViewSectionFeaturedCollection", () => {
     expect(screen.toJSON()).toBeNull()
   })
 
-  it("renders a list of artworks", () => {
-    renderWithRelay({
+  it("renders a list of artworks", async () => {
+    await renderWithRelay({
       HomeViewSectionArtworks: () => ({
         internalID: "home-view-section-foo-bar-collection-artworks",
         component: {
@@ -78,8 +78,8 @@ describe("HomeViewSectionFeaturedCollection", () => {
   })
 
   describe("tapping on view-all", () => {
-    it("fires an event and navigates", () => {
-      renderWithRelay({
+    it("fires an event and navigates", async () => {
+      await renderWithRelay({
         HomeViewSectionArtworks: () => ({
           contextModule: "fooBarRail",
           component: {
@@ -103,7 +103,7 @@ describe("HomeViewSectionFeaturedCollection", () => {
         }),
       })
 
-      fireEvent.press(screen.getByText(/Browse All Artworks/))
+      await fireEvent.press(screen.getByText(/Browse All Artworks/))
 
       expect(mockTrackEvent).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -120,8 +120,8 @@ describe("HomeViewSectionFeaturedCollection", () => {
   })
 
   describe("tapping on an artwork", () => {
-    it("fires an event and navigates", () => {
-      renderWithRelay({
+    it("fires an event and navigates", async () => {
+      await renderWithRelay({
         HomeViewSectionArtworks: () => ({
           contextModule: "fooBarRail",
           artworksConnection: {
@@ -139,7 +139,7 @@ describe("HomeViewSectionFeaturedCollection", () => {
         }),
       })
 
-      fireEvent.press(screen.getByText(/Artwork 1/))
+      await fireEvent.press(screen.getByText(/Artwork 1/))
 
       expect(mockTrackEvent).toHaveBeenCalledWith(
         expect.objectContaining({

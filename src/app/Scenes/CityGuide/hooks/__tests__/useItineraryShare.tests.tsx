@@ -31,7 +31,7 @@ describe("useItineraryShare", () => {
   })
 
   it("shares a curated guide's own slug with no token and no mutation", async () => {
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () =>
         useItineraryShare({
           internalID: "guide-1",
@@ -66,7 +66,7 @@ describe("useItineraryShare", () => {
   })
 
   it("mints a share token for a personal itinerary that has none, and includes it in the link", async () => {
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () =>
         useItineraryShare({
           internalID: "itinerary-1",
@@ -118,7 +118,7 @@ describe("useItineraryShare", () => {
   })
 
   it("reuses an already-minted share token instead of minting a new one", async () => {
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () =>
         useItineraryShare({
           internalID: "itinerary-1",
@@ -144,7 +144,7 @@ describe("useItineraryShare", () => {
   })
 
   it("tracks the tap, then the share with the activity the user picked", async () => {
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () =>
         useItineraryShare({
           internalID: "itinerary-1",
@@ -180,7 +180,7 @@ describe("useItineraryShare", () => {
   it("does not track a share when the user closes the share sheet", async () => {
     ;(RNShare.open as jest.Mock).mockResolvedValue({ success: false, dismissedAction: true })
 
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () =>
         useItineraryShare({
           internalID: "itinerary-1",

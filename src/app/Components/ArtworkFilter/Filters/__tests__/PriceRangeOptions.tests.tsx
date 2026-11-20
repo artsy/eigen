@@ -23,14 +23,14 @@ const DEFAULT_RANGE: Range = {
 jest.mock("lodash/debounce", () => jest.fn())
 
 describe("CustomPriceInput", () => {
-  it("renders without error", () => {
-    renderWithWrappers(
+  it("renders without error", async () => {
+    await renderWithWrappers(
       <Input value={DEFAULT_RANGE} onChange={jest.fn()} {...getEssentialProps()} />
     )
   })
 
-  it("renders the min value", () => {
-    renderWithWrappers(
+  it("renders the min value", async () => {
+    await renderWithWrappers(
       <Input
         testID="price-min-input"
         value={{ min: 444, max: 99999 }}
@@ -42,8 +42,8 @@ describe("CustomPriceInput", () => {
     expect(screen.getByTestId("price-min-input").props.value.min).toBe(444)
   })
 
-  it("renders the max value", () => {
-    renderWithWrappers(
+  it("renders the max value", async () => {
+    await renderWithWrappers(
       <Input
         testID="price-max-input"
         value={{ min: 444, max: 99999 }}
@@ -55,9 +55,9 @@ describe("CustomPriceInput", () => {
     expect(screen.getByTestId("price-max-input").props.value.max).toBe(99999)
   })
 
-  it("calls onChange with the min when it is updated", () => {
+  it("calls onChange with the min when it is updated", async () => {
     const handleChange = jest.fn()
-    renderWithWrappers(
+    await renderWithWrappers(
       <Input
         testID="price-min-input"
         value={DEFAULT_RANGE}
@@ -66,14 +66,14 @@ describe("CustomPriceInput", () => {
       />
     )
 
-    fireEvent.changeText(screen.getByTestId("price-min-input"), "777")
+    await fireEvent.changeText(screen.getByTestId("price-min-input"), "777")
 
     expect(handleChange).toHaveBeenCalledWith("777")
   })
 
-  it("calls onChange with the max when it is updated", () => {
+  it("calls onChange with the max when it is updated", async () => {
     const handleChange = jest.fn()
-    renderWithWrappers(
+    await renderWithWrappers(
       <Input
         testID="price-max-input"
         value={DEFAULT_RANGE}
@@ -82,7 +82,7 @@ describe("CustomPriceInput", () => {
       />
     )
 
-    fireEvent.changeText(screen.getByTestId("price-max-input"), "12345")
+    await fireEvent.changeText(screen.getByTestId("price-max-input"), "12345")
 
     expect(handleChange).toHaveBeenLastCalledWith("12345")
   })
@@ -131,8 +131,8 @@ describe("PriceRangeOptions", () => {
     ;(debounce as jest.Mock).mockImplementation((func) => func)
   })
 
-  it("renders the header and the inputs", () => {
-    getTree()
+  it("renders the header and the inputs", async () => {
+    await getTree()
 
     expect(screen.getByText("Choose Your Price Range")).toBeTruthy()
 
@@ -141,11 +141,11 @@ describe("PriceRangeOptions", () => {
     expect(screen.getByTestId("slider")).toBeTruthy()
   })
 
-  it("dispatches a custom price", () => {
-    getTree()
+  it("dispatches a custom price", async () => {
+    await getTree()
 
-    fireEvent.changeText(screen.getByTestId("price-min-input"), "1111")
-    fireEvent.changeText(screen.getByTestId("price-max-input"), "98765")
+    await fireEvent.changeText(screen.getByTestId("price-min-input"), "1111")
+    await fireEvent.changeText(screen.getByTestId("price-max-input"), "98765")
 
     expect(screen.getByTestId("debug")).toHaveTextContent(
       `{"displayText":"$1,111–98,765","paramValue":"1111-98765","paramName":"priceRange"}`,
@@ -153,11 +153,11 @@ describe("PriceRangeOptions", () => {
     )
   })
 
-  it("dispatches the last entered price", () => {
-    getTree()
+  it("dispatches the last entered price", async () => {
+    await getTree()
 
-    fireEvent.changeText(screen.getByTestId("price-min-input"), "1111")
-    fireEvent.changeText(screen.getByTestId("price-min-input"), "2222")
+    await fireEvent.changeText(screen.getByTestId("price-min-input"), "1111")
+    await fireEvent.changeText(screen.getByTestId("price-min-input"), "2222")
 
     expect(screen.getByTestId("debug")).toHaveTextContent(
       `{"displayText":"$2,222+","paramValue":"2222-*","paramName":"priceRange"}`,
@@ -165,51 +165,51 @@ describe("PriceRangeOptions", () => {
     )
   })
 
-  it('should display the "clear" button if a custom price is entered', () => {
-    getTree()
+  it('should display the "clear" button if a custom price is entered', async () => {
+    await getTree()
 
-    fireEvent.changeText(screen.getByTestId("price-min-input"), "1111")
+    await fireEvent.changeText(screen.getByTestId("price-min-input"), "1111")
 
     expect(screen.getByText("Clear")).toBeTruthy()
   })
 
-  it('should not display the "clear" button if the default value is selected', () => {
-    getTree()
+  it('should not display the "clear" button if the default value is selected', async () => {
+    await getTree()
 
     expect(screen.queryByText("Clear")).toBeNull()
   })
 
-  it('selected value should be cleared when the "clear" button is pressed', () => {
-    getTree()
+  it('selected value should be cleared when the "clear" button is pressed', async () => {
+    await getTree()
     const minInput = screen.getByTestId("price-min-input")
 
-    fireEvent.changeText(minInput, "1111")
-    fireEvent.press(screen.getByText("Clear"))
+    await fireEvent.changeText(minInput, "1111")
+    await fireEvent.press(screen.getByText("Clear"))
 
     expect(minInput.props.value).toBe("")
   })
 
   it("should not update input with a special character (included in android num-pad)", async () => {
-    getTree()
+    await getTree()
     const minInput = screen.getByTestId("price-min-input")
 
-    fireEvent.changeText(minInput, ".")
+    await fireEvent.changeText(minInput, ".")
 
     expect(minInput).toHaveProp("value", "")
 
-    fireEvent.changeText(minInput, " ")
+    await fireEvent.changeText(minInput, " ")
     expect(minInput).toHaveProp("value", "")
-    fireEvent.changeText(minInput, "-")
+    await fireEvent.changeText(minInput, "-")
     expect(minInput).toHaveProp("value", "")
-    fireEvent.changeText(minInput, ",")
+    await fireEvent.changeText(minInput, ",")
     expect(minInput).toHaveProp("value", "")
 
-    fireEvent.changeText(minInput, "1242135")
+    await fireEvent.changeText(minInput, "1242135")
     screen.queryByDisplayValue("1242135")
   })
 
   describe("Recent price ranges analytics", () => {
-    it("should correctly track analytics", () => {
+    it("should correctly track analytics", async () => {
       __globalStoreTestUtils__?.injectState({
         userPrefs: {
           priceRange: "0-5000",
@@ -219,9 +219,9 @@ describe("PriceRangeOptions", () => {
         },
       })
 
-      getTree()
+      await getTree()
 
-      fireEvent.press(screen.getByText("$0–100"))
+      await fireEvent.press(screen.getByText("$0–100"))
 
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
         [
@@ -235,7 +235,7 @@ describe("PriceRangeOptions", () => {
       `)
     })
 
-    it("should correctly track analytics when the collector profile-sourced price range is selected", () => {
+    it("should correctly track analytics when the collector profile-sourced price range is selected", async () => {
       __globalStoreTestUtils__?.injectState({
         userPrefs: {
           priceRange: "0-5000",
@@ -245,9 +245,9 @@ describe("PriceRangeOptions", () => {
         },
       })
 
-      getTree()
+      await getTree()
 
-      fireEvent.press(screen.getByText("$0–5,000"))
+      await fireEvent.press(screen.getByText("$0–5,000"))
 
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
         [

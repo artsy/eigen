@@ -38,24 +38,24 @@ describe("ForceUpdate", () => {
       mockUseIsStaging.mockReturnValue(false)
     })
 
-    it("renders the force update message", () => {
+    it("renders the force update message", async () => {
       const testMessage = "A new version is available. Please update to continue."
 
-      renderWithWrappers(<ForceUpdate forceUpdateMessage={testMessage} />)
+      await renderWithWrappers(<ForceUpdate forceUpdateMessage={testMessage} />)
 
       expect(screen.getByText(testMessage)).toBeOnTheScreen()
     })
 
-    it("renders the Update Artsy button", () => {
-      renderWithWrappers(<ForceUpdate forceUpdateMessage="Please update" />)
+    it("renders the Update Artsy button", async () => {
+      await renderWithWrappers(<ForceUpdate forceUpdateMessage="Please update" />)
 
       expect(screen.getByText("Update Artsy")).toBeOnTheScreen()
     })
 
-    it("does not render staging info when not in staging", () => {
+    it("does not render staging info when not in staging", async () => {
       mockUseIsStaging.mockReturnValue(false)
 
-      renderWithWrappers(<ForceUpdate forceUpdateMessage="Please update" />)
+      await renderWithWrappers(<ForceUpdate forceUpdateMessage="Please update" />)
 
       expect(screen.queryByText(/DeviceInfo Version:/)).not.toBeOnTheScreen()
       expect(screen.queryByText(/AppJson version:/)).not.toBeOnTheScreen()
@@ -68,8 +68,8 @@ describe("ForceUpdate", () => {
       mockUseIsStaging.mockReturnValue(true)
     })
 
-    it("renders staging debug information when in staging", () => {
-      renderWithWrappers(<ForceUpdate forceUpdateMessage="Please update" />)
+    it("renders staging debug information when in staging", async () => {
+      await renderWithWrappers(<ForceUpdate forceUpdateMessage="Please update" />)
 
       expect(screen.getByText("DeviceInfo Version: 1.0.0")).toBeOnTheScreen()
       expect(screen.getByText("AppJson version: 1.0.0")).toBeOnTheScreen()
@@ -82,9 +82,9 @@ describe("ForceUpdate", () => {
     it("opens the App Store URL on iOS when Update button is pressed", async () => {
       Platform.OS = "ios"
 
-      renderWithWrappers(<ForceUpdate forceUpdateMessage="Please update" />)
+      await renderWithWrappers(<ForceUpdate forceUpdateMessage="Please update" />)
 
-      fireEvent.press(screen.getByText("Update Artsy"))
+      await fireEvent.press(screen.getByText("Update Artsy"))
 
       expect(mockCanOpenURL).toHaveBeenCalledWith(
         "https://apps.apple.com/us/app/artsy-buy-sell-original-art/id703796080"
@@ -100,9 +100,9 @@ describe("ForceUpdate", () => {
     it("opens the Play Store URL on Android when Update button is pressed", async () => {
       Platform.OS = "android"
 
-      renderWithWrappers(<ForceUpdate forceUpdateMessage="Please update" />)
+      await renderWithWrappers(<ForceUpdate forceUpdateMessage="Please update" />)
 
-      fireEvent.press(screen.getByText("Update Artsy"))
+      await fireEvent.press(screen.getByText("Update Artsy"))
 
       expect(mockCanOpenURL).toHaveBeenCalledWith(
         "https://play.google.com/store/apps/details?id=net.artsy.app"
@@ -118,9 +118,9 @@ describe("ForceUpdate", () => {
     it("does not open URL when canOpenURL returns false", async () => {
       mockCanOpenURL.mockResolvedValue(false)
 
-      renderWithWrappers(<ForceUpdate forceUpdateMessage="Please update" />)
+      await renderWithWrappers(<ForceUpdate forceUpdateMessage="Please update" />)
 
-      fireEvent.press(screen.getByText("Update Artsy"))
+      await fireEvent.press(screen.getByText("Update Artsy"))
 
       await Promise.resolve()
 
@@ -132,9 +132,9 @@ describe("ForceUpdate", () => {
       const testError = new Error("Cannot open URL")
       mockCanOpenURL.mockRejectedValue(testError)
 
-      renderWithWrappers(<ForceUpdate forceUpdateMessage="Please update" />)
+      await renderWithWrappers(<ForceUpdate forceUpdateMessage="Please update" />)
 
-      fireEvent.press(screen.getByText("Update Artsy"))
+      await fireEvent.press(screen.getByText("Update Artsy"))
 
       await Promise.resolve()
 
@@ -143,14 +143,14 @@ describe("ForceUpdate", () => {
   })
 
   describe("edge cases", () => {
-    it("renders correctly when forceUpdateMessage is undefined", () => {
-      renderWithWrappers(<ForceUpdate forceUpdateMessage={undefined} />)
+    it("renders correctly when forceUpdateMessage is undefined", async () => {
+      await renderWithWrappers(<ForceUpdate forceUpdateMessage={undefined} />)
 
       expect(screen.getByText("Update Artsy")).toBeOnTheScreen()
     })
 
-    it("renders correctly with empty string message", () => {
-      renderWithWrappers(<ForceUpdate forceUpdateMessage="" />)
+    it("renders correctly with empty string message", async () => {
+      await renderWithWrappers(<ForceUpdate forceUpdateMessage="" />)
 
       expect(screen.getByText("Update Artsy")).toBeOnTheScreen()
     })

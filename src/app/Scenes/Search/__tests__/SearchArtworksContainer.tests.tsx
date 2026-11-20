@@ -21,9 +21,9 @@ describe("SearchArtworks", () => {
   }
 
   it("should render without throwing an error", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
         artistNames: "Artist Name",
       }),
@@ -34,28 +34,28 @@ describe("SearchArtworks", () => {
     expect(screen.getByText("Artist Name")).toBeTruthy()
   })
 
-  it("should render loading state", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("should render loading state", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     expect(screen.getByLabelText("Artwork results are loading")).toBeTruthy()
   })
 
-  it("should render error state", () => {
+  it("should render error state", async () => {
     if (__renderWithPlaceholderTestUtils__) {
       __renderWithPlaceholderTestUtils__.allowFallbacksAtTestTime = true
     }
 
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
 
-    rejectMostRecentRelayOperation(mockEnvironment, new Error("Bad connection"))
+    await rejectMostRecentRelayOperation(mockEnvironment, new Error("Bad connection"))
 
     expect(screen.getByText("Something went wrong. Please check back later.")).toBeTruthy()
   })
 
-  it("should track event when an artwork is tapped", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("should track event when an artwork is tapped", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
         internalID: "internalID",
         slug: "artworkSlug",
@@ -64,7 +64,7 @@ describe("SearchArtworks", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("Artist Name"))
+    await fireEvent.press(screen.getByText("Artist Name"))
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       [

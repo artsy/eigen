@@ -30,7 +30,7 @@ describe("CityCuratedGuidesScreen", () => {
   })
 
   it("tracks a screen view with the city slug", async () => {
-    renderWithRelay(connection([guide("Normal")]))
+    await renderWithRelay(connection([guide("Normal")]))
     await screen.findByText("Normal")
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -41,7 +41,9 @@ describe("CityCuratedGuidesScreen", () => {
   })
 
   it("renders every guide as a large card, with featured guides first", async () => {
-    renderWithRelay(connection([guide("Normal"), guide("Featured", true), guide("Lead", true)]))
+    await renderWithRelay(
+      connection([guide("Normal"), guide("Featured", true), guide("Lead", true)])
+    )
 
     const cards = await screen.findAllByTestId("event-guide-featured")
     expect(cards).toHaveLength(3)
@@ -51,14 +53,14 @@ describe("CityCuratedGuidesScreen", () => {
   })
 
   it("renders a lone unfeatured guide as a large card", async () => {
-    renderWithRelay(connection([guide("Normal")]))
+    await renderWithRelay(connection([guide("Normal")]))
 
     expect(await screen.findByTestId("event-guide-featured")).toBeOnTheScreen()
     expect(screen.queryByTestId("event-guide-row")).not.toBeOnTheScreen()
   })
 
   it("filters unpublished guides and shows an empty state", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       connection([guide("Draft", false, "PRIVATE"), guide("Unlisted", false, "UNLISTED")])
     )
 
@@ -70,9 +72,9 @@ describe("CityCuratedGuidesScreen", () => {
   })
 
   it("opens a guide's itinerary", async () => {
-    renderWithRelay(connection([guide("normal-guide")]))
+    await renderWithRelay(connection([guide("normal-guide")]))
 
-    fireEvent.press(await screen.findByTestId("event-guide-featured"))
+    await fireEvent.press(await screen.findByTestId("event-guide-featured"))
 
     expect(navigate).toHaveBeenCalledWith(
       "/city-guide/london-united-kingdom/itinerary/normal-guide"
@@ -80,11 +82,11 @@ describe("CityCuratedGuidesScreen", () => {
   })
 
   it("loads more guides at the end of the list", async () => {
-    const { mockResolveLastOperation } = renderWithRelay(connection([guide("First")], true))
+    const { mockResolveLastOperation } = await renderWithRelay(connection([guide("First")], true))
     await screen.findByText("First")
 
-    fireEvent(screen.getByTestId("city-curated-guides-list"), "onEndReached")
-    mockResolveLastOperation(connection([guide("Second")]))
+    await fireEvent(screen.getByTestId("city-curated-guides-list"), "onEndReached")
+    await mockResolveLastOperation(connection([guide("Second")]))
 
     expect(await screen.findByText("Second")).toBeOnTheScreen()
     expect(screen.getByText("First")).toBeOnTheScreen()

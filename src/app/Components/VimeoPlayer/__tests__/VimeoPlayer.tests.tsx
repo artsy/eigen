@@ -27,60 +27,60 @@ describe("VimeoPlayer", () => {
     jest.clearAllMocks()
   })
 
-  it("embeds the video with its hash", () => {
-    renderWithWrappers(<VimeoPlayer videoId="1227796325" hash="e76414347e" />)
+  it("embeds the video with its hash", async () => {
+    await renderWithWrappers(<VimeoPlayer videoId="1227796325" hash="e76414347e" />)
 
     expect(playerHTML()).toContain(
       "https://player.vimeo.com/video/1227796325?autoplay=0&playsinline=1&transparent=1&h=e76414347e"
     )
   })
 
-  it("doesn't loop or preload by default", () => {
-    renderWithWrappers(<VimeoPlayer videoId="76979871" />)
+  it("doesn't loop or preload by default", async () => {
+    await renderWithWrappers(<VimeoPlayer videoId="76979871" />)
 
     expect(playerHTML()).not.toContain("loop=1")
     expect(playerHTML()).not.toContain("preload=auto")
   })
 
-  it("loops and preloads when asked to", () => {
-    renderWithWrappers(<VimeoPlayer videoId="76979871" loop preload />)
+  it("loops and preloads when asked to", async () => {
+    await renderWithWrappers(<VimeoPlayer videoId="76979871" loop preload />)
 
     expect(playerHTML()).toContain("loop=1&preload=auto")
   })
 
-  it("starts playback on play()", () => {
+  it("starts playback on play()", async () => {
     const ref = createRef<VimeoPlayerRef>()
-    renderWithWrappers(<VimeoPlayer ref={ref} videoId="76979871" />)
+    await renderWithWrappers(<VimeoPlayer ref={ref} videoId="76979871" />)
 
-    act(() => ref.current?.play())
+    await act(() => ref.current?.play())
 
     expect(mockInjectJavaScript).toHaveBeenCalledWith(PLAY_SCRIPT)
   })
 
-  it("starts playback once the page loads when play() came first", () => {
+  it("starts playback once the page loads when play() came first", async () => {
     const ref = createRef<VimeoPlayerRef>()
-    renderWithWrappers(<VimeoPlayer ref={ref} videoId="76979871" />)
+    await renderWithWrappers(<VimeoPlayer ref={ref} videoId="76979871" />)
 
-    act(() => ref.current?.play())
-    fireEvent(screen.getByTestId("vimeo-player-webview"), "loadEnd")
+    await act(() => ref.current?.play())
+    await fireEvent(screen.getByTestId("vimeo-player-webview"), "loadEnd")
 
     expect(mockInjectJavaScript).toHaveBeenCalledTimes(2)
     expect(mockInjectJavaScript).toHaveBeenLastCalledWith(PLAY_SCRIPT)
   })
 
-  it("does not start playback on load without play()", () => {
-    renderWithWrappers(<VimeoPlayer videoId="76979871" />)
+  it("does not start playback on load without play()", async () => {
+    await renderWithWrappers(<VimeoPlayer videoId="76979871" />)
 
-    fireEvent(screen.getByTestId("vimeo-player-webview"), "loadEnd")
+    await fireEvent(screen.getByTestId("vimeo-player-webview"), "loadEnd")
 
     expect(mockInjectJavaScript).not.toHaveBeenCalled()
   })
 
-  it("reports playback starting", () => {
+  it("reports playback starting", async () => {
     const onPlay = jest.fn()
-    renderWithWrappers(<VimeoPlayer videoId="76979871" onPlay={onPlay} />)
+    await renderWithWrappers(<VimeoPlayer videoId="76979871" onPlay={onPlay} />)
 
-    fireEvent(screen.getByTestId("vimeo-player-webview"), "message", {
+    await fireEvent(screen.getByTestId("vimeo-player-webview"), "message", {
       nativeEvent: { data: "play" },
     })
 

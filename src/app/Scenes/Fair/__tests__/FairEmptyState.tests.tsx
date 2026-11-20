@@ -17,19 +17,19 @@ const { renderWithRelay } = setupTestWrapper<FairEmptyStateTestsQuery>({
 })
 
 describe("FairEmptyState", () => {
-  it("renders null when the fair is active", () => {
-    renderWithRelay({ Fair: () => ({ isActive: true }) })
+  it("renders null when the fair is active", async () => {
+    await renderWithRelay({ Fair: () => ({ isActive: true }) })
     expect(screen.queryByText(/This fair is currently unavailable/)).not.toBeOnTheScreen()
   })
 
   describe("inactive", () => {
-    it("renders correctly when the fair is inactive", () => {
-      renderWithRelay({ Fair: () => ({ isActive: false }) })
+    it("renders correctly when the fair is inactive", async () => {
+      await renderWithRelay({ Fair: () => ({ isActive: false }) })
       expect(screen.getByText("This fair is currently unavailable.")).toBeOnTheScreen()
     })
 
-    it("renders correctly when the fair is in the future", () => {
-      renderWithRelay({
+    it("renders correctly when the fair is in the future", async () => {
+      await renderWithRelay({
         Fair: () => ({ isActive: false, endAt: DateTime.local().plus({ days: 1 }) }),
       })
       expect(

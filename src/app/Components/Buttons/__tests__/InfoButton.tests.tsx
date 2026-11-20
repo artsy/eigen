@@ -7,7 +7,7 @@ describe("InfoButton", () => {
   it("renders the button and opens and closes the modal correctly", async () => {
     const mockOnPress = jest.fn()
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <InfoButton
         title="title"
         subTitle="subTitle"
@@ -19,12 +19,12 @@ describe("InfoButton", () => {
     expect(screen.getAllByText("title")).toBeDefined()
     expect(screen.getAllByText("subTitle")).toBeDefined()
 
-    fireEvent.press(screen.getAllByText("title")[0])
+    await fireEvent.press(screen.getAllByText("title")[0])
 
     expect(mockOnPress).toHaveBeenCalledTimes(1)
 
     expect(screen.getByText("Modal Content")).toBeTruthy()
 
-    fireEvent.press(screen.getByText("Close"))
+    await fireEvent.press(screen.getByText("Close"))
   })
 })

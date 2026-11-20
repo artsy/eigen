@@ -24,6 +24,9 @@ describe("EditSavedSearchAlert", () => {
     ;(useSavedSearchPills as jest.Mock).mockImplementation(() => pills)
   })
 
+  const waitForPendingOperation = () =>
+    waitFor(() => expect(mockEnvironment.mock.getAllOperations()).not.toHaveLength(0))
+
   afterEach(() => {
     jest.clearAllMocks()
   })
@@ -33,18 +36,18 @@ describe("EditSavedSearchAlert", () => {
   }
 
   it("renders without throwing an error", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
 
     // await waitFor(() => {
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Alert: () => alert,
     })
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Viewer: () => viewerMocked,
     })
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    await resolveMostRecentRelayOperation(mockEnvironment)
 
     const alertPills = screen.getAllByTestId("alert-pill")
     expect(alertPills).toHaveLength(4)
@@ -62,13 +65,13 @@ describe("EditSavedSearchAlert", () => {
       .mockImplementationOnce(() => pills)
       .mockImplementation(() => pills.filter((pill) => pill.label !== "Lithograph"))
 
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Alert: () => alert,
       Viewer: () => viewerMocked,
     })
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         internalID: "artistID",
         slug: "artistSlug",
@@ -77,15 +80,15 @@ describe("EditSavedSearchAlert", () => {
 
     await flushPromiseQueue()
 
-    fireEvent.press(screen.getByText("Lithograph"))
-    fireEvent.press(screen.getAllByText("Save Alert")[0])
+    await fireEvent.press(screen.getByText("Lithograph"))
+    await fireEvent.press(screen.getAllByText("Save Alert")[0])
 
     await waitFor(() => {
       const operation = mockEnvironment.mock.getMostRecentOperation()
       expect(operation.fragment.node.name).toBe("getAlertByCriteriaQuery")
     })
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Alert: () => ({
         internalID: null,
       }),
@@ -109,51 +112,52 @@ describe("EditSavedSearchAlert", () => {
   })
 
   it("should display saved search preview display name as placeholder for input name", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
 
-    await waitFor(() => {
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Alert: () => ({
-          ...alert,
-          name: "",
-          settings: {
-            ...alert.settings,
-          },
-        }),
-      })
+    await waitForPendingOperation()
+    await resolveMostRecentRelayOperation(mockEnvironment, {
+      Alert: () => ({
+        ...alert,
+        name: "",
+        settings: {
+          ...alert.settings,
+        },
+      }),
+    })
 
-      resolveMostRecentRelayOperation(mockEnvironment)
+    await waitForPendingOperation()
+    await resolveMostRecentRelayOperation(mockEnvironment)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artist: () => ({
-          internalID: "artistID",
-          name: "Artist Name",
-          slug: "artistSlug",
-        }),
-        Viewer: () => viewerMocked,
-      })
+    await waitForPendingOperation()
+    await resolveMostRecentRelayOperation(mockEnvironment, {
+      Artist: () => ({
+        internalID: "artistID",
+        name: "Artist Name",
+        slug: "artistSlug",
+      }),
+      Viewer: () => viewerMocked,
     })
   })
 
   describe("Notificaton toggles", () => {
     it("email and push toggles are enabled", async () => {
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
-      await waitFor(() => {
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Alert: () => alert,
-        })
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Viewer: () => ({
-            notificationPreferences: [
-              {
-                channel: "email",
-                name: "custom_alerts",
-                status: "SUBSCRIBED",
-              },
-            ],
-          }),
-        })
+      await waitForPendingOperation()
+      await resolveMostRecentRelayOperation(mockEnvironment, {
+        Alert: () => alert,
+      })
+      await waitForPendingOperation()
+      await resolveMostRecentRelayOperation(mockEnvironment, {
+        Viewer: () => ({
+          notificationPreferences: [
+            {
+              channel: "email",
+              name: "custom_alerts",
+              status: "SUBSCRIBED",
+            },
+          ],
+        }),
       })
 
       expect(screen.getByLabelText("Email Toggler")).toBeOnTheScreen()
@@ -163,22 +167,22 @@ describe("EditSavedSearchAlert", () => {
     })
 
     it("email and push toggles are disabled", async () => {
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
-      await waitFor(() => {
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Alert: () => ({
-            ...alert,
-            settings: {
-              ...alert.settings,
-              email: false,
-              push: false,
-            },
-          }),
-        })
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Viewer: () => viewerMocked,
-        })
+      await waitForPendingOperation()
+      await resolveMostRecentRelayOperation(mockEnvironment, {
+        Alert: () => ({
+          ...alert,
+          settings: {
+            ...alert.settings,
+            email: false,
+            push: false,
+          },
+        }),
+      })
+      await waitForPendingOperation()
+      await resolveMostRecentRelayOperation(mockEnvironment, {
+        Viewer: () => viewerMocked,
       })
 
       expect(screen.queryByLabelText("Email Toggler")).toHaveProp("accessibilityState", {
@@ -193,21 +197,21 @@ describe("EditSavedSearchAlert", () => {
     })
 
     it("email toggle is enabled, push toggle is disabled", async () => {
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
-      await waitFor(() => {
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Alert: () => ({
-            ...alert,
-            settings: {
-              ...alert.settings,
-              push: false,
-            },
-          }),
-        })
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Viewer: () => viewerMocked,
-        })
+      await waitForPendingOperation()
+      await resolveMostRecentRelayOperation(mockEnvironment, {
+        Alert: () => ({
+          ...alert,
+          settings: {
+            ...alert.settings,
+            push: false,
+          },
+        }),
+      })
+      await waitForPendingOperation()
+      await resolveMostRecentRelayOperation(mockEnvironment, {
+        Viewer: () => viewerMocked,
       })
 
       expect(screen.queryByLabelText("Email Toggler")).toHaveProp("accessibilityState", {
@@ -222,29 +226,29 @@ describe("EditSavedSearchAlert", () => {
     })
 
     it("push toggle is enabled, email toggle is disabled", async () => {
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
-      await waitFor(() => {
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Alert: () => ({
-            ...alert,
-            settings: {
-              ...alert.settings,
-              email: false,
+      await waitForPendingOperation()
+      await resolveMostRecentRelayOperation(mockEnvironment, {
+        Alert: () => ({
+          ...alert,
+          settings: {
+            ...alert.settings,
+            email: false,
+          },
+        }),
+      })
+      await waitForPendingOperation()
+      await resolveMostRecentRelayOperation(mockEnvironment, {
+        Viewer: () => ({
+          notificationPreferences: [
+            {
+              channel: "email",
+              name: "custom_alerts",
+              status: "SUBSCRIBED",
             },
-          }),
-        })
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Viewer: () => ({
-            notificationPreferences: [
-              {
-                channel: "email",
-                name: "custom_alerts",
-                status: "SUBSCRIBED",
-              },
-            ],
-          }),
-        })
+          ],
+        }),
       })
 
       expect(screen.queryByLabelText("Email Toggler")).toHaveProp("accessibilityState", {
@@ -260,35 +264,36 @@ describe("EditSavedSearchAlert", () => {
 
     describe("Save Button", () => {
       it("is disabled when the screen mounts", async () => {
-        renderWithWrappers(<TestRenderer />)
+        await renderWithWrappers(<TestRenderer />)
 
-        await waitFor(() => {
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            Alert: () => alert,
-          })
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            Viewer: () => viewerMocked,
-          })
-
-          resolveMostRecentRelayOperation(mockEnvironment)
+        await waitForPendingOperation()
+        await resolveMostRecentRelayOperation(mockEnvironment, {
+          Alert: () => alert,
+        })
+        await waitForPendingOperation()
+        await resolveMostRecentRelayOperation(mockEnvironment, {
+          Viewer: () => viewerMocked,
         })
 
+        await waitForPendingOperation()
+        await resolveMostRecentRelayOperation(mockEnvironment)
+
         const saveButton = screen.getByText("Save Alert")
-        fireEvent.press(saveButton, "onPress")
+        await fireEvent.press(saveButton)
 
         expect(() => mockEnvironment.mock.getMostRecentOperation()).toThrowError()
       })
 
       it("is enabled when the user taps on a suggested filter", async () => {
-        renderWithWrappers(<TestRenderer />)
+        await renderWithWrappers(<TestRenderer />)
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        await resolveMostRecentRelayOperation(mockEnvironment, {
           Alert: () => alert,
         })
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        await resolveMostRecentRelayOperation(mockEnvironment, {
           Viewer: () => viewerMocked,
         })
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        await resolveMostRecentRelayOperation(mockEnvironment, {
           PreviewSavedSearch: () => ({
             suggestedFilters: mockSuggestedFilters,
           }),
@@ -296,20 +301,20 @@ describe("EditSavedSearchAlert", () => {
 
         await screen.findByText("Painting")
 
-        fireEvent.press(screen.getByText("Painting"), "onPress")
+        await fireEvent.press(screen.getByText("Painting"))
 
         await flushPromiseQueue()
 
         const saveButton = screen.getByText("Save Alert")
 
-        fireEvent.press(saveButton, "onPress")
+        await fireEvent.press(saveButton)
 
         await flushPromiseQueue()
 
         expect(mockEnvironment.mock.getMostRecentOperation().fragment.node.name).toBe(
           "getAlertByCriteriaQuery"
         )
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        await resolveMostRecentRelayOperation(mockEnvironment, {
           Alert: () => ({
             internalID: null,
           }),
@@ -320,7 +325,7 @@ describe("EditSavedSearchAlert", () => {
         expect(mockEnvironment.mock.getMostRecentOperation().fragment.node.name).toBe(
           "updateSavedSearchAlertMutation"
         )
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        await resolveMostRecentRelayOperation(mockEnvironment, {
           Alert: () => alert,
         })
 

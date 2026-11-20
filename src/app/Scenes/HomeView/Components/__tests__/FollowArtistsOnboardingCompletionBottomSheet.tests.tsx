@@ -31,8 +31,8 @@ jest.mock("react-native-pager-view", () => {
   return { __esModule: true, default: MockPagerView }
 })
 
-const scrollToSecondPage = () => {
-  fireEvent(screen.getByTestId("pager-view"), "pageScroll", { nativeEvent: { position: 1 } })
+const scrollToSecondPage = async () => {
+  await fireEvent(screen.getByTestId("pager-view"), "pageScroll", { nativeEvent: { position: 1 } })
 }
 
 describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
@@ -43,10 +43,10 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
   })
 
   describe("Visibility", () => {
-    it("does not render content when showFollowedArtistSummaryBottomSheet is false", () => {
+    it("does not render content when showFollowedArtistSummaryBottomSheet is false", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(false)
 
-      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
+      await renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
 
       expect(
         screen.queryByText("Your followed artists are saved to Favorites.")
@@ -56,7 +56,7 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
     it("renders the sheet content when showFollowedArtistSummaryBottomSheet is true", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
+      await renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
 
       expect(
         await screen.findByText("Your followed artists are saved to Favorites.")
@@ -92,7 +92,7 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
       })
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
+      await renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
 
       await screen.findByText("Your followed artists are saved to Favorites.")
 
@@ -119,7 +119,7 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
       })
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
+      await renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
 
       await screen.findByText("Your followed artists are saved to Favorites.")
 
@@ -139,7 +139,7 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
     it("renders page 1 content", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
+      await renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
 
       expect(
         await screen.findByText("Your followed artists are saved to Favorites.")
@@ -152,7 +152,7 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
     it("renders page 2 content", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
+      await renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
 
       expect(await screen.findByText("We’ll let you know when new works arrive.")).toBeOnTheScreen()
       expect(
@@ -167,7 +167,7 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
     it("shows Next button on page 1", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
+      await renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
 
       // Component starts on page 1 (activeStep = 0)
       expect(await screen.findByText("Next")).toBeOnTheScreen()
@@ -176,7 +176,7 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
     it("shows View For You button on page 2", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
+      await renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
 
       await screen.findByText("Your followed artists are saved to Favorites.")
 
@@ -187,15 +187,15 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
     it("dismisses and resets global state when View For You is pressed", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
+      await renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
 
       await screen.findByText("Your followed artists are saved to Favorites.")
 
       // Navigate to page 1 to show "View For You" button
-      scrollToSecondPage()
+      await scrollToSecondPage()
 
       const viewForYouButton = await screen.findByText("View For You")
-      fireEvent.press(viewForYouButton)
+      await fireEvent.press(viewForYouButton)
 
       const state = __globalStoreTestUtils__!.getCurrentState()
       expect(state.onboarding.showFollowedArtistSummaryBottomSheet).toBe(false)
@@ -210,13 +210,13 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
       })
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
+      await renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
 
       await screen.findByText("Your followed artists are saved to Favorites.")
 
-      scrollToSecondPage()
+      await scrollToSecondPage()
 
-      fireEvent.press(await screen.findByText("View For You"))
+      await fireEvent.press(await screen.findByText("View For You"))
 
       expect(
         __globalStoreTestUtils__?.getCurrentState().onboarding.followedOnboardingArtists
@@ -228,7 +228,7 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
     it("advances from page 0 to page 1 when tapping anywhere on the sheet", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
+      await renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
 
       await screen.findByText("Your followed artists are saved to Favorites.")
       expect(screen.getByText("Next")).toBeOnTheScreen()
@@ -246,12 +246,12 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
     it("dismisses the sheet when tapping anywhere on page 1", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
+      await renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
 
       await screen.findByText("Your followed artists are saved to Favorites.")
 
       // Navigate to page 1
-      scrollToSecondPage()
+      await scrollToSecondPage()
 
       // Should show "View For You" button on page 1
       expect(await screen.findByText("View For You")).toBeOnTheScreen()

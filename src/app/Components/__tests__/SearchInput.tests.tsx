@@ -11,7 +11,7 @@ describe("SearchInput", () => {
   }
 
   it("renders input", async () => {
-    renderWithWrappers(<TestWrapper />)
+    await renderWithWrappers(<TestWrapper />)
     expect(screen.getByPlaceholderText("Type something...")).toBeDefined()
   })
 })

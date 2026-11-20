@@ -25,7 +25,7 @@ describe("ShowsRailContainer", () => {
     const environment = createMockEnvironment()
 
     it("renders the title and the shows and handles title press", async () => {
-      renderWithHookWrappersTL(<ShowsRailContainer title="Shows for You" />, environment)
+      await renderWithHookWrappersTL(<ShowsRailContainer title="Shows for You" />, environment)
 
       await act(async () => {
         environment.mock.resolveMostRecentOperation((operation) =>
@@ -44,7 +44,7 @@ describe("ShowsRailContainer", () => {
 
       expect(screen.getByText("Leeum Collection: Beyond Space")).toBeDefined()
 
-      fireEvent.press(screen.getByText("Shows for You"))
+      await fireEvent.press(screen.getByText("Shows for You"))
 
       expect(navigate).toHaveBeenCalledWith("/shows-for-you")
       expect(mockTrackEvent).toHaveBeenCalledWith({

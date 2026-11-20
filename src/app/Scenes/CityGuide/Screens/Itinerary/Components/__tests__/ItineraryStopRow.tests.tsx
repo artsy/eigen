@@ -63,8 +63,8 @@ const renderRow = (props: RowProps) =>
 
 describe("ItineraryStopRow", () => {
   // Read from the show, not the stop: saving the show elsewhere only updates the show.
-  it("shows a check when the stop's show is already on one of my itineraries", () => {
-    renderRow({
+  it("shows a check when the stop's show is already on one of my itineraries", async () => {
+    await renderRow({
       stop: makeItineraryStop({
         ...savedStop,
         isOnMyItineraries: false,
@@ -80,7 +80,7 @@ describe("ItineraryStopRow", () => {
   })
 
   it("renders the title, time and address", async () => {
-    renderRow({
+    await renderRow({
       stop: savedStop,
       citySlug: "london-united-kingdom",
       itineraryId: "guide-1",
@@ -92,8 +92,8 @@ describe("ItineraryStopRow", () => {
     expect(screen.getByText("🏛 Trafalgar Square, WC2N 5DN")).toBeTruthy()
   })
 
-  it("hides the image section when the stop has no image", () => {
-    renderWithWrappers(
+  it("hides the image section when the stop has no image", async () => {
+    await renderWithWrappers(
       <ItineraryStopRow
         stop={makeItineraryStop({ ...unsaveableStop, image: null })}
         citySlug="london-united-kingdom"
@@ -107,7 +107,7 @@ describe("ItineraryStopRow", () => {
   })
 
   it("leaves the note off the row", async () => {
-    renderRow({
+    await renderRow({
       stop: savedStop,
       citySlug: "london-united-kingdom",
       itineraryId: "guide-1",
@@ -134,8 +134,8 @@ describe("ItineraryStopRow", () => {
 
     // The row layout has to live on an element inside the link, not on the link: `StopCard`
     // declares it itself. RNTL does no layout, so this asserts where it's declared.
-    it("declares the row layout inside the link", () => {
-      renderWithWrappers(
+    it("declares the row layout inside the link", async () => {
+      await renderWithWrappers(
         <ItineraryStopRow
           stop={withItem({
             __typename: "Show",
@@ -161,8 +161,8 @@ describe("ItineraryStopRow", () => {
       })
     })
 
-    it("navigates to a show", () => {
-      renderWithWrappers(
+    it("navigates to a show", async () => {
+      await renderWithWrappers(
         <ItineraryStopRow
           stop={withItem({
             __typename: "Show",
@@ -183,14 +183,14 @@ describe("ItineraryStopRow", () => {
         />
       )
 
-      fireEvent.press(screen.getByTestId("stop-card-link"))
+      await fireEvent.press(screen.getByTestId("stop-card-link"))
 
       expect(navigate).toHaveBeenCalledWith("/show/white-cube-georg-baselitz-back-again")
     })
 
     // A gallery stop points at a Location, and the partner behind it is what has a page.
-    it("navigates to the gallery behind a location", () => {
-      renderWithWrappers(
+    it("navigates to the gallery behind a location", async () => {
+      await renderWithWrappers(
         <ItineraryStopRow
           stop={withItem({
             __typename: "Location",
@@ -213,15 +213,15 @@ describe("ItineraryStopRow", () => {
         />
       )
 
-      fireEvent.press(screen.getByTestId("stop-card-link"))
+      await fireEvent.press(screen.getByTestId("stop-card-link"))
 
       expect(navigate).toHaveBeenCalledWith("/partner/white-cube?locationID=bermondsey-id")
     })
 
     // A custom stop has no entity page, so it gets its own screen, addressed by the itinerary
     // it belongs to — Metaphysics has no root lookup for a single stop.
-    it("goes to a custom stop's own screen", () => {
-      renderWithWrappers(
+    it("goes to a custom stop's own screen", async () => {
+      await renderWithWrappers(
         <ItineraryStopRow
           stop={unsaveableStop}
           citySlug="london-united-kingdom"
@@ -230,7 +230,7 @@ describe("ItineraryStopRow", () => {
         />
       )
 
-      fireEvent.press(screen.getByTestId("stop-card-link"))
+      await fireEvent.press(screen.getByTestId("stop-card-link"))
 
       expect(navigate).toHaveBeenCalledWith(
         "/city-guide/london-united-kingdom/itinerary/guide-1/stop/stop-1"
@@ -238,8 +238,8 @@ describe("ItineraryStopRow", () => {
     })
 
     // The source link leaves Artsy, so the screen offers it rather than the row following it.
-    it("does not follow a custom stop's source link", () => {
-      renderWithWrappers(
+    it("does not follow a custom stop's source link", async () => {
+      await renderWithWrappers(
         <ItineraryStopRow
           stop={makeItineraryStop({
             ...unsaveableStop,
@@ -251,7 +251,7 @@ describe("ItineraryStopRow", () => {
         />
       )
 
-      fireEvent.press(screen.getByTestId("stop-card-link"))
+      await fireEvent.press(screen.getByTestId("stop-card-link"))
 
       expect(navigate).not.toHaveBeenCalledWith("https://timeout.com/london-cafe")
     })
@@ -259,8 +259,8 @@ describe("ItineraryStopRow", () => {
 
   // No saveTarget means the plus needs no lookup — a custom stop's own control renders
   // straight away, and an entity-backed stop's plus needs only an AddToItineraryProvider.
-  it("omits the note when the stop has none", () => {
-    renderWithWrappers(
+  it("omits the note when the stop has none", async () => {
+    await renderWithWrappers(
       <ItineraryStopRow
         stop={unsaveableStop}
         citySlug="london-united-kingdom"
@@ -275,8 +275,8 @@ describe("ItineraryStopRow", () => {
   // A custom stop has no entity to resolve, so its plus renders straight away rather than
   // waiting on a lookup the way an Artsy stop's control does. Its plus opens the same Add to
   // Itinerary sheet as an Artsy stop's, so it still needs the provider mounted above it.
-  it("shows the plus on a custom stop without waiting on a lookup", () => {
-    renderRow({
+  it("shows the plus on a custom stop without waiting on a lookup", async () => {
+    await renderRow({
       stop: unsaveableStop,
       citySlug: "london-united-kingdom",
       itineraryId: "guide-1",
@@ -286,8 +286,8 @@ describe("ItineraryStopRow", () => {
     expect(screen.getByTestId("custom-stop-save-button")).toBeOnTheScreen()
   })
 
-  it("renders no entity save control when the stop has no save target", () => {
-    renderWithWrappers(
+  it("renders no entity save control when the stop has no save target", async () => {
+    await renderWithWrappers(
       <ItineraryStopRow
         stop={unsaveableStop}
         citySlug="london-united-kingdom"
@@ -301,8 +301,8 @@ describe("ItineraryStopRow", () => {
   })
 
   // The plus has no saved state now: which itineraries hold the entity is the sheet's business.
-  it("shows a plus on an entity-backed stop", () => {
-    renderRow({
+  it("shows a plus on an entity-backed stop", async () => {
+    await renderRow({
       stop: savedStop,
       citySlug: "london-united-kingdom",
       itineraryId: "guide-1",
@@ -317,8 +317,8 @@ describe("ItineraryStopRow", () => {
       jest.clearAllMocks()
     })
 
-    it("tracks the row's own itinerary as context, with the entity as the destination", () => {
-      renderWithWrappers(
+    it("tracks the row's own itinerary as context, with the entity as the destination", async () => {
+      await renderWithWrappers(
         <AddToItineraryProvider citySlug="london-united-kingdom" cityName="London">
           <ItineraryStopRow
             stop={savedStop}
@@ -331,7 +331,7 @@ describe("ItineraryStopRow", () => {
         </AddToItineraryProvider>
       )
 
-      fireEvent.press(screen.getByTestId("city-guide-save-button"))
+      await fireEvent.press(screen.getByTestId("city-guide-save-button"))
 
       expect(mockTrackEvent).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -347,8 +347,8 @@ describe("ItineraryStopRow", () => {
       )
     })
 
-    it("tracks a custom stop with no destination entity", () => {
-      renderWithWrappers(
+    it("tracks a custom stop with no destination entity", async () => {
+      await renderWithWrappers(
         <AddToItineraryProvider citySlug="london-united-kingdom" cityName="London">
           <ItineraryStopRow
             stop={unsaveableStop}
@@ -359,7 +359,7 @@ describe("ItineraryStopRow", () => {
         </AddToItineraryProvider>
       )
 
-      fireEvent.press(screen.getByTestId("custom-stop-save-button"))
+      await fireEvent.press(screen.getByTestId("custom-stop-save-button"))
 
       expect(mockTrackEvent).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -373,8 +373,8 @@ describe("ItineraryStopRow", () => {
   })
 
   // The designs give the card three lines and separate hours from admission with a dot.
-  it("renders the three card lines for a show, with a dot between hours and admission", () => {
-    renderWithWrappers(
+  it("renders the three card lines for a show, with a dot between hours and admission", async () => {
+    await renderWithWrappers(
       <ItineraryStopRow
         stop={makeItineraryStop({
           ...unsaveableStop,
@@ -407,8 +407,8 @@ describe("ItineraryStopRow", () => {
     expect(screen.getByTestId("stop-card-meta-dot")).toBeOnTheScreen()
   })
 
-  it("shows no dot when there is only one of hours and admission", () => {
-    renderWithWrappers(
+  it("shows no dot when there is only one of hours and admission", async () => {
+    await renderWithWrappers(
       <ItineraryStopRow
         stop={makeItineraryStop({
           ...unsaveableStop,
