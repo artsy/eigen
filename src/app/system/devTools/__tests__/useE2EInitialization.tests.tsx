@@ -1,3 +1,4 @@
+import { waitFor } from "@testing-library/react-native"
 import { GlobalStore, __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { useE2EInitialization } from "app/system/devTools/useE2EInitialization"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -38,6 +39,28 @@ describe("useE2EInitialization", () => {
     renderWithWrappers(<TestComponent />)
 
     expect(localOverrides()).not.toHaveProperty("AREnableShareShowPartnerFeature")
+  })
+
+  describe("signing out", () => {
+    const pushPromptLogic = () =>
+      __globalStoreTestUtils__?.getCurrentState().artsyPrefs.pushPromptLogic
+
+    it("keeps the push prompt hidden after signing out", async () => {
+      // The real signOut resets pushPermissionsRequestedThisSession, so do the same here
+      const signOut = jest.spyOn(GlobalStore.actions.auth, "signOut").mockImplementation(() => {
+        GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushPermissionsRequestedThisSession(false)
+        return Promise.resolve() as any
+      })
+      __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "token" } })
+      mockLaunchArguments({ useE2EInit: true, shouldSignOut: true })
+
+      renderWithWrappers(<TestComponent />)
+
+      expect(signOut).toHaveBeenCalled()
+      await waitFor(() => expect(pushPromptLogic()?.pushPermissionsRequestedThisSession).toBe(true))
+
+      signOut.mockRestore()
+    })
   })
 
   describe("signing in with email and password", () => {

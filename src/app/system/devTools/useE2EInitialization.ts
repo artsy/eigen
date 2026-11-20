@@ -42,8 +42,11 @@ export const useE2EInitialization = () => {
     }
 
     // Hides the push permission prompt for e2e tests
-    setPushPermissionsRequestedThisSession(true)
-    setPushNotificationSettingsPromptSeen(true)
+    const hidePushPrompts = () => {
+      setPushPermissionsRequestedThisSession(true)
+      setPushNotificationSettingsPromptSeen(true)
+    }
+    hidePushPrompts()
 
     // Dismiss all progressive onboarding popovers for e2e tests
     GlobalStore.actions.artsyPrefs.features.setLocalOverride({
@@ -71,7 +74,9 @@ export const useE2EInitialization = () => {
         password,
       })
     } else if (shouldSignOut && isLoggedIn) {
-      GlobalStore.actions.auth.signOut()
+      // signOut lets the push prompt show again, so a flow that signs up afterwards would get it on
+      // the home screen. Hide it again once signing out is done.
+      GlobalStore.actions.auth.signOut().then(hidePushPrompts)
     }
   }, [isHydrated])
 }

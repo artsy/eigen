@@ -1,6 +1,6 @@
 # End-to-end tests
 
-The e2e flows run with [agent-device](https://github.com/callstack/agent-device) by Callstack, which drives iOS simulators and Android emulators. The flows are deterministic `.ad` replay scripts that run without an LLM, on the QA builds of `main`. They cover login, signup, deeplinks, the share sheet, a smoke test of every bottom tab, adding and deleting a My Collection artwork, and saving an artwork and following an artist in Favorites.
+The e2e flows run with [agent-device](https://github.com/callstack/agent-device) by Callstack, which drives iOS simulators and Android emulators. The flows are deterministic `.ad` replay scripts that run without an LLM, on the QA builds of `main`. They cover login, signup, deeplinks, the share sheet, a smoke test of every bottom tab, signing up and deleting a new account, adding and deleting a My Collection artwork, and saving an artwork and following an artist in Favorites.
 
 `perf/` holds the separate Flashlight performance test, which still uses Maestro. See [Measuring performance with Flashlight](../docs/measuring_performance_with_flashlight.md).
 
@@ -23,7 +23,7 @@ The e2e flows run with [agent-device](https://github.com/callstack/agent-device)
 ## Layout
 
 - `flows/<name>.ad`: one script per scenario, shared by iOS and Android. The platform comes from the device passed to the runner.
-- `flows/<name>.<ios|android>.ad`: a platform-only version, for a scenario that has to work differently on each platform. The `deeplink-*` and `share` flows are. `SKIP_FLOWS` uses the name without the suffix, e.g. `SKIP_FLOWS="deeplink-email deeplink-click"`.
+- `flows/<name>.<ios|android>.ad`: a platform-only version, for a scenario that has to work differently on each platform. The `deeplink-*`, `share` and `delete-account` flows are. `SKIP_FLOWS` uses the name without the suffix, e.g. `SKIP_FLOWS="deeplink-email deeplink-click"`.
 - `reporters/failures.mjs`: a test reporter that writes the failed tests to `failures.json` for `scripts/ci/report-e2e-test-failure`.
 
 ### Launch arguments
