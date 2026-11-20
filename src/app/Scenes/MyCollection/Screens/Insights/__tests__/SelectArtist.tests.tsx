@@ -24,7 +24,7 @@ describe.skip("SelectArtist", () => {
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   describe("when changing an artist from artists list", () => {
-    fit("should update the selected artist", async () => {
+    it("should update the selected artist", async () => {
       await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
       await act(() => {

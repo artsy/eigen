@@ -56,7 +56,7 @@ describe("CollectionArtworks", () => {
     expect(screen.getByText("Showing 123 works")).toBeOnTheScreen()
   })
 
-  fdescribe("collector signals", () => {
+  describe("collector signals", () => {
     it("renders the collector signals", async () => {
       await renderWithRelay({
         MarketingCollection: () => ({

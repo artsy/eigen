@@ -233,6 +233,8 @@ module.exports = {
         // render, fireEvent, act and our test helpers are async: a missing `await` lets the test
         // continue before React has flushed.
         "@typescript-eslint/no-floating-promises": ERR,
+        // fdescribe/fit/.only silently skip every other test in the file
+        "jest/no-focused-tests": ERR,
       },
     },
   ],
