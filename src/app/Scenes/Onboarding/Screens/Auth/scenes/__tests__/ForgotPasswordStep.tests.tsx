@@ -22,7 +22,7 @@ describe("ForgotPasswordStep", () => {
     renderWithWrappers(<ForgotPasswordStep />)
     expect(screen.getByDisplayValue("foo@bar.baz")).toBeOnTheScreen()
     expect(screen.getByText("Send Reset Link")).toBeEnabled()
-    fireEvent.changeText(screen.getByA11yHint("Enter your email address"), "invalid-email")
+    fireEvent.changeText(screen.getByHintText("Enter your email address"), "invalid-email")
     await waitFor(() => expect(screen.getByText("Send Reset Link")).toBeDisabled())
   })
 
@@ -57,7 +57,7 @@ describe("ForgotPasswordStep", () => {
     it("shows a confirmation message", async () => {
       renderWithWrappers(<ForgotPasswordStep />)
       fireEvent.press(screen.getByText("Send Reset Link"))
-      await waitFor(() => expect(screen.queryByA11yHint("Enter your email address")).toBeNull())
+      await waitFor(() => expect(screen.queryByHintText("Enter your email address")).toBeNull())
       expect(
         screen.getByText(
           "Password reset link sent—check your email. Please note, you must wait 5 minutes to receive another link."
@@ -70,7 +70,7 @@ describe("ForgotPasswordStep", () => {
     // it("sends a reset link when the 'send again' button is pressed", async () => {
     //   renderWithWrappers(<ForgotPasswordStep />)
     //   fireEvent.press(screen.getByText("Send Reset Link"))
-    //   await waitFor(() => expect(screen.queryByA11yHint("Enter your email address")).toBeNull())
+    //   await waitFor(() => expect(screen.queryByHintText("Enter your email address")).toBeNull())
     //   await waitFor(() => expect(screen.getByText("Send Again")).toBeEnabled())
     //   fireEvent.press(screen.getByText("Send Again"))
     //   await waitFor(() => expect(GlobalStore.actions.auth.forgotPassword).toHaveBeenCalledTimes(2))
@@ -79,7 +79,7 @@ describe("ForgotPasswordStep", () => {
     it("returns to the login screen when the 'return to login' button is pressed", async () => {
       renderWithWrappers(<ForgotPasswordStep />)
       fireEvent.press(screen.getByText("Send Reset Link"))
-      await waitFor(() => expect(screen.queryByA11yHint("Enter your email address")).toBeNull())
+      await waitFor(() => expect(screen.queryByHintText("Enter your email address")).toBeNull())
       fireEvent.press(screen.getByText("Return to Login"))
       await waitFor(() =>
         expect(mockUseAuthNavigation().navigate).toHaveBeenCalledWith({

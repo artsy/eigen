@@ -1,9 +1,5 @@
-import { Touchable } from "@artsy/palette-mobile"
-import { screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ConversationTestsQuery } from "__generated__/ConversationTestsQuery.graphql"
-import ConnectivityBanner from "app/Components/ConnectivityBanner"
-import { Composer } from "app/Scenes/Inbox/Components/Conversations/Composer"
-import { ConversationPartnerOfferCTA } from "app/Scenes/Inbox/Components/Conversations/ConversationPartnerOfferCTA"
 import { ConversationFragmentContainer } from "app/Scenes/Inbox/Screens/Conversation"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate, navigationEvents } from "app/system/navigation/navigate"
@@ -22,6 +18,23 @@ jest.mock("app/system/navigation/navigate", () => ({
     removeListener: jest.fn(),
   },
 }))
+
+// Wrap the partner offer banner in a host view so the tests can tell whether it was chosen.
+jest.mock("app/Scenes/Inbox/Components/Conversations/ConversationPartnerOfferCTA", () => {
+  const { View } = require("react-native")
+  const actual = jest.requireActual(
+    "app/Scenes/Inbox/Components/Conversations/ConversationPartnerOfferCTA"
+  )
+
+  return {
+    ...actual,
+    ConversationPartnerOfferCTA: (props: any) => (
+      <View testID="conversation-partner-offer-cta">
+        <actual.ConversationPartnerOfferCTA {...props} />
+      </View>
+    ),
+  }
+})
 
 const { renderWithRelay } = setupTestWrapper<ConversationTestsQuery>({
   Component: ({ me }) => (
@@ -52,11 +65,10 @@ it("looks correct when rendered", () => {
 
   renderWithRelay()
 
-  const composer = screen.UNSAFE_getByType(Composer)
-  const banners = screen.UNSAFE_queryAllByType(ConnectivityBanner)
-
-  expect(composer.props.disabled).toBeFalsy()
-  expect(banners).toHaveLength(0)
+  // The composer isn't disabled: once there is text, Send is enabled.
+  fireEvent.changeText(screen.getByLabelText("Text input field"), "Hello")
+  expect(screen.getByText("Send")).toBeEnabled()
+  expect(screen.queryByText("No Internet Connection")).not.toBeOnTheScreen()
 })
 
 it("looks correct when disconnected", async () => {
@@ -74,10 +86,10 @@ it("looks correct when disconnected", async () => {
 
   renderWithRelay()
 
-  const composer = screen.UNSAFE_getByType(Composer)
   // Since we're testing functional component behavior, we expect it to start enabled
   // The connectivity change would happen asynchronously
-  expect(composer.props.disabled).toBeFalsy()
+  fireEvent.changeText(screen.getByLabelText("Text input field"), "Hello")
+  expect(screen.getByText("Send")).toBeEnabled()
 })
 
 it("clicking on detail link opens pushes detail screen into navigator", () => {
@@ -96,8 +108,7 @@ it("clicking on detail link opens pushes detail screen into navigator", () => {
     }),
   })
 
-  const touchables = screen.UNSAFE_getAllByType(Touchable)
-  touchables[0].props.onPress()
+  fireEvent.press(screen.getByTestId("conversation-details-button"))
 
   expect(navigate).toHaveBeenCalledWith("/conversation/123/details")
 })
@@ -178,12 +189,12 @@ describe("partner offer banner priority", () => {
   it("shows the partner offer banner when there is no active order", () => {
     renderWithRelay(offerResolvers([]))
 
-    expect(screen.UNSAFE_queryAllByType(ConversationPartnerOfferCTA)).toHaveLength(1)
+    expect(screen.getByTestId("conversation-partner-offer-cta")).toBeOnTheScreen()
   })
 
   it("hides the partner offer banner when there is an active order", () => {
     renderWithRelay(offerResolvers([{ node: { internalID: "order-1" } }]))
 
-    expect(screen.UNSAFE_queryAllByType(ConversationPartnerOfferCTA)).toHaveLength(0)
+    expect(screen.queryByTestId("conversation-partner-offer-cta")).not.toBeOnTheScreen()
   })
 })

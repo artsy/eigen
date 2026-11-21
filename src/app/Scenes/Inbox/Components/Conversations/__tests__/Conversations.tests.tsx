@@ -1,9 +1,8 @@
+import { act, screen } from "@testing-library/react-native"
 import { ConversationsTestsQuery } from "__generated__/ConversationsTestsQuery.graphql"
 import { ConversationsContainer } from "app/Scenes/Inbox/Components/Conversations/Conversations"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 describe("messaging inbox", () => {
@@ -34,23 +33,23 @@ describe("messaging inbox", () => {
     />
   )
 
-  const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+  const renderAndResolve = (mockResolvers = {}) => {
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
     })
-    return tree
   }
 
   it("renders without throwing an error", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(ConversationsContainer)).toHaveLength(1)
+    renderAndResolve()
+    // The inbox header is the first thing ConversationsContainer renders.
+    expect(screen.getByText(/^Inbox/)).toBeOnTheScreen()
   })
 
   it("renders the no messages notice when there are no messages", () => {
-    const wrapper = getWrapper({
+    renderAndResolve({
       Me: () => ({
         conversations: {
           pageInfo: {
@@ -62,6 +61,6 @@ describe("messaging inbox", () => {
       }),
     })
 
-    expect(extractText(wrapper.root)).toContain("Keep track of your conversations with galleries")
+    expect(screen.getByText(/Keep track of your conversations with galleries/)).toBeOnTheScreen()
   })
 })

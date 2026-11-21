@@ -1,18 +1,27 @@
-import FastImage from "@d11/react-native-fast-image"
+import { act, fireEvent, screen, within } from "@testing-library/react-native"
 import { ShowContextCardTestsQuery } from "__generated__/ShowContextCardTestsQuery.graphql"
-import { SectionTitle } from "app/Components/SectionTitle"
-import {
-  ShowContextCard,
-  ShowContextCardFragmentContainer,
-} from "app/Scenes/Show/Components/ShowContextCard"
+import { ShowContextCardFragmentContainer } from "app/Scenes/Show/Components/ShowContextCard"
 import { navigate } from "app/system/navigation/navigate"
-import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { TouchableOpacity } from "react-native"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
+// Render FastImage as a host view so its `source` can be asserted on
+jest.mock("@d11/react-native-fast-image", () => {
+  const React = jest.requireActual("react")
+  const { View } = jest.requireActual("react-native")
+  const FastImage = (props: any) => React.createElement(View, { testID: "fast-image", ...props })
+  FastImage.priority = { low: "low", normal: "normal", high: "high" }
+  FastImage.resizeMode = {
+    contain: "contain",
+    cover: "cover",
+    stretch: "stretch",
+    center: "center",
+  }
+  FastImage.preload = jest.fn()
+  return { __esModule: true, default: FastImage }
+})
 
 describe("ShowContextCard", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -43,23 +52,22 @@ describe("ShowContextCard", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
     })
-    return tree
   }
 
   it("renders without throwing an error", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(ShowContextCard)).toHaveLength(1)
+    getWrapper()
+    expect(screen.getByTestId("ShowContextCard")).toBeOnTheScreen()
   })
 
   describe("when the show is a fair booth", () => {
     it("renders contextual info about the fair", () => {
-      const wrapper = getWrapper({
+      getWrapper({
         Show: () => ({
           isFairBooth: true,
           fair: {
@@ -75,19 +83,32 @@ describe("ShowContextCard", () => {
         }),
       })
 
-      const text = extractText(wrapper.root)
-      expect(text).toMatch("Part of IFPDA Print Fair 2020")
-      expect(text).toMatch("Jan 1 - Jan 31")
+      expect(screen.getByText(/Part of IFPDA Print Fair 2020/)).toBeOnTheScreen()
+      expect(screen.getByText(/Jan 1 - Jan 31/)).toBeOnTheScreen()
 
-      const mainImageURL = wrapper.root.findByProps({ testID: "main-image" }).props.src
-      const iconImageURL = wrapper.root.findByProps({ testID: "icon-image" }).props.src
+      const mainImage = within(screen.getByTestId("main-image")).getByTestId("fast-image")
+      const iconImage = within(screen.getByTestId("icon-image")).getByTestId("fast-image")
 
-      expect(iconImageURL).toBe("http://test.artsy.net/fair-logo.jpg")
-      expect(mainImageURL).toBe("http://test.artsy.net/fair-main.jpg")
+      expect(iconImage).toHaveProp(
+        "source",
+        expect.objectContaining({
+          uri: expect.stringContaining(
+            `src=${encodeURIComponent("http://test.artsy.net/fair-logo.jpg")}&`
+          ),
+        })
+      )
+      expect(mainImage).toHaveProp(
+        "source",
+        expect.objectContaining({
+          uri: expect.stringContaining(
+            `src=${encodeURIComponent("http://test.artsy.net/fair-main.jpg")}&`
+          ),
+        })
+      )
     })
 
     it("navigates to the fair", () => {
-      const wrapper = getWrapper({
+      getWrapper({
         Show: () => ({
           isFairBooth: true,
           fair: {
@@ -96,13 +117,12 @@ describe("ShowContextCard", () => {
         }),
       })
 
-      const title = wrapper.root.findByType(SectionTitle)
-      title.props.onPress()
+      fireEvent.press(screen.getByTestId("touchable-wrapper"))
       expect(navigate).toHaveBeenCalledWith("fair/ifpda-2020")
     })
 
     it("tracks taps", () => {
-      const wrapper = getWrapper({
+      getWrapper({
         Show: () => ({
           isFairBooth: true,
           internalID: "example-show-id",
@@ -111,12 +131,12 @@ describe("ShowContextCard", () => {
         Fair: () => ({
           internalID: "example-fair-id",
           slug: "example-fair-slug",
+          name: "Example Fair",
         }),
       })
 
-      act(() => {
-        wrapper.root.findAllByType(TouchableOpacity)[0].props.onPress()
-      })
+      // the card itself (not the section title)
+      fireEvent.press(screen.getByText("Example Fair"))
 
       expect(mockTrackEvent).toBeCalledWith({
         action: "tappedFairCard",
@@ -134,7 +154,7 @@ describe("ShowContextCard", () => {
 
   describe("when show is not a fair booth", () => {
     it("renders contextual info about the partner", () => {
-      const wrapper = getWrapper({
+      getWrapper({
         Show: () => ({
           isFairBooth: false,
           partner: {
@@ -151,20 +171,17 @@ describe("ShowContextCard", () => {
         }),
       })
 
-      const text = extractText(wrapper.root)
-      expect(text).toMatch("Presented by Pace Prints")
-      expect(text).toMatch("New York, London")
+      expect(screen.getByText(/Presented by Pace Prints/)).toBeOnTheScreen()
+      expect(screen.getByText(/New York, London/)).toBeOnTheScreen()
 
-      const renderedImages = wrapper.root
-        .findAllByType(FastImage)
-        .map((img) => img.props.source.uri)
+      const renderedImages = screen.getAllByTestId("fast-image").map((img) => img.props.source.uri)
       expect(renderedImages).toContain("http://test.artsy.net/artwork-1.jpg")
       expect(renderedImages).toContain("http://test.artsy.net/artwork-2.jpg")
       expect(renderedImages).toContain("http://test.artsy.net/artwork-3.jpg")
     })
 
     it("navigates to the partner profile", () => {
-      const wrapper = getWrapper({
+      getWrapper({
         Show: () => ({
           isFairBooth: false,
           partner: {
@@ -175,13 +192,12 @@ describe("ShowContextCard", () => {
         }),
       })
 
-      const title = wrapper.root.findByType(SectionTitle)
-      title.props.onPress()
+      fireEvent.press(screen.getByTestId("touchable-wrapper"))
       expect(navigate).toHaveBeenCalledWith("pace-prints")
     })
 
     it("tracks taps", () => {
-      const wrapper = getWrapper({
+      getWrapper({
         Show: () => ({
           isFairBooth: false,
           internalID: "example-show-id",
@@ -190,12 +206,12 @@ describe("ShowContextCard", () => {
         Partner: () => ({
           internalID: "example-partner-id",
           slug: "example-partner-slug",
+          name: "Example Partner",
         }),
       })
 
-      act(() => {
-        wrapper.root.findAllByType(TouchableOpacity)[0].props.onPress()
-      })
+      // the card itself (not the section title)
+      fireEvent.press(screen.getByText("Example Partner"))
 
       expect(mockTrackEvent).toBeCalledWith({
         action: "tappedPartnerCard",

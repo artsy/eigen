@@ -1,12 +1,12 @@
+import { fireEvent, screen } from "@testing-library/react-native"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
   getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { KeywordFilter } from "app/Components/ArtworkFilter/Filters/KeywordFilter"
-import { Input } from "app/Components/Input"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { debounce } from "lodash"
 
 jest.mock("lodash/debounce", () => jest.fn())
@@ -14,7 +14,8 @@ jest.mock("lodash/debounce", () => jest.fn())
 describe("KeywordFilter", () => {
   beforeEach(() => {
     ;(debounce as jest.Mock).mockImplementation((funk) => {
-      return funk
+      // the component cancels the debounced handler on unmount
+      return Object.assign(funk, { cancel: jest.fn() })
     })
   })
 
@@ -22,8 +23,8 @@ describe("KeywordFilter", () => {
     jest.resetAllMocks()
   })
 
-  it.skip("renders and filters when input changes", () => {
-    const selectedTree = renderWithWrappersLEGACY(
+  it("renders and filters when input changes", () => {
+    renderWithWrappers(
       <ArtworkFiltersStoreProvider
         runtimeModel={{
           ...getArtworkFiltersModel(),
@@ -34,10 +35,10 @@ describe("KeywordFilter", () => {
       </ArtworkFiltersStoreProvider>
     )
 
-    const input = selectedTree.root.findByType(Input)
-    expect(input).toBeTruthy()
+    const input = screen.getByPlaceholderText("Search by artwork title, series...")
+    expect(input).toBeOnTheScreen()
 
-    input.props.onChangeText("test-query")
+    fireEvent.changeText(input, "test-query")
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action_type: "auctionResultsFilterParamsChanged",
@@ -47,7 +48,7 @@ describe("KeywordFilter", () => {
       context_screen_owner_id: "artist-id",
       context_screen_owner_slug: "artist-slug",
       context_screen_owner_type: "Artist",
-      current: '{"sort":"DATE_DESC","allowEmptyCreatedDates":true}',
+      current: '{"allowEmptyCreatedDates":true,"sort":"DATE_DESC","state":"ALL"}',
     })
   })
 })

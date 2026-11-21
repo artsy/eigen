@@ -1,4 +1,3 @@
-import { Spinner } from "@artsy/palette-mobile"
 import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { EntitySearchResultsQuery } from "__generated__/EntitySearchResultsQuery.graphql"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
@@ -17,7 +16,7 @@ describe("EntitySearchResults", () => {
       <SearchContext.Provider
         value={{ inputRef: { current: { blur: jest.fn() } as any }, queryRef: { current: "" } }}
       >
-        <EntitySearchResultsScreen {...initialProps} />,
+        <EntitySearchResultsScreen {...initialProps} />
       </SearchContext.Provider>
     ),
   })
@@ -48,7 +47,7 @@ describe("EntitySearchResults", () => {
     })
 
     expect(screen.queryByTestId("SingleIndexEmptyResultsMessage")).toBeFalsy()
-    expect(screen.UNSAFE_queryByType(Spinner)).toBeFalsy()
+    expect(screen.queryByTestId("spinner")).not.toBeOnTheScreen()
   })
 
   it("renders the empty message when no results", async () => {

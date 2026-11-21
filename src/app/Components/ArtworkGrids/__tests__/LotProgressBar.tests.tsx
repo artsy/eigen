@@ -1,4 +1,4 @@
-import { ProgressBar } from "@artsy/palette-mobile"
+import { screen } from "@testing-library/react-native"
 import { LotProgressBar, LotProgressBarProps } from "app/Components/ArtworkGrids/LotProgressBar"
 import { DurationProvider } from "app/Components/Countdown"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -24,9 +24,9 @@ describe("LotProgressBar", () => {
         duration: null,
       }
 
-      const { UNSAFE_queryAllByType } = getWrapper(props)
+      getWrapper(props)
 
-      expect(UNSAFE_queryAllByType(ProgressBar).length).toBe(1)
+      expect(screen.getAllByTestId("progress-bar-track")).toHaveLength(1)
     })
   })
 
@@ -45,9 +45,9 @@ describe("LotProgressBar", () => {
         duration: null,
       }
 
-      const { UNSAFE_queryAllByType } = getWrapper(props)
+      getWrapper(props)
 
-      expect(UNSAFE_queryAllByType(ProgressBar).length).toBe(0)
+      expect(screen.queryByTestId("progress-bar-track")).not.toBeOnTheScreen()
     })
 
     it("ProgressBar disappears when time elapses", () => {
@@ -61,9 +61,9 @@ describe("LotProgressBar", () => {
         duration: Duration.fromMillis(0),
       }
 
-      const { UNSAFE_queryAllByType } = getWrapper(props)
+      getWrapper(props)
 
-      expect(UNSAFE_queryAllByType(ProgressBar).length).toBe(0)
+      expect(screen.queryByTestId("progress-bar-track")).not.toBeOnTheScreen()
     })
   })
 })

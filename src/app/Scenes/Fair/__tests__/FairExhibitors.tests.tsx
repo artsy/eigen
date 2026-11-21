@@ -1,9 +1,7 @@
-import { waitFor } from "@testing-library/react-native"
+import { act, screen, waitFor } from "@testing-library/react-native"
 import { FairExhibitorsTestsQuery } from "__generated__/FairExhibitorsTestsQuery.graphql"
-import { FairExhibitorRailQueryRenderer } from "app/Scenes/Fair/Components/FairExhibitorRail"
 import { FairExhibitorsFragmentContainer } from "app/Scenes/Fair/Components/FairExhibitors"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
@@ -11,7 +9,7 @@ describe("FairExhibitors", () => {
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
-    const view = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <QueryRenderer<FairExhibitorsTestsQuery>
         environment={env}
         query={graphql`
@@ -37,15 +35,17 @@ describe("FairExhibitors", () => {
       />
     )
 
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
+    act(() => {
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, mockResolvers)
+      )
+    })
 
-    return { view, env }
+    return { env }
   }
 
   it("renders the rails from exhibitors that have artworks", async () => {
-    const { view } = getWrapper({
+    const { env } = getWrapper({
       Fair: () => ({
         exhibitors: {
           edges: [
@@ -71,14 +71,15 @@ describe("FairExhibitors", () => {
       }),
     })
 
-    await waitFor(async () => {
-      const fairRails = await view.root.findAllByType(FairExhibitorRailQueryRenderer)
-      expect(fairRails).toHaveLength(2)
+    // Each FairExhibitorRailQueryRenderer fires its own query and shows a placeholder while loading
+    await waitFor(() => {
+      expect(env.mock.getAllOperations()).toHaveLength(2)
     })
+    expect(screen.getAllByText("Arwtworks Rail")).toHaveLength(2)
   })
 
   it("skips over any partners with no artworks", () => {
-    const { view } = getWrapper()
-    expect(extractText(view.root)).not.toContain("Partner Without Artworks")
+    getWrapper()
+    expect(screen.queryByText(/Partner Without Artworks/)).not.toBeOnTheScreen()
   })
 })

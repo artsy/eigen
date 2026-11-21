@@ -1,9 +1,8 @@
-import { Button } from "@artsy/palette-mobile"
-import { act } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { InquiryMakeOfferButtonTestsQuery } from "__generated__/InquiryMakeOfferButtonTestsQuery.graphql"
 import { InquiryMakeOfferButtonFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/InquiryMakeOfferButton"
 import { navigate } from "app/system/navigation/navigate"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Alert } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -52,23 +51,20 @@ const TestRenderer = () => {
   )
 }
 
-const getWrapper = (mockResolvers = {}) => {
-  const tree = renderWithWrappersLEGACY(<TestRenderer />)
+const renderAndResolve = (mockResolvers = {}) => {
+  renderWithWrappers(<TestRenderer />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, mockResolvers)
     )
   })
-  return tree
 }
 
 describe("Inquiry make offer button", () => {
   it("navigates to the order webview when button is tapped", async () => {
-    const wrapper = getWrapper()
+    renderAndResolve()
 
-    await act(async () => {
-      wrapper.root.findByType(Button).props.onPress()
-    })
+    fireEvent.press(screen.getByText("Make an Offer"))
 
     await act(async () => {
       env.mock.resolveMostRecentOperation((operation) => {
@@ -93,11 +89,9 @@ describe("Inquiry make offer button", () => {
   })
 
   it("presents an error dialogue if mutation returns an error response", async () => {
-    const wrapper = getWrapper()
+    renderAndResolve()
 
-    await act(async () => {
-      wrapper.root.findByType(Button).props.onPress()
-    })
+    fireEvent.press(screen.getByText("Make an Offer"))
 
     await act(async () => {
       env.mock.resolveMostRecentOperation((operation) => {

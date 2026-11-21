@@ -1,4 +1,3 @@
-import { Switch, Text } from "@artsy/palette-mobile"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { MyProfilePushNotificationsTestQuery } from "__generated__/MyProfilePushNotificationsTestQuery.graphql"
 import { SwitchMenu } from "app/Components/SwitchMenu"
@@ -30,7 +29,7 @@ jest.mock("app/utils/hooks/useFeatureFlag", () => ({
 }))
 
 describe(SwitchMenu, () => {
-  it("title is set to mono100 when enabled", async () => {
+  it("title is set to mono100 when enabled", () => {
     const props = {
       onChange: jest.fn(),
       value: false,
@@ -38,16 +37,14 @@ describe(SwitchMenu, () => {
       description: "Switch Menu Description",
       disabled: false,
     }
-    const { root } = renderWithWrappers(<SwitchMenu {...props} />)
-    // default state
-    const switchElement = await root.findByType(Switch)
-    const switchTextElements = await root.findAllByType(Text)
+    renderWithWrappers(<SwitchMenu {...props} />)
 
-    expect(switchElement.props.disabled).toBe(false)
-    expect(switchTextElements[0].props.color).toEqual("mono100")
+    expect(screen.getByRole("switch")).toHaveProp("disabled", false)
+    // mono100
+    expect(screen.getByText("SwitchMenu Test")).toHaveStyle({ color: "#000000" })
   })
 
-  it("title is set to mono60 when disabled", async () => {
+  it("title is set to mono60 when disabled", () => {
     const props = {
       onChange: jest.fn(),
       value: false,
@@ -55,13 +52,11 @@ describe(SwitchMenu, () => {
       description: "Switch Menu Description",
       disabled: true,
     }
-    const { root } = renderWithWrappers(<SwitchMenu {...props} />)
-    // default state
-    const switchElement = await root.findByType(Switch)
-    const switchTextElements = await root.findAllByType(Text)
+    renderWithWrappers(<SwitchMenu {...props} />)
 
-    expect(switchElement.props.disabled).toBe(true)
-    expect(switchTextElements[0].props.color).toEqual("mono60")
+    expect(screen.getByRole("switch")).toHaveProp("disabled", true)
+    // mono60
+    expect(screen.getByText("SwitchMenu Test")).toHaveStyle({ color: "#707070" })
   })
 })
 

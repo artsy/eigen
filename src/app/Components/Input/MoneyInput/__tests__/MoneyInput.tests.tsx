@@ -1,10 +1,7 @@
-import { Input, Text } from "@artsy/palette-mobile"
-import { screen, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { MoneyInput } from "app/Components/Input/MoneyInput/MoneyInput"
 import { deformatMoney, formatMoney } from "app/Components/Input/MoneyInput/moneyInputHelpers"
-import { SelectModal } from "app/Components/Select/Components/SelectModal"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { act } from "react-test-renderer"
 
 describe("MoneyInput", () => {
   let onChange = jest.fn()
@@ -15,7 +12,7 @@ describe("MoneyInput", () => {
 
   it("provides a Select for Currency", () => {
     renderWithWrappers(<MoneyInput initialValues={{ currency: "EUR" }} onChange={onChange} />)
-    expect(screen.UNSAFE_getAllByType(SelectModal)).toHaveLength(1)
+    expect(screen.getAllByRole("button", { name: "EUR" })).toHaveLength(1)
     expect(screen.getByText("EUR")).toBeDefined()
     expect(screen.queryByText("USD")).toBeNull()
 
@@ -32,87 +29,83 @@ describe("MoneyInput", () => {
   })
 
   it("drops cents when they aren't allowed", async () => {
-    renderWithWrappers(<MoneyInput allowCents={false} onChange={onChange} />)
-    const input = screen.UNSAFE_getAllByType(Input)[0]
+    renderWithWrappers(<MoneyInput testID="money-input" allowCents={false} onChange={onChange} />)
+    const input = screen.getByTestId("money-input")
 
-    act(() => input.props.onChangeText("3,200.50"))
+    fireEvent.changeText(input, "3,200.50")
 
-    expect(input.props.keyboardType).toBe("number-pad")
-    expect(input.props.value).toBe("3,200")
+    expect(screen.getByTestId("money-input")).toHaveProp("keyboardType", "number-pad")
+    expect(screen.getByTestId("money-input")).toHaveDisplayValue("3,200")
     await waitFor(() =>
       expect(onChange).toHaveBeenLastCalledWith({ currency: "USD", amount: "3200" })
     )
   })
 
   it("accepts amounts that already show a thousands separator", () => {
-    renderWithWrappers(<MoneyInput onChange={onChange} />)
+    renderWithWrappers(<MoneyInput testID="money-input" onChange={onChange} />)
 
-    act(() => screen.UNSAFE_getAllByType(Input)[0].props.onChangeText("3,200"))
-    act(() => screen.UNSAFE_getAllByType(Input)[0].props.onChangeText("3,2000"))
+    fireEvent.changeText(screen.getByTestId("money-input"), "3,200")
+    fireEvent.changeText(screen.getByTestId("money-input"), "3,2000")
 
-    expect(screen.UNSAFE_getAllByType(Input)[0].props.value).toBe("32,000")
+    expect(screen.getByTestId("money-input")).toHaveDisplayValue("32,000")
     expect(screen.queryByText("Please enter a valid amount.")).not.toBeOnTheScreen()
   })
 
   it("renders an input with the amount pre-filled", () => {
-    renderWithWrappers(<MoneyInput initialValues={{ amount: "2000" }} onChange={onChange} />)
-    const inputs = screen.UNSAFE_getAllByType(Input)
-    expect(inputs).toHaveLength(1)
-    expect(inputs[0].props.value).toBe("2,000")
+    renderWithWrappers(
+      <MoneyInput testID="money-input" initialValues={{ amount: "2000" }} onChange={onChange} />
+    )
+    expect(screen.getAllByTestId("money-input")).toHaveLength(1)
+    expect(screen.getByTestId("money-input")).toHaveDisplayValue("2,000")
   })
 
   it("shows custom error message, when error is controlled and amount is invalid", () => {
     renderWithWrappers(
       <MoneyInput
+        testID="money-input"
         shouldDisplayLocalError={false}
         error="custom error message"
         onChange={onChange}
       />
     )
-    const input = screen.UNSAFE_getAllByType(Input)[0]
 
-    input.props.onChangeText("200---")
-    input.parent?.props.validate()
-    const texts = screen.UNSAFE_getAllByType(Text)
-    expect(texts[1].props["children"]).toBe("custom error message")
+    // changing the text triggers validation
+    fireEvent.changeText(screen.getByTestId("money-input"), "200---")
+
+    expect(screen.getByText("custom error message")).toBeOnTheScreen()
+    expect(screen.queryByText("Please enter a valid amount.")).not.toBeOnTheScreen()
   })
 
   it("shows local error message when parent does not control error and amount is invalid if formatting is not enabled", async () => {
     renderWithWrappers(
       <MoneyInput
+        testID="money-input"
         shouldDisplayLocalError
         error="custom error message"
         onChange={onChange}
         format={false}
       />
     )
-    const input = screen.UNSAFE_getAllByType(Input)[0]
 
-    await waitFor(() => {
-      // if formatting is enabled "200---" will be automatically corrected
-      input.props.onChangeText("200---")
-      input.parent?.props.validate()
-      const texts = screen.UNSAFE_getAllByType(Text)
-      expect(texts[1].props["children"]).toBe("Please enter a valid amount.")
-    })
+    // if formatting is enabled "200---" will be automatically corrected
+    // changing the text triggers validation
+    fireEvent.changeText(screen.getByTestId("money-input"), "200---")
+
+    expect(await screen.findByText("Please enter a valid amount.")).toBeOnTheScreen()
+    expect(screen.queryByText("custom error message")).not.toBeOnTheScreen()
   })
 
   it("calls onChange when the value changes", async () => {
-    renderWithWrappers(<MoneyInput onChange={onChange} />)
+    renderWithWrappers(<MoneyInput testID="money-input" onChange={onChange} />)
     expect(onChange).not.toHaveBeenCalled()
 
-    const input = screen.UNSAFE_getAllByType(Input)[0]
-    const select = screen.UNSAFE_getAllByType(SelectModal)[0]
-
-    act(() => {
-      input.props.onChangeText("200")
-    })
+    fireEvent.changeText(screen.getByTestId("money-input"), "200")
     await waitFor(() => {
       expect(onChange).toHaveBeenCalledWith({ amount: "200", currency: "USD" })
     })
-    act(() => {
-      select.props.onSelectValue("EUR")
-    })
+
+    fireEvent.press(screen.getByRole("button", { name: "USD" }))
+    fireEvent.press(screen.getByText("EUR €"))
     await waitFor(() => {
       expect(onChange).toHaveBeenCalledWith({ amount: "200", currency: "EUR" })
     })

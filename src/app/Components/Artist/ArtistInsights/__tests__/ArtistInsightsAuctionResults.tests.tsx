@@ -1,21 +1,14 @@
-import { Text } from "@artsy/palette-mobile"
+import { screen } from "@testing-library/react-native"
 import { ArtistInsightsAuctionResultsTestsQuery } from "__generated__/ArtistInsightsAuctionResultsTestsQuery.graphql"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "app/Components/Artist/ArtistInsights/ArtistInsightsAuctionResults"
-import { ArtistInsightsEmpty } from "app/Components/Artist/ArtistInsights/ArtistsInsightsEmpty"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
   getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { InfoButton } from "app/Components/Buttons/InfoButton"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import {
-  mockEdges,
-  resolveMostRecentRelayOperation,
-} from "app/utils/tests/resolveMostRecentRelayOperation"
-import { SectionList } from "react-native"
+import { mockEdges } from "app/utils/tests/mockEdges"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 
@@ -78,7 +71,7 @@ describe("ArtistInsightsAuctionResults", () => {
 
   describe("Upcoming auction results", () => {
     it("are shown when upcoming auction results are available", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
+      renderWithWrappers(<TestRenderer initialData={initialState} />)
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({ statuses: { auctionLots: true } }),
         AuctionResultConnection: (context) => {
@@ -95,12 +88,12 @@ describe("ArtistInsightsAuctionResults", () => {
         },
       })
 
-      expect(tree.root.findAllByType(SectionList).length).toEqual(1)
-      expect(extractText(tree.root.findByType(SectionList))).toContain("Upcoming Auctions")
+      expect(screen.getByText("Upcoming Auctions")).toBeOnTheScreen()
+      expect(screen.getByText("Past Auctions")).toBeOnTheScreen()
     })
 
     it("are hidden when no upcoming auction results are available", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
+      renderWithWrappers(<TestRenderer initialData={initialState} />)
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({ statuses: { auctionLots: true } }),
         AuctionResultConnection: (context) => {
@@ -117,14 +110,14 @@ describe("ArtistInsightsAuctionResults", () => {
         },
       })
 
-      expect(tree.root.findAllByType(SectionList).length).toEqual(1)
-      expect(extractText(tree.root.findByType(SectionList))).not.toContain("Upcoming Auctions")
+      expect(screen.getByText("Past Auctions")).toBeOnTheScreen()
+      expect(screen.queryByText("Upcoming Auctions")).not.toBeOnTheScreen()
     })
   })
 
   describe("Past auction reuslt", () => {
     it("are shown when past auction results are available", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
+      renderWithWrappers(<TestRenderer initialData={initialState} />)
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({ statuses: { auctionLots: true } }),
         AuctionResultConnection: (context) => {
@@ -141,12 +134,12 @@ describe("ArtistInsightsAuctionResults", () => {
         },
       })
 
-      expect(tree.root.findAllByType(SectionList).length).toEqual(1)
-      expect(extractText(tree.root.findByType(SectionList))).toContain("Past Auctions")
+      expect(screen.getByText("Upcoming Auctions")).toBeOnTheScreen()
+      expect(screen.getByText("Past Auctions")).toBeOnTheScreen()
     })
 
     it("are hidden when no past auction results are available", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
+      renderWithWrappers(<TestRenderer initialData={initialState} />)
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({ statuses: { auctionLots: true } }),
         AuctionResultConnection: (context) => {
@@ -163,13 +156,13 @@ describe("ArtistInsightsAuctionResults", () => {
         },
       })
 
-      expect(tree.root.findAllByType(SectionList).length).toEqual(1)
-      expect(extractText(tree.root.findByType(SectionList))).not.toContain("Past Auctions")
+      expect(screen.getByText("Upcoming Auctions")).toBeOnTheScreen()
+      expect(screen.queryByText("Past Auctions")).not.toBeOnTheScreen()
     })
   })
 
   it("renders FilteredArtworkGridZeroState when no auction results are available", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
+    renderWithWrappers(<TestRenderer initialData={initialState} />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         statuses: { auctionLots: true },
@@ -180,22 +173,25 @@ describe("ArtistInsightsAuctionResults", () => {
       }),
     })
 
-    expect(tree.root.findAllByType(FilteredArtworkGridZeroState).length).toEqual(1)
+    expect(screen.getByText(/No results found/)).toBeOnTheScreen()
+    expect(screen.queryByText("Past Auctions")).not.toBeOnTheScreen()
   })
 
   it("renders the empty state when there are no auction lots", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
+    renderWithWrappers(<TestRenderer initialData={initialState} />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({ statuses: { auctionLots: false } }),
     })
 
-    expect(tree.root.findAllByType(ArtistInsightsEmpty).length).toEqual(1)
-    expect(tree.root.findAllByType(InfoButton).length).toEqual(0)
+    expect(
+      screen.getByText("There are currently no auction results for this artist.")
+    ).toBeOnTheScreen()
+    expect(screen.queryByText("Auction Results")).not.toBeOnTheScreen()
   })
 
   describe("ListHeaderComponent", () => {
     it("renders the results string when totalCount is equal to 1", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
+      renderWithWrappers(<TestRenderer initialData={initialState} />)
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({
           statuses: { auctionLots: true },
@@ -206,13 +202,11 @@ describe("ArtistInsightsAuctionResults", () => {
         }),
       })
 
-      expect(extractText(tree.root.findAllByType(Text)[1])).toBe(
-        "1 result • Sorted by most recent sale date"
-      )
+      expect(screen.getByText("1 result • Sorted by most recent sale date")).toBeOnTheScreen()
     })
 
     it("renders the results string when totalCount is greater than 1", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
+      renderWithWrappers(<TestRenderer initialData={initialState} />)
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({
           statuses: { auctionLots: true },
@@ -222,9 +216,7 @@ describe("ArtistInsightsAuctionResults", () => {
           },
         }),
       })
-      expect(extractText(tree.root.findAllByType(Text)[1])).toBe(
-        "10 results • Sorted by most recent sale date"
-      )
+      expect(screen.getByText("10 results • Sorted by most recent sale date")).toBeOnTheScreen()
     })
   })
 })

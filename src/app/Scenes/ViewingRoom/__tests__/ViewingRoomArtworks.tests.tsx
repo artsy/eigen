@@ -2,11 +2,8 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworksTestsQuery.graphql"
 import { tracks, ViewingRoomArtworksContainer } from "app/Scenes/ViewingRoom/ViewingRoomArtworks"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { RouterLink } from "app/system/navigation/RouterLink"
 import { navigate } from "app/system/navigation/navigate"
-import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { FlatList } from "react-native"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -30,10 +27,12 @@ describe("ViewingRoom", () => {
   })
 
   it("renders a flatlist with one artwork", () => {
-    renderWithRelay()
+    renderWithRelay({
+      Artwork: () => ({ title: "Artwork 1" }),
+    })
 
-    expect(screen.UNSAFE_getAllByType(FlatList)).toHaveLength(1)
-    expect(screen.UNSAFE_getAllByType(RouterLink)).toHaveLength(1)
+    expect(screen.getByText("Artworks")).toBeOnTheScreen()
+    expect(screen.getAllByText("Artwork 1")).toHaveLength(1)
   })
 
   it("renders additional information if it exists", () => {
@@ -43,9 +42,7 @@ describe("ViewingRoom", () => {
       }),
     })
 
-    expect(
-      extractText(screen.UNSAFE_getByProps({ testID: "artwork-additional-information" }))
-    ).toEqual("additionalInformation-1")
+    expect(screen.getByText("additionalInformation-1")).toBeOnTheScreen()
   })
 
   it("navigates to artwork screen + calls tracking on press", () => {

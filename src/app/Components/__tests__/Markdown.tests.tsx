@@ -1,13 +1,13 @@
-import { LinkText } from "@artsy/palette-mobile"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { Markdown } from "app/Components/Markdown"
 import { navigate } from "app/system/navigation/navigate"
 import { defaultRules, MarkdownRules } from "app/utils/renderMarkdown"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Linking, Text } from "react-native"
 
 describe("Markdown", () => {
   it("renders multiple paragraphs as Text elements", () => {
-    const markdown = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <Markdown>
         paragraph 1 has some text.
         {"\n"}
@@ -16,17 +16,13 @@ describe("Markdown", () => {
       </Markdown>
     )
 
-    expect(markdown.root.findAllByType(Text).length).toEqual(4)
-    expect(markdown.root.findAllByType(Text)[0].props.children[0]).toMatch(
-      "paragraph 1 has some text"
-    )
-    expect(markdown.root.findAllByType(Text)[2].props.children[0]).toMatch(
-      "paragraph 2 also has text"
-    )
+    expect(screen.getAllByText(/.*/)).toHaveLength(4)
+    expect(screen.getAllByText(/.*/)[0]).toHaveTextContent(/paragraph 1 has some text/)
+    expect(screen.getAllByText(/.*/)[2]).toHaveTextContent(/paragraph 2 also has text/)
   })
 
   it("renders links as LinkText", () => {
-    const markdown = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <Markdown>
         Sorry, your bid wasn’t received before
         {"\n"}
@@ -36,12 +32,10 @@ describe("Markdown", () => {
       </Markdown>
     )
 
-    expect(markdown.root.findAllByType(LinkText).length).toEqual(1)
-    expect(markdown.root.findAllByType(LinkText)[0].props.children[0]).toMatch(
-      "join the live auction"
-    )
+    expect(screen.getAllByTestId(/^linktext-/)).toHaveLength(1)
+    expect(screen.getAllByTestId(/^linktext-/)[0]).toHaveTextContent("join the live auction")
 
-    markdown.root.findAllByType(LinkText)[0].props.onPress()
+    fireEvent.press(screen.getAllByTestId(/^linktext-/)[0])
 
     expect(navigate).toHaveBeenCalledWith("http://www.artsy.net", { modal: true })
   })
@@ -50,7 +44,7 @@ describe("Markdown", () => {
     Linking.canOpenURL = jest.fn().mockReturnValue(Promise.resolve(true))
     Linking.openURL = jest.fn()
 
-    const markdown = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <Markdown>
         Your bid can’t be placed at this time.
         {"\n"}
@@ -60,11 +54,11 @@ describe("Markdown", () => {
       </Markdown>
     )
 
-    expect(markdown.root.findAllByType(LinkText).length).toEqual(1)
-    expect(markdown.root.findAllByType(LinkText)[0].props.children[0]).toMatch("support@artsy.net")
+    expect(screen.getAllByTestId(/^linktext-/)).toHaveLength(1)
+    expect(screen.getAllByTestId(/^linktext-/)[0]).toHaveTextContent("support@artsy.net")
 
-    await markdown.root.findAllByType(LinkText)[0].props.onPress()
-    expect(Linking.openURL).toBeCalledWith("mailto:support@artsy.net")
+    fireEvent.press(screen.getAllByTestId(/^linktext-/)[0])
+    await waitFor(() => expect(Linking.openURL).toBeCalledWith("mailto:support@artsy.net"))
   })
 
   it("accepts a rules prop", () => {
@@ -76,11 +70,10 @@ describe("Markdown", () => {
         react: (node, output, state) => <Text testID="foobar">{output(node.content, state)}</Text>,
       },
     } as MarkdownRules
-    const markdown = renderWithWrappersLEGACY(
-      <Markdown rules={rules}>Paragraph 1 has some text</Markdown>
-    )
+    renderWithWrappers(<Markdown rules={rules}>Paragraph 1 has some text</Markdown>)
 
-    expect(markdown.root.findAllByType(Text)[0].props.testID).toBe("foobar")
+    expect(screen.getAllByText(/.*/)[0]).toHaveProp("testID", "foobar")
+    expect(screen.getByTestId("foobar")).toHaveTextContent("Paragraph 1 has some text")
   })
 })
 

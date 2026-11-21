@@ -1,15 +1,35 @@
+import { act, screen, within } from "@testing-library/react-native"
 import { ViewingRoomHeaderTestsQuery } from "__generated__/ViewingRoomHeaderTestsQuery.graphql"
-import { CountdownTimer } from "app/Components/Countdown/CountdownTimer"
-import {
-  PartnerIconImage,
-  ViewingRoomHeaderContainer,
-} from "app/Scenes/ViewingRoom/Components/ViewingRoomHeader"
+import { ViewingRoomHeaderContainer } from "app/Scenes/ViewingRoom/Components/ViewingRoomHeader"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { act } from "react"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
+// Render FastImage as a host view so its `source` can be asserted on
+jest.mock("@d11/react-native-fast-image", () => {
+  const React = jest.requireActual("react")
+  const { View } = jest.requireActual("react-native")
+  const FastImage = (props: any) => React.createElement(View, { testID: "fast-image", ...props })
+  FastImage.priority = { low: "low", normal: "normal", high: "high" }
+  FastImage.resizeMode = {
+    contain: "contain",
+    cover: "cover",
+    stretch: "stretch",
+    center: "center",
+  }
+  FastImage.preload = jest.fn()
+  return { __esModule: true, default: FastImage }
+})
+
+jest.mock("app/Components/Countdown/CountdownTimer", () => {
+  const React = jest.requireActual("react")
+  const { View } = jest.requireActual("react-native")
+  return {
+    ...jest.requireActual("app/Components/Countdown/CountdownTimer"),
+    CountdownTimer: () => React.createElement(View, { testID: "countdown-timer" }),
+  }
+})
 
 describe("ViewingRoomHeader", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -31,7 +51,7 @@ describe("ViewingRoomHeader", () => {
     mockEnvironment = createMockEnvironment()
   })
   it("renders a background image", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
@@ -42,10 +62,13 @@ describe("ViewingRoomHeader", () => {
         return result
       })
     })
-    expect(tree.root.findByProps({ testID: "background-image" }).props.src).toBe("Foo")
+    expect(within(screen.getByTestId("background-image")).getByTestId("fast-image")).toHaveProp(
+      "source",
+      expect.objectContaining({ uri: expect.stringContaining("src=Foo&") })
+    )
   })
   it("renders a title", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
@@ -54,11 +77,11 @@ describe("ViewingRoomHeader", () => {
         return result
       })
     })
-    expect(extractText(tree.root.findByProps({ testID: "title" }))).toBe("Foo")
+    expect(screen.getByTestId("title")).toHaveTextContent("Foo", { exact: true })
   })
 
   it("renders a countdown timer for scheduled", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
@@ -66,11 +89,11 @@ describe("ViewingRoomHeader", () => {
         })
       )
     })
-    expect(tree.root.findAllByType(CountdownTimer)).toHaveLength(1)
+    expect(screen.getAllByTestId("countdown-timer")).toHaveLength(1)
   })
 
   it("renders a countdown timer for live", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
@@ -78,11 +101,11 @@ describe("ViewingRoomHeader", () => {
         })
       )
     })
-    expect(tree.root.findAllByType(CountdownTimer)).toHaveLength(1)
+    expect(screen.getAllByTestId("countdown-timer")).toHaveLength(1)
   })
 
   it("doesn't render a countdown timer for closed", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
@@ -90,11 +113,11 @@ describe("ViewingRoomHeader", () => {
         })
       )
     })
-    expect(tree.root.findAllByType(CountdownTimer)).toHaveLength(0)
+    expect(screen.queryByTestId("countdown-timer")).not.toBeOnTheScreen()
   })
 
   it("renders partner name", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
@@ -103,10 +126,10 @@ describe("ViewingRoomHeader", () => {
         return result
       })
     })
-    expect(extractText(tree.root.findByProps({ testID: "partner-name" }))).toBe("Foo")
+    expect(screen.getByTestId("partner-name")).toHaveTextContent("Foo", { exact: true })
   })
   it("renders partner logo", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
@@ -119,13 +142,14 @@ describe("ViewingRoomHeader", () => {
         return result
       })
     })
-    expect(tree.root.findByProps({ testID: "partner-icon" }).props.source.uri).toBe(
-      "https://example.com/image.jpg"
+    expect(screen.getByTestId("partner-icon")).toHaveProp(
+      "source",
+      expect.objectContaining({ uri: "https://example.com/image.jpg" })
     )
   })
 
   it("doesn't render logo (and doesn't crash) if partner profile is null", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
@@ -138,6 +162,6 @@ describe("ViewingRoomHeader", () => {
         return result
       })
     })
-    expect(tree.root.findAllByType(PartnerIconImage)).toHaveLength(0)
+    expect(screen.queryByTestId("partner-icon")).not.toBeOnTheScreen()
   })
 })

@@ -32,16 +32,16 @@ describe("LoginPasswordStep", () => {
   it("calls the global login function", async () => {
     jest.spyOn(GlobalStore.actions.auth, "signIn").mockResolvedValue("success")
     renderWithWrappers(<LoginPasswordStep />)
-    fireEvent.changeText(screen.getByA11yHint("Enter your password"), "Password1")
-    fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+    fireEvent.changeText(screen.getByHintText("Enter your password"), "Password1")
+    fireEvent.press(screen.getByHintText("Continue to the next screen"))
     await waitFor(() => expect(GlobalStore.actions.auth.signIn).toHaveBeenCalled())
   })
 
   it("navigates to the standard OTP step with required", async () => {
     jest.spyOn(GlobalStore.actions.auth, "signIn").mockResolvedValue("otp_missing")
     renderWithWrappers(<LoginPasswordStep />)
-    fireEvent.changeText(screen.getByA11yHint("Enter your password"), "Password1")
-    fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+    fireEvent.changeText(screen.getByHintText("Enter your password"), "Password1")
+    fireEvent.press(screen.getByHintText("Continue to the next screen"))
     await waitFor(() =>
       expect(mockUseAuthNavigation().navigate).toHaveBeenCalledWith({
         name: "LoginOTPStep",
@@ -53,8 +53,8 @@ describe("LoginPasswordStep", () => {
   it("navigates to the on-demand OTP step when required", async () => {
     jest.spyOn(GlobalStore.actions.auth, "signIn").mockResolvedValue("on_demand_otp_missing")
     renderWithWrappers(<LoginPasswordStep />)
-    fireEvent.changeText(screen.getByA11yHint("Enter your password"), "Password1")
-    fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+    fireEvent.changeText(screen.getByHintText("Enter your password"), "Password1")
+    fireEvent.press(screen.getByHintText("Continue to the next screen"))
     await waitFor(() =>
       expect(mockUseAuthNavigation().navigate).toHaveBeenCalledWith({
         name: "LoginOTPStep",
@@ -67,8 +67,8 @@ describe("LoginPasswordStep", () => {
     jest.spyOn(GlobalStore.actions.auth, "signIn").mockResolvedValue("auth_blocked")
     jest.spyOn(Alert, "alert")
     renderWithWrappers(<LoginPasswordStep />)
-    fireEvent.changeText(screen.getByA11yHint("Enter your password"), "Password1")
-    fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+    fireEvent.changeText(screen.getByHintText("Enter your password"), "Password1")
+    fireEvent.press(screen.getByHintText("Continue to the next screen"))
     await waitFor(() =>
       expect(Alert.alert).toHaveBeenCalledWith(
         "Sign in attempt blocked",
@@ -82,8 +82,8 @@ describe("LoginPasswordStep", () => {
     jest.spyOn(GlobalStore.actions.auth, "signIn").mockResolvedValue("failure")
     const toastSpy = jest.spyOn(GlobalStore.actions.toast, "add")
     renderWithWrappers(<LoginPasswordStep />)
-    fireEvent.changeText(screen.getByA11yHint("Enter your password"), "Password1")
-    fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+    fireEvent.changeText(screen.getByHintText("Enter your password"), "Password1")
+    fireEvent.press(screen.getByHintText("Continue to the next screen"))
     await waitFor(() =>
       expect(toastSpy).toHaveBeenCalledWith({
         message: "Something went wrong. Please try again, or contact support@artsy.net",
@@ -97,8 +97,8 @@ describe("LoginPasswordStep", () => {
     jest.spyOn(GlobalStore.actions.auth, "signIn").mockResolvedValue("invalid_credentials")
     const toastSpy = jest.spyOn(GlobalStore.actions.toast, "add")
     renderWithWrappers(<LoginPasswordStep />)
-    fireEvent.changeText(screen.getByA11yHint("Enter your password"), "Password1")
-    fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+    fireEvent.changeText(screen.getByHintText("Enter your password"), "Password1")
+    fireEvent.press(screen.getByHintText("Continue to the next screen"))
     expect(toastSpy).not.toHaveBeenCalled()
     await screen.findByText("Incorrect email or password")
   })
@@ -116,7 +116,7 @@ describe("LoginPasswordStep", () => {
 
     it("navigates to the sign-up screen when the login link is pressed", () => {
       renderWithWrappers(<LoginPasswordStep />)
-      fireEvent.press(screen.getByA11yHint("Go to the sign-up screen"))
+      fireEvent.press(screen.getByHintText("Go to the sign-up screen"))
       expect(mockUseAuthNavigation().navigate).toHaveBeenCalledWith({
         name: "SignUpPasswordStep",
         params: { email: "foo@bar.baz", showLoginLink: true },

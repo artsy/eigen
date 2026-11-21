@@ -37,7 +37,7 @@ describe("SignUpNameStep", () => {
       </AuthContext.Provider>
     )
 
-    expect(screen.getByA11yHint("Enter your full name")).toBeTruthy()
+    expect(screen.getByHintText("Enter your full name")).toBeTruthy()
   })
 
   // The e2e signup flow presses this button by its accessibility label, so a rename has to
@@ -61,7 +61,7 @@ describe("SignUpNameStep", () => {
     )
 
     expect(
-      screen.getByA11yHint("Check this element to accept Artsy's terms and privacy policy")
+      screen.getByHintText("Check this element to accept Artsy's terms and privacy policy")
     ).toBeTruthy()
   })
 
@@ -72,7 +72,7 @@ describe("SignUpNameStep", () => {
       </AuthContext.Provider>
     )
 
-    expect(screen.getByA11yHint("Check this element to receive Artsy's emails")).toBeTruthy()
+    expect(screen.getByHintText("Check this element to receive Artsy's emails")).toBeTruthy()
   })
 
   describe("user is automatically subscribed", () => {
@@ -94,7 +94,7 @@ describe("SignUpNameStep", () => {
         </AuthContext.Provider>
       )
 
-      expect(screen.queryByA11yHint("Check this element to receive Artsy's emails")).toBeNull()
+      expect(screen.queryByHintText("Check this element to receive Artsy's emails")).toBeNull()
     })
 
     it("agrees to receive emails if the user is automatically ", async () => {
@@ -109,9 +109,9 @@ describe("SignUpNameStep", () => {
         </AuthContext.Provider>
       )
 
-      fireEvent.changeText(screen.getByA11yHint("Enter your full name"), "Percy Cat")
+      fireEvent.changeText(screen.getByHintText("Enter your full name"), "Percy Cat")
       fireEvent.press(
-        screen.getByA11yHint("Check this element to accept Artsy's terms and privacy policy")
+        screen.getByHintText("Check this element to accept Artsy's terms and privacy policy")
       )
 
       fireEvent.press(screen.getByText("Continue"))

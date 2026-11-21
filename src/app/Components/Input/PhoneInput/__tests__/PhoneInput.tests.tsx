@@ -1,14 +1,8 @@
-import { Input, Text } from "@artsy/palette-mobile"
-import { screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { PhoneInput } from "app/Components/Input/PhoneInput/PhoneInput"
-import { SelectModal } from "app/Components/Select/Components/SelectModal"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { act } from "react-test-renderer"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-// TODO: Fix asap
-// Tested on device and works well
-describe.skip("PhoneInput", () => {
+describe("PhoneInput", () => {
   let onChange = jest.fn()
   let onChangeText = jest.fn()
   const setValidation = jest.fn()
@@ -18,9 +12,18 @@ describe.skip("PhoneInput", () => {
     onChangeText = jest.fn()
   })
 
+  const selectCountry = (countryName: string) => {
+    fireEvent.press(screen.getAllByRole("button")[0])
+    expect(screen.getByText("Country code")).toBeOnTheScreen()
+    fireEvent.changeText(screen.getByPlaceholderText("Type to search..."), countryName)
+    // option labels can include the local name, e.g. "Germany (Deutschland)"
+    fireEvent.press(screen.getByText(new RegExp(`^${countryName}`)))
+  }
+
   it("provides a Select for the country", () => {
-    const { root } = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <PhoneInput
+        testID="phone-input"
         value="+447825577664"
         onChange={onChange}
         onChangeText={onChangeText}
@@ -30,22 +33,23 @@ describe.skip("PhoneInput", () => {
       />
     )
 
-    // eslint-disable-next-line testing-library/await-async-queries
-    expect(root.findAllByType(SelectModal)).toHaveLength(1)
-    // eslint-disable-next-line testing-library/await-async-queries
-    root.findByType(SelectModal).props.onSelectValue("de")
-    expect(extractText(root)).toContain("🇩🇪+4978 25577664")
-    // eslint-disable-next-line testing-library/await-async-queries
-    root.findByType(SelectModal).props.onSelectValue("fr")
-    expect(extractText(root)).toContain("🇫🇷+3378 25 57 76 64")
-    // eslint-disable-next-line testing-library/await-async-queries
-    root.findByType(SelectModal).props.onSelectValue("us")
-    expect(extractText(root)).toContain("🇺🇸+1(782) 557-7664")
+    selectCountry("Germany")
+    expect(screen.getByText("🇩🇪  +49")).toBeOnTheScreen()
+    expect(screen.getByTestId("phone-input")).toHaveDisplayValue("78 25577664")
+
+    selectCountry("France")
+    expect(screen.getByText("🇫🇷  +33")).toBeOnTheScreen()
+    expect(screen.getByTestId("phone-input")).toHaveDisplayValue("78 25 57 76 64")
+
+    selectCountry("United States")
+    expect(screen.getByText("🇺🇸  +1")).toBeOnTheScreen()
+    expect(screen.getByTestId("phone-input")).toHaveDisplayValue("(782) 557-7664")
   })
 
   it("renders an input with the phone number pre-filled", () => {
-    const { root } = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <PhoneInput
+        testID="phone-input"
         value="+447825577664"
         onChange={onChange}
         onChangeText={onChangeText}
@@ -53,15 +57,15 @@ describe.skip("PhoneInput", () => {
       />
     )
 
-    // eslint-disable-next-line testing-library/await-async-queries
-    expect(root.findAllByType(Input)).toHaveLength(1)
-    // eslint-disable-next-line testing-library/await-async-queries
-    expect(extractText(root.findByType(Input))).toBe("🇬🇧+447825 577664")
+    expect(screen.getAllByTestId("phone-input")).toHaveLength(1)
+    expect(screen.getByText("🇬🇧  +44")).toBeOnTheScreen()
+    expect(screen.getByTestId("phone-input")).toHaveDisplayValue("7825 577664")
   })
 
   it("shows custom error message, when error is controlled and phone number is invalid", () => {
-    const { root } = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <PhoneInput
+        testID="phone-input"
         value="447825577664"
         onChange={onChange}
         onChangeText={onChangeText}
@@ -73,18 +77,15 @@ describe.skip("PhoneInput", () => {
       />
     )
 
-    act(() => {
-      // eslint-disable-next-line testing-library/await-async-queries
-      root.findByType(Input).props.onChangeText("")
-    })
+    fireEvent.changeText(screen.getByTestId("phone-input"), "")
 
-    // eslint-disable-next-line testing-library/await-async-queries
-    expect(root.findAllByType(Text)[2].props["children"]).toBe("custom error message")
+    expect(screen.getByText("custom error message")).toBeOnTheScreen()
   })
 
-  it("shows local error message when parent does not control error and phone number is invalid", () => {
-    const { root } = renderWithWrappersLEGACY(
+  it("shows local error message when parent does not control error and phone number is invalid", async () => {
+    renderWithWrappers(
       <PhoneInput
+        testID="phone-input"
         value="447825577664"
         onChange={onChange}
         onChangeText={onChangeText}
@@ -94,13 +95,10 @@ describe.skip("PhoneInput", () => {
       />
     )
 
-    act(() => {
-      // eslint-disable-next-line testing-library/await-async-queries
-      root.findByType(Input).props.onChangeText("")
-    })
+    fireEvent.changeText(screen.getByTestId("phone-input"), "")
 
-    // eslint-disable-next-line testing-library/await-async-queries
-    expect(root.findAllByType(Text)[2].props["children"]).toBe("Please enter a valid phone number.")
+    // validation is async (validatePhoneNumber)
+    expect(await screen.findByText("Please enter a valid phone number.")).toBeOnTheScreen()
   })
 
   it("does not show a validation message when phone number valid", () => {
@@ -119,8 +117,9 @@ describe.skip("PhoneInput", () => {
   })
 
   it("calls onChange and onChangeText when the value changes", () => {
-    const { root } = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <PhoneInput
+        testID="phone-input"
         value="+447825577664"
         onChange={onChange}
         onChangeText={onChangeText}
@@ -130,17 +129,11 @@ describe.skip("PhoneInput", () => {
     expect(onChange).not.toHaveBeenCalled()
     expect(onChangeText).not.toHaveBeenCalled()
 
-    act(() => {
-      // eslint-disable-next-line testing-library/await-async-queries
-      root.findByType(Input).props.onChangeText("999")
-    })
+    fireEvent.changeText(screen.getByTestId("phone-input"), "999")
     expect(onChange).toHaveBeenCalledWith("+44 999")
     expect(onChangeText).toHaveBeenCalledWith("+44 999")
 
-    act(() => {
-      // eslint-disable-next-line testing-library/await-async-queries
-      root.findByType(SelectModal).props.onSelectValue("us")
-    })
+    selectCountry("United States")
     expect(onChange).toHaveBeenCalledWith("+1 (999) ")
     expect(onChangeText).toHaveBeenCalledWith("+1 (999) ")
   })

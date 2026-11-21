@@ -1,16 +1,42 @@
-import { Button } from "@artsy/palette-mobile"
-import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen, userEvent, waitFor } from "@testing-library/react-native"
 import { ComposerTestsQuery } from "__generated__/ComposerTestsQuery.graphql"
-import { CTAPopUp } from "app/Scenes/Inbox/Components/Conversations/CTAPopUp"
 import { Composer } from "app/Scenes/Inbox/Components/Conversations/Composer"
-import { OpenInquiryModalButton } from "app/Scenes/Inbox/Components/Conversations/OpenInquiryModalButton"
-import { ReviewOfferButton } from "app/Scenes/Inbox/Components/Conversations/ReviewOfferButton"
-import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { TextInput, TouchableWithoutFeedback } from "react-native"
 import { graphql } from "react-relay"
 
 jest.unmock("react-tracking")
+
+// Wrap the CTA pieces in host views we can query, so the tests can tell which ones rendered.
+jest.mock("app/Scenes/Inbox/Components/Conversations/CTAPopUp", () => {
+  const { View } = require("react-native")
+  const actual = jest.requireActual("app/Scenes/Inbox/Components/Conversations/CTAPopUp")
+
+  return {
+    ...actual,
+    CTAPopUp: (props: any) => (
+      <View testID="cta-pop-up">
+        <actual.CTAPopUp {...props} />
+      </View>
+    ),
+  }
+})
+
+jest.mock("app/Scenes/Inbox/Components/Conversations/ReviewOfferButton", () => {
+  const { View } = require("react-native")
+  const actual = jest.requireActual("app/Scenes/Inbox/Components/Conversations/ReviewOfferButton")
+
+  return {
+    ...actual,
+    ReviewOfferButton: (props: any) => (
+      <View testID="review-offer-button">
+        <actual.ReviewOfferButton {...props} />
+      </View>
+    ),
+  }
+})
+
+// Copy only OpenInquiryModalButton renders.
+const INQUIRY_BUTTON_TEXT = "The Artsy Guarantee"
 
 const { renderWithRelay } = setupTestWrapper<
   ComposerTestsQuery,
@@ -37,19 +63,18 @@ describe("regarding the send button", () => {
     const overrideText = "History repeats itself, first as tragedy, second as farce."
     renderWithRelay({}, { value: overrideText, disabled: true })
 
-    expect(screen.UNSAFE_getByType(Button).props.disabled).toBeTruthy()
+    expect(screen.getByText("Send")).toBeDisabled()
   })
 
-  it("calls onSubmit with the text when send button is pressed", () => {
+  it("calls onSubmit with the text when send button is pressed", async () => {
     const onSubmit = jest.fn()
     renderWithRelay({}, { onSubmit })
 
     const text = "Don't trust everything you see, even salt looks like sugar"
-    act(() => {
-      screen.UNSAFE_getByType(TextInput).props.onChangeText(text)
-    })
+    fireEvent.changeText(screen.getByLabelText("Text input field"), text)
 
-    fireEvent(screen.UNSAFE_getByType(TouchableWithoutFeedback), "onPress")
+    // The send button is a TouchableWithoutFeedback, which only responds to responder events.
+    await userEvent.press(screen.getByText("Send"))
 
     expect(onSubmit).toHaveBeenCalledWith(text)
   })
@@ -74,7 +99,7 @@ describe("inquiry offer", () => {
         activeOrders: { edges: [] },
       }),
     })
-    expect(screen.UNSAFE_queryAllByType(OpenInquiryModalButton).length).toEqual(1)
+    expect(screen.getByText(INQUIRY_BUTTON_TEXT)).toBeOnTheScreen()
   })
 
   it("does not render the inquiry make offer button if inquiry item is not an offerable artwork", () => {
@@ -94,7 +119,7 @@ describe("inquiry offer", () => {
         ],
       }),
     })
-    expect(screen.UNSAFE_queryAllByType(OpenInquiryModalButton).length).toEqual(0)
+    expect(screen.queryByText(INQUIRY_BUTTON_TEXT)).not.toBeOnTheScreen()
   })
 
   it("does not render a CTA when the keyboard is visible", async () => {
@@ -111,11 +136,9 @@ describe("inquiry offer", () => {
       }),
     })
 
-    act(() => {
-      screen.UNSAFE_getByType(TextInput).props.onFocus()
-    })
+    fireEvent(screen.getByLabelText("Text input field"), "focus")
 
-    await waitFor(() => expect(screen.UNSAFE_queryAllByType(CTAPopUp)[0]).not.toBeDefined())
+    await waitFor(() => expect(screen.queryByTestId("cta-pop-up")).not.toBeOnTheScreen())
   })
 
   describe("with associated orders (OrderCTAs)", () => {
@@ -145,7 +168,7 @@ describe("inquiry offer", () => {
         }),
       })
 
-      expect(screen.UNSAFE_queryAllByType(CTAPopUp)[0]).not.toBeDefined()
+      expect(screen.queryByTestId("cta-pop-up")).not.toBeOnTheScreen()
     })
 
     it("renders a orange offer CTA if there is a pending offer from the seller", () => {
@@ -182,9 +205,7 @@ describe("inquiry offer", () => {
           },
         }),
       })
-      const cta = screen.UNSAFE_queryAllByType(ReviewOfferButton)[0]
-      expect(cta).toBeDefined()
-      expect(extractText(cta)).toContain("Counteroffer Received")
+      expect(screen.getByTestId("review-offer-button")).toHaveTextContent(/Counteroffer Received/)
     })
 
     it("renders a green cta if the seller has approved the buyer's offer", () => {
@@ -221,9 +242,7 @@ describe("inquiry offer", () => {
           },
         }),
       })
-      const cta = screen.UNSAFE_queryAllByType(ReviewOfferButton)[0]
-      expect(cta).toBeDefined()
-      expect(extractText(cta)).toContain("Counteroffer Accepted")
+      expect(screen.getByTestId("review-offer-button")).toHaveTextContent(/Counteroffer Accepted/)
     })
 
     it("renders the MO button instead of the cta if the seller has rejected the buyer's offer", () => {
@@ -261,8 +280,8 @@ describe("inquiry offer", () => {
           },
         }),
       })
-      expect(screen.UNSAFE_queryAllByType(OpenInquiryModalButton).length).toEqual(1)
-      expect(screen.UNSAFE_queryAllByType(ReviewOfferButton).length).toEqual(0)
+      expect(screen.getByText(INQUIRY_BUTTON_TEXT)).toBeOnTheScreen()
+      expect(screen.queryByTestId("review-offer-button")).not.toBeOnTheScreen()
     })
 
     it("renders a red cta if the payment fails after an order is accepted", () => {
@@ -299,9 +318,7 @@ describe("inquiry offer", () => {
           },
         }),
       })
-      const cta = screen.UNSAFE_queryAllByType(ReviewOfferButton)[0]
-      expect(cta).toBeDefined()
-      expect(extractText(cta)).toContain("Payment Failed")
+      expect(screen.getByTestId("review-offer-button")).toHaveTextContent(/Payment Failed/)
     })
 
     it("renders the MO button instead of the cta if the offer lapsed", () => {
@@ -339,8 +356,8 @@ describe("inquiry offer", () => {
           },
         }),
       })
-      expect(screen.UNSAFE_queryAllByType(OpenInquiryModalButton).length).toEqual(1)
-      expect(screen.UNSAFE_queryAllByType(ReviewOfferButton).length).toEqual(0)
+      expect(screen.getByText(INQUIRY_BUTTON_TEXT)).toBeOnTheScreen()
+      expect(screen.queryByTestId("review-offer-button")).not.toBeOnTheScreen()
     })
   })
 })

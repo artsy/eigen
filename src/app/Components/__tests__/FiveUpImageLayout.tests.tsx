@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { FiveUpImageLayout } from "app/Components/FiveUpImageLayout"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Image } from "react-native"
 
 describe("FiveUpImageLayout", () => {
   const mockImageURLs = [
@@ -16,7 +15,7 @@ describe("FiveUpImageLayout", () => {
     renderWithWrappers(<FiveUpImageLayout imageURLs={mockImageURLs} />)
 
     // Verify all 5 images are rendered
-    const images = screen.UNSAFE_getAllByType(Image)
+    const images = screen.getAllByTestId("five-up-image")
     expect(images).toHaveLength(5)
 
     // Check that each image has the correct source URL
@@ -29,7 +28,7 @@ describe("FiveUpImageLayout", () => {
     const threeImages = mockImageURLs.slice(0, 3)
     renderWithWrappers(<FiveUpImageLayout imageURLs={threeImages} />)
 
-    const images = screen.UNSAFE_getAllByType(Image)
+    const images = screen.getAllByTestId("five-up-image")
     expect(images).toHaveLength(5)
 
     // First 3 images should match the provided URLs

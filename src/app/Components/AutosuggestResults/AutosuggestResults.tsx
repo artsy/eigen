@@ -163,7 +163,7 @@ const AutosuggestResultsFlatList: React.FC<{
       <Flex pb={6}>
         {hasMoreResults ? (
           <Flex justifyContent="center" mt={1}>
-            <Spinner />
+            <Spinner testID="autosuggest-results-spinner" />
           </Flex>
         ) : (
           !noResults && !!ListFooterComponent && <ListFooterComponent />
@@ -214,6 +214,7 @@ const AutosuggestResultsFlatList: React.FC<{
     <Flex style={{ width: "100%", height: "100%" }} pb={2}>
       {!!showHeaderComponent && <HeaderComponent />}
       <InfiniteScrollFlashList<AutosuggestResult>
+        testID="autosuggest-results-list"
         ListHeaderComponent={ListHeaderComponent}
         listRef={flatListRef}
         initialNumToRender={isTablet() ? 24 : 12}

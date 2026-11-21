@@ -1,10 +1,8 @@
-import { Button } from "@artsy/palette-mobile"
+import { act, screen } from "@testing-library/react-native"
 import { InfiniteScrollArtworksGridTestsQuery } from "__generated__/InfiniteScrollArtworksGridTestsQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import "react-native"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 describe("Artist Series Artworks", () => {
@@ -63,20 +61,18 @@ describe("Artist Series Artworks", () => {
   )
 
   it("renders component with default props", () => {
-    const wrapper = () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />)
-      act(() => {
-        env.mock.resolveMostRecentOperation({
-          errors: [],
-          data: {
-            ...artworksConnection,
-          },
-        })
+    renderWithWrappers(<TestRenderer />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          ...artworksConnection,
+        },
       })
-      return tree
-    }
-    expect(wrapper().root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(1)
-    expect(wrapper().root.findAllByType(Button)).toHaveLength(0)
+    })
+
+    expect(screen.getAllByLabelText("Artworks ScrollView")).toHaveLength(1)
+    expect(screen.queryByText("Show more")).not.toBeOnTheScreen()
   })
 })
 

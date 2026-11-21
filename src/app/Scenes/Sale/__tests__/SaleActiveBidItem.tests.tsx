@@ -1,18 +1,10 @@
+import { fireEvent, screen } from "@testing-library/react-native"
 import { SaleActiveBidItemTestsQuery } from "__generated__/SaleActiveBidItemTestsQuery.graphql"
-import {
-  HighestBid,
-  Outbid,
-  ReserveNotMet,
-  BiddingLiveNow,
-  LiveAuction,
-} from "app/Scenes/MyBids/Components/BiddingStatuses"
 import { SaleActiveBidItemContainer } from "app/Scenes/Sale/Components/SaleActiveBidItem"
 import { navigate } from "app/system/navigation/navigate"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { DateTime } from "luxon"
-import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 
@@ -80,7 +72,7 @@ describe("SaleActiveBidItem", () => {
   })
 
   it("navigates to the sale artwork screen on press", () => {
-    const view = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     const highestBidLot = {
       ...lotStanding,
@@ -96,13 +88,12 @@ describe("SaleActiveBidItem", () => {
 
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
-    const button = view.root.findAllByType(TouchableOpacity)[0]
-    button.props.onPress()
+    fireEvent.press(screen.getByRole("button"))
     expect(navigate).toBeCalledWith("artwork-href")
   })
 
   it("renders highest bid if a lot is the highest bid", () => {
-    const view = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     const highestBidLot = {
       ...lotStanding,
@@ -118,11 +109,11 @@ describe("SaleActiveBidItem", () => {
 
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
-    expect(view.root.findAllByType(HighestBid)).toHaveLength(1)
+    expect(screen.getAllByText("Highest bid")).toHaveLength(1)
   })
 
   it("renders ReserveNotMet if the reserve has not been met", () => {
-    const view = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     const reserveNotMetBidLot = {
       ...lotStanding,
@@ -144,11 +135,11 @@ describe("SaleActiveBidItem", () => {
 
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
-    expect(view.root.findAllByType(ReserveNotMet)).toHaveLength(1)
+    expect(screen.getAllByText("Reserve not met")).toHaveLength(1)
   })
 
   it("renders Outbid if the user has been outbid", () => {
-    const view = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     const outbidBidLot = {
       ...lotStanding,
@@ -164,11 +155,11 @@ describe("SaleActiveBidItem", () => {
 
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
-    expect(view.root.findAllByType(Outbid)).toHaveLength(1)
+    expect(screen.getAllByText("Outbid")).toHaveLength(1)
   })
 
   it("renders BiddingLiveNow and hides bids info if the sale is in live bidding state", () => {
-    const view = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     const liveBiddingLot = {
       ...lotStanding,
@@ -190,12 +181,12 @@ describe("SaleActiveBidItem", () => {
 
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
-    expect(extractText(view.root)).not.toContain("1 bid")
-    expect(view.root.findAllByType(BiddingLiveNow)).toHaveLength(1)
+    expect(screen.queryByText(/1 bid/)).not.toBeOnTheScreen()
+    expect(screen.getAllByText("Bidding live now")).toHaveLength(1)
   })
 
   it("renders LiveAuction and hides bids info if the sale is past live bidding start time", () => {
-    const view = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     const liveBiddingLot = {
       ...lotStanding,
@@ -217,12 +208,12 @@ describe("SaleActiveBidItem", () => {
 
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
-    expect(extractText(view.root)).not.toContain("1 bid")
-    expect(view.root.findAllByType(LiveAuction)).toHaveLength(1)
+    expect(screen.queryByText(/1 bid/)).not.toBeOnTheScreen()
+    expect(screen.getAllByText("Live auction")).toHaveLength(1)
   })
 
   it("renders the right bid count if the user has only 1 bid", () => {
-    const view = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     const oneBidLot = {
       ...lotStanding,
@@ -244,11 +235,11 @@ describe("SaleActiveBidItem", () => {
 
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
-    expect(extractText(view.root)).toContain("1 bid")
+    expect(screen.getByText(/1 bid/)).toBeOnTheScreen()
   })
 
   it("renders the right bid count if the user has more than 1 bid", () => {
-    const view = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     const fiveBidsLot = {
       ...lotStanding,
@@ -270,6 +261,6 @@ describe("SaleActiveBidItem", () => {
 
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
-    expect(extractText(view.root)).toContain("5 bids")
+    expect(screen.getByText(/5 bids/)).toBeOnTheScreen()
   })
 })

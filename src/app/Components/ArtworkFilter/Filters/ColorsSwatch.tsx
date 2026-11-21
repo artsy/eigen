@@ -28,6 +28,7 @@ export const ColorsSwatch: React.FC<ColorsSwatchProps> = ({
           height="34px"
           borderRadius="17px"
           bg={backgroundColor}
+          testID={`color-swatch-${name}`}
         >
           {!!selected && (
             <CheckmarkIcon

@@ -30,8 +30,8 @@ describe("SignUpPasswordStep", () => {
   it("navigates to the next step when a valid password is entered", async () => {
     renderWithWrappers(<SignUpPasswordStep />)
 
-    fireEvent.changeText(screen.getByA11yHint("Enter your password"), "Password1")
-    fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+    fireEvent.changeText(screen.getByHintText("Enter your password"), "Password1")
+    fireEvent.press(screen.getByHintText("Continue to the next screen"))
 
     await waitFor(() => {
       expect(mockUseAuthNavigation().navigate).toHaveBeenCalledWith({
@@ -46,7 +46,7 @@ describe("SignUpPasswordStep", () => {
 
   it("navigates back when back button is pressed", () => {
     renderWithWrappers(<SignUpPasswordStep />)
-    fireEvent.press(screen.getByA11yHint("Go back to the previous screen"))
+    fireEvent.press(screen.getByHintText("Go back to the previous screen"))
     expect(mockUseAuthNavigation().goBack).toHaveBeenCalled()
   })
 
@@ -63,12 +63,12 @@ describe("SignUpPasswordStep", () => {
 
     it("displays a login link", () => {
       renderWithWrappers(<SignUpPasswordStep />)
-      expect(screen.getByA11yHint("Go to the login screen")).toBeDefined()
+      expect(screen.getByHintText("Go to the login screen")).toBeDefined()
     })
 
     it("navigates to the login screen when the login link is pressed", () => {
       renderWithWrappers(<SignUpPasswordStep />)
-      fireEvent.press(screen.getByA11yHint("Go to the login screen"))
+      fireEvent.press(screen.getByHintText("Go to the login screen"))
       expect(mockUseAuthNavigation().navigate).toHaveBeenCalledWith({
         name: "LoginPasswordStep",
         params: { email: "foo@bar.baz", showSignUpLink: true },
