@@ -1,8 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { MedianSalePriceAtAuction } from "app/Scenes/MyCollection/Screens/Insights/MedianSalePriceAtAuction"
-import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
 const collectedArtists = [
   { internalID: "andy-warhol-id", name: "Andy Warhol" },
@@ -10,37 +8,29 @@ const collectedArtists = [
   { internalID: "amoako-boafo-id", name: "Amoako Boafo" },
 ]
 
-const resolveScreenQuery = (artist: { internalID: string; name: string }) =>
-  resolveMostRecentRelayOperation(getMockRelayEnvironment(), {
-    Query: () => ({
-      artist: { ...artist, imageUrl: null },
-      me: {
-        myCollectionInfo: { artistsCount: collectedArtists.length },
-        userInterestsConnection: {
-          edges: collectedArtists.map((node) => ({ node: { __typename: "Artist", ...node } })),
-        },
+const screenData = (artist: { internalID: string; name: string }) => ({
+  Query: () => ({
+    artist: { ...artist, imageUrl: null },
+    me: {
+      myCollectionInfo: { artistsCount: collectedArtists.length },
+      userInterestsConnection: {
+        edges: collectedArtists.map((node) => ({ node: { __typename: "Artist", ...node } })),
       },
-    }),
-  })
-
-const waitForScreenQuery = () =>
-  waitFor(() =>
-    expect(
-      getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name
-    ).toBe("MedianSalePriceAtAuctionQuery")
-  )
+    },
+  }),
+})
 
 describe("SelectArtist", () => {
-  const renderScreen = async () => {
-    await renderWithWrappers(
+  const { renderWithRelay } = setupTestWrapper({
+    Component: () => (
       <MedianSalePriceAtAuction artistID="andy-warhol-id" initialCategory="Painting" />
-    )
-    await waitForScreenQuery()
-    await resolveScreenQuery(collectedArtists[0])
-  }
+    ),
+  })
+
+  const renderScreen = () => renderWithRelay(screenData(collectedArtists[0]))
 
   it("refetches the screen for the artist picked from the list", async () => {
-    await renderScreen()
+    const { env } = await renderScreen()
 
     expect(screen.getByText("Andy Warhol")).toBeOnTheScreen()
 
@@ -50,7 +40,7 @@ describe("SelectArtist", () => {
     await fireEvent.press(screen.getByTestId("artist-section-item-Banksy"))
 
     await waitFor(() =>
-      expect(getMockRelayEnvironment().mock.getMostRecentOperation().request.variables).toEqual(
+      expect(env.mock.getMostRecentOperation().request.variables).toEqual(
         expect.objectContaining({ artistID: "banksy-id", artistId: "banksy-id" })
       )
     )
