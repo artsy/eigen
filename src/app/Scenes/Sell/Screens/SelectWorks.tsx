@@ -63,6 +63,14 @@ const SelectWorksContent: React.FC<SelectWorksContentProps> = withSuspense({
     const [selectedWorkIDs, setSelectedWorkIDs] = useState<string[]>([])
     const [reviewedWorks, setReviewedWorks] = useState<SellSelectionWork[]>()
     const [footerHeight, setFooterHeight] = useState(0)
+
+    // A work's resale status, like “In progress”, from its active submission
+    const artworkLabels: Record<string, string> = {}
+    artworks.forEach(({ internalID, activeResaleSubmission }) => {
+      if (activeResaleSubmission?.statusMessage) {
+        artworkLabels[internalID] = activeResaleSubmission.statusMessage
+      }
+    })
     const toast = useToast()
 
     const selectedArtworks = artworks.filter((artwork) =>
@@ -101,6 +109,7 @@ const SelectWorksContent: React.FC<SelectWorksContentProps> = withSuspense({
           <MasonryInfiniteScrollArtworkGrid
             artworks={artworks}
             selectedArtworkIDs={selectedWorkIDs}
+            artworkLabels={artworkLabels}
             onPress={(_slug, artwork) => !!artwork && toggleWork(artwork.internalID)}
             hideSaveIcon
             hideSaleInfo
@@ -168,6 +177,9 @@ const selectWorksQuery = graphql`
             }
             ...ArtworkGridItem_artwork
             ...SellWorkCard_artwork
+            activeResaleSubmission {
+              statusMessage
+            }
           }
         }
       }

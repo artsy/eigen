@@ -1,6 +1,6 @@
 # End-to-end tests
 
-The e2e flows run with [agent-device](https://github.com/callstack/agent-device) by Callstack, which drives iOS simulators and Android emulators. The flows are deterministic `.ad` replay scripts that run without an LLM, on the QA builds of `main`. They cover login, signup, deeplinks and the share sheet.
+The e2e flows run with [agent-device](https://github.com/callstack/agent-device) by Callstack, which drives iOS simulators and Android emulators. The flows are deterministic `.ad` replay scripts that run without an LLM, on the QA builds of `main`. They cover login, signup, deeplinks, the share sheet, a smoke test of every bottom tab, signing up and deleting a new account, adding and deleting a My Collection artwork, and saving an artwork and following an artist in Favorites.
 
 `perf/` holds the separate Flashlight performance test, which still uses Maestro. See [Measuring performance with Flashlight](../docs/measuring_performance_with_flashlight.md).
 
@@ -17,13 +17,20 @@ The e2e flows run with [agent-device](https://github.com/callstack/agent-device)
 - Flows run in a fixed order, set by `FIRST_FLOWS` in the runner. `login` and `signup` go first, so a freshly booted simulator's slow first minutes land on the simplest flows. Then come `deeplink-email`, `deeplink-click` and `deeplink-artist`, in that order, so a failure can be told apart from being the first deeplink of the run. Any other flow follows, alphabetically. In the iOS job, the simulator also starts booting right after checkout, so it settles during setup.
 - Each flow gets up to 3 attempts. A flow that only passes on a retry is logged as flaky, with a warning on the run summary.
 - At the end, the runner prints a summary like agent-device's own reporter. That's one `✓`/`⨯` line per flow with its time, then the flaky flows and the failures, with the error of every failed attempt. In CI it's also added to the run's summary page. Flow names come from each flow's `# @title` header.
-- Failures are posted to `#mobile-alerts` with a screenshot (uploaded to S3).
+- Failures are posted to `#mobile-alerts` with a screenshot (uploaded to S3). Only runs on `main` post; runs on other branches skip Slack.
+- To test a branch's app changes, build it under its own name, then run the suite on that build. Start `build-qa-ios.yml` (or `build-qa-android.yml`) on the branch with `build_name` set, e.g. to the branch name without slashes. It uploads `Artsy-<build_name>` instead of `Artsy-latest`, so main's build is left alone. Then start `ios-e2e.yml` (or `android-e2e.yml`) on the branch with the same `build_name`:
+
+  ```sh
+  gh workflow run build-qa-ios.yml --ref <branch> -f build_name=<name>
+  gh workflow run ios-e2e.yml --ref <branch> -f build_name=<name>
+  ```
+
 - Only `junit.xml` and `failures.json` are attached to the run as artifacts. This repo's artifacts are public, and agent-device's logs and screenshots can show the test account.
 
 ## Layout
 
 - `flows/<name>.ad`: one script per scenario, shared by iOS and Android. The platform comes from the device passed to the runner.
-- `flows/<name>.<ios|android>.ad`: a platform-only version, for a scenario that has to work differently on each platform. The `deeplink-*` and `share` flows are. `SKIP_FLOWS` uses the name without the suffix, e.g. `SKIP_FLOWS="deeplink-email deeplink-click"`.
+- `flows/<name>.<ios|android>.ad`: a platform-only version, for a scenario that has to work differently on each platform. The `deeplink-*`, `share` and `delete-account` flows are. `SKIP_FLOWS` uses the name without the suffix, e.g. `SKIP_FLOWS="deeplink-email deeplink-click"`.
 - `reporters/failures.mjs`: a test reporter that writes the failed tests to `failures.json` for `scripts/ci/report-e2e-test-failure`.
 
 ### Launch arguments
@@ -73,6 +80,13 @@ AD_VAR_APP_ID=net.artsy.qa AD_VAR_EMAIL=... AD_VAR_PASSWORD=... agent-device rep
 - Wait for the element you're about to use, not just a heading on its screen. A heading can appear before the field is ready, and neighbouring screens can share headings.
 - After moving to a new screen, `wait absent` for the previous screen's field before pressing anything. On slower simulators both screens are on screen during the transition, so a selector like `label="Continue"` matches twice.
 - Give the first `wait` a generous timeout (90s). The first launch on a cold CI simulator can take over a minute.
+- A flow that changes account state (saves, follows, My Collection works, orders) should sign up a new account, like `favorites`, `my-collection` and `delete-account` do, rather than use the shared test account. Scripts can't branch, so on a shared account an attempt that stops halfway leaves state behind that breaks every run after it until someone resets the account by hand. The runner makes a new `SIGNUP_EMAIL`/`SIGNUP_PASSWORD` for every attempt.
+- If a flow must change the shared test account, it has to undo the change before it ends and check the undo landed. Say in the flow's header what to reset by hand when an attempt stops halfway.
+- Prefer stable test data over live inventory. `favorites` uses the sold staging work "Maestro Test Artwork, 2025" by "Test Artist", which won't change under the flow.
+- Press bottom tabs by their testID, `id="bottom-tab-<route>"` (e.g. `bottom-tab-search`), not their label. On Android, `label="Search"` also matches Home's search button. Tab screens stay mounted after their first visit, and Android keeps them in the accessibility tree, so wait for something only the new tab renders.
+- Palette's `Button` repeats its accessibility label on an inner view, so a label matches twice. Add the role: `press 'role="button" label="Delete Artwork"'`.
+- Labels that include counts or prices ("Follow 1.2K", "Saved Artworks, 3 Artworks") change between runs. Give the element a stable `accessibilityLabel` (and put the count in `accessibilityValue`), or fall back to its `testID`.
+- With `useE2EInit`, dev builds silence LogBox (`useE2EInitialization`). Its banner sits over the tab bar and swallows taps meant for it. QA builds have no LogBox, so this only affects local runs.
 - See `agent-device help scripting` and `agent-device help test` for the full syntax.
 
 ## Deeplinks

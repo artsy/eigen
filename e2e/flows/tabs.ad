@@ -1,0 +1,19 @@
+# @title Tabs - Smoke
+# Visits every bottom tab once and checks each one renders its own content, so a tab whose screen crashes or
+# whose query fails shows up here. Read-only: it doesn't change the test account.
+# Tab screens stay mounted after their first visit, and Android keeps them in the accessibility tree, so each
+# wait is for something only that tab renders, and each tab is visited once. Home's search-button is still in the
+# tree on later tabs, so it only proves Home rendered at launch.
+# @launch useE2EInit=true email=${EMAIL} password=${PASSWORD}
+open ${APP_ID}
+# The first launch on a cold CI simulator can take over a minute
+wait 'id="search-button"' 90000
+# Tabs are pressed by testID (tabBarButtonTestID): on Android, label="Search" also matches Home's search button
+press 'id="bottom-tab-search"'
+wait 'label="Explore by Category" || text="Explore by Category"' 30000
+press 'id="bottom-tab-inbox"'
+wait 'label="Inquiries" || text="Inquiries"' 30000
+press 'id="bottom-tab-favorites"'
+wait 'label="Learn more about Favorites"' 30000
+press 'id="bottom-tab-profile"'
+wait 'id="account-card"' 30000

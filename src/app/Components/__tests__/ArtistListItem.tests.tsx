@@ -82,6 +82,15 @@ describe("ArtistListItem", () => {
     resolveMostRecentRelayOperation(mockEnvironment)
     expect(() => screen.getByTestId("follow-artist-button")).toBeTruthy()
   })
+
+  it("labels the FollowButton with the artist's name", () => {
+    renderWithWrappers(<TestRenderer showFollowButton />)
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artist: () => ({ name: "Test Artist", is_followed: true }),
+    })
+    // Palette's Button repeats the label on an inner view, so match the button role
+    expect(screen.getByRole("button", { name: "Following Test Artist" })).toBeOnTheScreen()
+  })
 })
 
 describe("formatTombstoneText", () => {

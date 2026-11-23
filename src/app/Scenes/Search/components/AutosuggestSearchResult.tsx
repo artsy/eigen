@@ -103,6 +103,9 @@ export const AutosuggestSearchResult: React.FC<{
     <>
       <RouterLink
         to={href}
+        // A caller with onResultPress uses the row as a picker and handles the press itself
+        disableNavigation={!!onResultPress}
+        disablePrefetch={!!onResultPress}
         onPress={onPress}
         testID={`autosuggest-search-result-${result.displayLabel}`}
         style={{

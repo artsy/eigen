@@ -526,10 +526,17 @@ rescue => e
   UI.error("Failed to write to #{path}: #{e.message}")
 end
 
+# QA builds upload as Artsy-latest, the build main's nightly e2e runs test. QA_BUILD_NAME uploads a
+# branch's build under its own name instead, so it doesn't replace main's (see build-qa-ios.yml).
+def qa_build_name
+  name = ENV['QA_BUILD_NAME'].to_s.strip
+  name.empty? ? 'latest' : name
+end
+
 def upload_ios_qa_to_s3
   app_name = "Artsy"
   derived_data_path = ENV['DERIVED_DATA_PATH'] || 'derived_data'
-  s3_dest = "#{S3_IOS_BUILDS_PATH}#{app_name}-latest.zip"
+  s3_dest = "#{S3_IOS_BUILDS_PATH}#{app_name}-#{qa_build_name}.zip"
   configuration = "QA"
 
   # Find the .app bundle
@@ -563,7 +570,7 @@ end
 
 def upload_android_qa_to_s3(apk_path)
   app_name = "Artsy"
-  s3_dest = "#{S3_ANDROID_BUILDS_PATH}#{app_name}-latest.apk"
+  s3_dest = "#{S3_ANDROID_BUILDS_PATH}#{app_name}-#{qa_build_name}.apk"
 
   if apk_path.nil? || !File.exist?(apk_path)
     UI.error("❌ QA APK not found at: #{apk_path}")

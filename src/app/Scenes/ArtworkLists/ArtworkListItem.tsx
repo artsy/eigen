@@ -34,9 +34,15 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = ({ artworkList, imagesL
 
   const { trackTappedArtworkList } = useFavoritesTracking()
 
+  const artworksCountText = `${item.artworksCount} ${item.artworksCount === 1 ? "Artwork" : "Artworks"}`
+
   return (
     <RouterLink
       to={`/artwork-list/${item.internalID}`}
+      accessibilityRole="link"
+      // The list name identifies it; the count changes, so screen readers get it as the value
+      accessibilityLabel={item.name}
+      accessibilityValue={{ text: artworksCountText }}
       onPress={() => {
         trackTappedArtworkList(item.internalID)
       }}
@@ -67,7 +73,7 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = ({ artworkList, imagesL
             )}
           </Flex>
           <Text variant="xs" color="mono60" numberOfLines={1}>
-            {item.artworksCount} {item.artworksCount === 1 ? "Artwork" : "Artworks"}
+            {artworksCountText}
           </Text>
         </Flex>
       </Flex>

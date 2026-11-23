@@ -73,6 +73,7 @@ const collection = {
             internalID: "id-a2",
             title: "Sellable Work",
             artistNames: "Artist A",
+            activeResaleSubmission: null,
           },
         },
         {
@@ -81,6 +82,7 @@ const collection = {
             internalID: "id-c3",
             title: "Unsellable Work",
             artistNames: "Artist B",
+            activeResaleSubmission: null,
           },
         },
         {
@@ -89,6 +91,7 @@ const collection = {
             internalID: "id-b4",
             title: "Auction Work",
             artistNames: "Artist C",
+            activeResaleSubmission: null,
           },
         },
       ],
@@ -163,6 +166,30 @@ describe("Sell", () => {
 
     expect(screen.queryByText("Step 1 · Decide Which Works to Sell")).not.toBeOnTheScreen()
     expect(dismissModal).toHaveBeenCalledTimes(1)
+  })
+
+  it("labels works with the status of their active resale submission", async () => {
+    renderWithRelay({
+      Me: () => {
+        const me = collection.Me()
+        const [sellable, unsellable, auction] = me.myCollectionConnection.edges
+        return {
+          ...me,
+          myCollectionConnection: {
+            edges: [
+              sellable,
+              unsellable,
+              {
+                node: { ...auction.node, activeResaleSubmission: { statusMessage: "In progress" } },
+              },
+            ],
+          },
+        }
+      },
+    })
+
+    expect(await screen.findByText("In progress")).toBeOnTheScreen()
+    expect(screen.getAllByText("In progress")).toHaveLength(1)
   })
 
   it("keeps the verify button disabled until a work is selected", async () => {

@@ -189,6 +189,8 @@ const ArtistListItem: React.FC<Props> = ({
               testID="follow-artist-button"
               haptic
               isFollowed={!!is_followed}
+              // Every row's button reads "Follow" otherwise, so say which artist it's for
+              accessibilityLabel={`${is_followed ? "Following" : "Follow"} ${name}`}
               onPress={handleFollowArtist}
             />
           </Flex>

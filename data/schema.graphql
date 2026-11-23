@@ -4275,6 +4275,10 @@ type ArtsyShippingOptInResponse {
 }
 
 type Artwork implements Node & Searchable & Sellable {
+  """
+  The current user’s active resale submission for this artwork, if there is one.
+  """
+  activeResaleSubmission: ResaleSubmission
   additionalInformation(format: Format): String
   artaShippingEnabled: Boolean
     @deprecated(reason: "Prefer to use `processWithArtsyShippingDomestic`. [Will be removed in v2]")
@@ -8280,6 +8284,11 @@ type CRMActivity {
     """
     timezone: String
   ): String
+
+  """
+  The user who added this activity
+  """
+  userID: String
 }
 
 """
@@ -12746,6 +12755,11 @@ type Conversation implements Node {
   collectorOrdersConnection(
     after: String
     before: String
+
+    """
+    Filter by buyer states
+    """
+    buyerState: [OrderBuyerStateEnum]
     first: Int
     last: Int
     page: Int
@@ -12948,6 +12962,11 @@ type Conversation implements Node {
     first: Int
     last: Int
     page: Int
+
+    """
+    Filter by seller states
+    """
+    sellerState: [OrderSellerStateEnum]
     size: Int
   ): PartnerOrdersConnection
 
@@ -13839,6 +13858,11 @@ input CreateCRMActivityInput {
   """
   occurredAt: String
   subject: String
+
+  """
+  The user who added the activity, who must belong to the activity's partner. Defaults to the current user, null leaves it unset
+  """
+  userID: String
 }
 
 type CreateCRMActivityPayload {
@@ -16799,6 +16823,41 @@ union DeletePurchaseResponseOrError = DeletePurchaseFailure | DeletePurchaseSucc
 
 type DeletePurchaseSuccess {
   purchase: Purchase
+}
+
+type DeleteResaleSubmissionImageFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteResaleSubmissionImageInput {
+  clientMutationId: String
+
+  """
+  The internal ID of the resale submission.
+  """
+  id: String!
+
+  """
+  The internal ID of the condition photo to remove.
+  """
+  imageID: String!
+}
+
+type DeleteResaleSubmissionImagePayload {
+  clientMutationId: String
+
+  """
+  On success: the resale submission without the photo.
+  """
+  resaleSubmissionOrError: DeleteResaleSubmissionImageResponseOrError
+}
+
+union DeleteResaleSubmissionImageResponseOrError =
+    DeleteResaleSubmissionImageFailure
+  | DeleteResaleSubmissionImageSuccess
+
+type DeleteResaleSubmissionImageSuccess {
+  resaleSubmission: ResaleSubmission
 }
 
 type DeleteShippingPresetFailure {
@@ -26743,6 +26802,13 @@ type Mutation {
   deletePurchase(input: deletePurchaseInput!): deletePurchasePayload
 
   """
+  Remove a condition photo from a resale submission.
+  """
+  deleteResaleSubmissionImage(
+    input: DeleteResaleSubmissionImageInput!
+  ): DeleteResaleSubmissionImagePayload
+
+  """
   Deletes a shipping preset for a partner.
   """
   deleteShippingPreset(
@@ -27586,7 +27652,7 @@ type Mutation {
   updateQuiz(input: updateQuizMutationInput!): updateQuizMutationPayload
 
   """
-  Update the asking price and shipping preferences of a resale submission. Omitted or null fields are left unchanged.
+  Update the asking price, shipping preferences and condition photos of a resale submission. Omitted or null fields are left unchanged.
   """
   updateResaleSubmission(input: UpdateResaleSubmissionInput!): UpdateResaleSubmissionPayload
 
@@ -31252,6 +31318,11 @@ type PartnerListPublication {
   description: String
 
   """
+  Where each element of the room is aligned (viewing rooms rebuild). Null on a room published before the elements could be aligned one by one, which falls back to textAlignment for its text.
+  """
+  elementAlignments: ViewingRoomElementAlignments
+
+  """
   Optional heading shown on the published room.
   """
   heading: String
@@ -31310,6 +31381,11 @@ type PartnerListPublication {
   """
   showLogo: Boolean
   slug: String
+
+  """
+  Optional subtitle under the heading (viewing rooms rebuild). Null when the gallery didn't add one.
+  """
+  subtitle: String
 
   """
   Alignment of the heading and text (viewing rooms rebuild). Null on a room published before the rebuild.
@@ -32335,6 +32411,11 @@ type PrivateViewingRoom {
   description: String
 
   """
+  Where each element of the room is aligned (viewing rooms rebuild). Omitted like heroStyle; a room without it falls back to textAlignment for its text.
+  """
+  elementAlignments: ViewingRoomElementAlignments
+
+  """
   The gallery's name, omitted when the gallery has chosen to hide it (show_gallery_name).
   """
   galleryName: String
@@ -32354,6 +32435,11 @@ type PrivateViewingRoom {
   Whether to show the brand kit logo, apart from the gallery name. Null on a room published before the logo had its own setting, which shows the logo in place of the name when the brand is applied. The brand kit also comes with it when only the logo is on; apply its colors and font only when applyBrand is true.
   """
   showLogo: Boolean
+
+  """
+  Optional subtitle under the heading (viewing rooms rebuild). Omitted when the gallery didn't add one, and for a gated room until authenticated.
+  """
+  subtitle: String
 
   """
   Alignment of the heading and text (viewing rooms rebuild). Omitted like heroStyle.
@@ -32432,6 +32518,11 @@ type PrivateViewingRoomContents {
   description: String
 
   """
+  Where each element of the room is aligned (viewing rooms rebuild). Omitted like heroStyle; a room without it falls back to textAlignment for its text.
+  """
+  elementAlignments: ViewingRoomElementAlignments
+
+  """
   The gallery's name, omitted when the gallery has chosen to hide it (show_gallery_name).
   """
   galleryName: String
@@ -32446,6 +32537,11 @@ type PrivateViewingRoomContents {
   Whether to show the brand kit logo, apart from the gallery name. Null on a room published before the logo had its own setting, which shows the logo in place of the name when the brand is applied. The brand kit also comes with it when only the logo is on; apply its colors and font only when applyBrand is true.
   """
   showLogo: Boolean
+
+  """
+  Optional subtitle under the heading (viewing rooms rebuild). Omitted when the gallery didn't add one, and for a gated room until authenticated.
+  """
+  subtitle: String
 
   """
   Alignment of the heading and text (viewing rooms rebuild). Omitted like heroStyle.
@@ -32599,6 +32695,11 @@ input PublishPartnerListPublicationMutationInput {
   description: String
 
   """
+  Where each element of the room is aligned, one by one (viewing rooms rebuild).
+  """
+  elementAlignments: ViewingRoomElementAlignmentsInput
+
+  """
   Optional heading shown on the published room.
   """
   heading: String
@@ -32627,6 +32728,11 @@ input PublishPartnerListPublicationMutationInput {
   Whether to show the gallery's brand kit logo on the public page, apart from the gallery name.
   """
   showLogo: Boolean
+
+  """
+  Optional subtitle under the heading (viewing rooms rebuild). Blank hides it.
+  """
+  subtitle: String
 
   """
   Alignment of the heading and text (viewing rooms rebuild).
@@ -36034,6 +36140,11 @@ type ResaleSubmission {
   channel: ResaleSubmissionChannel
 
   """
+  Photos the seller added to show the work’s condition, oldest first.
+  """
+  conditionPhotos: [Image!]!
+
+  """
   The seller’s answer to how the work will get to its buyer.
   """
   courierHandoff: ResaleSubmissionCourierHandoff
@@ -36091,6 +36202,11 @@ type ResaleSubmission {
   """
   rejectionReasons: [ResaleSubmissionRejectionReason!]!
   state: ResaleSubmissionState!
+
+  """
+  A simple user-facing message to indicate the status of this submission, derived from current state.
+  """
+  statusMessage: String!
 
   """
   The My Collection artwork being resold.
@@ -40203,6 +40319,11 @@ input UpdateCRMActivityInput {
   """
   occurredAt: String
   subject: String
+
+  """
+  The user who added the activity, who must belong to the activity's partner. Null clears it, leaving it out keeps it
+  """
+  userID: String
 }
 
 type UpdateCRMActivityPayload {
@@ -42285,6 +42406,11 @@ input UpdateResaleSubmissionInput {
   How the work will get to its buyer.
   """
   courierHandoff: ResaleSubmissionCourierHandoff
+
+  """
+  S3 URLs of uploaded photos to add as condition photos, in order, at most 10. Each is added separately: if one fails, the ones before it stay saved, so reload conditionPhotos before retrying.
+  """
+  externalImageUrls: [String]
 
   """
   The internal ID of the resale submission to update.
@@ -46063,6 +46189,36 @@ type ViewingRoomEdge {
   The item at the end of the edge
   """
   node: ViewingRoom
+}
+
+enum ViewingRoomElementAlignment {
+  CENTER
+  LEFT
+  RIGHT
+}
+
+"""
+Where each element of the room is aligned. Null for an element the gallery hasn't aligned.
+"""
+type ViewingRoomElementAlignments {
+  artworks: ViewingRoomElementAlignment
+  curatorialText: ViewingRoomElementAlignment
+  description: ViewingRoomElementAlignment
+  galleryName: ViewingRoomElementAlignment
+  heading: ViewingRoomElementAlignment
+  subtitle: ViewingRoomElementAlignment
+}
+
+"""
+Where each element of the room is aligned.
+"""
+input ViewingRoomElementAlignmentsInput {
+  artworks: ViewingRoomElementAlignment
+  curatorialText: ViewingRoomElementAlignment
+  description: ViewingRoomElementAlignment
+  galleryName: ViewingRoomElementAlignment
+  heading: ViewingRoomElementAlignment
+  subtitle: ViewingRoomElementAlignment
 }
 
 enum ViewingRoomHeroStyle {

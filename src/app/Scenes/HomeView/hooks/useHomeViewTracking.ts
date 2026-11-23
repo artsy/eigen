@@ -44,7 +44,9 @@ export const useHomeViewTracking = () => {
     },
 
     bannerViewed: (
-      orders: Array<ExtractNodeType<PaymentFailureBanner_Fragment$data["commerceMyOrders"]>>
+      orders: Array<
+        ExtractNodeType<NonNullable<PaymentFailureBanner_Fragment$data["me"]>["ordersConnection"]>
+      >
     ) => {
       const payload: BannerViewed = {
         action: ActionType.bannerViewed,
@@ -537,7 +539,9 @@ export const useHomeViewTracking = () => {
     },
 
     tappedChangePaymentMethod: (
-      orders: Array<ExtractNodeType<PaymentFailureBanner_Fragment$data["commerceMyOrders"]>>
+      orders: Array<
+        ExtractNodeType<NonNullable<PaymentFailureBanner_Fragment$data["me"]>["ordersConnection"]>
+      >
     ) => {
       const payload: TappedChangePaymentMethod = {
         action: ActionType.tappedChangePaymentMethod,

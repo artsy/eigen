@@ -151,6 +151,8 @@ const AppTabs: React.FC = () => {
 
             return icon
           },
+          // The tab labels clash with other "Search" buttons on Android, so e2e flows press tabs by this id
+          tabBarButtonTestID: `bottom-tab-${route.name}`,
           tabBarButton: (props) => (
             <PlatformPressable
               {...props}

@@ -13,14 +13,31 @@ on:
       ANDROID_KEY_PASSWORD:
         required: true
   workflow_dispatch: # Builds and uploads to S3 without running the e2e tests
+    inputs:
+      build_name:
+        description: "Uploads the build as Artsy-<build_name>. Off main, use a name other than latest (e.g. the branch's), so main's build isn't replaced"
+        required: false
+        default: latest
 
 jobs:
   build-android-qa:
-    if: github.ref == 'refs/heads/main'
+    # Off main, only with a build_name, so a branch build never replaces main's Artsy-latest.
+    # inputs is empty when nightly-qa.yml calls this.
+    if: github.ref == 'refs/heads/main' || (inputs.build_name != '' && inputs.build_name != 'latest')
     runs-on: ubuntu-24.04
     timeout-minutes: 90
 
     steps:
+      # The name ends up in an S3 key, so only allow characters that are safe there and in a shell
+      - name: Check build name
+        env:
+          BUILD_NAME: ${{ inputs.build_name }}
+        run: |
+          if [[ -n "$BUILD_NAME" && ! "$BUILD_NAME" =~ ^[A-Za-z0-9._-]+$ ]]; then
+            echo "::error::build_name may only contain letters, digits, '.', '_' and '-'"
+            exit 1
+          fi
+
       - name: Checkout repository
         uses: actions/checkout@v5
 
@@ -42,6 +59,7 @@ jobs:
       - name: Build Android app and upload to S3 for e2e tests
         run: bundle exec fastlane build_qa_android
         env:
+          QA_BUILD_NAME: ${{ inputs.build_name }}
           VERBOSE: 1
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}

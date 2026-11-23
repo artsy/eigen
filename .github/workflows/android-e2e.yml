@@ -9,9 +9,16 @@ on:
       AWS_SECRET_ACCESS_KEY:
         required: true
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab, on the latest QA build
+    inputs:
+      build_name:
+        description: "Tests the QA build uploaded as Artsy-<build_name>, e.g. a branch's from build-qa-android.yml"
+        required: false
+        default: latest
 
 env:
   AGENT_DEVICE_NO_UPDATE_NOTIFIER: 1
+  # Only main's runs post failures to Slack; a branch run is someone trying out changes
+  SKIP_SLACK_REPORT: ${{ github.ref != 'refs/heads/main' && '1' || '' }}
 
 # The group is spelled out because inside a called workflow `github.workflow` is the caller's name,
 # which the iOS suite would share. On a branch a newer run makes the older one pointless; on main a
@@ -58,7 +65,15 @@ jobs:
         run: ./scripts/setup/setup-env-for-e2e android
 
       - name: Download Android App (APK)
-        run: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
+        # inputs is empty when nightly-qa.yml calls this, which tests Artsy-latest
+        env:
+          BUILD_NAME: ${{ inputs.build_name || 'latest' }}
+        run: |
+          if [[ ! "$BUILD_NAME" =~ ^[A-Za-z0-9._-]+$ ]]; then
+            echo "::error::build_name may only contain letters, digits, '.', '_' and '-'"
+            exit 1
+          fi
+          aws s3 cp "s3://artsy-citadel/eigen/builds/android/Artsy-$BUILD_NAME.apk" ./Artsy.apk
 
       - name: Install agent-device
         run: |
@@ -86,6 +101,9 @@ jobs:
         with:
           api-level: 34
           arch: x86_64
+          # Without a profile the emulator gets a small default screen, where forms like Delete My Account
+          # need scrolling the flows can't do reliably. Match a common phone instead.
+          profile: pixel_7
           ram-size: "8192M"
           heap-size: "4096M"
           disk-size: "8G"

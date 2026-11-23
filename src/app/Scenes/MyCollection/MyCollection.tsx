@@ -122,6 +122,7 @@ const MyCollection: React.FC = () => {
                   {activeNavigationTab !== Tab.insights && (
                     <Touchable
                       accessibilityRole="button"
+                      accessibilityLabel="Add to My Collection"
                       hitSlop={ICON_HIT_SLOP}
                       onPress={() => handleCreateButtonPress()}
                     >
