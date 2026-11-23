@@ -12745,6 +12745,11 @@ type Conversation implements Node {
   collectorOrdersConnection(
     after: String
     before: String
+
+    """
+    Filter by buyer states
+    """
+    buyerState: [OrderBuyerStateEnum]
     first: Int
     last: Int
     page: Int
@@ -12947,6 +12952,11 @@ type Conversation implements Node {
     first: Int
     last: Int
     page: Int
+
+    """
+    Filter by seller states
+    """
+    sellerState: [OrderSellerStateEnum]
     size: Int
   ): PartnerOrdersConnection
 
