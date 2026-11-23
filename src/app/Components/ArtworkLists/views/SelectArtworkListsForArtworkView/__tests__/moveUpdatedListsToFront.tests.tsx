@@ -1,4 +1,4 @@
-import { screen, within } from "@testing-library/react-native"
+import { act, screen, within } from "@testing-library/react-native"
 import { moveUpdatedListsToFrontTestsQuery } from "__generated__/moveUpdatedListsToFrontTestsQuery.graphql"
 import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ArtworkLists } from "app/Components/ArtworkLists/components/ArtworkLists"
@@ -6,7 +6,6 @@ import { getArtworkListsStoreInitialState } from "app/Components/ArtworkLists/ty
 import { moveUpdatedListsToFront } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { commitLocalUpdate, graphql } from "react-relay"
-import { act } from "react-test-renderer"
 
 const expectOrder = (names: string[]) => {
   const rows = screen.getAllByTestId("artworkListItem")
