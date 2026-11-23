@@ -1,9 +1,8 @@
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import "react-native"
 import { LocationMap } from "app/Components/LocationMap/LocationMap"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 it("renders without throwing an error", () => {
-  renderWithWrappersLEGACY(<LocationMap {...(data as any)} />)
+  renderWithWrappers(<LocationMap {...(data as any)} />)
 })
 
 const data = {

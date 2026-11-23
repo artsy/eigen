@@ -1,4 +1,3 @@
-import { Touchable } from "@artsy/palette-mobile"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkPreviewTestsQuery } from "__generated__/ArtworkPreviewTestsQuery.graphql"
 import {
@@ -33,7 +32,7 @@ describe("concerning selection handling", () => {
       { onSelected }
     )
 
-    expect(screen.queryByText("Karl and Anna Face Off (Diptych) / 2016")).toBeTruthy()
+    expect(screen.getByText("Karl and Anna Face Off (Diptych) / 2016")).toBeOnTheScreen()
     fireEvent.press(screen.getByText("Karl and Anna Face Off (Diptych) / 2016"))
 
     expect(onSelected).toHaveBeenCalledTimes(1)
@@ -44,7 +43,7 @@ describe("concerning selection handling", () => {
       Artist: () => ({}),
     })
 
-    fireEvent.press(screen.UNSAFE_getByType(Touchable))
+    fireEvent.press(screen.getByRole("button"))
 
     expect(onSelected).not.toHaveBeenCalled()
   })

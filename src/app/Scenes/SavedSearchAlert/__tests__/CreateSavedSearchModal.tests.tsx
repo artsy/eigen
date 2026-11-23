@@ -1,10 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import {
   SavedSearchEntity,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import {
   CreateSavedSearchModal,
   CreateSavedSearchModalProps,
@@ -12,6 +11,7 @@ import {
 } from "app/Scenes/SavedSearchAlert/CreateSavedSearchModal"
 import {
   CreateSavedSearchAlertNavigationStack,
+  CreateSavedSearchAlertParams,
   SavedSearchAlertMutationResult,
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import {
@@ -21,6 +21,19 @@ import {
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+
+// Wrap the real component to record the params it receives
+let mockCreateSavedSearchAlertParams: CreateSavedSearchAlertParams | undefined
+jest.mock("app/Scenes/SavedSearchAlert/CreateSavedSearchAlert", () => {
+  const actual = jest.requireActual("app/Scenes/SavedSearchAlert/CreateSavedSearchAlert")
+  return {
+    ...actual,
+    CreateSavedSearchAlert: (props: any) => {
+      mockCreateSavedSearchAlertParams = props.params
+      return <actual.CreateSavedSearchAlert {...props} />
+    },
+  }
+})
 
 jest.mock("app/Scenes/SavedSearchAlert/queries/getAlertByCriteria", () => ({
   getAlertByCriteria: () => Promise.resolve(null),
@@ -112,10 +125,11 @@ describe("CreateSavedSearchModal", () => {
   })
 
   it("tracks clicks when the create alert button is pressed", async () => {
-    const { UNSAFE_root } = renderWithWrappers(<TestRenderer />)
+    mockCreateSavedSearchAlertParams = undefined
+    renderWithWrappers(<TestRenderer />)
 
-    const createSavedSearchAlert = await UNSAFE_root.findByType(CreateSavedSearchAlert)
-    createSavedSearchAlert.props.params.onComplete(mockedMutationResult)
+    await waitFor(() => expect(mockCreateSavedSearchAlertParams).toBeDefined())
+    act(() => mockCreateSavedSearchAlertParams!.onComplete?.(mockedMutationResult))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       tracks.toggleSavedSearch(true, OwnerType.artist, "ownerId", "ownerSlug", "searchCriteriaID")

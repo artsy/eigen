@@ -1,6 +1,6 @@
 import { act, screen } from "@testing-library/react-native"
 import { ShowTestsQuery } from "__generated__/ShowTestsQuery.graphql"
-import { Show, ShowFragmentContainer } from "app/Scenes/Show/Show"
+import { ShowFragmentContainer } from "app/Scenes/Show/Show"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -34,8 +34,6 @@ describe("Show", () => {
         },
       }),
     })
-
-    expect(screen.UNSAFE_queryAllByType(Show)).toHaveLength(1)
 
     expect(screen.getByText("The big show")).toBeTruthy()
     expect(screen.getByText("October 23 – October 27, 2000")).toBeTruthy()

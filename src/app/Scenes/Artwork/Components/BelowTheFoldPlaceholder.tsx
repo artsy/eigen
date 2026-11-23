@@ -28,7 +28,7 @@ export const BelowTheFoldPlaceholder = () => {
       <ContentPlaceholder />
 
       <Spacer y={4} />
-      <ActivityIndicator />
+      <ActivityIndicator testID="below-the-fold-placeholder-loading-indicator" />
     </ProvidePlaceholderContext>
   )
 }

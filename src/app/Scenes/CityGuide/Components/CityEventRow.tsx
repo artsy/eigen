@@ -25,7 +25,12 @@ export const CityEventRow: React.FC<Props> = ({
 }) => {
   return (
     <Flex testID="city-event-row" flexDirection="row" alignItems="center" gap={1} py={1}>
-      <RouterLink to={href ?? undefined} disablePrefetch style={{ flex: 1 }}>
+      <RouterLink
+        to={href ?? undefined}
+        disablePrefetch
+        style={{ flex: 1 }}
+        testID="city-event-row-link"
+      >
         <Flex flexDirection="row" alignItems="center" gap={1} flex={1}>
           {!!imageURL && (
             <Image src={imageURL} width={IMAGE_SIZE} height={IMAGE_SIZE} resizeMode="cover" />

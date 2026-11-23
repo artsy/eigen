@@ -1,10 +1,9 @@
-import { renderHook } from "@testing-library/react-native"
+import { act, renderHook } from "@testing-library/react-native"
 import {
   useSetWebViewCallback,
   useWebViewCallback,
   useWebViewEvent,
 } from "app/utils/useWebViewEvent"
-import { act } from "react-test-renderer"
 
 describe("useWebViewEvent", () => {
   it("useSetWebViewCallback", () => {

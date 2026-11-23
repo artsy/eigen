@@ -6,7 +6,7 @@ import {
   useRecentSearches,
 } from "app/Scenes/Search/SearchModel"
 import { __globalStoreTestUtils__, GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { times } from "lodash"
 
 const banksy: RecentSearch = {
@@ -108,7 +108,7 @@ describe(useRecentSearches, () => {
     expect(localRecentSearches.length).toBe(0)
     expect(globalRecentSearches.length).toBe(0)
 
-    renderWithWrappersLEGACY(
+    renderWithWrappers(
       <GlobalStoreProvider>
         <TestComponent />
       </GlobalStoreProvider>
@@ -127,9 +127,7 @@ describe(useRecentSearches, () => {
       })
     })
 
-    await waitFor(() => {
-      expect(localRecentSearches.length).toBe(10)
-      expect(globalRecentSearches.length).toBe(10)
-    })
+    await waitFor(() => expect(localRecentSearches.length).toBe(10))
+    expect(globalRecentSearches.length).toBe(10)
   })
 })

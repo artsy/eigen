@@ -111,27 +111,40 @@ type SellView = Awaited<ReturnType<typeof renderSell>>
 
 type ActiveArtwork = { internalID: string; artistNames: string; title?: string }
 
-// Step 2 loads the active work with its own query. Step 3 asks for the same fields, so Relay's
-// store answers it. The shared id keeps a generated one from overwriting another work in step 1.
-const resolveActiveArtwork = (view: SellView, artwork: ActiveArtwork) => {
-  view.mockResolveLastOperation({ Artwork: () => ({ id: artwork.internalID, ...artwork }) })
+// Each step starts its query after the step change renders, which can lag behind the press on a
+// busy CI runner. Wait for that operation to be pending, so we resolve it and not an older one.
+const resolveWhenPending = async (
+  view: SellView,
+  operationName: string,
+  resolvers: Parameters<SellView["mockResolveLastOperation"]>[0]
+) => {
+  await waitFor(() =>
+    expect(view.env.mock.getMostRecentOperation().request.node.operation.name).toBe(operationName)
+  )
+  view.mockResolveLastOperation(resolvers)
 }
 
+// Step 2 loads the active work with its own query. Step 3 asks for the same fields, so Relay's
+// store answers it. The shared id keeps a generated one from overwriting another work in step 1.
+const resolveActiveArtwork = (view: SellView, artwork: ActiveArtwork) =>
+  resolveWhenPending(view, "ConditionQuery", {
+    Artwork: () => ({ id: artwork.internalID, ...artwork }),
+  })
+
 // Step 3 also loads the saved addresses, which the earlier steps never asked for
-const resolveLocationStep = (view: SellView, artwork: ActiveArtwork) => {
-  view.mockResolveLastOperation({
+const resolveLocationStep = (view: SellView, artwork: ActiveArtwork) =>
+  resolveWhenPending(view, "LocationAndContactQuery", {
     Artwork: () => ({ id: artwork.internalID, ...artwork }),
     // A fixed id lets a saved address update this list
     Me: () => ({ id: "me", addressConnection: { edges: [{ node: SAVED_ADDRESS }] } }),
   })
-}
 
 const openAuctionConditionStep = async (view: SellView) => {
   fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
   fireEvent.press(screen.getByText("Verify If Sellable"))
   fireEvent.press(await screen.findByText("Proceed to Listing"))
   fireEvent.press(await screen.findByText("Start Submission"))
-  resolveActiveArtwork(view, { internalID: "id-b4", artistNames: "Artist C" })
+  await resolveActiveArtwork(view, { internalID: "id-b4", artistNames: "Artist C" })
   await screen.findByText("Step 2 · Condition")
 }
 
@@ -233,7 +246,11 @@ describe("Sell", () => {
     expect(screen.getByText(/We reviewed demand for these works/)).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Start Listing"))
-    resolveActiveArtwork(view, { internalID: "id-a2", artistNames: "Artist A", title: "Work A" })
+    await resolveActiveArtwork(view, {
+      internalID: "id-a2",
+      artistNames: "Artist A",
+      title: "Work A",
+    })
     expect(await screen.findByText("Step 2 · Condition & Price")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 2 of 3")).toBeOnTheScreen()
     expect(screen.getByText("Confirm Listing Price")).toBeDisabled()
@@ -246,7 +263,11 @@ describe("Sell", () => {
     expect(await screen.findByText("US$2,720")).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Confirm Listing Price"))
-    resolveLocationStep(view, { internalID: "id-a2", artistNames: "Artist A", title: "Work A" })
+    await resolveLocationStep(view, {
+      internalID: "id-a2",
+      artistNames: "Artist A",
+      title: "Work A",
+    })
     expect(await screen.findByText("Step 3 · Shipping Options")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 3 of 3")).toBeOnTheScreen()
     expect(screen.getByText("List Artwork")).toBeDisabled()
@@ -286,7 +307,7 @@ describe("Sell", () => {
     fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
     await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
     fireEvent.press(screen.getByText("Continue"))
-    resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
+    await resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
     expect(await screen.findByText("Step 3 · Location & Contact")).toBeOnTheScreen()
     expect(screen.queryByText("How will this be packed?")).not.toBeOnTheScreen()
     await waitFor(() =>
@@ -322,7 +343,7 @@ describe("Sell", () => {
     await openAuctionConditionStep(view)
     fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
     fireEvent.press(screen.getByText("Continue"))
-    resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
+    await resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
     await screen.findByText("Step 3 · Location & Contact")
     fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
 
@@ -342,12 +363,7 @@ describe("Sell", () => {
     await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
     fireEvent.press(screen.getByText("Save Address"))
 
-    await waitFor(() =>
-      expect(view.env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-        "useCreateUserAddressMutation"
-      )
-    )
-    view.mockResolveLastOperation({
+    await resolveWhenPending(view, "useCreateUserAddressMutation", {
       CreateUserAddressPayload: () => ({
         me: {
           id: "me",
@@ -391,7 +407,7 @@ describe("Sell", () => {
     fireEvent.press(screen.getByText("Verify If Sellable"))
     fireEvent.press(await screen.findByText("Proceed to Listing"))
     fireEvent.press(await screen.findByText("Start Listing"))
-    resolveActiveArtwork(view, { internalID: "id-a2", artistNames: "Artist A" })
+    await resolveActiveArtwork(view, { internalID: "id-a2", artistNames: "Artist A" })
     await screen.findByText("Step 2 · Condition & Price")
 
     pressHardwareBack()

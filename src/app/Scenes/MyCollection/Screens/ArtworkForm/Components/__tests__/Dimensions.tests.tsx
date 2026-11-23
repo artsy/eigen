@@ -1,6 +1,6 @@
-import { Input } from "@artsy/palette-mobile"
+import { screen } from "@testing-library/react-native"
 import { Dimensions } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/Dimensions"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
 
 jest.mock("formik")
@@ -21,11 +21,9 @@ describe("Dimensions", () => {
   })
 
   it("displays correct dimensions", () => {
-    const view = renderWithWrappersLEGACY(<Dimensions />)
-    // eslint-disable-next-line testing-library/await-async-queries
-    const inputs = view.root.findAllByType(Input)
-    expect(inputs[0].props.value).toBe("20")
-    expect(inputs[1].props.value).toBe("30")
-    expect(inputs[2].props.value).toBe("40")
+    renderWithWrappers(<Dimensions />)
+    expect(screen.getByTestId("HeightInput")).toHaveDisplayValue("20")
+    expect(screen.getByTestId("WidthInput")).toHaveDisplayValue("30")
+    expect(screen.getByTestId("DepthInput")).toHaveDisplayValue("40")
   })
 })

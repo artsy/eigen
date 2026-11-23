@@ -1,12 +1,18 @@
-import { Button } from "@artsy/palette-mobile"
+import { act, screen } from "@testing-library/react-native"
 import { PartnerHeaderTestsQuery } from "__generated__/PartnerHeaderTestsQuery.graphql"
-import { TypeEyebrow } from "app/Components/TypeEyebrow"
 import { PartnerHeaderContainer as PartnerHeader } from "app/Scenes/Partner/Components/PartnerHeader"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
+
+jest.mock("app/Components/TypeEyebrow", () => {
+  const { Text } = jest.requireActual("react-native")
+  return {
+    TypeEyebrow: ({ children }: { children: string }) => (
+      <Text testID="type-eyebrow">{children}</Text>
+    ),
+  }
+})
 
 describe("PartnerHeader", () => {
   const env = createMockEnvironment()
@@ -31,8 +37,8 @@ describe("PartnerHeader", () => {
     />
   )
 
-  it("renders artwork counts", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+  it("renders artwork counts", () => {
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -42,11 +48,11 @@ describe("PartnerHeader", () => {
       })
     })
 
-    expect(extractText(tree.root)).toContain("1.2K works")
+    expect(screen.getByText("1.2K works")).toBeOnTheScreen()
   })
 
-  it("renders the follow button", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+  it("renders the follow button", () => {
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -56,11 +62,11 @@ describe("PartnerHeader", () => {
       })
     })
 
-    expect(extractText(tree.root.findByType(Button))).toContain("Follow")
+    expect(screen.getByRole("button", { name: /Follow/ })).toBeOnTheScreen()
   })
 
-  it("renders the Black Owned marquee if the gallery has the 'Black Owned' category", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+  it("renders the Black Owned marquee if the gallery has the 'Black Owned' category", () => {
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -70,11 +76,11 @@ describe("PartnerHeader", () => {
       })
     })
 
-    expect(extractText(tree.root)).toContain("Black Owned")
+    expect(screen.getAllByText(/Black Owned/).length).toBeGreaterThan(0)
   })
 
-  it("renders a type eyebrow above the name when the partner has a category", async () => {
-    const view = renderWithWrappersLEGACY(<TestRenderer />)
+  it("renders a type eyebrow above the name when the partner has a category", () => {
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -84,12 +90,12 @@ describe("PartnerHeader", () => {
       })
     })
 
-    expect(extractText(view.root)).toContain("Gallery")
-    expect(extractText(view.root)).toContain("Gagosian")
+    expect(screen.getByTestId("type-eyebrow")).toHaveTextContent("Gallery")
+    expect(screen.getByText("Gagosian")).toBeOnTheScreen()
   })
 
-  it("renders no eyebrow when the partner has no type", async () => {
-    const view = renderWithWrappersLEGACY(<TestRenderer />)
+  it("renders no eyebrow when the partner has no type", () => {
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -99,7 +105,7 @@ describe("PartnerHeader", () => {
       })
     })
 
-    expect(view.root.findAll((node) => node.type === TypeEyebrow)).toHaveLength(0)
+    expect(screen.queryByTestId("type-eyebrow")).not.toBeOnTheScreen()
   })
 })
 

@@ -172,14 +172,56 @@ module.exports = {
       },
     },
     {
-      files: ["*.tests.ts", "*.tests.tsx"],
+      files: [
+        "*.tests.ts",
+        "*.tests.tsx",
+        // shared test helpers and mocks that aren't test files themselves
+        "**/__tests__/**",
+        "src/app/utils/tests/**",
+      ],
       rules: {
-        "no-restricted-imports": OFF,
+        // App-level import restrictions don't apply to tests, but tests must not depend on
+        // react-test-renderer: RNTL v14 drops it in favour of `test-renderer`.
+        "no-restricted-imports": [
+          ERR,
+          {
+            paths: [
+              {
+                name: "react-test-renderer",
+                message:
+                  "Use @testing-library/react-native (`renderWithWrappers`, `screen`, `act`) instead. RNTL v14 drops react-test-renderer.",
+              },
+            ],
+            patterns: [
+              {
+                group: ["react-test-renderer/*"],
+                message:
+                  "Use @testing-library/react-native instead. RNTL v14 drops react-test-renderer.",
+              },
+            ],
+          },
+        ],
+        "no-restricted-syntax": [
+          ERR,
+          {
+            selector: "Identifier[name=/^UNSAFE_(root|(get|query)(All)?By(Type|Props))$/]",
+            message:
+              "UNSAFE_* queries are removed in RNTL v14. Query by role, label, text or testID instead.",
+          },
+          {
+            selector: "Identifier[name=/^(get|query|find)(All)?ByA11yHint$/]",
+            message: "Use *ByHintText instead.",
+          },
+        ],
       },
     },
     {
       files: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
       extends: ["plugin:testing-library/react"],
+      rules: {
+        // RNTL v14 makes fireEvent async (and userEvent already is), so awaiting them must be allowed.
+        "testing-library/no-await-sync-events": OFF,
+      },
     },
   ],
 }

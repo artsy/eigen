@@ -1,17 +1,14 @@
-/* eslint-disable testing-library/await-async-queries */
-import { Touchable } from "@artsy/palette-mobile"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { FeaturedCollectionsRailTestsQuery } from "__generated__/FeaturedCollectionsRailTestsQuery.graphql"
 import {
   FeaturedCollectionsRail,
   FeaturedCollectionsRailContainer,
-  ImageWrapper,
 } from "app/Scenes/Collection/Components/CollectionHubsRails/FeaturedCollections/FeaturedCollectionsRail"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ComponentProps } from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 describe("Featured Collections Rail", () => {
@@ -55,9 +52,8 @@ describe("Featured Collections Rail", () => {
     />
   )
 
-  const getWrapper = () => {
-    // eslint-disable-next-line testing-library/render-result-naming-convention
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+  const renderWithRelayFixture = () => {
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -66,17 +62,17 @@ describe("Featured Collections Rail", () => {
         },
       })
     })
-    return tree
   }
 
   it("renders without throwing an error", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(FeaturedCollectionsRail)).toHaveLength(1)
+    renderWithRelayFixture()
+    expect(screen.getByTestId("group")).toHaveTextContent("Curated Highlights")
+    expect(screen.getAllByRole("button")).toHaveLength(3)
   })
 
   it("correctly tracks when a collection is tapped", () => {
-    const wrapper = getWrapper()
-    wrapper.root.findAllByType(Touchable)[0].props.onPress()
+    renderWithRelayFixture()
+    fireEvent.press(screen.getAllByRole("button")[0])
 
     expect(mockTrackEvent).toBeCalledWith({
       action_type: "tappedCollectionGroup",
@@ -102,45 +98,42 @@ describe("Featured Collections Rail", () => {
     })
 
     it("renders three collections in the Featured Collections Series", () => {
-      const tree = renderWithWrappersLEGACY(<FeaturedCollectionsRail {...props} />).root
+      renderWithWrappers(<FeaturedCollectionsRail {...props} />)
 
-      expect(tree.findAllByType(ImageWrapper).length).toBe(3)
+      expect(screen.getAllByRole("button")).toHaveLength(3)
     })
 
     it("renders the collection hub rail title", () => {
-      const tree = renderWithWrappersLEGACY(<FeaturedCollectionsRail {...props} />).root
-      expect(tree.findByProps({ testID: "group" }).props.children).toBe("Curated Highlights")
+      renderWithWrappers(<FeaturedCollectionsRail {...props} />)
+      expect(screen.getByTestId("group")).toHaveTextContent("Curated Highlights", { exact: true })
     })
 
     it("renders each Featured Collection's title", () => {
-      const tree = renderWithWrappersLEGACY(<FeaturedCollectionsRail {...props} />).root
+      renderWithWrappers(<FeaturedCollectionsRail {...props} />)
 
-      const title1 = tree.findByProps({ testID: "title-0" })
-      const title2 = tree.findByProps({ testID: "title-1" })
-      const title3 = tree.findByProps({ testID: "title-2" })
-
-      expect(title1.props.children).toBe("First Featured Collection")
-      expect(title2.props.children).toBe("Second Featured Collection")
-      expect(title3.props.children).toBe("Third Featured Collection")
+      expect(screen.getByTestId("title-0")).toHaveTextContent("First Featured Collection", {
+        exact: true,
+      })
+      expect(screen.getByTestId("title-1")).toHaveTextContent("Second Featured Collection", {
+        exact: true,
+      })
+      expect(screen.getByTestId("title-2")).toHaveTextContent("Third Featured Collection", {
+        exact: true,
+      })
     })
 
     it("renders each Featured Collection's price guidance metadata", () => {
-      const tree = renderWithWrappersLEGACY(<FeaturedCollectionsRail {...props} />).root
+      renderWithWrappers(<FeaturedCollectionsRail {...props} />)
 
-      const price1 = tree.findByProps({ testID: "price-0" })
-      const price2 = tree.findByProps({ testID: "price-1" })
-      const price3 = tree.findByProps({ testID: "price-2" })
-
-      expect(price1.props.children).toBe("From $15,000")
-      expect(price2.props.children).toBe("From $25,000")
-      expect(price3.props.children).toBe("From $35,000")
+      expect(screen.getByTestId("price-0")).toHaveTextContent("From $15,000", { exact: true })
+      expect(screen.getByTestId("price-1")).toHaveTextContent("From $25,000", { exact: true })
+      expect(screen.getByTestId("price-2")).toHaveTextContent("From $35,000", { exact: true })
     })
 
     it("navigates to a new collection when tapped", () => {
-      const tree = renderWithWrappersLEGACY(<FeaturedCollectionsRail {...props} />).root
+      renderWithWrappers(<FeaturedCollectionsRail {...props} />)
 
-      const instance = tree.findAllByType(Touchable)[0]
-      act(() => instance.props.onPress())
+      fireEvent.press(screen.getAllByRole("button")[0])
 
       expect(navigate).toHaveBeenCalledWith("/collection/featured-collection-1")
     })

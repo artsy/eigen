@@ -1,5 +1,4 @@
 import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
-import { ViewingRoomsListItem } from "app/Scenes/ViewingRoom/Components/ViewingRoomsListItem"
 import { ViewingRoomsListScreen } from "app/Scenes/ViewingRoom/ViewingRoomsList"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
@@ -31,8 +30,9 @@ describe("ViewingRoomsList", () => {
         },
       }),
     })
-    await waitForElementToBeRemoved(() => screen.getByTestId("viewing-rooms-list-placeholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("viewing-rooms-list-placeholder"))
 
-    expect(screen.UNSAFE_queryAllByType(ViewingRoomsListItem).length).toBeGreaterThanOrEqual(2)
+    // ViewingRoomsListItem renders each viewing room's title
+    expect(screen.getAllByText(/^(one|two|three|four)$/).length).toBeGreaterThanOrEqual(2)
   })
 })

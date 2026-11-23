@@ -1,5 +1,4 @@
 import { bullet } from "@artsy/palette-mobile"
-import FastImage from "@d11/react-native-fast-image"
 import { act, fireEvent, screen, waitFor, within } from "@testing-library/react-native"
 import {
   FilterArtworksInput,
@@ -17,6 +16,23 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { BackHandler } from "react-native"
 import { graphql } from "react-relay"
 import { Observable } from "relay-runtime"
+
+// Render FastImage as a host element with a testID so the source it receives can be asserted on
+jest.mock("@d11/react-native-fast-image", () => {
+  const React = require("react")
+  const { View } = require("react-native")
+  const actual = jest.requireActual("@d11/react-native-fast-image")
+  const MockFastImage = Object.assign(
+    React.forwardRef((props: any, ref: any) => <View ref={ref} {...props} testID="fast-image" />),
+    {
+      resizeMode: actual.default.resizeMode,
+      priority: actual.default.priority,
+      cacheControl: actual.default.cacheControl,
+      preload: actual.default.preload,
+    }
+  )
+  return { __esModule: true, ...actual, default: MockFastImage }
+})
 
 jest.mock("app/Scenes/Lens/utils/discardTempPhotos", () => ({
   discardTempPhotos: jest.fn(),
@@ -120,11 +136,11 @@ describe("LensResults", () => {
   it("shows the photo the search ran on", () => {
     renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 
-    const thumbnail = within(screen.getByTestId("lensResultsPhotoThumbnail")).UNSAFE_getByType(
-      FastImage
+    const thumbnail = within(screen.getByTestId("lensResultsPhotoThumbnail")).getByTestId(
+      "fast-image"
     )
 
-    expect(thumbnail.props.source.uri).toBe(photoUri)
+    expect(thumbnail).toHaveProp("source", expect.objectContaining({ uri: photoUri }))
   })
 
   it("tells the user these are matches to their photo", () => {

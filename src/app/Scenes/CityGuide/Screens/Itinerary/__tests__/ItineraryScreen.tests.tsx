@@ -10,10 +10,13 @@ import {
 } from "app/utils/tests/draxSortableListSpy"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { RefreshControl, ScrollView, StatusBar } from "react-native"
+import { RefreshControl, StatusBar } from "react-native"
 import RNShare from "react-native-share"
-import { ReactTestInstance } from "react-test-renderer"
 import { MockPayloadGenerator } from "relay-test-utils"
+
+// The React Native jest preset's RefreshControl mock keeps a reference to the last mounted
+// instance, which lets us pull to refresh without walking the render tree.
+const pullToRefresh = () => (RefreshControl as any).latestRef.props.onRefresh()
 
 // React-test-renderer has issues with memo components, so we need to mock the palette-mobile
 // Image component. See https://github.com/facebook/react/issues/17301
@@ -624,7 +627,7 @@ describe("ItineraryScreen", () => {
 
   // A stop title `Text` renders its string directly, or as the lone string among other
   // (falsy, conditional) children — either way, this pulls out just the string.
-  const stopTitleText = (element: ReactTestInstance) => {
+  const stopTitleText = (element: ReturnType<typeof screen.getByText>) => {
     // eslint-disable-next-line testing-library/no-node-access -- React props, not a DOM node.
     const children = element.props.children
 
@@ -731,10 +734,8 @@ describe("ItineraryScreen", () => {
 
       await screen.findByText("Chill Vibes Only")
 
-      // The RefreshControl element itself does not surface in the tree, so the refresh is
-      // fired through the scroll view that owns it.
       act(() => {
-        screen.UNSAFE_getByType(RefreshControl).props.onRefresh()
+        pullToRefresh()
       })
 
       await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
@@ -752,7 +753,7 @@ describe("ItineraryScreen", () => {
       expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
 
       act(() => {
-        screen.UNSAFE_getByType(RefreshControl).props.onRefresh()
+        pullToRefresh()
       })
 
       await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(1))
@@ -829,7 +830,7 @@ describe("ItineraryScreen", () => {
 
     expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
 
-    expect(screen.UNSAFE_getByType(ScrollView).props.contentContainerStyle).toMatchObject({
+    expect(screen.getByTestId("itinerary-scroll-view").props.contentContainerStyle).toMatchObject({
       paddingBottom: 60,
     })
   })

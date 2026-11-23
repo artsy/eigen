@@ -1,12 +1,14 @@
-import { Text } from "@artsy/palette-mobile"
-import Spinner from "app/Components/Spinner"
+import { act, screen } from "@testing-library/react-native"
 import { UserProfileQueryRenderer } from "app/Scenes/MyProfile/LoggedInUserInfo"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { extractText } from "app/utils/tests/extractText"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { act } from "react-test-renderer"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { createMockEnvironment } from "relay-test-utils"
+
+jest.mock("app/Components/Spinner", () => {
+  const { View } = require("react-native")
+  return { __esModule: true, default: () => <View testID="spinner" /> }
+})
 
 describe(UserProfileQueryRenderer, () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -16,12 +18,12 @@ describe(UserProfileQueryRenderer, () => {
   })
 
   it("spins until the operation resolves", () => {
-    const tree = renderWithWrappersLEGACY(<UserProfileQueryRenderer />)
-    expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
+    renderWithWrappers(<UserProfileQueryRenderer />)
+    expect(screen.getAllByTestId("spinner")).toHaveLength(1)
   })
 
   it("renders upon sucess", () => {
-    const tree = renderWithWrappersLEGACY(<UserProfileQueryRenderer />)
+    renderWithWrappers(<UserProfileQueryRenderer />)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
       "LoggedInUserInfoQuery"
     )
@@ -38,16 +40,19 @@ describe(UserProfileQueryRenderer, () => {
       })
     })
 
-    const userInfo = tree.root.findAllByType(Text)
-    expect(userInfo).toHaveLength(1)
-    expect(extractText(tree.root)).toContain("Unit Test User (example@example.com)")
+    expect(screen.queryByTestId("spinner")).not.toBeOnTheScreen()
+    // A single line of text with the user's info, and nothing else
+    expect(screen.getAllByText(/.*/)).toHaveLength(1)
+    expect(screen.getByText("Logged in as: Unit Test User (example@example.com)")).toBeOnTheScreen()
   })
 
   it("renders null upon failure", () => {
-    const tree = renderWithWrappersLEGACY(<UserProfileQueryRenderer />)
+    renderWithWrappers(<UserProfileQueryRenderer />)
 
     rejectMostRecentRelayOperation(env, new Error())
 
-    expect(tree).toMatchInlineSnapshot(`null`)
+    // Nothing is rendered: no spinner and no text
+    expect(screen.queryByTestId("spinner")).not.toBeOnTheScreen()
+    expect(screen.queryAllByText(/.*/)).toHaveLength(0)
   })
 })

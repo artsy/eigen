@@ -2,7 +2,6 @@ import { screen } from "@testing-library/react-native"
 import { ArtistAboutShowsTestsQuery } from "__generated__/ArtistAboutShowsTestsQuery.graphql"
 import { ArtistAboutShowsFragmentContainer } from "app/Components/Artist/ArtistAbout/ArtistAboutShows"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { FlatList } from "react-native"
 import { graphql } from "react-relay"
 
 describe("ArtistAboutShows", () => {
@@ -25,9 +24,10 @@ describe("ArtistAboutShows", () => {
   })
 
   it("returns list of shows if the user has running events", () => {
-    const tree = renderWithRelay({ ShowConnection: () => mockShows })
+    renderWithRelay({ Artist: () => ({ name: "Andy Warhol" }), ShowConnection: () => mockShows })
 
-    expect(tree.UNSAFE_getAllByType(FlatList).length).toEqual(1)
+    expect(screen.getByText("Shows Featuring Andy Warhol")).toBeOnTheScreen()
+    expect(screen.getAllByTestId("show-item-visit-show-link").length).toBeGreaterThan(0)
   })
 })
 

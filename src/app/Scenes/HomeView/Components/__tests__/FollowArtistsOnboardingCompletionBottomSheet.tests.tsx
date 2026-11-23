@@ -1,10 +1,39 @@
-import FastImage from "@d11/react-native-fast-image"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { FollowArtistsOnboardingCompletionBottomSheet } from "app/Scenes/HomeView/Components/FollowArtistsOnboardingCompletionBottomSheet"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { fireGestureHandler, getByGestureTestId } from "react-native-gesture-handler/jest-utils"
-import PagerView from "react-native-pager-view"
+
+// Render FastImage as a host element so the image sources can be asserted on
+jest.mock("@d11/react-native-fast-image", () => {
+  const { View } = jest.requireActual("react-native")
+  const ActualFastImage = jest.requireActual("@d11/react-native-fast-image").default
+  const MockFastImage = (props: any) => <View testID="fast-image" source={props.source} />
+  Object.assign(MockFastImage, ActualFastImage)
+  return { __esModule: true, default: MockFastImage }
+})
+
+const mockSetPage = jest.fn()
+
+// Render PagerView as a host element so page scroll events can be fired on it and setPage can be
+// asserted on
+jest.mock("react-native-pager-view", () => {
+  const React = jest.requireActual("react")
+  const { View } = jest.requireActual("react-native")
+  const MockPagerView = React.forwardRef(({ children, onPageScroll }: any, ref: any) => {
+    React.useImperativeHandle(ref, () => ({ setPage: mockSetPage }))
+    return (
+      <View testID="pager-view" onPageScroll={onPageScroll}>
+        {children}
+      </View>
+    )
+  })
+  return { __esModule: true, default: MockPagerView }
+})
+
+const scrollToSecondPage = () => {
+  fireEvent(screen.getByTestId("pager-view"), "pageScroll", { nativeEvent: { position: 1 } })
+}
 
 describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
   beforeEach(() => {
@@ -67,9 +96,7 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
 
       await screen.findByText("Your followed artists are saved to Favorites.")
 
-      const renderedImages = screen
-        .UNSAFE_getAllByType(FastImage)
-        .map((img) => img.props.source.uri)
+      const renderedImages = screen.getAllByTestId("fast-image").map((img) => img.props.source.uri)
 
       expect(renderedImages.some((uri: string) => uri.includes("artist-1.jpg"))).toBe(false)
       expect(renderedImages.some((uri: string) => uri.includes("artist-2.jpg"))).toBe(true)
@@ -99,7 +126,7 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
       expect(screen.getByText("A")).toBeOnTheScreen()
 
       const avatarImages = screen
-        .UNSAFE_getAllByType(FastImage)
+        .getAllByTestId("fast-image")
         .map((img) => img.props.source.uri as string)
         .filter((uri) => uri.includes("example.com"))
 
@@ -160,15 +187,12 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
     it("dismisses and resets global state when View For You is pressed", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      const { UNSAFE_getByType } = renderWithWrappers(
-        <FollowArtistsOnboardingCompletionBottomSheet />
-      )
+      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
 
       await screen.findByText("Your followed artists are saved to Favorites.")
 
       // Navigate to page 1 to show "View For You" button
-      const pagerView = UNSAFE_getByType(PagerView)
-      pagerView.props.onPageScroll({ nativeEvent: { position: 1 } })
+      scrollToSecondPage()
 
       const viewForYouButton = await screen.findByText("View For You")
       fireEvent.press(viewForYouButton)
@@ -190,8 +214,7 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
 
       await screen.findByText("Your followed artists are saved to Favorites.")
 
-      const pagerView = screen.UNSAFE_getByType(PagerView)
-      pagerView.props.onPageScroll({ nativeEvent: { position: 1 } })
+      scrollToSecondPage()
 
       fireEvent.press(await screen.findByText("View For You"))
 
@@ -205,22 +228,16 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
     it("advances from page 0 to page 1 when tapping anywhere on the sheet", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      const { UNSAFE_getByType } = renderWithWrappers(
-        <FollowArtistsOnboardingCompletionBottomSheet />
-      )
+      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
 
       await screen.findByText("Your followed artists are saved to Favorites.")
       expect(screen.getByText("Next")).toBeOnTheScreen()
-
-      // Get PagerView and spy on setPage
-      const pagerView = UNSAFE_getByType(PagerView)
-      const setPageSpy = jest.spyOn(pagerView.props.ref.current, "setPage")
 
       // Simulate tap using gesture handler test utils
       fireGestureHandler(getByGestureTestId("tap-to-progress"))
 
       // Verify tap called setPage(1) and did not dismiss
-      expect(setPageSpy).toHaveBeenCalledWith(1)
+      expect(mockSetPage).toHaveBeenCalledWith(1)
       expect(
         __globalStoreTestUtils__!.getCurrentState().onboarding.showFollowedArtistSummaryBottomSheet
       ).toBe(true)
@@ -229,15 +246,12 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
     it("dismisses the sheet when tapping anywhere on page 1", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      const { UNSAFE_getByType } = renderWithWrappers(
-        <FollowArtistsOnboardingCompletionBottomSheet />
-      )
+      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
 
       await screen.findByText("Your followed artists are saved to Favorites.")
 
       // Navigate to page 1
-      const pagerView = UNSAFE_getByType(PagerView)
-      pagerView.props.onPageScroll({ nativeEvent: { position: 1 } })
+      scrollToSecondPage()
 
       // Should show "View For You" button on page 1
       expect(await screen.findByText("View For You")).toBeOnTheScreen()

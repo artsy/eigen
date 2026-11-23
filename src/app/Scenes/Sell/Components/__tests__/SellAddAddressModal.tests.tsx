@@ -3,7 +3,7 @@ import { SellAddAddressModal } from "app/Scenes/Sell/Components/SellAddAddressMo
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { getLocationDetails, getLocationPredictions } from "app/utils/googleMaps"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { AccessibilityInfo, Modal } from "react-native"
+import { AccessibilityInfo } from "react-native"
 import { MockPayloadGenerator } from "relay-test-utils"
 
 jest.mock("app/utils/googleMaps", () => ({
@@ -42,7 +42,8 @@ const pickPlace = async (place = PLACE) => {
 }
 
 // What Android Back calls inside a native modal
-const pressAndroidBack = () => screen.UNSAFE_getByType(Modal).props.onRequestClose()
+const pressAndroidBack = () =>
+  fireEvent(screen.getByTestId("sell-add-address-modal"), "requestClose")
 
 const resolveMutation = (userAddressOrErrors: object) => {
   const env = getMockRelayEnvironment()

@@ -14,11 +14,13 @@ describe("Message", () => {
   })
 
   it("renders null when body is empty and isFirstMessage is false", () => {
-    const { toJSON } = renderWithWrappers(
+    renderWithWrappers(
       <Message message={{ ...mockMessage, body: null }} conversationId="conversation-123" />
     )
 
-    expect(toJSON()).toBeNull()
+    // Nothing is rendered: no message bubble, no attachments and no timestamp.
+    expect(screen.queryAllByText(/./)).toHaveLength(0)
+    expect(screen.queryByRole("button")).not.toBeOnTheScreen()
   })
 
   describe("first message with formattedFirstMessage", () => {

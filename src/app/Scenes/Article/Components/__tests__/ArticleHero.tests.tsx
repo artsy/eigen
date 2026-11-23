@@ -1,16 +1,15 @@
-import { Image } from "@artsy/palette-mobile"
 import { screen } from "@testing-library/react-native"
 import { ArticleHero } from "app/Scenes/Article/Components/ArticleHero"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-// React-test-renderer has issues with memo components, so we need to mock the palette-mobile Image component
-// Until it gets fixed
-// See https://github.com/facebook/react/issues/17301
-jest.mock("@artsy/palette-mobile", () => ({
-  ...jest.requireActual("@artsy/palette-mobile"),
-  Image: require("react-native").Image,
-}))
+jest.mock("@artsy/palette-mobile", () => {
+  const { Image } = require("react-native")
+  return {
+    ...jest.requireActual("@artsy/palette-mobile"),
+    Image: (props: any) => <Image {...props} testID="palette-image" />,
+  }
+})
 
 describe("ArticleHero", () => {
   const { renderWithRelay } = setupTestWrapper({
@@ -61,7 +60,7 @@ describe("ArticleHero", () => {
       }),
     })
 
-    expect(screen.UNSAFE_getByType(Image)).toBeTruthy()
+    expect(screen.getByTestId("palette-image")).toBeOnTheScreen()
   })
 
   it("renders hero video if available", () => {
@@ -81,8 +80,8 @@ describe("ArticleHero", () => {
       }),
     })
 
-    expect(screen.UNSAFE_queryByType(Image)).toBeNull()
-    expect(screen.getByTestId("ArticleHeroVideo")).toBeTruthy()
+    expect(screen.queryByTestId("palette-image")).not.toBeOnTheScreen()
+    expect(screen.getByTestId("ArticleHeroVideo")).toBeOnTheScreen()
   })
 
   it("does not render hero image if not available", () => {
@@ -93,6 +92,6 @@ describe("ArticleHero", () => {
       }),
     })
 
-    expect(screen.UNSAFE_queryByType(Image)).toBeNull()
+    expect(screen.queryByTestId("palette-image")).not.toBeOnTheScreen()
   })
 })

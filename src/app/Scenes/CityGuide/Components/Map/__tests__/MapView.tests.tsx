@@ -1,7 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ScreenDimensionsProvider, Theme } from "@artsy/palette-mobile"
-import { act, fireEvent, render, screen } from "@testing-library/react-native"
-import { MapPins } from "app/Scenes/CityGuide/Components/Map/MapPins"
+import { fireEvent, render, screen } from "@testing-library/react-native"
 import { MapView } from "app/Scenes/CityGuide/Components/Map/MapView"
 import { MapSection } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 import { BOUNDS_PADDING } from "app/Scenes/CityGuide/utils/constants"
@@ -24,6 +23,17 @@ jest.mock("@rnmapbox/maps", () => ({
   SymbolLayer: () => null,
   CircleLayer: () => null,
   LineLayer: () => null,
+}))
+
+// Renders MapPins as a host view so the test can read the pinned features and fire its
+// `onSelectPlace` callback.
+jest.mock("app/Scenes/CityGuide/Components/Map/MapPins", () => ({
+  MapPins: (props: any) => {
+    const { View } = require("react-native")
+    return (
+      <View testID="map-pins" collection={props.collection} onSelectPlace={props.onSelectPlace} />
+    )
+  },
 }))
 
 const TOP_INSET = 59
@@ -116,7 +126,7 @@ describe("MapView Saved filter", () => {
 
   const pinnedPlaceIds = () =>
     screen
-      .UNSAFE_getByType(MapPins)
+      .getByTestId("map-pins")
       .props.collection.features.map((feature: any) => feature.properties.id)
 
   it("shows All and Saved pills even for a single section", () => {
@@ -185,7 +195,7 @@ describe("MapView tracking", () => {
   it("tracks a single pin tap against the screen showing the map", () => {
     renderMap()
 
-    act(() => screen.UNSAFE_getByType(MapPins).props.onSelectPlace("place-1"))
+    fireEvent(screen.getByTestId("map-pins"), "selectPlace", "place-1")
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedMapPin",

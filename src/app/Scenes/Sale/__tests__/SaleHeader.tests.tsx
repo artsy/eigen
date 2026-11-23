@@ -1,6 +1,5 @@
 import { act, screen } from "@testing-library/react-native"
 import { SaleHeaderTestsQuery } from "__generated__/SaleHeaderTestsQuery.graphql"
-import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { SaleHeaderContainer } from "app/Scenes/Sale/Components/SaleHeader"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Settings } from "luxon"
@@ -48,7 +47,7 @@ describe("SaleHeader", () => {
     })
 
     expect(screen.getByTestId("saleName")).toHaveTextContent("sale name")
-    expect(screen.UNSAFE_getAllByType(CaretButton)).toHaveLength(1)
+    expect(screen.getAllByText("More info about this auction")).toHaveLength(1)
   })
 
   it("does not render auction is closed when cascading end time is enabled", () => {
