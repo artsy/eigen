@@ -95,7 +95,6 @@ const collection = {
             internalID: "id-a2",
             title: "Sellable Work",
             artistNames: "Artist A",
-            activeResaleSubmission: null,
           },
         },
         {
@@ -104,7 +103,6 @@ const collection = {
             internalID: "id-c3",
             title: "Unsellable Work",
             artistNames: "Artist B",
-            activeResaleSubmission: null,
           },
         },
         {
@@ -113,7 +111,6 @@ const collection = {
             internalID: "id-b4",
             title: "Auction Work",
             artistNames: "Artist C",
-            activeResaleSubmission: null,
           },
         },
       ],
@@ -217,30 +214,6 @@ describe("Sell", () => {
     expect(dismissModal).toHaveBeenCalledTimes(1)
   })
 
-  it("hides works that already have an active resale submission", async () => {
-    await renderSell({
-      Me: () => {
-        const me = collection.Me()
-        const [sellable, unsellable, auction] = me.myCollectionConnection.edges
-        return {
-          ...me,
-          myCollectionConnection: {
-            edges: [
-              sellable,
-              unsellable,
-              {
-                node: { ...auction.node, activeResaleSubmission: { internalID: "submission-id" } },
-              },
-            ],
-          },
-        }
-      },
-    })
-
-    expect(screen.getByTestId("artworkGridItem-Sellable Work")).toBeOnTheScreen()
-    expect(screen.queryByTestId("artworkGridItem-Auction Work")).not.toBeOnTheScreen()
-  })
-
   it("hides a work verified on an earlier visit when the flow opens again", async () => {
     const view = await renderSell()
     fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
@@ -252,9 +225,9 @@ describe("Sell", () => {
     renderWithRelay({
       Me: () => {
         const me = collection.Me()
-        const [sellable, ...rest] = me.myCollectionConnection.edges
-        const verified = { ...sellable.node, activeResaleSubmission: resaleSubmissionFor("id-a2") }
-        return { ...me, myCollectionConnection: { edges: [{ node: verified }, ...rest] } }
+        // The server leaves out works with an active resale submission
+        const [, ...rest] = me.myCollectionConnection.edges
+        return { ...me, myCollectionConnection: { edges: rest } }
       },
     })
 

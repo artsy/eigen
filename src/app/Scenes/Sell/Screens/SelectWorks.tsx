@@ -70,10 +70,7 @@ const SelectWorksContent: React.FC<SelectWorksContentProps> = withSuspense({
       {},
       { fetchPolicy: "network-only" }
     )
-    // Works with an active resale submission are already on their way to being sold
-    const artworks = extractNodes(data.me?.myCollectionConnection).filter(
-      (artwork) => !artwork.activeResaleSubmission
-    )
+    const artworks = extractNodes(data.me?.myCollectionConnection)
     const [selectedWorkIDs, setSelectedWorkIDs] = useState<string[]>([])
     const [reviewedWorks, setReviewedWorks] = useState<SellSelectionWork[]>()
     const [verifying, setVerifying] = useState(false)
@@ -236,9 +233,6 @@ const selectWorksQuery = graphql`
             }
             ...ArtworkGridItem_artwork
             ...SellWorkCard_artwork
-            activeResaleSubmission {
-              internalID
-            }
           }
         }
       }
