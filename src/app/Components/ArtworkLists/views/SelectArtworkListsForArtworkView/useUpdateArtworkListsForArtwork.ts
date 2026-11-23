@@ -33,7 +33,7 @@ export const useUpdateArtworkListsForArtwork = (artworkID: string): MutationResu
 
         // Independent of the artwork/`entity` records below, so run it before
         // their early returns — a missing store count shouldn't skip the reorder.
-        moveSavedListsToFront(store, response?.addedToArtworkLists)
+        moveUpdatedListsToFront(store, response)
 
         const artwork = store.get(artworkID)
 
@@ -80,22 +80,33 @@ export const useUpdateArtworkListsForArtwork = (artworkID: string): MutationResu
   return [commit, isInProgress]
 }
 
+type ReorderableList = { readonly internalID: string; readonly default: boolean } | null | undefined
+
 /**
- * Gravity sorts the lists UPDATED_AT_DESC, so a list you just saved to jumps to
- * the front on the next fetch. Mirror that in the store up front, otherwise
- * store-and-network paints the stale order for a frame before the network
- * response reorders it. The default "Saved Artworks" list isn't part of this
- * connection, so it's skipped.
+ * Gravity sorts the lists UPDATED_AT_DESC, so any list whose membership just
+ * changed — saved to or removed from — jumps to the front on the next fetch.
+ * Mirror that in the store up front, otherwise store-and-network paints the
+ * stale order for a frame before the network response reorders it. The default
+ * "Saved Artworks" list isn't part of this connection, so it's skipped.
  */
-export const moveSavedListsToFront = (
+export const moveUpdatedListsToFront = (
   store: RecordSourceSelectorProxy,
-  addedToArtworkLists: Response["addedToArtworkLists"]
+  response:
+    | {
+        readonly addedToArtworkLists?: ReadonlyArray<ReorderableList> | null
+        readonly removedFromArtworkLists?: ReadonlyArray<ReorderableList> | null
+      }
+    | null
+    | undefined
 ) => {
-  const addedCustomListIDs = (addedToArtworkLists ?? [])
+  const updatedCustomListIDs = [
+    ...(response?.addedToArtworkLists ?? []),
+    ...(response?.removedFromArtworkLists ?? []),
+  ]
     .filter((list) => list && !list.default)
     .map((list) => list?.internalID)
 
-  if (!addedCustomListIDs.length) {
+  if (!updatedCustomListIDs.length) {
     return
   }
 
@@ -108,7 +119,7 @@ export const moveSavedListsToFront = (
 
   const edges = connection.getLinkedRecords("edges") ?? []
 
-  addedCustomListIDs.forEach((internalID) => {
+  updatedCustomListIDs.forEach((internalID) => {
     const node = edges
       .find((edge) => edge?.getLinkedRecord("node")?.getValue("internalID") === internalID)
       ?.getLinkedRecord("node")

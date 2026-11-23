@@ -1,9 +1,9 @@
 import { screen, within } from "@testing-library/react-native"
-import { moveSavedListsToFrontTestsQuery } from "__generated__/moveSavedListsToFrontTestsQuery.graphql"
+import { moveUpdatedListsToFrontTestsQuery } from "__generated__/moveUpdatedListsToFrontTestsQuery.graphql"
 import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ArtworkLists } from "app/Components/ArtworkLists/components/ArtworkLists"
 import { getArtworkListsStoreInitialState } from "app/Components/ArtworkLists/types"
-import { moveSavedListsToFront } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
+import { moveUpdatedListsToFront } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { commitLocalUpdate, graphql } from "react-relay"
 import { act } from "react-test-renderer"
@@ -16,14 +16,14 @@ const expectOrder = (names: string[]) => {
   })
 }
 
-const { renderWithRelay } = setupTestWrapper<moveSavedListsToFrontTestsQuery>({
+const { renderWithRelay } = setupTestWrapper<moveUpdatedListsToFrontTestsQuery>({
   Component: ({ me }: any) => (
     <ArtworkListsStore.Provider runtimeModel={{ state: { ...getArtworkListsStoreInitialState() } }}>
       <ArtworkLists me={me} />
     </ArtworkListsStore.Provider>
   ),
   query: graphql`
-    query moveSavedListsToFrontTestsQuery @relay_test_operation {
+    query moveUpdatedListsToFrontTestsQuery @relay_test_operation {
       me {
         ...ArtworkLists_me @arguments(artworkID: "artwork-id")
       }
@@ -43,28 +43,48 @@ const twoCustomLists = {
   }),
 }
 
-describe("moveSavedListsToFront", () => {
-  it("moves a just-saved list to the front of the connection", () => {
+describe("moveUpdatedListsToFront", () => {
+  it("moves a list saved to, to the front of the connection", () => {
     const { env } = renderWithRelay(twoCustomLists)
 
     expectOrder(["List A", "List B"])
 
     act(() => {
       commitLocalUpdate(env, (store) => {
-        moveSavedListsToFront(store, [{ internalID: "list-b", default: false }] as any)
+        moveUpdatedListsToFront(store, {
+          addedToArtworkLists: [{ internalID: "list-b", default: false }],
+        })
       })
     })
 
     expectOrder(["List B", "List A"])
   })
 
-  it("leaves order untouched when nothing custom was added", () => {
+  it("moves a list removed from, to the front of the connection", () => {
+    const { env } = renderWithRelay(twoCustomLists)
+
+    expectOrder(["List A", "List B"])
+
+    act(() => {
+      commitLocalUpdate(env, (store) => {
+        moveUpdatedListsToFront(store, {
+          removedFromArtworkLists: [{ internalID: "list-b", default: false }],
+        })
+      })
+    })
+
+    expectOrder(["List B", "List A"])
+  })
+
+  it("leaves order untouched when only the default list changed", () => {
     const { env } = renderWithRelay(twoCustomLists)
 
     act(() => {
       commitLocalUpdate(env, (store) => {
-        // Only the default "Saved Artworks" list changed — not part of this connection.
-        moveSavedListsToFront(store, [{ internalID: "saved-artwork", default: true }] as any)
+        // The default "Saved Artworks" list isn't part of this connection.
+        moveUpdatedListsToFront(store, {
+          addedToArtworkLists: [{ internalID: "saved-artwork", default: true }],
+        })
       })
     })
 
