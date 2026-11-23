@@ -615,6 +615,11 @@ type Alert {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -732,7 +737,7 @@ type Alert {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -2438,6 +2443,11 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -2555,7 +2565,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -3121,6 +3131,11 @@ type ArtistPartnerEdge {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -3238,7 +3253,7 @@ type ArtistPartnerEdge {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -3403,6 +3418,11 @@ type ArtistSeries implements Node {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -3520,7 +3540,7 @@ type ArtistSeries implements Node {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -5415,6 +5435,11 @@ type ArtworkFilterNode {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -5532,7 +5557,7 @@ type ArtworkFilterNode {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -6229,7 +6254,12 @@ enum ArtworkSearchProfile {
   DEFAULT
 
   """
-  Inventory search for a partner. Requires partnerID and partner access; ignored otherwise.
+  Inventory search for a partner, matching the medium type instead of the catalog medium. Requires partnerID and partner access; ignored otherwise.
+  """
+  PARTNER_CMS
+
+  """
+  Inventory search for a partner, matching the catalog medium. Requires partnerID and partner access; ignored otherwise.
   """
   PARTNER_INVENTORY
 }
@@ -9245,6 +9275,11 @@ type Collection {
   """
   name: String!
   private: Boolean!
+
+  """
+  Representative artworks (ordered), resolved from their ids.
+  """
+  representativeArtworks: [Artwork!]
 
   """
   True if this collection represents artworks explicitly saved by the user, false otherwise.
@@ -18189,6 +18224,11 @@ interface EntityWithFilterArtworksConnectionInterface {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -18305,7 +18345,7 @@ interface EntityWithFilterArtworksConnectionInterface {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -18694,6 +18734,11 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -18811,7 +18856,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -19545,6 +19590,11 @@ input FilterArtworksInput {
   attributionClass: [String]
   availability: String
   before: String
+
+  """
+  Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+  """
+  catalogArtworkAvailability: String
   categories: [String]
 
   """
@@ -19661,7 +19711,7 @@ input FilterArtworksInput {
   saleID: ID
 
   """
-  Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+  Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
   """
   searchProfile: ArtworkSearchProfile
   showID: String
@@ -20374,6 +20424,11 @@ type Gene implements Node & Searchable {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -20491,7 +20546,7 @@ type Gene implements Node & Searchable {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -24000,6 +24055,11 @@ type MarketingCollection implements Node {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -24117,7 +24177,7 @@ type MarketingCollection implements Node {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -29321,7 +29381,7 @@ type Partner implements Node {
     query: String!
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` matches title, artist, medium type and full or partial inventory ID.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` match title, artist, medium and full or partial inventory ID. `PARTNER_INVENTORY` matches the catalog medium, and `PARTNER_CMS` the medium type.
     """
     searchProfile: ArtworkSearchProfile
     size: Int
@@ -29462,6 +29522,11 @@ type Partner implements Node {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -29579,7 +29644,7 @@ type Partner implements Node {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -30114,6 +30179,11 @@ type PartnerArtist {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -30231,7 +30301,7 @@ type PartnerArtist {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -30433,6 +30503,11 @@ type PartnerArtistEdge {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -30550,7 +30625,7 @@ type PartnerArtistEdge {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -33193,6 +33268,11 @@ type Query {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -33310,7 +33390,7 @@ type Query {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -33826,6 +33906,11 @@ type Query {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -33953,7 +34038,7 @@ type Query {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -37928,6 +38013,11 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -38045,7 +38135,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -38876,6 +38966,11 @@ type Tag implements Node {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -38993,7 +39088,7 @@ type Tag implements Node {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -44027,6 +44122,11 @@ type Viewer {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -44144,7 +44244,7 @@ type Viewer {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -44596,6 +44696,11 @@ type Viewer {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -44723,7 +44828,7 @@ type Viewer {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
