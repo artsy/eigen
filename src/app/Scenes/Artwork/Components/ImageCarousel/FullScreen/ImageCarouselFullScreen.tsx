@@ -81,7 +81,7 @@ export const ImageCarouselFullScreen = () => {
     // on unmount we use it's built-in fade transition
     <Modal
       transparent
-      animated={false}
+      animationType="none"
       hardwareAccelerated
       supportedOrientations={["landscape", "portrait"]}
     >

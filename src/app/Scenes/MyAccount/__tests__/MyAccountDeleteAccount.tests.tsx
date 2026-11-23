@@ -4,11 +4,15 @@ import { MyAccountDeleteAccountFragmentContainer } from "app/Scenes/MyAccount/My
 import { deleteUserAccount } from "app/Scenes/MyAccount/deleteUserAccount"
 import { GlobalStore } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Alert, InteractionManager } from "react-native"
+import { Alert } from "react-native"
 import { graphql } from "react-relay"
 
 jest.mock("app/Scenes/MyAccount/deleteUserAccount", () => ({
   deleteUserAccount: jest.fn(),
+}))
+
+jest.mock("app/utils/runAfterInteractions", () => ({
+  runAfterInteractions: jest.fn((callback) => callback()),
 }))
 
 describe("MyAccountDeleteAccount", () => {
@@ -32,10 +36,6 @@ describe("MyAccountDeleteAccount", () => {
     })
     alert = jest.spyOn(Alert, "alert")
     signOut = jest.spyOn(GlobalStore.actions.auth, "signOut").mockResolvedValue(undefined as any)
-    jest.spyOn(InteractionManager, "runAfterInteractions").mockImplementation((task: any) => {
-      task()
-      return { then: jest.fn(), done: jest.fn(), cancel: jest.fn() } as any
-    })
   })
 
   afterEach(() => {

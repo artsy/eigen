@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react-native"
+import { act, screen } from "@testing-library/react-native"
 import { HomeViewSectionArtworksTestsQuery } from "__generated__/HomeViewSectionArtworksTestsQuery.graphql"
 import * as dismissSavedArtworkModule from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { HomeViewScreen } from "app/Scenes/HomeView/HomeView"
@@ -7,7 +7,6 @@ import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import { act } from "react-test-renderer"
 
 const useDismissSavedArtworkSpy = jest.spyOn(dismissSavedArtworkModule, "useDismissSavedArtwork")
 const requestPushNotificationsPermissionSpy = jest.spyOn(

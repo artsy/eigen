@@ -85,7 +85,7 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me$data; relay: RelayPagi
 }
 
 export const OrderHistoryPlaceholder: React.FC<{}> = () => (
-  <Flex px="15px" mt="15px">
+  <Flex px="15px" mt="15px" testID="order-history-placeholder">
     {times(2).map((index: number) => (
       <Box key={index}>
         <Flex mt={1}>

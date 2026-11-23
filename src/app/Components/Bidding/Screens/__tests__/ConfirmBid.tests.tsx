@@ -1,6 +1,5 @@
-import { Button, Checkbox } from "@artsy/palette-mobile"
 import Sentry from "@sentry/react-native"
-import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor, within } from "@testing-library/react-native"
 import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
 import { ConfirmBid_saleArtwork$data } from "__generated__/ConfirmBid_saleArtwork.graphql"
 import { useCreateBidderPositionMutation } from "__generated__/useCreateBidderPositionMutation.graphql"
@@ -298,11 +297,12 @@ describe("ConfirmBid", () => {
 
       fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
 
-      const placeBidButton = screen.UNSAFE_getByType(Button)
+      const placeBidButton = screen.getByTestId("bid-button")
 
       fireEvent.press(placeBidButton)
 
-      expect(placeBidButton.props.loading).toEqual(true)
+      // While loading, the button hides its label (opacity 0) and shows a spinner instead
+      expect(within(placeBidButton).getByText("Bid")).not.toBeVisible()
     })
 
     it("disables tap events while a spinner is being shown", () => {
@@ -315,7 +315,7 @@ describe("ConfirmBid", () => {
       const conditionsOfSaleLink = screen.getByText(
         "Artsy's and Christie's General Terms and Conditions of Sale"
       )
-      const conditionsOfSaleCheckbox = screen.UNSAFE_getByType(Checkbox)
+      const conditionsOfSaleCheckbox = screen.getByRole("checkbox")
 
       fireEvent.press(conditionsOfSaleCheckbox)
       fireEvent.press(screen.getByTestId("bid-button"))
@@ -328,7 +328,7 @@ describe("ConfirmBid", () => {
 
       expect(navigateSpy).not.toHaveBeenCalled()
 
-      expect(conditionsOfSaleCheckbox.props.disabled).toEqual(true)
+      expect(conditionsOfSaleCheckbox).toBeDisabled()
     })
 
     describe("when pressing bid", () => {

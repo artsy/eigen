@@ -1,3 +1,4 @@
+import { fireEvent, screen } from "@testing-library/react-native"
 import { Aggregations, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
@@ -5,10 +6,8 @@ import {
   getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { COLORS, ColorsOptionsScreen } from "app/Components/ArtworkFilter/Filters/ColorsOptions"
-import { ColorsSwatch } from "app/Components/ArtworkFilter/Filters/ColorsSwatch"
 import { getEssentialProps } from "app/Components/ArtworkFilter/Filters/helper"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { act, ReactTestRenderer } from "react-test-renderer"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("Colors options screen", () => {
   const []: Aggregations = []
@@ -28,11 +27,8 @@ describe("Colors options screen", () => {
     sizeMetric: "cm",
   }
 
-  const selectedColorOptions = (componentTree: ReactTestRenderer) => {
-    const colorSwatches = componentTree.root.findAllByType(ColorsSwatch)
-    const selectedOption = colorSwatches.filter((item) => item.props.selected)
-    return selectedOption
-  }
+  const selectedColorOptions = () =>
+    COLORS.filter((color) => !!screen.queryByTestId(`check-icon-${color.name}`))
 
   const MockColorScreen = ({
     initialData = initialState,
@@ -52,11 +48,14 @@ describe("Colors options screen", () => {
   }
 
   it("shows the correct number of color options", () => {
-    const tree = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <MockColorScreen aggregations={[]} {...getEssentialProps()} initialData={initialState} />
     )
 
-    expect(tree.root.findAllByType(ColorsSwatch)).toHaveLength(COLORS.length)
+    expect(screen.getAllByTestId(/^color-swatch-/)).toHaveLength(COLORS.length)
+    COLORS.forEach((color) => {
+      expect(screen.getByText(color.name)).toBeOnTheScreen()
+    })
   })
 
   describe("selecting a color filter", () => {
@@ -82,12 +81,10 @@ describe("Colors options screen", () => {
         sizeMetric: "cm",
       }
 
-      const component = renderWithWrappersLEGACY(
-        <MockColorScreen {...getEssentialProps()} initialData={injectedState} />
-      )
+      renderWithWrappers(<MockColorScreen {...getEssentialProps()} initialData={injectedState} />)
 
-      const selectedOption = selectedColorOptions(component)[0]
-      expect(selectedOption.props.name).toMatch(COLORS[0].name)
+      const selectedOption = selectedColorOptions()[0]
+      expect(selectedOption.name).toMatch(COLORS[0].name)
     })
 
     it("allows multiple color options to be selected when several are tapped", () => {
@@ -112,21 +109,15 @@ describe("Colors options screen", () => {
         sizeMetric: "cm",
       }
 
-      const tree = renderWithWrappersLEGACY(
-        <MockColorScreen {...getEssentialProps()} initialData={injectedState} />
-      )
+      renderWithWrappers(<MockColorScreen {...getEssentialProps()} initialData={injectedState} />)
 
-      const firstOptionInstance = tree.root.findAllByType(ColorsSwatch)[0]
-      const secondOptionInstance = tree.root.findAllByType(ColorsSwatch)[1]
-      const thirdOptionInstance = tree.root.findAllByType(ColorsSwatch)[2]
+      fireEvent.press(screen.getByText(COLORS[0].name))
+      fireEvent.press(screen.getByText(COLORS[1].name))
+      fireEvent.press(screen.getByText(COLORS[2].name))
 
-      act(() => firstOptionInstance.props.onPress())
-      act(() => secondOptionInstance.props.onPress())
-      act(() => thirdOptionInstance.props.onPress())
-
-      const selectedOptions = selectedColorOptions(tree)
+      const selectedOptions = selectedColorOptions()
       expect(selectedOptions).toHaveLength(3)
-      expect(selectedOptions.map((option) => option.props.name)).toEqual([
+      expect(selectedOptions.map((option) => option.name)).toEqual([
         COLORS[0].name,
         COLORS[1].name,
         COLORS[2].name,
@@ -149,21 +140,17 @@ describe("Colors options screen", () => {
         sizeMetric: "cm",
       }
 
-      const tree = renderWithWrappersLEGACY(
-        <MockColorScreen {...getEssentialProps()} initialData={injectedState} />
-      )
+      renderWithWrappers(<MockColorScreen {...getEssentialProps()} initialData={injectedState} />)
 
-      const secondOptionInstance = tree.root.findAllByType(ColorsSwatch)[1]
+      fireEvent.press(screen.getByText(COLORS[1].name))
 
-      act(() => secondOptionInstance.props.onPress())
-
-      const selectedOptions = selectedColorOptions(tree)
+      const selectedOptions = selectedColorOptions()
       expect(selectedOptions).toHaveLength(1)
-      expect(selectedOptions[0].props.name).toMatch(COLORS[1].name)
+      expect(selectedOptions[0].name).toMatch(COLORS[1].name)
 
-      act(() => secondOptionInstance.props.onPress())
+      fireEvent.press(screen.getByText(COLORS[1].name))
 
-      const afterSecondTapOptions = selectedColorOptions(tree)
+      const afterSecondTapOptions = selectedColorOptions()
       expect(afterSecondTapOptions).toHaveLength(0)
     })
   })

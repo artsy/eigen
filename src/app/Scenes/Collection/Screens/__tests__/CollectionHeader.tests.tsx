@@ -39,7 +39,7 @@ describe("collection header", () => {
         }),
       })
 
-      expect(screen.UNSAFE_queryByProps({ testID: "header-image" })).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("header-image")).not.toBeOnTheScreen()
     })
   })
 

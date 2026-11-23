@@ -1,12 +1,11 @@
-import { fireEvent } from "@testing-library/react-native"
+import { act, fireEvent } from "@testing-library/react-native"
 import { OrderUpdateTestsQuery } from "__generated__/OrderUpdateTestsQuery.graphql"
+import { OrderUpdateFragmentContainer as OrderUpdate } from "app/Scenes/Inbox/Components/Conversations/OrderUpdate"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import "react-native"
 import { QueryRenderer, graphql } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { OrderUpdateFragmentContainer as OrderUpdate } from "app/Scenes/Inbox/Components/Conversations/OrderUpdate"
 
 jest.mock("@react-native-community/netinfo", () => {
   return {
@@ -73,14 +72,14 @@ const getWrapper = (event = {}) => {
       ],
     },
   }
-  const tree = renderWithWrappers(<TestRenderer />)
+  const view = renderWithWrappers(<TestRenderer />)
   const finalResolvers = { Conversation: () => mockConversation }
   act(() => {
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, finalResolvers)
     )
   })
-  return tree
+  return view
 }
 
 it("renders without throwing an error", () => {

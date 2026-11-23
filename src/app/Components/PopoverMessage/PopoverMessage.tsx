@@ -155,6 +155,7 @@ export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
 
   return (
     <AnimatedFlex
+      testID="popover-message"
       position="absolute"
       left="1"
       right="1"

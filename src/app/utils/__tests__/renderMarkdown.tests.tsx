@@ -4,7 +4,6 @@ import { Flex, Text } from "@artsy/palette-mobile"
 import { fireEvent, screen, within } from "@testing-library/react-native"
 import { navigate } from "app/system/navigation/navigate"
 import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
-import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import React from "react"
 import { Output, ReactElements, SingleASTNode, State } from "simple-markdown"
@@ -65,7 +64,7 @@ describe("renderMarkdown", () => {
     // ensures that there is a <Text> element that includes another one with "paragraph" in it
     expect(within(screen.getByText(/This is a/)).getByText(/paragraph/)).toBeTruthy()
 
-    expect(extractText(screen.getAllByTestId(/linktext-/)[0])).toEqual("first")
+    expect(screen.getAllByTestId(/linktext-/)[0]).toHaveTextContent("first")
 
     // ensures that there is a <Text> element that includes another one with "second" in it
     expect(within(screen.getByText(/And that is a/)).getByText(/second/)).toBeTruthy()
@@ -73,7 +72,7 @@ describe("renderMarkdown", () => {
     // ensures that there is a <Text> element that includes another one with "paragraph" in it
     expect(within(screen.getByText(/And that is a/)).getByText(/paragraph/)).toBeTruthy()
 
-    expect(extractText(screen.getAllByTestId(/linktext-/)[1])).toEqual("second")
+    expect(screen.getAllByTestId(/linktext-/)[1]).toHaveTextContent("second")
   })
 
   it("handles custom rules", () => {

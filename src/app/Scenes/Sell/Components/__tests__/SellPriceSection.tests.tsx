@@ -1,5 +1,4 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
-import { SellFeeInfoBottomSheet } from "app/Scenes/Sell/Components/SellFeeInfoBottomSheet"
 import { SellPriceSection } from "app/Scenes/Sell/Components/SellPriceSection"
 import {
   SellConditionStore,
@@ -8,6 +7,18 @@ import {
 } from "app/Scenes/Sell/State/SellConditionStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Alert } from "react-native"
+
+// gorhom unmounts a sheet's content when it closes, but the global mock keeps it mounted
+jest.mock("app/Components/BottomSheet/AutomountedBottomSheetModal", () => {
+  const { createElement } = jest.requireActual("react")
+  const { AutomountedBottomSheetModal } = jest.requireActual(
+    "app/Components/BottomSheet/AutomountedBottomSheetModal"
+  )
+  return {
+    AutomountedBottomSheetModal: (props: { visible: boolean }) =>
+      props.visible ? createElement(AutomountedBottomSheetModal, props) : null,
+  }
+})
 
 const TestPriceSection: React.FC<{ rating?: SellConditionStoreModel["rating"] }> = ({
   rating = "FAIR",
@@ -76,9 +87,6 @@ describe("SellPriceSection", () => {
     expect(await screen.findByText(/flat 15% fee/)).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Got it"))
-    // The bottom sheet mock keeps its children rendered, so check what the sheet was told
-    await waitFor(() =>
-      expect(screen.UNSAFE_getByType(SellFeeInfoBottomSheet).props.visible).toBe(false)
-    )
+    await waitFor(() => expect(screen.queryByText(/flat 15% fee/)).not.toBeOnTheScreen())
   })
 })

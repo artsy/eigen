@@ -46,11 +46,6 @@ if (__DEV__) {
   NativeModules.DevSettings.setIsShakeToShowDevMenuEnabled(false)
 }
 
-if (__DEV__) {
-  // include reactotron only on dev
-  require("../../ReactotronConfig.js")
-}
-
 // Sentry must be setup early in the app lifecycle to hook into navigation
 const debugSentry = unsafe_getDevToggle("DTDebugSentry")
 const environment = unsafe__getEnvironment()

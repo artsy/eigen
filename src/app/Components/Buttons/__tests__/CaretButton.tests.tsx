@@ -1,13 +1,11 @@
+import { screen } from "@testing-library/react-native"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-
-import { TouchableOpacity } from "react-native"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("CaretButton", () => {
   it("renders properly", () => {
-    const tree = renderWithWrappersLEGACY(<CaretButton text="I am a caret button" />)
-    expect(tree.root.findAllByType(TouchableOpacity)).toBeTruthy()
-    expect(extractText(tree.root)).toContain("I am a caret button")
+    renderWithWrappers(<CaretButton text="I am a caret button" />)
+    expect(screen.getByRole("button")).toBeOnTheScreen()
+    expect(screen.getByRole("button")).toHaveTextContent(/I am a caret button/)
   })
 })

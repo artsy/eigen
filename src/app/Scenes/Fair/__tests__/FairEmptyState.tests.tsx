@@ -1,11 +1,12 @@
+import { screen } from "@testing-library/react-native"
+import { FairEmptyStateTestsQuery } from "__generated__/FairEmptyStateTestsQuery.graphql"
 import { FairEmptyStateFragmentContainer } from "app/Scenes/Fair/Components/FairEmptyState"
-import { extractText } from "app/utils/tests/extractText"
-import { setupTestWrapper_LEGACY } from "app/utils/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { DateTime } from "luxon"
 import { graphql } from "react-relay"
 
-const { getWrapper } = setupTestWrapper_LEGACY({
-  Component: FairEmptyStateFragmentContainer,
+const { renderWithRelay } = setupTestWrapper<FairEmptyStateTestsQuery>({
+  Component: (props) => <FairEmptyStateFragmentContainer fair={props.fair!} />,
   query: graphql`
     query FairEmptyStateTestsQuery {
       fair(id: "example-fair-id") {
@@ -17,23 +18,25 @@ const { getWrapper } = setupTestWrapper_LEGACY({
 
 describe("FairEmptyState", () => {
   it("renders null when the fair is active", () => {
-    const wrapper = getWrapper({ Fair: () => ({ isActive: true }) })
-    expect(wrapper.toJSON()).toBeNull()
+    renderWithRelay({ Fair: () => ({ isActive: true }) })
+    expect(screen.queryByText(/This fair is currently unavailable/)).not.toBeOnTheScreen()
   })
 
   describe("inactive", () => {
     it("renders correctly when the fair is inactive", () => {
-      const wrapper = getWrapper({ Fair: () => ({ isActive: false }) })
-      expect(extractText(wrapper.root)).toEqual("This fair is currently unavailable.")
+      renderWithRelay({ Fair: () => ({ isActive: false }) })
+      expect(screen.getByText("This fair is currently unavailable.")).toBeOnTheScreen()
     })
 
     it("renders correctly when the fair is in the future", () => {
-      const wrapper = getWrapper({
+      renderWithRelay({
         Fair: () => ({ isActive: false, endAt: DateTime.local().plus({ days: 1 }) }),
       })
-      expect(extractText(wrapper.root)).toEqual(
-        "This fair is currently unavailable. Please check back closer to the fair for artworks."
-      )
+      expect(
+        screen.getByText(
+          "This fair is currently unavailable. Please check back closer to the fair for artworks."
+        )
+      ).toBeOnTheScreen()
     })
   })
 })

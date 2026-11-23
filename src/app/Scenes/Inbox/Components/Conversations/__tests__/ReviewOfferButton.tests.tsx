@@ -1,4 +1,4 @@
-import { AlertFillIcon, MoneyFillIcon } from "@artsy/icons/native"
+import { screen, userEvent } from "@testing-library/react-native"
 import { ConversationCTA_conversation$data } from "__generated__/ConversationCTA_conversation.graphql"
 import {
   ReviewOfferButton,
@@ -7,11 +7,35 @@ import {
 } from "app/Scenes/Inbox/Components/Conversations/ReviewOfferButton"
 import { navigate } from "app/system/navigation/navigate"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { DateTime } from "luxon"
-import { TouchableWithoutFeedback } from "react-native"
+
+// Wrap the icons in host views we can query, so the tests can tell which one rendered.
+jest.mock("@artsy/icons/native", () => {
+  const { View } = require("react-native")
+  const actual = jest.requireActual("@artsy/icons/native")
+
+  return {
+    ...actual,
+    AlertFillIcon: (props: any) => (
+      <View testID="alert-fill-icon">
+        <actual.AlertFillIcon {...props} />
+      </View>
+    ),
+    MoneyFillIcon: (props: any) => (
+      <View testID="money-fill-icon">
+        <actual.MoneyFillIcon {...props} />
+      </View>
+    ),
+  }
+})
+
+const escapeRegExp = (string: string) => string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+
+/** Asserts that a rendered text contains `string`. */
+const expectText = (string: string) =>
+  expect(screen.getByText(new RegExp(escapeRegExp(string)))).toBeOnTheScreen()
 
 describe("ReviewOfferButton", () => {
   const getWrapper = (
@@ -29,110 +53,101 @@ describe("ReviewOfferButton", () => {
         ...activeOrder,
       } as ExtractNodeType<ConversationCTA_conversation$data["activeOrders"]>,
     }
-    return renderWithWrappersLEGACY(<ReviewOfferButton {...props} />)
+    return renderWithWrappers(<ReviewOfferButton {...props} />)
   }
 
   it("renders without throwing an error", () => {
-    const wrapper = getWrapper("PAYMENT_FAILED")
-    expect(wrapper.root.findAllByType(ReviewOfferButton)).toHaveLength(1)
+    getWrapper("PAYMENT_FAILED")
+    expect(screen.getByRole("button")).toBeOnTheScreen()
   })
 
   it("shows correct message for accepted offers", () => {
-    const wrapper = getWrapper("OFFER_ACCEPTED", { offers: { edges: [{} as any] } })
+    getWrapper("OFFER_ACCEPTED", { offers: { edges: [{} as any] } })
 
-    const text = extractText(wrapper.root)
-    expect(text).toContain("Offer Accepted")
-    expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(1)
+    expectText("Offer Accepted")
+    expect(screen.getAllByTestId("money-fill-icon")).toHaveLength(1)
   })
 
   it("shows correct message for accepted offers", () => {
-    const wrapper = getWrapper("OFFER_ACCEPTED_CONFIRM_NEEDED", { offers: { edges: [{} as any] } })
+    getWrapper("OFFER_ACCEPTED_CONFIRM_NEEDED", { offers: { edges: [{} as any] } })
 
-    const text = extractText(wrapper.root)
-    expect(text).toContain("Offer Accepted - Confirm total")
-    expect(wrapper.root.findAllByType(AlertFillIcon)).toHaveLength(1)
+    expectText("Offer Accepted - Confirm total")
+    expect(screen.getAllByTestId("alert-fill-icon")).toHaveLength(1)
   })
 
   it("shows correct message for accepted offers", () => {
-    const wrapper = getWrapper("OFFER_RECEIVED_CONFIRM_NEEDED", { offers: { edges: [{} as any] } })
+    getWrapper("OFFER_RECEIVED_CONFIRM_NEEDED", { offers: { edges: [{} as any] } })
 
-    const text = extractText(wrapper.root)
-    expect(text).toContain("Counteroffer Received - Confirm Total")
-    expect(wrapper.root.findAllByType(AlertFillIcon)).toHaveLength(1)
+    expectText("Counteroffer Received - Confirm Total")
+    expect(screen.getAllByTestId("alert-fill-icon")).toHaveLength(1)
   })
 
   it("shows correct message for accepted offers", () => {
-    const wrapper = getWrapper("PROVISIONAL_OFFER_ACCEPTED", { offers: { edges: [{} as any] } })
+    getWrapper("PROVISIONAL_OFFER_ACCEPTED", { offers: { edges: [{} as any] } })
 
-    const text = extractText(wrapper.root)
-    expect(text).toContain("Offer Accepted")
-    expect(wrapper.root.findAllByType(MoneyFillIcon)).toHaveLength(1)
+    expectText("Offer Accepted")
+    expect(screen.getAllByTestId("money-fill-icon")).toHaveLength(1)
   })
 
   it("shows correct message for accepted offers where payment fails", () => {
-    const wrapper = getWrapper("PAYMENT_FAILED")
+    getWrapper("PAYMENT_FAILED")
 
-    const text = extractText(wrapper.root)
-    expect(text).toContain("Unable to process payment for accepted offer. Update payment method.")
-    expect(wrapper.root.findAllByType(AlertFillIcon)).toHaveLength(1)
+    expectText("Unable to process payment for accepted offer. Update payment method.")
+    expect(screen.getAllByTestId("alert-fill-icon")).toHaveLength(1)
   })
 
   it("shows correct message and icon for received offers", () => {
-    const wrapper = getWrapper("OFFER_RECEIVED", { offers: { edges: [{} as any] } })
+    getWrapper("OFFER_RECEIVED", { offers: { edges: [{} as any] } })
 
-    const text = extractText(wrapper.root)
-    expect(text).toContain("Offer Received")
-    expect(wrapper.root.findAllByType(AlertFillIcon)).toHaveLength(1)
+    expectText("Offer Received")
+    expect(screen.getAllByTestId("alert-fill-icon")).toHaveLength(1)
   })
 
   it("shows correct messaging and icon when offer is a counteroffer", () => {
-    const wrapper = getWrapper("OFFER_RECEIVED", { offers: { edges: [{} as any, {} as any] } })
+    getWrapper("OFFER_RECEIVED", { offers: { edges: [{} as any, {} as any] } })
 
-    const text = extractText(wrapper.root)
-    expect(text).toContain("Counteroffer Received")
-    expect(wrapper.root.findAllByType(AlertFillIcon)).toHaveLength(1)
+    expectText("Counteroffer Received")
+    expect(screen.getAllByTestId("alert-fill-icon")).toHaveLength(1)
   })
 
   it("shows correct expiration in minutes when there is less than 1 hour left", () => {
     const expirationTime = DateTime.local().plus({ minutes: 31 })
-    const wrapper = getWrapper("OFFER_RECEIVED", {
+    getWrapper("OFFER_RECEIVED", {
       offers: { edges: [{} as any, {} as any] },
       stateExpiresAt: expirationTime.toString(),
     })
 
-    const text = extractText(wrapper.root)
-    expect(text).toContain("Counteroffer Received")
-    expect(text).toContain("The offer expires in 30m")
+    expectText("Counteroffer Received")
+    expectText("The offer expires in 30m")
   })
 
   it("shows correct expiration in hours when there is more than 1 hour left", () => {
     const expirationTime = DateTime.local().plus({ hours: 10 })
-    const wrapper = getWrapper("OFFER_RECEIVED", {
+    getWrapper("OFFER_RECEIVED", {
       offers: { edges: [{} as any, {} as any] },
       stateExpiresAt: expirationTime.toString(),
     })
 
-    const text = extractText(wrapper.root)
-    expect(text).toContain("Counteroffer Received")
-    expect(text).toContain("The offer expires in 10hr")
+    expectText("Counteroffer Received")
+    expectText("The offer expires in 10hr")
   })
 
   it("shows correct expiration in hours when there is more than 24 hours left", () => {
     const expirationTime = DateTime.local().plus({ hours: 72 })
-    const wrapper = getWrapper("OFFER_RECEIVED", {
+    getWrapper("OFFER_RECEIVED", {
       offers: { edges: [{} as any, {} as any] },
       stateExpiresAt: expirationTime.toString(),
     })
 
-    const text = extractText(wrapper.root)
-    expect(text).toContain("Counteroffer Received")
-    expect(text).toContain("The offer expires in 72hr")
+    expectText("Counteroffer Received")
+    expectText("The offer expires in 72hr")
   })
 
-  it("tapping it opens the review offer webview with the correct modal title and tracks event", () => {
-    const wrapper = getWrapper("OFFER_RECEIVED", { offers: { edges: [{} as any, {} as any] } })
+  it("tapping it opens the review offer webview with the correct modal title and tracks event", async () => {
+    getWrapper("OFFER_RECEIVED", { offers: { edges: [{} as any, {} as any] } })
 
-    wrapper.root.findByType(TouchableWithoutFeedback).props.onPress()
+    // A TouchableWithoutFeedback, which only responds to responder events.
+    await userEvent.press(screen.getByRole("button"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedViewOffer",
@@ -146,10 +161,11 @@ describe("ReviewOfferButton", () => {
     })
   })
 
-  it("tapping it opens the correct webview with the correct title for offers where payment fails", () => {
-    const wrapper = getWrapper("PAYMENT_FAILED", { offers: { edges: [{} as any, {} as any] } })
+  it("tapping it opens the correct webview with the correct title for offers where payment fails", async () => {
+    getWrapper("PAYMENT_FAILED", { offers: { edges: [{} as any, {} as any] } })
 
-    wrapper.root.findByType(TouchableWithoutFeedback).props.onPress()
+    // A TouchableWithoutFeedback, which only responds to responder events.
+    await userEvent.press(screen.getByRole("button"))
 
     expect(navigate).toHaveBeenCalledWith("/orders/order-id/payment/new", {
       modal: true,

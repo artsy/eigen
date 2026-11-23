@@ -105,7 +105,11 @@ export const ListItem = ({
   const selected = item.paramValue === selectedOption.paramValue
 
   return (
-    <TouchableRow accessibilityState={{ selected }} onPress={() => onSelect(item)}>
+    <TouchableRow
+      accessibilityState={{ selected }}
+      onPress={() => onSelect(item)}
+      testID="single-select-option"
+    >
       <OptionListItem>
         <InnerOptionListItem px={withExtraPadding && item.displayText !== "All" ? 4 : 2}>
           <Text color="mono100" variant="xs">

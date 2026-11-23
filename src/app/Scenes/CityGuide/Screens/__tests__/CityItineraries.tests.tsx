@@ -7,6 +7,10 @@ import { RefreshControl } from "react-native"
 import RNShare from "react-native-share"
 import { MockPayloadGenerator } from "relay-test-utils"
 
+// The React Native jest preset's RefreshControl mock keeps a reference to the last mounted
+// instance, which lets us pull to refresh without walking the render tree.
+const pullToRefresh = () => (RefreshControl as any).latestRef.props.onRefresh()
+
 // Resolves the way the share sheet does when it is closed without sharing.
 jest.mock("react-native-share", () => ({
   open: jest.fn().mockResolvedValue({ success: false, dismissedAction: true }),
@@ -146,7 +150,7 @@ describe("CityItineraries", () => {
     await screen.findByText("A")
 
     act(() => {
-      screen.UNSAFE_getByType(RefreshControl).props.onRefresh()
+      pullToRefresh()
     })
 
     const listOperations = () =>

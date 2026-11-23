@@ -1,6 +1,6 @@
 import { WorksForYou } from "app/Components/Containers/WorksForYou"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 beforeAll(() => {
   WorksForYou.prototype.componentDidUpdate = () => {
@@ -11,20 +11,20 @@ beforeAll(() => {
 describe("with notifications", () => {
   it("updates the notification count", () => {
     const me = notificationsResponse().query.me
-    renderWithWrappersLEGACY(<WorksForYou me={me as any} relay={null as any} />)
+    renderWithWrappers(<WorksForYou me={me as any} relay={null as any} />)
     expect(LegacyNativeModules.ARTemporaryAPIModule.markNotificationsRead).toBeCalled()
   })
 
   it("renders without throwing an error", () => {
     const me = notificationsResponse().query.me
-    renderWithWrappersLEGACY(<WorksForYou me={me as any} relay={null as any} />)
+    renderWithWrappers(<WorksForYou me={me as any} relay={null as any} />)
   })
 })
 
 describe("without notifications", () => {
   it("renders without throwing an error", () => {
     const me = emptyStateResponse().query.me
-    renderWithWrappersLEGACY(<WorksForYou me={me as any} relay={null as any} />)
+    renderWithWrappers(<WorksForYou me={me as any} relay={null as any} />)
   })
 })
 

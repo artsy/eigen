@@ -1,9 +1,8 @@
+import { act, screen } from "@testing-library/react-native"
 import { ShowLocationTestsQuery } from "__generated__/ShowLocationTestsQuery.graphql"
 import { ShowLocationFragmentContainer } from "app/Scenes/Show/Components/ShowLocation"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 const COMPLETE_FAIR_LOCATION_FIXTURE = {
@@ -59,42 +58,37 @@ describe("ShowLocation", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
     })
-    return tree
   }
 
   it("renders the show location if there is a valid show location", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       Show: () => ({ fair: null }),
       Partner: () => ({ name: "Example Partner Name" }),
       Location: () => COMPLETE_PARTNER_LOCATION_FIXTURE,
     })
 
-    const text = extractText(wrapper.root)
-
-    expect(text).not.toContain("Example Partner Name at")
-    expect(text).toContain("Example Partner Name")
-    expect(text).toContain("131 Allen Street")
-    expect(text).toContain("New York, 10002")
+    expect(screen.queryByText(/Example Partner Name at/)).not.toBeOnTheScreen()
+    expect(screen.getByText(/Example Partner Name/)).toBeOnTheScreen()
+    expect(screen.getByText(/131 Allen Street/)).toBeOnTheScreen()
+    expect(screen.getByText(/New York, 10002/)).toBeOnTheScreen()
   })
 
   it("renders the fair location if there is a valid fair location", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       Partner: () => ({ name: "Example Partner Name" }),
       Location: () => COMPLETE_FAIR_LOCATION_FIXTURE,
     })
 
-    const text = extractText(wrapper.root)
-
-    expect(text).toContain("Example Partner Name at")
-    expect(text).toContain("Somerset House")
-    expect(text).toContain("Strand")
-    expect(text).toContain("London WC2R 1LA")
-    expect(text).toContain("United Kingdom")
+    expect(screen.getByText(/Example Partner Name at/)).toBeOnTheScreen()
+    expect(screen.getByText(/Somerset House/)).toBeOnTheScreen()
+    expect(screen.getByText(/Strand/)).toBeOnTheScreen()
+    expect(screen.getByText(/London WC2R 1LA/)).toBeOnTheScreen()
+    expect(screen.getByText(/United Kingdom/)).toBeOnTheScreen()
   })
 })

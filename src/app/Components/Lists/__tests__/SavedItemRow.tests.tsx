@@ -1,5 +1,6 @@
+import { screen } from "@testing-library/react-native"
 import { SavedItemRow } from "app/Components/Lists/SavedItemRow"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 const props = {
   href: "/artist/petra-collins",
@@ -8,5 +9,7 @@ const props = {
 }
 
 it("renders without throwing an error", () => {
-  renderWithWrappersLEGACY(<SavedItemRow {...props} />)
+  renderWithWrappers(<SavedItemRow {...props} />)
+
+  expect(screen.getByText("Petra Collins")).toBeOnTheScreen()
 })

@@ -4,7 +4,6 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { SearchArtworksGridPaginationContainer } from "app/Scenes/Search/SearchArtworksGrid"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Modal } from "react-native"
 import { graphql } from "react-relay"
 
 describe("SearchArtworksGrid", () => {
@@ -49,7 +48,11 @@ describe("SearchArtworksGrid", () => {
   it("tracks filter modal closing", () => {
     renderWithRelay()
 
-    screen.UNSAFE_getAllByType(Modal)[0].props.onDismiss()
+    // Open the filter modal first so that it is mounted, then dismiss it
+    fireEvent.press(screen.getByText("Sort & Filter"))
+    mockTrackEvent.mockClear()
+
+    fireEvent(screen.getByTestId("artwork-filter-navigator"), "dismiss")
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       [
@@ -68,6 +71,6 @@ describe("SearchArtworksGrid", () => {
   it('should display "Sort & Filter" label by default', () => {
     renderWithRelay()
 
-    expect(screen.queryByText("Sort & Filter")).toBeTruthy()
+    expect(screen.getByText("Sort & Filter")).toBeOnTheScreen()
   })
 })

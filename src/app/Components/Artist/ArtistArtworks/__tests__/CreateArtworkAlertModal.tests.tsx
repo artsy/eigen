@@ -4,13 +4,19 @@ import {
   CreateArtworkAlertModal,
   computeArtworkAlertProps,
 } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
-import { CreateSavedSearchModal } from "app/Scenes/SavedSearchAlert/CreateSavedSearchModal"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-jest.mock("app/Scenes/SavedSearchAlert/CreateSavedSearchModal", () => ({
-  CreateSavedSearchModal: () => "CreateSavedSearchModal",
-}))
+jest.mock("app/Scenes/SavedSearchAlert/CreateSavedSearchModal", () => {
+  const { Text } = require("react-native")
+  return {
+    CreateSavedSearchModal: (props: { currentArtworkID?: string }) => (
+      <Text testID="create-saved-search-modal">
+        {`CreateSavedSearchModal:${props.currentArtworkID}`}
+      </Text>
+    ),
+  }
+})
 
 describe("CreateArtworkAlertModal", () => {
   const { renderWithRelay } = setupTestWrapper({
@@ -31,21 +37,21 @@ describe("CreateArtworkAlertModal", () => {
       }),
     })
 
-    expect(screen.queryByText("CreateSavedSearchModal")).toBeFalsy()
+    expect(screen.queryByTestId("create-saved-search-modal")).not.toBeOnTheScreen()
   })
 
   it("returns renders modal", () => {
-    const { UNSAFE_getByType } = renderWithRelay()
-    expect(UNSAFE_getByType(CreateSavedSearchModal)).toBeTruthy()
+    renderWithRelay()
+    expect(screen.getByTestId("create-saved-search-modal")).toBeOnTheScreen()
   })
 
   it("passes current artwork id to modal", () => {
-    const { UNSAFE_getByProps } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => ({
         internalID: "set-alert-from-me",
       }),
     })
-    expect(UNSAFE_getByProps({ currentArtworkID: "set-alert-from-me" })).toBeTruthy()
+    expect(screen.getByText("CreateSavedSearchModal:set-alert-from-me")).toBeOnTheScreen()
   })
 })
 

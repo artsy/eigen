@@ -2,8 +2,6 @@ import { screen } from "@testing-library/react-native"
 import { ArtworkHeaderTestsQuery } from "__generated__/ArtworkHeaderTestsQuery.graphql"
 import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ArtworkHeaderFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkHeader"
-import { ArtworkTombstone } from "app/Scenes/Artwork/Components/ArtworkTombstone"
-import { ImageCarousel } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -28,15 +26,21 @@ describe("ArtworkHeader", () => {
   })
 
   it("renders correctly", () => {
-    renderWithRelay()
+    renderWithRelay({
+      Artwork: () => ({
+        title: "Mock Artwork Title",
+        date: null,
+        figures: [{ __typename: "Image", url: "https://example.com/image.jpg" }],
+      }),
+    })
 
     // tombstone
-    expect(screen.UNSAFE_queryAllByType(ArtworkTombstone)).toHaveLength(1)
+    expect(screen.getAllByText("Mock Artwork Title")).toHaveLength(1)
 
     // actions component
-    expect(screen.UNSAFE_queryAllByType(ArtworkTombstone)).toHaveLength(1)
+    expect(screen.getAllByText("Share")).toHaveLength(1)
 
     // image carousel component
-    expect(screen.UNSAFE_queryAllByType(ImageCarousel)).toHaveLength(1)
+    expect(screen.getAllByLabelText("Image Carousel")).toHaveLength(1)
   })
 })

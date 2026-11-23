@@ -5,6 +5,10 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
+jest.mock("react-native-gesture-handler/ReanimatedSwipeable", () =>
+  require("app/utils/tests/mockReanimatedSwipeable")
+)
+
 const mockDismissTask = jest.fn()
 const mockAcknowledgeTask = jest.fn()
 
@@ -54,9 +58,7 @@ describe("Task Component", () => {
   it("should dismiss when the task is cleared", async () => {
     renderWithRelay({ Task: () => mockTask })
 
-    const clearButton = screen.getByText("Clear")
-
-    fireEvent.press(clearButton)
+    fireEvent.press(screen.getByText("Clear"))
 
     expect(mockDismissTask).toHaveBeenCalled()
     expect(mockTrackEvent).toHaveBeenCalledWith({

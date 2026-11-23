@@ -1,6 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworksInSeriesRailTestsQuery } from "__generated__/ArtworksInSeriesRailTestsQuery.graphql"
-import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { ArtworksInSeriesRail } from "app/Scenes/Artwork/Components/ArtworksInSeriesRail"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -76,7 +75,7 @@ describe("ArtworksInSeriesRail", () => {
       }),
     })
 
-    expect(screen.UNSAFE_queryAllByType(ArtworkRailCard)).toHaveLength(5)
+    expect(screen.getAllByTestId("artwork-rail-card-image")).toHaveLength(5)
   })
 
   it("navigates to the artist series when the header is tapped", () => {

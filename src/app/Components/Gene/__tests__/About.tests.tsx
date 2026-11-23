@@ -1,8 +1,7 @@
-// Note: test renderer must be required after react-native.
-
 import { Tabs } from "@artsy/palette-mobile"
+import { screen } from "@testing-library/react-native"
 import About from "app/Components/Gene/About"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 it("renders without throwing a error", () => {
   const gene = {
@@ -40,9 +39,11 @@ it("renders without throwing a error", () => {
     ],
   }
 
-  renderWithWrappersLEGACY(
+  renderWithWrappers(
     <Tabs.TabsWithHeader title="test">
       <About gene={gene as any} />
     </Tabs.TabsWithHeader>
   )
+
+  expect(screen.getByText(/Deep time refers to the concept of an expansive time/)).toBeOnTheScreen()
 })

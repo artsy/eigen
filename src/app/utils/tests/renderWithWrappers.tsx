@@ -1,10 +1,9 @@
 import { render, RenderOptions } from "@testing-library/react-native"
 import { TestProviders } from "app/Providers"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { Suspense } from "react"
+import { ReactElement, Suspense } from "react"
+import { Text } from "react-native"
 import { Environment, RelayEnvironmentProvider } from "react-relay"
-import ReactTestRenderer from "react-test-renderer"
-import { ReactElement } from "simple-markdown"
 
 export interface WrappersProps {
   skipRelay?: boolean
@@ -27,48 +26,6 @@ const Wrappers: React.FC<React.PropsWithChildren<WrappersProps>> = ({
       {children}
     </TestProviders>
   )
-}
-
-/**
- * Returns given component wrapped with our page wrappers
- * @param component
- */
-const componentWithWrappers = (component: ReactElement) => {
-  return <Wrappers>{component}</Wrappers>
-}
-
-/**
- * @deprecated Use `renderWithWrappers` instead.
- *
- * Renders a React Component with our page wrappers
- * @param component
- */
-export const renderWithWrappersLEGACY = (component: ReactElement) => {
-  const wrappedComponent = componentWithWrappers(component)
-  try {
-    let renderedComponent: ReactTestRenderer.ReactTestRenderer | undefined
-
-    // React 19 requires ReactTestRenderer.create to be wrapped in act
-    ReactTestRenderer.act(() => {
-      renderedComponent = ReactTestRenderer.create(wrappedComponent)
-    })
-
-    if (!renderedComponent) {
-      throw new Error("Failed to create test renderer")
-    }
-
-    // monkey patch update method to wrap components
-    const originalUpdate = renderedComponent.update
-    renderedComponent.update = (nextElement: ReactElement) => {
-      ReactTestRenderer.act(() => {
-        originalUpdate(componentWithWrappers(nextElement))
-      })
-    }
-
-    return renderedComponent
-  } catch (error: any) {
-    throw new Error(error.stack)
-  }
 }
 
 /**
@@ -101,7 +58,7 @@ export const renderWithHookWrappersTL = (
 ) => {
   const jsx = (
     <RelayEnvironmentProvider environment={environment}>
-      <Suspense fallback="Loading...">{component}</Suspense>
+      <Suspense fallback={<Text>Loading...</Text>}>{component}</Suspense>
     </RelayEnvironmentProvider>
   )
   return renderWithWrappers(jsx, wrapperProps)

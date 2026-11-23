@@ -10,10 +10,11 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
+import { runAfterInteractions } from "app/utils/runAfterInteractions"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import React, { useCallback, useState } from "react"
-import { Alert, InteractionManager, LayoutChangeEvent } from "react-native"
+import { Alert, LayoutChangeEvent } from "react-native"
 import { KeyboardStickyView } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -142,7 +143,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
                     {
                       text: "OK",
                       onPress: () => {
-                        InteractionManager.runAfterInteractions(() => {
+                        runAfterInteractions(() => {
                           GlobalStore.actions.auth.signOut()
                         })
                       },

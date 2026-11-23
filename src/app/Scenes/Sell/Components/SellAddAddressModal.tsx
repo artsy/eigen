@@ -78,6 +78,7 @@ export const SellAddAddressModal: React.FC<SellAddAddressModalProps> = ({
 
   return (
     <Modal
+      testID="sell-add-address-modal"
       visible={visible}
       animationType="slide"
       presentationStyle="pageSheet"

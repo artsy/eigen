@@ -2,9 +2,6 @@ import { screen } from "@testing-library/react-native"
 import { ArtistSeriesTestsQuery } from "__generated__/ArtistSeriesTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtistSeries } from "app/Scenes/ArtistSeries/ArtistSeries"
-import { ArtistSeriesArtworks } from "app/Scenes/ArtistSeries/ArtistSeriesArtworks"
-import { ArtistSeriesMeta } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
-import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -25,16 +22,19 @@ describe("Artist Series", () => {
   })
 
   it("renders without throwing an error", () => {
-    renderWithRelay({})
-    expect(screen.UNSAFE_queryAllByType(ArtistSeries)).toHaveLength(1)
+    renderWithRelay({ ArtistSeries: () => ({ title: "Pumpkins" }) })
+    expect(screen.getAllByText("Pumpkins").length).toBeGreaterThan(0)
   })
 
   it("renders the necessary subcomponents", () => {
     renderWithRelay({})
 
-    expect(screen.UNSAFE_queryAllByType(ArtistSeriesMeta)).toHaveLength(1)
-    expect(screen.UNSAFE_queryAllByType(ArtistSeriesArtworks)).toHaveLength(1)
-    expect(screen.UNSAFE_queryAllByType(ArtistSeriesMoreSeries)).toHaveLength(1)
+    // ArtistSeriesMeta
+    expect(screen.getByTestId("description")).toBeOnTheScreen()
+    // ArtistSeriesArtworks
+    expect(screen.getByTestId("ArtistSeriesArtworksGrid")).toBeOnTheScreen()
+    // ArtistSeriesMoreSeries
+    expect(screen.getByText("More series by this artist")).toBeOnTheScreen()
   })
 
   describe("with an artist series without an artist", () => {
@@ -44,7 +44,7 @@ describe("Artist Series", () => {
           artist: null,
         }),
       })
-      expect(screen.UNSAFE_queryByType(ArtistSeriesMoreSeries)).not.toBeOnTheScreen()
+      expect(screen.queryByText("More series by this artist")).not.toBeOnTheScreen()
     })
   })
 
@@ -61,7 +61,7 @@ describe("Artist Series", () => {
           ],
         }),
       })
-      expect(screen.UNSAFE_queryByType(ArtistSeriesMoreSeries)).not.toBeOnTheScreen()
+      expect(screen.queryByText("More series by this artist")).not.toBeOnTheScreen()
     })
   })
 })

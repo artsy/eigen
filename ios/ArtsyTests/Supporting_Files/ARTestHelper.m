@@ -9,7 +9,38 @@
 #import "AREmission.h"
 
 
+/// The app's Info.plist declares `SceneDelegate`, which starts React Native through Expo and needs
+/// the real `AppDelegate`. The test host uses this one instead, which only shows `ARTestHelper`'s
+/// window in the connecting scene.
+@interface ARTestSceneDelegate : UIResponder <UIWindowSceneDelegate>
+@property (strong, nonatomic) UIWindow *window;
+@end
+
+@implementation ARTestSceneDelegate
+
+- (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions
+{
+    if (![scene isKindOfClass:UIWindowScene.class]) {
+        return;
+    }
+    UIWindow *window = [(id<UIApplicationDelegate>)UIApplication.sharedApplication.delegate window];
+    window.windowScene = (UIWindowScene *)scene;
+    [window makeKeyAndVisible];
+    self.window = window;
+}
+
+@end
+
+
 @implementation ARTestHelper
+
+- (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options
+{
+    // An unnamed configuration doesn't pick up the Info.plist entry, so `SceneDelegate` never runs.
+    UISceneConfiguration *configuration = [[UISceneConfiguration alloc] initWithName:nil sessionRole:connectingSceneSession.role];
+    configuration.delegateClass = ARTestSceneDelegate.class;
+    return configuration;
+}
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
 {

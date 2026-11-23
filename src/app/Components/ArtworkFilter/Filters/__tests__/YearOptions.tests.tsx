@@ -1,5 +1,4 @@
-import { Text } from "@artsy/palette-mobile"
-import MultiSlider from "@ptomasroos/react-native-multi-slider"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
@@ -9,13 +8,15 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import {
   ALLOW_EMPTY_CREATED_DATES_FILTER,
-  OptionItem,
   YearOptionsScreen,
 } from "app/Components/ArtworkFilter/Filters/YearOptions"
 import { getEssentialProps } from "app/Components/ArtworkFilter/Filters/helper"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { act } from "react-test-renderer"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+
+jest.mock("@ptomasroos/react-native-multi-slider", () => {
+  const { View } = require("react-native")
+  return (props: object) => <View testID="multi-slider" {...props} />
+})
 
 describe("Year Options Screen", () => {
   let storeInstance: ReturnType<typeof ArtworksFiltersStore.useStore>
@@ -77,26 +78,18 @@ describe("Year Options Screen", () => {
   )
 
   it("renders propertly", () => {
-    const tree = renderWithWrappersLEGACY(<MockYearOptionsScreen initialData={initialState} />)
+    renderWithWrappers(<MockYearOptionsScreen initialData={initialState} />)
 
-    expect(extractText(tree.root.findAllByType(Text)[1])).toEqual("2010 – 2021")
-    expect(extractText(tree.root.findAllByType(OptionItem)[0])).toEqual(
-      ALLOW_EMPTY_CREATED_DATES_FILTER.displayText
-    )
+    expect(screen.getByText("2010 – 2021")).toBeOnTheScreen()
+    expect(screen.getByText(ALLOW_EMPTY_CREATED_DATES_FILTER.displayText)).toBeOnTheScreen()
   })
 
   it("selects the right year range and option", () => {
-    const tree = renderWithWrappersLEGACY(<MockYearOptionsScreen initialData={initialState} />)
-
+    renderWithWrappers(<MockYearOptionsScreen initialData={initialState} />)
     ;(storeInstance as any).getActions().__injectState?.(initialState)
 
-    const multiSlider = tree.root.findAllByType(MultiSlider)[0]
-    const optionItem = tree.root.findAllByType(OptionItem)[0]
-
-    act(() => {
-      multiSlider.props.onValuesChangeFinish(["2011", "2020"])
-      optionItem.props.onPress()
-    })
+    fireEvent(screen.getByTestId("multi-slider"), "valuesChangeFinish", ["2011", "2020"])
+    fireEvent.press(screen.getByText(ALLOW_EMPTY_CREATED_DATES_FILTER.displayText))
 
     const selectedFilters = storeInstance.getState().selectedFilters
     const latestCreatedYear = selectedFilters.find(

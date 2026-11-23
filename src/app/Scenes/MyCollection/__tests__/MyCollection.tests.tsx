@@ -1,7 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { MyCollectionTestsQuery } from "__generated__/MyCollectionTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionQueryRenderer, Tab } from "app/Scenes/MyCollection/MyCollection"
@@ -128,8 +127,7 @@ describe("MyCollection", () => {
         }),
       })
 
-      const addArtworkButton = screen.UNSAFE_getByProps({ testID: "add-artwork-button-zero-state" })
-      addArtworkButton.props.onPress()
+      fireEvent.press(screen.getByTestId("add-artwork-button-zero-state"))
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
@@ -199,11 +197,7 @@ describe("MyCollection", () => {
         }),
       })
 
-      const addArtworkButton = screen.UNSAFE_getByProps({
-        testID: "add-artwork-button-zero-artworks-state",
-      })
-
-      addArtworkButton.props.onPress()
+      fireEvent.press(screen.getByTestId("add-artwork-button-zero-artworks-state"))
 
       expect(navigate).toHaveBeenCalledWith(
         "my-collection/artworks/new",
@@ -227,11 +221,7 @@ describe("MyCollection", () => {
         }),
       })
 
-      const addArtworkButton = screen.UNSAFE_getByProps({
-        testID: "add-artwork-button-zero-artworks-state",
-      })
-
-      addArtworkButton.props.onPress()
+      fireEvent.press(screen.getByTestId("add-artwork-button-zero-artworks-state"))
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
@@ -250,7 +240,7 @@ describe("MyCollection", () => {
   describe("collection is not empty", () => {
     it("renders without throwing an error", () => {
       renderWithRelay()
-      expect(screen.UNSAFE_getByType(InfiniteScrollMyCollectionArtworksGridContainer)).toBeDefined()
+      expect(screen.getByLabelText("Artworks Content View")).toBeOnTheScreen()
     })
   })
 

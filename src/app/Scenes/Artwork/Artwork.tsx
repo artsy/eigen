@@ -33,10 +33,11 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { promptForReview } from "app/utils/promptForReview"
+import { runAfterInteractions } from "app/utils/runAfterInteractions"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { FlatList, InteractionManager, RefreshControl } from "react-native"
+import { FlatList, RefreshControl } from "react-native"
 import {
   Environment,
   RelayRefetchProp,
@@ -211,7 +212,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
     ({ orderId, isPurchase }) => {
       if (orderId) {
         goBack()
-        InteractionManager.runAfterInteractions(() => {
+        runAfterInteractions(() => {
           navigate(`/orders/${orderId}/details`)
         })
       }

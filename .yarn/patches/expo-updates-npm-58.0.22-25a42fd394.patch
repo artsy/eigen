@@ -41,21 +41,3 @@ index c216e1cfaff3b6c0bcae4f0fd68f02cadac7aabd..702735099c49f811caae7f71ce9291f9
 +    // instead of being silently ignored. This is the core fix for the Bridgeless crash issue.
    }
  }
-diff --git a/ios/EXUpdates.podspec b/ios/EXUpdates.podspec
-index 7f37c4ff40b20b6d4b723e1a0b3e8669072e3293..3d2f1ce8fb8eb2b2355ad77da884f68d32903fd8 100644
---- a/ios/EXUpdates.podspec
-+++ b/ios/EXUpdates.podspec
-@@ -18,7 +18,12 @@ begin
-   # No dev client if we are using native debug
-   if ENV['EX_UPDATES_NATIVE_DEBUG'] != '1'
-     project_root = ENV['PROJECT_ROOT'] || Pod::Config.instance.installation_root.to_s
--    use_dev_client = File.dirname(`node --print "require.resolve('expo-dev-client/package.json', { paths: ['#{__dir__}', '#{project_root}'] })"`).length > 0
-+    # PATCHED: the upstream one-liner is broken when expo-dev-client is not installed.
-+    # The backtick returns "" on failure, File.dirname("") is ".", and "." .length > 0 is true,
-+    # so use_dev_client was wrongly enabled (adding -DUSE_DEV_CLIENT=1 to Debug builds).
-+    # It also leaked the node MODULE_NOT_FOUND stack trace to stderr during pod install.
-+    resolved_dev_client = `node --print "require.resolve('expo-dev-client/package.json', { paths: ['#{__dir__}', '#{project_root}'] })" 2>/dev/null`.strip
-+    use_dev_client = $?.success? && !resolved_dev_client.empty?
-   end
- rescue
-   use_dev_client = false

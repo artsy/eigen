@@ -1,10 +1,25 @@
-import FastImage from "@d11/react-native-fast-image"
 import { act, fireEvent, screen, waitFor, within } from "@testing-library/react-native"
 import { SimilarArtworksScreen } from "app/Scenes/SimilarArtworks/SimilarArtworks"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+
+// Render FastImage as a host view so its `source` can be asserted on
+jest.mock("@d11/react-native-fast-image", () => {
+  const React = jest.requireActual("react")
+  const { View } = jest.requireActual("react-native")
+  const FastImage = (props: any) => React.createElement(View, { testID: "fast-image", ...props })
+  FastImage.priority = { low: "low", normal: "normal", high: "high" }
+  FastImage.resizeMode = {
+    contain: "contain",
+    cover: "cover",
+    stretch: "stretch",
+    center: "center",
+  }
+  FastImage.preload = jest.fn()
+  return { __esModule: true, default: FastImage }
+})
 
 describe("SimilarArtworks", () => {
   const { renderWithRelay } = setupTestWrapper({
@@ -46,11 +61,14 @@ describe("SimilarArtworks", () => {
       Artwork: () => ({ title: "Cool Painting", image: { url: "https://example.com/image.jpg" } }),
     })
 
-    const thumbnail = within(
-      await screen.findByTestId("lensResultsPhotoThumbnail")
-    ).UNSAFE_getByType(FastImage)
+    const thumbnail = within(await screen.findByTestId("lensResultsPhotoThumbnail")).getByTestId(
+      "fast-image"
+    )
 
-    expect(thumbnail.props.source.uri).toBe("https://example.com/image.jpg")
+    expect(thumbnail).toHaveProp(
+      "source",
+      expect.objectContaining({ uri: "https://example.com/image.jpg" })
+    )
   })
 
   it("shows an empty state when there are no similar artworks", async () => {

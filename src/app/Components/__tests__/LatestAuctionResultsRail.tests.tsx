@@ -30,9 +30,10 @@ describe("LatestAuctionResultsRail", () => {
   })
 
   it("returns null if there are no auction results", async () => {
-    const { toJSON } = renderWithRelay({ Me: () => emptyMe })
+    renderWithRelay({ Me: () => emptyMe })
 
-    expect(toJSON()).toBeNull()
+    expect(screen.queryByText("Auction Results for Artists You Follow")).not.toBeOnTheScreen()
+    expect(screen.queryByText(/Artist Name/)).not.toBeOnTheScreen()
   })
 })
 

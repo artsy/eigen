@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { act, fireEvent } from "@testing-library/react-native"
 import { InquiryPurchaseButtonTestsQuery } from "__generated__/InquiryPurchaseButtonTestsQuery.graphql"
 import { InquiryPurchaseButtonFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/InquiryPurchaseButton"
 import { navigate } from "app/system/navigation/navigate"
@@ -6,7 +6,6 @@ import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Alert } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 jest.spyOn(Alert, "alert")
@@ -45,13 +44,13 @@ const TestRenderer = () => {
 }
 
 const getWrapper = (mockResolvers = {}) => {
-  const tree = renderWithWrappers(<TestRenderer />)
+  const view = renderWithWrappers(<TestRenderer />)
   act(() => {
     environment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, mockResolvers)
     )
   })
-  return tree
+  return view
 }
 
 describe("InquiryPurchaseButton", () => {
