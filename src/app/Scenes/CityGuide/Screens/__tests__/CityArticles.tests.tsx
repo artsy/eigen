@@ -4,13 +4,6 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
-// React-test-renderer has issues with memo components, so we need to mock the palette-mobile
-// Image component. See https://github.com/facebook/react/issues/17301
-jest.mock("@artsy/palette-mobile", () => ({
-  ...jest.requireActual("@artsy/palette-mobile"),
-  Image: require("react-native").Image,
-}))
-
 describe("CityArticlesScreen", () => {
   const { renderWithRelay } = setupTestWrapper({
     Component: () => <CityArticlesScreen citySlug="london-united-kingdom" />,

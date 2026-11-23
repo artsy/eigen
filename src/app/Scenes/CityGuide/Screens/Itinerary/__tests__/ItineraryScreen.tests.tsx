@@ -18,8 +18,8 @@ import { MockPayloadGenerator } from "relay-test-utils"
 // instance, which lets us pull to refresh without walking the render tree.
 const pullToRefresh = () => (RefreshControl as any).latestRef.props.onRefresh()
 
-// React-test-renderer has issues with memo components, so we need to mock the palette-mobile
-// Image component. See https://github.com/facebook/react/issues/17301
+// palette-mobile's Image puts `testID` on a wrapping Flex and `src`/`style` on an inner
+// FastImage. Swap in RN's Image so the testID, `src` and `style` live on one element.
 jest.mock("@artsy/palette-mobile", () => ({
   ...jest.requireActual("@artsy/palette-mobile"),
   Image: require("react-native").Image,

@@ -5,9 +5,8 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 const imageURL = "https://image.com/image.jpg"
 const style = { width: 100, height: 300 }
 
-// React-test-renderer has issues with memo components, so we need to mock the palette-mobile Image component
-// Until it gets fixed
-// See https://github.com/facebook/react/issues/17301
+// palette-mobile's Image puts `testID` on a wrapping Flex and `src`/`style` on an inner
+// FastImage. Swap in RN's Image so the testID, `src` and `style` live on one element.
 jest.mock("@artsy/palette-mobile", () => ({
   ...jest.requireActual("@artsy/palette-mobile"),
   Image: require("react-native").Image,

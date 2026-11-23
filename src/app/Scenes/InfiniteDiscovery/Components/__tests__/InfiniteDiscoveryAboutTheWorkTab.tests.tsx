@@ -70,11 +70,8 @@ describe("AboutTheWorkTab", () => {
       }),
     })
 
-    // Not sure why, but these two lines were failing tests. cc @carlos
-    // mockResolveLastOperation({})
-    // await waitForElementToBeRemoved(() => screen.queryByText("Loading..."))
-
-    expect(screen.queryByText("Includes a Certificate of Authenticity")).not.toBeOnTheScreen()
+    expect(screen.getByText("Oil on canvas")).toBeOnTheScreen()
+    expect(screen.queryByTestId("authenticity-certificate")).not.toBeOnTheScreen()
     expect(screen.queryByText("Condition")).not.toBeOnTheScreen()
     expect(screen.queryByText("Signature")).not.toBeOnTheScreen()
     expect(screen.queryByText("Publisher")).not.toBeOnTheScreen()
@@ -117,10 +114,6 @@ describe("AboutTheWorkTab", () => {
       const { mockResolveLastOperation } = await renderWithRelay()
       await mockResolveLastOperation({ Artwork: () => artwork })
 
-      // Ditto
-      // mockResolveLastOperation({})
-      // await waitForElementToBeRemoved(() => screen.queryByText("Loading..."))
-
       const container = await screen.findByTestId("attribution")
       expect(within(container).getByText("This is a")).toBeOnTheScreen()
       expect(within(container).getByText("unique work")).toBeOnTheScreen()
@@ -129,10 +122,6 @@ describe("AboutTheWorkTab", () => {
     it("shows certificate icon when work has certificate and is not biddable", async () => {
       const { mockResolveLastOperation } = await renderWithRelay()
       await mockResolveLastOperation({ Artwork: () => artwork })
-
-      // Ditto
-      // mockResolveLastOperation({})
-      // await waitForElementToBeRemoved(() => screen.queryByText("Loading..."))
 
       expect(screen.getByTestId("certificate-icon")).toBeOnTheScreen()
     })

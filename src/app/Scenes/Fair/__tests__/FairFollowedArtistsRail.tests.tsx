@@ -6,16 +6,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
-// Mock memo to return the same instance of the component
-// issue: https://github.com/facebook/react/issues/17301
-jest.mock("react", () => {
-  const actualReact = jest.requireActual("react")
-  return {
-    ...actualReact,
-    memo: (component: React.ComponentType<any>) => component,
-  }
-})
-
 describe("FairFollowedArtistsRail", () => {
   const trackEvent = useTracking().trackEvent
   let env: ReturnType<typeof createMockEnvironment>
