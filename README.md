@@ -60,8 +60,8 @@ You can learn more about this work from [our blog][footer_blog] and by following
 our [job postings][footer_jobs]!
 
 [footer_website]: https://www.artsy.net/
-[footer_principles]: https://github.com/artsy/README/blob/main/culture/engineering-principles.md
-[footer_open]: https://github.com/artsy/README/blob/main/culture/engineering-principles.md#open-source-by-default
+[footer_principles]: https://github.com/artsy/README/blob/e4b7dff3209b43f4ab63bad919f2500972aade1b/culture/engineering-principles.md
+[footer_open]: https://github.com/artsy/README/blob/e4b7dff3209b43f4ab63bad919f2500972aade1b/culture/engineering-principles.md#open-source-by-default
 [footer_blog]: https://artsy.github.io/
 [footer_twitter]: https://twitter.com/ArtsyOpenSource
 [footer_api]: https://developers.artsy.net/
@@ -71,7 +71,7 @@ our [job postings][footer_jobs]!
 [mounir_github_profile]: https://github.com/MounirDhahri
 [george_github_profile]: https://github.com/gkartalis
 [circle_ci]: https://circleci.com/gh/artsy/eigen
-[overview]: https://github.com/artsy/README/blob/main/culture/what-is-artsy.md#artsy-in-a-nutshell
+[overview]: https://github.com/artsy/README/blob/e4b7dff3209b43f4ab63bad919f2500972aade1b/culture/what-is-artsy.md#artsy-in-a-nutshell
 [team_culture]: https://www.objc.io/issues/22-scale/artsy
 [artsy_github]: https://github.com/artsy
 [artsy_readme]: https://github.com/artsy/README
