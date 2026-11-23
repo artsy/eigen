@@ -107,6 +107,15 @@ describe("InfiniteDiscoveryHeader", () => {
     expect(screen.getByText("Discover Daily")).toBeOnTheScreen()
   })
 
+  it("exits Discover Daily when the close button is pressed", async () => {
+    await renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
+
+    await fireEvent.press(screen.getByRole("button", { name: "Exit Discover Daily" }))
+
+    expect(mockTrack.tappedExit).toHaveBeenCalledTimes(1)
+    expect(mockGoBack).toHaveBeenCalledTimes(1)
+  })
+
   it("shows toast when exiting with saved artworks", async () => {
     GlobalStore.actions.infiniteDiscovery.incrementSavedArtworksCount()
     GlobalStore.actions.infiniteDiscovery.incrementSavedArtworksCount()

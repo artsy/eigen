@@ -33,12 +33,16 @@ describe("MyAccountEditPhoneQueryRenderer", () => {
     expect(screen.getByDisplayValue("7825 577664")).toBeOnTheScreen()
   })
 
-  it("keeps Save disabled while the number is invalid", async () => {
-    mockValidatePhoneNumber.mockResolvedValue(false)
+  it("disables Save when the number becomes invalid", async () => {
     await renderWithRelay({ Me: () => ({ phone: "+447825577664" }) })
 
-    await waitFor(() => expect(mockValidatePhoneNumber).toHaveBeenCalled())
-    expect(screen.getByRole("button", { name: "Save" })).toBeDisabled()
+    // Save starts disabled, so first see it enabled by a valid number
+    await waitFor(() => expect(screen.getByRole("button", { name: "Save" })).toBeEnabled())
+
+    mockValidatePhoneNumber.mockResolvedValue(false)
+    await fireEvent.changeText(screen.getByDisplayValue("7825 577664"), "78")
+
+    await waitFor(() => expect(screen.getByRole("button", { name: "Save" })).toBeDisabled())
   })
 
   it("saves the number and goes back", async () => {

@@ -32,7 +32,6 @@ interface Props {
   renderedInTab?: boolean
 }
 
-// @TODO: Implement test for the CityGuideEventList component https://artsyproduct.atlassian.net/browse/LD-562
 export const CityGuideEventList: React.FC<Props> = memo(
   ({ bucket, type, citySlug, cityName, header, onScroll, fetchingNextPage, renderedInTab }) => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

@@ -12,7 +12,6 @@ export interface Props {
   citySlug: string
 }
 
-// @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
 export const CityGuideSavedEventSection: React.FC<Props> = ({ data, citySlug }) => {
   const handleTap = () => {
     navigate(`/city-save/${citySlug}`)

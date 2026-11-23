@@ -221,7 +221,6 @@ module.exports = {
         "**/?(*.)+(spec|test).[jt]s?(x)",
         "src/**/*.tests.ts",
         "src/**/*.tests.tsx",
-        "src/app/Components/ArtworkFilter/Filters/AggregationOptionCommonValidation.tsx",
       ],
       extends: ["plugin:testing-library/react"],
       parserOptions: {
