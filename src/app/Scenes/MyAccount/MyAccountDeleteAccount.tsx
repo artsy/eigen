@@ -133,14 +133,22 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
                   setError(mutationError?.message)
                   return
                 }
-                //  Account deleted request submitted successfully
+                //  Account deleted request submitted successfully. Sign out once the alert is
+                // dismissed, so it's read before the screen goes away.
                 Alert.alert(
                   "Account deletion request submitted!",
-                  "It may take up to 7 days to fully delete and remove all of your data."
+                  "It may take up to 7 days to fully delete and remove all of your data.",
+                  [
+                    {
+                      text: "OK",
+                      onPress: () => {
+                        InteractionManager.runAfterInteractions(() => {
+                          GlobalStore.actions.auth.signOut()
+                        })
+                      },
+                    },
+                  ]
                 )
-                InteractionManager.runAfterInteractions(() => {
-                  GlobalStore.actions.auth.signOut()
-                })
               } catch (e: any) {
                 setError("Something went wrong")
               } finally {
