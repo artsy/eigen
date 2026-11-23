@@ -8284,6 +8284,11 @@ type CRMActivity {
     """
     timezone: String
   ): String
+
+  """
+  The user who added this activity
+  """
+  userID: String
 }
 
 """
@@ -13848,6 +13853,11 @@ input CreateCRMActivityInput {
   """
   occurredAt: String
   subject: String
+
+  """
+  The user who added the activity, who must belong to the activity's partner. Defaults to the current user, null leaves it unset
+  """
+  userID: String
 }
 
 type CreateCRMActivityPayload {
@@ -40304,6 +40314,11 @@ input UpdateCRMActivityInput {
   """
   occurredAt: String
   subject: String
+
+  """
+  The user who added the activity, who must belong to the activity's partner. Null clears it, leaving it out keeps it
+  """
+  userID: String
 }
 
 type UpdateCRMActivityPayload {
