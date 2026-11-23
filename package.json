@@ -106,7 +106,6 @@
   ],
   "dependenciesComments": {
     "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled",
-    "postcss": "Pinned to fix GHSA-6g55-p6wh-862q and GHSA-r28c-9q8g-f849 (path traversal / arbitrary file disclosure via sourceMappingURL). expo (via @expo/metro-config@55.0.21) exact-pins postcss@~8.4.32, and styled-components@6.1.19 exact-pins postcss@8.4.49, neither of which is patched; remove this once expo/styled-components bump their postcss dependency upstream.",
     "sharp": "Pinned to 0.35.0 to fix GHSA-f88m-g3jw-g9cj. react-native-bootsplash@7.1.0 exact-caret-pins sharp@^0.34.5 (excludes 0.35.0); remove this once react-native-bootsplash is bumped to 7.3.2+ (which requires sharp@^0.35.2).",
     "tmp": "Pinned to 0.2.7 to fix GHSA-ph9p-34f9-6g65 (arbitrary file/directory write via symlink). @artsy/update-repo@0.8.2 (latest) exact-pins tmp@^0.1.0 with no patched release on that line; remove this once @artsy/update-repo bumps its tmp dependency upstream."
   },
@@ -114,7 +113,7 @@
     "@artsy/changelog": "0.1.0",
     "@artsy/cohesion": "4.425.0",
     "@artsy/icons": "3.85.0",
-    "@artsy/palette-mobile": "25.0.0--canary.542.6974.0",
+    "@artsy/palette-mobile": "25.0.0--canary.542.6979.0",
     "@artsy/to-title-case": "1.2.1",
     "@braze/react-native-sdk": "23.1.0",
     "@d11/react-native-fast-image": "patch:@d11/react-native-fast-image@npm%3A8.13.0#~/.yarn/patches/@d11-react-native-fast-image-npm-8.13.0-1ba5757ff5.patch",
@@ -220,7 +219,7 @@
     "semver": "7.5.2",
     "sift-react-native": "patch:sift-react-native@npm%3A0.1.15#~/.yarn/patches/sift-react-native-npm-0.1.15-61730a007d.patch",
     "simple-markdown": "0.7.3",
-    "styled-components": "6.1.19",
+    "styled-components": "6.6.0",
     "styled-system": "5.1.5",
     "unleash-proxy-client": "3.8.2",
     "url": "0.11.3",
@@ -340,7 +339,6 @@
     "@types/react-relay": "18.2.0",
     "@jest/fake-timers@npm:^29.7.0": "patch:@jest/fake-timers@npm%3A29.7.0#~/.yarn/patches/@jest-fake-timers-npm-29.7.0-e4174d1b56.patch",
     "nanoid": "3.3.18",
-    "postcss": "8.5.23",
     "sharp": "0.35.0",
     "tmp": "0.2.7"
   },
