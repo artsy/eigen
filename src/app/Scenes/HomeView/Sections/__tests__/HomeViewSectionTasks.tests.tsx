@@ -4,9 +4,12 @@ import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionTasks } from "app/Scenes/HomeView/Sections/HomeViewSectionTasks"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { pressSwipeableAction } from "app/utils/tests/pressSwipeableAction"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
+
+jest.mock("react-native-gesture-handler/ReanimatedSwipeable", () =>
+  require("app/utils/tests/mockReanimatedSwipeable")
+)
 
 const swipeTaskOpen = async (task: ReturnType<typeof screen.getByTestId>) => {
   fireEvent(task, "onSwipeableWillOpen", { direction: "right" })
@@ -147,7 +150,7 @@ describe("HomeViewSectionTasks", () => {
     swipeTaskOpen(task1)
 
     // Tap Clear on the first task
-    pressSwipeableAction(within(task1).getByText("Clear"))
+    fireEvent.press(within(task1).getByText("Clear"))
 
     // task optimistically clears
     await waitFor(() => {

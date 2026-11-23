@@ -1,9 +1,12 @@
 import { Text } from "@artsy/palette-mobile"
-import { screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { Swipeable } from "app/Components/Swipeable/Swipeable"
-import { pressSwipeableAction } from "app/utils/tests/pressSwipeableAction"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import ReactNativeHapticFeedback from "react-native-haptic-feedback"
+
+jest.mock("react-native-gesture-handler/ReanimatedSwipeable", () =>
+  require("app/utils/tests/mockReanimatedSwipeable")
+)
 
 jest.mock("react-native-haptic-feedback", () => ({
   trigger: jest.fn(),
@@ -29,7 +32,7 @@ describe("Swipeable Component", () => {
       <Swipeable {...mockProps} actionComponentWidth={80} actionOnPress={mockAction} />
     )
 
-    pressSwipeableAction(screen.getByText("Swipe Me"))
+    fireEvent.press(screen.getByText("Swipe Me"))
 
     expect(mockAction).toHaveBeenCalled()
   })
@@ -39,7 +42,7 @@ describe("Swipeable Component", () => {
       <Swipeable {...mockProps} actionComponentWidth={80} actionOnPress={mockAction} />
     )
 
-    pressSwipeableAction(screen.getByText("Swipe Me"))
+    fireEvent.press(screen.getByText("Swipe Me"))
 
     expect(ReactNativeHapticFeedback.trigger).toHaveBeenCalledWith("impactLight")
   })

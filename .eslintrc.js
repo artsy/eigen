@@ -175,8 +175,9 @@ module.exports = {
       files: [
         "*.tests.ts",
         "*.tests.tsx",
-        // shared test helper that isn't a test file itself
-        "src/app/Components/ArtworkFilter/Filters/AggregationOptionCommonValidation.tsx",
+        // shared test helpers and mocks that aren't test files themselves
+        "**/__tests__/**",
+        "src/app/utils/tests/**",
       ],
       rules: {
         // App-level import restrictions don't apply to tests, but tests must not depend on

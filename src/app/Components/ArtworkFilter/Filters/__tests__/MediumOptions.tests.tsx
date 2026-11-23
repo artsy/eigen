@@ -1,9 +1,9 @@
 import { Aggregations, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { MediumOptionsScreen } from "app/Components/ArtworkFilter/Filters/MediumOptions"
 import {
   sharedAggregateFilterValidation,
   ValidationParams,
-} from "app/Components/ArtworkFilter/Filters/AggregationOptionCommonValidation"
-import { MediumOptionsScreen } from "app/Components/ArtworkFilter/Filters/MediumOptions"
+} from "app/Components/ArtworkFilter/Filters/__tests__/AggregationOptionCommonValidation"
 import { getEssentialProps } from "app/Components/ArtworkFilter/Filters/helper"
 
 describe("Medium Options Screen", () => {
