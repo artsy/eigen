@@ -3,7 +3,7 @@ import React
 import ReactAppDependencyProvider
 import UserNotifications
 
-class AppDelegate: ExpoAppDelegate, UNUserNotificationCenterDelegate {
+class AppDelegate: ExpoAppDelegate, ExpoReactNativeFactoryProvider, UNUserNotificationCenterDelegate {
     var window: UIWindow?
 
     @objc static var shared: AppDelegate? {
@@ -32,15 +32,9 @@ class AppDelegate: ExpoAppDelegate, UNUserNotificationCenterDelegate {
       reactNativeDelegate = delegate
       reactNativeFactory = factory
 
-  #if os(iOS) || os(tvOS)
-      window = UIWindow(frame: UIScreen.main.bounds)
-
-      factory.startReactNative(
-        withModuleName: "main",
-        in: window,
-        launchOptions: launchOptions)
-  #endif
-
+      // The window is created and React Native is started by `SceneDelegate` under the
+      // scene-based life cycle (required by the iOS 27 SDK). `ExpoAppSceneDelegate` re-feeds
+      // scene URL, user-activity, quick-action and life-cycle events to the overrides below.
       return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 

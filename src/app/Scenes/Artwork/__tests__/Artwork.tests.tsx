@@ -50,8 +50,7 @@ jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
   return { TimeOffsetProvider }
 })
 
-jest.mock("react-native/Libraries/Interaction/InteractionManager", () => ({
-  ...jest.requireActual("react-native/Libraries/Interaction/InteractionManager"),
+jest.mock("app/utils/runAfterInteractions", () => ({
   runAfterInteractions: jest.fn((callback) => callback()),
 }))
 

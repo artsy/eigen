@@ -3,8 +3,8 @@ import { INPUT_HEIGHT } from "app/Components/Input"
 import { Select, SelectRef } from "app/Components/Select"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
+import { runAfterInteractions } from "app/utils/runAfterInteractions"
 import React, { Ref, useRef, useState } from "react"
-import { InteractionManager } from "react-native"
 import { AttributionClassType, RarityInfoModal } from "./RarityLegacy"
 
 interface RarityProps {
@@ -26,9 +26,7 @@ export const Rarity: React.FC<RarityProps> = ({ selectRef, onSubmitEditing }) =>
       formik.setFieldValue("editionNumber", undefined)
       formik.setFieldValue("editionSize", undefined)
     }
-    // TODO: `InteractionManager` is deprecated
-    // we need to update it to `requestIdleCallback` when we upgrade to RN 0.82+
-    InteractionManager.runAfterInteractions(() => {
+    runAfterInteractions(() => {
       if (value === "LIMITED_EDITION") {
         editionRef.current?.focus()
       } else {

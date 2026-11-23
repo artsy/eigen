@@ -6,8 +6,7 @@ import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyC
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-jest.mock("react-native/Libraries/Interaction/InteractionManager", () => ({
-  ...jest.requireActual("react-native/Libraries/Interaction/InteractionManager"),
+jest.mock("app/utils/runAfterInteractions", () => ({
   runAfterInteractions: jest.fn((callback) => callback()),
 }))
 

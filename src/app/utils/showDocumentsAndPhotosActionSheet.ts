@@ -1,5 +1,5 @@
 import { ActionSheetOptions } from "@expo/react-native-action-sheet"
-import RNDocumentPicker, { DocumentPickerResponse } from "@react-native-documents/picker"
+import { DocumentPickerResponse, pick, types } from "@react-native-documents/picker"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { isArray } from "lodash"
 import { Platform } from "react-native"
@@ -37,14 +37,9 @@ export async function showDocumentsAndPhotosActionSheet(
         let photos = null
         try {
           if (buttonIndex === 0) {
-            const results = await RNDocumentPicker.pick({
+            const results = await pick({
               mode: "import",
-              type: [
-                RNDocumentPicker.types.images,
-                RNDocumentPicker.types.pdf,
-                RNDocumentPicker.types.docx,
-                RNDocumentPicker.types.doc,
-              ],
+              type: [types.images, types.pdf, types.docx, types.doc],
               allowMultiSelection: true,
             })
 

@@ -26,8 +26,7 @@ jest.mock("app/system/navigation/navigate", () => ({
   navigate: jest.fn(),
 }))
 
-jest.mock("react-native/Libraries/Interaction/InteractionManager", () => ({
-  ...jest.requireActual("react-native/Libraries/Interaction/InteractionManager"),
+jest.mock("app/utils/runAfterInteractions", () => ({
   runAfterInteractions: jest.fn((callback) => callback()),
 }))
 

@@ -270,9 +270,9 @@ dependencies {
     implementation 'commons-io:commons-io:2.8.0'
 
     // For WebP support, including animated WebP
-    implementation 'com.facebook.fresco:animated-base-support:1.3.0'  // We need this to support android versions below API level 14
-    implementation 'com.facebook.fresco:animated-webp:3.6.0'
-    implementation 'com.facebook.fresco:webpsupport:3.6.0'
+    // Keep these on the Fresco version React Native ships (gradle/libs.versions.toml in react-native).
+    implementation 'com.facebook.fresco:animated-webp:3.7.0'
+    implementation 'com.facebook.fresco:webpsupport:3.7.0'
 
     // Test dependencies
     testImplementation 'junit:junit:4.13.2'

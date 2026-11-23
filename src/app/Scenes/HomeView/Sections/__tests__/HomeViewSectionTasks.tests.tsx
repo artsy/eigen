@@ -4,6 +4,7 @@ import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionTasks } from "app/Scenes/HomeView/Sections/HomeViewSectionTasks"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { pressSwipeableAction } from "app/utils/tests/pressSwipeableAction"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { ReactTestInstance } from "react-test-renderer"
@@ -147,7 +148,7 @@ describe("HomeViewSectionTasks", () => {
     swipeTaskOpen(task1)
 
     // Tap Clear on the first task
-    fireEvent.press(within(task1).getByText("Clear"))
+    pressSwipeableAction(within(task1).getByText("Clear"))
 
     // task optimistically clears
     await waitFor(() => {
