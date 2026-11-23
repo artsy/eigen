@@ -29,13 +29,18 @@ export const useUpdateArtworkListsForArtwork = (artworkID: string): MutationResu
     return initialCommit({
       ...config,
       updater: (store, data) => {
+        const response = data?.artworksCollectionsBatchUpdate?.responseOrError
+
+        // Independent of the artwork/`entity` records below, so run it before
+        // their early returns — a missing store count shouldn't skip the reorder.
+        moveSavedListsToFront(store, response?.addedToArtworkLists)
+
         const artwork = store.get(artworkID)
 
         if (!artwork) {
           return
         }
 
-        const response = data?.artworksCollectionsBatchUpdate?.responseOrError
         const addedCounts = getArtworkListsCountByType(response?.addedToArtworkLists)
         const removedCounts = getArtworkListsCountByType(response?.removedFromArtworkLists)
 
@@ -68,8 +73,6 @@ export const useUpdateArtworkListsForArtwork = (artworkID: string): MutationResu
         const newValue = prevValue + addedCounts.custom - removedCounts.custom
 
         entity.setValue(newValue, "totalCount")
-
-        moveSavedListsToFront(store, response?.addedToArtworkLists)
       },
     })
   }
@@ -84,7 +87,7 @@ export const useUpdateArtworkListsForArtwork = (artworkID: string): MutationResu
  * response reorders it. The default "Saved Artworks" list isn't part of this
  * connection, so it's skipped.
  */
-const moveSavedListsToFront = (
+export const moveSavedListsToFront = (
   store: RecordSourceSelectorProxy,
   addedToArtworkLists: Response["addedToArtworkLists"]
 ) => {
