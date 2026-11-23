@@ -94,9 +94,9 @@ describe("ArtistListItem", () => {
     expect(() => screen.getByTestId("follow-artist-button")).toBeTruthy()
   })
 
-  it("labels the FollowButton with the artist's name", () => {
-    renderWithWrappers(<TestRenderer showFollowButton />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+  it("labels the FollowButton with the artist's name", async () => {
+    await renderWithWrappers(<TestRenderer showFollowButton />)
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({ name: "Test Artist", is_followed: true }),
     })
     // Palette's Button repeats the label on an inner view, so match the button role

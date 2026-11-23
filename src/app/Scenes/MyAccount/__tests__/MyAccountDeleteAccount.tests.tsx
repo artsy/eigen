@@ -43,14 +43,17 @@ describe("MyAccountDeleteAccount", () => {
   })
 
   it("signs out only once the confirmation alert is dismissed", async () => {
-    renderWithRelay({ Me: () => ({ hasPassword: true }) })
+    await renderWithRelay({ Me: () => ({ hasPassword: true }) })
 
-    fireEvent.changeText(
+    await fireEvent.changeText(
       screen.getByPlaceholderText("Please share with us why you are leaving"),
       "Testing"
     )
-    fireEvent.changeText(screen.getByPlaceholderText("Enter your password to continue"), "secret")
-    fireEvent.press(screen.getByRole("button", { name: "Delete My Account" }))
+    await fireEvent.changeText(
+      screen.getByPlaceholderText("Enter your password to continue"),
+      "secret"
+    )
+    await fireEvent.press(screen.getByRole("button", { name: "Delete My Account" }))
 
     await waitFor(() =>
       expect(alert).toHaveBeenCalledWith(

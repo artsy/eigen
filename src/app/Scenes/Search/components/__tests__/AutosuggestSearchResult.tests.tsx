@@ -130,10 +130,10 @@ describe(AutosuggestSearchResult, () => {
     expect(spy).toHaveBeenCalled()
   })
 
-  it(`does not navigate when a custom touch handler is passed`, () => {
+  it(`does not navigate when a custom touch handler is passed`, async () => {
     const spy = jest.fn()
-    renderWithWrappers(<TestWrapper result={result} onResultPress={spy} />)
-    fireEvent.press(screen.getByTestId(`autosuggest-search-result-${result.displayLabel}`))
+    await renderWithWrappers(<TestWrapper result={result} onResultPress={spy} />)
+    await fireEvent.press(screen.getByTestId(`autosuggest-search-result-${result.displayLabel}`))
     expect(spy).toHaveBeenCalledWith(result)
     expect(navigate).not.toHaveBeenCalled()
   })
