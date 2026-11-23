@@ -227,6 +227,10 @@ module.exports = {
       parserOptions: {
         project: "./tsconfig.json",
         tsconfigRootDir: __dirname,
+        // @react-native/typescript-config lists `es2024.promise`, which @typescript-eslint/parser v5
+        // can't map to scope-analysis globals. Setting `lib` here skips that lookup; type
+        // information still comes from the full tsconfig.
+        lib: ["esnext"],
       },
       rules: {
         // RNTL v14 makes fireEvent async (and userEvent already is), so awaiting them must be allowed.
