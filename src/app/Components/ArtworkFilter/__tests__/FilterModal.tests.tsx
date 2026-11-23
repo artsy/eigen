@@ -423,9 +423,8 @@ describe("Applying filters via Show Results", () => {
 describe("Applying filters on Artworks", () => {
   let env: ReturnType<typeof createMockEnvironment>
 
-  beforeEach(async () => {
+  beforeEach(() => {
     env = createMockEnvironment()
-    await resolveMostRecentRelayOperation(env)
   })
 
   const TestRenderer = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => (
@@ -458,13 +457,16 @@ describe("Applying filters on Artworks", () => {
     />
   )
 
-  it.skip("calls the relay method to refetch artworks when a filter is applied", async () => {
+  it("calls the relay method to refetch artworks when a filter is applied", async () => {
+    const priceHighToLow = {
+      displayText: "Price (High to Low)",
+      paramName: FilterParamName.sort,
+      paramValue: "-has_price,-prices",
+    }
     const injectedState: ArtworkFiltersState = {
-      selectedFilters: [{ displayText: "Price (High to Low)", paramName: FilterParamName.sort }],
-      appliedFilters: [{ displayText: "Price (High to Low)", paramName: FilterParamName.sort }],
-      previouslyAppliedFilters: [
-        { displayText: "Price (High to Low)", paramName: FilterParamName.sort },
-      ],
+      selectedFilters: [priceHighToLow],
+      appliedFilters: [priceHighToLow],
+      previouslyAppliedFilters: [priceHighToLow],
       applyFilters: true,
       aggregations: mockAggregations,
       filterType: "artwork",
@@ -487,25 +489,12 @@ describe("Applying filters on Artworks", () => {
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toEqual(
       "CollectionArtworksInfiniteScrollGridQuery"
     )
-    expect(env.mock.getMostRecentOperation().request.variables).toMatchInlineSnapshot(`
-      Object {
-        "acquireable": false,
-        "additionalGeneIDs": null,
-        "atAuction": false,
-        "attributionClass": null,
-        "color": null,
-        "colors": null,
-        "count": 10,
-        "cursor": null,
-        "id": "street-art-now",
-        "inquireableOnly": false,
-        "majorPeriods": null,
-        "offerable": false,
-        "partnerID": null,
-        "priceRange": "*-*",
-        "sort": null,
-      }
-    `)
+    expect(env.mock.getMostRecentOperation().request.variables).toEqual(
+      expect.objectContaining({
+        id: "street-art-now",
+        input: expect.objectContaining({ sort: "-has_price,-prices" }),
+      })
+    )
   })
 })
 

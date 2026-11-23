@@ -8,7 +8,6 @@ import { MyCollectionContainer } from "app/Scenes/MyCollection/MyCollectionLegac
 import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -243,23 +242,6 @@ describe("MyCollection", () => {
       expect(screen.getByLabelText("Artworks Content View")).toBeOnTheScreen()
     })
   })
-
-  describe("sorting and filtering", () => {
-    it.skip("filters and sorts without crashing", async () => {
-      await renderWithRelay({
-        Me: () => ({
-          myCollectionConnection,
-        }),
-      })
-
-      await applyFilter("Sort By", "Price Paid (High to Low)")
-      await applyFilter("Artists", "Banksy")
-      // await applyFilter("Rarity", "Unique")
-      // await applyFilter("Medium", "Print")
-      // await applyFilter("Price", "$0-1,000")
-      // await applyFilter("Size", "Small (under 40cm)")
-    })
-  })
 })
 
 describe("MyCollection with AREnableSellMyCollectionArtwork", () => {
@@ -293,36 +275,3 @@ describe("MyCollection with AREnableSellMyCollectionArtwork", () => {
     })
   })
 })
-
-const applyFilter = async (filterName: string, filterOption: string) => {
-  await flushPromiseQueue()
-  await fireEvent.press(screen.getByTestId("sort-and-filter-button"))
-  await fireEvent.press(screen.getByText(filterName))
-  await fireEvent.press(screen.getByText(filterOption))
-  await fireEvent.press(screen.getByText("Show Results"))
-}
-
-const myCollectionConnection = {
-  edges: [
-    {
-      node: {
-        id: "QXJ0d29yazo2MWMwOTk4ZWU0YjZjMzAwMGI3NmJmYjE=",
-        medium: "Print",
-        pricePaid: {
-          minor: "2000",
-        },
-        attributionClass: {
-          name: "Unique",
-        },
-        sizeBucket: null,
-        width: 30,
-        height: 20,
-        artist: {
-          name: "Banksy",
-          internalID: "4dd1584de0091e000100207c",
-          formattedNationalityAndBirthday: "British",
-        },
-      },
-    },
-  ],
-}

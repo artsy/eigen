@@ -57,8 +57,7 @@ describe("EditSavedSearchAlert", () => {
     expect(alertPills[3]).toHaveTextContent("Paper")
   })
 
-  // TODO: fix this test
-  it.skip("should pass updated criteria to update mutation when pills are removed", async () => {
+  it("should pass updated criteria to update mutation when pills are removed", async () => {
     ;(useSavedSearchPills as jest.Mock)
       .mockImplementationOnce(() => pills)
       .mockImplementationOnce(() => pills)
@@ -381,6 +380,6 @@ const mockSuggestedFilters = [
 const pills = [
   { label: "Banksy", paramName: "artistIDs", value: "banksy" },
   { label: "Monkeys", paramName: "artistSeriesIDs", value: "monkeys" },
-  { label: "Lithograph", paramName: "materialTerms", value: "lithograph" },
-  { label: "Paper", paramName: "materialTerms", value: "paper" },
+  { label: "Lithograph", paramName: "materialsTerms", value: "lithograph" },
+  { label: "Paper", paramName: "materialsTerms", value: "paper" },
 ]

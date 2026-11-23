@@ -264,13 +264,14 @@ describe("CreateNewArtworkListView", () => {
       expect(screen.getByText("3 / 40")).toBeOnTheScreen()
     })
 
-    // Known issue with react native testing library
-    // context: https://github.com/callstack/react-native-testing-library/issues/1239
-    it.skip("when user has reached the allowed limit", async () => {
+    it("when user has reached the allowed limit", async () => {
       await renderWithRelay()
 
-      const longText = "a".repeat(100)
-      await fireEvent(screen.getByPlaceholderText(inputPlaceholder), "changeText", longText)
+      const input = screen.getByPlaceholderText(inputPlaceholder)
+      // The native TextInput stops typing at maxLength; fireEvent.changeText would bypass it
+      expect(input).toHaveProp("maxLength", 40)
+
+      await fireEvent.changeText(input, "a".repeat(40))
 
       expect(screen.getByText("40 / 40")).toBeOnTheScreen()
     })

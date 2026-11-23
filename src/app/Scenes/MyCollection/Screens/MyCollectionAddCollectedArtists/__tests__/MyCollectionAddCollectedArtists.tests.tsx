@@ -6,7 +6,7 @@ import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
-describe.skip("MyCollectionAddCollectedArtists", () => {
+describe("MyCollectionAddCollectedArtists", () => {
   const { renderWithRelay } = setupTestWrapper({
     Component: MyCollectionAddCollectedArtistsScreen,
   })

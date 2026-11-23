@@ -131,8 +131,7 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
       expect(screen.queryByText("Artsy would like to send you notifications")).toBeFalsy()
     })
 
-    // FIXME: Platform.select always defaults to iOS, which breaks this test
-    it.skip("should show the open settings banner on Android if the user did not allow push notifications", async () => {
+    it("should show the open settings banner on Android if the user did not allow push notifications", async () => {
       mockFetchNotificationPermissions().mockImplementationOnce(() =>
         Promise.resolve(PushAuthorizationStatus.Denied)
       )

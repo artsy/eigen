@@ -8,10 +8,11 @@ const HR = MIN * 60
 const DAY = HR * 24
 
 describe("UrgencyInfo", () => {
-  jest.useFakeTimers({
-    legacyFakeTimers: true,
+  // Modern fake timers move Date along with the timers, so the countdown text is deterministic
+  beforeEach(() => {
+    jest.useFakeTimers()
   })
-  afterAll(() => {
+  afterEach(() => {
     jest.useRealTimers()
   })
   it('shows "Live in" when sale is live type and has not started', async () => {
@@ -56,7 +57,7 @@ describe("UrgencyInfo", () => {
     expect(screen.getByText("In progress")).toBeOnTheScreen()
   })
 
-  it.skip("calls onTimerEnd function when timer ends", async () => {
+  it("calls onTimerEnd function when timer ends", async () => {
     const start = new Date(new Date().getTime()).toISOString()
     const end = new Date(new Date().getTime() + 3 * SEC).toISOString()
     const onTimerEndMock = jest.fn()
@@ -69,11 +70,16 @@ describe("UrgencyInfo", () => {
       />
     )
 
-    // IRL onTimerEndMock is called once when the timer ends
-    // but since timer runs endlessly, jest timer would never exit
-    // TODO: Find better way to test this block
-    jest.runAllTimers()
-    expect(onTimerEndMock).toHaveBeenCalled()
+    // The countdown interval never stops, so step past the end time instead of running all timers
+    await act(() => {
+      jest.advanceTimersByTime(2 * SEC)
+    })
+    expect(onTimerEndMock).not.toHaveBeenCalled()
+
+    await act(() => {
+      jest.advanceTimersByTime(2 * SEC)
+    })
+    expect(onTimerEndMock).toHaveBeenCalledTimes(1)
   })
 
   describe("text color", () => {
@@ -86,7 +92,7 @@ describe("UrgencyInfo", () => {
       await act(() => {
         jest.advanceTimersByTime(2000)
       })
-      expect(screen.getByText("58m 59s left")).toHaveStyle({ color: "#D71023" })
+      expect(screen.getByText("58m 58s left")).toHaveStyle({ color: "#D71023" })
     })
     it("text color is blue when time is greater than 1 hour", async () => {
       const start = new Date(new Date().getTime() - 10).toISOString()

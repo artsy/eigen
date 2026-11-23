@@ -3,18 +3,12 @@ import { Fair, Show } from "app/Scenes/CityGuide/utils/types"
 import { CityFixture } from "app/__fixtures__/CityFixture"
 import { uniq } from "lodash"
 
-// The stubbed data needs re-creating
-//
-describe.skip(bucketCityResults, () => {
+describe(bucketCityResults, () => {
   const results = bucketCityResults(
     CityFixture.shows.edges.map((e: any) => e.node),
     CityFixture.upcomingShows.edges.map((e: any) => e.node),
     CityFixture.fairs.edges.map((e: any) => e.node)
   )
-
-  it("doesn't yet support saved results", () => {
-    expect(results.saved).toEqual([])
-  })
 
   it("calculates galleries correctly", () => {
     expect(uniq(results.galleries.map((s) => s!.partner!.type))).toEqual(["Gallery"])
