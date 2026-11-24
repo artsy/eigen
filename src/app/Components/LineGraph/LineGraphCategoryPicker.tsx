@@ -1,6 +1,6 @@
 import { Flex, Spacer, useSpace, useColor, Pill, Text } from "@artsy/palette-mobile"
 import { memo, useEffect, useRef, useState } from "react"
-import { Dimensions, LayoutRectangle, ViewProps } from "react-native"
+import { Dimensions, LayoutRectangle, ViewProps, ScrollViewInstance } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 
 import { ColoredDot, DEFAULT_DOT_COLOR } from "./ColoredDot"
@@ -45,7 +45,7 @@ export const LineGraphCategoryPicker: React.FC<LineGraphCategoryPickerProps> = m
     const [selectedIndex, setSelectedIndex] = useState(initialSelectedIndex)
 
     const allLayoutsPresent = categoryLayouts.every((l) => l)
-    const scrollViewRef = useRef<ScrollView>(null)
+    const scrollViewRef = useRef<ScrollViewInstance>(null)
     const { width: screenWidth } = Dimensions.get("window")
 
     const alignSelectedToCenter = () => {

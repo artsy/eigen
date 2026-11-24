@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Input, SkeletonBox } from "@artsy/palette-mobile"
+import { Flex, Input, SkeletonBox, InputRef } from "@artsy/palette-mobile"
 import { MyAccountEditEmailQuery } from "__generated__/MyAccountEditEmailQuery.graphql"
 import { MyAccountEditEmail_me$key } from "__generated__/MyAccountEditEmail_me.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
@@ -22,7 +22,7 @@ interface MyAccountEditEmailProps {
 export const MyAccountEditEmail: React.FC<MyAccountEditEmailProps> = (props) => {
   const me = useFragment(meFragment, props.me)
   const toast = useToast()
-  const inputRef = useRef<Input>(null)
+  const inputRef = useRef<InputRef>(null)
 
   const [email, setEmail] = useState<string>(me.email ?? "")
 

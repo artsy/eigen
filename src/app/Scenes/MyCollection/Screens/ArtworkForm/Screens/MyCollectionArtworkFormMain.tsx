@@ -94,7 +94,7 @@ export const MyCollectionArtworkFormMain: React.FC<
   const dimensionsRef = useRef<InputRef>(null)
   const priceRef = useRef<InputRef>(null)
   const provenanceRef = useRef<InputRef>(null)
-  const locationRef = useRef<Input>(null)
+  const locationRef = useRef<InputRef>(null)
   const notesRef = useRef<InputRef>(null)
 
   useEffect(() => {

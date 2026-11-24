@@ -1,9 +1,10 @@
 import { Spacer, Text } from "@artsy/palette-mobile"
 import { OtherCollectionsRail_collectionGroup$data } from "__generated__/OtherCollectionsRail_collectionGroup.graphql"
 import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import React, { useRef } from "react"
-import { TouchableOpacity, View } from "react-native"
+import { TouchableOpacity, View, ViewInstance } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export interface OtherCollectionsRailProps {
@@ -13,7 +14,7 @@ export interface OtherCollectionsRailProps {
 export const OtherCollectionsRail: React.FC<OtherCollectionsRailProps> = ({
   collectionGroup: { name, members },
 }) => {
-  const ref = useRef<View | null>(null)
+  const ref = useRef<ViewInstance | null>(null)
 
   return (
     <View ref={ref}>

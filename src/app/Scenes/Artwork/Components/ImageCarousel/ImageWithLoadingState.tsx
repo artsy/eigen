@@ -1,7 +1,7 @@
 import { Image } from "@artsy/palette-mobile"
 import { BLURHASH_DECODE_ASYNC } from "app/utils/blurhashDecodeAsync"
 import React from "react"
-import { TouchableWithoutFeedback, View, ViewProps } from "react-native"
+import { TouchableWithoutFeedback, View, ViewProps, ViewInstance } from "react-native"
 
 interface ImageWithLoadingStateProps {
   width: number
@@ -20,7 +20,7 @@ interface ImageWithLoadingStateProps {
  *
  * @param param0 same as RN's Image props
  */
-export const ImageWithLoadingState = React.forwardRef<View, ImageWithLoadingStateProps>(
+export const ImageWithLoadingState = React.forwardRef<ViewInstance, ImageWithLoadingStateProps>(
   (props, ref) => {
     // When the image has loaded we want to fade it in, so we have a white overlay
     // this assumes the image will be on a white backdrop. This component will

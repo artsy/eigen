@@ -21,7 +21,7 @@ import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { tracks } from "app/utils/track/ArtworkActions"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
-import { ScrollView, Text as RNText, ViewStyle } from "react-native"
+import { ScrollView, Text as RNText, ViewStyle, ScrollViewInstance } from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import Animated, {
   Easing,
@@ -87,7 +87,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     const saveAnimationProgress = useSharedValue(0)
     const heartOpacity = useSharedValue(0)
     const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
-    const thumbnailScrollRef = useRef<ScrollView>(null)
+    const thumbnailScrollRef = useRef<ScrollViewInstance>(null)
     // Tracks whether user is manually scrolling thumbnails (drag/momentum)
     const isUserScrolling = useRef(false)
     // Prevents onScroll updates during programmatic scroll (tap navigation)

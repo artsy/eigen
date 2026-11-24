@@ -10,6 +10,7 @@ import {
   Text,
   Touchable,
   useTheme,
+  InputRef,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import LoadingModal from "app/Components/Modals/LoadingModal"
@@ -147,7 +148,7 @@ const LoginWelcomeStepForm: React.FC = () => {
   } = useFormikContext<LoginEmailFormValues>()
 
   const navigation = useNavigation<NavigationProp<OnboardingNavigationStack>>()
-  const emailRef = useRef<Input>(null)
+  const emailRef = useRef<InputRef>(null)
 
   useInputAutofocus({
     screenName: "LoginWelcomeStep",

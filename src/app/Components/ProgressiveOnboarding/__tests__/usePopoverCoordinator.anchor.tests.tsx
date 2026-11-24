@@ -10,7 +10,7 @@ import {
   PROGRESSIVE_ONBOARDING_OFFER_SETTINGS,
   PROGRESSIVE_ONBOARDING_SAVE_ARTWORK,
 } from "app/store/ProgressiveOnboardingModel"
-import { View } from "react-native"
+import { ViewInstance } from "react-native"
 
 // The rest of the coordinator tests run with `useAnchorSettled` mocked as a pass-through.
 // These drive anchor measurements through the real hook, to cover how its two checks
@@ -32,7 +32,7 @@ const makeAnchor = (position: { x: number; y: number }) => ({
   current: {
     measureInWindow: (callback: (...args: number[]) => void) =>
       callback(position.x, position.y, 100, 40),
-  } as unknown as View,
+  } as unknown as ViewInstance,
 })
 
 const advance = (ms: number) =>

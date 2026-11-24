@@ -1,6 +1,6 @@
 import { CloseIcon } from "@artsy/icons/native"
 import { Flex, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
-import { FlashList } from "@shopify/flash-list"
+import { FlashList, ViewToken } from "@shopify/flash-list"
 import {
   ArticleSlideShow_article$data,
   ArticleSlideShow_article$key,
@@ -11,7 +11,6 @@ import { goBack } from "app/system/navigation/navigate"
 import { compact } from "lodash"
 import { MotiView } from "moti"
 import { useMemo, useState } from "react"
-import { ViewToken } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 const TITLE_MIN_HEIGHT = 140
@@ -46,7 +45,7 @@ export const ArticleSlideShow: React.FC<ArticleSlideShowProps> = ({ article, cov
     return null
   }
 
-  const onViewableItemsChanged = (info: { viewableItems: ViewToken[] }) => {
+  const onViewableItemsChanged = (info: { viewableItems: ViewToken<unknown>[] }) => {
     if (info.viewableItems.length > 0) {
       const index = info.viewableItems[0].index
       if (!!index && currentSlide !== index) {

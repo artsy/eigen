@@ -7,6 +7,7 @@ import {
   Spacer,
   Text,
   useTheme,
+  InputRef,
 } from "@artsy/palette-mobile"
 import {
   useAuthNavigation,
@@ -62,7 +63,7 @@ const SignUpPasswordStepForm: React.FC = () => {
 
   const navigation = useAuthNavigation()
   const screen = useAuthScreen()
-  const passwordRef = useRef<Input>(null)
+  const passwordRef = useRef<InputRef>(null)
 
   const { color } = useTheme()
 

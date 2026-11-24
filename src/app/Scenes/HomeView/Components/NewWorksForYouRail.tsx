@@ -6,6 +6,7 @@ import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import {
@@ -13,7 +14,7 @@ import {
   extractArtworkActionTrackingProps,
 } from "app/utils/track/ArtworkActions"
 import React, { memo, useImperativeHandle, useRef } from "react"
-import { FlatList, View } from "react-native"
+import { FlatList, View, ViewInstance } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RailScrollProps } from "./types"
@@ -31,7 +32,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
 
     const { artworksForUser } = useFragment(artworksFragment, artworkConnection)
 
-    const railRef = useRef<View>(null)
+    const railRef = useRef<ViewInstance>(null)
     const listRef = useRef<FlatList<any>>(null)
 
     const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({

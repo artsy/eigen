@@ -6,7 +6,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { ProgressiveOnboardingKey } from "app/store/ProgressiveOnboardingModel"
 import { readCurrentRoute, useCurrentRoute } from "app/utils/hooks/useCurrentRoute"
 import { RefObject, useCallback, useEffect, useRef, useState } from "react"
-import { View } from "react-native"
+import { ViewInstance } from "react-native"
 
 /**
  * How long a popover may hold the lock after being told to show without reporting that
@@ -27,7 +27,7 @@ interface UsePopoverCoordinatorArgs {
   /** Delay before showing. Hiding is never delayed. */
   delay?: number
   /** The popover's anchor. Showing waits for it to stop moving (see `useAnchorSettled`). */
-  anchorRef?: RefObject<View | null>
+  anchorRef?: RefObject<ViewInstance | null>
 }
 
 /**

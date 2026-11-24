@@ -17,7 +17,7 @@ import { DEFAULT_PRICE_RANGE } from "app/Components/PriceRange/constants"
 import { getBarsFromAggregations } from "app/Components/PriceRange/utils"
 import { debounce } from "lodash"
 import { useMemo, useRef, useState } from "react"
-import { ScrollView } from "react-native"
+import { ScrollView, ScrollViewInstance } from "react-native"
 import { useTracking } from "react-tracking"
 import { parsePriceRangeLabel, PriceRange } from "./helpers"
 
@@ -30,7 +30,7 @@ const PARAM_NAME = FilterParamName.priceRange
 const DEBOUNCE_DELAY = 200
 
 export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
-  const screenScrollViewRef = useRef<ScrollView>(null)
+  const screenScrollViewRef = useRef<ScrollViewInstance>(null)
 
   const tracking = useTracking()
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions(

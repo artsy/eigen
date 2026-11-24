@@ -3,7 +3,13 @@ import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/us
 import { useScreenDimensions } from "app/utils/hooks"
 import { useSafeTimeout } from "app/utils/hooks/useSafeTimeout"
 import { useCallback, useContext, useEffect, useMemo, useRef } from "react"
-import { Animated, NativeScrollEvent, NativeSyntheticEvent, ScrollView, View } from "react-native"
+import {
+  Animated,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  View,
+  ScrollViewInstance,
+} from "react-native"
 
 /**
  * Wraps the content in a scroll view which provides a 'vertical swipe' facility.
@@ -74,7 +80,7 @@ export const VerticalSwipeToDismiss: React.FC<React.PropsWithChildren<{ onClose(
     [onClose]
   )
 
-  const ref = useRef<ScrollView | null>(null)
+  const ref = useRef<ScrollViewInstance | null>(null)
   const setSafeTimeout = useSafeTimeout()
 
   // 😭😭😭

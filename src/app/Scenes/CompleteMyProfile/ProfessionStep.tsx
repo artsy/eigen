@@ -1,4 +1,4 @@
-import { Flex, Input, Screen, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Input, Screen, Spacer, Text, InputRef } from "@artsy/palette-mobile"
 import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
@@ -6,7 +6,7 @@ import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingCo
 import { FC, useRef } from "react"
 
 export const ProfessionStep: FC = () => {
-  const ref = useRef<Input>(null)
+  const ref = useRef<InputRef>(null)
   const { goNext } = useCompleteProfile()
 
   const profession = CompleteMyProfileStore.useStoreState((state) => state.progressState.profession)

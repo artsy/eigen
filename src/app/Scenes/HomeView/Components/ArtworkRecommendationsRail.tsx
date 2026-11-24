@@ -12,7 +12,7 @@ import {
   extractArtworkActionTrackingProps,
 } from "app/utils/track/ArtworkActions"
 import React, { memo, useImperativeHandle, useRef } from "react"
-import { FlatList, View } from "react-native"
+import { FlatList, View, ViewInstance } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RailScrollProps } from "./types"
@@ -32,7 +32,7 @@ export const ArtworkRecommendationsRail: React.FC<
 
   const { artworkRecommendations } = useFragment(artworksFragment, me)
 
-  const railRef = useRef<View>(null)
+  const railRef = useRef<ViewInstance>(null)
   const listRef = useRef<FlatList<any>>(null)
 
   const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({

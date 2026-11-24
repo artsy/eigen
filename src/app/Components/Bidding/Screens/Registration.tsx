@@ -470,7 +470,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         <Box p={2} mb={2}>
           <Button
             testID="register-button"
-            onPress={this.canCreateBidder() ? this.register.bind(this) : null}
+            onPress={this.canCreateBidder() ? this.register.bind(this) : undefined}
             loading={isLoading}
             block
             disabled={!this.canCreateBidder()}

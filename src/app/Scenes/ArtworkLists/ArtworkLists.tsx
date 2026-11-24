@@ -129,7 +129,7 @@ const ArtworkListsContent: React.FC<ArtworkListsContentProps & ArtworkListsProps
         keyExtractor={(item) => item.key}
         onEndReached={handleLoadMore}
         ListFooterComponent={() => (!!hasNext ? <LoadingIndicator /> : <Spacer x={2} />)}
-        ListHeaderComponent={isPartnerOfferEnabled ? <SavesTabHeader /> : null}
+        ListHeaderComponent={isPartnerOfferEnabled ? <SavesTabHeader /> : undefined}
         refreshControl={
           <RefreshControl
             onRefresh={handleRefresh}
@@ -159,7 +159,7 @@ const ArtworkListsContent: React.FC<ArtworkListsContentProps & ArtworkListsProps
         )
       }
       ListHeaderComponent={
-        isPartnerOfferEnabled ? isFavorites ? <SavesHeader /> : <SavesTabHeader /> : null
+        isPartnerOfferEnabled ? isFavorites ? <SavesHeader /> : <SavesTabHeader /> : undefined
       }
       refreshControl={
         <RefreshControl

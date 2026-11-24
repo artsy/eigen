@@ -4,7 +4,7 @@ import { ArtistSeriesMeta_artistSeries$data } from "__generated__/ArtistSeriesMe
 import { ReadMore } from "app/Components/ReadMore"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import React, { useRef } from "react"
-import { View } from "react-native"
+import { ViewInstance } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtistSeriesMetaProps {
@@ -12,7 +12,7 @@ interface ArtistSeriesMetaProps {
 }
 
 export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries }) => {
-  const metaRef = useRef<View | null>(null)
+  const metaRef = useRef<ViewInstance | null>(null)
 
   const artist = artistSeries.artist?.[0]
   const artistSeriesTotalCount = artist?.artistSeriesConnection?.totalCount ?? 0

@@ -4,7 +4,7 @@ import { Composer_conversation$key } from "__generated__/Composer_conversation.g
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { Schema } from "app/utils/track"
 import React, { useEffect, useRef, useState } from "react"
-import { TextInput, TouchableWithoutFeedback, ViewProps } from "react-native"
+import { TextInput, TouchableWithoutFeedback, ViewProps, TextInputInstance } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useFragment } from "react-relay"
@@ -36,13 +36,13 @@ interface Props {
 }
 
 export const Composer: React.FC<
-  React.PropsWithChildren<Props & { forwardedRef?: React.Ref<TextInput> }>
+  React.PropsWithChildren<Props & { forwardedRef?: React.Ref<TextInputInstance> }>
 > = ({ disabled, onSubmit, value, conversation, children, forwardedRef }) => {
   const data = useFragment(fragment, conversation)
   const { bottom } = useSafeAreaInsets()
   const [active, setActive] = useState(false)
   const [text, setText] = useState<string | null>(null)
-  const inputRef = useRef<TextInput>(null)
+  const inputRef = useRef<TextInputInstance>(null)
   const tracking = useTracking()
   const color = useColor()
   const submitText = () => {

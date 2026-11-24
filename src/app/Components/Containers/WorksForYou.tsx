@@ -96,6 +96,7 @@ export class WorksForYou extends React.Component<Props, State> {
             this.setState({ width: event.nativeEvent.layout.width })
           }}
           renderItem={(data) => {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             return <Notification width={this.state.width!} notification={data.item} />
           }}
           onEndReached={this.fetchNextPage}
@@ -113,11 +114,11 @@ export class WorksForYou extends React.Component<Props, State> {
                     </Flex>
                   </Box>
                 )
-              : null
+              : undefined
           }
           ListEmptyComponent={
             this.state.width === null
-              ? null
+              ? undefined
               : () => (
                   <ZeroState
                     title="You haven’t followed any artists yet"

@@ -43,7 +43,7 @@ import {
   ListRenderItem,
   RefreshControl,
   StatusBar,
-  ViewToken,
+  ListViewToken,
 } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { FollowArtistsOnboardingCompletionBottomSheet } from "./Components/FollowArtistsOnboardingCompletionBottomSheet"
@@ -79,7 +79,7 @@ export const HomeView: React.FC = memo(() => {
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const onViewableItemsChanged = useRef(
-    ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
+    ({ viewableItems }: { viewableItems: ListViewToken[]; changed: ListViewToken[] }) => {
       const newViewableRails = new Set<string>()
 
       // Track currently viewable rails // needed to enable tracking artwork views
