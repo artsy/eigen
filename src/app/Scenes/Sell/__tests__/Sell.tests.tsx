@@ -1,4 +1,3 @@
-import { Spinner } from "@artsy/palette-mobile"
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { Sell } from "app/Scenes/Sell/Sell"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -60,8 +59,8 @@ const mockHardwareBack = () => {
     return { remove: () => listeners.splice(listeners.indexOf(handler), 1) }
   })
 
-  return () => {
-    act(() => {
+  return async () => {
+    await act(() => {
       ;[...listeners]
         .reverse()
         .some((listener) => listener({ type: "hardwareBackPress", timeStamp: Date.now() }))
@@ -121,7 +120,7 @@ const collection = {
 const { renderWithRelay } = setupTestWrapper({ Component: Sell })
 
 const renderSell = async (resolvers: MockResolvers = collection) => {
-  const view = renderWithRelay(resolvers)
+  const view = await renderWithRelay(resolvers)
   await screen.findByTestId("artworkGridItem-Sellable Work")
   return view
 }
@@ -136,7 +135,7 @@ const resolveVerify = async (view: SellView, failedIDs: string[] = []) => {
   await waitFor(() => expect(operationNames(view)).toContain("useCreateResaleSubmissionsMutation"))
   const { artworkIDs } = view.env.mock.getMostRecentOperation().request.variables.input
 
-  view.mockResolveLastOperation({
+  await view.mockResolveLastOperation({
     CreateResaleSubmissionsPayload: () => ({
       resaleSubmissionsOrErrors: artworkIDs.map((artworkID: string) =>
         failedIDs.includes(artworkID)
@@ -165,7 +164,7 @@ const resolveWhenPending = async (
   await waitFor(() =>
     expect(view.env.mock.getMostRecentOperation().request.node.operation.name).toBe(operationName)
   )
-  view.mockResolveLastOperation(resolvers)
+  await view.mockResolveLastOperation(resolvers)
 }
 
 // Step 2 loads the active work with its own query. Step 3 asks for the same fields, so Relay's
@@ -184,20 +183,20 @@ const resolveLocationStep = (view: SellView, artwork: ActiveArtwork) =>
   })
 
 const openAuctionConditionStep = async (view: SellView) => {
-  fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
-  fireEvent.press(screen.getByText("Verify If Sellable"))
+  await fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
+  await fireEvent.press(screen.getByText("Verify If Sellable"))
   await resolveVerify(view)
-  fireEvent.press(await screen.findByText("Proceed to Listing"))
-  fireEvent.press(await screen.findByText("Start Submission"))
+  await fireEvent.press(await screen.findByText("Proceed to Listing"))
+  await fireEvent.press(await screen.findByText("Start Submission"))
   await resolveActiveArtwork(view, { internalID: "id-b4", artistNames: "Artist C" })
   await screen.findByText("Step 2 · Condition")
 }
 
 const openWorksSummary = async (view: SellView) => {
-  fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
-  fireEvent.press(screen.getByText("Verify If Sellable"))
+  await fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
+  await fireEvent.press(screen.getByText("Verify If Sellable"))
   await resolveVerify(view)
-  fireEvent.press(await screen.findByText("Proceed to Listing"))
+  await fireEvent.press(await screen.findByText("Proceed to Listing"))
   await screen.findByText("Start Listing")
 }
 
@@ -219,9 +218,9 @@ describe("Sell", () => {
     expect(screen.getByText(/Tap the works you’ve considered selling/)).toBeOnTheScreen()
   })
 
-  it("closes straight away when the feature flag is off", () => {
+  it("closes straight away when the feature flag is off", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSellMyCollectionArtwork: false })
-    renderWithWrappers(<Sell />)
+    await renderWithWrappers(<Sell />)
 
     expect(screen.queryByText("Step 1 · Decide Which Works to Sell")).not.toBeOnTheScreen()
     expect(dismissModal).toHaveBeenCalledTimes(1)
@@ -229,13 +228,13 @@ describe("Sell", () => {
 
   it("hides a work verified on an earlier visit when the flow opens again", async () => {
     const view = await renderSell()
-    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
-    fireEvent.press(screen.getByText("Verify If Sellable"))
+    await fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
+    await fireEvent.press(screen.getByText("Verify If Sellable"))
     await resolveVerify(view)
-    view.unmount()
+    await view.unmount()
 
     // Throws if the screen reads its cached copy instead of asking again
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => {
         const me = collection.Me()
         // The server leaves out works with an active resale submission
@@ -253,26 +252,26 @@ describe("Sell", () => {
 
     expect(screen.getByText("Verify If Sellable")).toBeDisabled()
 
-    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
+    await fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
     expect(screen.getByText("Verify If Sellable")).toBeEnabled()
     expect(navigate).not.toHaveBeenCalled()
 
-    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
+    await fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
     expect(screen.getByText("Verify If Sellable")).toBeDisabled()
   })
 
   it("previews only the sellable works still ticked, each with its sales channel", async () => {
     const view = await renderSell()
 
-    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
-    fireEvent.press(screen.getByTestId("artworkGridItem-Unsellable Work"))
-    fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
-    fireEvent.press(screen.getByText("Verify If Sellable"))
+    await fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
+    await fireEvent.press(screen.getByTestId("artworkGridItem-Unsellable Work"))
+    await fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
+    await fireEvent.press(screen.getByText("Verify If Sellable"))
     expect(await resolveVerify(view)).toEqual(["id-a2", "id-c3", "id-b4"])
     expect(await screen.findByText("Not able to sell yet")).toBeOnTheScreen()
 
-    fireEvent.press(await screen.findByRole("checkbox", { name: "Artist C, Auction Work" }))
-    fireEvent.press(screen.getByText("Proceed to Listing"))
+    await fireEvent.press(await screen.findByRole("checkbox", { name: "Artist C, Auction Work" }))
+    await fireEvent.press(screen.getByText("Proceed to Listing"))
 
     expect(await screen.findByText("Artsy Listing")).toBeOnTheScreen()
     expect(screen.getByText("Artist A")).toBeOnTheScreen()
@@ -286,9 +285,9 @@ describe("Sell", () => {
     const view = await renderSell()
     await openWorksSummary(view)
 
-    fireEvent.press(screen.getByLabelText("Go back"))
-    fireEvent.press(await screen.findByTestId("artworkGridItem-Auction Work"))
-    fireEvent.press(screen.getByText("Verify If Sellable"))
+    await fireEvent.press(screen.getByLabelText("Go back"))
+    await fireEvent.press(await screen.findByTestId("artworkGridItem-Auction Work"))
+    await fireEvent.press(screen.getByText("Verify If Sellable"))
 
     expect(await resolveVerify(view)).toEqual(["id-b4"])
     expect(await screen.findByText("Proceed to Listing")).toBeOnTheScreen()
@@ -297,9 +296,9 @@ describe("Sell", () => {
   it("keeps the sheet closed when a work fails, then retries only that work", async () => {
     const view = await renderSell()
 
-    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
-    fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
-    fireEvent.press(screen.getByText("Verify If Sellable"))
+    await fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
+    await fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
+    await fireEvent.press(screen.getByText("Verify If Sellable"))
     await resolveVerify(view, ["id-b4"])
 
     await waitFor(() =>
@@ -312,8 +311,8 @@ describe("Sell", () => {
     expect(screen.queryByText("Proceed to Listing")).not.toBeOnTheScreen()
 
     // The toast shows a moment before the button stops loading, and a loading button ignores presses
-    await waitFor(() => expect(screen.UNSAFE_queryByType(Spinner)).toBeNull())
-    fireEvent.press(screen.getByText("Verify If Sellable"))
+    await waitFor(() => expect(screen.getByText("Verify If Sellable")).toBeVisible())
+    await fireEvent.press(screen.getByText("Verify If Sellable"))
     expect(await resolveVerify(view)).toEqual(["id-b4"])
     expect(await screen.findByText("Proceed to Listing")).toBeOnTheScreen()
   })
@@ -321,12 +320,12 @@ describe("Sell", () => {
   it("shows an error when the request fails", async () => {
     const view = await renderSell()
 
-    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
-    fireEvent.press(screen.getByText("Verify If Sellable"))
+    await fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
+    await fireEvent.press(screen.getByText("Verify If Sellable"))
     await waitFor(() =>
       expect(operationNames(view)).toContain("useCreateResaleSubmissionsMutation")
     )
-    view.mockRejectLastOperation(new Error("Network request failed"))
+    await view.mockRejectLastOperation(new Error("Network request failed"))
 
     await waitFor(() =>
       expect(mockShowToast).toHaveBeenCalledWith(
@@ -341,9 +340,9 @@ describe("Sell", () => {
   it("ignores taps on the grid while the works are being checked", async () => {
     const view = await renderSell()
 
-    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
-    fireEvent.press(screen.getByText("Verify If Sellable"))
-    fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
+    await fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
+    await fireEvent.press(screen.getByText("Verify If Sellable"))
+    await fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
 
     expect(await resolveVerify(view)).toEqual(["id-a2"])
     expect(await screen.findByText(/We can help you with this work/)).toBeOnTheScreen()
@@ -357,7 +356,7 @@ describe("Sell", () => {
     expect(screen.getByLabelText("Step 1 of 3")).toBeOnTheScreen()
     expect(screen.getByText(/We reviewed demand for these works/)).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Start Listing"))
+    await fireEvent.press(screen.getByText("Start Listing"))
     await resolveActiveArtwork(view, {
       internalID: "id-a2",
       artistNames: "Artist A",
@@ -367,14 +366,14 @@ describe("Sell", () => {
     expect(screen.getByLabelText("Step 2 of 3")).toBeOnTheScreen()
     expect(screen.getByText("Confirm Listing Price")).toBeDisabled()
 
-    fireEvent.press(screen.getByRole("radio", { name: /^Excellent\./ }))
+    await fireEvent.press(screen.getByRole("radio", { name: /^Excellent\./ }))
     await waitFor(() => expect(screen.getByRole("radio", { name: /^Excellent\./ })).toBeChecked())
     expect(screen.getByText("Confirm Listing Price")).toBeDisabled()
 
-    fireEvent.changeText(screen.getByLabelText("Asking price"), "3200")
+    await fireEvent.changeText(screen.getByLabelText("Asking price"), "3200")
     expect(await screen.findByText("US$2,720")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Confirm Listing Price"))
+    await fireEvent.press(screen.getByText("Confirm Listing Price"))
     await resolveLocationStep(view, {
       internalID: "id-a2",
       artistNames: "Artist A",
@@ -388,24 +387,24 @@ describe("Sell", () => {
       expect(screen.getByRole("radio", { name: /^Collector, 401 Broadway/ })).toBeChecked()
     )
 
-    fireEvent.press(screen.getByRole("radio", { name: /^Framed\./ }))
-    fireEvent.press(screen.getByRole("radio", { name: /^Courier packs\./ }))
+    await fireEvent.press(screen.getByRole("radio", { name: /^Framed\./ }))
+    await fireEvent.press(screen.getByRole("radio", { name: /^Courier packs\./ }))
     expect(screen.getByText("List Artwork")).toBeDisabled()
 
-    fireEvent.press(screen.getByRole("radio", { name: /^Courier needs to collect\./ }))
+    await fireEvent.press(screen.getByRole("radio", { name: /^Courier needs to collect\./ }))
     await waitFor(() =>
       expect(screen.getByLabelText("Mobile number")).toHaveDisplayValue("555 0100")
     )
-    fireEvent.changeText(screen.getByLabelText("Mobile number"), "")
+    await fireEvent.changeText(screen.getByLabelText("Mobile number"), "")
     expect(screen.getByText("List Artwork")).toBeDisabled()
 
-    fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
+    await fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
     await waitFor(() => expect(screen.getByText("List Artwork")).toBeEnabled())
-    fireEvent.press(screen.getByText("List Artwork"))
+    await fireEvent.press(screen.getByText("List Artwork"))
     expect(await screen.findByText("Your listing is live!")).toBeOnTheScreen()
     expect(screen.getByText("Artist A’s Work A has been submitted for sale.")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Return to My Collection"))
+    await fireEvent.press(screen.getByText("Return to My Collection"))
     expect(goBack).toHaveBeenCalledTimes(1)
   })
 
@@ -416,9 +415,9 @@ describe("Sell", () => {
     expect(screen.getByText("Artist C")).toBeOnTheScreen()
     expect(screen.getByText("Continue")).toBeDisabled()
 
-    fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
+    await fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
     await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
-    fireEvent.press(screen.getByText("Continue"))
+    await fireEvent.press(screen.getByText("Continue"))
     await resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
     expect(await screen.findByText("Step 3 · Location & Contact")).toBeOnTheScreen()
     expect(screen.queryByText("How will this be packed?")).not.toBeOnTheScreen()
@@ -430,13 +429,13 @@ describe("Sell", () => {
       expect(screen.getByLabelText("Mobile number")).toHaveDisplayValue("555 0100")
     )
 
-    fireEvent.changeText(screen.getByLabelText("Mobile number"), "")
-    fireEvent(screen.getByLabelText("Mobile number"), "blur")
+    await fireEvent.changeText(screen.getByLabelText("Mobile number"), "")
+    await fireEvent(screen.getByLabelText("Mobile number"), "blur")
     expect(screen.getByText("Submit for Review")).toBeDisabled()
     expect(await screen.findByText("Phone number is required")).toBeOnTheScreen()
 
-    fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
-    fireEvent.press(screen.getByText("Submit for Review"))
+    await fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
+    await fireEvent.press(screen.getByText("Submit for Review"))
     expect(await screen.findByText("Submitted!")).toBeOnTheScreen()
     expect(screen.getByText(/One of our specialists will reach out/)).toBeOnTheScreen()
   })
@@ -453,27 +452,27 @@ describe("Sell", () => {
     })
     const view = await renderSell()
     await openAuctionConditionStep(view)
-    fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
-    fireEvent.press(screen.getByText("Continue"))
+    await fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
+    await fireEvent.press(screen.getByText("Continue"))
     await resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
     await screen.findByText("Step 3 · Location & Contact")
-    fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
+    await fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
 
-    fireEvent.press(screen.getByLabelText("Add new address"))
+    await fireEvent.press(screen.getByLabelText("Add new address"))
     expect(await screen.findByText("Add address")).toBeOnTheScreen()
     // The step header has its own close button, so take the modal’s, which renders last
-    fireEvent.press(screen.getAllByLabelText("Close").at(-1)!)
+    await fireEvent.press(screen.getAllByLabelText("Close").at(-1)!)
     await waitFor(() => expect(screen.queryByText("Add address")).not.toBeOnTheScreen())
     expect(screen.getByLabelText("Mobile number")).toHaveDisplayValue("555 0199")
 
-    fireEvent.press(screen.getByLabelText("Add new address"))
+    await fireEvent.press(screen.getByLabelText("Add new address"))
     await screen.findByText("Add address")
-    fireEvent.changeText(screen.getByLabelText("Full name"), "Collector")
-    fireEvent.press(screen.getByTestId("sell-street-address"))
-    fireEvent.changeText(await screen.findByLabelText("Search addresses"), "1 Main")
-    fireEvent.press(await screen.findByText(NEW_PLACE.name))
+    await fireEvent.changeText(screen.getByLabelText("Full name"), "Collector")
+    await fireEvent.press(screen.getByTestId("sell-street-address"))
+    await fireEvent.changeText(await screen.findByLabelText("Search addresses"), "1 Main")
+    await fireEvent.press(await screen.findByText(NEW_PLACE.name))
     await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
-    fireEvent.press(screen.getByText("Save Address"))
+    await fireEvent.press(screen.getByText("Save Address"))
 
     await resolveWhenPending(view, "useCreateUserAddressMutation", {
       CreateUserAddressPayload: () => ({
@@ -499,11 +498,11 @@ describe("Sell", () => {
 
     await openWorksSummary(view)
 
-    fireEvent.press(screen.getByLabelText("Go back"))
+    await fireEvent.press(screen.getByLabelText("Go back"))
     expect(await screen.findByText("Verify If Sellable")).toBeEnabled()
     expect(dismissModal).not.toHaveBeenCalled()
 
-    fireEvent.press(screen.getByLabelText("Close"))
+    await fireEvent.press(screen.getByLabelText("Close"))
     expect(dismissModal).toHaveBeenCalledTimes(1)
   })
 
@@ -513,16 +512,16 @@ describe("Sell", () => {
 
     await openWorksSummary(view)
 
-    pressHardwareBack()
+    await pressHardwareBack()
     expect(await screen.findByText("Verify If Sellable")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Verify If Sellable"))
-    fireEvent.press(await screen.findByText("Proceed to Listing"))
-    fireEvent.press(await screen.findByText("Start Listing"))
+    await fireEvent.press(screen.getByText("Verify If Sellable"))
+    await fireEvent.press(await screen.findByText("Proceed to Listing"))
+    await fireEvent.press(await screen.findByText("Start Listing"))
     await resolveActiveArtwork(view, { internalID: "id-a2", artistNames: "Artist A" })
     await screen.findByText("Step 2 · Condition & Price")
 
-    pressHardwareBack()
+    await pressHardwareBack()
     expect(await screen.findByText("Start Listing")).toBeOnTheScreen()
     expect(dismissModal).not.toHaveBeenCalled()
   })
@@ -533,9 +532,9 @@ describe("Sell", () => {
     const view = await renderSell()
     await openAuctionConditionStep(view)
 
-    fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
+    await fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
     await waitFor(() => expect(screen.getByRole("radio", { name: /^Fair\./ })).toBeChecked())
-    fireEvent.press(screen.getByLabelText("Go back"))
+    await fireEvent.press(screen.getByLabelText("Go back"))
 
     expect(alertSpy).toHaveBeenCalledWith(
       "Go back to step 1?",
@@ -544,17 +543,17 @@ describe("Sell", () => {
     )
     const buttons = alertSpy.mock.calls[0][2]!
 
-    act(() => buttons.find((button) => button.text === "Stay")?.onPress?.())
+    await act(() => buttons.find((button) => button.text === "Stay")?.onPress?.())
     expect(screen.getByRole("radio", { name: /^Fair\./ })).toBeChecked()
 
-    act(() => pressHardwareBack())
+    await pressHardwareBack()
     expect(alertSpy).toHaveBeenCalledTimes(2)
     expect(alertSpy.mock.calls[1][0]).toBe("Go back to step 1?")
     expect(screen.getByRole("radio", { name: /^Fair\./ })).toBeChecked()
 
-    act(() => buttons.find((button) => button.text === "Go back")?.onPress?.())
+    await act(() => buttons.find((button) => button.text === "Go back")?.onPress?.())
     // The submission is already in the Relay store, so step 2 opens without a new query
-    fireEvent.press(await screen.findByText("Start Submission"))
+    await fireEvent.press(await screen.findByText("Start Submission"))
 
     expect(await screen.findByRole("radio", { name: /^Fair\./ })).not.toBeChecked()
   })
@@ -565,7 +564,7 @@ describe("Sell", () => {
 
     await openWorksSummary(view)
 
-    fireEvent.press(screen.getByLabelText("Close"))
+    await fireEvent.press(screen.getByLabelText("Close"))
     expect(alertSpy).toHaveBeenCalledWith("Leave this flow?", expect.any(String), expect.any(Array))
     expect(dismissModal).not.toHaveBeenCalled()
 

@@ -24,18 +24,15 @@ describe("ArticleSectionArtworkGrid", () => {
     `,
   })
 
-  it("renders the artworks", () => {
-    renderWithRelay({
+  it("renders the artworks", async () => {
+    await renderWithRelay({
       Article: () => ({
         sections: [
           {
             __typename: "ArticleSectionArtworkGrid",
             columns: 3,
             artworksConnection: {
-              edges: [
-                { node: { title: "First Artwork" } },
-                { node: { title: "Second Artwork" } },
-              ],
+              edges: [{ node: { title: "First Artwork" } }, { node: { title: "Second Artwork" } }],
             },
           },
         ],
@@ -47,8 +44,8 @@ describe("ArticleSectionArtworkGrid", () => {
     expect(screen.getByTestId("artworkGridItem-Second Artwork")).toBeOnTheScreen()
   })
 
-  it("tracks taps on artworks", () => {
-    renderWithRelay({
+  it("tracks taps on artworks", async () => {
+    await renderWithRelay({
       Article: () => ({
         internalID: "article-id",
         slug: "article-slug",
@@ -73,7 +70,7 @@ describe("ArticleSectionArtworkGrid", () => {
       }),
     })
 
-    fireEvent.press(screen.getByTestId("artworkGridItem-Example Artwork"))
+    await fireEvent.press(screen.getByTestId("artworkGridItem-Example Artwork"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -90,8 +87,8 @@ describe("ArticleSectionArtworkGrid", () => {
     )
   })
 
-  it("renders nothing when there are no artworks", () => {
-    renderWithRelay({
+  it("renders nothing when there are no artworks", async () => {
+    await renderWithRelay({
       Article: () => ({
         sections: [
           {

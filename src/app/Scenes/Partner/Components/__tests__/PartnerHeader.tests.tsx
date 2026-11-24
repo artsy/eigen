@@ -37,9 +37,9 @@ describe("PartnerHeader", () => {
     />
   )
 
-  it("renders artwork counts", () => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+  it("renders artwork counts", async () => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
         data: {
@@ -51,9 +51,9 @@ describe("PartnerHeader", () => {
     expect(screen.getByText("1.2K works")).toBeOnTheScreen()
   })
 
-  it("renders the follow button", () => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+  it("renders the follow button", async () => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
         data: {
@@ -65,9 +65,9 @@ describe("PartnerHeader", () => {
     expect(screen.getByRole("button", { name: /Follow/ })).toBeOnTheScreen()
   })
 
-  it("renders the Black Owned marquee if the gallery has the 'Black Owned' category", () => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+  it("renders the Black Owned marquee if the gallery has the 'Black Owned' category", async () => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
         data: {
@@ -79,9 +79,9 @@ describe("PartnerHeader", () => {
     expect(screen.getAllByText(/Black Owned/).length).toBeGreaterThan(0)
   })
 
-  it("renders a type eyebrow above the name when the partner has a category", () => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+  it("renders a type eyebrow above the name when the partner has a category", async () => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
         data: {
@@ -94,9 +94,9 @@ describe("PartnerHeader", () => {
     expect(screen.getByText("Gagosian")).toBeOnTheScreen()
   })
 
-  it("renders no eyebrow when the partner has no type", () => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+  it("renders no eyebrow when the partner has no type", async () => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
         data: {

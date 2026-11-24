@@ -21,10 +21,20 @@ describe("ArtworkAuctionTimer", () => {
     `,
   })
 
-  it("renders registration ends at", () => {
+  // A frozen clock keeps the time left exact. On the real clock, a render in the same millisecond
+  // as the setup shows "1d" instead of "23h 59m".
+  beforeEach(() => {
+    jest.useFakeTimers({ now: new Date("2026-01-15T12:00:00Z") })
+  })
+
+  afterEach(() => {
+    jest.useRealTimers()
+  })
+
+  it("renders registration ends at", async () => {
     const registerDate = DateTime.fromMillis(Date.now()).plus({ days: 1 })
 
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         collectorSignals: {
           auction: {
@@ -37,10 +47,10 @@ describe("ArtworkAuctionTimer", () => {
     expect(screen.getByText(`Register by ${registerDate.toFormat("MMM d")}`)).toBeOnTheScreen()
   })
 
-  it('hides "Register by" when hideRegisterBySignal is true', () => {
+  it('hides "Register by" when hideRegisterBySignal is true', async () => {
     const registerDate = DateTime.fromMillis(Date.now()).plus({ days: 1 })
 
-    renderWithRelay(
+    await renderWithRelay(
       {
         Artwork: () => ({
           collectorSignals: {
@@ -58,12 +68,12 @@ describe("ArtworkAuctionTimer", () => {
     ).not.toBeOnTheScreen()
   })
 
-  it("shows the time left to bid", () => {
-    renderWithRelay({
+  it("shows the time left to bid", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         collectorSignals: {
           auction: {
-            lotClosesAt: DateTime.fromMillis(Date.now()).plus({ days: 1 }).toISO(),
+            lotClosesAt: DateTime.fromMillis(Date.now()).plus({ hours: 23, minutes: 59 }).toISO(),
             onlineBiddingExtended: false,
           },
         },
@@ -73,12 +83,12 @@ describe("ArtworkAuctionTimer", () => {
     expect(screen.getByText("23h 59m left to bid")).toBeOnTheScreen()
   })
 
-  it("shows the time left to bid when online bidding is extended", () => {
-    renderWithRelay({
+  it("shows the time left to bid when online bidding is extended", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         collectorSignals: {
           auction: {
-            lotClosesAt: DateTime.fromMillis(Date.now()).plus({ minutes: 2 }).toISO(),
+            lotClosesAt: DateTime.fromMillis(Date.now()).plus({ minutes: 1 }).toISO(),
             onlineBiddingExtended: true,
           },
         },
@@ -88,8 +98,8 @@ describe("ArtworkAuctionTimer", () => {
     expect(screen.getByText("Extended, 1m left")).toBeOnTheScreen()
   })
 
-  it("does not render when the lot closes at is more than 5 days away", () => {
-    renderWithRelay({
+  it("does not render when the lot closes at is more than 5 days away", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         collectorSignals: {
           auction: {

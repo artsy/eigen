@@ -6,8 +6,8 @@ import {
 } from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
 
 describe("AuthContext", () => {
-  const setup = (initialState: Partial<AuthContextModel>) => {
-    const view = renderHook(
+  const setup = async (initialState: Partial<AuthContextModel>) => {
+    const view = await renderHook(
       () => ({
         state: AuthContext.useStoreState((state) => state),
         actions: AuthContext.useStoreActions((action) => action),
@@ -27,8 +27,8 @@ describe("AuthContext", () => {
     }
   }
 
-  it("sets up intial context and action helpers", () => {
-    const { getState, actions } = setup({})
+  it("sets up intial context and action helpers", async () => {
+    const { getState, actions } = await setup({})
 
     expect(Object.keys(getState())).toEqual([
       "currentScreen",
@@ -48,54 +48,54 @@ describe("AuthContext", () => {
   })
 
   describe("actions", () => {
-    it("goBack", () => {
-      const { getState, actions } = setup({
+    it("goBack", async () => {
+      const { getState, actions } = await setup({
         currentScreen: { name: "SignUpNameStep" },
         previousScreens: [{ name: "LoginWelcomeStep" }, { name: "SignUpPasswordStep" }],
       })
 
-      act(() => actions.goBack())
+      await act(() => actions.goBack())
 
       expect(getState().currentScreen).toEqual({ name: "SignUpPasswordStep" })
     })
 
-    it("doesn't goBack when there are no previous screens", () => {
-      const { getState, actions } = setup({
+    it("doesn't goBack when there are no previous screens", async () => {
+      const { getState, actions } = await setup({
         currentScreen: { name: "LoginWelcomeStep" },
         previousScreens: [],
       })
 
-      act(() => actions.goBack())
+      await act(() => actions.goBack())
 
       expect(getState().currentScreen).toEqual({ name: "LoginWelcomeStep" })
     })
 
-    it("setCurrentScreen", () => {
-      const { getState, actions } = setup({ currentScreen: { name: "LoginWelcomeStep" } })
+    it("setCurrentScreen", async () => {
+      const { getState, actions } = await setup({ currentScreen: { name: "LoginWelcomeStep" } })
 
-      act(() => actions.setCurrentScreen({ name: "LoginPasswordStep" }))
+      await act(() => actions.setCurrentScreen({ name: "LoginPasswordStep" }))
 
       expect(getState().currentScreen).toEqual({ name: "LoginPasswordStep" })
     })
 
-    it("setModalExpanded", () => {
-      const { getState, actions } = setup({})
+    it("setModalExpanded", async () => {
+      const { getState, actions } = await setup({})
 
-      act(() => actions.setModalExpanded(true))
+      await act(() => actions.setModalExpanded(true))
 
       expect(getState().isModalExpanded).toBe(true)
       expect(getState().isMounted).toBe(true)
 
-      act(() => actions.setModalExpanded(false))
+      await act(() => actions.setModalExpanded(false))
 
       expect(getState().isModalExpanded).toBe(false)
       expect(getState().isMounted).toBe(true)
     })
 
-    it("setParams", () => {
-      const { getState, actions } = setup({})
+    it("setParams", async () => {
+      const { getState, actions } = await setup({})
 
-      act(() => actions.setParams({ email: "foo@bar.baz" }))
+      await act(() => actions.setParams({ email: "foo@bar.baz" }))
 
       expect(getState().currentScreen?.params).toEqual({ email: "foo@bar.baz" })
     })

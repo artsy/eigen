@@ -6,7 +6,7 @@ import {
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("MyCollectionImageView", () => {
-  it("shows a remote image if imageURL is present", () => {
+  it("shows a remote image if imageURL is present", async () => {
     const props: MyCollectionImageViewProps = {
       imageWidth: 100,
       imageHeight: 100,
@@ -14,12 +14,12 @@ describe("MyCollectionImageView", () => {
       imageURL: "https://some-url/:version.jpg",
       artworkSlug: "some-slug",
     }
-    renderWithWrappers(<MyCollectionImageView {...props} />)
+    await renderWithWrappers(<MyCollectionImageView {...props} />)
 
-    expect(screen.queryByTestId("Image-Remote")).toBeOnTheScreen()
+    expect(screen.getByTestId("Image-Remote")).toBeOnTheScreen()
   })
 
-  it("shows a fallback state if neither are present", () => {
+  it("shows a fallback state if neither are present", async () => {
     const props: MyCollectionImageViewProps = {
       imageWidth: 100,
       imageHeight: 100,
@@ -27,8 +27,8 @@ describe("MyCollectionImageView", () => {
       artworkSlug: "some-slug",
     }
 
-    renderWithWrappers(<MyCollectionImageView {...props} />)
+    await renderWithWrappers(<MyCollectionImageView {...props} />)
 
-    expect(screen.queryByTestId("Fallback")).toBeDefined()
+    expect(screen.getByTestId("Fallback")).toBeDefined()
   })
 })

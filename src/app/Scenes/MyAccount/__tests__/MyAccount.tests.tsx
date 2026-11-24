@@ -49,8 +49,8 @@ describe("MyAccountQueryRenderer", () => {
     `,
   })
 
-  it("shows email", () => {
-    renderWithRelay({
+  it("shows email", async () => {
+    await renderWithRelay({
       Me: () => ({
         email:
           "myverylongemailmyverylongemailmyverylongemail@averylongdomainaverylongdomainaverylongdomain.com",
@@ -69,8 +69,8 @@ describe("MyAccountQueryRenderer", () => {
   })
 
   describe("When ShowLinkedAccounts", () => {
-    it("Shows linked accounts section when user does not have 2FA enabled AND has linked accounts", () => {
-      renderWithRelay({
+    it("Shows linked accounts section when user does not have 2FA enabled AND has linked accounts", async () => {
+      await renderWithRelay({
         Me: () => ({
           email: "email@gmail.com",
           phone: "123",
@@ -90,10 +90,10 @@ describe("MyAccountQueryRenderer", () => {
         jest.clearAllMocks()
       })
 
-      it("links when **not** previously linked and unlinks when previously linked", () => {
+      it("links when **not** previously linked and unlinks when previously linked", async () => {
         Platform.OS = "ios"
 
-        renderWithRelay({
+        await renderWithRelay({
           Me: () => ({
             email: "email@gmail.com",
             phone: "123",
@@ -109,15 +109,15 @@ describe("MyAccountQueryRenderer", () => {
         const fblinkItem = screen.getByText("Facebook")
         const googlelinkItem = screen.getByText("Google")
 
-        fireEvent(fblinkItem, "onPress")
+        await fireEvent(fblinkItem, "onPress")
         expect(mockUnlinkFB).toHaveBeenCalled()
 
-        fireEvent(googlelinkItem, "onPress")
+        await fireEvent(googlelinkItem, "onPress")
         expect(mockUnlinkGoogle).not.toHaveBeenCalled()
       })
 
-      it("user cannot unlink their only authentication method", () => {
-        renderWithRelay({
+      it("user cannot unlink their only authentication method", async () => {
+        await renderWithRelay({
           Me: () => ({
             email: "email@gmail.com",
             phone: "123",
@@ -132,7 +132,7 @@ describe("MyAccountQueryRenderer", () => {
 
         const fblinkItem = screen.getByText("Facebook")
 
-        fireEvent(fblinkItem, "onPress")
+        await fireEvent(fblinkItem, "onPress")
 
         expect(mockUnlinkFB).not.toHaveBeenCalled()
       })

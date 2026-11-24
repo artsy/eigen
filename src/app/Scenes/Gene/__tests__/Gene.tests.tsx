@@ -44,14 +44,14 @@ describe("Gene", () => {
     )
   }
 
-  it("renders without throwing an error", () => {
-    renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
+  it("renders without throwing an error", async () => {
+    await renderWithWrappers(<TestRenderer />)
+    await resolveMostRecentRelayOperation(environment)
   })
 
-  it("returns all tabs", () => {
-    renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment, {
+  it("returns all tabs", async () => {
+    await renderWithWrappers(<TestRenderer />)
+    await resolveMostRecentRelayOperation(environment, {
       Gene: () => ({ description: "A gene description" }),
       FilterArtworksConnection: () => ({ counts: { total: 10 } }),
     })
@@ -63,10 +63,10 @@ describe("Gene", () => {
   })
 
   it("renders filter modal", async () => {
-    renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
+    await renderWithWrappers(<TestRenderer />)
+    await resolveMostRecentRelayOperation(environment)
 
-    fireEvent.press(await screen.findByTestId("sort-and-filter-button"))
+    await fireEvent.press(await screen.findByTestId("sort-and-filter-button"))
 
     // ArtworkFilterOptionsScreen
     expect(screen.getByText("Clear All")).toBeOnTheScreen()

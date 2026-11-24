@@ -20,18 +20,18 @@ describe("CollectionRail", () => {
     `,
   })
 
-  it("renders", () => {
-    renderWithRelay()
+  it("renders", async () => {
+    await renderWithRelay()
 
     expect(screen.getByText(/mock-Value-for-Field-"Title"/)).toBeOnTheScreen()
   })
 
-  it("when tapping on an artwork", () => {
-    renderWithRelay({
+  it("when tapping on an artwork", async () => {
+    await renderWithRelay({
       FilterArtworksConnection: () => ({ edges, counts: { total: 2 } }),
     })
 
-    fireEvent.press(screen.getByTestId(`artwork-${edges[0].node.slug}`))
+    await fireEvent.press(screen.getByTestId(`artwork-${edges[0].node.slug}`))
 
     expect(navigate).toHaveBeenCalledWith(`/artwork/${edges[0].node.internalID}`)
     expect(trackEvent).toHaveBeenLastCalledWith({
@@ -45,12 +45,12 @@ describe("CollectionRail", () => {
     })
   })
 
-  it("when tapping on the title", () => {
-    renderWithRelay({
+  it("when tapping on the title", async () => {
+    await renderWithRelay({
       FilterArtworksConnection: () => ({ edges, counts: { total: 1 } }),
     })
 
-    fireEvent.press(screen.getByText(/mock-Value-for-Field-"Title"/))
+    await fireEvent.press(screen.getByText(/mock-Value-for-Field-"Title"/))
 
     expect(navigate).toHaveBeenCalledWith('/collection/<mock-value-for-field-"slug">')
     expect(trackEvent).toHaveBeenLastCalledWith({

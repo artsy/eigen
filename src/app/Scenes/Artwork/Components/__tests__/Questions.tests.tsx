@@ -26,7 +26,7 @@ describe("Questions", () => {
   })
 
   it("renders", async () => {
-    renderWithRelay({ Artwork: () => ({}), Me: () => ({}) })
+    await renderWithRelay({ Artwork: () => ({}), Me: () => ({}) })
     expect(screen.getByText("Questions about this piece?")).toBeDefined()
     expect(screen.getByText("Contact Gallery")).toBeDefined()
   })

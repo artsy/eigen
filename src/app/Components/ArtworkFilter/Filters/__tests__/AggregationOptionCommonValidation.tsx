@@ -64,26 +64,26 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
 
     const counts = aggregationForFilter(params.filterKey, params.aggregations)?.counts ?? []
 
-    it("renders the correct number of " + params.name + " options", () => {
-      renderWithWrappers(<MockScreenWrapper />)
+    it("renders the correct number of " + params.name + " options", async () => {
+      await renderWithWrappers(<MockScreenWrapper />)
       // Counts returned + all option
       expect(getOptionRows()).toHaveLength(counts.length + 1)
     })
 
-    it("adds an all option", () => {
-      renderWithWrappers(<MockScreenWrapper />)
+    it("adds an all option", async () => {
+      await renderWithWrappers(<MockScreenWrapper />)
       const firstRow = getOptionRows()[0]
       expect(firstRow).toHaveTextContent("All", { exact: false })
     })
 
     describe("selecting a " + params.name + " filter", () => {
-      it("displays the default " + params.name + " if no selected filters", () => {
-        renderWithWrappers(<MockScreenWrapper />)
+      it("displays the default " + params.name + " if no selected filters", async () => {
+        await renderWithWrappers(<MockScreenWrapper />)
         const [selectedOption] = getSelectedOptionRows()
         expect(selectedOption).toHaveTextContent("All", { exact: false })
       })
 
-      it("displays a " + params.name + " filter option when selected", () => {
+      it("displays a " + params.name + " filter option when selected", async () => {
         const injectedState: ArtworkFiltersState = {
           selectedFilters: [
             {
@@ -105,7 +105,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           sizeMetric: "cm",
         }
 
-        renderWithWrappers(<MockScreenWrapper initialData={injectedState} />)
+        await renderWithWrappers(<MockScreenWrapper initialData={injectedState} />)
 
         const [selectedOption] = getSelectedOptionRows()
         expect(selectedOption).toHaveTextContent(counts[0].name, { exact: false })
@@ -117,14 +117,14 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           " filter to be selected at a time when several " +
           params.name +
           " options are tapped",
-        () => {
-          renderWithWrappers(<MockScreenWrapper />)
+        async () => {
+          await renderWithWrappers(<MockScreenWrapper />)
 
           expect(getSelectedOptionRows()).toHaveLength(1)
 
-          fireEvent.press(getOptionRows()[0])
-          fireEvent.press(getOptionRows()[1])
-          fireEvent.press(getOptionRows()[2])
+          await fireEvent.press(getOptionRows()[0])
+          await fireEvent.press(getOptionRows()[1])
+          await fireEvent.press(getOptionRows()[2])
 
           expect(getSelectedOptionRows()).toHaveLength(1)
           expect(getOptionRows()[2]).toBeSelected()

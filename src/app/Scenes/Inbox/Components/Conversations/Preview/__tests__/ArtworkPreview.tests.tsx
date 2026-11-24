@@ -26,24 +26,24 @@ describe("concerning selection handling", () => {
     onSelected.mockClear()
   })
 
-  it("passes an onPress handler to the touchable component if an onSelected handler is given", () => {
-    renderWithRelay(
+  it("passes an onPress handler to the touchable component if an onSelected handler is given", async () => {
+    await renderWithRelay(
       { Artwork: () => ({ title: "Karl and Anna Face Off (Diptych)", date: "2016" }) },
       { onSelected }
     )
 
     expect(screen.getByText("Karl and Anna Face Off (Diptych) / 2016")).toBeOnTheScreen()
-    fireEvent.press(screen.getByText("Karl and Anna Face Off (Diptych) / 2016"))
+    await fireEvent.press(screen.getByText("Karl and Anna Face Off (Diptych) / 2016"))
 
     expect(onSelected).toHaveBeenCalledTimes(1)
   })
 
-  it("does not pass an onPress handler to the touchable component if no onSelected handler is given", () => {
-    renderWithRelay({
+  it("does not pass an onPress handler to the touchable component if no onSelected handler is given", async () => {
+    await renderWithRelay({
       Artist: () => ({}),
     })
 
-    fireEvent.press(screen.getByRole("button"))
+    await fireEvent.press(screen.getByRole("button"))
 
     expect(onSelected).not.toHaveBeenCalled()
   })

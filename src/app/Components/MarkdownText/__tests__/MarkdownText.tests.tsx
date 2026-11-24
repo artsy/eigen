@@ -12,34 +12,34 @@ describe("MarkdownText", () => {
     jest.clearAllMocks()
   })
 
-  it("renders the markdown content", () => {
-    renderWithWrappers(<MarkdownText markdown={"First paragraph\n\nSecond paragraph"} />)
+  it("renders the markdown content", async () => {
+    await renderWithWrappers(<MarkdownText markdown={"First paragraph\n\nSecond paragraph"} />)
 
     expect(screen.getByText(/First paragraph/)).toBeOnTheScreen()
     expect(screen.getByText(/Second paragraph/)).toBeOnTheScreen()
   })
 
-  it("renders list content", () => {
-    renderWithWrappers(<MarkdownText markdown={"Intro\n\n- first item\n- second item\n"} />)
+  it("renders list content", async () => {
+    await renderWithWrappers(<MarkdownText markdown={"Intro\n\n- first item\n- second item\n"} />)
 
     expect(screen.getByText(/first item/)).toBeOnTheScreen()
     expect(screen.getByText(/second item/)).toBeOnTheScreen()
   })
 
-  it("navigates when a link is pressed", () => {
-    renderWithWrappers(<MarkdownText markdown="Go to [Andy Warhol](/artist/andy-warhol)" />)
+  it("navigates when a link is pressed", async () => {
+    await renderWithWrappers(<MarkdownText markdown="Go to [Andy Warhol](/artist/andy-warhol)" />)
 
-    fireEvent.press(screen.getByText("Andy Warhol"))
+    await fireEvent.press(screen.getByText("Andy Warhol"))
 
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
   })
 
-  it("navigates modally when specified", () => {
-    renderWithWrappers(
+  it("navigates modally when specified", async () => {
+    await renderWithWrappers(
       <MarkdownText presentLinksModally markdown="Go to [Andy Warhol](/artist/andy-warhol)" />
     )
 
-    fireEvent.press(screen.getByText("Andy Warhol"))
+    await fireEvent.press(screen.getByText("Andy Warhol"))
 
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol", { modal: true })
   })

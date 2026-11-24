@@ -21,13 +21,13 @@ describe("Artist Series", () => {
     `,
   })
 
-  it("renders without throwing an error", () => {
-    renderWithRelay({ ArtistSeries: () => ({ title: "Pumpkins" }) })
+  it("renders without throwing an error", async () => {
+    await renderWithRelay({ ArtistSeries: () => ({ title: "Pumpkins" }) })
     expect(screen.getAllByText("Pumpkins").length).toBeGreaterThan(0)
   })
 
-  it("renders the necessary subcomponents", () => {
-    renderWithRelay({})
+  it("renders the necessary subcomponents", async () => {
+    await renderWithRelay({})
 
     // ArtistSeriesMeta
     expect(screen.getByTestId("description")).toBeOnTheScreen()
@@ -38,8 +38,8 @@ describe("Artist Series", () => {
   })
 
   describe("with an artist series without an artist", () => {
-    it("does not render ArtistSeriesMoreSeries", () => {
-      renderWithRelay({
+    it("does not render ArtistSeriesMoreSeries", async () => {
+      await renderWithRelay({
         ArtistSeries: () => ({
           artist: null,
         }),
@@ -49,8 +49,8 @@ describe("Artist Series", () => {
   })
 
   describe("with an artist series artist without an artistSeriesConnection", () => {
-    it("does not render ArtistSeriesMoreSeries", () => {
-      renderWithRelay({
+    it("does not render ArtistSeriesMoreSeries", async () => {
+      await renderWithRelay({
         ArtistSeries: () => ({
           artist: [
             {

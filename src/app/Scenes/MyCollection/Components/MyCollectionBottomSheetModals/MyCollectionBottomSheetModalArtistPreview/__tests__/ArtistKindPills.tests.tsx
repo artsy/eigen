@@ -23,8 +23,8 @@ describe("ArtistKindPills", () => {
     `,
   })
 
-  it("renders a pill for an artist with insights", () => {
-    renderWithRelay({
+  it("renders a pill for an artist with insights", async () => {
+    await renderWithRelay({
       Artist: () => ({
         insights: [
           {
@@ -39,8 +39,8 @@ describe("ArtistKindPills", () => {
     expect(screen.getByText("Fancy pants")).toBeOnTheScreen()
   })
 
-  it("renders no pill for an artist with no insights", () => {
-    renderWithRelay({
+  it("renders no pill for an artist with no insights", async () => {
+    await renderWithRelay({
       Artist: () => ({
         insights: [],
       }),

@@ -10,25 +10,25 @@ jest.mock("react-native-image-crop-picker", () => ({
 
 describe("requestPhotos", () => {
   describe("on iOS", () => {
-    it("calls the native module on iOS 14 and above", () => {
+    it("calls the native module on iOS 14 and above", async () => {
       Platform.OS = "ios"
       Object.defineProperty(Platform, "Version", {
         get: () => 15,
       })
       const mockRequestPhotos = jest.fn()
       LegacyNativeModules.ARPHPhotoPickerModule.requestPhotos = mockRequestPhotos
-      requestPhotos()
+      await requestPhotos()
       expect(mockRequestPhotos).toHaveBeenCalled()
     })
   })
 
   describe("on Android", () => {
-    it("shows the react native photo picker", () => {
+    it("shows the react native photo picker", async () => {
       Platform.OS = "android"
       Object.defineProperty(Platform, "Version", {
         get: () => 23,
       })
-      requestPhotos()
+      await requestPhotos()
       expect(openPicker).toHaveBeenCalled()
     })
   })

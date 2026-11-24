@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { AboutWork_artwork$data } from "__generated__/AboutWork_artwork.graphql"
 import { AboutWork } from "app/Scenes/Artwork/Components/AboutWork"
 import { truncatedTextLimit } from "app/utils/hardware"
@@ -12,41 +13,41 @@ describe("AboutWork", () => {
     ;(truncatedTextLimit as jest.Mock).mockReset()
   })
 
-  it("renders the AboutWork correctly if all info is present", () => {
-    const { queryByText } = renderWithWrappers(<AboutWork artwork={aboutWorkArtwork} />)
-    expect(queryByText("About the work")).toBeTruthy()
-    expect(queryByText("From Artsy Specialist:")).toBeTruthy()
+  it("renders the AboutWork correctly if all info is present", async () => {
+    await renderWithWrappers(<AboutWork artwork={aboutWorkArtwork} />)
+    expect(screen.getByText("About the work")).toBeTruthy()
+    expect(screen.getByText("From Artsy Specialist:")).toBeTruthy()
   })
 
-  it("renders the AboutWork correctly if only additional information is present", () => {
+  it("renders the AboutWork correctly if only additional information is present", async () => {
     const artworkNoDescription = { ...aboutWorkArtwork, description: null }
 
-    const { queryByText } = renderWithWrappers(<AboutWork artwork={artworkNoDescription} />)
-    expect(queryByText("About the work")).toBeTruthy()
-    expect(queryByText("From Artsy Specialist:")).toBeFalsy()
+    await renderWithWrappers(<AboutWork artwork={artworkNoDescription} />)
+    expect(screen.getByText("About the work")).toBeTruthy()
+    expect(screen.queryByText("From Artsy Specialist:")).toBeFalsy()
   })
 
-  it("renders the AboutWork correctly if only description is present", () => {
+  it("renders the AboutWork correctly if only description is present", async () => {
     const artworkNoAdditionalInfo = { ...aboutWorkArtwork, additionalInformation: null }
 
-    const { queryByText } = renderWithWrappers(<AboutWork artwork={artworkNoAdditionalInfo} />)
-    expect(queryByText("About the work")).toBeTruthy()
-    expect(queryByText("From Artsy Specialist:")).toBeTruthy()
+    await renderWithWrappers(<AboutWork artwork={artworkNoAdditionalInfo} />)
+    expect(screen.getByText("About the work")).toBeTruthy()
+    expect(screen.getByText("From Artsy Specialist:")).toBeTruthy()
   })
 
-  it("renders nothing if no information is present", () => {
+  it("renders nothing if no information is present", async () => {
     const artworkNoInfo = { ...aboutWorkArtwork, additionalInformation: null, description: null }
 
-    const { queryByText } = renderWithWrappers(<AboutWork artwork={artworkNoInfo} />)
-    expect(queryByText("About the work")).toBeFalsy()
-    expect(queryByText("From Artsy Specialist:")).toBeFalsy()
+    await renderWithWrappers(<AboutWork artwork={artworkNoInfo} />)
+    expect(screen.queryByText("About the work")).toBeFalsy()
+    expect(screen.queryByText("From Artsy Specialist:")).toBeFalsy()
   })
 
-  it("hides 'From Artsy Specialist:' for auction works", () => {
+  it("hides 'From Artsy Specialist:' for auction works", async () => {
     const artworkInAuction = { ...aboutWorkArtwork, isInAuction: true }
 
-    const { queryByText } = renderWithWrappers(<AboutWork artwork={artworkInAuction} />)
-    expect(queryByText("From Artsy Specialist:")).toBeFalsy()
+    await renderWithWrappers(<AboutWork artwork={artworkInAuction} />)
+    expect(screen.queryByText("From Artsy Specialist:")).toBeFalsy()
   })
 })
 

@@ -1,4 +1,4 @@
-import { act, screen } from "@testing-library/react-native"
+import { screen } from "@testing-library/react-native"
 import { HomeViewSectionArtworksTestsQuery } from "__generated__/HomeViewSectionArtworksTestsQuery.graphql"
 import * as dismissSavedArtworkModule from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { HomeViewScreen } from "app/Scenes/HomeView/HomeView"
@@ -43,16 +43,14 @@ describe("HomeView", () => {
 
   describe("progressive onboarding setup", () => {
     it("dismisses 'save-artwork' onboarding flow when user has saves", async () => {
-      const { mockResolveLastOperation } = renderWithRelay()
+      const { mockResolveLastOperation } = await renderWithRelay()
 
-      act(() => {
-        mockResolveLastOperation({
-          Me: () => ({
-            counts: {
-              savedArtworks: 1,
-            },
-          }),
-        })
+      await mockResolveLastOperation({
+        Me: () => ({
+          counts: {
+            savedArtworks: 1,
+          },
+        }),
       })
 
       await flushPromiseQueue()
@@ -60,8 +58,8 @@ describe("HomeView", () => {
       expect(useDismissSavedArtworkSpy).toHaveBeenCalledWith(true)
     })
 
-    it("doesn't dismiss 'save-artwork' onboarding flow when user has no saves", () => {
-      renderWithRelay({
+    it("doesn't dismiss 'save-artwork' onboarding flow when user has no saves", async () => {
+      await renderWithRelay({
         Me: () => ({
           counts: {
             savedArtworks: 0,
@@ -73,14 +71,14 @@ describe("HomeView", () => {
     })
   })
 
-  it("request push notification permissions on mount", () => {
-    renderWithRelay({})
+  it("request push notification permissions on mount", async () => {
+    await renderWithRelay({})
 
     expect(requestPushNotificationsPermissionSpy).toHaveBeenCalled()
   })
 
   it("renders an email confirmation banner", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         canRequestEmailConfirmation: true,
       }),
@@ -90,8 +88,8 @@ describe("HomeView", () => {
   })
 
   describe("home view experiments", () => {
-    it("fires an experiment_viewed event for enabled experiments", () => {
-      renderWithRelay({
+    it("fires an experiment_viewed event for enabled experiments", async () => {
+      await renderWithRelay({
         HomeView: () => ({
           experiments: [
             {
@@ -113,8 +111,8 @@ describe("HomeView", () => {
       )
     })
 
-    it("does not fire an experiment_viewed event for disabled experiments", () => {
-      renderWithRelay({
+    it("does not fire an experiment_viewed event for disabled experiments", async () => {
+      await renderWithRelay({
         HomeView: () => ({
           experiments: [
             {
@@ -133,8 +131,8 @@ describe("HomeView", () => {
       )
     })
 
-    it("does not fire an experiment_viewed event when variant is missing", () => {
-      renderWithRelay({
+    it("does not fire an experiment_viewed event when variant is missing", async () => {
+      await renderWithRelay({
         HomeView: () => ({
           experiments: [
             {

@@ -35,8 +35,8 @@ describe("Full Artist Series List", () => {
   )
 
   it("renders the all of an artist's associated Artist Series", async () => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
         data: {
@@ -49,8 +49,8 @@ describe("Full Artist Series List", () => {
   })
 
   it("tracks clicks on an artist series", async () => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
         data: {
@@ -70,7 +70,7 @@ describe("Full Artist Series List", () => {
     `)
 
     expect(screen.getByText("plums")).toBeOnTheScreen()
-    fireEvent.press(screen.getByText("plums"))
+    await fireEvent.press(screen.getByText("plums"))
 
     expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
       [

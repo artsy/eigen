@@ -7,7 +7,7 @@ import { DateTime } from "luxon"
 
 describe("CommercialInformation buttons and coundtown timer", () => {
   it("renders Lot label and CountDownTimer when Artwork is in an auction", async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <ArtworkStoreProvider>
         <ArtworkLotTimerWrapper
           artwork={artwork}
@@ -23,8 +23,8 @@ describe("CommercialInformation buttons and coundtown timer", () => {
     expect(screen.getByText("31 Watchers")).toBeOnTheScreen()
   })
 
-  it("renders CountDownTimer with the sale artwork's end time when Artwork is in a cascading end time auction", () => {
-    renderWithWrappers(
+  it("renders CountDownTimer with the sale artwork's end time when Artwork is in a cascading end time auction", async () => {
+    await renderWithWrappers(
       <ArtworkStoreProvider>
         <ArtworkLotTimerWrapper
           artwork={artwork}
@@ -40,8 +40,8 @@ describe("CommercialInformation buttons and coundtown timer", () => {
     expect(screen.getByText("3d 7h")).toBeOnTheScreen()
   })
 
-  it("should render bidding closed and no timer if bidding is closed", () => {
-    renderWithWrappers(
+  it("should render bidding closed and no timer if bidding is closed", async () => {
+    await renderWithWrappers(
       <ArtworkStoreProvider>
         <ArtworkLotTimerWrapper
           artwork={

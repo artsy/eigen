@@ -1,28 +1,28 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { PriceRange } from "app/Components/ArtworkFilter/Filters/helpers"
 import { RecentPriceRanges } from "app/Components/ArtworkFilter/RecentPriceRanges"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("Recent price ranges", () => {
-  it("should be rendered", () => {
+  it("should be rendered", async () => {
     __globalStoreTestUtils__?.injectState({
       recentPriceRanges: {
         ranges: ["*-500", "1000-2000", "3000-*"],
       },
     })
 
-    const { getByText } = renderWithWrappers(
+    await renderWithWrappers(
       <RecentPriceRanges selectedRange={defaultSelectedRange} onSelected={jest.fn} />
     )
 
-    expect(getByText("Recent price ranges")).toBeTruthy()
-    expect(getByText("$0–500")).toBeTruthy()
-    expect(getByText("$1,000–2,000")).toBeTruthy()
-    expect(getByText("$3,000+")).toBeTruthy()
+    expect(screen.getByText("Recent price ranges")).toBeTruthy()
+    expect(screen.getByText("$0–500")).toBeTruthy()
+    expect(screen.getByText("$1,000–2,000")).toBeTruthy()
+    expect(screen.getByText("$3,000+")).toBeTruthy()
   })
 
-  it("should pass the selected price range to onSelected callback", () => {
+  it("should pass the selected price range to onSelected callback", async () => {
     const onSelectedMock = jest.fn()
     __globalStoreTestUtils__?.injectState({
       recentPriceRanges: {
@@ -30,11 +30,11 @@ describe("Recent price ranges", () => {
       },
     })
 
-    const { getByText } = renderWithWrappers(
+    await renderWithWrappers(
       <RecentPriceRanges selectedRange={defaultSelectedRange} onSelected={onSelectedMock} />
     )
 
-    fireEvent.press(getByText("$0–500"))
+    await fireEvent.press(screen.getByText("$0–500"))
 
     expect(onSelectedMock).toBeCalledWith({
       value: "*-500",
@@ -42,23 +42,23 @@ describe("Recent price ranges", () => {
     })
   })
 
-  it("should render the empty state if recent price ranges are empty", () => {
+  it("should render the empty state if recent price ranges are empty", async () => {
     __globalStoreTestUtils__?.injectState({
       recentPriceRanges: {
         ranges: [],
       },
     })
 
-    const { getByText } = renderWithWrappers(
+    await renderWithWrappers(
       <RecentPriceRanges selectedRange={defaultSelectedRange} onSelected={jest.fn} />
     )
 
     const emptyText = "Your recent price ranges will show here"
-    expect(getByText(emptyText)).toBeTruthy()
+    expect(screen.getByText(emptyText)).toBeTruthy()
   })
 
   describe("the collector profile-sourced price range", () => {
-    it("should NOT be rendered if it is NOT specified", () => {
+    it("should NOT be rendered if it is NOT specified", async () => {
       __globalStoreTestUtils__?.injectState({
         userPrefs: {
           priceRange: "*-*",
@@ -68,14 +68,14 @@ describe("Recent price ranges", () => {
         },
       })
 
-      const { queryAllByLabelText } = renderWithWrappers(
+      await renderWithWrappers(
         <RecentPriceRanges selectedRange={defaultSelectedRange} onSelected={jest.fn} />
       )
 
-      expect(queryAllByLabelText("Price range pill")).toHaveLength(0)
+      expect(screen.queryAllByLabelText("Price range pill")).toHaveLength(0)
     })
 
-    it("should be rendered if it is specified", () => {
+    it("should be rendered if it is specified", async () => {
       __globalStoreTestUtils__?.injectState({
         userPrefs: {
           priceRange: "0-5000",
@@ -85,14 +85,14 @@ describe("Recent price ranges", () => {
         },
       })
 
-      const { queryByText } = renderWithWrappers(
+      await renderWithWrappers(
         <RecentPriceRanges selectedRange={defaultSelectedRange} onSelected={jest.fn} />
       )
 
-      expect(queryByText("$0–5,000")).toBeTruthy()
+      expect(screen.getByText("$0–5,000")).toBeTruthy()
     })
 
-    it("should be rendered 5 pills maximum (4 recently selected, 1 collector profile-sourced)", () => {
+    it("should be rendered 5 pills maximum (4 recently selected, 1 collector profile-sourced)", async () => {
       __globalStoreTestUtils__?.injectState({
         userPrefs: {
           priceRange: "0-5000",
@@ -102,38 +102,38 @@ describe("Recent price ranges", () => {
         },
       })
 
-      const { queryByText } = renderWithWrappers(
+      await renderWithWrappers(
         <RecentPriceRanges selectedRange={defaultSelectedRange} onSelected={jest.fn} />
       )
 
-      expect(queryByText("$0–100")).toBeTruthy()
-      expect(queryByText("$100–200")).toBeTruthy()
-      expect(queryByText("$200–300")).toBeTruthy()
-      expect(queryByText("$300–400")).toBeTruthy()
+      expect(screen.getByText("$0–100")).toBeTruthy()
+      expect(screen.getByText("$100–200")).toBeTruthy()
+      expect(screen.getByText("$200–300")).toBeTruthy()
+      expect(screen.getByText("$300–400")).toBeTruthy()
 
       // collector profile-sourced
-      expect(queryByText("$0–5,000")).toBeTruthy()
+      expect(screen.getByText("$0–5,000")).toBeTruthy()
 
-      expect(queryByText("$400–500")).toBeNull()
+      expect(screen.queryByText("$400–500")).toBeNull()
     })
   })
 
   describe("Clear button", () => {
-    it("should NOT be rendered if recent price ranges are empty", () => {
+    it("should NOT be rendered if recent price ranges are empty", async () => {
       __globalStoreTestUtils__?.injectState({
         recentPriceRanges: {
           ranges: [],
         },
       })
 
-      const { queryByText } = renderWithWrappers(
+      await renderWithWrappers(
         <RecentPriceRanges selectedRange={defaultSelectedRange} onSelected={jest.fn} />
       )
 
-      expect(queryByText("Clear")).toBeNull()
+      expect(screen.queryByText("Clear")).toBeNull()
     })
 
-    it("should NOT be rendered if only the collector profile-sourced price range is available", () => {
+    it("should NOT be rendered if only the collector profile-sourced price range is available", async () => {
       __globalStoreTestUtils__?.injectState({
         recentPriceRanges: {
           ranges: [],
@@ -143,28 +143,28 @@ describe("Recent price ranges", () => {
         },
       })
 
-      const { queryByText } = renderWithWrappers(
+      await renderWithWrappers(
         <RecentPriceRanges selectedRange={defaultSelectedRange} onSelected={jest.fn} />
       )
 
-      expect(queryByText("Clear")).toBeNull()
+      expect(screen.queryByText("Clear")).toBeNull()
     })
 
-    it("should be rendered if only the custom price ranges are available", () => {
+    it("should be rendered if only the custom price ranges are available", async () => {
       __globalStoreTestUtils__?.injectState({
         recentPriceRanges: {
           ranges: ["0-100", "100-200"],
         },
       })
 
-      const { getByText } = renderWithWrappers(
+      await renderWithWrappers(
         <RecentPriceRanges selectedRange={defaultSelectedRange} onSelected={jest.fn} />
       )
 
-      expect(getByText("Clear")).toBeTruthy()
+      expect(screen.getByText("Clear")).toBeTruthy()
     })
 
-    it("should be rendered if when the custom and the collector profile-sourced price ranges are available", () => {
+    it("should be rendered if when the custom and the collector profile-sourced price ranges are available", async () => {
       __globalStoreTestUtils__?.injectState({
         recentPriceRanges: {
           ranges: ["0-100", "100-200"],
@@ -174,29 +174,29 @@ describe("Recent price ranges", () => {
         },
       })
 
-      const { getByText } = renderWithWrappers(
+      await renderWithWrappers(
         <RecentPriceRanges selectedRange={defaultSelectedRange} onSelected={jest.fn} />
       )
 
-      expect(getByText("Clear")).toBeTruthy()
+      expect(screen.getByText("Clear")).toBeTruthy()
     })
 
-    it("should clear all recent price ranges when button is pressed", () => {
+    it("should clear all recent price ranges when button is pressed", async () => {
       __globalStoreTestUtils__?.injectState({
         recentPriceRanges: {
           ranges: ["*-500", "1000-2000", "3000-*"],
         },
       })
 
-      const { queryByText, getByText } = renderWithWrappers(
+      await renderWithWrappers(
         <RecentPriceRanges selectedRange={defaultSelectedRange} onSelected={jest.fn} />
       )
 
-      fireEvent.press(getByText("Clear"))
+      await fireEvent.press(screen.getByText("Clear"))
 
-      expect(queryByText("$0–500")).toBeNull()
-      expect(queryByText("$1,000–2,000")).toBeNull()
-      expect(queryByText("$3,000+")).toBeNull()
+      expect(screen.queryByText("$0–500")).toBeNull()
+      expect(screen.queryByText("$1,000–2,000")).toBeNull()
+      expect(screen.queryByText("$3,000+")).toBeNull()
     })
   })
 })

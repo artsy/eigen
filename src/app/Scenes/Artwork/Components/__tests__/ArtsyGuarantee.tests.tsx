@@ -5,8 +5,8 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("ArtsyGuarantee", () => {
-  it("should render all sections correctly", () => {
-    renderWithWrappers(<ArtsyGuarantee />)
+  it("should render all sections correctly", async () => {
+    await renderWithWrappers(<ArtsyGuarantee />)
 
     expect(screen.getByText("Secure Checkout")).toBeTruthy()
     expect(screen.getByLabelText("Secure Checkout Icon")).toBeTruthy()
@@ -20,22 +20,22 @@ describe("ArtsyGuarantee", () => {
     expect(screen.getByText("Learn more")).toBeTruthy()
   })
 
-  it("should redirect to a webview with buyer-guarantee info", () => {
-    renderWithWrappers(<ArtsyGuarantee />)
+  it("should redirect to a webview with buyer-guarantee info", async () => {
+    await renderWithWrappers(<ArtsyGuarantee />)
 
     expect(screen.getByText("Learn more")).toBeTruthy()
 
-    fireEvent.press(screen.getByText("Learn more"))
+    await fireEvent.press(screen.getByText("Learn more"))
 
     expect(navigate).toHaveBeenCalledWith("https://www.artsy.net/buyer-guarantee")
   })
 
-  it("should trigger analytics event", () => {
-    renderWithWrappers(<ArtsyGuarantee />)
+  it("should trigger analytics event", async () => {
+    await renderWithWrappers(<ArtsyGuarantee />)
 
     expect(screen.getByText("Learn more")).toBeTruthy()
 
-    fireEvent.press(screen.getByText("Learn more"))
+    await fireEvent.press(screen.getByText("Learn more"))
 
     expect(mockTrackEvent).toHaveBeenCalled()
     expect(mockTrackEvent).toHaveBeenCalledWith({

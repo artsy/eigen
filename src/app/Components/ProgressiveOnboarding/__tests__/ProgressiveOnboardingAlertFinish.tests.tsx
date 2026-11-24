@@ -19,21 +19,21 @@ describe("ProgressiveOnboardingAlertFinish", () => {
     })
   })
 
-  it("renders", () => {
-    wrapper()
+  it("renders", async () => {
+    await wrapper()
 
     expect(screen.getByText("Test Children")).toBeOnTheScreen()
     expect(screen.queryByText("When you’re ready, click Create Alert.")).not.toBeOnTheScreen()
   })
 
-  it("shows the tooltip given all the conditions are met", () => {
+  it("shows the tooltip given all the conditions are met", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         sessionState: { isReady: true },
         dismissed: [{ key: "alert-select-filters", timestamp: Date.now() }],
       },
     })
-    wrapper()
+    await wrapper()
 
     expect(screen.getByText("When you’re ready, click Create Alert.")).toBeOnTheScreen()
   })
@@ -45,16 +45,16 @@ describe("ProgressiveOnboardingAlertFinish", () => {
         dismissed: [{ key: "alert-select-filters", timestamp: Date.now() }],
       },
     })
-    wrapper()
+    await wrapper()
 
-    fireEvent.press(screen.getByText("When you’re ready, click Create Alert."))
+    await fireEvent.press(screen.getByText("When you’re ready, click Create Alert."))
 
     expect(__globalStoreTestUtils__?.getLastAction()).toHaveProperty("payload", "alert-finish")
     expect(screen.queryByText("When you’re ready, click Create Alert.")).not.toBeOnTheScreen()
   })
 
-  it("does not show the tooltip if 'alert-select-filters' is not dismissed", () => {
-    wrapper()
+  it("does not show the tooltip if 'alert-select-filters' is not dismissed", async () => {
+    await wrapper()
     expect(screen.queryByText("When you’re ready, click Create Alert.")).not.toBeOnTheScreen()
   })
 })

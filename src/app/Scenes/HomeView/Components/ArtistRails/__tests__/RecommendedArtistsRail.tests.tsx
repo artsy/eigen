@@ -28,14 +28,14 @@ describe("RecommendedArtistsRail", () => {
   })
 
   it("Renders list of recommended artists without throwing an error", async () => {
-    renderWithRelay({ Me: () => mockMe })
+    await renderWithRelay({ Me: () => mockMe })
 
     expect(screen.getByText("Rhombie Sandoval")).toBeTruthy()
     expect(screen.getByText("Mexican-American, b. 1991")).toBeTruthy()
   })
 
   it("returns null if there are no artists", async () => {
-    const { toJSON } = renderWithRelay({ Me: () => emptyMe })
+    const { toJSON } = await renderWithRelay({ Me: () => emptyMe })
 
     expect(toJSON()).toBeNull()
   })

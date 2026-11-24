@@ -50,8 +50,8 @@ describe("useCityItineraryStops", () => {
     <RelayEnvironmentProvider environment={env}>{children}</RelayEnvironmentProvider>
   )
 
-  const renderIt = () =>
-    renderHook(
+  const renderIt = async () =>
+    await renderHook(
       () => useCityItineraryStops({ citySlug: "london-united-kingdom", cityName: "London" }),
       { wrapper }
     )
@@ -104,7 +104,7 @@ describe("useCityItineraryStops", () => {
   })
 
   it("adds a stop to the itinerary the user already has, in one mutation", async () => {
-    const { result } = renderIt()
+    const { result } = await renderIt()
 
     const promise = result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
 
@@ -117,7 +117,7 @@ describe("useCityItineraryStops", () => {
 
   // The rail's own counts would otherwise stay stale until its screen happens to remount.
   it("refetches the itineraries rail once a stop is added", async () => {
-    const { result } = renderIt()
+    const { result } = await renderIt()
 
     const promise = result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
 
@@ -141,7 +141,7 @@ describe("useCityItineraryStops", () => {
   // The listing serializes at :short, which has no sections, so the itinerary's own are read
   // separately — through Query.itinerary, the same record the itinerary screen renders from.
   it("reads the sections through Query.itinerary rather than the listing", async () => {
-    const { result } = renderIt()
+    const { result } = await renderIt()
 
     void result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
 
@@ -158,7 +158,7 @@ describe("useCityItineraryStops", () => {
   // The name is a plain string Gravity stores verbatim, so a stop belongs in the section the
   // user already has rather than in a second one differing only in case.
   it("reuses a My Stops section however it is cased", async () => {
-    const { result } = renderIt()
+    const { result } = await renderIt()
 
     void result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
 
@@ -181,7 +181,7 @@ describe("useCityItineraryStops", () => {
 
   // Creating one on the strength of a failed read is what leaves an itinerary with two.
   it("refuses to add a section when the itinerary cannot be read", async () => {
-    const { result } = renderIt()
+    const { result } = await renderIt()
 
     const promise = result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
 
@@ -195,7 +195,7 @@ describe("useCityItineraryStops", () => {
   // An itinerary copied from a guide arrives with the guide's own days, so the section is
   // matched by name rather than taken as the first.
   it("adds to an existing My Stops section rather than a guide's own days", async () => {
-    const { result } = renderIt()
+    const { result } = await renderIt()
 
     // Not awaited: the assertion is about which section the add targets, not its result.
     void result.current.addStop({ itemType: "SHOW", itemID: "show-2" })
@@ -241,7 +241,7 @@ describe("useCityItineraryStops", () => {
     }
 
     it("sends the copied fields and no item", async () => {
-      const { result } = renderIt()
+      const { result } = await renderIt()
 
       const promise = result.current.addStop(customStop)
 
@@ -271,7 +271,7 @@ describe("useCityItineraryStops", () => {
 
     // No id to compare, so a duplicate is caught on title plus address.
     it("does not add the same custom stop twice", async () => {
-      const { result } = renderIt()
+      const { result } = await renderIt()
 
       const promise = result.current.addStop(customStop)
 
@@ -303,7 +303,7 @@ describe("useCityItineraryStops", () => {
   // Metaphysics has no find-or-create, and a new itinerary has no section for a stop to
   // belong to. With no itinerary there are no sections to read either.
   it("creates the itinerary and a section when the user has none", async () => {
-    const { result } = renderIt()
+    const { result } = await renderIt()
 
     const promise = result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
 
@@ -364,7 +364,7 @@ describe("useCityItineraryStops", () => {
   // deleteItineraryStop takes the stop's own id, which a card never has, so the stop is found
   // by the entity it points at.
   it("finds the stop by its item, then deletes it by id", async () => {
-    const { result } = renderIt()
+    const { result } = await renderIt()
 
     const promise = result.current.removeStop({ itemType: "SHOW", itemID: "show-1" })
 
@@ -395,7 +395,7 @@ describe("useCityItineraryStops", () => {
 
   // The card already shows what the user wanted, so this is success, not an error.
   it("does nothing when the itinerary has no stop for that entity", async () => {
-    const { result } = renderIt()
+    const { result } = await renderIt()
 
     const promise = result.current.removeStop({ itemType: "SHOW", itemID: "show-1" })
 
@@ -407,7 +407,7 @@ describe("useCityItineraryStops", () => {
 
   // Gravity has no uniqueness constraint on (section, item type, item id) yet.
   it("does not add a second stop for an entity already on the itinerary", async () => {
-    const { result } = renderIt()
+    const { result } = await renderIt()
 
     const promise = result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
 
@@ -421,7 +421,7 @@ describe("useCityItineraryStops", () => {
 
   // Nothing to remove from, and creating an itinerary in order to delete from it is absurd.
   it("does nothing when removing and the user has no itinerary", async () => {
-    const { result } = renderIt()
+    const { result } = await renderIt()
 
     const promise = result.current.removeStop({ itemType: "SHOW", itemID: "show-1" })
 
@@ -433,7 +433,7 @@ describe("useCityItineraryStops", () => {
   })
 
   it("surfaces a mutation failure rather than reporting success", async () => {
-    const { result } = renderIt()
+    const { result } = await renderIt()
 
     const promise = result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
 
@@ -453,7 +453,7 @@ describe("useCityItineraryStops", () => {
 
   // Two quick taps would otherwise each find no itinerary and create one.
   it("serialises calls so a double tap cannot create two itineraries", async () => {
-    const { result } = renderIt()
+    const { result } = await renderIt()
 
     const first = result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
     const second = result.current.addStop({ itemType: "SHOW", itemID: "show-2" })

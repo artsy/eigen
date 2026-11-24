@@ -54,24 +54,24 @@ const { renderWithRelay } = setupTestWrapper<
   `,
 })
 
-it("renders without throwing a error", () => {
-  renderWithRelay()
+it("renders without throwing a error", async () => {
+  await renderWithRelay()
 })
 
 describe("regarding the send button", () => {
-  it("disables it even if it contains text if the disabled prop is true", () => {
+  it("disables it even if it contains text if the disabled prop is true", async () => {
     const overrideText = "History repeats itself, first as tragedy, second as farce."
-    renderWithRelay({}, { value: overrideText, disabled: true })
+    await renderWithRelay({}, { value: overrideText, disabled: true })
 
     expect(screen.getByText("Send")).toBeDisabled()
   })
 
   it("calls onSubmit with the text when send button is pressed", async () => {
     const onSubmit = jest.fn()
-    renderWithRelay({}, { onSubmit })
+    await renderWithRelay({}, { onSubmit })
 
     const text = "Don't trust everything you see, even salt looks like sugar"
-    fireEvent.changeText(screen.getByLabelText("Text input field"), text)
+    await fireEvent.changeText(screen.getByLabelText("Text input field"), text)
 
     // The send button is a TouchableWithoutFeedback, which only responds to responder events.
     await userEvent.press(screen.getByText("Send"))
@@ -81,8 +81,8 @@ describe("regarding the send button", () => {
 })
 
 describe("inquiry offer", () => {
-  it("renders the inquiry make offer button if inquiry item is an offerable artwork and no active orders", () => {
-    renderWithRelay({
+  it("renders the inquiry make offer button if inquiry item is an offerable artwork and no active orders", async () => {
+    await renderWithRelay({
       Conversation: () => ({
         items: [
           {
@@ -102,8 +102,8 @@ describe("inquiry offer", () => {
     expect(screen.getByText(INQUIRY_BUTTON_TEXT)).toBeOnTheScreen()
   })
 
-  it("does not render the inquiry make offer button if inquiry item is not an offerable artwork", () => {
-    renderWithRelay({
+  it("does not render the inquiry make offer button if inquiry item is not an offerable artwork", async () => {
+    await renderWithRelay({
       Conversation: () => ({
         items: [
           {
@@ -126,7 +126,7 @@ describe("inquiry offer", () => {
   })
 
   it("does not render a CTA when the keyboard is visible", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Conversation: () => ({
         items: [
           {
@@ -139,14 +139,14 @@ describe("inquiry offer", () => {
       }),
     })
 
-    fireEvent(screen.getByLabelText("Text input field"), "focus")
+    await fireEvent(screen.getByLabelText("Text input field"), "focus")
 
     await waitFor(() => expect(screen.queryByTestId("cta-pop-up")).not.toBeOnTheScreen())
   })
 
   describe("with associated orders (OrderCTAs)", () => {
-    it("renders no CTA if there is an active order with a pending offer from the buyer", () => {
-      renderWithRelay({
+    it("renders no CTA if there is an active order with a pending offer from the buyer", async () => {
+      await renderWithRelay({
         Conversation: () => ({
           items: [
             {
@@ -174,8 +174,8 @@ describe("inquiry offer", () => {
       expect(screen.queryByTestId("cta-pop-up")).not.toBeOnTheScreen()
     })
 
-    it("renders a orange offer CTA if there is a pending offer from the seller", () => {
-      renderWithRelay({
+    it("renders a orange offer CTA if there is a pending offer from the seller", async () => {
+      await renderWithRelay({
         Conversation: () => ({
           items: [
             {
@@ -208,8 +208,8 @@ describe("inquiry offer", () => {
       expect(screen.getByTestId("review-offer-button")).toHaveTextContent(/Counteroffer Received/)
     })
 
-    it("renders a green cta if the seller has approved the buyer's offer", () => {
-      renderWithRelay({
+    it("renders a green cta if the seller has approved the buyer's offer", async () => {
+      await renderWithRelay({
         Conversation: () => ({
           items: [
             {
@@ -243,8 +243,8 @@ describe("inquiry offer", () => {
       expect(screen.getByTestId("review-offer-button")).toHaveTextContent(/Counteroffer Accepted/)
     })
 
-    it("renders the MO button instead of the cta if the seller has rejected the buyer's offer", () => {
-      renderWithRelay({
+    it("renders the MO button instead of the cta if the seller has rejected the buyer's offer", async () => {
+      await renderWithRelay({
         Conversation: () => ({
           items: [
             {
@@ -282,8 +282,8 @@ describe("inquiry offer", () => {
       expect(screen.queryByTestId("review-offer-button")).not.toBeOnTheScreen()
     })
 
-    it("renders a red cta if the payment fails after an order is accepted", () => {
-      renderWithRelay({
+    it("renders a red cta if the payment fails after an order is accepted", async () => {
+      await renderWithRelay({
         Conversation: () => ({
           items: [
             {
@@ -316,8 +316,8 @@ describe("inquiry offer", () => {
       expect(screen.getByTestId("review-offer-button")).toHaveTextContent(/Payment Failed/)
     })
 
-    it("renders the MO button instead of the cta if the offer lapsed", () => {
-      renderWithRelay({
+    it("renders the MO button instead of the cta if the offer lapsed", async () => {
+      await renderWithRelay({
         Conversation: () => ({
           items: [
             {

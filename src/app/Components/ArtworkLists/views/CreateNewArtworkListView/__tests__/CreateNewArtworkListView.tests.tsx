@@ -47,22 +47,22 @@ describe("CreateNewArtworkListView", () => {
 
   describe("Error state", () => {
     it("when artwork list name is empty", async () => {
-      renderWithRelay()
+      await renderWithRelay()
 
       const input = screen.getByPlaceholderText(inputPlaceholder)
-      fireEvent.changeText(input, helloWorldText)
-      fireEvent.changeText(input, "")
+      await fireEvent.changeText(input, helloWorldText)
+      await fireEvent.changeText(input, "")
 
       expect(await screen.findByText("Name is required"))
     })
 
     it("submit (blur) when artwork list name is empty", async () => {
-      renderWithRelay()
+      await renderWithRelay()
 
       const input = screen.getByPlaceholderText(inputPlaceholder)
-      fireEvent.changeText(input, "")
+      await fireEvent.changeText(input, "")
 
-      fireEvent(input, "submitEditing")
+      await fireEvent(input, "submitEditing")
 
       expect(await screen.findByText("Name is required"))
     })
@@ -72,32 +72,35 @@ describe("CreateNewArtworkListView", () => {
 
       const errorMessage = "You already have a list with this name."
 
-      const { mockResolveLastOperation } = renderWithRelay()
+      const { env, mockResolveLastOperation } = await renderWithRelay()
       jest.spyOn(KeyboardController, "isVisible").mockReturnValue(true)
 
       const input = screen.getByPlaceholderText(inputPlaceholder)
-      fireEvent.changeText(input, helloWorldText)
+      await fireEvent.changeText(input, helloWorldText)
 
-      fireEvent(input, "submitEditing")
+      await fireEvent(input, "submitEditing")
 
-      await waitFor(() => {
-        mockResolveLastOperation({
-          Mutation: () => ({
-            createCollection: {
-              responseOrError: {
-                __typename: "CreateCollectionFailure",
-                mutationError: {
-                  fieldErrors: [
-                    {
-                      name: "name",
-                      message: errorMessage,
-                    },
-                  ],
-                },
+      await waitFor(() =>
+        expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+          "useCreateNewArtworkListMutation"
+        )
+      )
+      await mockResolveLastOperation({
+        Mutation: () => ({
+          createCollection: {
+            responseOrError: {
+              __typename: "CreateCollectionFailure",
+              mutationError: {
+                fieldErrors: [
+                  {
+                    name: "name",
+                    message: errorMessage,
+                  },
+                ],
               },
             },
-          }),
-        })
+          },
+        }),
       })
 
       expect(screen.getByText(errorMessage)).toBeOnTheScreen()
@@ -109,25 +112,25 @@ describe("CreateNewArtworkListView", () => {
       Platform.OS = "android"
     })
 
-    it("disabled by default", () => {
-      renderWithRelay()
+    it("disabled by default", async () => {
+      await renderWithRelay()
 
       expect(screen.getByText("Save")).toBeDisabled()
     })
 
-    it("disabled when artwork list name is empty", () => {
-      renderWithRelay()
+    it("disabled when artwork list name is empty", async () => {
+      await renderWithRelay()
 
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), helloWorldText)
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), "")
+      await fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), helloWorldText)
+      await fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), "")
 
       expect(screen.getByText("Save")).toBeDisabled()
     })
 
-    it("enabled when artwork list name is entered", () => {
-      renderWithRelay()
+    it("enabled when artwork list name is entered", async () => {
+      await renderWithRelay()
 
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), helloWorldText)
+      await fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), helloWorldText)
 
       expect(screen.getByText("Save")).toBeEnabled()
     })
@@ -139,30 +142,33 @@ describe("CreateNewArtworkListView", () => {
     })
 
     it("when mutation returned success", async () => {
-      const { mockResolveLastOperation } = renderWithRelay()
+      const { env, mockResolveLastOperation } = await renderWithRelay()
       jest.spyOn(KeyboardController, "isVisible").mockReturnValue(false)
 
       const input = screen.getByPlaceholderText(inputPlaceholder)
-      fireEvent.changeText(input, helloWorldText)
+      await fireEvent.changeText(input, helloWorldText)
 
-      fireEvent.press(screen.getByText("Save"))
+      await fireEvent.press(screen.getByText("Save"))
 
-      await waitFor(() => {
-        mockResolveLastOperation({
-          Mutation: () => ({
-            createCollection: {
-              responseOrError: {
-                __typename: "CreateCollectionSuccess",
-                collection: {
-                  internalID: "artwork-list-id",
-                  name: helloWorldText,
-                  shareableWithPartners: true,
-                  artworksCount: 0,
-                },
+      await waitFor(() =>
+        expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+          "useCreateNewArtworkListMutation"
+        )
+      )
+      await mockResolveLastOperation({
+        Mutation: () => ({
+          createCollection: {
+            responseOrError: {
+              __typename: "CreateCollectionSuccess",
+              collection: {
+                internalID: "artwork-list-id",
+                name: helloWorldText,
+                shareableWithPartners: true,
+                artworksCount: 0,
               },
             },
-          }),
-        })
+          },
+        }),
       })
 
       expect(screen.queryByText("Name is required")).not.toBeOnTheScreen()
@@ -175,30 +181,33 @@ describe("CreateNewArtworkListView", () => {
     })
 
     it("when mutation returned success", async () => {
-      const { mockResolveLastOperation } = renderWithRelay()
+      const { env, mockResolveLastOperation } = await renderWithRelay()
       jest.spyOn(KeyboardController, "isVisible").mockReturnValue(false)
 
       const input = screen.getByPlaceholderText(inputPlaceholder)
-      fireEvent.changeText(input, helloWorldText)
+      await fireEvent.changeText(input, helloWorldText)
 
-      fireEvent(input, "submitEditing")
+      await fireEvent(input, "submitEditing")
 
-      await waitFor(() => {
-        mockResolveLastOperation({
-          Mutation: () => ({
-            createCollection: {
-              responseOrError: {
-                __typename: "CreateCollectionSuccess",
-                collection: {
-                  internalID: "artwork-list-id",
-                  name: helloWorldText,
-                  shareableWithPartners: true,
-                  artworksCount: 0,
-                },
+      await waitFor(() =>
+        expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+          "useCreateNewArtworkListMutation"
+        )
+      )
+      await mockResolveLastOperation({
+        Mutation: () => ({
+          createCollection: {
+            responseOrError: {
+              __typename: "CreateCollectionSuccess",
+              collection: {
+                internalID: "artwork-list-id",
+                name: helloWorldText,
+                shareableWithPartners: true,
+                artworksCount: 0,
               },
             },
-          }),
-        })
+          },
+        }),
       })
 
       expect(screen.queryByText("Name is required")).not.toBeOnTheScreen()
@@ -206,25 +215,25 @@ describe("CreateNewArtworkListView", () => {
   })
 
   describe("Textual content", () => {
-    it("default state", () => {
-      renderWithRelay()
+    it("default state", async () => {
+      await renderWithRelay()
 
       expect(screen.getByText("New list")).toBeOnTheScreen()
     })
 
-    it("default state with AREnableArtworkListOfferability ff on", () => {
+    it("default state with AREnableArtworkListOfferability ff on", async () => {
       __globalStoreTestUtils__?.injectFeatureFlags({
         AREnableArtworkListOfferability: true,
       })
 
-      renderWithRelay()
+      await renderWithRelay()
 
       expect(screen.getByText("New list")).toBeOnTheScreen()
       expect(screen.getByText("Share list with galleries")).toBeOnTheScreen()
 
       // test that the explanatory text is not visible by default
       expect(screen.queryByText("Shared lists are eligible to receive")).not.toBeOnTheScreen()
-      fireEvent.press(screen.getByText("Share list with galleries", { exact: false }))
+      await fireEvent.press(screen.getByText("Share list with galleries", { exact: false }))
       expect(
         screen.getByText("Shared lists are eligible to receive", { exact: false })
       ).toBeOnTheScreen()
@@ -232,36 +241,37 @@ describe("CreateNewArtworkListView", () => {
   })
 
   describe("Remaining characters", () => {
-    it("default state", () => {
-      renderWithRelay()
+    it("default state", async () => {
+      await renderWithRelay()
 
       expect(screen.getByText("0 / 40")).toBeOnTheScreen()
     })
 
-    it("when user entered 39 characters", () => {
-      renderWithRelay()
+    it("when user entered 39 characters", async () => {
+      await renderWithRelay()
 
       const longText = "a".repeat(39)
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), longText)
+      await fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), longText)
 
       expect(screen.getByText("39 / 40")).toBeOnTheScreen()
     })
 
-    it("when user entered something", () => {
-      renderWithRelay()
+    it("when user entered something", async () => {
+      await renderWithRelay()
 
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), "abc")
+      await fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), "abc")
 
       expect(screen.getByText("3 / 40")).toBeOnTheScreen()
     })
 
-    // Known issue with react native testing library
-    // context: https://github.com/callstack/react-native-testing-library/issues/1239
-    it.skip("when user has reached the allowed limit", () => {
-      renderWithRelay()
+    it("when user has reached the allowed limit", async () => {
+      await renderWithRelay()
 
-      const longText = "a".repeat(100)
-      fireEvent(screen.getByPlaceholderText(inputPlaceholder), "changeText", longText)
+      const input = screen.getByPlaceholderText(inputPlaceholder)
+      // The native TextInput stops typing at maxLength; fireEvent.changeText would bypass it
+      expect(input).toHaveProp("maxLength", 40)
+
+      await fireEvent.changeText(input, "a".repeat(40))
 
       expect(screen.getByText("40 / 40")).toBeOnTheScreen()
     })

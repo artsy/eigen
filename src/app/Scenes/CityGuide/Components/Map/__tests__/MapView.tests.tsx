@@ -69,8 +69,8 @@ describe("MapView cameraStop bounds padding", () => {
     capturedCameraProps = null
   })
 
-  it("pads the fitted bounds on all sides with BOUNDS_PADDING, plus the safe-area inset on top", () => {
-    render(
+  it("pads the fitted bounds on all sides with BOUNDS_PADDING, plus the safe-area inset on top", async () => {
+    await render(
       <Theme>
         <ScreenDimensionsProvider>
           <MapView
@@ -108,8 +108,8 @@ describe("MapView Saved filter", () => {
     },
   ]
 
-  const renderMap = (props: { sections?: MapSection[]; showSavedFilter?: boolean } = {}) =>
-    render(
+  const renderMap = async (props: { sections?: MapSection[]; showSavedFilter?: boolean } = {}) =>
+    await render(
       <Theme>
         <ScreenDimensionsProvider>
           <MapView
@@ -129,33 +129,33 @@ describe("MapView Saved filter", () => {
       .getByTestId("map-pins")
       .props.collection.features.map((feature: any) => feature.properties.id)
 
-  it("shows All and Saved pills even for a single section", () => {
-    renderMap({ showSavedFilter: true })
+  it("shows All and Saved pills even for a single section", async () => {
+    await renderMap({ showSavedFilter: true })
 
     expect(screen.getByText("All")).toBeOnTheScreen()
     expect(screen.getByText("Saved")).toBeOnTheScreen()
   })
 
-  it("filters the pins to saved places", () => {
-    renderMap({ showSavedFilter: true })
+  it("filters the pins to saved places", async () => {
+    await renderMap({ showSavedFilter: true })
 
-    fireEvent.press(screen.getByText("Saved"))
+    await fireEvent.press(screen.getByText("Saved"))
 
     expect(pinnedPlaceIds()).toEqual(["saved"])
   })
 
-  it("has no Saved pill without the filter", () => {
-    renderMap()
+  it("has no Saved pill without the filter", async () => {
+    await renderMap()
 
     expect(screen.queryByText("Saved")).not.toBeOnTheScreen()
     expect(screen.queryByText("All")).not.toBeOnTheScreen()
   })
 
-  it("has no Saved pill when nothing is saved", () => {
+  it("has no Saved pill when nothing is saved", async () => {
     const sections = savedSections()
     sections[0].places = sections[0].places.map((place) => ({ ...place, isSaved: false }))
 
-    renderMap({ sections, showSavedFilter: true })
+    await renderMap({ sections, showSavedFilter: true })
 
     expect(screen.queryByText("Saved")).not.toBeOnTheScreen()
   })
@@ -171,8 +171,8 @@ describe("MapView tracking", () => {
     },
   ]
 
-  const renderMap = () =>
-    render(
+  const renderMap = async () =>
+    await render(
       <Theme>
         <ScreenDimensionsProvider>
           <MapView
@@ -192,10 +192,10 @@ describe("MapView tracking", () => {
     jest.clearAllMocks()
   })
 
-  it("tracks a single pin tap against the screen showing the map", () => {
-    renderMap()
+  it("tracks a single pin tap against the screen showing the map", async () => {
+    await renderMap()
 
-    fireEvent(screen.getByTestId("map-pins"), "selectPlace", "place-1")
+    await fireEvent(screen.getByTestId("map-pins"), "selectPlace", "place-1")
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedMapPin",
@@ -206,10 +206,10 @@ describe("MapView tracking", () => {
     })
   })
 
-  it("tracks a filter pill tap with the section it picks", () => {
-    renderMap()
+  it("tracks a filter pill tap with the section it picks", async () => {
+    await renderMap()
 
-    fireEvent.press(screen.getByText("Day 2"))
+    await fireEvent.press(screen.getByText("Day 2"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedNavigationTab",

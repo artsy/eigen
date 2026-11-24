@@ -42,13 +42,13 @@ describe("MyCollectionAddPhotos", () => {
     mockAddPhotos = <Wrapper />
   })
 
-  it("updates header with correct label based on number of photos selected", () => {
-    renderWithWrappers(mockAddPhotos)
+  it("updates header with correct label based on number of photos selected", async () => {
+    await renderWithWrappers(mockAddPhotos)
     expect(screen.getByText("Photos (2)")).toBeOnTheScreen()
   })
 
   it("displays the correct number of photos", async () => {
-    renderWithWrappers(mockAddPhotos)
+    await renderWithWrappers(mockAddPhotos)
     // In MyCollectionAddPhotos We delay by DELAY_TIME_MS while showing a lighter placeholder before
     // loading the heavier images.
     expect(
@@ -57,20 +57,20 @@ describe("MyCollectionAddPhotos", () => {
     expect(screen.getAllByLabelText("Delete photo")).toHaveLength(2)
   })
 
-  it("renders add photo button", () => {
-    renderWithWrappers(mockAddPhotos)
+  it("renders add photo button", async () => {
+    await renderWithWrappers(mockAddPhotos)
     expect(screen.getByLabelText("Add photos")).toBeOnTheScreen()
   })
 
-  it("triggers action on add photo button click", () => {
-    renderWithWrappers(mockAddPhotos)
-    fireEvent.press(screen.getByLabelText("Add photos"))
+  it("triggers action on add photo button click", async () => {
+    await renderWithWrappers(mockAddPhotos)
+    await fireEvent.press(screen.getByLabelText("Add photos"))
     expect(showPhotoActionSheet).toHaveBeenCalled()
   })
 
-  it("triggers action on add photo button click", () => {
-    renderWithWrappers(<Wrapper />)
-    fireEvent.press(screen.getByLabelText("Add photos"))
+  it("triggers action on add photo button click", async () => {
+    await renderWithWrappers(<Wrapper />)
+    await fireEvent.press(screen.getByLabelText("Add photos"))
     expect(showPhotoActionSheet).toHaveBeenCalled()
   })
 
@@ -78,7 +78,7 @@ describe("MyCollectionAddPhotos", () => {
     const spy = jest.fn()
     GlobalStore.actions.myCollection.artwork.removePhoto = spy as any
 
-    renderWithWrappers(<Wrapper />)
+    await renderWithWrappers(<Wrapper />)
     // In MyCollectionAddPhotos We delay by DELAY_TIME_MS while showing a lighter placeholder before
     // loading the heavier images.
     const deleteButtons = await screen.findAllByLabelText(
@@ -86,7 +86,7 @@ describe("MyCollectionAddPhotos", () => {
       {},
       { timeout: DELAY_TIME_MS + 1000 }
     )
-    fireEvent.press(deleteButtons[0])
+    await fireEvent.press(deleteButtons[0])
     await waitFor(() => expect(spy).toHaveBeenCalledWith({ path: "photo/1" }))
   })
 })

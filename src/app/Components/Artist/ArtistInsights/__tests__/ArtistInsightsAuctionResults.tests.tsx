@@ -70,9 +70,9 @@ describe("ArtistInsightsAuctionResults", () => {
   )
 
   describe("Upcoming auction results", () => {
-    it("are shown when upcoming auction results are available", () => {
-      renderWithWrappers(<TestRenderer initialData={initialState} />)
-      resolveMostRecentRelayOperation(mockEnvironment, {
+    it("are shown when upcoming auction results are available", async () => {
+      await renderWithWrappers(<TestRenderer initialData={initialState} />)
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({ statuses: { auctionLots: true } }),
         AuctionResultConnection: (context) => {
           if (context.alias === "upcomingAuctionResults") {
@@ -92,9 +92,9 @@ describe("ArtistInsightsAuctionResults", () => {
       expect(screen.getByText("Past Auctions")).toBeOnTheScreen()
     })
 
-    it("are hidden when no upcoming auction results are available", () => {
-      renderWithWrappers(<TestRenderer initialData={initialState} />)
-      resolveMostRecentRelayOperation(mockEnvironment, {
+    it("are hidden when no upcoming auction results are available", async () => {
+      await renderWithWrappers(<TestRenderer initialData={initialState} />)
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({ statuses: { auctionLots: true } }),
         AuctionResultConnection: (context) => {
           if (context.alias === "upcomingAuctionResults") {
@@ -116,9 +116,9 @@ describe("ArtistInsightsAuctionResults", () => {
   })
 
   describe("Past auction reuslt", () => {
-    it("are shown when past auction results are available", () => {
-      renderWithWrappers(<TestRenderer initialData={initialState} />)
-      resolveMostRecentRelayOperation(mockEnvironment, {
+    it("are shown when past auction results are available", async () => {
+      await renderWithWrappers(<TestRenderer initialData={initialState} />)
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({ statuses: { auctionLots: true } }),
         AuctionResultConnection: (context) => {
           if (context.alias === "pastAuctionResults") {
@@ -138,9 +138,9 @@ describe("ArtistInsightsAuctionResults", () => {
       expect(screen.getByText("Past Auctions")).toBeOnTheScreen()
     })
 
-    it("are hidden when no past auction results are available", () => {
-      renderWithWrappers(<TestRenderer initialData={initialState} />)
-      resolveMostRecentRelayOperation(mockEnvironment, {
+    it("are hidden when no past auction results are available", async () => {
+      await renderWithWrappers(<TestRenderer initialData={initialState} />)
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({ statuses: { auctionLots: true } }),
         AuctionResultConnection: (context) => {
           if (context.alias === "pastAuctionResults") {
@@ -161,9 +161,9 @@ describe("ArtistInsightsAuctionResults", () => {
     })
   })
 
-  it("renders FilteredArtworkGridZeroState when no auction results are available", () => {
-    renderWithWrappers(<TestRenderer initialData={initialState} />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+  it("renders FilteredArtworkGridZeroState when no auction results are available", async () => {
+    await renderWithWrappers(<TestRenderer initialData={initialState} />)
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         statuses: { auctionLots: true },
         auctionResultsConnection: {
@@ -177,9 +177,9 @@ describe("ArtistInsightsAuctionResults", () => {
     expect(screen.queryByText("Past Auctions")).not.toBeOnTheScreen()
   })
 
-  it("renders the empty state when there are no auction lots", () => {
-    renderWithWrappers(<TestRenderer initialData={initialState} />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+  it("renders the empty state when there are no auction lots", async () => {
+    await renderWithWrappers(<TestRenderer initialData={initialState} />)
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({ statuses: { auctionLots: false } }),
     })
 
@@ -190,9 +190,9 @@ describe("ArtistInsightsAuctionResults", () => {
   })
 
   describe("ListHeaderComponent", () => {
-    it("renders the results string when totalCount is equal to 1", () => {
-      renderWithWrappers(<TestRenderer initialData={initialState} />)
-      resolveMostRecentRelayOperation(mockEnvironment, {
+    it("renders the results string when totalCount is equal to 1", async () => {
+      await renderWithWrappers(<TestRenderer initialData={initialState} />)
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({
           statuses: { auctionLots: true },
           auctionResultsConnection: {
@@ -205,9 +205,9 @@ describe("ArtistInsightsAuctionResults", () => {
       expect(screen.getByText("1 result • Sorted by most recent sale date")).toBeOnTheScreen()
     })
 
-    it("renders the results string when totalCount is greater than 1", () => {
-      renderWithWrappers(<TestRenderer initialData={initialState} />)
-      resolveMostRecentRelayOperation(mockEnvironment, {
+    it("renders the results string when totalCount is greater than 1", async () => {
+      await renderWithWrappers(<TestRenderer initialData={initialState} />)
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({
           statuses: { auctionLots: true },
           auctionResultsConnection: {

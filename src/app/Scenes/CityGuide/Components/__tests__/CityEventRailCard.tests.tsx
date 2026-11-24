@@ -3,8 +3,8 @@ import { CityEventRailCard } from "app/Scenes/CityGuide/Components/CityEventRail
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-// React-test-renderer has issues with memo components, so we need to mock the palette-mobile
-// Image component. See https://github.com/facebook/react/issues/17301
+// palette-mobile's Image puts `testID` on a wrapping Flex and `src`/`style` on an inner
+// FastImage. Swap in RN's Image so the testID, `src` and `style` live on one element.
 jest.mock("@artsy/palette-mobile", () => ({
   ...jest.requireActual("@artsy/palette-mobile"),
   Image: require("react-native").Image,
@@ -22,30 +22,30 @@ describe("CityEventRailCard", () => {
     jest.clearAllMocks()
   })
 
-  it("renders the title and the date line", () => {
-    renderWithWrappers(<CityEventRailCard {...props} />)
+  it("renders the title and the date line", async () => {
+    await renderWithWrappers(<CityEventRailCard {...props} />)
 
     expect(screen.getByText("One Fly Makes No Summer")).toBeOnTheScreen()
     expect(screen.getByText("Jul 31 - Aug 29, 2026")).toBeOnTheScreen()
   })
 
-  it("renders the admission line when given one", () => {
-    renderWithWrappers(<CityEventRailCard {...props} admission="Paid Entry" />)
+  it("renders the admission line when given one", async () => {
+    await renderWithWrappers(<CityEventRailCard {...props} admission="Paid Entry" />)
 
     expect(screen.getByText("Paid Entry")).toBeOnTheScreen()
   })
 
   // The designs arch the top of an Opening Soon image, and leave a Current Shows one square.
-  it("arches the top of the image only when asked to", () => {
-    renderWithWrappers(<CityEventRailCard {...props} />)
+  it("arches the top of the image only when asked to", async () => {
+    await renderWithWrappers(<CityEventRailCard {...props} />)
 
     expect(screen.getByTestId("city-event-rail-card-image")).toHaveStyle({
       borderTopLeftRadius: 0,
       borderTopRightRadius: 0,
     })
 
-    screen.unmount()
-    renderWithWrappers(<CityEventRailCard {...props} archTopImage />)
+    await screen.unmount()
+    await renderWithWrappers(<CityEventRailCard {...props} archTopImage />)
 
     expect(screen.getByTestId("city-event-rail-card-image")).toHaveStyle({
       borderTopLeftRadius: 80,
@@ -54,26 +54,26 @@ describe("CityEventRailCard", () => {
   })
 
   // Opening Soon cards pass no admission.
-  it("renders no admission line when not given one", () => {
-    renderWithWrappers(<CityEventRailCard {...props} />)
+  it("renders no admission line when not given one", async () => {
+    await renderWithWrappers(<CityEventRailCard {...props} />)
 
     expect(screen.queryByText("Free")).not.toBeOnTheScreen()
     expect(screen.queryByText("Paid Entry")).not.toBeOnTheScreen()
   })
 
-  it("navigates to the href when tapped", () => {
-    renderWithWrappers(<CityEventRailCard {...props} />)
+  it("navigates to the href when tapped", async () => {
+    await renderWithWrappers(<CityEventRailCard {...props} />)
 
-    fireEvent.press(screen.getByText("One Fly Makes No Summer"))
+    await fireEvent.press(screen.getByText("One Fly Makes No Summer"))
 
     expect(navigate).toHaveBeenCalledWith("/show/one-fly-makes-no-summer")
   })
 
-  it("fires onPress before navigating", () => {
+  it("fires onPress before navigating", async () => {
     const onPress = jest.fn()
-    renderWithWrappers(<CityEventRailCard {...props} onPress={onPress} />)
+    await renderWithWrappers(<CityEventRailCard {...props} onPress={onPress} />)
 
-    fireEvent.press(screen.getByText("One Fly Makes No Summer"))
+    await fireEvent.press(screen.getByText("One Fly Makes No Summer"))
 
     expect(onPress).toHaveBeenCalled()
     expect(navigate).toHaveBeenCalledWith("/show/one-fly-makes-no-summer")

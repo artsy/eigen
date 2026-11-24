@@ -8,25 +8,25 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 // `CityEventListScreen` resolves two connections behind `@include` in one query and unmasks
 // each with its own plural `useFragment`. That takes an extra render pass to settle beyond
 // what `renderWithRelay`'s synchronous resolve flushes (the same reason
-// `RecentlyViewed.tests.tsx` awaits `waitForElementToBeRemoved` after its own renderWithRelay
+// `RecentlyViewed.tests.tsx` waits for its placeholder to go after its own renderWithRelay
 // call), so every assertion here waits for the title rather than reading the tree immediately.
 describe("CityEventListScreen", () => {
   const { renderWithRelay } = setupTestWrapper({ Component: CityEventListScreen })
 
   it("titles itself for the shows section", async () => {
-    renderWithRelay({}, { citySlug: "london-united-kingdom", section: "shows" })
+    await renderWithRelay({}, { citySlug: "london-united-kingdom", section: "shows" })
 
     expect(await screen.findAllByText("Current Shows")).not.toHaveLength(0)
   })
 
   it("titles itself for the fairs section", async () => {
-    renderWithRelay({}, { citySlug: "london-united-kingdom", section: "fairs" })
+    await renderWithRelay({}, { citySlug: "london-united-kingdom", section: "fairs" })
 
     expect(await screen.findAllByText("Current Fairs")).not.toHaveLength(0)
   })
 
   it("titles itself for the opening section", async () => {
-    renderWithRelay({}, { citySlug: "london-united-kingdom", section: "opening" })
+    await renderWithRelay({}, { citySlug: "london-united-kingdom", section: "opening" })
 
     expect(await screen.findAllByText("Opening Soon")).not.toHaveLength(0)
   })
@@ -40,7 +40,7 @@ describe("CityEventListScreen", () => {
       { name: "Tracey Emin", location: { cityGuideNeighborhood: FARRINGDON } },
     ]
 
-    renderWithRelay(
+    await renderWithRelay(
       {
         City: () => ({
           name: "London",
@@ -58,7 +58,7 @@ describe("CityEventListScreen", () => {
   it("collapses a section when its header is pressed", async () => {
     const shows = [{ name: "Frida Kahlo", location: { cityGuideNeighborhood: FARRINGDON } }]
 
-    renderWithRelay(
+    await renderWithRelay(
       {
         City: () => ({
           name: "London",
@@ -71,20 +71,20 @@ describe("CityEventListScreen", () => {
 
     await waitFor(() => expect(screen.getAllByTestId("city-event-row")).toHaveLength(shows.length))
 
-    fireEvent.press(screen.getAllByTestId("city-event-section-header")[0])
+    await fireEvent.press(screen.getAllByTestId("city-event-section-header")[0])
 
     expect(screen.queryAllByTestId("city-event-row")).toHaveLength(0)
     expect(screen.getAllByTestId("city-event-section-header").length).toBeGreaterThan(0)
   })
 
   it("falls back to shows for an unrecognised route section", async () => {
-    renderWithRelay({}, { citySlug: "london-united-kingdom", section: "not-a-section" })
+    await renderWithRelay({}, { citySlug: "london-united-kingdom", section: "not-a-section" })
 
     await screen.findAllByText("Current Shows")
   })
 
   it("falls back to shows for a missing route section", async () => {
-    renderWithRelay({}, { citySlug: "london-united-kingdom", section: "" })
+    await renderWithRelay({}, { citySlug: "london-united-kingdom", section: "" })
 
     await screen.findAllByText("Current Shows")
   })
@@ -95,7 +95,7 @@ describe("CityEventListScreen", () => {
       { name: "1-54", location: { cityGuideNeighborhood: CENTRAL_LONDON } },
     ]
 
-    renderWithRelay(
+    await renderWithRelay(
       {
         City: () => ({
           name: "London",
@@ -119,7 +119,7 @@ describe("CityEventListScreen", () => {
   it("keeps the footer count on the fetched total when a section is collapsed", async () => {
     const shows = [{ name: "Frida Kahlo", location: { cityGuideNeighborhood: FARRINGDON } }]
 
-    renderWithRelay(
+    await renderWithRelay(
       {
         City: () => ({
           name: "London",
@@ -132,7 +132,7 @@ describe("CityEventListScreen", () => {
 
     await waitFor(() => expect(screen.getAllByTestId("city-event-section-header")).toHaveLength(1))
 
-    fireEvent.press(screen.getAllByTestId("city-event-section-header")[0])
+    await fireEvent.press(screen.getAllByTestId("city-event-section-header")[0])
 
     // Would read "Showing 0 of 143" if the count came from the flattened visible rows.
     expect(screen.getByText(`Showing ${shows.length} of 143`)).toBeTruthy()
@@ -141,7 +141,7 @@ describe("CityEventListScreen", () => {
   it("says so when there are more events than one page", async () => {
     const shows = [{ name: "Frida Kahlo", location: { cityGuideNeighborhood: FARRINGDON } }]
 
-    renderWithRelay(
+    await renderWithRelay(
       {
         City: () => ({
           name: "London",
@@ -156,7 +156,7 @@ describe("CityEventListScreen", () => {
   })
 
   it("tracks a screen view for the section it renders", async () => {
-    renderWithRelay({}, { citySlug: "london-united-kingdom", section: "fairs" })
+    await renderWithRelay({}, { citySlug: "london-united-kingdom", section: "fairs" })
 
     await screen.findAllByText("Current Fairs")
 
@@ -166,7 +166,7 @@ describe("CityEventListScreen", () => {
   })
 
   it("tracks the cohesion screen view against cityGuideEventList", async () => {
-    renderWithRelay({}, { citySlug: "london-united-kingdom", section: "fairs" })
+    await renderWithRelay({}, { citySlug: "london-united-kingdom", section: "fairs" })
 
     await screen.findAllByText("Current Fairs")
 
@@ -185,7 +185,7 @@ describe("CityEventListScreen", () => {
       },
     ]
 
-    renderWithRelay(
+    await renderWithRelay(
       {
         City: () => ({
           name: "London",
@@ -199,7 +199,7 @@ describe("CityEventListScreen", () => {
     const toggle = await screen.findByTestId("city-event-list-view-toggle")
     expect(await screen.findAllByTestId("city-event-row")).toHaveLength(shows.length)
 
-    fireEvent.press(toggle)
+    await fireEvent.press(toggle)
 
     // The list unmounts in map mode, and back means "back to the list" rather than leaving
     // the screen — no separate route to land on.
@@ -223,7 +223,7 @@ describe("CityEventListScreen", () => {
       })
     )
 
-    fireEvent.press(screen.getByTestId("city-event-list-view-toggle"))
+    await fireEvent.press(screen.getByTestId("city-event-list-view-toggle"))
 
     expect(await screen.findAllByTestId("city-event-row")).toHaveLength(shows.length)
     expect(mockTrackEvent).toHaveBeenCalledWith(
@@ -242,14 +242,17 @@ describe("CityEventListScreen", () => {
     // The query resolves synchronously inside `renderWithRelay`, which drops the completed
     // operation from the mock environment's pending list. `execute` is a jest mock of its
     // own, so its call args still carry the variables the operation was issued with.
-    const requestedVariables = (env: ReturnType<typeof renderWithRelay>["env"]) =>
+    const requestedVariables = (env: Awaited<ReturnType<typeof renderWithRelay>>["env"]) =>
       (env.execute as jest.Mock).mock.calls[0][0].operation.request.variables
 
     it("is false for the shows section when the flag is off, even when signed in", async () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: false })
       __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
 
-      const view = renderWithRelay({}, { citySlug: "london-united-kingdom", section: "shows" })
+      const view = await renderWithRelay(
+        {},
+        { citySlug: "london-united-kingdom", section: "shows" }
+      )
       await screen.findAllByText("Current Shows")
 
       expect(requestedVariables(view.env).forYou).toBe(false)
@@ -259,7 +262,10 @@ describe("CityEventListScreen", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
       __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: null } })
 
-      const view = renderWithRelay({}, { citySlug: "london-united-kingdom", section: "shows" })
+      const view = await renderWithRelay(
+        {},
+        { citySlug: "london-united-kingdom", section: "shows" }
+      )
       await screen.findAllByText("Current Shows")
 
       expect(requestedVariables(view.env).forYou).toBe(false)
@@ -269,7 +275,10 @@ describe("CityEventListScreen", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
       __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
 
-      const view = renderWithRelay({}, { citySlug: "london-united-kingdom", section: "shows" })
+      const view = await renderWithRelay(
+        {},
+        { citySlug: "london-united-kingdom", section: "shows" }
+      )
       await screen.findAllByText("Current Shows")
 
       expect(requestedVariables(view.env).forYou).toBe(true)
@@ -280,7 +289,10 @@ describe("CityEventListScreen", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
       __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
 
-      const view = renderWithRelay({}, { citySlug: "london-united-kingdom", section: "opening" })
+      const view = await renderWithRelay(
+        {},
+        { citySlug: "london-united-kingdom", section: "opening" }
+      )
       await screen.findAllByText("Opening Soon")
 
       expect(requestedVariables(view.env).forYou).toBe(false)
@@ -298,7 +310,7 @@ describe("CityEventListScreen", () => {
         { name: "Frida Kahlo", location: { cityGuideNeighborhood: FARRINGDON } },
       ]
 
-      renderWithRelay(
+      await renderWithRelay(
         {
           City: () => ({
             name: "London",
@@ -337,7 +349,7 @@ describe("CityEventListScreen", () => {
         },
       ]
 
-      renderWithRelay(
+      await renderWithRelay(
         {
           City: () => ({
             name: "London",
@@ -348,7 +360,7 @@ describe("CityEventListScreen", () => {
         { citySlug: "london-united-kingdom", section: "shows" }
       )
 
-      fireEvent.press(await screen.findByTestId("city-event-list-view-toggle"))
+      await fireEvent.press(await screen.findByTestId("city-event-list-view-toggle"))
 
       // The pills only render when more than one section has pins, so "All" means the map
       // still got the two neighbourhoods rather than a single ranked section.
@@ -363,7 +375,7 @@ describe("CityEventListScreen", () => {
         { name: "Tracey Emin", location: { cityGuideNeighborhood: CENTRAL_LONDON } },
       ]
 
-      renderWithRelay(
+      await renderWithRelay(
         {
           City: () => ({
             name: "London",
@@ -383,7 +395,7 @@ describe("CityEventListScreen", () => {
   it("hides the map toggle when nothing has valid coordinates", async () => {
     const shows = [{ name: "Frida Kahlo", location: { cityGuideNeighborhood: FARRINGDON } }]
 
-    renderWithRelay(
+    await renderWithRelay(
       {
         City: () => ({
           name: "London",

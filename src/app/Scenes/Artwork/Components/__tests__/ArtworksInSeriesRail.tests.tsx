@@ -6,16 +6,6 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-// Mock memo to return the same instance of the component
-// issue: https://github.com/facebook/react/issues/17301
-jest.mock("react", () => {
-  const actualReact = jest.requireActual("react")
-  return {
-    ...actualReact,
-    memo: (component: React.ComponentType<any>) => component,
-  }
-})
-
 describe("ArtworksInSeriesRail", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworksInSeriesRailTestsQuery>({
     Component: ({ artwork }) => <ArtworksInSeriesRail artwork={artwork!} />,
@@ -28,8 +18,8 @@ describe("ArtworksInSeriesRail", () => {
     `,
   })
 
-  it("renders each artwork in the artist series", () => {
-    renderWithRelay({
+  it("renders each artwork in the artist series", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         artistSeriesConnection: {
           edges: [
@@ -78,8 +68,8 @@ describe("ArtworksInSeriesRail", () => {
     expect(screen.getAllByTestId("artwork-rail-card-image")).toHaveLength(5)
   })
 
-  it("navigates to the artist series when the header is tapped", () => {
-    renderWithRelay({
+  it("navigates to the artist series when the header is tapped", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         artistSeriesConnection: {
           edges: [
@@ -93,13 +83,13 @@ describe("ArtworksInSeriesRail", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("More From This Series"))
+    await fireEvent.press(screen.getByText("More From This Series"))
 
     expect(navigate).toHaveBeenCalledWith("/artist-series/alex-katz-departure")
   })
 
-  it("tracks clicks to the View series button", () => {
-    renderWithRelay({
+  it("tracks clicks to the View series button", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "artwork124",
         slug: "my-cool-artwork",
@@ -131,7 +121,7 @@ describe("ArtworksInSeriesRail", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("More From This Series"))
+    await fireEvent.press(screen.getByText("More From This Series"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
@@ -146,8 +136,8 @@ describe("ArtworksInSeriesRail", () => {
     })
   })
 
-  it("tracks clicks on an individual artwork", () => {
-    renderWithRelay({
+  it("tracks clicks on an individual artwork", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "artwork124",
         slug: "my-cool-artwork",
@@ -165,7 +155,7 @@ describe("ArtworksInSeriesRail", () => {
       }),
     })
 
-    fireEvent.press(screen.getByTestId("artwork-my-cool-artwork"))
+    await fireEvent.press(screen.getByTestId("artwork-my-cool-artwork"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
@@ -180,8 +170,8 @@ describe("ArtworksInSeriesRail", () => {
     })
   })
 
-  it("tracks clicks on an individual artwork with a partner offer", () => {
-    renderWithRelay({
+  it("tracks clicks on an individual artwork with a partner offer", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "artwork124",
         slug: "my-cool-artwork",
@@ -202,7 +192,7 @@ describe("ArtworksInSeriesRail", () => {
       }),
     })
 
-    fireEvent.press(screen.getByTestId("artwork-my-cool-artwork"))
+    await fireEvent.press(screen.getByTestId("artwork-my-cool-artwork"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
@@ -218,8 +208,8 @@ describe("ArtworksInSeriesRail", () => {
     })
   })
 
-  it("tracks clicks on an individual artwork with auction signals", () => {
-    renderWithRelay({
+  it("tracks clicks on an individual artwork with auction signals", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "artwork124",
         slug: "my-cool-artwork",
@@ -233,7 +223,7 @@ describe("ArtworksInSeriesRail", () => {
       }),
     })
 
-    fireEvent.press(screen.getByTestId("artwork-my-cool-artwork"))
+    await fireEvent.press(screen.getByTestId("artwork-my-cool-artwork"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",

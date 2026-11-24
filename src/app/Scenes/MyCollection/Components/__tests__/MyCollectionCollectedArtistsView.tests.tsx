@@ -25,14 +25,14 @@ describe("MyCollectionCollectedArtistsView", () => {
   })
 
   it("renders collected artists", async () => {
-    renderWithRelay({ Me: () => mockUserInterest })
+    await renderWithRelay({ Me: () => mockUserInterest })
 
     await expect(screen.getByText("Rhombie Sandoval")).toBeTruthy()
     await expect(screen.getByText("Banksy")).toBeTruthy()
   })
 
   it("renders the privacy lock next to the artist name", async () => {
-    renderWithRelay({ Me: () => mockUserInterest })
+    await renderWithRelay({ Me: () => mockUserInterest })
 
     await expect(screen.getAllByTestId("lock-icon")).toHaveLength(2)
   })

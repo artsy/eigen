@@ -51,7 +51,7 @@ describe("ViewingRoomHeader", () => {
     mockEnvironment = createMockEnvironment()
   })
   it("renders a background image", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
 
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
@@ -68,7 +68,7 @@ describe("ViewingRoomHeader", () => {
     )
   })
   it("renders a title", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
@@ -81,7 +81,7 @@ describe("ViewingRoomHeader", () => {
   })
 
   it("renders a countdown timer for scheduled", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
@@ -93,7 +93,7 @@ describe("ViewingRoomHeader", () => {
   })
 
   it("renders a countdown timer for live", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
@@ -105,7 +105,7 @@ describe("ViewingRoomHeader", () => {
   })
 
   it("doesn't render a countdown timer for closed", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
@@ -117,7 +117,7 @@ describe("ViewingRoomHeader", () => {
   })
 
   it("renders partner name", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
@@ -129,7 +129,7 @@ describe("ViewingRoomHeader", () => {
     expect(screen.getByTestId("partner-name")).toHaveTextContent("Foo", { exact: true })
   })
   it("renders partner logo", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
@@ -149,7 +149,7 @@ describe("ViewingRoomHeader", () => {
   })
 
   it("doesn't render logo (and doesn't crash) if partner profile is null", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {

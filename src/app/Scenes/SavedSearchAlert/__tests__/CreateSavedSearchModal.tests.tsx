@@ -120,16 +120,16 @@ describe("CreateSavedSearchModal", () => {
     return <CreateSavedSearchModal {...defaultProps} {...props} />
   }
 
-  it("renders without throwing an error", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("renders without throwing an error", async () => {
+    await renderWithWrappers(<TestRenderer />)
   })
 
   it("tracks clicks when the create alert button is pressed", async () => {
     mockCreateSavedSearchAlertParams = undefined
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
 
     await waitFor(() => expect(mockCreateSavedSearchAlertParams).toBeDefined())
-    act(() => mockCreateSavedSearchAlertParams!.onComplete?.(mockedMutationResult))
+    await act(() => mockCreateSavedSearchAlertParams!.onComplete?.(mockedMutationResult))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       tracks.toggleSavedSearch(true, OwnerType.artist, "ownerId", "ownerSlug", "searchCriteriaID")
@@ -140,20 +140,19 @@ describe("CreateSavedSearchModal", () => {
     const { renderWithRelay } = setupTestWrapper({
       Component: () => (
         <TestWrapper>
-          <CreateSavedSearchModal {...defaultProps} />,
+          <CreateSavedSearchModal {...defaultProps} />
         </TestWrapper>
       ),
     })
 
-    const { mockResolveLastOperation } = renderWithRelay()
+    const { env, mockResolveLastOperation } = await renderWithRelay()
 
-    await waitFor(() => {
-      mockResolveLastOperation({})
-    })
+    await waitFor(() => expect(env.mock.getAllOperations()).not.toHaveLength(0))
+    await mockResolveLastOperation({})
 
     expect(screen.getByTestId("save-alert-button")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByTestId("save-alert-button"))
+    await fireEvent.press(screen.getByTestId("save-alert-button"))
 
     await waitFor(() =>
       expect(mockNavigate).toHaveBeenCalledWith("ConfirmationScreen", {

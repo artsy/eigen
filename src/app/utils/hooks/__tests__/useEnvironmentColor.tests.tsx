@@ -14,28 +14,29 @@ describe("useEnvironmentColor", () => {
     <GlobalStoreProvider>{children}</GlobalStoreProvider>
   )
 
-  const setUp = ({ preview, staging }: { preview: boolean; staging: boolean }) => {
+  const setUp = async ({ preview, staging }: { preview: boolean; staging: boolean }) => {
     mockIsRunningPreviewBundle.mockReturnValue(preview)
     __globalStoreTestUtils__?.injectState({
       devicePrefs: { environment: { env: staging ? "staging" : "production" } },
     })
 
-    return renderHook(useEnvironmentColor, { wrapper }).result.current
+    const { result } = await renderHook(useEnvironmentColor, { wrapper })
+    return result.current
   }
 
-  it("is orange while a preview bundle runs", () => {
-    expect(setUp({ preview: true, staging: false })).toBe("orange100")
+  it("is orange while a preview bundle runs", async () => {
+    expect(await setUp({ preview: true, staging: false })).toBe("orange100")
   })
 
-  it("is purple on staging", () => {
-    expect(setUp({ preview: false, staging: true })).toBe("devpurple")
+  it("is purple on staging", async () => {
+    expect(await setUp({ preview: false, staging: true })).toBe("devpurple")
   })
 
-  it("prefers the preview colour when both are on", () => {
-    expect(setUp({ preview: true, staging: true })).toBe("orange100")
+  it("prefers the preview colour when both are on", async () => {
+    expect(await setUp({ preview: true, staging: true })).toBe("orange100")
   })
 
-  it("is null in production", () => {
-    expect(setUp({ preview: false, staging: false })).toBeNull()
+  it("is null in production", async () => {
+    expect(await setUp({ preview: false, staging: false })).toBeNull()
   })
 })

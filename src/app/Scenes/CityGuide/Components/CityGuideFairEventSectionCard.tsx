@@ -13,7 +13,6 @@ interface Props {
   fair: Fair
 }
 
-// @TODO: Implement tests for this component https://artsyproduct.atlassian.net/browse/LD-549
 export const CityGuideFairEventSectionCard: React.FC<Props> = ({ fair }) => {
   const color = useColor()
   const { image, name, profile, exhibition_period, slug } = fair

@@ -28,8 +28,8 @@ const emptyBucketResults = {
 } as unknown as BucketResults
 
 describe("CityFilterPills", () => {
-  it("renders a pill for every city tab", () => {
-    renderWithWrappers(
+  it("renders a pill for every city tab", async () => {
+    await renderWithWrappers(
       <CityFilterPills
         selectedTabId="all"
         onSelectTab={jest.fn()}
@@ -43,9 +43,9 @@ describe("CityFilterPills", () => {
     })
   })
 
-  it("calls onSelectTab with the pressed tab", () => {
+  it("calls onSelectTab with the pressed tab", async () => {
     const onSelectTab = jest.fn()
-    renderWithWrappers(
+    await renderWithWrappers(
       <CityFilterPills
         selectedTabId="all"
         onSelectTab={onSelectTab}
@@ -54,13 +54,13 @@ describe("CityFilterPills", () => {
       />
     )
 
-    fireEvent.press(screen.getByText("Museums"))
+    await fireEvent.press(screen.getByText("Museums"))
 
     expect(onSelectTab).toHaveBeenCalledWith(cityTabs.find((tab) => tab.id === "museums"))
   })
 
-  it("does not render tabs without results", () => {
-    renderWithWrappers(
+  it("does not render tabs without results", async () => {
+    await renderWithWrappers(
       <CityFilterPills
         selectedTabId="all"
         onSelectTab={jest.fn()}
@@ -76,9 +76,9 @@ describe("CityFilterPills", () => {
     expect(screen.getByText("Galleries")).toBeOnTheScreen()
   })
 
-  it("renders only the All pill when every other tab is empty", () => {
+  it("renders only the All pill when every other tab is empty", async () => {
     const onSelectTab = jest.fn()
-    renderWithWrappers(
+    await renderWithWrappers(
       <CityFilterPills
         selectedTabId="all"
         onSelectTab={onSelectTab}
@@ -94,10 +94,10 @@ describe("CityFilterPills", () => {
     expect(screen.queryByText("Museums")).not.toBeOnTheScreen()
   })
 
-  it("falls back to highlighting All when the selected tab has no results", () => {
+  it("falls back to highlighting All when the selected tab has no results", async () => {
     // Simulates the drawer/pager selecting a tab that CityFilterPills has hidden because it
     // has no results — the pill row should still show a sensible highlight, not none at all.
-    renderWithWrappers(
+    await renderWithWrappers(
       <CityFilterPills
         selectedTabId="museums"
         onSelectTab={jest.fn()}
@@ -112,10 +112,10 @@ describe("CityFilterPills", () => {
     })
   })
 
-  it("renders fine with bottomSheetAnimatedIndex omitted", () => {
+  it("renders fine with bottomSheetAnimatedIndex omitted", async () => {
     // The itineraries-flagged map never mounts a bottom sheet, so there's nothing to fade
     // against — the pill row must still render without one.
-    renderWithWrappers(
+    await renderWithWrappers(
       <CityFilterPills
         selectedTabId="all"
         onSelectTab={jest.fn()}

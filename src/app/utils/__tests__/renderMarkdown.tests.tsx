@@ -15,67 +15,67 @@ describe("renderMarkdown", () => {
     expect(componentList.length).toEqual(1)
   })
 
-  it("returns markdown for multiple paragraphs", () => {
+  it("returns markdown for multiple paragraphs", async () => {
     const componentList = renderMarkdown(
       "This is a first paragraph\n\nThis is a second paragraph"
     ) as any
     expect(componentList.length).toEqual(4)
 
-    renderWithWrappers(<Flex>{componentList}</Flex>)
+    await renderWithWrappers(<Flex>{componentList}</Flex>)
 
     expect(screen.getByText("This is a first paragraph")).toBeTruthy()
     expect(screen.getByText("This is a second paragraph")).toBeTruthy()
   })
 
-  it("renders an ATX (###-style) heading even without a trailing blank line", () => {
+  it("renders an ATX (###-style) heading even without a trailing blank line", async () => {
     const componentList = renderMarkdown("### Heading\nBody text") as any
 
-    renderWithWrappers(<Flex>{componentList}</Flex>)
+    await renderWithWrappers(<Flex>{componentList}</Flex>)
 
     expect(screen.getByText("Heading")).toBeTruthy()
     expect(screen.getByText("Body text")).toBeTruthy()
     expect(screen.queryByText(/###/)).toBeNull()
   })
 
-  it("renders list items with new text styles", () => {
+  it("renders list items with new text styles", async () => {
     const componentList = renderMarkdown(
       "Intro\n\n- first item\n- second item\n",
       defaultRules({ useNewTextStyles: true })
     ) as any
 
-    renderWithWrappers(<Flex>{componentList}</Flex>)
+    await renderWithWrappers(<Flex>{componentList}</Flex>)
 
     expect(screen.getByText(/first item/)).toBeTruthy()
     expect(screen.getByText(/second item/)).toBeTruthy()
   })
 
-  it("returns markdown for multiple paragraphs and links", () => {
+  it("returns markdown for multiple paragraphs and links", async () => {
     const componentList = renderMarkdown(
       "This is a [first](/artist/first) paragraph\n\nAnd that is a [second](/gene/second) paragraph"
     ) as any
     expect(componentList.length).toEqual(4)
 
-    renderWithWrappers(<Flex>{componentList}</Flex>)
+    await renderWithWrappers(<Flex>{componentList}</Flex>)
 
     expect(screen.getAllByTestId(/linktext-/)).toHaveLength(2)
 
     // ensures that there is a <Text> element that includes another one with "first" in it
     expect(within(screen.getByText(/This is a/)).getByText(/first/)).toBeTruthy()
-    // ensures that there is a <Text> element that includes another one with "paragraph" in it
-    expect(within(screen.getByText(/This is a/)).getByText(/paragraph/)).toBeTruthy()
+    // ensures that the same <Text> element also includes "paragraph"
+    expect(screen.getByText(/This is a/)).toHaveTextContent(/paragraph/)
 
     expect(screen.getAllByTestId(/linktext-/)[0]).toHaveTextContent("first")
 
     // ensures that there is a <Text> element that includes another one with "second" in it
     expect(within(screen.getByText(/And that is a/)).getByText(/second/)).toBeTruthy()
 
-    // ensures that there is a <Text> element that includes another one with "paragraph" in it
-    expect(within(screen.getByText(/And that is a/)).getByText(/paragraph/)).toBeTruthy()
+    // ensures that the same <Text> element also includes "paragraph"
+    expect(screen.getByText(/And that is a/)).toHaveTextContent(/paragraph/)
 
     expect(screen.getAllByTestId(/linktext-/)[1]).toHaveTextContent("second")
   })
 
-  it("handles custom rules", () => {
+  it("handles custom rules", async () => {
     const basicRules = defaultRules({})
     const customRules = {
       ...basicRules,
@@ -95,13 +95,13 @@ describe("renderMarkdown", () => {
       customRules
     ) as any
     expect(componentList.length).toEqual(4)
-    renderWithWrappers(<Flex>{componentList}</Flex>)
+    await renderWithWrappers(<Flex>{componentList}</Flex>)
 
     expect(screen.getByText("This is a first paragraph")).toBeTruthy()
     expect(screen.getByText("This is a second paragraph")).toBeTruthy()
   })
 
-  it("opens links modally when specified", () => {
+  it("opens links modally when specified", async () => {
     const basicRules = defaultRules({ modal: true })
     const customRules = {
       ...basicRules,
@@ -121,16 +121,16 @@ describe("renderMarkdown", () => {
       customRules
     ) as any
 
-    renderWithWrappers(<Flex>{componentList}</Flex>)
+    await renderWithWrappers(<Flex>{componentList}</Flex>)
 
     expect(screen.getAllByTestId(/linktext-/)).toHaveLength(2)
 
-    fireEvent.press(screen.getAllByTestId(/linktext-/)[0])
+    await fireEvent.press(screen.getAllByTestId(/linktext-/)[0])
 
     expect(navigate).toHaveBeenCalledWith("/artist/first", { modal: true })
   })
 
-  it("doesn't open links modally when not specified", () => {
+  it("doesn't open links modally when not specified", async () => {
     const basicRules = defaultRules({})
     const customRules = {
       ...basicRules,
@@ -150,10 +150,10 @@ describe("renderMarkdown", () => {
       customRules
     ) as any
 
-    renderWithWrappers(<Flex>{componentList}</Flex>)
+    await renderWithWrappers(<Flex>{componentList}</Flex>)
     expect(screen.getAllByTestId(/linktext-/)).toHaveLength(2)
 
-    fireEvent.press(screen.getAllByTestId(/linktext-/)[0])
+    await fireEvent.press(screen.getAllByTestId(/linktext-/)[0])
 
     expect(navigate).toHaveBeenCalledWith("/artist/first")
   })

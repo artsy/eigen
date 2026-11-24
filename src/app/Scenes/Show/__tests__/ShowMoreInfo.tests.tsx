@@ -33,22 +33,22 @@ describe("ShowMoreInfo", () => {
     />
   )
 
-  const getWrapper = (mockResolvers = {}) => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+  const getWrapper = async (mockResolvers = {}) => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
     })
   }
 
-  it("renders without throwing an error", () => {
-    getWrapper()
+  it("renders without throwing an error", async () => {
+    await getWrapper()
     expect(screen.getByText("About")).toBeOnTheScreen()
   })
 
-  it("renders basic information", () => {
-    getWrapper({
+  it("renders basic information", async () => {
+    await getWrapper({
       Show: () => ({
         about: "Basic information about the show",
         pressRelease: "The press release for the show",
@@ -61,8 +61,8 @@ describe("ShowMoreInfo", () => {
     expect(screen.getByText(/The press release for the show/)).toBeOnTheScreen()
   })
 
-  it("renders the partner type", () => {
-    getWrapper({
+  it("renders the partner type", async () => {
+    await getWrapper({
       Partner: () => ({ type: "Institutional Seller" }),
     })
 
@@ -70,23 +70,23 @@ describe("ShowMoreInfo", () => {
     expect(screen.queryByText(/Institutional Seller/)).not.toBeOnTheScreen()
   })
 
-  it("renders the hours", () => {
-    getWrapper()
+  it("renders the hours", async () => {
+    await getWrapper()
     expect(screen.getByText("Hours")).toBeOnTheScreen()
   })
 
-  it("does not render the hours if they are missing from the location", () => {
-    getWrapper({ Location: () => ({ openingHours: null }) })
+  it("does not render the hours if they are missing from the location", async () => {
+    await getWrapper({ Location: () => ({ openingHours: null }) })
     expect(screen.queryByText("Hours")).not.toBeOnTheScreen()
   })
 
-  it("renders the location", () => {
-    getWrapper()
+  it("renders the location", async () => {
+    await getWrapper()
     expect(screen.getByText("Location")).toBeOnTheScreen()
   })
 
-  it("does not render the location if the coordinates are missing", () => {
-    getWrapper({ LatLng: () => ({ lat: null }) })
+  it("does not render the location if the coordinates are missing", async () => {
+    await getWrapper({ LatLng: () => ({ lat: null }) })
     expect(screen.queryByText("Location")).not.toBeOnTheScreen()
   })
 })

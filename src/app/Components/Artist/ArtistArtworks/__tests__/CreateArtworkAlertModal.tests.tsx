@@ -30,8 +30,8 @@ describe("CreateArtworkAlertModal", () => {
     `,
   })
 
-  it("returns null if artwork is ineligible", () => {
-    renderWithRelay({
+  it("returns null if artwork is ineligible", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         isEligibleToCreateAlert: false,
       }),
@@ -40,13 +40,13 @@ describe("CreateArtworkAlertModal", () => {
     expect(screen.queryByTestId("create-saved-search-modal")).not.toBeOnTheScreen()
   })
 
-  it("returns renders modal", () => {
-    renderWithRelay()
+  it("returns renders modal", async () => {
+    await renderWithRelay()
     expect(screen.getByTestId("create-saved-search-modal")).toBeOnTheScreen()
   })
 
-  it("passes current artwork id to modal", () => {
-    renderWithRelay({
+  it("passes current artwork id to modal", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "set-alert-from-me",
       }),

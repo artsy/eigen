@@ -16,18 +16,18 @@ describe("SortByModal", () => {
     )
   }
 
-  it("should render options", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("should render options", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     expect(screen.getByText("Option One")).toBeTruthy()
     expect(screen.getByText("Option Two")).toBeTruthy()
   })
 
-  it("should call `onSelectOption` with selected option", () => {
+  it("should call `onSelectOption` with selected option", async () => {
     const mockOnSelectOption = jest.fn()
-    renderWithWrappers(<TestRenderer onSelectOption={mockOnSelectOption} />)
+    await renderWithWrappers(<TestRenderer onSelectOption={mockOnSelectOption} />)
 
-    fireEvent.press(screen.getByText("Option Two"))
+    await fireEvent.press(screen.getByText("Option Two"))
 
     expect(mockOnSelectOption.mock.calls[0]).toMatchInlineSnapshot(`
       [
@@ -39,8 +39,8 @@ describe("SortByModal", () => {
     `)
   })
 
-  it("should render selected option state when `selectedValue` prop is passed", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("should render selected option state when `selectedValue` prop is passed", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     const radioButtons = screen.getAllByRole("radio")
     expect(radioButtons).toHaveLength(2)

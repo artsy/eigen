@@ -3,8 +3,8 @@ import { ColorsSwatch } from "app/Components/ArtworkFilter/Filters/ColorsSwatch"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("Colors swatch", () => {
-  it("adds a check icon when selected", () => {
-    renderWithWrappers(
+  it("adds a check icon when selected", async () => {
+    await renderWithWrappers(
       <ColorsSwatch
         width={30}
         backgroundColor="mono100"
@@ -15,9 +15,9 @@ describe("Colors swatch", () => {
     )
     expect(screen.getByTestId("check-icon-blue")).toHaveProp("fill", "#fff")
 
-    screen.unmount()
+    await screen.unmount()
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <ColorsSwatch
         width={30}
         backgroundColor="mono100"
@@ -29,8 +29,8 @@ describe("Colors swatch", () => {
     expect(screen.queryByTestId("check-icon-blue")).not.toBeOnTheScreen()
   })
 
-  it("has correct background color for passed in color", () => {
-    renderWithWrappers(
+  it("has correct background color for passed in color", async () => {
+    await renderWithWrappers(
       <ColorsSwatch
         width={30}
         backgroundColor="#435EA9"
@@ -41,7 +41,7 @@ describe("Colors swatch", () => {
     )
     expect(screen.getByTestId("color-swatch-blue")).toHaveStyle({ backgroundColor: "#435EA9" })
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <ColorsSwatch
         width={30}
         backgroundColor="#595A5B"
@@ -54,7 +54,7 @@ describe("Colors swatch", () => {
       backgroundColor: "#595A5B",
     })
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <ColorsSwatch
         width={30}
         backgroundColor="#F1572C"

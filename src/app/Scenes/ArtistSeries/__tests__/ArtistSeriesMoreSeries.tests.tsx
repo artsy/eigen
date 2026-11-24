@@ -48,9 +48,9 @@ describe("ArtistSeriesMoreSeries", () => {
     />
   )
 
-  const renderWithFixture = (testFixture: any) => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+  const renderWithFixture = async (testFixture: any) => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
         data: {
@@ -60,27 +60,27 @@ describe("ArtistSeriesMoreSeries", () => {
     })
   }
 
-  it("renders without throwing an error", () => {
-    renderWithFixture(ArtistSeriesMoreSeriesFixture)
+  it("renders without throwing an error", async () => {
+    await renderWithFixture(ArtistSeriesMoreSeriesFixture)
     expect(screen.getByTestId("header")).toBeOnTheScreen()
   })
 
-  it("renders the correct header text", () => {
-    renderWithFixture(ArtistSeriesMoreSeriesFixture)
+  it("renders the correct header text", async () => {
+    await renderWithFixture(ArtistSeriesMoreSeriesFixture)
     expect(screen.getByTestId("header")).toHaveTextContent("This is a header", { exact: true })
   })
 
   describe("with at least one other series related to the artist to show", () => {
-    it("renders the related artist series", () => {
-      renderWithFixture(ArtistSeriesMoreSeriesFixture)
+    it("renders the related artist series", async () => {
+      await renderWithFixture(ArtistSeriesMoreSeriesFixture)
       expect(screen.getAllByLabelText("Artist Series List Item")).toHaveLength(5)
     })
 
-    it("tracks an event on click", () => {
-      renderWithFixture(ArtistSeriesMoreSeriesFixture)
+    it("tracks an event on click", async () => {
+      await renderWithFixture(ArtistSeriesMoreSeriesFixture)
       const artistSeriesButton = screen.getAllByLabelText("Artist Series List Item")[0]
 
-      fireEvent.press(artistSeriesButton)
+      await fireEvent.press(artistSeriesButton)
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: "tappedArtistSeriesGroup",
@@ -99,22 +99,22 @@ describe("ArtistSeriesMoreSeries", () => {
   })
 
   describe("with no other series related to the artist to show", () => {
-    it("does not render", () => {
-      renderWithFixture(ArtistSeriesMoreSeriesNoSeriesFixture)
+    it("does not render", async () => {
+      await renderWithFixture(ArtistSeriesMoreSeriesNoSeriesFixture)
       expect(screen.queryAllByLabelText("Artist Series List Item")).toHaveLength(0)
     })
   })
 
   describe("with greater than four series associated with an artist", () => {
-    it("renders a view all button with a total count for all the series associated with the artist", () => {
-      renderWithFixture(ArtistSeriesMoreSeriesFixture)
+    it("renders a view all button with a total count for all the series associated with the artist", async () => {
+      await renderWithFixture(ArtistSeriesMoreSeriesFixture)
       expect(screen.getByTestId("viewAll")).toHaveTextContent("View All (6)", { exact: true })
     })
   })
 
   describe("with fewer than four series associated with an artist", () => {
-    it("does not render a view all button", () => {
-      renderWithFixture(ArtistSeriesMoreSeriesBelowViewAllThresholdFixture)
+    it("does not render a view all button", async () => {
+      await renderWithFixture(ArtistSeriesMoreSeriesBelowViewAllThresholdFixture)
       expect(screen.queryByTestId("viewAll")).not.toBeOnTheScreen()
     })
   })

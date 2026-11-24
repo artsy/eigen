@@ -6,8 +6,8 @@ import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("ArtistSeriesListItem", () => {
-  it("navigates to the artist series when tapped", () => {
-    renderWithWrappers(
+  it("navigates to the artist series when tapped", async () => {
+    await renderWithWrappers(
       <ArtistSeriesListItem
         horizontalSlidePosition={2}
         contextScreenOwnerType={OwnerType.artist}
@@ -15,13 +15,13 @@ describe("ArtistSeriesListItem", () => {
       />
     )
 
-    fireEvent.press(screen.getByTestId("list-item-image"))
+    await fireEvent.press(screen.getByTestId("list-item-image"))
 
     expect(navigate).toHaveBeenCalledWith("/artist-series/yayoi-kusama-pumpkins")
   })
 
-  it("shows the artist series title, image and for sale artwork counts", () => {
-    renderWithWrappers(
+  it("shows the artist series title, image and for sale artwork counts", async () => {
+    await renderWithWrappers(
       <ArtistSeriesListItem
         horizontalSlidePosition={2}
         contextScreenOwnerType={OwnerType.artist}
@@ -34,7 +34,7 @@ describe("ArtistSeriesListItem", () => {
 
     expect(screen.getByTestId("list-item-image")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByLabelText("Artist Series List Item"))
+    await fireEvent.press(screen.getByLabelText("Artist Series List Item"))
 
     expect(navigate).toHaveBeenCalledWith("/artist-series/yayoi-kusama-pumpkins")
   })

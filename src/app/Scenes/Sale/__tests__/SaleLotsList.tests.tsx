@@ -4,8 +4,8 @@ import { SaleLotsListSortMode } from "app/Scenes/Sale/Components/SaleLotsList"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("SaleLotsListSortMode", () => {
-  it("renders the right sort mode and count", () => {
-    renderWithWrappers(
+  it("renders the right sort mode and count", async () => {
+    await renderWithWrappers(
       <SaleLotsListSortMode
         filterParams={{ sort: "bidder_positions_count" } as FilterParams}
         filteredTotal={20}

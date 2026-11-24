@@ -43,21 +43,21 @@ describe("ProgressiveOnboardingSaveAlert", () => {
     })
   })
 
-  it("renders", () => {
-    wrapper()
+  it("renders", async () => {
+    await wrapper()
 
     expect(screen.getByText("Test Children")).toBeOnTheScreen()
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
   })
 
-  it("shows the popover given all the conditions are met", () => {
+  it("shows the popover given all the conditions are met", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         sessionState: { isReady: true },
         dismissed: [{ key: "save-artwork", timestamp: Date.now() }],
       },
     })
-    wrapper()
+    await wrapper()
 
     expect(screen.getByText("Popover")).toBeOnTheScreen()
   })
@@ -69,10 +69,10 @@ describe("ProgressiveOnboardingSaveAlert", () => {
         dismissed: [{ key: "save-artwork", timestamp: Date.now() }],
       },
     })
-    wrapper()
+    await wrapper()
 
     await screen.findByText("Got it")
-    fireEvent.press(screen.getByText("Got it"))
+    await fireEvent.press(screen.getByText("Got it"))
 
     expect(__globalStoreTestUtils__?.getLastAction()).toHaveProperty("payload", [
       "alert-create",
@@ -88,20 +88,20 @@ describe("ProgressiveOnboardingSaveAlert", () => {
         dismissed: [{ key: "save-artwork", timestamp: Date.now() }],
       },
     })
-    wrapper()
+    await wrapper()
 
     await screen.findByText("Learn more")
-    fireEvent.press(screen.getByText("Learn more"))
+    await fireEvent.press(screen.getByText("Learn more"))
 
     expect(__globalStoreTestUtils__?.getLastAction()).toHaveProperty("payload", "alert-create")
   })
 
-  it("does not show the popover if 'save-artwork' is not dismissed", () => {
-    wrapper()
+  it("does not show the popover if 'save-artwork' is not dismissed", async () => {
+    await wrapper()
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
   })
 
-  it("does not show the popover given another popover is active", () => {
+  it("does not show the popover given another popover is active", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         sessionState: { isReady: true, activePopover: "save-artwork" },
@@ -109,14 +109,14 @@ describe("ProgressiveOnboardingSaveAlert", () => {
       },
     })
 
-    wrapper()
+    await wrapper()
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
   })
 
-  it("does not show the popover given isFocused false", () => {
+  it("does not show the popover given isFocused false", async () => {
     mockUseIsFocusedMock.mockReturnValue(false)
 
-    wrapper()
+    await wrapper()
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
   })
 })

@@ -11,8 +11,8 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 describe(OrderHistoryQueryRender, () => {
-  it("Loads OrderHistoryQueryRender", () => {
-    renderWithWrappers(<OrderHistoryQueryRender />)
+  it("Loads OrderHistoryQueryRender", async () => {
+    await renderWithWrappers(<OrderHistoryQueryRender />)
     expect(screen.getAllByTestId("order-history-placeholder")).toHaveLength(1)
   })
 })
@@ -42,8 +42,8 @@ describe("Order history container", () => {
   })
 
   it("Render empty order list", async () => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
         data: {
@@ -59,8 +59,8 @@ describe("Order history container", () => {
   })
 
   it("Render not empty order list", async () => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
           Me: () => ({

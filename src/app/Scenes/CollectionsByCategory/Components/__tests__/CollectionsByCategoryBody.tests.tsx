@@ -48,8 +48,8 @@ describe("CollectionsByCategoryBody", () => {
   })
 
   describe("given category type is DiscoveryMarketingCollection", () => {
-    it("renders chips and collection rails", () => {
-      renderWithRelay({
+    it("renders chips and collection rails", async () => {
+      await renderWithRelay({
         DiscoveryMarketingCollection: () => ({
           __typename: "DiscoveryMarketingCollection",
           category: "Contemporary",
@@ -72,8 +72,8 @@ describe("CollectionsByCategoryBody", () => {
   })
 
   describe("given category type is DiscoveryArtworksWithFiltersCollection", () => {
-    it("renders chips and basic structure", () => {
-      renderWithRelay({
+    it("renders chips and basic structure", async () => {
+      await renderWithRelay({
         DiscoveryArtworksWithFiltersCollection: () => ({
           __typename: "DiscoveryArtworksWithFiltersCollection",
           category: "Contemporary",

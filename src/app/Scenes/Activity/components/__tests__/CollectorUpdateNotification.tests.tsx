@@ -51,7 +51,7 @@ describe("CollectorUpdateNotification", () => {
   })
 
   it("renders collector profile information", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         profession: "Blacksmith",
         location: { display: "" },
@@ -65,7 +65,7 @@ describe("CollectorUpdateNotification", () => {
   })
 
   it("renders add artists to collection information", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         profession: null,
         myCollectionInfo: { artworksCount: 0 },
@@ -80,7 +80,7 @@ describe("CollectorUpdateNotification", () => {
   })
 
   it("calls onPress when pressed", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         profession: "Blacksmith",
         location: { display: "" },
@@ -91,13 +91,13 @@ describe("CollectorUpdateNotification", () => {
     })
 
     const title = await screen.findByText("Tell us a little bit more about you.")
-    fireEvent.press(title)
+    await fireEvent.press(title)
 
     expect(onPress).toHaveBeenCalledTimes(1)
   })
 
   it("tracks tappedCompleteYourProfile event when collector profile notification is pressed", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         profession: "Blacksmith",
         location: { display: "" },
@@ -108,7 +108,7 @@ describe("CollectorUpdateNotification", () => {
     })
 
     const title = await screen.findByText("Tell us a little bit more about you.")
-    fireEvent.press(title)
+    await fireEvent.press(title)
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedCompleteYourProfile",

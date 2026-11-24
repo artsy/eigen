@@ -1,4 +1,4 @@
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, waitFor, screen } from "@testing-library/react-native"
 import { Modal } from "app/Components/Modal"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Linking } from "react-native"
@@ -8,22 +8,22 @@ describe("Modal", () => {
     jest.clearAllMocks()
   })
 
-  it("renders without throwing an error", () => {
-    const { getByText } = renderWithWrappers(
+  it("renders without throwing an error", async () => {
+    await renderWithWrappers(
       <Modal visible headerText="An error occurred" detailText="This is an error moop." />
     )
 
-    expect(getByText("An error occurred")).toBeTruthy()
-    expect(getByText("This is an error moop.")).toBeTruthy()
+    expect(screen.getByText("An error occurred")).toBeTruthy()
+    expect(screen.getByText("This is an error moop.")).toBeTruthy()
   })
 
-  it("should call `closeModal` when `Ok` button is pressed", () => {
+  it("should call `closeModal` when `Ok` button is pressed", async () => {
     const closeModalMock = jest.fn()
-    const { getByText } = renderWithWrappers(
+    await renderWithWrappers(
       <Modal visible headerText="Header" detailText="Detail" closeModal={closeModalMock} />
     )
 
-    fireEvent.press(getByText("Ok"))
+    await fireEvent.press(screen.getByText("Ok"))
 
     expect(closeModalMock).toBeCalled()
   })
@@ -32,7 +32,7 @@ describe("Modal", () => {
     Linking.canOpenURL = jest.fn().mockReturnValue(Promise.resolve(true))
     Linking.openURL = jest.fn()
 
-    const { getByText } = renderWithWrappers(
+    await renderWithWrappers(
       <Modal
         visible
         headerText="Header"
@@ -40,7 +40,7 @@ describe("Modal", () => {
       />
     )
 
-    fireEvent.press(getByText("username@email.com"))
+    await fireEvent.press(screen.getByText("username@email.com"))
 
     await waitFor(() => expect(Linking.openURL).toBeCalledWith("mailto:username@email.com"))
   })

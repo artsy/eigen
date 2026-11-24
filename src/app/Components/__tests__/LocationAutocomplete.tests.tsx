@@ -11,16 +11,16 @@ jest.mock("app/utils/googleMaps", () => ({
 const mockOnChange = jest.fn()
 
 describe("LocationAutocomplete", () => {
-  it("pre-fills the input with the initialLocation", () => {
-    renderWithWrappers(
+  it("pre-fills the input with the initialLocation", async () => {
+    await renderWithWrappers(
       <LocationAutocomplete initialLocation={initialLocation} onChange={mockOnChange} />
     )
 
     expect(screen.getByTestId("autocomplete-location-input").props.value).toBe("Berlin, Germany")
   })
 
-  it("pre-fills the input with the displayLocation", () => {
-    renderWithWrappers(
+  it("pre-fills the input with the displayLocation", async () => {
+    await renderWithWrappers(
       <LocationAutocomplete
         displayLocation={buildLocationDisplay(initialLocation)}
         onChange={mockOnChange}
@@ -39,19 +39,19 @@ describe("LocationAutocomplete", () => {
     })
 
     it("queries google when the user types 3 or more characters", async () => {
-      renderWithWrappers(<LocationAutocomplete onChange={mockOnChange} />)
+      await renderWithWrappers(<LocationAutocomplete onChange={mockOnChange} />)
 
       const input = screen.getByTestId("autocomplete-location-input")
 
-      fireEvent(input, "focus")
+      await fireEvent(input, "focus")
 
-      fireEvent(input, "changeText", "f")
+      await fireEvent(input, "changeText", "f")
       expect(getLocationPredictions).not.toHaveBeenCalled()
 
-      fireEvent(input, "changeText", "fo")
+      await fireEvent(input, "changeText", "fo")
       expect(getLocationPredictions).not.toHaveBeenCalled()
 
-      fireEvent(input, "changeText", "foo")
+      await fireEvent(input, "changeText", "foo")
       expect(getLocationPredictions).toHaveBeenCalled()
 
       await waitFor(() =>
@@ -67,17 +67,17 @@ describe("LocationAutocomplete", () => {
     })
 
     it("calls the onChange with the correct location and clears the predictions when the user selects a location", async () => {
-      renderWithWrappers(<LocationAutocomplete onChange={mockOnChange} />)
+      await renderWithWrappers(<LocationAutocomplete onChange={mockOnChange} />)
 
       const input = screen.getByTestId("autocomplete-location-input")
 
-      fireEvent(input, "focus")
-      fireEvent(input, "changeText", "foo")
+      await fireEvent(input, "focus")
+      await fireEvent(input, "changeText", "foo")
 
       expect(getLocationPredictions).toHaveBeenCalled()
 
       const result = await screen.findByTestId("autocomplete-location-prediction-a")
-      fireEvent.press(result)
+      await fireEvent.press(result)
 
       expect(getLocationDetails).toHaveBeenCalled()
 
@@ -92,14 +92,14 @@ describe("LocationAutocomplete", () => {
     })
 
     it("calls onChange with a custom location", async () => {
-      renderWithWrappers(<LocationAutocomplete allowCustomLocation onChange={mockOnChange} />)
+      await renderWithWrappers(<LocationAutocomplete allowCustomLocation onChange={mockOnChange} />)
 
       const input = screen.getByTestId("autocomplete-location-input")
 
-      fireEvent(input, "focus")
-      fireEvent(input, "changeText", "A custom location")
+      await fireEvent(input, "focus")
+      await fireEvent(input, "changeText", "A custom location")
 
-      fireEvent(input, "blur")
+      await fireEvent(input, "blur")
 
       await waitFor(() => expect(mockOnChange).toHaveBeenCalledWith({ city: "A custom location" }))
     })
@@ -111,7 +111,7 @@ describe("LocationAutocomplete", () => {
     })
 
     it("shows a message", async () => {
-      renderWithWrappers(<LocationAutocomplete showError onChange={mockOnChange} />)
+      await renderWithWrappers(<LocationAutocomplete showError onChange={mockOnChange} />)
 
       expect(() =>
         screen.getByText("Please try searching again with a different spelling.")
@@ -120,7 +120,7 @@ describe("LocationAutocomplete", () => {
       )
 
       const input = screen.getByTestId("autocomplete-location-input")
-      fireEvent.changeText(input, "there is no such a location")
+      await fireEvent.changeText(input, "there is no such a location")
 
       await (() =>
         expect(

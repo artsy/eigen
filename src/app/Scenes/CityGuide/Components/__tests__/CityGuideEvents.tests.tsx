@@ -88,7 +88,7 @@ describe("CityGuideEvents", () => {
   })
 
   it("shows itinerary membership independently of follows on all three rails", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       {
         City: () => ({
           fairsConnection: {
@@ -111,7 +111,7 @@ describe("CityGuideEvents", () => {
   })
 
   it("interpolates the city name into the two Current headers, but not Opening Soon", async () => {
-    renderWithRelay(resolvers, props)
+    await renderWithRelay(resolvers, props)
 
     expect(await screen.findByText("Current London Fairs")).toBeOnTheScreen()
     expect(screen.getByText("Current London Shows")).toBeOnTheScreen()
@@ -119,7 +119,7 @@ describe("CityGuideEvents", () => {
   })
 
   it("renders a card in each rail from the query", async () => {
-    renderWithRelay(resolvers, props)
+    await renderWithRelay(resolvers, props)
 
     expect(await screen.findByText("Frieze London")).toBeOnTheScreen()
     expect(screen.getByText("One Fly Makes No Summer")).toBeOnTheScreen()
@@ -127,21 +127,21 @@ describe("CityGuideEvents", () => {
   })
 
   it("shows the run for a current show and the opening day for one opening soon", async () => {
-    renderWithRelay(resolvers, props)
+    await renderWithRelay(resolvers, props)
 
     expect(await screen.findByText("Jul 31 – Aug 29, 2026")).toBeOnTheScreen()
     expect(screen.getByText("Sep 3, 2026")).toBeOnTheScreen()
   })
 
   it("turns isFreeAdmission into words, and shows no admission line for Opening Soon", async () => {
-    renderWithRelay(resolvers, props)
+    await renderWithRelay(resolvers, props)
 
     expect(await screen.findByText("Free")).toBeOnTheScreen()
     expect(screen.queryByText("Paid Entry")).not.toBeOnTheScreen()
   })
 
   it("says Paid Entry when admission is not free", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       {
         City: () => ({
           ...city,
@@ -157,9 +157,9 @@ describe("CityGuideEvents", () => {
   })
 
   it("navigates to the show when a card is tapped", async () => {
-    renderWithRelay(resolvers, props)
+    await renderWithRelay(resolvers, props)
 
-    fireEvent.press(await screen.findByText("One Fly Makes No Summer"))
+    await fireEvent.press(await screen.findByText("One Fly Makes No Summer"))
 
     expect(navigate).toHaveBeenCalledWith(
       "/show/kristin-hjellegjerde-gallery-one-fly-makes-no-summer"
@@ -167,9 +167,9 @@ describe("CityGuideEvents", () => {
   })
 
   it("navigates to the full list when a section header is tapped", async () => {
-    renderWithRelay(resolvers, props)
+    await renderWithRelay(resolvers, props)
 
-    fireEvent.press(await screen.findByText("Current London Fairs"))
+    await fireEvent.press(await screen.findByText("Current London Fairs"))
 
     expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/events/fairs")
   })
@@ -179,9 +179,9 @@ describe("CityGuideEvents", () => {
     ["Current London Shows", "tappedShowGroup", "currentShowsRail", "shows"],
     ["Opening Soon", "tappedShowGroup", "showsRail", "opening"],
   ])("tracks the %s header as a View all tap", async (title, action, contextModule, section) => {
-    renderWithRelay(resolvers, props)
+    await renderWithRelay(resolvers, props)
 
-    fireEvent.press(await screen.findByText(title))
+    await fireEvent.press(await screen.findByText(title))
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action,
@@ -195,9 +195,9 @@ describe("CityGuideEvents", () => {
   })
 
   it("tracks the tap on a fair card", async () => {
-    renderWithRelay(resolvers, props)
+    await renderWithRelay(resolvers, props)
 
-    fireEvent.press(await screen.findByText("Frieze London"))
+    await fireEvent.press(await screen.findByText("Frieze London"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -213,9 +213,9 @@ describe("CityGuideEvents", () => {
   })
 
   it("tracks the tap on a current show card with the current-shows-rail module", async () => {
-    renderWithRelay(resolvers, props)
+    await renderWithRelay(resolvers, props)
 
-    fireEvent.press(await screen.findByText("One Fly Makes No Summer"))
+    await fireEvent.press(await screen.findByText("One Fly Makes No Summer"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -231,9 +231,9 @@ describe("CityGuideEvents", () => {
   })
 
   it("tracks the tap on an opening-soon show card with the shows-rail module", async () => {
-    renderWithRelay(resolvers, props)
+    await renderWithRelay(resolvers, props)
 
-    fireEvent.press(await screen.findByText("Vestiges"))
+    await fireEvent.press(await screen.findByText("Vestiges"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -246,7 +246,7 @@ describe("CityGuideEvents", () => {
   })
 
   it("renders no plus for a fair with no address", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       {
         City: () => ({
           ...city,
@@ -263,7 +263,7 @@ describe("CityGuideEvents", () => {
   })
 
   it("hides a section that has no results, header included", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       {
         City: () => ({
           ...city,
@@ -289,17 +289,21 @@ describe("CityGuideEvents", () => {
   // navigated instead of saving. It is now a sibling of the link, as in CityEventRow.
   // The plus opens the Add to Itinerary sheet; it must not also follow the card's link.
   it("does not navigate when the plus is tapped", async () => {
-    renderWithRelay(resolvers, props)
+    await renderWithRelay(resolvers, props)
 
-    fireEvent.press(await screen.findByLabelText("Add One Fly Makes No Summer to an itinerary"))
+    await fireEvent.press(
+      await screen.findByLabelText("Add One Fly Makes No Summer to an itinerary")
+    )
 
     expect(navigate).not.toHaveBeenCalled()
   })
 
   it("tracks tappedAddToItinerary against the home screen's own context", async () => {
-    renderWithRelay(resolvers, props)
+    await renderWithRelay(resolvers, props)
 
-    fireEvent.press(await screen.findByLabelText("Add One Fly Makes No Summer to an itinerary"))
+    await fireEvent.press(
+      await screen.findByLabelText("Add One Fly Makes No Summer to an itinerary")
+    )
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -315,9 +319,9 @@ describe("CityGuideEvents", () => {
   })
 
   it("still navigates when the card itself is tapped", async () => {
-    renderWithRelay(resolvers, props)
+    await renderWithRelay(resolvers, props)
 
-    fireEvent.press(await screen.findByText("One Fly Makes No Summer"))
+    await fireEvent.press(await screen.findByText("One Fly Makes No Summer"))
 
     expect(navigate).toHaveBeenCalledWith(
       "/show/kristin-hjellegjerde-gallery-one-fly-makes-no-summer"
@@ -327,7 +331,7 @@ describe("CityGuideEvents", () => {
   // The designs size the rails' add glyph at 18; CityGuideSaveButton defaults to the 24 the
   // list rows use, so the rails have to ask for the smaller one.
   it("renders the save glyph at the size the rail designs specify", async () => {
-    renderWithRelay(resolvers, props)
+    await renderWithRelay(resolvers, props)
 
     const icons = await screen.findAllByTestId("city-guide-save-button-add-icon")
 

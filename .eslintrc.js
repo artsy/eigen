@@ -216,11 +216,29 @@ module.exports = {
       },
     },
     {
-      files: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+      files: [
+        "**/__tests__/**/*.[jt]s?(x)",
+        "**/?(*.)+(spec|test).[jt]s?(x)",
+        "src/**/*.tests.ts",
+        "src/**/*.tests.tsx",
+      ],
       extends: ["plugin:testing-library/react"],
+      parserOptions: {
+        project: "./tsconfig.json",
+        tsconfigRootDir: __dirname,
+        // @react-native/typescript-config lists `es2024.promise`, which @typescript-eslint/parser v5
+        // can't map to scope-analysis globals. Setting `lib` here skips that lookup; type
+        // information still comes from the full tsconfig.
+        lib: ["esnext"],
+      },
       rules: {
         // RNTL v14 makes fireEvent async (and userEvent already is), so awaiting them must be allowed.
         "testing-library/no-await-sync-events": OFF,
+        // render, fireEvent, act and our test helpers are async: a missing `await` lets the test
+        // continue before React has flushed.
+        "@typescript-eslint/no-floating-promises": ERR,
+        // fdescribe/fit/.only silently skip every other test in the file
+        "jest/no-focused-tests": ERR,
       },
     },
   ],

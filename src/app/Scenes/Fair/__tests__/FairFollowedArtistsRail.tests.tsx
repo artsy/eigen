@@ -6,16 +6,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
-// Mock memo to return the same instance of the component
-// issue: https://github.com/facebook/react/issues/17301
-jest.mock("react", () => {
-  const actualReact = jest.requireActual("react")
-  return {
-    ...actualReact,
-    memo: (component: React.ComponentType<any>) => component,
-  }
-})
-
 describe("FairFollowedArtistsRail", () => {
   const trackEvent = useTracking().trackEvent
   let env: ReturnType<typeof createMockEnvironment>
@@ -52,17 +42,17 @@ describe("FairFollowedArtistsRail", () => {
     />
   )
 
-  const getWrapper = (mockResolvers = {}) => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+  const getWrapper = async (mockResolvers = {}) => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
     })
   }
 
-  it("tracks taps on artworks", () => {
-    getWrapper({
+  it("tracks taps on artworks", async () => {
+    await getWrapper({
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
@@ -72,7 +62,7 @@ describe("FairFollowedArtistsRail", () => {
       }),
     })
 
-    fireEvent.press(screen.getByTestId("artwork-some-artwork"))
+    await fireEvent.press(screen.getByTestId("artwork-some-artwork"))
 
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
@@ -88,8 +78,8 @@ describe("FairFollowedArtistsRail", () => {
     })
   })
 
-  it("tracks taps on artworks with partner offers", () => {
-    getWrapper({
+  it("tracks taps on artworks with partner offers", async () => {
+    await getWrapper({
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
@@ -107,7 +97,7 @@ describe("FairFollowedArtistsRail", () => {
       }),
     })
 
-    fireEvent.press(screen.getByTestId("artwork-some-artwork"))
+    await fireEvent.press(screen.getByTestId("artwork-some-artwork"))
 
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
@@ -124,8 +114,8 @@ describe("FairFollowedArtistsRail", () => {
     })
   })
 
-  it("tracks taps on artworks with auction signals", () => {
-    getWrapper({
+  it("tracks taps on artworks with auction signals", async () => {
+    await getWrapper({
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
@@ -146,7 +136,7 @@ describe("FairFollowedArtistsRail", () => {
       }),
     })
 
-    fireEvent.press(screen.getByTestId("artwork-some-artwork"))
+    await fireEvent.press(screen.getByTestId("artwork-some-artwork"))
 
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
@@ -165,8 +155,8 @@ describe("FairFollowedArtistsRail", () => {
     })
   })
 
-  it("displays the '>' button if there are 3 or more artworks", () => {
-    getWrapper({
+  it("displays the '>' button if there are 3 or more artworks", async () => {
+    await getWrapper({
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
@@ -190,8 +180,8 @@ describe("FairFollowedArtistsRail", () => {
     expect(screen.getByText("Browse All Artworks")).toBeOnTheScreen()
   })
 
-  it("doesn't display the '>' button if there are less than 3 artworks to show", () => {
-    getWrapper({
+  it("doesn't display the '>' button if there are less than 3 artworks to show", async () => {
+    await getWrapper({
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
@@ -211,8 +201,8 @@ describe("FairFollowedArtistsRail", () => {
     expect(screen.getByText("Browse All Artworks")).toBeOnTheScreen()
   })
 
-  it("tracks taps on the rails header", () => {
-    getWrapper({
+  it("tracks taps on the rails header", async () => {
+    await getWrapper({
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
@@ -226,7 +216,7 @@ describe("FairFollowedArtistsRail", () => {
         },
       }),
     })
-    fireEvent.press(screen.getByTestId("touchable-wrapper"))
+    await fireEvent.press(screen.getByTestId("touchable-wrapper"))
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "worksByArtistsYouFollowRail",

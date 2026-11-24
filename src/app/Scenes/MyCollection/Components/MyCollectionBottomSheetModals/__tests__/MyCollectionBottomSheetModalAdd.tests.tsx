@@ -15,12 +15,12 @@ describe("MyCollectionBottomSheetModalAdd", () => {
   }
 
   describe("Add Artists", () => {
-    it("navigates the user to add artists screen", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("navigates the user to add artists screen", async () => {
+      await renderWithWrappers(<TestRenderer />)
 
       const addArtistsButton = screen.getByText("Add Artists")
 
-      fireEvent(addArtistsButton, "onPress")
+      await fireEvent(addArtistsButton, "onPress")
 
       expect(navigate).toHaveBeenCalledWith("my-collection/collected-artists/new", {
         passProps: {
@@ -31,12 +31,12 @@ describe("MyCollectionBottomSheetModalAdd", () => {
   })
 
   describe("Add Artworks", () => {
-    it("navigates the user to add artwork screen", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("navigates the user to add artwork screen", async () => {
+      await renderWithWrappers(<TestRenderer />)
 
       const addArworksButton = screen.getByText("Add Artworks")
 
-      fireEvent(addArworksButton, "onPress")
+      await fireEvent(addArworksButton, "onPress")
 
       expect(navigate).toHaveBeenCalledWith("my-collection/artworks/new", {
         passProps: {

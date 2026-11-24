@@ -14,28 +14,28 @@ describe("LoginOTPStep", () => {
     mockUseAuthScreen.mockReturnValue({ params: { otpMode: "standard" } })
   })
 
-  it("renders correctly", () => {
-    renderWithWrappers(<LoginOTPStep />)
+  it("renders correctly", async () => {
+    await renderWithWrappers(<LoginOTPStep />)
 
     expect(screen.getByText("Authentication Code")).toBeDefined()
     expect(screen.getByText("Authentication code")).toBeDefined()
   })
 
-  it("allows the user to switch between authentication and recovery codes", () => {
-    renderWithWrappers(<LoginOTPStep />)
+  it("allows the user to switch between authentication and recovery codes", async () => {
+    await renderWithWrappers(<LoginOTPStep />)
 
     const recoveryCodeButton = screen.getByText("Enter recovery code instead")
     expect(recoveryCodeButton).toBeDefined()
 
-    fireEvent.press(recoveryCodeButton)
+    await fireEvent.press(recoveryCodeButton)
 
     expect(screen.getByText("Recovery code")).toBeDefined()
   })
 
-  it("renders instructions when OTP mode is 'on_demand'", () => {
+  it("renders instructions when OTP mode is 'on_demand'", async () => {
     mockUseAuthScreen.mockReturnValue({ params: { otpMode: "on_demand" } })
 
-    renderWithWrappers(<LoginOTPStep />)
+    await renderWithWrappers(<LoginOTPStep />)
 
     expect(
       screen.getByText(

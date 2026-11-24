@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import {
   SavedSearchEntity,
   SearchCriteriaAttributes,
@@ -53,12 +53,14 @@ describe("AlertPriceRangeScreen", () => {
   })
 
   it("renders PriceRangeContainer with the correct props", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artist: () => artist,
     })
 
     // wait for suspense to go away
-    await waitForElementToBeRemoved(() => screen.queryByTestId("alert-price-range-spinner"))
+    await waitFor(() =>
+      expect(screen.queryByTestId("alert-price-range-spinner")).not.toBeOnTheScreen()
+    )
 
     expect(screen.getByText("Set price range you are interested in")).toBeTruthy()
 
@@ -76,12 +78,14 @@ describe("AlertPriceRangeScreen", () => {
   })
 
   it("Clear button clears input fields", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artist: () => artist,
     })
 
     // wait for suspense to go away
-    await waitForElementToBeRemoved(() => screen.queryByTestId("alert-price-range-spinner"))
+    await waitFor(() =>
+      expect(screen.queryByTestId("alert-price-range-spinner")).not.toBeOnTheScreen()
+    )
 
     const minInput = screen.getByTestId("price-min-input")
     const maxInput = screen.getByTestId("price-max-input")
@@ -90,22 +94,24 @@ describe("AlertPriceRangeScreen", () => {
     expect(maxInput.props.value).toBe("1500")
 
     const clearButton = screen.getByText("Clear")
-    fireEvent.press(clearButton)
+    await fireEvent.press(clearButton)
 
     expect(minInput.props.value).toBe("")
     expect(maxInput.props.value).toBe("")
   })
 
   it("Set Price Range button sets price range attribute, navigates back and saves recent price range", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artist: () => artist,
     })
 
     // wait for suspense to go away
-    await waitForElementToBeRemoved(() => screen.queryByTestId("alert-price-range-spinner"))
+    await waitFor(() =>
+      expect(screen.queryByTestId("alert-price-range-spinner")).not.toBeOnTheScreen()
+    )
 
     const submitButton = screen.getByText("Set Price Range")
-    fireEvent.press(submitButton)
+    await fireEvent.press(submitButton)
 
     expect(goBackMock).toHaveBeenCalledTimes(1)
   })

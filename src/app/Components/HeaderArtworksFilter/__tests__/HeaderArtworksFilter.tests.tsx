@@ -21,31 +21,31 @@ describe("HeaderArtworksFilter", () => {
     )
   }
 
-  it("renders without throwing an error", () => {
-    renderWithWrappers(<MockHeaderArtworksFilter />)
+  it("renders without throwing an error", async () => {
+    await renderWithWrappers(<MockHeaderArtworksFilter />)
 
     expect(screen.getByTestId("HeaderArtworksFilter")).toBeOnTheScreen()
   })
 
-  it("renders top separator", () => {
-    renderWithWrappers(<MockHeaderArtworksFilter />)
+  it("renders top separator", async () => {
+    await renderWithWrappers(<MockHeaderArtworksFilter />)
     expect(screen.getAllByTestId("header-artworks-filter-separator")).toHaveLength(1)
   })
 
-  it("should show correct artworks count", () => {
-    renderWithWrappers(<MockHeaderArtworksFilter />)
+  it("should show correct artworks count", async () => {
+    await renderWithWrappers(<MockHeaderArtworksFilter />)
     expect(screen.getByText("Showing 120 works")).toBeOnTheScreen()
   })
 
-  it("should call `onPress` when `sort & filter` button is pressed", () => {
-    renderWithWrappers(<MockHeaderArtworksFilter />)
-    fireEvent.press(screen.getByText("Sort & Filter"))
+  it("should call `onPress` when `sort & filter` button is pressed", async () => {
+    await renderWithWrappers(<MockHeaderArtworksFilter />)
+    await fireEvent.press(screen.getByText("Sort & Filter"))
     expect(onPress).toBeCalled()
   })
 
   describe("without animation", () => {
-    it("doesn't render top separator", () => {
-      renderWithWrappers(<MockHeaderArtworksFilter animationValue={undefined} />)
+    it("doesn't render top separator", async () => {
+      await renderWithWrappers(<MockHeaderArtworksFilter animationValue={undefined} />)
       expect(screen.queryByTestId("header-artworks-filter-separator")).not.toBeOnTheScreen()
     })
   })

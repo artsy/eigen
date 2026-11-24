@@ -39,17 +39,17 @@ describe("CityGuide status bar", () => {
 
   it.each(["on", "off"] as const)(
     "uses black status bar icons on the map with dark mode %s and restores the theme on blur",
-    (darkModeOption) => {
+    async (darkModeOption) => {
       __globalStoreTestUtils__?.injectState({ devicePrefs: { darkModeOption } })
-      renderWithWrappers(<CityGuide />)
+      await renderWithWrappers(<CityGuide />)
 
       let cleanup: void | (() => void)
-      act(() => {
+      await act(() => {
         cleanup = mockFocusEffect()
       })
       expect(StatusBar.setBarStyle).toHaveBeenLastCalledWith("dark-content", true)
 
-      act(() => cleanup?.())
+      await act(() => cleanup?.())
       expect(StatusBar.setBarStyle).toHaveBeenLastCalledWith(
         darkModeOption === "on" ? "light-content" : "dark-content",
         true

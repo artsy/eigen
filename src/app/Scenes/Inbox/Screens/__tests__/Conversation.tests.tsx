@@ -50,7 +50,7 @@ const { renderWithRelay } = setupTestWrapper<ConversationTestsQuery>({
   variables: { conversationID: "conversation-id" },
 })
 
-it("looks correct when rendered", () => {
+it("looks correct when rendered", async () => {
   // Mock NetInfo for connected state
   jest.doMock("@react-native-community/netinfo", () => ({
     __esModule: true,
@@ -63,10 +63,10 @@ it("looks correct when rendered", () => {
     },
   }))
 
-  renderWithRelay()
+  await renderWithRelay()
 
   // The composer isn't disabled: once there is text, Send is enabled.
-  fireEvent.changeText(screen.getByLabelText("Text input field"), "Hello")
+  await fireEvent.changeText(screen.getByLabelText("Text input field"), "Hello")
   expect(screen.getByText("Send")).toBeEnabled()
   expect(screen.queryByText("No Internet Connection")).not.toBeOnTheScreen()
 })
@@ -84,15 +84,15 @@ it("looks correct when disconnected", async () => {
     },
   }))
 
-  renderWithRelay()
+  await renderWithRelay()
 
   // Since we're testing functional component behavior, we expect it to start enabled
   // The connectivity change would happen asynchronously
-  fireEvent.changeText(screen.getByLabelText("Text input field"), "Hello")
+  await fireEvent.changeText(screen.getByLabelText("Text input field"), "Hello")
   expect(screen.getByText("Send")).toBeEnabled()
 })
 
-it("clicking on detail link opens pushes detail screen into navigator", () => {
+it("clicking on detail link opens pushes detail screen into navigator", async () => {
   // Mock NetInfo for this test
   jest.doMock("@react-native-community/netinfo", () => ({
     __esModule: true,
@@ -102,18 +102,18 @@ it("clicking on detail link opens pushes detail screen into navigator", () => {
     },
   }))
 
-  renderWithRelay({
+  await renderWithRelay({
     Conversation: () => ({
       internalID: "123",
     }),
   })
 
-  fireEvent.press(screen.getByTestId("conversation-details-button"))
+  await fireEvent.press(screen.getByTestId("conversation-details-button"))
 
   expect(navigate).toHaveBeenCalledWith("/conversation/123/details")
 })
 
-it("handles a dismissed modal with modalDismiss event", () => {
+it("handles a dismissed modal with modalDismiss event", async () => {
   // Mock NetInfo for this test
   jest.doMock("@react-native-community/netinfo", () => ({
     __esModule: true,
@@ -123,7 +123,7 @@ it("handles a dismissed modal with modalDismiss event", () => {
     },
   }))
 
-  renderWithRelay()
+  await renderWithRelay()
 
   // Test that the navigation event listener is set up
   expect(navigationEvents.addListener).toHaveBeenCalledWith("modalDismissed", expect.any(Function))
@@ -132,7 +132,7 @@ it("handles a dismissed modal with modalDismiss event", () => {
   navigationEvents.emit("modalDismissed")
 })
 
-it("handles a dismissed modal with goBack event", () => {
+it("handles a dismissed modal with goBack event", async () => {
   // Mock NetInfo for this test
   jest.doMock("@react-native-community/netinfo", () => ({
     __esModule: true,
@@ -142,7 +142,7 @@ it("handles a dismissed modal with goBack event", () => {
     },
   }))
 
-  renderWithRelay()
+  await renderWithRelay()
 
   // Test that the navigation event listener is set up
   expect(navigationEvents.addListener).toHaveBeenCalledWith("goBack", expect.any(Function))
@@ -186,14 +186,14 @@ describe("partner offer banner priority", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationPartnerOffers: true })
   })
 
-  it("shows the partner offer banner when there is no active order", () => {
-    renderWithRelay(offerResolvers([]))
+  it("shows the partner offer banner when there is no active order", async () => {
+    await renderWithRelay(offerResolvers([]))
 
     expect(screen.getByTestId("conversation-partner-offer-cta")).toBeOnTheScreen()
   })
 
-  it("hides the partner offer banner when there is an active order", () => {
-    renderWithRelay(
+  it("hides the partner offer banner when there is an active order", async () => {
+    await renderWithRelay(
       offerResolvers([
         { node: { internalID: "order-1", impulseConversationId: "conversation-id" } },
       ])

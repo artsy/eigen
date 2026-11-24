@@ -76,8 +76,8 @@ describe("HomeViewSectionArtworks", () => {
     `,
   })
 
-  it("renders nothing when no artworks", () => {
-    const { toJSON } = renderWithRelay({
+  it("renders nothing when no artworks", async () => {
+    const { toJSON } = await renderWithRelay({
       HomeViewComponent: () => ({
         title: "New Works for You",
       }),
@@ -90,8 +90,8 @@ describe("HomeViewSectionArtworks", () => {
     expect(toJSON()).toBeNull()
   })
 
-  it("renders a list of artworks", () => {
-    renderWithRelay({
+  it("renders a list of artworks", async () => {
+    await renderWithRelay({
       HomeViewSectionArtworks: () => ({
         internalID: "home-view-section-new-works-for-you",
         component: {
@@ -129,7 +129,7 @@ describe("HomeViewSectionArtworks", () => {
     expect(screen.getByText(/Artwork 1/)).toBeOnTheScreen()
     expect(screen.getByText(/Artwork 2/)).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText(/Artwork 2/))
+    await fireEvent.press(screen.getByText(/Artwork 2/))
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
         [
@@ -151,8 +151,8 @@ describe("HomeViewSectionArtworks", () => {
     expect(navigate).toHaveBeenCalledWith("/artwork-2-href")
   })
 
-  it("does not render disliked artworks when enabled", () => {
-    renderWithRelay({
+  it("does not render disliked artworks when enabled", async () => {
+    await renderWithRelay({
       HomeViewSectionArtworks: () => ({
         internalID: "home-view-section-new-works-for-you",
         contextModule: "newWorksForYouRail",
@@ -184,7 +184,7 @@ describe("HomeViewSectionArtworks", () => {
     })
 
     it("tracks itemViewed events when feature flag is enabled and rail is visible", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         HomeViewSectionArtworks: () => ({
           internalID: "home-view-section-new-works-for-you",
           contextModule: "newWorksForYouRail",
@@ -219,7 +219,7 @@ describe("HomeViewSectionArtworks", () => {
 
       const artworkRail = await screen.findByTestId("artwork-rail")
 
-      fireEvent(artworkRail, "viewableItemsChanged", {
+      await fireEvent(artworkRail, "viewableItemsChanged", {
         viewableItems: [
           { item: { internalID: "artwork-1-id" }, index: 0 },
           { item: { internalID: "artwork-2-id" }, index: 1 },
@@ -248,7 +248,7 @@ describe("HomeViewSectionArtworks", () => {
     })
 
     it("does not track itemViewed events when rail is not visible", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         HomeViewSectionArtworks: () => ({
           internalID: "home-view-section-new-works-for-you",
           contextModule: "newWorksForYouRail",
@@ -275,7 +275,7 @@ describe("HomeViewSectionArtworks", () => {
 
       const artworkRail = await screen.findByTestId("artwork-rail")
 
-      fireEvent(artworkRail, "viewableItemsChanged", {
+      await fireEvent(artworkRail, "viewableItemsChanged", {
         viewableItems: [{ item: { internalID: "artwork-1-id" }, index: 0 }],
         changed: [],
       })
@@ -289,7 +289,7 @@ describe("HomeViewSectionArtworks", () => {
     })
 
     it("does not track itemViewed events when trackItemImpressions is false", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         HomeViewSectionArtworks: () => ({
           internalID: "home-view-section-new-works-for-you",
           contextModule: "newWorksForYouRail",
@@ -329,7 +329,7 @@ describe("HomeViewSectionArtworks", () => {
     })
 
     it("tracks itemViewed events only once per artwork", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         HomeViewSectionArtworks: () => ({
           internalID: "home-view-section-new-works-for-you",
           contextModule: "newWorksForYouRail",
@@ -358,13 +358,13 @@ describe("HomeViewSectionArtworks", () => {
       const artworkRail = await screen.findByTestId("artwork-rail")
 
       // First time
-      fireEvent(artworkRail, "viewableItemsChanged", {
+      await fireEvent(artworkRail, "viewableItemsChanged", {
         viewableItems: [{ item: { internalID: "artwork-1-id" }, index: 0 }],
         changed: [],
       })
 
       // Second time - should not trigger another tracking event
-      fireEvent(artworkRail, "viewableItemsChanged", {
+      await fireEvent(artworkRail, "viewableItemsChanged", {
         viewableItems: [{ item: { internalID: "artwork-1-id" }, index: 0 }],
         changed: [],
       })
@@ -419,15 +419,15 @@ describe("HomeViewSectionArtworks", () => {
       setLiveSectionIDs([])
     })
 
-    it("re-fires railViewed as soon as the rail is refreshed", () => {
-      renderWithRelay({
+    it("re-fires railViewed as soon as the rail is refreshed", async () => {
+      await renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
 
       homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
       mockTrackEvent.mockClear()
 
-      act(() => {
+      await act(() => {
         homeViewStoreActions.bumpLiveRefetchKey()
       })
 
@@ -439,19 +439,19 @@ describe("HomeViewSectionArtworks", () => {
       })
     })
 
-    it("re-fires railViewed once an off-screen rail is scrolled into view after a refresh", () => {
-      const { env } = renderWithRelay({
+    it("re-fires railViewed once an off-screen rail is scrolled into view after a refresh", async () => {
+      const { env } = await renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
 
       homeViewStoreActions.setViewableSections([])
       mockTrackEvent.mockClear()
 
-      act(() => {
+      await act(() => {
         homeViewStoreActions.bumpLiveRefetchKey()
       })
 
-      act(() => {
+      await act(() => {
         env.mock.resolveMostRecentOperation((operation) =>
           MockPayloadGenerator.generate(operation, {
             HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
@@ -465,26 +465,26 @@ describe("HomeViewSectionArtworks", () => {
       )
 
       // Scrolled into view afterwards — the pending refresh re-fires railViewed.
-      act(() => {
+      await act(() => {
         homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
       })
 
       expect(mockTrackEvent).toHaveBeenCalledWith(expect.objectContaining({ action: "railViewed" }))
     })
 
-    it("re-fires railViewed on every refresh while the rail is in view", () => {
-      const { env } = renderWithRelay({
+    it("re-fires railViewed on every refresh while the rail is in view", async () => {
+      const { env } = await renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
 
       homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
       mockTrackEvent.mockClear()
 
-      const refresh = () => {
-        act(() => {
+      const refresh = async () => {
+        await act(() => {
           homeViewStoreActions.bumpLiveRefetchKey()
         })
-        act(() => {
+        await act(() => {
           env.mock.resolveMostRecentOperation((operation) =>
             MockPayloadGenerator.generate(operation, {
               HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
@@ -494,8 +494,8 @@ describe("HomeViewSectionArtworks", () => {
       }
 
       // Two separate returns to home, both with the rail in view.
-      refresh()
-      refresh()
+      await refresh()
+      await refresh()
 
       const railViewedCalls = mockTrackEvent.mock.calls.filter(
         (call) => (call[0] as any)?.action === "railViewed"
@@ -504,7 +504,7 @@ describe("HomeViewSectionArtworks", () => {
     })
 
     it("re-enables itemViewed tracking after the live refresh completes", async () => {
-      const { env } = renderWithRelay({
+      const { env } = await renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
 
@@ -514,7 +514,7 @@ describe("HomeViewSectionArtworks", () => {
       const viewableItems = [{ item: { internalID: "artwork-1-id" }, index: 0 }]
 
       // Item is tracked once initially.
-      fireEvent(screen.getByTestId("artwork-rail"), "viewableItemsChanged", {
+      await fireEvent(screen.getByTestId("artwork-rail"), "viewableItemsChanged", {
         viewableItems,
         changed: [],
       })
@@ -524,10 +524,10 @@ describe("HomeViewSectionArtworks", () => {
       ).toHaveLength(1)
 
       // Refresh the rail and complete it — the impression guard resets on completion.
-      act(() => {
+      await act(() => {
         homeViewStoreActions.bumpLiveRefetchKey()
       })
-      act(() => {
+      await act(() => {
         env.mock.resolveMostRecentOperation((operation) =>
           MockPayloadGenerator.generate(operation, {
             HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
@@ -536,7 +536,7 @@ describe("HomeViewSectionArtworks", () => {
       })
 
       // The same item becoming viewable again should re-fire after the refresh.
-      fireEvent(await screen.findByTestId("artwork-rail"), "viewableItemsChanged", {
+      await fireEvent(await screen.findByTestId("artwork-rail"), "viewableItemsChanged", {
         viewableItems,
         changed: [],
       })
@@ -546,17 +546,17 @@ describe("HomeViewSectionArtworks", () => {
       ).toHaveLength(2)
     })
 
-    it("does not re-fire analytics when the flags are off", () => {
+    it("does not re-fire analytics when the flags are off", async () => {
       setLiveSectionIDs([])
 
-      renderWithRelay({
+      await renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
 
       homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
       mockTrackEvent.mockClear()
 
-      act(() => {
+      await act(() => {
         homeViewStoreActions.bumpLiveRefetchKey()
       })
 
@@ -565,8 +565,8 @@ describe("HomeViewSectionArtworks", () => {
       )
     })
 
-    it("refetches every live rail on a bump even when the rail is off screen", () => {
-      const { env } = renderWithRelay({
+    it("refetches every live rail on a bump even when the rail is off screen", async () => {
+      const { env } = await renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
 
@@ -575,7 +575,7 @@ describe("HomeViewSectionArtworks", () => {
       const operationsBeforeRefresh = env.mock.getAllOperations().length
 
       // A refresh (return-to-home or pull-to-refresh) refreshes all live rails.
-      act(() => {
+      await act(() => {
         homeViewStoreActions.bumpLiveRefetchKey()
       })
 
@@ -583,18 +583,18 @@ describe("HomeViewSectionArtworks", () => {
       expect(env.mock.getAllOperations().length).toBeGreaterThan(operationsBeforeRefresh)
     })
 
-    it("refetches but does not re-fire railViewed when the rail is off screen", () => {
-      const { env } = renderWithRelay({
+    it("refetches but does not re-fire railViewed when the rail is off screen", async () => {
+      const { env } = await renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
 
       homeViewStoreActions.setViewableSections([])
       mockTrackEvent.mockClear()
 
-      act(() => {
+      await act(() => {
         homeViewStoreActions.bumpLiveRefetchKey()
       })
-      act(() => {
+      await act(() => {
         env.mock.resolveMostRecentOperation((operation) =>
           MockPayloadGenerator.generate(operation, {
             HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
@@ -643,15 +643,15 @@ describe("HomeViewSectionArtworks", () => {
       setLiveSectionIDs([])
     })
 
-    it("re-fires railViewed as soon as the rail is refreshed", () => {
-      renderWithRelay({
+    it("re-fires railViewed as soon as the rail is refreshed", async () => {
+      await renderWithRelay({
         HomeViewSectionArtworks: () => NWFY_SECTION,
       })
 
       homeViewStoreActions.setViewableSections([NEW_WORKS_FOR_YOU_SECTION_ID])
       mockTrackEvent.mockClear()
 
-      act(() => {
+      await act(() => {
         homeViewStoreActions.bumpLiveRefetchKey()
       })
 
@@ -664,7 +664,7 @@ describe("HomeViewSectionArtworks", () => {
     })
 
     it("re-enables itemViewed tracking after the live refresh completes", async () => {
-      const { env } = renderWithRelay({
+      const { env } = await renderWithRelay({
         HomeViewSectionArtworks: () => NWFY_SECTION,
       })
 
@@ -673,7 +673,7 @@ describe("HomeViewSectionArtworks", () => {
       expect(await screen.findByTestId("artwork-rail")).toBeOnTheScreen()
       const viewableItems = [{ item: { internalID: "artwork-1-id" }, index: 0 }]
 
-      fireEvent(screen.getByTestId("artwork-rail"), "viewableItemsChanged", {
+      await fireEvent(screen.getByTestId("artwork-rail"), "viewableItemsChanged", {
         viewableItems,
         changed: [],
       })
@@ -682,10 +682,10 @@ describe("HomeViewSectionArtworks", () => {
         mockTrackEvent.mock.calls.filter((call) => (call[0] as any)?.action === "item_viewed")
       ).toHaveLength(1)
 
-      act(() => {
+      await act(() => {
         homeViewStoreActions.bumpLiveRefetchKey()
       })
-      act(() => {
+      await act(() => {
         env.mock.resolveMostRecentOperation((operation) =>
           MockPayloadGenerator.generate(operation, {
             HomeViewSectionArtworks: () => NWFY_SECTION,
@@ -693,7 +693,7 @@ describe("HomeViewSectionArtworks", () => {
         )
       })
 
-      fireEvent(screen.getByTestId("artwork-rail"), "viewableItemsChanged", {
+      await fireEvent(screen.getByTestId("artwork-rail"), "viewableItemsChanged", {
         viewableItems,
         changed: [],
       })
@@ -703,19 +703,19 @@ describe("HomeViewSectionArtworks", () => {
       ).toHaveLength(2)
     })
 
-    it("does not refresh when only the WTYL experiment is enabled", () => {
+    it("does not refresh when only the WTYL experiment is enabled", async () => {
       // NWFY's live-refresh is gated by its own experiment — enabling WTYL alone must not make
       // the NWFY rail refetch.
       setLiveSectionIDs([RECOMMENDED_ARTWORKS_SECTION_ID])
 
-      const { env } = renderWithRelay({
+      const { env } = await renderWithRelay({
         HomeViewSectionArtworks: () => NWFY_SECTION,
       })
 
       homeViewStoreActions.setViewableSections([NEW_WORKS_FOR_YOU_SECTION_ID])
       mockTrackEvent.mockClear()
 
-      act(() => {
+      await act(() => {
         homeViewStoreActions.bumpLiveRefetchKey()
       })
 
@@ -726,17 +726,17 @@ describe("HomeViewSectionArtworks", () => {
       )
     })
 
-    it("does not re-fire analytics when the flags are off", () => {
+    it("does not re-fire analytics when the flags are off", async () => {
       setLiveSectionIDs([])
 
-      renderWithRelay({
+      await renderWithRelay({
         HomeViewSectionArtworks: () => NWFY_SECTION,
       })
 
       homeViewStoreActions.setViewableSections([NEW_WORKS_FOR_YOU_SECTION_ID])
       mockTrackEvent.mockClear()
 
-      act(() => {
+      await act(() => {
         homeViewStoreActions.bumpLiveRefetchKey()
       })
 

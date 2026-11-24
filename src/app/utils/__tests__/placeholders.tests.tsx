@@ -7,16 +7,16 @@ import {
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("PlaceholderBox", () => {
-  it("requires a placeholder context", () => {
+  it("requires a placeholder context", async () => {
     try {
-      renderWithWrappers(<PlaceholderBox width={400} />)
+      await renderWithWrappers(<PlaceholderBox width={400} />)
     } catch (error: any) {
       expect(error.message).toContain(
         "Error: You're using a Placeholder outside of a PlaceholderContext"
       )
     }
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <ProvidePlaceholderContext>
         <PlaceholderBox width={400} />
       </ProvidePlaceholderContext>
@@ -25,8 +25,8 @@ describe("PlaceholderBox", () => {
 })
 
 describe("PlaceholderRaggedText", () => {
-  it("creates the right number of placeholders matching the given number of lines", () => {
-    renderWithWrappers(
+  it("creates the right number of placeholders matching the given number of lines", async () => {
+    await renderWithWrappers(
       <ProvidePlaceholderContext>
         <PlaceholderRaggedText numLines={4} />
       </ProvidePlaceholderContext>

@@ -1,5 +1,5 @@
 import { Text } from "@artsy/palette-mobile"
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useState } from "react"
@@ -19,12 +19,12 @@ describe(useAnimatedValue, () => {
     )
   }
 
-  it("returns a stable animated value", () => {
-    const { getByLabelText } = renderWithWrappers(<Mock />)
+  it("returns a stable animated value", async () => {
+    await renderWithWrappers(<Mock />)
     const prevVal = val
     expect(val).toBeInstanceOf(Animated.Value)
 
-    fireEvent.press(getByLabelText("button"))
+    await fireEvent.press(screen.getByLabelText("button"))
 
     expect(prevVal).toBe(val)
   })

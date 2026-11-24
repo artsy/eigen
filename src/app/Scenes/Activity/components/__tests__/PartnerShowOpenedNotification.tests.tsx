@@ -38,7 +38,7 @@ describe("PartnerShowOpenedNotification", () => {
   })
 
   it("renders all elements", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         notification,
       }),
@@ -57,7 +57,7 @@ describe("PartnerShowOpenedNotification", () => {
 
   describe("'Visit Show CTA", () => {
     it("links to the Viewing Room page", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({
           notification,
         }),
@@ -69,7 +69,7 @@ describe("PartnerShowOpenedNotification", () => {
 
       const viewAllWorksByLink = screen.getByTestId("show-item-visit-show-link")
 
-      fireEvent.press(viewAllWorksByLink)
+      await fireEvent.press(viewAllWorksByLink)
 
       await act(async () => {
         await flushPromiseQueue()

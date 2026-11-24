@@ -78,8 +78,8 @@ describe("SaleLotsListContainer", () => {
       `,
     })
 
-    it("renders grid and handles pagination correctly", () => {
-      renderWithRelay({
+    it("renders grid and handles pagination correctly", async () => {
+      await renderWithRelay({
         Viewer: () => ({
           artworksConnection: {
             aggregations: [],
@@ -120,8 +120,8 @@ describe("SaleLotsListContainer", () => {
       `,
     })
 
-    it("renders list view correctly", () => {
-      renderWithRelay({
+    it("renders list view correctly", async () => {
+      await renderWithRelay({
         Viewer: () => ({
           artworksConnection: {
             aggregations: [],
@@ -137,7 +137,7 @@ describe("SaleLotsListContainer", () => {
   })
 
   describe("SaleLotsListSortMode", () => {
-    it("renders correct sort description and count", () => {
+    it("renders correct sort description and count", async () => {
       const { renderWithWrappers } = require("app/utils/tests/renderWithWrappers")
 
       const component = (
@@ -148,7 +148,7 @@ describe("SaleLotsListContainer", () => {
         />
       )
 
-      renderWithWrappers(component)
+      await renderWithWrappers(component)
 
       expect(screen.getByText(/Sorted by/)).toBeTruthy()
       expect(screen.getByText("Showing 15 of 50")).toBeTruthy()

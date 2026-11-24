@@ -1,5 +1,5 @@
 import { createToken } from "@stripe/stripe-react-native"
-import { act, fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
 import {
   BidFlowContextProvider,
@@ -88,7 +88,7 @@ describe("BidFlow", () => {
     })
 
     useCreateBidderPositionMock.mockReturnValue([mockCreateBidderPositionMutation, false])
-    renderWithRelay({
+    const { env, mockResolveLastOperation } = await renderWithRelay({
       SaleArtwork: () => saleArtwork,
       Me: () => me.qualifiedUser,
     })
@@ -96,15 +96,25 @@ describe("BidFlow", () => {
     // Select Max Bid
     expect(screen.getByText("$35,000")).toBeOnTheScreen()
 
-    act(() => {
+    await act(() => {
       mockStore.getActions().setSelectedBidIndex(2)
     })
 
     expect(screen.getByText("$45,000")).toBeOnTheScreen()
-    fireEvent.press(screen.getByText("Next"))
+    await fireEvent.press(screen.getByText("Next"))
 
     // Confirm Bid
     expect(screen.getByText("Confirm your bid")).toBeOnTheScreen()
+
+    await waitFor(() =>
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "PriceSummaryQuery"
+      )
+    )
+    const { saleArtworkId } = env.mock.getMostRecentOperation().request.variables
+    await mockResolveLastOperation({
+      Query: () => ({ node: { __typename: "SaleArtwork", id: saleArtworkId } }),
+    })
     ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
 
     bidderPositionQueryMock.mockReturnValueOnce(
@@ -115,8 +125,8 @@ describe("BidFlow", () => {
       screen.getByText(/I agree to Artsy's General Terms and Conditions of Sale/)
     ).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
-    fireEvent.press(screen.getByTestId("bid-button"))
+    await fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+    await fireEvent.press(screen.getByTestId("bid-button"))
 
     // Bid Result
     await screen.findByText("You’re the highest bidder")
@@ -137,21 +147,31 @@ describe("BidFlow", () => {
     useCreateCreditCardMock.mockReturnValue([mockCreateCreditCardMutation, false])
     useCreateBidderPositionMock.mockReturnValue([mockCreateBidderPositionMutation, false])
 
-    renderWithRelay({
+    const { env, mockResolveLastOperation } = await renderWithRelay({
       SaleArtwork: () => saleArtwork,
       Me: () => me.unqualifiedUser,
     })
 
     // Select Max Bid
     expect(screen.getByText("$35,000")).toBeOnTheScreen()
-    act(() => {
+    await act(() => {
       mockStore.getActions().setSelectedBidIndex(2)
     })
     expect(screen.getByText("$45,000")).toBeOnTheScreen()
-    fireEvent.press(screen.getByText("Next"))
+    await fireEvent.press(screen.getByText("Next"))
 
     // Confirm Bid
     expect(screen.getByText("Confirm your bid")).toBeOnTheScreen()
+
+    await waitFor(() =>
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "PriceSummaryQuery"
+      )
+    )
+    const { saleArtworkId } = env.mock.getMostRecentOperation().request.variables
+    await mockResolveLastOperation({
+      Query: () => ({ node: { __typename: "SaleArtwork", id: saleArtworkId } }),
+    })
     ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
 
     bidderPositionQueryMock.mockReturnValueOnce(
@@ -159,7 +179,7 @@ describe("BidFlow", () => {
     )
 
     // mimic adding a credit card
-    act(() => {
+    await act(() => {
       mockStore.getActions().setBillingAddress(billingAddress)
       mockStore.getActions().setCreditCardToken(stripeToken as any)
     })
@@ -168,8 +188,8 @@ describe("BidFlow", () => {
       screen.getByText(/I agree to Artsy's General Terms and Conditions of Sale/)
     ).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
-    fireEvent.press(screen.getByTestId("bid-button"))
+    await fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+    await fireEvent.press(screen.getByTestId("bid-button"))
 
     // Bid Result
     await screen.findByText("You’re the highest bidder")

@@ -31,17 +31,18 @@ beforeEach(() => {
 })
 
 describe(VanityURLPossibleRedirect, () => {
-  it("shows a loading spinner before anything has happened", () => {
-    fetchMockResponseOnce({ status: 200, url: "https://artsy.net/test" })
+  it("shows a loading spinner before anything has happened", async () => {
+    // Keep the request pending: render now flushes a resolved fetch before it returns
+    fetchMock.mockResponseOnce(() => new Promise(() => {}))
 
-    renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
+    await renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
     expect(screen.getAllByTestId("spinner")).toHaveLength(1)
   })
 
-  it("sends a fetch request", () => {
+  it("sends a fetch request", async () => {
     fetchMockResponseOnce({ status: 200, url: "https://www.artsy.net/test" })
 
-    renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
+    await renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(fetchMock.mock.calls[0]).toMatchInlineSnapshot(`
       [
@@ -59,7 +60,7 @@ describe(VanityURLPossibleRedirect, () => {
   it("calls `navigate` when the redirect points to an external url", async () => {
     fetchMockResponseOnce({ status: 200, url: "https://google.com/blah" })
 
-    renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
+    await renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
     await waitFor(() => expect(navigate).toBeCalled())
     expect(navigate).toHaveBeenCalledWith("https://google.com/blah")
   })
@@ -67,7 +68,7 @@ describe(VanityURLPossibleRedirect, () => {
   it("calls `navigate` when the redirect points to a native view", async () => {
     fetchMockResponseOnce({ status: 200, url: "https://www.artsy.net/artist/banksy" })
 
-    renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
+    await renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
     await waitFor(() => expect(navigate).toBeCalled())
     expect(navigate).toHaveBeenCalledWith("https://www.artsy.net/artist/banksy")
   })
@@ -87,32 +88,32 @@ describe(VanityURLPossibleRedirect, () => {
 
     it("shows the error page if the fetch fails", async () => {
       fetchMock.mockRejectOnce()
-      renderWithWrappers(<VanityURLPossibleRedirect slug="test-fail" />)
+      await renderWithWrappers(<VanityURLPossibleRedirect slug="test-fail" />)
 
       await screen.findByText("We can't find that page.")
       expect(screen.getByText("We can't find that page.")).toBeOnTheScreen()
       expect(openURLMock).not.toHaveBeenCalled()
 
-      fireEvent.press(screen.getByText("Open in browser"))
+      await fireEvent.press(screen.getByText("Open in browser"))
       expect(openURLMock).toHaveBeenCalledWith("https://www.artsy.net/test-fail")
     })
 
     it("shows the error page if the response is not `ok`", async () => {
       fetchMockResponseOnce({ status: 404, url: "https://whatever" })
-      renderWithWrappers(<VanityURLPossibleRedirect slug="test-not-ok" />)
+      await renderWithWrappers(<VanityURLPossibleRedirect slug="test-not-ok" />)
 
       await screen.findByText("We can't find that page.")
       expect(screen.getByText("We can't find that page.")).toBeOnTheScreen()
       expect(openURLMock).not.toHaveBeenCalled()
 
-      fireEvent.press(screen.getByText("Open in browser"))
+      await fireEvent.press(screen.getByText("Open in browser"))
       expect(openURLMock).toHaveBeenCalledWith("https://www.artsy.net/test-not-ok")
     })
   })
 
   it("shows an internal web view when there is no redirect", async () => {
     fetchMockResponseOnce({ status: 200, url: "https://artsy.net/no-redirect" })
-    renderWithWrappers(<VanityURLPossibleRedirect slug="no-redirect" />)
+    await renderWithWrappers(<VanityURLPossibleRedirect slug="no-redirect" />)
 
     await waitFor(() => expect(screen.getAllByTestId("ArtsyWebViewPage")).toHaveLength(1))
     expect(screen.getByTestId("ArtsyWebViewPage")).toHaveTextContent(
@@ -122,7 +123,7 @@ describe(VanityURLPossibleRedirect, () => {
 
   it("shows an internal web view when there is a redirect to a page that is supposed to be shown in a web view", async () => {
     fetchMockResponseOnce({ status: 200, url: "https://artsy.net/categories" })
-    renderWithWrappers(<VanityURLPossibleRedirect slug="genes" />)
+    await renderWithWrappers(<VanityURLPossibleRedirect slug="genes" />)
 
     await waitFor(() => expect(screen.getAllByTestId("ArtsyWebViewPage")).toHaveLength(1))
     expect(screen.getByTestId("ArtsyWebViewPage")).toHaveTextContent("https://artsy.net/categories")

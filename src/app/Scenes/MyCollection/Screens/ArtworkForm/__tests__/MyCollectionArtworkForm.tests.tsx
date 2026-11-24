@@ -42,7 +42,7 @@ describe("MyCollectionArtworkForm", () => {
       // initialises with the correct values (enableReinitialize: false)
       GlobalStore.actions.myCollection.artwork.startEditingArtwork(mockArtwork as any)
 
-      renderWithRelay({}, { artwork: mockArtwork as any, mode: "edit" })
+      await renderWithRelay({}, { artwork: mockArtwork as any, mode: "edit" })
 
       await flushPromiseQueue()
 
@@ -82,7 +82,7 @@ describe("MyCollectionArtworkForm", () => {
         uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
         // renderWithRelay resolves the initial ArtistAutosuggestQuery automatically
-        const { env } = renderWithRelay({}, { mode: "add", source: Tab.collection })
+        const { env } = await renderWithRelay({}, { mode: "add", source: Tab.collection })
 
         await flushPromiseQueue()
 
@@ -94,8 +94,11 @@ describe("MyCollectionArtworkForm", () => {
           expect(screen.getByPlaceholderText("Search for artists on Artsy")).toBeTruthy()
         })
 
-        fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "banksy")
-        act(() =>
+        await fireEvent.changeText(
+          screen.getByPlaceholderText("Search for artists on Artsy"),
+          "banksy"
+        )
+        await act(() =>
           env.mock.resolveMostRecentOperation({
             errors: [],
             data: mockArtistSearchResult,
@@ -104,7 +107,7 @@ describe("MyCollectionArtworkForm", () => {
 
         // await flushPromiseQueue()
 
-        fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
+        await fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
 
         await flushPromiseQueue()
 
@@ -116,16 +119,18 @@ describe("MyCollectionArtworkForm", () => {
           expect(screen.getByPlaceholderText("Search artworks")).toBeTruthy()
         })
 
-        fireEvent.changeText(screen.getByPlaceholderText("Search artworks"), "banksy")
-        act(() =>
+        await fireEvent.changeText(screen.getByPlaceholderText("Search artworks"), "banksy")
+        await act(() =>
           env.mock.resolveMostRecentOperation({
             errors: [],
             data: mockArtworkSearchResult,
           })
         )
-        fireEvent.press(screen.getByTestId("artworkGridItem-Morons"))
+        await fireEvent.press(screen.getByTestId("artworkGridItem-Morons"))
 
-        act(() => env.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult }))
+        await act(() =>
+          env.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult })
+        )
 
         await flushPromiseQueue()
 
@@ -144,7 +149,7 @@ describe("MyCollectionArtworkForm", () => {
 
         // Complete Form
 
-        fireEvent.press(screen.getByTestId("CompleteButton"))
+        await fireEvent.press(screen.getByTestId("CompleteButton"))
 
         await flushPromiseQueue()
 
@@ -213,7 +218,7 @@ describe("MyCollectionArtworkForm", () => {
     describe("when skipping the artwork selection", () => {
       it("leaves the form empty", async () => {
         // renderWithRelay resolves the initial ArtistAutosuggestQuery automatically
-        const { env } = renderWithRelay({}, { mode: "add", source: Tab.collection })
+        const { env } = await renderWithRelay({}, { mode: "add", source: Tab.collection })
 
         await flushPromiseQueue()
 
@@ -222,9 +227,9 @@ describe("MyCollectionArtworkForm", () => {
         expect(screen.getByText("Select an Artist")).toBeTruthy()
 
         const artistSearchInput = await screen.findByPlaceholderText("Search for artists on Artsy")
-        fireEvent.changeText(artistSearchInput, "banksy")
+        await fireEvent.changeText(artistSearchInput, "banksy")
 
-        act(() =>
+        await act(() =>
           env.mock.resolveMostRecentOperation({
             errors: [],
             data: mockArtistSearchResult,
@@ -233,7 +238,7 @@ describe("MyCollectionArtworkForm", () => {
 
         await flushPromiseQueue()
 
-        fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
+        await fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
 
         await flushPromiseQueue()
 
@@ -245,9 +250,12 @@ describe("MyCollectionArtworkForm", () => {
           expect(screen.getByPlaceholderText("Search artworks")).toBeTruthy()
         })
 
-        fireEvent.changeText(screen.getByPlaceholderText("Search artworks"), "Test Artwork Title")
+        await fireEvent.changeText(
+          screen.getByPlaceholderText("Search artworks"),
+          "Test Artwork Title"
+        )
 
-        act(() =>
+        await act(() =>
           env.mock.resolveMostRecentOperation({
             errors: [],
             data: mockArtworkSearchResult,
@@ -256,7 +264,7 @@ describe("MyCollectionArtworkForm", () => {
 
         await flushPromiseQueue()
 
-        fireEvent.press(screen.getByTestId("my-collection-artwork-form-artwork-skip-button"))
+        await fireEvent.press(screen.getByTestId("my-collection-artwork-form-artwork-skip-button"))
 
         await flushPromiseQueue()
 
@@ -484,7 +492,7 @@ describe("MyCollectionArtworkForm", () => {
         uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
         // renderWithRelay resolves the initial ArtistAutosuggestQuery automatically
-        const { env } = renderWithRelay({}, { mode: "add", source: Tab.collection })
+        const { env } = await renderWithRelay({}, { mode: "add", source: Tab.collection })
 
         // await flushPromiseQueue()
 
@@ -495,8 +503,11 @@ describe("MyCollectionArtworkForm", () => {
           expect(screen.getByPlaceholderText("Search for artists on Artsy")).toBeTruthy()
         })
 
-        fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "banksy")
-        act(() =>
+        await fireEvent.changeText(
+          screen.getByPlaceholderText("Search for artists on Artsy"),
+          "banksy"
+        )
+        await act(() =>
           env.mock.resolveMostRecentOperation({
             errors: [],
             data: mockArtistSearchResult,
@@ -504,28 +515,30 @@ describe("MyCollectionArtworkForm", () => {
         )
         // await flushPromiseQueue()
 
-        fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
+        await fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
 
         // await flushPromiseQueue()
 
         // // Select Artwork Screen
 
         const artworkSearchInput = await screen.findByPlaceholderText("Search artworks")
-        fireEvent.changeText(artworkSearchInput, "banksy")
-        act(() =>
+        await fireEvent.changeText(artworkSearchInput, "banksy")
+        await act(() =>
           env.mock.resolveMostRecentOperation({
             errors: [],
             data: mockArtworkSearchResult,
           })
         )
-        fireEvent.press(screen.getByTestId("artworkGridItem-Morons"))
+        await fireEvent.press(screen.getByTestId("artworkGridItem-Morons"))
 
-        act(() => env.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult }))
+        await act(() =>
+          env.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult })
+        )
 
         await flushPromiseQueue()
 
         // Complete Form
-        fireEvent.press(screen.getByTestId("CompleteButton"))
+        await fireEvent.press(screen.getByTestId("CompleteButton"))
 
         await flushPromiseQueue()
 

@@ -11,22 +11,22 @@ jest.mock("app/system/navigation/RouterLink", () => {
 })
 
 describe("MenuItem", () => {
-  it("renders with title and description", () => {
-    renderWithWrappers(<MenuItem title="Test Title" description="Test description" />)
+  it("renders with title and description", async () => {
+    await renderWithWrappers(<MenuItem title="Test Title" description="Test description" />)
 
     expect(screen.getByText("Test Title")).toBeTruthy()
     expect(screen.getByText("Test description")).toBeTruthy()
   })
 
-  it("renders with value", () => {
-    renderWithWrappers(<MenuItem title="Menu Item" value="Value text" />)
+  it("renders with value", async () => {
+    await renderWithWrappers(<MenuItem title="Menu Item" value="Value text" />)
 
     expect(screen.getByText("Menu Item")).toBeTruthy()
     expect(screen.getByText("Value text")).toBeTruthy()
   })
 
-  it("renders with custom icon and rightView", () => {
-    renderWithWrappers(
+  it("renders with custom icon and rightView", async () => {
+    await renderWithWrappers(
       <MenuItem title="Custom Item" icon={<Text>Icon</Text>} rightView={<Text>Right View</Text>} />
     )
 

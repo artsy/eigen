@@ -19,23 +19,23 @@ describe("MapPreviewCard", () => {
     jest.clearAllMocks()
   })
 
-  it("navigates to the place's href when tapped", () => {
-    renderWithWrappers(<MapPreviewCard place={place()} citySlug="london-united-kingdom" />)
+  it("navigates to the place's href when tapped", async () => {
+    await renderWithWrappers(<MapPreviewCard place={place()} citySlug="london-united-kingdom" />)
 
-    fireEvent.press(screen.getByText("Frieze London"))
+    await fireEvent.press(screen.getByText("Frieze London"))
 
     expect(navigate).toHaveBeenCalledWith("/fair/frieze-london-2026")
   })
 
-  it("uses StopCard even when a place only supplies a title", () => {
-    renderWithWrappers(<MapPreviewCard place={place()} citySlug="london-united-kingdom" />)
+  it("uses StopCard even when a place only supplies a title", async () => {
+    await renderWithWrappers(<MapPreviewCard place={place()} citySlug="london-united-kingdom" />)
 
     expect(screen.getByTestId("stop-card")).toBeOnTheScreen()
   })
 
-  it("keeps saving separate from card navigation and tracking", () => {
+  it("keeps saving separate from card navigation and tracking", async () => {
     const save = jest.fn()
-    renderWithWrappers(
+    await renderWithWrappers(
       <MapPreviewCard
         place={place({
           saveControl: (
@@ -48,17 +48,17 @@ describe("MapPreviewCard", () => {
       />
     )
 
-    fireEvent.press(screen.getByText("Save"))
+    await fireEvent.press(screen.getByText("Save"))
 
     expect(save).toHaveBeenCalledTimes(1)
     expect(navigate).not.toHaveBeenCalled()
     expect(mockTrackEvent).not.toHaveBeenCalled()
   })
 
-  it("tracks the tap when the card will navigate", () => {
-    renderWithWrappers(<MapPreviewCard place={place()} citySlug="london-united-kingdom" />)
+  it("tracks the tap when the card will navigate", async () => {
+    await renderWithWrappers(<MapPreviewCard place={place()} citySlug="london-united-kingdom" />)
 
-    fireEvent.press(screen.getByText("Frieze London"))
+    await fireEvent.press(screen.getByText("Frieze London"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -73,10 +73,10 @@ describe("MapPreviewCard", () => {
 
   // The cluster rail uses onPress for select-only cards with no navigation of their own — a
   // select isn't a tap-through, so it shouldn't count as one.
-  it("does not track when disableNavigation forces a select-only card", () => {
+  it("does not track when disableNavigation forces a select-only card", async () => {
     const onPress = jest.fn()
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <MapPreviewCard
         place={place()}
         citySlug="london-united-kingdom"
@@ -85,25 +85,25 @@ describe("MapPreviewCard", () => {
       />
     )
 
-    fireEvent.press(screen.getByText("Frieze London"))
+    await fireEvent.press(screen.getByText("Frieze London"))
 
     expect(onPress).toHaveBeenCalled()
     expect(navigate).not.toHaveBeenCalled()
     expect(mockTrackEvent).not.toHaveBeenCalled()
   })
 
-  it("does not track a place with no href", () => {
-    renderWithWrappers(
+  it("does not track a place with no href", async () => {
+    await renderWithWrappers(
       <MapPreviewCard place={place({ href: null })} citySlug="london-united-kingdom" />
     )
 
-    fireEvent.press(screen.getByText("Frieze London"))
+    await fireEvent.press(screen.getByText("Frieze London"))
 
     expect(mockTrackEvent).not.toHaveBeenCalled()
   })
 
-  it("tracks a stop card the same way, via StopCard's own onPress", () => {
-    renderWithWrappers(
+  it("tracks a stop card the same way, via StopCard's own onPress", async () => {
+    await renderWithWrappers(
       <MapPreviewCard
         place={place({
           card: { kind: "custom", title: "Coffee at London Cafe" },
@@ -113,7 +113,7 @@ describe("MapPreviewCard", () => {
       />
     )
 
-    fireEvent.press(screen.getByTestId("stop-card-link"))
+    await fireEvent.press(screen.getByTestId("stop-card-link"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({

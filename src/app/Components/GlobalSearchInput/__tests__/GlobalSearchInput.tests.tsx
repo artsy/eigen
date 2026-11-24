@@ -35,16 +35,16 @@ describe("GlobalSearchInput", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtsyLens: true })
   })
 
-  it("renders the search label properly", () => {
-    renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
+  it("renders the search label properly", async () => {
+    await renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
 
     expect(/Search Artsy/).toBeTruthy()
   })
 
-  it("tracks the search bar tapped event", () => {
-    renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
+  it("tracks the search bar tapped event", async () => {
+    await renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
 
-    fireEvent.press(screen.getByTestId("search-button"))
+    await fireEvent.press(screen.getByTestId("search-button"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -55,56 +55,56 @@ describe("GlobalSearchInput", () => {
   })
 
   describe("Artsy Lens camera icon", () => {
-    it("renders the camera icon when the onyx_artsy-lens experiment is on", () => {
+    it("renders the camera icon when the onyx_artsy-lens experiment is on", async () => {
       mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
 
-      renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
+      await renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
 
       expect(screen.getByTestId("search-input-camera-icon")).toBeOnTheScreen()
     })
 
-    it("hides the camera icon when the onyx_artsy-lens experiment is off", () => {
+    it("hides the camera icon when the onyx_artsy-lens experiment is off", async () => {
       mockUseExperimentFlag.mockReturnValue(false)
 
-      renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
+      await renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
 
       expect(screen.queryByTestId("search-input-camera-icon")).not.toBeOnTheScreen()
     })
 
-    it("hides the camera icon when AREnableArtsyLens is off, even if the experiment is on", () => {
+    it("hides the camera icon when AREnableArtsyLens is off, even if the experiment is on", async () => {
       mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtsyLens: false })
 
-      renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
+      await renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
 
       expect(screen.queryByTestId("search-input-camera-icon")).not.toBeOnTheScreen()
     })
 
     // The icon used to sit inside the bar's `pointerEvents="none"` subtree, so tapping it opened
     // the text-search overlay like any other part of the bar.
-    it("opens the camera directly, without the search overlay, when the icon is tapped", () => {
+    it("opens the camera directly, without the search overlay, when the icon is tapped", async () => {
       mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
       const onOverlayVisibilityChange = jest.fn()
 
-      renderWithWrappers(
+      await renderWithWrappers(
         <GlobalSearchInput
           ownerType={OwnerType.home}
           onOverlayVisibilityChange={onOverlayVisibilityChange}
         />
       )
 
-      fireEvent.press(screen.getByTestId("search-input-camera-icon"))
+      await fireEvent.press(screen.getByTestId("search-input-camera-icon"))
 
       expect(navigate).toHaveBeenCalledWith("/lens")
       expect(onOverlayVisibilityChange).not.toHaveBeenCalledWith(true)
     })
 
-    it("reports the tap as the search input icon entry point", () => {
+    it("reports the tap as the search input icon entry point", async () => {
       mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
 
-      renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
+      await renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
 
-      fireEvent.press(screen.getByTestId("search-input-camera-icon"))
+      await fireEvent.press(screen.getByTestId("search-input-camera-icon"))
 
       expect(mockTrackEvent).toHaveBeenCalledExactlyOnceWith({
         action: "tappedSearchByImage",
@@ -116,9 +116,9 @@ describe("GlobalSearchInput", () => {
     })
   })
 
-  it("reports overlay visibility changes", () => {
+  it("reports overlay visibility changes", async () => {
     const onOverlayVisibilityChange = jest.fn()
-    const { unmount } = renderWithWrappers(
+    const { unmount } = await renderWithWrappers(
       <GlobalSearchInput
         ownerType={OwnerType.home}
         onOverlayVisibilityChange={onOverlayVisibilityChange}
@@ -127,11 +127,11 @@ describe("GlobalSearchInput", () => {
 
     expect(onOverlayVisibilityChange).toHaveBeenLastCalledWith(false)
 
-    fireEvent.press(screen.getByTestId("search-button"))
+    await fireEvent.press(screen.getByTestId("search-button"))
 
     expect(onOverlayVisibilityChange).toHaveBeenLastCalledWith(true)
 
-    unmount()
+    await unmount()
 
     expect(onOverlayVisibilityChange).toHaveBeenLastCalledWith(false)
   })

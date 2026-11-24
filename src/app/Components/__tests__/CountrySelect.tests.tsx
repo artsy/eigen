@@ -3,8 +3,8 @@ import { COUNTRY_SELECT_OPTIONS, CountrySelect } from "app/Components/CountrySel
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("CountrySelect", () => {
-  it("renders correctly", () => {
-    renderWithWrappers(<CountrySelect onSelectValue={() => {}} value="DE" />)
+  it("renders correctly", async () => {
+    await renderWithWrappers(<CountrySelect onSelectValue={() => {}} value="DE" />)
 
     expect(screen.getByText("Germany")).toBeTruthy()
   })

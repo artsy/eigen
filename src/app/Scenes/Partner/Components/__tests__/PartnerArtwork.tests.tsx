@@ -21,8 +21,8 @@ describe("PartnerArtwork", () => {
     `,
   })
 
-  it("renders the artworks", () => {
-    renderWithRelay({
+  it("renders the artworks", async () => {
+    await renderWithRelay({
       Partner: () => ({
         artworks: {
           edges: [
@@ -41,8 +41,8 @@ describe("PartnerArtwork", () => {
     expect(screen.getByText("Banksy")).toBeTruthy()
   })
 
-  it("renders the empty state", () => {
-    renderWithRelay({
+  it("renders the empty state", async () => {
+    await renderWithRelay({
       Partner: () => ({
         artworks: {
           edges: [],

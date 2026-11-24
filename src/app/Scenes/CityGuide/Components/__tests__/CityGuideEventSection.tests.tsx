@@ -20,9 +20,14 @@ const data = [
 ] as any as Show[]
 
 describe("CityEvent", () => {
-  it("renders properly", () => {
-    renderWithWrappers(
-      <CityGuideEventSection title="Gallery shows" section="galleries" citySlug="new-york" data={data} />
+  it("renders properly", async () => {
+    await renderWithWrappers(
+      <CityGuideEventSection
+        title="Gallery shows"
+        section="galleries"
+        citySlug="new-york"
+        data={data}
+      />
     )
 
     expect(screen.getByText("Gallery shows")).toBeTruthy()

@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { FullFeaturedArtistListTestsQuery } from "__generated__/FullFeaturedArtistListTestsQuery.graphql"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
 import { FullFeaturedArtistListCollectionFixture } from "app/Scenes/Collection/Components/__fixtures__/CollectionFixture"
@@ -22,36 +23,36 @@ describe("FullFeaturedArtistList", () => {
     `,
   })
 
-  it("renders featured artist", () => {
-    const { getByText } = renderWithRelay({
+  it("renders featured artist", async () => {
+    await renderWithRelay({
       MarketingCollection: () => FullFeaturedArtistListCollectionFixture,
     })
 
-    expect(getByText("Pablo Picasso")).toBeTruthy()
-    expect(getByText("Andy Warhol")).toBeTruthy()
-    expect(getByText("Joan Miro")).toBeTruthy()
-    expect(getByText("Jean-Michel Basquiat")).toBeTruthy()
-    expect(getByText("Kenny Scharf")).toBeTruthy()
+    expect(screen.getByText("Pablo Picasso")).toBeTruthy()
+    expect(screen.getByText("Andy Warhol")).toBeTruthy()
+    expect(screen.getByText("Joan Miro")).toBeTruthy()
+    expect(screen.getByText("Jean-Michel Basquiat")).toBeTruthy()
+    expect(screen.getByText("Kenny Scharf")).toBeTruthy()
   })
 
   it("does not render an EntityHeader for excluded artists", async () => {
-    const { getByText, queryByText } = renderWithRelay({
+    await renderWithRelay({
       MarketingCollection: () => ({
         ...FullFeaturedArtistListCollectionFixture,
         featuredArtistExclusionIds: ["34534-andy-warhols-id", "2342-pablo-picassos-id"],
       }),
     })
 
-    expect(getByText("Joan Miro")).toBeTruthy()
-    expect(getByText("Jean-Michel Basquiat")).toBeTruthy()
-    expect(getByText("Kenny Scharf")).toBeTruthy()
-    expect(queryByText("Andy Warhol")).toBeFalsy()
-    expect(queryByText("Pablo Picasso")).toBeFalsy()
+    expect(screen.getByText("Joan Miro")).toBeTruthy()
+    expect(screen.getByText("Jean-Michel Basquiat")).toBeTruthy()
+    expect(screen.getByText("Kenny Scharf")).toBeTruthy()
+    expect(screen.queryByText("Andy Warhol")).toBeFalsy()
+    expect(screen.queryByText("Pablo Picasso")).toBeFalsy()
   })
 
   describe("when artist ids are explicitly requested", () => {
     it("does not render an EntityHeader for any non-requested artists", async () => {
-      const { getByText, queryByText } = renderWithRelay({
+      await renderWithRelay({
         MarketingCollection: () => ({
           ...FullFeaturedArtistListCollectionFixture,
           query: {
@@ -61,9 +62,9 @@ describe("FullFeaturedArtistList", () => {
         }),
       })
 
-      expect(getByText("Andy Warhol")).toBeTruthy()
-      expect(queryByText("Joan Miro")).toBeFalsy()
-      expect(queryByText("Pablo Picasso")).toBeFalsy()
+      expect(screen.getByText("Andy Warhol")).toBeTruthy()
+      expect(screen.queryByText("Joan Miro")).toBeFalsy()
+      expect(screen.queryByText("Pablo Picasso")).toBeFalsy()
     })
   })
 })

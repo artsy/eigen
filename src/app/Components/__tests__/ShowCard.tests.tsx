@@ -34,10 +34,10 @@ describe("ShowCard", () => {
   })
 
   it("navigates to the show page", async () => {
-    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     await act(async () => {
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Show: () => ({
           href: "/show/berghain-art-show",
           name: "Berghain Art Show",
@@ -57,17 +57,17 @@ describe("ShowCard", () => {
     })
 
     const button = screen.getByText("Berghain Art Show")
-    fireEvent.press(button)
+    await fireEvent.press(button)
 
     expect(navigate).toHaveBeenCalledWith("/show/berghain-art-show")
     expect(mockOnPress).toHaveBeenCalled()
   })
 
   it("renders the show name, data and city ", async () => {
-    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     await act(async () => {
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Show: () => ({
           href: "/show/berghain-art-show",
           name: "Berghain Art Show",
@@ -87,7 +87,7 @@ describe("ShowCard", () => {
     })
 
     const button = screen.getByText("Berghain Art Show")
-    fireEvent.press(button)
+    await fireEvent.press(button)
 
     expect(navigate).toHaveBeenCalledWith("/show/berghain-art-show")
     expect(mockOnPress).toHaveBeenCalled()

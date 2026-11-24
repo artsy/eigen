@@ -10,9 +10,9 @@ import { graphql } from "react-relay"
 
 describe("ContactGalleryButton", () => {
   it("opens the inquiry modal when the 'contact gallery' button is pressed", async () => {
-    renderWithRelay()
+    await renderWithRelay()
 
-    fireEvent.press(screen.getByText("Contact Gallery"))
+    await fireEvent.press(screen.getByText("Contact Gallery"))
 
     await waitFor(() => {
       expect(screen.getByText("What information are you looking for?")).toBeVisible()
@@ -20,7 +20,7 @@ describe("ContactGalleryButton", () => {
   })
 
   it("tracks an event when the 'contact gallery' button is pressed", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",
@@ -28,7 +28,7 @@ describe("ContactGalleryButton", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("Contact Gallery"))
+    await fireEvent.press(screen.getByText("Contact Gallery"))
 
     await waitFor(() => {
       expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -41,7 +41,7 @@ describe("ContactGalleryButton", () => {
   })
 
   it("tracks an event when the 'contact gallery' button is pressed on an artwork with a partner offer", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",
@@ -49,7 +49,7 @@ describe("ContactGalleryButton", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("Contact Gallery"))
+    await fireEvent.press(screen.getByText("Contact Gallery"))
 
     await waitFor(() => {
       expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -63,7 +63,7 @@ describe("ContactGalleryButton", () => {
   })
 
   it("tracks an event when the 'contact gallery' button is pressed on an artwork with auction signals", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",
@@ -74,7 +74,7 @@ describe("ContactGalleryButton", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("Contact Gallery"))
+    await fireEvent.press(screen.getByText("Contact Gallery"))
 
     await waitFor(() => {
       expect(mockTrackEvent).toHaveBeenCalledWith({

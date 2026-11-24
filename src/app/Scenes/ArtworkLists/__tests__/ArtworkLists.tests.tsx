@@ -1,4 +1,4 @@
-import { act } from "@testing-library/react-native"
+import { act, screen } from "@testing-library/react-native"
 import { ArtworkLists } from "app/Scenes/ArtworkLists/ArtworkLists"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
@@ -15,10 +15,10 @@ describe("ArtworkLists", () => {
   })
 
   it("renders Artwork lists", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     await act(async () => {
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Me: () => ({
           savedArtworksArtworkList,
           customArtworkLists,
@@ -28,17 +28,17 @@ describe("ArtworkLists", () => {
       await flushPromiseQueue()
     })
 
-    expect(getByText("Saved Artworks")).toBeTruthy()
-    expect(getByText("Custom Artwork List 1")).toBeTruthy()
-    expect(getByText("Custom Artwork List 2")).toBeTruthy()
+    expect(screen.getByText("Saved Artworks")).toBeTruthy()
+    expect(screen.getByText("Custom Artwork List 1")).toBeTruthy()
+    expect(screen.getByText("Custom Artwork List 2")).toBeTruthy()
   })
 
   describe("Artwork lists item count", () => {
     it("renders 'Artworks' label for more than 1 artworks", async () => {
-      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
       await act(async () => {
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        await resolveMostRecentRelayOperation(mockEnvironment, {
           Me: () => ({
             savedArtworksArtworkList,
             customArtworkLists,
@@ -49,17 +49,17 @@ describe("ArtworkLists", () => {
       })
 
       // Saved Artworks
-      expect(getByText("5 Artworks")).toBeTruthy()
+      expect(screen.getByText("5 Artworks")).toBeTruthy()
 
       // Custom Artworks
-      expect(getByText("2 Artworks")).toBeTruthy()
+      expect(screen.getByText("2 Artworks")).toBeTruthy()
     })
 
     it("renders 'Artwork' label for 1 artwork", async () => {
-      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
       await act(async () => {
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        await resolveMostRecentRelayOperation(mockEnvironment, {
           Me: () => ({
             savedArtworksArtworkList,
             customArtworkLists,
@@ -70,7 +70,7 @@ describe("ArtworkLists", () => {
       })
 
       // Custom Artworks
-      expect(getByText("1 Artwork")).toBeTruthy()
+      expect(screen.getByText("1 Artwork")).toBeTruthy()
     })
   })
 })

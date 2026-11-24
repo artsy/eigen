@@ -14,24 +14,24 @@ describe("Section", () => {
       global.__DEV__ = false
     })
 
-    it("raises an error if section ID is missing", () => {
+    it("raises an error if section ID is missing", async () => {
       const section = {
         internalID: null,
       }
-      expect(() => {
+      await expect(
         renderWithWrappers(
           // @ts-expect-error internalID=null intentionally
           <Section section={section} index={1} />
         )
-      }).toThrow()
+      ).rejects.toThrow()
     })
 
-    it("renders a message if section type is not recognized", () => {
+    it("renders a message if section type is not recognized", async () => {
       const section = {
         __typename: "SomeUnknownSectionType",
         internalID: "42",
       } as SectionProps["section"]
-      renderWithWrappers(<Section section={section} index={1} />)
+      await renderWithWrappers(<Section section={section} index={1} />)
       expect(screen.getByText(/Non supported section/)).toBeOnTheScreen()
     })
   })
@@ -47,30 +47,30 @@ describe("Section", () => {
       global.__DEV__ = false
     })
 
-    it("does not raise an error if section ID is missing", () => {
+    it("does not raise an error if section ID is missing", async () => {
       const section = {
         internalID: null,
       }
-      expect(() => {
+      await expect(
         renderWithWrappers(
           // @ts-expect-error internalID=null intentionally
           <Section section={section} index={1} />
         )
-      }).not.toThrow()
+      ).resolves.not.toThrow()
     })
 
-    it("does not render a message if section type is not recognized", () => {
+    it("does not render a message if section type is not recognized", async () => {
       const section = {
         __typename: "SomeUnknownSectionType",
         internalID: "42",
       } as SectionProps["section"]
-      renderWithWrappers(<Section section={section} index={1} />)
+      await renderWithWrappers(<Section section={section} index={1} />)
       expect(screen.queryByText(/Non supported section/)).not.toBeOnTheScreen()
     })
   })
 
   describe("with an optional component.type", () => {
-    it("renders FeaturedCollection", () => {
+    it("renders FeaturedCollection", async () => {
       const section = {
         __typename: "SomeSectionType",
         internalID: "42",
@@ -78,11 +78,11 @@ describe("Section", () => {
           type: "FeaturedCollection",
         },
       } as SectionProps["section"]
-      renderWithWrappers(<Section section={section} index={1} />)
+      await renderWithWrappers(<Section section={section} index={1} />)
       expect(screen.getByTestId("HomeViewSectionFeaturedCollectionPlaceholder")).toBeOnTheScreen()
     })
 
-    it("renders FeaturedCollection", () => {
+    it("renders FeaturedCollection", async () => {
       const section = {
         __typename: "SomeSectionType",
         internalID: "42",
@@ -90,7 +90,7 @@ describe("Section", () => {
           type: "ArticlesCard",
         },
       } as SectionProps["section"]
-      renderWithWrappers(<Section section={section} index={1} />)
+      await renderWithWrappers(<Section section={section} index={1} />)
       expect(screen.getByTestId("HomeViewSectionArticlesCardsPlaceholder")).toBeOnTheScreen()
     })
   })

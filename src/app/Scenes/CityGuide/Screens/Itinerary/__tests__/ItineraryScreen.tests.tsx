@@ -18,8 +18,8 @@ import { MockPayloadGenerator } from "relay-test-utils"
 // instance, which lets us pull to refresh without walking the render tree.
 const pullToRefresh = () => (RefreshControl as any).latestRef.props.onRefresh()
 
-// React-test-renderer has issues with memo components, so we need to mock the palette-mobile
-// Image component. See https://github.com/facebook/react/issues/17301
+// palette-mobile's Image puts `testID` on a wrapping Flex and `src`/`style` on an inner
+// FastImage. Swap in RN's Image so the testID, `src` and `style` live on one element.
 jest.mock("@artsy/palette-mobile", () => ({
   ...jest.requireActual("@artsy/palette-mobile"),
   Image: require("react-native").Image,
@@ -97,7 +97,7 @@ describe("ItineraryScreen", () => {
   })
 
   it("renders the header and every section", async () => {
-    renderWithRelay({ Itinerary: () => ITINERARY }, props)
+    await renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
     expect(await screen.findByText("Chill Vibes Only")).toBeTruthy()
     expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
@@ -105,7 +105,7 @@ describe("ItineraryScreen", () => {
   })
 
   it("tracks the screen view against the guide's own id and slug", async () => {
-    renderWithRelay({ Itinerary: () => ITINERARY }, props)
+    await renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
     await screen.findByText("Chill Vibes Only")
 
@@ -121,7 +121,10 @@ describe("ItineraryScreen", () => {
     ["your own itinerary", { isMine: true }, OwnerType.cityGuideItinerary],
     ["someone else's itinerary", { isMine: false }, OwnerType.cityGuideSharedItinerary],
   ])("tracks %s under its own screen owner type", async (_, fields, ownerType) => {
-    renderWithRelay({ Itinerary: () => ({ ...ITINERARY, isCurated: false, ...fields }) }, props)
+    await renderWithRelay(
+      { Itinerary: () => ({ ...ITINERARY, isCurated: false, ...fields }) },
+      props
+    )
 
     await screen.findByText("Chill Vibes Only")
 
@@ -136,30 +139,30 @@ describe("ItineraryScreen", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ ARDarkModeSupport: true })
       __globalStoreTestUtils__?.injectState({ devicePrefs: { darkModeOption } })
       const setBarStyle = jest.spyOn(StatusBar, "setBarStyle").mockImplementation(() => {})
-      const { unmount } = renderWithRelay({ Itinerary: () => ITINERARY }, props)
+      const { unmount } = await renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
       try {
         await screen.findByTestId("itinerary-status-bar-overlay")
         await waitFor(() => expect(setBarStyle).toHaveBeenLastCalledWith("light-content", true))
 
-        fireEvent.press(await screen.findByTestId("itinerary-view-toggle"))
+        await fireEvent.press(await screen.findByTestId("itinerary-view-toggle"))
         await waitFor(() => expect(setBarStyle).toHaveBeenLastCalledWith("dark-content", true))
         expect(screen.queryByTestId("itinerary-status-bar-overlay")).not.toBeOnTheScreen()
 
-        fireEvent.press(screen.getByTestId("itinerary-view-toggle"))
+        await fireEvent.press(screen.getByTestId("itinerary-view-toggle"))
         expect(screen.getByTestId("itinerary-status-bar-overlay")).toBeOnTheScreen()
         await waitFor(() => expect(setBarStyle).toHaveBeenLastCalledWith("light-content", true))
       } finally {
-        unmount()
+        await unmount()
         setBarStyle.mockRestore()
       }
     }
   )
 
   it("tracks the map/list toggle under the cityGuideMapToggle module", async () => {
-    renderWithRelay({ Itinerary: () => ITINERARY }, props)
+    await renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
-    fireEvent.press(await screen.findByTestId("itinerary-view-toggle"))
+    await fireEvent.press(await screen.findByTestId("itinerary-view-toggle"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -174,7 +177,7 @@ describe("ItineraryScreen", () => {
   })
 
   it("falls back to a positional section title when the server sends none", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       {
         Itinerary: () => ({
           ...ITINERARY,
@@ -188,7 +191,7 @@ describe("ItineraryScreen", () => {
   })
 
   it("joins the two server-formatted times into the row's display time", async () => {
-    renderWithRelay({ Itinerary: () => ITINERARY }, props)
+    await renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
     expect(await screen.findAllByText("11am-4pm")).not.toHaveLength(0)
   })
@@ -196,7 +199,7 @@ describe("ItineraryScreen", () => {
   it("renders the unavailable state when the itinerary does not resolve", async () => {
     // Resolved at the root: an `Itinerary: () => null` resolver does not null the field,
     // MockPayloadGenerator still generates a default object for it.
-    renderWithRelay({ Query: () => ({ itinerary: null }) }, props)
+    await renderWithRelay({ Query: () => ({ itinerary: null }) }, props)
 
     expect(await screen.findByText("This guide is no longer available.")).toBeTruthy()
     expect(screen.queryByText("Chill Vibes Only")).toBeNull()
@@ -206,7 +209,7 @@ describe("ItineraryScreen", () => {
   // versioned URLs it generated but not the original's dimensions, and `resized` scales
   // from those.
   it("uses the hero image url", async () => {
-    renderWithRelay({ Itinerary: () => ITINERARY }, props)
+    await renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
     expect(await screen.findByTestId("itinerary-hero-image")).toHaveProp(
       "src",
@@ -215,7 +218,7 @@ describe("ItineraryScreen", () => {
   })
 
   it("hides the hero image section when the itinerary has no image", async () => {
-    renderWithRelay({ Itinerary: () => ({ ...ITINERARY, heroImage: null }) }, props)
+    await renderWithRelay({ Itinerary: () => ({ ...ITINERARY, heroImage: null }) }, props)
 
     expect(await screen.findByText("Chill Vibes Only")).toBeOnTheScreen()
     expect(screen.queryByTestId("itinerary-hero-image")).not.toBeOnTheScreen()
@@ -223,7 +226,7 @@ describe("ItineraryScreen", () => {
   })
 
   it("falls back to the first stop's image when the itinerary has no hero", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       {
         Itinerary: () => ({
           ...ITINERARY,
@@ -247,7 +250,7 @@ describe("ItineraryScreen", () => {
   })
 
   it("has no fallback when the first stop has no image, even if a later one does", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       {
         Itinerary: () => ({
           ...ITINERARY,
@@ -272,20 +275,20 @@ describe("ItineraryScreen", () => {
     const own = { ...ITINERARY, isCurated: false, isMine: true }
 
     it("labels it Your Itinerary and drops the byline", async () => {
-      renderWithRelay({ Itinerary: () => own }, props)
+      await renderWithRelay({ Itinerary: () => own }, props)
 
       expect(await screen.findByText("Your Itinerary")).toBeOnTheScreen()
       expect(screen.queryByText(/^By /)).not.toBeOnTheScreen()
     })
 
     it("offers the itinerary picker on the map", async () => {
-      const view = renderWithRelay({ Itinerary: () => own }, props)
+      const view = await renderWithRelay({ Itinerary: () => own }, props)
 
-      fireEvent.press(await screen.findByTestId("itinerary-view-toggle"))
+      await fireEvent.press(await screen.findByTestId("itinerary-view-toggle"))
 
       // The picker runs its own query, and renderWithRelay resolves only the screen's.
       await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
-      view.mockResolveLastOperation({
+      await view.mockResolveLastOperation({
         Me: () => ({
           itinerariesConnection: {
             edges: [{ node: { internalID: "chill-vibes-only", slug: null, title: "Mine" } }],
@@ -298,7 +301,7 @@ describe("ItineraryScreen", () => {
 
     // One section is the whole list, so its name would be a redundant subheading.
     it("hides the heading while it has a single section", async () => {
-      renderWithRelay(
+      await renderWithRelay(
         {
           Itinerary: () => ({
             ...own,
@@ -317,7 +320,7 @@ describe("ItineraryScreen", () => {
     // Removing a section's last stop leaves the section behind, and a heading over nothing
     // reads as a section that failed to load.
     it("leaves out a section with no stops, and stops counting it", async () => {
-      renderWithRelay(
+      await renderWithRelay(
         {
           Itinerary: () => ({
             ...own,
@@ -340,7 +343,7 @@ describe("ItineraryScreen", () => {
     // A guide copied onto your own itinerary brings its days along; without their headings
     // they read as one undifferentiated list.
     it("shows every section's heading once it has more than one", async () => {
-      renderWithRelay({ Itinerary: () => own }, props)
+      await renderWithRelay({ Itinerary: () => own }, props)
 
       expect(await screen.findByText("Day 1 — Easing in")).toBeOnTheScreen()
       expect(screen.getByText("Day 2 — London Frieze")).toBeOnTheScreen()
@@ -348,9 +351,9 @@ describe("ItineraryScreen", () => {
     })
 
     it("offers to edit it", async () => {
-      renderWithRelay({ Itinerary: () => own }, props)
+      await renderWithRelay({ Itinerary: () => own }, props)
 
-      fireEvent.press(await screen.findByLabelText("Edit Chill Vibes Only"))
+      await fireEvent.press(await screen.findByLabelText("Edit Chill Vibes Only"))
 
       expect(await screen.findByText("Edit Itinerary")).toBeOnTheScreen()
       expect(screen.getByTestId("itinerary-edit-name")).toHaveProp(
@@ -360,7 +363,7 @@ describe("ItineraryScreen", () => {
     })
 
     it("lets its stops be reordered", async () => {
-      renderWithRelay({ Itinerary: () => own }, props)
+      await renderWithRelay({ Itinerary: () => own }, props)
 
       await screen.findByText("Stop 1")
 
@@ -371,12 +374,12 @@ describe("ItineraryScreen", () => {
     })
 
     it("goes back once the itinerary is deleted from its own edit sheet", async () => {
-      const view = renderWithRelay({ Itinerary: () => own }, props)
+      const view = await renderWithRelay({ Itinerary: () => own }, props)
 
-      fireEvent.press(await screen.findByLabelText("Edit Chill Vibes Only"))
-      fireEvent.press(await screen.findByTestId("itinerary-edit-delete"))
+      await fireEvent.press(await screen.findByLabelText("Edit Chill Vibes Only"))
+      await fireEvent.press(await screen.findByTestId("itinerary-edit-delete"))
 
-      view.mockResolveLastOperation({
+      await view.mockResolveLastOperation({
         deleteItineraryPayload: () => ({
           responseOrError: { __typename: "ItineraryMutationSuccess" },
         }),
@@ -388,7 +391,7 @@ describe("ItineraryScreen", () => {
 
   describe("a curated guide", () => {
     it("keeps its section headings and byline", async () => {
-      renderWithRelay({ Itinerary: () => ITINERARY }, props)
+      await renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
       expect(await screen.findByText("Day 1 — Easing in")).toBeOnTheScreen()
       expect(screen.getByText("By Casey Lesser")).toBeOnTheScreen()
@@ -398,15 +401,15 @@ describe("ItineraryScreen", () => {
     // The picker lists what you own, so on a guide it would navigate away from what you are
     // reading rather than switch between peers.
     it("offers no itinerary picker on the map", async () => {
-      renderWithRelay({ Itinerary: () => ITINERARY }, props)
+      await renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
-      fireEvent.press(await screen.findByTestId("itinerary-view-toggle"))
+      await fireEvent.press(await screen.findByTestId("itinerary-view-toggle"))
 
       expect(screen.queryByTestId("itinerary-picker")).not.toBeOnTheScreen()
     })
 
     it("offers no way to edit it", async () => {
-      renderWithRelay({ Itinerary: () => ITINERARY }, props)
+      await renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
       await screen.findByText("Chill Vibes Only")
 
@@ -417,7 +420,7 @@ describe("ItineraryScreen", () => {
     // this is the FIREWORKS-68 case: the account that built the guide in forque still sees it
     // as "mine" in the app.
     it("offers no way to edit or reorder it even when isMine is true", async () => {
-      renderWithRelay({ Itinerary: () => ({ ...ITINERARY, isMine: true }) }, props)
+      await renderWithRelay({ Itinerary: () => ({ ...ITINERARY, isMine: true }) }, props)
 
       await screen.findByText("Stop 1")
 
@@ -432,7 +435,7 @@ describe("ItineraryScreen", () => {
   // `isCurated` alone can't distinguish your own itinerary from someone else's personal one
   // opened via their share link — only `isMine` can.
   it("offers no way to edit or share someone else's personal itinerary opened via a share link", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       { Itinerary: () => ({ ...ITINERARY, isCurated: false, isMine: false, shareToken: "tok" }) },
       { ...props, shareToken: "tok" }
     )
@@ -455,7 +458,7 @@ describe("ItineraryScreen", () => {
   ])(
     "identifies a shared itinerary as $label with hero $heroImage",
     async ({ heroImage, authorName, label }) => {
-      renderWithRelay(
+      await renderWithRelay(
         {
           Itinerary: () => ({
             ...ITINERARY,
@@ -484,7 +487,7 @@ describe("ItineraryScreen", () => {
     })
 
     it("uses the uploaded image when the curator gave one", async () => {
-      renderWithRelay(
+      await renderWithRelay(
         withStops([
           {
             ...stop(1),
@@ -505,7 +508,7 @@ describe("ItineraryScreen", () => {
     })
 
     it("falls back to a show's cover image", async () => {
-      renderWithRelay(
+      await renderWithRelay(
         withStops([
           {
             ...stop(1),
@@ -526,7 +529,7 @@ describe("ItineraryScreen", () => {
     })
 
     it("falls back to a fair's image", async () => {
-      renderWithRelay(
+      await renderWithRelay(
         withStops([
           {
             ...stop(1),
@@ -545,7 +548,7 @@ describe("ItineraryScreen", () => {
 
     // A location has no picture of its own, so the gallery's profile stands in.
     it("falls back to a gallery's profile image", async () => {
-      renderWithRelay(
+      await renderWithRelay(
         withStops([
           {
             ...stop(1),
@@ -571,9 +574,9 @@ describe("ItineraryScreen", () => {
 
   describe("the share button", () => {
     it("shares a curated guide by its public slug, with no token", async () => {
-      const view = renderWithRelay({ Itinerary: () => ITINERARY }, props)
+      const view = await renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
-      fireEvent.press(await screen.findByTestId("itinerary-share"))
+      await fireEvent.press(await screen.findByTestId("itinerary-share"))
 
       await waitFor(() => expect(RNShare.open).toHaveBeenCalled())
       expect(RNShare.open).toHaveBeenCalledWith(
@@ -591,9 +594,9 @@ describe("ItineraryScreen", () => {
 
     it("mints a share token for a personal itinerary and includes it in the link", async () => {
       const own = { ...ITINERARY, isCurated: false, isMine: true, slug: null, shareToken: null }
-      const view = renderWithRelay({ Itinerary: () => own }, props)
+      const view = await renderWithRelay({ Itinerary: () => own }, props)
 
-      fireEvent.press(await screen.findByTestId("itinerary-share"))
+      await fireEvent.press(await screen.findByTestId("itinerary-share"))
 
       await waitFor(() =>
         expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
@@ -653,11 +656,11 @@ describe("ItineraryScreen", () => {
       })
 
     it("shows the new order before the mutation answers, and sends a 1-indexed position", async () => {
-      const view = renderWithRelay({ Itinerary: () => own }, props)
+      const view = await renderWithRelay({ Itinerary: () => own }, props)
 
       expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
 
-      dropFirstStopLast()
+      await dropFirstStopLast()
 
       // Optimistic: the list reads in the dropped order with the mutation still in flight.
       expect(displayedStopTitles()).toEqual(["Stop 2", "Stop 3", "Stop 1"])
@@ -699,11 +702,11 @@ describe("ItineraryScreen", () => {
     })
 
     it("puts the stop back and says so when the mutation fails", async () => {
-      const view = renderWithRelay({ Itinerary: () => own }, props)
+      const view = await renderWithRelay({ Itinerary: () => own }, props)
 
       expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
 
-      dropFirstStopLast()
+      await dropFirstStopLast()
 
       expect(displayedStopTitles()).toEqual(["Stop 2", "Stop 3", "Stop 1"])
 
@@ -730,11 +733,11 @@ describe("ItineraryScreen", () => {
   // would suspend and replace the guide with a spinner.
   describe("pull to refresh", () => {
     it("refetches without unmounting the guide", async () => {
-      const view = renderWithRelay({ Itinerary: () => ITINERARY }, props)
+      const view = await renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
       await screen.findByText("Chill Vibes Only")
 
-      act(() => {
+      await act(() => {
         pullToRefresh()
       })
 
@@ -748,11 +751,11 @@ describe("ItineraryScreen", () => {
     })
 
     it("renders an itinerary that becomes empty after refreshing", async () => {
-      const view = renderWithRelay({ Itinerary: () => ITINERARY }, props)
+      const view = await renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
       expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
 
-      act(() => {
+      await act(() => {
         pullToRefresh()
       })
 
@@ -773,7 +776,7 @@ describe("ItineraryScreen", () => {
 
   describe("with no stops", () => {
     it("tells the owner how to add stops", async () => {
-      renderWithRelay(
+      await renderWithRelay(
         { Itinerary: () => ({ ...ITINERARY, isCurated: false, isMine: true, sections: [] }) },
         props
       )
@@ -788,7 +791,7 @@ describe("ItineraryScreen", () => {
 
     // Someone viewing a shared or curated itinerary can't add to it, so no instructions.
     it("shows a plain message to anyone else", async () => {
-      renderWithRelay({ Itinerary: () => ({ ...ITINERARY, sections: [] }) }, props)
+      await renderWithRelay({ Itinerary: () => ({ ...ITINERARY, sections: [] }) }, props)
 
       expect(await screen.findByText("No stops yet")).toBeOnTheScreen()
       expect(screen.getByText("Stops added to this itinerary will show up here.")).toBeOnTheScreen()
@@ -796,7 +799,7 @@ describe("ItineraryScreen", () => {
 
     // Emptying a section by removing its last stop leaves the section behind.
     it("counts sections with no stops as empty", async () => {
-      renderWithRelay(
+      await renderWithRelay(
         {
           Itinerary: () => ({
             ...ITINERARY,
@@ -810,14 +813,14 @@ describe("ItineraryScreen", () => {
     })
 
     it("hides the map toggle, with nothing to put on a map", async () => {
-      renderWithRelay({ Itinerary: () => ({ ...ITINERARY, sections: [] }) }, props)
+      await renderWithRelay({ Itinerary: () => ({ ...ITINERARY, sections: [] }) }, props)
 
       expect(await screen.findByText("No stops yet")).toBeOnTheScreen()
       expect(screen.queryByTestId("itinerary-view-toggle")).not.toBeOnTheScreen()
     })
 
     it("doesn't show when there are stops", async () => {
-      renderWithRelay({ Itinerary: () => ITINERARY }, props)
+      await renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
       expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
       expect(screen.queryByText("No stops yet")).not.toBeOnTheScreen()
@@ -826,7 +829,7 @@ describe("ItineraryScreen", () => {
   })
 
   it("keeps the stop list clear of the floating map toggle button", async () => {
-    renderWithRelay({ Itinerary: () => ITINERARY }, props)
+    await renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
     expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
 
@@ -857,12 +860,12 @@ describe("ItineraryScreen", () => {
     }
 
     it("keeps every stop on screen once the sheet's own query resolves", async () => {
-      const view = renderWithRelay({ Itinerary: () => own }, props)
+      const view = await renderWithRelay({ Itinerary: () => own }, props)
 
       expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
       expect(screen.getByText("Stop 2")).toBeOnTheScreen()
 
-      fireEvent.press(screen.getByTestId("city-guide-save-button"))
+      await fireEvent.press(screen.getByTestId("city-guide-save-button"))
 
       await waitFor(() =>
         expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(

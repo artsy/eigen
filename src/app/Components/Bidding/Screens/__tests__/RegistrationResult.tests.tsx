@@ -14,8 +14,8 @@ describe("Registration result component", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableEnrichedMarkdown: false })
   })
 
-  it("renders registration pending properly", () => {
-    renderWithWrappers(
+  it("renders registration pending properly", async () => {
+    await renderWithWrappers(
       <RegistrationResult
         navigation={null!}
         route={
@@ -42,8 +42,8 @@ describe("Registration result component", () => {
     ).not.toBeOnTheScreen()
   })
 
-  it("renders registration pending with an explanation about IDV", () => {
-    renderWithWrappers(
+  it("renders registration pending with an explanation about IDV", async () => {
+    await renderWithWrappers(
       <RegistrationResult
         navigation={null!}
         route={
@@ -71,8 +71,8 @@ describe("Registration result component", () => {
     ).not.toBeOnTheScreen()
   })
 
-  it("does not render the icon when the registration status is pending", () => {
-    renderWithWrappers(
+  it("does not render the icon when the registration status is pending", async () => {
+    await renderWithWrappers(
       <RegistrationResult
         navigation={null!}
         route={{ params: { status: RegistrationStatus.RegistrationStatusPending } } as any}
@@ -82,8 +82,8 @@ describe("Registration result component", () => {
     expect(screen.queryByTestId("registration-result-icon")).not.toBeOnTheScreen()
   })
 
-  it("renders registration complete properly", () => {
-    renderWithWrappers(
+  it("renders registration complete properly", async () => {
+    await renderWithWrappers(
       <RegistrationResult
         navigation={null!}
         route={{ params: { status: RegistrationStatus.RegistrationStatusComplete } } as any}
@@ -93,8 +93,8 @@ describe("Registration result component", () => {
     expect(screen.getByTestId("registration-result-icon")).toBeOnTheScreen()
   })
 
-  it("renders registration error properly", () => {
-    renderWithWrappers(
+  it("renders registration error properly", async () => {
+    await renderWithWrappers(
       <RegistrationResult
         navigation={null!}
         route={{ params: { status: RegistrationStatus.RegistrationStatusError } } as any}
@@ -106,8 +106,8 @@ describe("Registration result component", () => {
     expect(screen.getByText("with any questions.", { exact: false })).toBeOnTheScreen()
   })
 
-  it("renders an error screen when the status is a network error", () => {
-    renderWithWrappers(
+  it("renders an error screen when the status is a network error", async () => {
+    await renderWithWrappers(
       <RegistrationResult
         navigation={null!}
         route={{ params: { status: RegistrationStatus.RegistrationStatusNetworkError } } as any}
@@ -127,29 +127,29 @@ describe("Registration result component", () => {
     Linking.canOpenURL = jest.fn().mockReturnValue(Promise.resolve(true))
     Linking.openURL = jest.fn()
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <RegistrationResult
         navigation={null!}
         route={{ params: { status: RegistrationStatus.RegistrationStatusError } } as any}
       />
     )
 
-    fireEvent.press(screen.getByText("support@artsy.net"))
+    await fireEvent.press(screen.getByText("support@artsy.net"))
     await waitFor(() => expect(Linking.openURL).toBeCalledWith("mailto:support@artsy.net"))
   })
 
-  it("dismisses the controller when the continue button is pressed", () => {
+  it("dismisses the controller when the continue button is pressed", async () => {
     jest.useFakeTimers({
       legacyFakeTimers: true,
     })
-    renderWithWrappers(
+    await renderWithWrappers(
       <RegistrationResult
         navigation={null!}
         route={{ params: { status: RegistrationStatus.RegistrationStatusComplete } } as any}
       />
     )
 
-    fireEvent.press(screen.getByTestId("continue-button"))
+    await fireEvent.press(screen.getByTestId("continue-button"))
 
     jest.runAllTicks()
 

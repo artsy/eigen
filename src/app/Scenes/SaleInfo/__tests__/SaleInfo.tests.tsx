@@ -29,8 +29,8 @@ describe("SaleInfo", () => {
         __globalStoreTestUtils__?.injectFeatureFlags({ AREnableEnrichedMarkdown: false })
       })
 
-      it("renders a description containing a list", () => {
-        renderWithRelay({ Sale: () => ({ ...mockSale, description }) })
+      it("renders a description containing a list", async () => {
+        await renderWithRelay({ Sale: () => ({ ...mockSale, description }) })
 
         expect(screen.getByText(/First lot/)).toBeOnTheScreen()
         expect(screen.getByText(/Second lot/)).toBeOnTheScreen()
@@ -42,8 +42,8 @@ describe("SaleInfo", () => {
         __globalStoreTestUtils__?.injectFeatureFlags({ AREnableEnrichedMarkdown: true })
       })
 
-      it("renders the description with the native markdown renderer", () => {
-        renderWithRelay({ Sale: () => ({ ...mockSale, description }) })
+      it("renders the description with the native markdown renderer", async () => {
+        await renderWithRelay({ Sale: () => ({ ...mockSale, description }) })
 
         expect(screen.getByText(/First lot/)).toBeOnTheScreen()
         expect(screen.getByText(/Second lot/)).toBeOnTheScreen()
@@ -52,8 +52,8 @@ describe("SaleInfo", () => {
     })
   })
 
-  it("shows register to bid button", () => {
-    renderWithRelay({
+  it("shows register to bid button", async () => {
+    await renderWithRelay({
       Sale: () => mockSale,
     })
 
@@ -61,8 +61,8 @@ describe("SaleInfo", () => {
     expect(screen.getByTestId("register-to-bid-button")).not.toBeEmptyElement()
   })
 
-  it("hides register to bid button if auction is over", () => {
-    renderWithRelay({
+  it("hides register to bid button if auction is over", async () => {
+    await renderWithRelay({
       Sale: () => ({
         ...mockSale,
         startAt: "2022-09-01T15:00:00",
@@ -73,8 +73,8 @@ describe("SaleInfo", () => {
     expect(screen.queryByTestId("register-to-bid-button")).toBeFalsy()
   })
 
-  it("shows Auction is live View shows up when an auction is live", () => {
-    renderWithRelay({
+  it("shows Auction is live View shows up when an auction is live", async () => {
+    await renderWithRelay({
       Sale: () => liveMockSale,
     })
 
@@ -82,24 +82,24 @@ describe("SaleInfo", () => {
     expect(screen.getByText("This is a live auction")).toBeOnTheScreen()
   })
 
-  it("doesn't show Auction is live view when an auction is not live", () => {
-    renderWithRelay({
+  it("doesn't show Auction is live view when an auction is not live", async () => {
+    await renderWithRelay({
       Sale: () => mockSale,
     })
 
     expect(screen.queryAllByTestId("live-auction")).toHaveLength(0)
   })
 
-  it("shows the buyers premium correctly for a single percentage", () => {
-    renderWithRelay({
+  it("shows the buyers premium correctly for a single percentage", async () => {
+    await renderWithRelay({
       Sale: () => mockSale,
     })
 
     expect(screen.getByText("20% on the hammer price")).toBeTruthy()
   })
 
-  it("shows the buyers premium correctly for range of percentages", () => {
-    renderWithRelay({
+  it("shows the buyers premium correctly for range of percentages", async () => {
+    await renderWithRelay({
       Sale: () => ({
         ...mockSale,
         isWithBuyersPremium: true,

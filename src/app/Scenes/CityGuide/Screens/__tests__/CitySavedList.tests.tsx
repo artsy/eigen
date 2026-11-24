@@ -36,7 +36,7 @@ describe("CitySavedListQueryRenderer", () => {
   it("renders a row for every saved show", async () => {
     const shows = [{ name: "Frida Kahlo" }, { name: "Tracey Emin" }]
 
-    renderWithRelay(
+    await renderWithRelay(
       {
         FollowsAndSaves: () => ({ shows: { edges: shows.map((node) => ({ node })) } }),
         City: () => ({ name: "London", fairsConnection: { edges: [] } }),
@@ -56,7 +56,7 @@ describe("CitySavedListQueryRenderer", () => {
     ]
     const followed = fairs.filter((f) => f.profile.isFollowed)
 
-    renderWithRelay(
+    await renderWithRelay(
       {
         FollowsAndSaves: () => ({ shows: { edges: [] } }),
         City: () => ({
@@ -75,7 +75,7 @@ describe("CitySavedListQueryRenderer", () => {
   })
 
   it("puts fairs above shows", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       {
         FollowsAndSaves: () => ({ shows: { edges: [{ node: { name: "Frida Kahlo" } }] } }),
         City: () => ({
@@ -117,7 +117,7 @@ describe("CitySavedListQueryRenderer", () => {
   })
 
   it("shows an empty state when nothing is saved", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       {
         FollowsAndSaves: () => ({ shows: { edges: [] } }),
         City: () => ({ name: "London", fairsConnection: { edges: [] } }),
@@ -131,7 +131,7 @@ describe("CitySavedListQueryRenderer", () => {
   })
 
   it("sets the itinerary title, with the city name interpolated, on the native header", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       {
         FollowsAndSaves: () => ({ shows: { edges: [{ node: { name: "Frida Kahlo" } }] } }),
         City: () => ({ name: "London", fairsConnection: { edges: [] } }),
@@ -145,7 +145,7 @@ describe("CitySavedListQueryRenderer", () => {
   })
 
   it("tracks the cohesion screen view against cityGuideSavedList", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       {
         FollowsAndSaves: () => ({ shows: { edges: [{ node: { name: "Frida Kahlo" } }] } }),
         City: () => ({ name: "London", fairsConnection: { edges: [] } }),
@@ -163,7 +163,7 @@ describe("CitySavedListQueryRenderer", () => {
   })
 
   it("shows a map toggle when there are places to map, and switches list/map mode when pressed", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       {
         FollowsAndSaves: () => ({
           shows: {
@@ -185,7 +185,7 @@ describe("CitySavedListQueryRenderer", () => {
     const toggle = await screen.findByTestId("city-saved-list-view-toggle")
     expect(await screen.findAllByTestId("city-event-row")).toHaveLength(1)
 
-    fireEvent.press(toggle)
+    await fireEvent.press(toggle)
 
     // The list unmounts in map mode, same trade the event list and itinerary screens make:
     // the map is a mode of this screen, not a screen of its own.
@@ -208,7 +208,7 @@ describe("CitySavedListQueryRenderer", () => {
       })
     )
 
-    fireEvent.press(screen.getByTestId("city-saved-list-view-toggle"))
+    await fireEvent.press(screen.getByTestId("city-saved-list-view-toggle"))
 
     expect(await screen.findAllByTestId("city-event-row")).toHaveLength(1)
     expect(mockTrackEvent).toHaveBeenCalledWith(
@@ -224,7 +224,7 @@ describe("CitySavedListQueryRenderer", () => {
   })
 
   it("hides the map toggle when nothing has valid coordinates", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       {
         FollowsAndSaves: () => ({
           shows: { edges: [{ node: { name: "Frida Kahlo", location: {} } }] },

@@ -29,49 +29,49 @@ describe("Timer", () => {
   })
 
   describe("formats the remaining time", () => {
-    it("when there are a few days left", () => {
+    it("when there are a few days left", async () => {
       // Thursday, May 14, 2018 10:24:31.000 AM UTC
-      renderWithWrappers(<Timer lotEndAt="2018-05-14T10:24:31+00:00" />)
+      await renderWithWrappers(<Timer lotEndAt="2018-05-14T10:24:31+00:00" />)
 
       expect(screen.getByText("03d  14h  01m  59s")).toBeTruthy()
     })
 
-    it("when there are a few hours left", () => {
+    it("when there are a few hours left", async () => {
       // Thursday, May 10, 2018 10:42:32.000 PM UTC
-      renderWithWrappers(<Timer lotEndAt="2018-05-10T22:42:32+00:00" />)
+      await renderWithWrappers(<Timer lotEndAt="2018-05-10T22:42:32+00:00" />)
 
       expect(screen.getByText("00d  02h  20m  00s")).toBeTruthy()
     })
 
-    it("when there are a few minutes left", () => {
+    it("when there are a few minutes left", async () => {
       // Thursday, May 10, 2018 8:42:32.000 PM UTC
-      renderWithWrappers(<Timer lotEndAt="2018-05-10T20:42:32+00:00" />)
+      await renderWithWrappers(<Timer lotEndAt="2018-05-10T20:42:32+00:00" />)
 
       expect(screen.getByText("00d  00h  20m  00s")).toBeTruthy()
     })
 
-    it("when a few seconds are left", () => {
+    it("when a few seconds are left", async () => {
       // Thursday, May 10, 2018 8:22:42.000 PM UTC
-      renderWithWrappers(<Timer lotEndAt="2018-05-10T20:22:42+00:00" />)
+      await renderWithWrappers(<Timer lotEndAt="2018-05-10T20:22:42+00:00" />)
 
       expect(screen.getByText("00d  00h  00m  10s")).toBeTruthy()
     })
   })
 
-  it("shows 'Closes' when it's an online-only sale with an ending time", () => {
-    renderWithWrappers(<Timer lotEndAt="2018-05-14T20:00:00+00:00" />)
+  it("shows 'Closes' when it's an online-only sale with an ending time", async () => {
+    await renderWithWrappers(<Timer lotEndAt="2018-05-14T20:00:00+00:00" />)
 
     expect(screen.getByText(/Closes/)).toBeTruthy()
   })
 
-  it("shows 'Live' when the liveStartsAt prop is given", () => {
-    renderWithWrappers(<Timer liveStartsAt="2018-05-14T20:00:00+00:00" />)
+  it("shows 'Live' when the liveStartsAt prop is given", async () => {
+    await renderWithWrappers(<Timer liveStartsAt="2018-05-14T20:00:00+00:00" />)
 
     expect(screen.getByText(/Live/)).toBeTruthy()
   })
 
-  it("shows 'Starts' the sale has not started yet", () => {
-    renderWithWrappers(
+  it("shows 'Starts' the sale has not started yet", async () => {
+    await renderWithWrappers(
       <Timer
         startsAt="2018-04-14T20:00:00+00:00"
         isPreview
@@ -82,8 +82,8 @@ describe("Timer", () => {
     expect(screen.getByText(/Starts/)).toBeTruthy()
   })
 
-  it("shows 'Bidding closed' when the auction is closed", () => {
-    renderWithWrappers(
+  it("shows 'Bidding closed' when the auction is closed", async () => {
+    await renderWithWrappers(
       <Timer
         startsAt="2018-04-14T20:00:00+00:00"
         isPreview={false}
@@ -95,8 +95,8 @@ describe("Timer", () => {
     expect(screen.getByText("Bidding closed")).toBeTruthy()
   })
 
-  it("shows 'In progress' when the auction is in live auction integration mode", () => {
-    renderWithWrappers(
+  it("shows 'In progress' when the auction is in live auction integration mode", async () => {
+    await renderWithWrappers(
       <Timer
         startsAt="2018-04-14T20:00:00+00:00"
         isPreview={false}
@@ -108,70 +108,74 @@ describe("Timer", () => {
     expect(screen.getByText("In progress")).toBeTruthy()
   })
 
-  it("shows month, date, and hour adjusted for the timezone where the user is", () => {
+  it("shows month, date, and hour adjusted for the timezone where the user is", async () => {
     Settings.defaultZone = "America/Los_Angeles"
 
     // Thursday, May 14, 2018 8:00:00.000 PM UTC
     // Thursday, May 14, 2018 1:00:00.000 PM PDT in LA
-    renderWithWrappers(<Timer lotEndAt="2018-05-14T20:00:00+00:00" />)
+    await renderWithWrappers(<Timer lotEndAt="2018-05-14T20:00:00+00:00" />)
 
     expect(screen.getByText("Closes May 14, 1 PM PDT")).toBeTruthy()
   })
 
-  describe("displays the minutes when the sale does not end on the hour", () => {
+  it("displays the minutes when the sale does not end on the hour", async () => {
     Settings.defaultZone = "America/New_York"
-    renderWithWrappers(<Timer lotEndAt="2018-05-14T20:01:00+00:00" />)
+    await renderWithWrappers(<Timer lotEndAt="2018-05-14T20:01:00+00:00" />)
 
     expect(screen.getByText("Closes May 14, 4:01 PM EDT")).toBeTruthy()
   })
 
-  it("omits the minutes when the sale ends on the hour", () => {
+  it("omits the minutes when the sale ends on the hour", async () => {
     Settings.defaultZone = "America/New_York"
-    renderWithWrappers(<Timer lotEndAt="2018-05-14T20:00:00+00:00" />)
+    await renderWithWrappers(<Timer lotEndAt="2018-05-14T20:00:00+00:00" />)
 
     expect(screen.getByText("Closes May 14, 4 PM EDT")).toBeTruthy()
   })
 
   describe("timer transitions", () => {
-    it("transitions state from preview --> closing when the timer ends", () => {
-      renderWithWrappers(<Timer isPreview startsAt={futureTime} lotEndAt={futureTime} />)
+    it("transitions state from preview --> closing when the timer ends", async () => {
+      await renderWithWrappers(<Timer isPreview startsAt={futureTime} lotEndAt={futureTime} />)
 
       expect(screen.getByText(/Starts/)).toBeTruthy()
 
-      act(() => {
+      await act(() => {
         jest.advanceTimersByTime(1 * SECONDS)
       })
       expect(screen.getByText(/Closes/)).toBeTruthy()
     })
 
-    it("transitions state from preview --> live upcoming when the timer ends", () => {
-      renderWithWrappers(<Timer isPreview startsAt={futureTime} liveStartsAt={futureTime} />)
+    it("transitions state from preview --> live upcoming when the timer ends", async () => {
+      await renderWithWrappers(<Timer isPreview startsAt={futureTime} liveStartsAt={futureTime} />)
 
       expect(screen.getByText(/Starts/)).toBeTruthy()
 
-      act(() => {
+      await act(() => {
         jest.advanceTimersByTime(1 * SECONDS)
       })
       expect(screen.getByText(/Live/)).toBeTruthy()
     })
 
-    it("transitions state from live upcoming --> live ongoing when the timer ends", () => {
-      renderWithWrappers(<Timer isPreview={false} startsAt={pastTime} liveStartsAt={futureTime} />)
+    it("transitions state from live upcoming --> live ongoing when the timer ends", async () => {
+      await renderWithWrappers(
+        <Timer isPreview={false} startsAt={pastTime} liveStartsAt={futureTime} />
+      )
 
       expect(screen.getByText(/Live/)).toBeTruthy()
 
-      act(() => {
+      await act(() => {
         jest.advanceTimersByTime(1 * SECONDS)
       })
       expect(screen.getByText(/In progress/)).toBeTruthy()
     })
 
-    it("transitions state from closing --> closed when the timer ends", () => {
-      renderWithWrappers(<Timer isPreview={false} startsAt={pastTime} lotEndAt={futureTime} />)
+    it("transitions state from closing --> closed when the timer ends", async () => {
+      await renderWithWrappers(
+        <Timer isPreview={false} startsAt={pastTime} lotEndAt={futureTime} />
+      )
 
       expect(screen.getByText(/Closes/)).toBeTruthy()
 
-      act(() => {
+      await act(() => {
         jest.advanceTimersByTime(1 * SECONDS)
       })
       expect(screen.getByText(/Bidding closed/)).toBeTruthy()
@@ -187,8 +191,8 @@ describe("Countdown", () => {
     jest.clearAllMocks()
   })
 
-  it("shows extended bidding info when extendedBiddingPeriodMinutes is present", () => {
-    renderWithWrappers(
+  it("shows extended bidding info when extendedBiddingPeriodMinutes is present", async () => {
+    await renderWithWrappers(
       <Countdown
         duration={duration}
         label="A label"
@@ -203,8 +207,8 @@ describe("Countdown", () => {
     expect(textBlock).toBeDefined()
   })
 
-  it("shows the new ticker if the sale has cascading end times", () => {
-    renderWithWrappers(
+  it("shows the new ticker if the sale has cascading end times", async () => {
+    await renderWithWrappers(
       <Countdown
         duration={duration}
         label="This is the label"
@@ -217,8 +221,8 @@ describe("Countdown", () => {
     expect(screen.queryByLabelText("Simple Ticker")).toBeFalsy()
   })
 
-  it("does not shows the new ticker if the sale does not have cascading end times", () => {
-    renderWithWrappers(<Countdown duration={duration} label="This is the label" />)
+  it("does not shows the new ticker if the sale does not have cascading end times", async () => {
+    await renderWithWrappers(<Countdown duration={duration} label="This is the label" />)
 
     expect(screen.getByLabelText("Simple Ticker")).toBeTruthy()
     expect(screen.queryByLabelText("Modern Ticker")).toBeFalsy()

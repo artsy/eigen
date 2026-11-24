@@ -32,7 +32,7 @@ describe("SelectMaxBid", () => {
   })
 
   it("can update the max bid", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       SaleArtwork: () => ({
         increments: [
           { display: "£100", cents: 10000 },
@@ -47,7 +47,7 @@ describe("SelectMaxBid", () => {
     expect(screen.queryByTestId("modal-max-bid")).not.toBeVisible()
 
     // open the modal
-    fireEvent.press(screen.getByTestId("max-bid"))
+    await fireEvent.press(screen.getByTestId("max-bid"))
 
     await screen.findByTestId("modal-max-bid")
 
@@ -56,14 +56,14 @@ describe("SelectMaxBid", () => {
     expect(screen.getByText("£300")).toBeOnTheScreen()
 
     // select a new max bid
-    fireEvent.press(screen.getByText("£200"))
+    await fireEvent.press(screen.getByText("£200"))
 
     expect(screen.queryByTestId("modal-max-bid")).not.toBeVisible()
 
     expect(screen.queryByText("£100")).not.toBeOnTheScreen()
     expect(screen.getByText("£200")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Next"))
+    await fireEvent.press(screen.getByText("Next"))
 
     expect(mockNavigator.navigate).toHaveBeenCalledWith("ConfirmBid", {
       refreshSaleArtwork: expect.any(Function),

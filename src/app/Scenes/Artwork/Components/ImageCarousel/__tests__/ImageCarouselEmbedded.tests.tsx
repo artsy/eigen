@@ -61,29 +61,29 @@ describe("ImageCarouselEmbedded", () => {
     )
   }
 
-  it("should render all passed images", () => {
-    renderWithWrappers(<TestWrapper />)
+  it("should render all passed images", async () => {
+    await renderWithWrappers(<TestWrapper />)
 
     expect(screen.getAllByLabelText("Image with Loading State")).toHaveLength(2)
   })
 
-  it("responds to onImagePressed prop", () => {
-    renderWithWrappers(<TestWrapper />)
+  it("responds to onImagePressed prop", async () => {
+    await renderWithWrappers(<TestWrapper />)
 
-    fireEvent.press(screen.getAllByLabelText("Image with Loading State")[0])
+    await fireEvent.press(screen.getAllByLabelText("Image with Loading State")[0])
     expect(onImagePressedMock).toHaveBeenCalled()
   })
 
-  it("does something when you tap an image with deepZoom", () => {
-    renderWithWrappers(<TestWrapper />)
+  it("does something when you tap an image with deepZoom", async () => {
+    await renderWithWrappers(<TestWrapper />)
 
     expect(context.fullScreenState.current).toBe("none")
 
-    fireEvent.press(screen.getAllByLabelText("Image with Loading State")[0])
+    await fireEvent.press(screen.getAllByLabelText("Image with Loading State")[0])
     expect(context.fullScreenState.current).not.toBe("none")
   })
 
-  it("does nothing when you tap an image without deepZoom", () => {
+  it("does nothing when you tap an image without deepZoom", async () => {
     const contextInit: ContextInit = {
       images: [
         {
@@ -101,11 +101,11 @@ describe("ImageCarouselEmbedded", () => {
       ] as ImageCarouselImage[],
     }
 
-    renderWithWrappers(<TestWrapper contextInit={contextInit} />)
+    await renderWithWrappers(<TestWrapper contextInit={contextInit} />)
 
     expect(context.fullScreenState.current).toBe("none")
 
-    fireEvent.press(screen.getAllByLabelText("Image with Loading State")[0])
+    await fireEvent.press(screen.getAllByLabelText("Image with Loading State")[0])
     expect(context.fullScreenState.current).toBe("none")
   })
 })

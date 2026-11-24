@@ -5,6 +5,7 @@ import {
   useNewImageCarouselContext,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { Text } from "react-native"
 
 const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
   images: [
@@ -50,7 +51,7 @@ describe("image carousel context", () => {
         <ImageCarouselContext.Consumer>
           {(ctx) => {
             context = ctx
-            return "hello world"
+            return <Text>hello world</Text>
           }}
         </ImageCarouselContext.Consumer>
       </ImageCarouselContext.Provider>
@@ -63,8 +64,8 @@ describe("image carousel context", () => {
     context = null
   })
 
-  it("sets up the context properly", () => {
-    render(<Mock />)
+  it("sets up the context properly", async () => {
+    await render(<Mock />)
 
     expect(context!.dispatch).toBeInstanceOf(Function)
     expect(context!.imageIndex.current).toBe(0)
@@ -74,8 +75,8 @@ describe("image carousel context", () => {
     expect(context!.embeddedImageRefs).toEqual([])
   })
 
-  it("sets the isZoomedCompletelyOut properly correctly", () => {
-    render(<Mock />)
+  it("sets the isZoomedCompletelyOut properly correctly", async () => {
+    await render(<Mock />)
 
     expect(context!.isZoomedCompletelyOut.current).toBe(true)
 
@@ -95,8 +96,8 @@ describe("image carousel context", () => {
     expect(context!.isZoomedCompletelyOut.current).toBe(true)
   })
 
-  it("sets the imageIndex correctly", () => {
-    render(<Mock />)
+  it("sets the imageIndex correctly", async () => {
+    await render(<Mock />)
 
     expect(context!.imageIndex.current).toBe(0)
 
@@ -110,8 +111,8 @@ describe("image carousel context", () => {
     expect(context!.imageIndex.current).toBe(0)
   })
 
-  it("sets the full screen mode correctly", () => {
-    render(<Mock />)
+  it("sets the full screen mode correctly", async () => {
+    await render(<Mock />)
 
     expect(context!.fullScreenState.current).toBe("none")
 
@@ -131,8 +132,8 @@ describe("image carousel context", () => {
     expect(context!.fullScreenState.current).toBe("none")
   })
 
-  it("scrolls the flatList when the image index changes", () => {
-    render(<Mock />)
+  it("scrolls the flatList when the image index changes", async () => {
+    await render(<Mock />)
 
     // @ts-ignore
     context!.embeddedFlatListRef.current = { scrollToIndex: jest.fn() }
@@ -154,8 +155,8 @@ describe("image carousel context", () => {
     })
   })
 
-  it("tracks the imageIndex changes", () => {
-    render(<Mock />)
+  it("tracks the imageIndex changes", async () => {
+    await render(<Mock />)
 
     context!.dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex: 1 })
     context!.dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex: 3 })

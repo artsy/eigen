@@ -77,19 +77,19 @@ describe("Year Options Screen", () => {
     </ArtworkFiltersStoreProvider>
   )
 
-  it("renders propertly", () => {
-    renderWithWrappers(<MockYearOptionsScreen initialData={initialState} />)
+  it("renders propertly", async () => {
+    await renderWithWrappers(<MockYearOptionsScreen initialData={initialState} />)
 
     expect(screen.getByText("2010 – 2021")).toBeOnTheScreen()
     expect(screen.getByText(ALLOW_EMPTY_CREATED_DATES_FILTER.displayText)).toBeOnTheScreen()
   })
 
-  it("selects the right year range and option", () => {
-    renderWithWrappers(<MockYearOptionsScreen initialData={initialState} />)
+  it("selects the right year range and option", async () => {
+    await renderWithWrappers(<MockYearOptionsScreen initialData={initialState} />)
     ;(storeInstance as any).getActions().__injectState?.(initialState)
 
-    fireEvent(screen.getByTestId("multi-slider"), "valuesChangeFinish", ["2011", "2020"])
-    fireEvent.press(screen.getByText(ALLOW_EMPTY_CREATED_DATES_FILTER.displayText))
+    await fireEvent(screen.getByTestId("multi-slider"), "valuesChangeFinish", ["2011", "2020"])
+    await fireEvent.press(screen.getByText(ALLOW_EMPTY_CREATED_DATES_FILTER.displayText))
 
     const selectedFilters = storeInstance.getState().selectedFilters
     const latestCreatedYear = selectedFilters.find(

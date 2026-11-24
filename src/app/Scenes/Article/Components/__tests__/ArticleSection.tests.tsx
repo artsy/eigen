@@ -61,8 +61,8 @@ describe("ArticleSection", () => {
     `,
   })
 
-  it("renders ArticleSectionText when __typename is ArticleSectionText", () => {
-    renderWithRelay({
+  it("renders ArticleSectionText when __typename is ArticleSectionText", async () => {
+    await renderWithRelay({
       Article: () => ({
         sections: [
           {
@@ -75,8 +75,8 @@ describe("ArticleSection", () => {
     expect(screen.getByText("ArticleSectionText")).toBeOnTheScreen()
   })
 
-  it("renders ArticleSectionImageCollection when __typename is ArticleSectionImageCollection", () => {
-    renderWithRelay({
+  it("renders ArticleSectionImageCollection when __typename is ArticleSectionImageCollection", async () => {
+    await renderWithRelay({
       Article: () => ({
         sections: [
           {
@@ -89,8 +89,8 @@ describe("ArticleSection", () => {
     expect(screen.getByText("ArticleSectionImageCollection")).toBeOnTheScreen()
   })
 
-  it("renders ArticleSectionImageSet when __typename is ArticleSectionImageSet", () => {
-    renderWithRelay({
+  it("renders ArticleSectionImageSet when __typename is ArticleSectionImageSet", async () => {
+    await renderWithRelay({
       Article: () => ({
         sections: [
           {
@@ -103,8 +103,8 @@ describe("ArticleSection", () => {
     expect(screen.getByText("ArticleSectionImageSet")).toBeOnTheScreen()
   })
 
-  it("renders ArticleSectionEmbed when __typename is ArticleSectionEmbed", () => {
-    renderWithRelay({
+  it("renders ArticleSectionEmbed when __typename is ArticleSectionEmbed", async () => {
+    await renderWithRelay({
       Article: () => ({
         sections: [
           {
@@ -117,8 +117,8 @@ describe("ArticleSection", () => {
     expect(screen.getByText("ArticleSectionEmbed")).toBeOnTheScreen()
   })
 
-  it("renders ArticleSectionArtworkGrid when __typename is ArticleSectionArtworkGrid", () => {
-    renderWithRelay({
+  it("renders ArticleSectionArtworkGrid when __typename is ArticleSectionArtworkGrid", async () => {
+    await renderWithRelay({
       Article: () => ({
         sections: [
           {
@@ -131,8 +131,8 @@ describe("ArticleSection", () => {
     expect(screen.getByText("ArticleSectionArtworkGrid")).toBeOnTheScreen()
   })
 
-  it("renders null for unknown __typename", () => {
-    renderWithRelay({
+  it("renders null for unknown __typename", async () => {
+    await renderWithRelay({
       Article: () => ({
         sections: [
           {

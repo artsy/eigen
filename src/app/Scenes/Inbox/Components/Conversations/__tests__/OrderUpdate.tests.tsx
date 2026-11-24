@@ -1,4 +1,4 @@
-import { act, fireEvent } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { OrderUpdateTestsQuery } from "__generated__/OrderUpdateTestsQuery.graphql"
 import { OrderUpdateFragmentContainer as OrderUpdate } from "app/Scenes/Inbox/Components/Conversations/OrderUpdate"
 import { navigate } from "app/system/navigation/navigate"
@@ -60,7 +60,7 @@ const TestRenderer = () => (
   />
 )
 
-const getWrapper = (event = {}) => {
+const getWrapper = async (event = {}) => {
   const mockConversation = {
     orderConnection: {
       edges: [
@@ -72,9 +72,9 @@ const getWrapper = (event = {}) => {
       ],
     },
   }
-  const view = renderWithWrappers(<TestRenderer />)
+  const view = await renderWithWrappers(<TestRenderer />)
   const finalResolvers = { Conversation: () => mockConversation }
-  act(() => {
+  await act(() => {
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, finalResolvers)
     )
@@ -82,60 +82,60 @@ const getWrapper = (event = {}) => {
   return view
 }
 
-it("renders without throwing an error", () => {
-  getWrapper({ __typename: "CommerceOrderStateChangedEvent", state: "APPROVED" })
+it("renders without throwing an error", async () => {
+  await getWrapper({ __typename: "CommerceOrderStateChangedEvent", state: "APPROVED" })
 })
 
 describe("OrderUpdate with order updates", () => {
-  it("displays the offer approved event", () => {
-    const { getByText } = getWrapper({
+  it("displays the offer approved event", async () => {
+    await getWrapper({
       __typename: "CommerceOrderStateChangedEvent",
       orderUpdateState: "offer_approved",
       state: "APPROVED",
     })
-    expect(getByText("Offer Accepted")).toBeTruthy()
+    expect(screen.getByText("Offer Accepted")).toBeTruthy()
   })
 
-  it("displays the seller declined event", () => {
-    const { getByText } = getWrapper({
+  it("displays the seller declined event", async () => {
+    await getWrapper({
       __typename: "CommerceOrderStateChangedEvent",
       orderUpdateState: "offer_rejected",
     })
 
-    expect(getByText("Offer Declined")).toBeTruthy()
+    expect(screen.getByText("Offer Declined")).toBeTruthy()
   })
 
-  it("displays the offer expired event", () => {
-    const { getByText } = getWrapper({
+  it("displays the offer expired event", async () => {
+    await getWrapper({
       __typename: "CommerceOrderStateChangedEvent",
       orderUpdateState: "offer_lapsed",
       state: "CANCELED",
       stateReason: ["_lapsed"],
     })
-    expect(getByText("Offer Expired")).toBeTruthy()
+    expect(screen.getByText("Offer Expired")).toBeTruthy()
   })
 
-  it("shows an offer submitted event", () => {
-    const { getByText } = getWrapper({
+  it("shows an offer submitted event", async () => {
+    await getWrapper({
       __typename: "CommerceOfferSubmittedEvent",
       offer: { respondsTo: null, amount: "$100" },
     })
 
-    expect(getByText("You sent an offer for $100. See details.")).toBeTruthy()
-    fireEvent.press(getByText("See details."))
+    expect(screen.getByText("You sent an offer for $100. See details.")).toBeTruthy()
+    await fireEvent.press(screen.getByText("See details."))
     expect(navigate).toHaveBeenCalledWith("/conversation/12345/details")
   })
 
-  it("shows a counteroffer offer from the user", () => {
-    const { getByText } = getWrapper({
+  it("shows a counteroffer offer from the user", async () => {
+    await getWrapper({
       __typename: "CommerceOfferSubmittedEvent",
       offer: { respondsTo: {}, amount: "$150" },
     })
-    expect(getByText("You sent a counteroffer for $150")).toBeTruthy()
+    expect(screen.getByText("You sent a counteroffer for $150")).toBeTruthy()
   })
 
-  it("shows a counteroffer from the partner", () => {
-    const { getByText } = getWrapper({
+  it("shows a counteroffer from the partner", async () => {
+    await getWrapper({
       __typename: "CommerceOfferSubmittedEvent",
       offer: {
         amount: "$200",
@@ -144,11 +144,11 @@ describe("OrderUpdate with order updates", () => {
         offerAmountChanged: true,
       },
     })
-    expect(getByText("You received a counteroffer for $200")).toBeTruthy()
+    expect(screen.getByText("You received a counteroffer for $200")).toBeTruthy()
   })
 
-  it("shows an accepted offer from the partner with pending action", () => {
-    const { getByText } = getWrapper({
+  it("shows an accepted offer from the partner with pending action", async () => {
+    await getWrapper({
       __typename: "CommerceOfferSubmittedEvent",
       offer: {
         respondsTo: {},
@@ -156,49 +156,49 @@ describe("OrderUpdate with order updates", () => {
         offerAmountChanged: false,
       },
     })
-    expect(getByText("Offer Accepted - Pending Action")).toBeTruthy()
+    expect(screen.getByText("Offer Accepted - Pending Action")).toBeTruthy()
   })
 
-  it("shows buy order processing approval", () => {
-    const { getByText } = getWrapper({
+  it("shows buy order processing approval", async () => {
+    await getWrapper({
       __typename: "CommerceOrderStateChangedEvent",
       orderUpdateState: "buy_processing_approval",
     })
-    expect(getByText("Order approved. Payment Processing")).toBeTruthy()
+    expect(screen.getByText("Order approved. Payment Processing")).toBeTruthy()
   })
 
-  it("shows offer order processing approval", () => {
-    const { getByText } = getWrapper({
+  it("shows offer order processing approval", async () => {
+    await getWrapper({
       __typename: "CommerceOrderStateChangedEvent",
       orderUpdateState: "offer_processing_approval",
     })
-    expect(getByText("Offer accepted. Payment Processing")).toBeTruthy()
+    expect(screen.getByText("Offer accepted. Payment Processing")).toBeTruthy()
   })
 
-  it("shows a submitted buy order", () => {
-    const { getByText } = getWrapper({
+  it("shows a submitted buy order", async () => {
+    await getWrapper({
       __typename: "CommerceOrderStateChangedEvent",
       orderUpdateState: "buy_submitted",
     })
 
-    expect(getByText("You purchased this artwork. See details.")).toBeTruthy()
+    expect(screen.getByText("You purchased this artwork. See details.")).toBeTruthy()
   })
 
-  it("shows an expired buy order", () => {
-    const { getByText } = getWrapper({
+  it("shows an expired buy order", async () => {
+    await getWrapper({
       __typename: "CommerceOrderStateChangedEvent",
       orderUpdateState: "buy_lapsed",
       state: "CANCELED",
       stateReason: ["_lapsed"],
     })
-    expect(getByText("Purchase Expired")).toBeTruthy()
+    expect(screen.getByText("Purchase Expired")).toBeTruthy()
   })
-  it("shows an approved buy order", () => {
-    const { getByText } = getWrapper({
+  it("shows an approved buy order", async () => {
+    await getWrapper({
       __typename: "CommerceOrderStateChangedEvent",
       orderUpdateState: "buy_approved",
       state: "APPROVED",
     })
-    expect(getByText("Purchase Accepted")).toBeTruthy()
+    expect(screen.getByText("Purchase Accepted")).toBeTruthy()
   })
 })

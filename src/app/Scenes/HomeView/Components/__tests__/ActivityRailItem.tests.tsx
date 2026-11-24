@@ -21,8 +21,8 @@ describe("ActivityRail", () => {
     `,
   })
 
-  it("renders a PARTNER_SHOW_OPENED activity item", () => {
-    renderWithRelay({
+  it("renders a PARTNER_SHOW_OPENED activity item", async () => {
+    await renderWithRelay({
       Me: () => ({
         notification: {
           internalID: "id-1",
@@ -36,8 +36,8 @@ describe("ActivityRail", () => {
     expect(screen.getByText("Show •")).toBeOnTheScreen()
   })
 
-  it("renders an ARTWORK_ALERT activity item", () => {
-    renderWithRelay({
+  it("renders an ARTWORK_ALERT activity item", async () => {
+    await renderWithRelay({
       Me: () => ({
         notification: {
           internalID: "id-1",
@@ -51,8 +51,8 @@ describe("ActivityRail", () => {
     expect(screen.getByText("Alert •")).toBeOnTheScreen()
   })
 
-  it("renders an ARTWORK_PUBLISHED artwork alert activity item", () => {
-    renderWithRelay({
+  it("renders an ARTWORK_PUBLISHED artwork alert activity item", async () => {
+    await renderWithRelay({
       Me: () => ({
         notification: {
           internalID: "id-1",
@@ -66,8 +66,8 @@ describe("ActivityRail", () => {
     expect(screen.getByText("Follow •")).toBeOnTheScreen()
   })
 
-  it("renders an ARTICLE_FEATURED_ARTIST artwork alert activity item", () => {
-    renderWithRelay({
+  it("renders an ARTICLE_FEATURED_ARTIST artwork alert activity item", async () => {
+    await renderWithRelay({
       Me: () => ({
         notification: {
           internalID: "id-1",
@@ -83,8 +83,8 @@ describe("ActivityRail", () => {
     expect(screen.getByText("Editorial •")).toBeOnTheScreen()
   })
 
-  it("navigates to the notification screen when an ARTICLE_FEATURED_ARTIST item is pressed", () => {
-    renderWithRelay({
+  it("navigates to the notification screen when an ARTICLE_FEATURED_ARTIST item is pressed", async () => {
+    await renderWithRelay({
       Me: () => ({
         notification: {
           internalID: "id-1",
@@ -95,16 +95,16 @@ describe("ActivityRail", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("Example Article Title"))
+    await fireEvent.press(screen.getByText("Example Article Title"))
 
     expect(navigate).toHaveBeenCalledWith("/notification/id-1")
   })
 
-  it("renders a PARTNER_OFFER_CREATED artwork alert activity item", () => {
+  it("renders a PARTNER_OFFER_CREATED artwork alert activity item", async () => {
     // Today is Friday, November 01, 2024 11:11:11.000 AM UTC in milliseconds
     Date.now = () => 1730459471000
 
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         notification: {
           internalID: "id-1",
@@ -125,8 +125,8 @@ describe("ActivityRail", () => {
     expect(screen.getByText("Expires in", { exact: false })).toBeOnTheScreen()
   })
 
-  it("renders a VIEWING_ROOM_PUBLISHED artwork alert activity item", () => {
-    renderWithRelay({
+  it("renders a VIEWING_ROOM_PUBLISHED artwork alert activity item", async () => {
+    await renderWithRelay({
       Me: () => ({
         notification: {
           internalID: "id-1",

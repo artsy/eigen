@@ -33,8 +33,8 @@ const renderSheet = (props: Partial<React.ComponentProps<typeof SellSelectionNot
   )
 
 describe("SellSelectionNoteBottomSheet", () => {
-  it("lists the works we can and can’t sell", () => {
-    renderSheet({})
+  it("lists the works we can and can’t sell", async () => {
+    await renderSheet({})
 
     expect(screen.getByText(/We can help you with 1\/2 of the works/)).toBeOnTheScreen()
     expect(
@@ -46,8 +46,8 @@ describe("SellSelectionNoteBottomSheet", () => {
     expect(screen.getAllByRole("checkbox")).toHaveLength(1)
   })
 
-  it("talks about a single work when only one was selected", () => {
-    renderSheet({ unsellableWorks: [], selectedWorkIDs: ["id-a2"] })
+  it("talks about a single work when only one was selected", async () => {
+    await renderSheet({ unsellableWorks: [], selectedWorkIDs: ["id-a2"] })
 
     expect(
       screen.getByText("We can help you with this work, as long as it’s currently in the US.")
@@ -56,27 +56,27 @@ describe("SellSelectionNoteBottomSheet", () => {
     expect(screen.getByRole("checkbox", { name: "Artist A, Sellable Work" })).toBeChecked()
   })
 
-  it("hides the sellable section when nothing can be sold", () => {
-    renderSheet({ sellableWorks: [], selectedWorkIDs: ["id-c3"] })
+  it("hides the sellable section when nothing can be sold", async () => {
+    await renderSheet({ sellableWorks: [], selectedWorkIDs: ["id-c3"] })
 
     expect(screen.queryByText("Works we can sell")).not.toBeOnTheScreen()
     expect(screen.getByText("Proceed to Listing")).toBeDisabled()
   })
 
-  it("reports ticks and proceeds while a sellable work is ticked", () => {
+  it("reports ticks and proceeds while a sellable work is ticked", async () => {
     const onToggleWork = jest.fn()
     const onProceed = jest.fn()
-    renderSheet({ onToggleWork, onProceed })
+    await renderSheet({ onToggleWork, onProceed })
 
-    fireEvent.press(screen.getByRole("checkbox", { name: "Artist A, Sellable Work" }))
+    await fireEvent.press(screen.getByRole("checkbox", { name: "Artist A, Sellable Work" }))
     expect(onToggleWork).toHaveBeenCalledWith("id-a2")
 
-    fireEvent.press(screen.getByText("Proceed to Listing"))
+    await fireEvent.press(screen.getByText("Proceed to Listing"))
     expect(onProceed).toHaveBeenCalledTimes(1)
   })
 
-  it("disables Proceed once every sellable work is unticked", () => {
-    renderSheet({ selectedWorkIDs: ["id-c3"] })
+  it("disables Proceed once every sellable work is unticked", async () => {
+    await renderSheet({ selectedWorkIDs: ["id-c3"] })
 
     expect(screen.getByRole("checkbox", { name: "Artist A, Sellable Work" })).not.toBeChecked()
     expect(screen.getByText("Proceed to Listing")).toBeDisabled()

@@ -36,8 +36,8 @@ describe("HomeViewSectionArticlesCards", () => {
     `,
   })
 
-  it("renders a list of articles", () => {
-    renderWithRelay({
+  it("renders a list of articles", async () => {
+    await renderWithRelay({
       HomeViewComponent: () => ({
         title: "Some news items",
         behaviors: {
@@ -57,8 +57,8 @@ describe("HomeViewSectionArticlesCards", () => {
     expect(screen.getByText(/All the news/)).toBeOnTheScreen()
   })
 
-  it("handles item press", () => {
-    renderWithRelay({
+  it("handles item press", async () => {
+    await renderWithRelay({
       HomeViewComponent: () => ({
         title: "Some news items",
         behaviors: {
@@ -77,7 +77,7 @@ describe("HomeViewSectionArticlesCards", () => {
     expect(screen.getByText(/The third news item/)).toBeOnTheScreen()
     expect(screen.getByText(/All the news/)).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText(/The first news item/))
+    await fireEvent.press(screen.getByText(/The first news item/))
 
     expect(navigate).toHaveBeenCalledWith("/article/one")
     expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -93,8 +93,8 @@ describe("HomeViewSectionArticlesCards", () => {
     })
   })
 
-  it("handles title press", () => {
-    renderWithRelay({
+  it("handles title press", async () => {
+    await renderWithRelay({
       HomeViewComponent: () => ({
         title: "Some news items",
         behaviors: {
@@ -107,7 +107,7 @@ describe("HomeViewSectionArticlesCards", () => {
       ArticleConnection: () => mockArticleconnection,
     })
 
-    fireEvent.press(screen.getByText(/All the news/))
+    await fireEvent.press(screen.getByText(/All the news/))
 
     expect(navigate).toHaveBeenCalledWith("/articles")
     expect(mockTrackEvent).toHaveBeenCalledWith({

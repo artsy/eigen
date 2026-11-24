@@ -12,7 +12,7 @@ jest.mock("react-native-device-info", () => ({
 
 describe("useScreenReaderTracking", () => {
   it("Should track the status of the screen reader of a user", async () => {
-    renderHook(() => useScreenReaderAndFontScaleTracking())
+    await renderHook(() => useScreenReaderAndFontScaleTracking())
 
     await waitFor(() => {
       expect(SegmentTrackingProvider.identify).toHaveBeenCalledTimes(1)

@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import {
   COLORS_INDEXED_BY_VALUE,
   COLOR_OPTIONS,
@@ -13,8 +13,8 @@ import {
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("SavedSearchFilterColor", () => {
-  it("shows all available color options unselected", () => {
-    const { getByTestId } = renderWithWrappers(
+  it("shows all available color options unselected", async () => {
+    await renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterColor />
       </SavedSearchStoreProvider>
@@ -22,13 +22,15 @@ describe("SavedSearchFilterColor", () => {
 
     COLOR_OPTIONS.forEach((option) => {
       expect(() =>
-        getByTestId(`check-icon-${COLORS_INDEXED_BY_VALUE[option.paramValue as string].name}`)
+        screen.getByTestId(
+          `check-icon-${COLORS_INDEXED_BY_VALUE[option.paramValue as string].name}`
+        )
       ).toThrow()
     })
   })
 
-  it("shows the right selected state", () => {
-    const { getByTestId } = renderWithWrappers(
+  it("shows the right selected state", async () => {
+    await renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={{ ...initialData, attributes: { colors: ["red"] } }}>
         <SavedSearchFilterColor />
       </SavedSearchStoreProvider>
@@ -37,26 +39,30 @@ describe("SavedSearchFilterColor", () => {
     COLOR_OPTIONS.forEach((option) => {
       if (option.paramValue !== "red") {
         expect(() =>
-          getByTestId(`check-icon-${COLORS_INDEXED_BY_VALUE[option.paramValue as string].name}`)
+          screen.getByTestId(
+            `check-icon-${COLORS_INDEXED_BY_VALUE[option.paramValue as string].name}`
+          )
         ).toThrow()
       } else {
         expect(
-          getByTestId(`check-icon-${COLORS_INDEXED_BY_VALUE[option.paramValue as string].name}`)
+          screen.getByTestId(
+            `check-icon-${COLORS_INDEXED_BY_VALUE[option.paramValue as string].name}`
+          )
         ).toBeDefined()
       }
     })
   })
 
-  it("Updates selected filters on press", () => {
-    const { getByTestId, getByText } = renderWithWrappers(
+  it("Updates selected filters on press", async () => {
+    await renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterColor />
       </SavedSearchStoreProvider>
     )
 
-    fireEvent(getByText("Red"), "onPress")
+    await fireEvent(screen.getByText("Red"), "onPress")
 
-    expect(getByTestId("check-icon-Red")).toBeDefined()
+    expect(screen.getByTestId("check-icon-Red")).toBeDefined()
   })
 })
 

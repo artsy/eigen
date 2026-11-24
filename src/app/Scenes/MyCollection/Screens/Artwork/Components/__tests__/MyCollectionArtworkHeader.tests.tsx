@@ -17,8 +17,8 @@ describe("MyCollectionArtworkHeader", () => {
     `,
   })
 
-  it("fires the analytics tracking event when image is pressed", () => {
-    renderWithRelay({
+  it("fires the analytics tracking event when image is pressed", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "someInternalId",
         slug: "someSlug",
@@ -26,7 +26,7 @@ describe("MyCollectionArtworkHeader", () => {
     })
 
     const carouselImage = screen.getByLabelText("Image with Loading State")
-    fireEvent(carouselImage, "Press")
+    await fireEvent(carouselImage, "Press")
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action_name: "artworkImageZoom",
@@ -36,7 +36,7 @@ describe("MyCollectionArtworkHeader", () => {
   })
 
   it("shows fallback view when images are null", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         artistNames: "names",
         date: new Date().toISOString(),

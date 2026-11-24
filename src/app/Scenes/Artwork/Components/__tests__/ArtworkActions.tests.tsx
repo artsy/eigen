@@ -82,8 +82,8 @@ describe("ArtworkActions", () => {
     })
   })
 
-  it("renders buttons correctly", () => {
-    renderWithRelay({
+  it("renders buttons correctly", async () => {
+    await renderWithRelay({
       Artwork: () => artworkActionsArtwork,
     })
 
@@ -91,12 +91,12 @@ describe("ArtworkActions", () => {
     expect(screen.getByText("Share")).toBeOnTheScreen()
   })
 
-  it("does not show the View in Room option if the artwork is not hangable", () => {
+  it("does not show the View in Room option if the artwork is not hangable", async () => {
     const artworkActionsArtworkNotHangable = {
       ...artworkActionsArtwork,
       isHangable: false,
     }
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => artworkActionsArtworkNotHangable,
     })
 
@@ -104,8 +104,8 @@ describe("ArtworkActions", () => {
     expect(screen.queryByText("View in Room")).not.toBeOnTheScreen()
   })
 
-  it("should display 'Save' button", () => {
-    renderWithRelay({
+  it("should display 'Save' button", async () => {
+    await renderWithRelay({
       Artwork: () => artworkActionsArtwork,
     })
 
@@ -113,13 +113,13 @@ describe("ArtworkActions", () => {
     expect(screen.queryByText("Saved")).not.toBeOnTheScreen()
   })
 
-  it("should display 'Watch lot' button if work is in an open auction", () => {
+  it("should display 'Watch lot' button if work is in an open auction", async () => {
     const artworkActionsArtworkInAuction = {
       ...artworkActionsArtwork,
       sale: { isAuction: true, isClosed: false },
     }
 
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => artworkActionsArtworkInAuction,
     })
 
@@ -130,10 +130,10 @@ describe("ArtworkActions", () => {
   })
 
   describe("without AR enabled", () => {
-    it("does not show the View in Room option if the phone does not have AREnabled", () => {
+    it("does not show the View in Room option if the phone does not have AREnabled", async () => {
       LegacyNativeModules.ARCocoaConstantsModule.AREnabled = false
 
-      renderWithRelay({
+      await renderWithRelay({
         Artwork: () => artworkActionsArtwork,
       })
 
@@ -142,8 +142,8 @@ describe("ArtworkActions", () => {
   })
 
   describe("Save button", () => {
-    it("should trigger save mutation when user presses save button", () => {
-      const { env } = renderWithRelay({
+    it("should trigger save mutation when user presses save button", async () => {
+      const { env } = await renderWithRelay({
         Artwork: () => ({
           ...artworkActionsArtwork,
           isSaved: false,
@@ -152,15 +152,15 @@ describe("ArtworkActions", () => {
 
       expect(screen.getByLabelText("Save artwork")).toBeOnTheScreen()
 
-      fireEvent.press(screen.getByLabelText("Save artwork"))
+      await fireEvent.press(screen.getByLabelText("Save artwork"))
 
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
         "useSaveArtworkMutation"
       )
     })
 
-    it("tracks save with artwork entity id and slug", () => {
-      const { mockResolveLastOperation } = renderWithRelay({
+    it("tracks save with artwork entity id and slug", async () => {
+      const { mockResolveLastOperation } = await renderWithRelay({
         Artwork: () => ({
           ...artworkActionsArtwork,
           internalID: "artwork-internal-id",
@@ -169,9 +169,9 @@ describe("ArtworkActions", () => {
         }),
       })
 
-      fireEvent.press(screen.getByLabelText("Save artwork"))
+      await fireEvent.press(screen.getByLabelText("Save artwork"))
 
-      mockResolveLastOperation({
+      await mockResolveLastOperation({
         SaveArtworkPayload: () => ({
           artwork: {
             id: "artwork12345",
@@ -203,18 +203,18 @@ describe("ArtworkActions", () => {
       mockUseEnableArtsyLens.mockReturnValue(false)
     })
 
-    it("is hidden when the feature is off", () => {
-      renderWithRelay({ Artwork: () => artworkActionsArtwork })
+    it("is hidden when the feature is off", async () => {
+      await renderWithRelay({ Artwork: () => artworkActionsArtwork })
 
       expect(screen.queryByText("Find similar")).not.toBeOnTheScreen()
     })
 
-    it("navigates to similar artworks and tracks the tap when the feature is on", () => {
+    it("navigates to similar artworks and tracks the tap when the feature is on", async () => {
       mockUseEnableArtsyLens.mockReturnValue(true)
 
-      renderWithRelay({ Artwork: () => artworkActionsArtwork })
+      await renderWithRelay({ Artwork: () => artworkActionsArtwork })
 
-      fireEvent.press(screen.getByText("Find similar"))
+      await fireEvent.press(screen.getByText("Find similar"))
 
       expect(navigate).toHaveBeenCalledWith("/artwork/andreas-rod-prinzknecht/similar")
       expect(mockTrackEvent).toHaveBeenCalledWith(

@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { screen, waitFor } from "@testing-library/react-native"
 import { AlertArtworksPillsQuery } from "__generated__/AlertArtworksPillsQuery.graphql"
 import {
   AlertArtworksPills,
@@ -17,7 +17,7 @@ describe("AlertArtworksPills", () => {
   })
 
   it("renders pills, grid and buttons", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         alert: {
           pills: [
@@ -28,7 +28,7 @@ describe("AlertArtworksPills", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("pills-placeholder"))
+    await waitFor(() => expect(screen.queryByTestId("pills-placeholder")).not.toBeOnTheScreen())
 
     expect(screen.getByText("Banksy")).toBeOnTheScreen()
     expect(screen.getByText("Limited edition")).toBeOnTheScreen()

@@ -4,10 +4,10 @@ import { switchTab } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("NoMessages", () => {
-  it("Navigates to home when clicked", () => {
-    renderWithWrappers(<NoMessages />)
+  it("Navigates to home when clicked", async () => {
+    await renderWithWrappers(<NoMessages />)
 
-    fireEvent.press(screen.getByText("Explore Works"))
+    await fireEvent.press(screen.getByText("Explore Works"))
 
     expect(switchTab).toHaveBeenCalledWith("home")
   })

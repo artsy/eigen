@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react-native"
 import About from "app/Components/Gene/About"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-it("renders without throwing a error", () => {
+it("renders without throwing a error", async () => {
   const gene = {
     description: `Deep time refers to the concept of an expansive time that stretches far beyond human history to
                   include the approximately 4.5 billion-year geological history of Earth and the estimated 13.8
@@ -39,7 +39,7 @@ it("renders without throwing a error", () => {
     ],
   }
 
-  renderWithWrappers(
+  await renderWithWrappers(
     <Tabs.TabsWithHeader title="test">
       <About gene={gene as any} />
     </Tabs.TabsWithHeader>

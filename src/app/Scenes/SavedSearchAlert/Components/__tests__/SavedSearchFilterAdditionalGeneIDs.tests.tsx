@@ -12,8 +12,8 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 const mono100Hex = "#000000"
 
 describe("SavedSearchFilterAdditionalGeneIDs", () => {
-  it("shows all available categories unselected", () => {
-    renderWithWrappers(
+  it("shows all available categories unselected", async () => {
+    await renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterAdditionalGeneIDs />
       </SavedSearchStoreProvider>
@@ -27,8 +27,8 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
     })
   })
 
-  it("shows the right selected categories", () => {
-    renderWithWrappers(
+  it("shows the right selected categories", async () => {
+    await renderWithWrappers(
       <SavedSearchStoreProvider
         runtimeModel={{ ...initialData, attributes: { additionalGeneIDs: ["painting"] } }}
       >
@@ -48,8 +48,8 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
     })
   })
 
-  it("Updates selected categories filters on press", () => {
-    renderWithWrappers(
+  it("Updates selected categories filters on press", async () => {
+    await renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterAdditionalGeneIDs />
       </SavedSearchStoreProvider>
@@ -57,13 +57,13 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
 
     expect(screen.getByText("Work on Paper")).toHaveStyle({ color: mono100Hex })
 
-    fireEvent(screen.getByText("Work on Paper"), "onPress")
+    await fireEvent(screen.getByText("Work on Paper"), "onPress")
 
     expect(screen.getByText("Work on Paper")).not.toHaveStyle({ color: mono100Hex })
   })
 
-  it("Shows all categories if the user has already selected mediums", () => {
-    renderWithWrappers(
+  it("Shows all categories if the user has already selected mediums", async () => {
+    await renderWithWrappers(
       <SavedSearchStoreProvider
         runtimeModel={{
           ...initialData,

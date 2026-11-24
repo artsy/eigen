@@ -31,8 +31,8 @@ const makeObj = ({ currentTime, startAt, endAt }: WrapperProps) => ({
 })
 
 describe("useEventTiming", () => {
-  it("returns 'Closed' when everything defaults to now", () => {
-    const { result } = renderHook(() =>
+  it("returns 'Closed' when everything defaults to now", async () => {
+    const { result } = await renderHook(() =>
       useEventTiming(
         makeObj({
           currentTime: { seconds: 0 },
@@ -57,8 +57,8 @@ describe("useEventTiming", () => {
     })
   })
 
-  it("returns the correct values if the event is already over", () => {
-    const { result } = renderHook(() =>
+  it("returns the correct values if the event is already over", async () => {
+    const { result } = await renderHook(() =>
       useEventTiming(
         makeObj({
           currentTime: { seconds: 21 },
@@ -83,8 +83,8 @@ describe("useEventTiming", () => {
     })
   })
 
-  it("returns the correct value if the event is opening soon", () => {
-    const { result } = renderHook(() =>
+  it("returns the correct value if the event is opening soon", async () => {
+    const { result } = await renderHook(() =>
       useEventTiming(
         makeObj({
           currentTime: { seconds: 0 },
@@ -109,8 +109,8 @@ describe("useEventTiming", () => {
     })
   })
 
-  it("returns the correct values if the event is ending soon", () => {
-    const { result } = renderHook(() =>
+  it("returns the correct values if the event is ending soon", async () => {
+    const { result } = await renderHook(() =>
       useEventTiming(
         makeObj({
           currentTime: { seconds: 10 },
@@ -135,8 +135,8 @@ describe("useEventTiming", () => {
     })
   })
 
-  it("returns the correct values if the event is ending today", () => {
-    const { result } = renderHook(() =>
+  it("returns the correct values if the event is ending today", async () => {
+    const { result } = await renderHook(() =>
       useEventTiming(
         makeObj({
           currentTime: { seconds: 10 },

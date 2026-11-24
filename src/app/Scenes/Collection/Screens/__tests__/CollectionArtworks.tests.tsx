@@ -29,8 +29,8 @@ describe("CollectionArtworks", () => {
     `,
   })
 
-  it("returns zero state component when there are no artworks to display", () => {
-    renderWithRelay({
+  it("returns zero state component when there are no artworks to display", async () => {
+    await renderWithRelay({
       MarketingCollection: () => ({
         collectionArtworks: {
           edges: [],
@@ -44,8 +44,8 @@ describe("CollectionArtworks", () => {
     expect(screen.getByText(/Clear filters/)).toBeOnTheScreen()
   })
 
-  it("returns artworks", () => {
-    renderWithRelay({
+  it("returns artworks", async () => {
+    await renderWithRelay({
       MarketingCollection: () => ({
         collectionArtworks: {
           counts: { total: 123 },
@@ -56,9 +56,9 @@ describe("CollectionArtworks", () => {
     expect(screen.getByText("Showing 123 works")).toBeOnTheScreen()
   })
 
-  fdescribe("collector signals", () => {
-    it("renders the collector signals", () => {
-      renderWithRelay({
+  describe("collector signals", () => {
+    it("renders the collector signals", async () => {
+      await renderWithRelay({
         MarketingCollection: () => ({
           collectionArtworks: {
             counts: { total: 123 },
@@ -82,8 +82,8 @@ describe("CollectionArtworks", () => {
     })
 
     CURATORS_PICKS_SLUGS.forEach((slug) => {
-      it(`does not render the collector signals for ${slug} collection`, () => {
-        renderWithRelay({
+      it(`does not render the collector signals for ${slug} collection`, async () => {
+        await renderWithRelay({
           MarketingCollection: () => ({
             slug,
             collectionArtworks: {

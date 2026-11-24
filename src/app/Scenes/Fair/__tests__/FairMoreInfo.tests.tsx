@@ -22,7 +22,7 @@ describe("FairMoreInfo", () => {
   })
 
   it("displays more information about the fair", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Fair: () => ({
         about: "This is the about.",
         summary: "This is the summary.",
@@ -58,7 +58,7 @@ describe("FairMoreInfo", () => {
   })
 
   it("handles missing information", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Fair: () => ({
         about: "",
         tagline: "",

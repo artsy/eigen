@@ -18,26 +18,26 @@ describe("PhotoRow", () => {
 
     beforeEach(() => mockEnvironment.mockClear())
 
-    it("renders photo as a thumbnail", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("renders photo as a thumbnail", async () => {
+      await renderWithWrappers(<TestRenderer />)
       expect(screen.getByTestId("Submission_Image")).toBeTruthy()
     })
 
-    it("renders photo size", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("renders photo size", async () => {
+      await renderWithWrappers(<TestRenderer />)
       expect(screen.getByText("3.3 MB")).toBeTruthy()
     })
 
-    it("renders Delete button", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("renders Delete button", async () => {
+      await renderWithWrappers(<TestRenderer />)
       expect(screen.getByTestId("Submission_Delete_Photo_Button")).toBeTruthy()
     })
 
-    it("fires handlePhotoDelete with correct photo when Delete button pressed", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("fires handlePhotoDelete with correct photo when Delete button pressed", async () => {
+      await renderWithWrappers(<TestRenderer />)
       const DeleteButton = screen.getByTestId("Submission_Delete_Photo_Button")
 
-      fireEvent.press(DeleteButton)
+      await fireEvent.press(DeleteButton)
 
       expect(mockHandlePhotoDelete).toHaveBeenCalled()
       expect(mockHandlePhotoDelete).toHaveBeenCalledWith(mockUploadedPhoto)
@@ -53,8 +53,8 @@ describe("PhotoRow", () => {
 
     beforeEach(() => mockEnvironment.mockClear())
 
-    it("renders correct error message", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("renders correct error message", async () => {
+      await renderWithWrappers(<TestRenderer />)
       expect(screen.getByText("some error")).toBeTruthy()
     })
   })

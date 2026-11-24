@@ -124,8 +124,8 @@ describe("assignDeep", () => {
 })
 
 describe(persist, () => {
-  beforeEach(() => {
-    AsyncStorage.clear()
+  beforeEach(async () => {
+    await AsyncStorage.clear()
   })
   it("omits the sessionStorage key", async () => {
     await persist({
@@ -161,8 +161,8 @@ describe(persist, () => {
 })
 
 describe(unpersist, () => {
-  beforeEach(() => {
-    AsyncStorage.clear()
+  beforeEach(async () => {
+    await AsyncStorage.clear()
   })
   it("returns an empty object if there was nothing saved before", async () => {
     expect(await unpersist()).toEqual({})

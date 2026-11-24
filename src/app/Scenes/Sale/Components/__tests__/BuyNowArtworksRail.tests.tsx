@@ -16,13 +16,13 @@ describe("BuyNowArtworksRail", () => {
     variables: { id: "sale-id" },
   })
 
-  it(`renders "Buy now" rail and artworks`, () => {
-    renderWithRelay(mockProps)
+  it(`renders "Buy now" rail and artworks`, async () => {
+    await renderWithRelay(mockProps)
     expect(screen.getByText("Artworks Available to Inquire")).toBeDefined()
     expect(screen.getAllByText("Best artwork ever, 2019")).toBeDefined()
   })
 
-  it("renders nothing if there are no artworks", () => {
+  it("renders nothing if there are no artworks", async () => {
     const noArtworksProps = {
       Sale: () => ({
         artworksConnection: {
@@ -31,7 +31,7 @@ describe("BuyNowArtworksRail", () => {
       }),
     }
 
-    renderWithRelay(noArtworksProps)
+    await renderWithRelay(noArtworksProps)
     expect(screen.queryAllByTestId("bnmo-rail-wrapper")).toHaveLength(0)
   })
 })

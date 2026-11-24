@@ -23,8 +23,8 @@ describe("AlertsList", () => {
     `,
   })
 
-  it("renders empty state when the user has no saved searches", () => {
-    renderWithRelay({
+  it("renders empty state when the user has no saved searches", async () => {
+    await renderWithRelay({
       Me: () => ({
         alertsConnection: {
           edges: [],
@@ -42,8 +42,8 @@ describe("AlertsList", () => {
     expect(screen.getByText("Explore Artists")).toBeTruthy()
   })
 
-  it("renders a list of alerts", () => {
-    renderWithRelay({
+  it("renders a list of alerts", async () => {
+    await renderWithRelay({
       Me: () => ({
         alertsConnection: {
           edges: [

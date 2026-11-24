@@ -13,25 +13,25 @@ describe(FooterButtons, () => {
   const trackEvent = useTracking().trackEvent
 
   describe("when the active step is not the last one", () => {
-    it("the next button is rendered and navigates to the next page", () => {
-      renderWithWrappers(
+    it("the next button is rendered and navigates to the next page", async () => {
+      await renderWithWrappers(
         <FooterButtons dismissModal={mockDismissModal} goToNextPage={mockGoToNextPage} />
       )
 
       const nextButton = screen.getByText("Next")
-      fireEvent(nextButton, "onPress")
+      await fireEvent(nextButton, "onPress")
       expect(mockGoToNextPage).toHaveBeenCalled()
     })
   })
 
   describe("when the active step is the last one", () => {
     it("the Add Artwork button is rendered and navigates to the add artwork screen", async () => {
-      renderWithWrappers(
+      await renderWithWrappers(
         <FooterButtons isLastStep dismissModal={mockDismissModal} goToNextPage={mockGoToNextPage} />
       )
 
       const appArtworkButton = screen.getByText("Add Artwork")
-      fireEvent(appArtworkButton, "onPress")
+      await fireEvent(appArtworkButton, "onPress")
       expect(switchTab).toHaveBeenCalledWith("profile")
       expect(mockDismissModal).toHaveBeenCalled()
       await flushPromiseQueue()
@@ -50,12 +50,12 @@ describe(FooterButtons, () => {
     })
 
     it("the Add Artist button is rendered and navigates to the add artist screen", async () => {
-      renderWithWrappers(
+      await renderWithWrappers(
         <FooterButtons isLastStep dismissModal={mockDismissModal} goToNextPage={mockGoToNextPage} />
       )
 
       const addArtistButton = screen.getByText("Add Artists")
-      fireEvent(addArtistButton, "onPress")
+      await fireEvent(addArtistButton, "onPress")
       expect(switchTab).toHaveBeenCalledWith("profile")
       expect(mockDismissModal).toHaveBeenCalled()
       await flushPromiseQueue()

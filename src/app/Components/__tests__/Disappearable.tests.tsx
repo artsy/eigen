@@ -5,8 +5,8 @@ import { createRef } from "react"
 import { Text } from "react-native"
 
 describe("Disappearable", () => {
-  it("renders children correctly", () => {
-    renderWithWrappers(
+  it("renders children correctly", async () => {
+    await renderWithWrappers(
       <Disappearable>
         <Text>Test Content</Text>
       </Disappearable>
@@ -15,10 +15,10 @@ describe("Disappearable", () => {
     expect(screen.getByText("Test Content")).toBeTruthy()
   })
 
-  it("provides disappear method via ref", () => {
+  it("provides disappear method via ref", async () => {
     const ref = createRef<Disappearable>()
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <Disappearable ref={ref}>
         <Text>Disappearing Content</Text>
       </Disappearable>

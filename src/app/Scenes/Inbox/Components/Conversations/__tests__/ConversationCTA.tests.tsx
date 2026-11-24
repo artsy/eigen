@@ -118,8 +118,8 @@ const expectReviewOfferButton = ({
   return cta
 }
 
-it("renders without throwing an error", () => {
-  expect(() => renderWithRelay()).not.toThrow()
+it("renders without throwing an error", async () => {
+  await expect(renderWithRelay()).resolves.not.toThrow()
 })
 
 describe("conversation about an artwork with inquiry checkout enabled", () => {
@@ -161,8 +161,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     })
   }
 
-  it("renders the make offer button if there is no active order", () => {
-    renderWithOrders()
+  it("renders the make offer button if there is no active order", async () => {
+    await renderWithOrders()
 
     expect(screen.getByText(INQUIRY_BUTTON_TEXT)).toBeOnTheScreen()
   })
@@ -201,28 +201,28 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
         Artwork: () => ({ internalID: "123", href: "/artwork/foo", isOfferableFromInquiry: true }),
       })
 
-      it("replaces the inquiry buttons with the offer banner when the flag is on", () => {
+      it("replaces the inquiry buttons with the offer banner when the flag is on", async () => {
         __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationPartnerOffers: true })
 
-        renderWithRelay(buildPartnerOfferResolvers())
+        await renderWithRelay(buildPartnerOfferResolvers())
 
         // The dedicated offer banner replaces the inquiry transaction buttons.
         expect(screen.queryByText(INQUIRY_BUTTON_TEXT)).not.toBeOnTheScreen()
         expect(screen.getByTestId("conversation-partner-offer-cta")).toBeOnTheScreen()
       })
 
-      it("still renders the inquiry buttons when the flag is off", () => {
+      it("still renders the inquiry buttons when the flag is off", async () => {
         __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationPartnerOffers: false })
 
-        renderWithRelay(buildPartnerOfferResolvers())
+        await renderWithRelay(buildPartnerOfferResolvers())
 
         expect(screen.getByText(INQUIRY_BUTTON_TEXT)).toBeOnTheScreen()
       })
 
-      it("falls back to the inquiry buttons once the offer expires", () => {
+      it("falls back to the inquiry buttons once the offer expires", async () => {
         __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationPartnerOffers: true })
 
-        renderWithRelay(buildPartnerOfferResolvers({ endAt: pastISO() }))
+        await renderWithRelay(buildPartnerOfferResolvers({ endAt: pastISO() }))
 
         expect(screen.queryByTestId("conversation-partner-offer-cta")).not.toBeOnTheScreen()
         expect(screen.getByText(INQUIRY_BUTTON_TEXT)).toBeOnTheScreen()
@@ -230,8 +230,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     }
   )
 
-  it("renders the payment failed message if the payment failed", () => {
-    renderWithOrders({ buyerAction: "PAYMENT_FAILED", buyerState: "PAYMENT_FAILED" })
+  it("renders the payment failed message if the payment failed", async () => {
+    await renderWithOrders({ buyerAction: "PAYMENT_FAILED", buyerState: "PAYMENT_FAILED" })
 
     expectReviewOfferButton({
       bg: "red100",
@@ -243,14 +243,14 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     })
   })
 
-  it("doesn't render when the order has no buyer action (offer waiting on the seller)", () => {
-    renderWithOrders({ buyerAction: null, buyerState: "SUBMITTED" })
+  it("doesn't render when the order has no buyer action (offer waiting on the seller)", async () => {
+    await renderWithOrders({ buyerAction: null, buyerState: "SUBMITTED" })
 
     assertRendersNothing()
   })
 
-  it("renders the pending offer when the seller countered", () => {
-    renderWithOrders({ buyerAction: "OFFER_RECEIVED", buyerState: "OFFER_RECEIVED" })
+  it("renders the pending offer when the seller countered", async () => {
+    await renderWithOrders({ buyerAction: "OFFER_RECEIVED", buyerState: "OFFER_RECEIVED" })
 
     expectReviewOfferButton({
       bg: "orange150",
@@ -259,8 +259,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     })
   })
 
-  it("shows counteroffer received when there is more than one submitted offer", () => {
-    renderWithOrders({
+  it("shows counteroffer received when there is more than one submitted offer", async () => {
+    await renderWithOrders({
       buyerAction: "OFFER_RECEIVED",
       buyerState: "OFFER_RECEIVED",
       submittedOffers: [{ internalID: "offer-1" }, { internalID: "offer-2" }],
@@ -269,8 +269,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     expectReviewOfferButton({ strings: ["Counteroffer Received"] })
   })
 
-  it("shows correct message for an accepted offer", () => {
-    renderWithOrders({ buyerAction: "OFFER_ACCEPTED", buyerState: "APPROVED" })
+  it("shows correct message for an accepted offer", async () => {
+    await renderWithOrders({ buyerAction: "OFFER_ACCEPTED", buyerState: "APPROVED" })
 
     expectReviewOfferButton({
       bg: "green100",
@@ -279,8 +279,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     })
   })
 
-  it("shows counter received - confirm total when the seller's counteroffer defines the total", () => {
-    renderWithOrders({
+  it("shows counter received - confirm total when the seller's counteroffer defines the total", async () => {
+    await renderWithOrders({
       buyerAction: "OFFER_RECEIVED_CONFIRM_NEEDED",
       buyerState: "OFFER_RECEIVED",
     })
@@ -292,8 +292,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     })
   })
 
-  it("shows accepted - confirm total when the seller accepts and defines the total", () => {
-    renderWithOrders({
+  it("shows accepted - confirm total when the seller accepts and defines the total", async () => {
+    await renderWithOrders({
       buyerAction: "OFFER_ACCEPTED_CONFIRM_NEEDED",
       buyerState: "OFFER_RECEIVED",
     })
@@ -305,8 +305,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     })
   })
 
-  it("shows offer accepted when buyer also approves the provisional offer", () => {
-    renderWithOrders({ buyerAction: "PROVISIONAL_OFFER_ACCEPTED", buyerState: "APPROVED" })
+  it("shows offer accepted when buyer also approves the provisional offer", async () => {
+    await renderWithOrders({ buyerAction: "PROVISIONAL_OFFER_ACCEPTED", buyerState: "APPROVED" })
 
     expectReviewOfferButton({
       bg: "green100",
@@ -319,8 +319,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
   // always kept showing the accepted banner.
   it.each([["SHIPPED"], ["COMPLETED"]])(
     "shows the 'approved' banner for fulfilled (%s) offers",
-    (buyerState) => {
-      renderWithOrders({ buyerAction: null, buyerState })
+    async (buyerState) => {
+      await renderWithOrders({ buyerAction: null, buyerState })
 
       expectReviewOfferButton({
         bg: "green100",
@@ -330,14 +330,14 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     }
   )
 
-  it("doesn't render for refunded offers", () => {
-    renderWithOrders({ buyerAction: null, buyerState: "REFUNDED" })
+  it("doesn't render for refunded offers", async () => {
+    await renderWithOrders({ buyerAction: null, buyerState: "REFUNDED" })
 
     assertRendersNothing()
   })
 
-  it("ignores orders from another conversation and shows the inquiry buttons", () => {
-    renderWithOrders({
+  it("ignores orders from another conversation and shows the inquiry buttons", async () => {
+    await renderWithOrders({
       buyerAction: "OFFER_RECEIVED",
       buyerState: "OFFER_RECEIVED",
       impulseConversationId: "another-conversation-id",
@@ -347,8 +347,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     expect(screen.getByText(INQUIRY_BUTTON_TEXT)).toBeOnTheScreen()
   })
 
-  it("ignores orders with no conversation and shows the inquiry buttons", () => {
-    renderWithOrders({
+  it("ignores orders with no conversation and shows the inquiry buttons", async () => {
+    await renderWithOrders({
       buyerAction: "OFFER_RECEIVED",
       buyerState: "OFFER_RECEIVED",
       impulseConversationId: null,
@@ -358,20 +358,20 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     expect(screen.getByText(INQUIRY_BUTTON_TEXT)).toBeOnTheScreen()
   })
 
-  it("skips null order nodes", () => {
-    renderWithOrders(null, { buyerAction: "OFFER_RECEIVED", buyerState: "OFFER_RECEIVED" })
+  it("skips null order nodes", async () => {
+    await renderWithOrders(null, { buyerAction: "OFFER_RECEIVED", buyerState: "OFFER_RECEIVED" })
 
     expectReviewOfferButton({ strings: ["Offer Received"] })
   })
 
-  it("shows the inquiry buttons when the only node is null", () => {
-    renderWithOrders(null)
+  it("shows the inquiry buttons when the only node is null", async () => {
+    await renderWithOrders(null)
 
     expect(screen.getByText(INQUIRY_BUTTON_TEXT)).toBeOnTheScreen()
   })
 
-  it("prefers the order with a buyer action over a newer order without one", () => {
-    renderWithOrders(
+  it("prefers the order with a buyer action over a newer order without one", async () => {
+    await renderWithOrders(
       { internalID: "newer-order-id", buyerAction: null, buyerState: "SUBMITTED" },
       {
         internalID: "countered-order-id",
@@ -384,8 +384,8 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
   })
 
   describe("given BUY mode", () => {
-    it("doesn't render anything", () => {
-      renderWithOrders({
+    it("doesn't render anything", async () => {
+      await renderWithOrders({
         mode: "BUY",
         buyerAction: null,
         buyerState: "APPROVED",

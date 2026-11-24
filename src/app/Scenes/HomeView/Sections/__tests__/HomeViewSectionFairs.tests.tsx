@@ -32,8 +32,8 @@ describe("HomeViewSectionFairs", () => {
     `,
   })
 
-  it("renders nothing when there are no fairs", () => {
-    const { toJSON } = renderWithRelay({
+  it("renders nothing when there are no fairs", async () => {
+    const { toJSON } = await renderWithRelay({
       HomeViewComponent: () => ({
         title: "Featured Fairs",
         desriptions: "The most exciting fairs in the world",
@@ -47,8 +47,8 @@ describe("HomeViewSectionFairs", () => {
     expect(toJSON()).toBeNull()
   })
 
-  it("renders a list of fairs", () => {
-    renderWithRelay({
+  it("renders a list of fairs", async () => {
+    await renderWithRelay({
       HomeViewComponent: () => ({
         title: "Featured Fairs",
         description: "The most exciting fairs in the world",
@@ -74,8 +74,8 @@ describe("HomeViewSectionFairs", () => {
     expect(screen.getByText(/Fair 2/)).toBeOnTheScreen()
   })
 
-  it("tracks fairs taps properly", () => {
-    renderWithRelay({
+  it("tracks fairs taps properly", async () => {
+    await renderWithRelay({
       HomeViewSectionFairs: () => ({
         internalID: "home-view-section-featured-fairs",
         component: {
@@ -107,7 +107,7 @@ describe("HomeViewSectionFairs", () => {
     expect(screen.getByText(/Fair 1/)).toBeOnTheScreen()
     expect(screen.getByText(/Fair 2/)).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText(/Fair 2/))
+    await fireEvent.press(screen.getByText(/Fair 2/))
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
         [
           {
@@ -128,7 +128,7 @@ describe("HomeViewSectionFairs", () => {
   })
 
   it("tracks view-all properly", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       HomeViewSectionFairs: () => ({
         internalID: "home-view-section-featured-fairs",
         contextModule: "fairRail",
@@ -158,7 +158,7 @@ describe("HomeViewSectionFairs", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("Featured Fairs"))
+    await fireEvent.press(screen.getByText("Featured Fairs"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
