@@ -105,10 +105,11 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
             >
               <ImageWrapper key={index} p={2}>
                 <Image
+                  testID={"image-" + index}
                   width={220}
                   height={190}
-                  src={result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.url ?? ""}
-                  blurhash={result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.blurhash}
+                  src={result?.representativeArtworks?.[0]?.image?.url ?? ""}
+                  blurhash={result?.representativeArtworks?.[0]?.image?.blurhash}
                 />
                 <Text variant="sm" weight="medium" mt="15px" testID={"title-" + index}>
                   {result.title}
@@ -151,18 +152,10 @@ export const FeaturedCollectionsRailContainer = createFragmentContainer(Featured
         title
         priceGuidance
         descriptionMarkdown
-        featuredCollectionArtworks: artworksConnection(
-          first: 1
-          aggregations: [TOTAL]
-          sort: "-decayed_merch"
-        ) {
-          edges {
-            node {
-              image {
-                url
-                blurhash
-              }
-            }
+        representativeArtworks {
+          image {
+            url
+            blurhash
           }
         }
       }

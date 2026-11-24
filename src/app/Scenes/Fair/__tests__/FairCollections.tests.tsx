@@ -5,6 +5,14 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
+jest.mock("@d11/react-native-fast-image", () => {
+  const React = require("react")
+  const { View } = require("react-native")
+  const FastImage = (props: any) => React.createElement(View, { testID: "fast-image", ...props })
+  FastImage.resizeMode = { cover: "cover", contain: "contain" }
+  return FastImage
+})
+
 describe("FairCollections", () => {
   const { renderWithRelay } = setupTestWrapper<FairCollectionsTestsQuery>({
     Component: ({ fair }) => <FairCollectionsFragmentContainer fair={fair!} />,
@@ -67,6 +75,44 @@ describe("FairCollections", () => {
       destination_screen_owner_slug: "collectible-sculptures",
       type: "thumbnail",
     })
+  })
+
+  it("renders images sourced from representative artworks", async () => {
+    await renderWithRelay({
+      Fair: () => ({
+        marketingCollections: [
+          {
+            title: "Big Artists, Small Sculptures",
+            representativeArtworks: [
+              { image: { url: "https://example.com/image-1.jpg" } },
+              { image: { url: "https://example.com/image-2.jpg" } },
+              { image: { url: "https://example.com/image-3.jpg" } },
+            ],
+          },
+        ],
+      }),
+    })
+
+    const uris = screen.getAllByTestId("fast-image").map((image) => image.props.source.uri)
+    expect(uris).toEqual([
+      "https://example.com/image-1.jpg",
+      "https://example.com/image-2.jpg",
+      "https://example.com/image-3.jpg",
+    ])
+  })
+
+  it("renders without image URLs when a collection has no representative artworks", async () => {
+    await renderWithRelay({
+      Fair: () => ({
+        marketingCollections: [
+          { title: "Big Artists, Small Sculptures", representativeArtworks: [] },
+        ],
+      }),
+    })
+
+    expect(screen.getByText("Big Artists, Small Sculptures")).toBeOnTheScreen()
+    const uris = screen.getAllByTestId("fast-image").map((image) => image.props.source.uri)
+    expect(uris.every((uri) => uri === undefined)).toBe(true)
   })
 
   it("renders null if there are no collections", async () => {

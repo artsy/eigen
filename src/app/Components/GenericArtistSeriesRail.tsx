@@ -2,8 +2,8 @@ import { Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { CollectionArtistSeriesRail_collectionGroup$data } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
 import { CardRailCard } from "app/Components/CardRail/CardRailCard"
 import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
-import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { compact } from "lodash"
 import { View } from "react-native"
@@ -43,7 +43,7 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
         ItemSeparatorComponent={() => <Spacer x={0.5} />}
         renderItem={({ item: result, index }) => {
           const artworkImageURLs = compact(
-            extractNodes(result?.artworksConnection, (artwork) => artwork.image?.url)
+            (result?.representativeArtworks ?? []).map((artwork) => artwork?.image?.url)
           )
 
           return (

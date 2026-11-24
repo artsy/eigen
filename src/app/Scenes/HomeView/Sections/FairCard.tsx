@@ -4,7 +4,6 @@ import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
 import { CardWithMetaData, useNumColumns } from "app/Components/Cards/CardWithMetaData"
 import { FairFollowButton } from "app/Components/FairFollowButton"
 import { MultipleImageLayout } from "app/Components/MultipleImageLayout"
-import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { compact, concat, take } from "lodash"
 import { FC, memo } from "react"
@@ -36,8 +35,7 @@ export const FairCard: FC<FairCardProps> = memo(({ fair: fairFragment, onPress, 
     take(
       concat(
         [fair.image?.url],
-        extractNodes(fair.followedArtistArtworks, (artwork) => artwork.image?.url),
-        extractNodes(fair.otherArtworks, (artwork) => artwork.image?.url)
+        (fair.representativeArtworks ?? []).map((artwork) => artwork.image?.url)
       ),
       3
     )
@@ -84,25 +82,9 @@ const fragment = graphql`
       city
       country
     }
-    followedArtistArtworks: filterArtworksConnection(
-      first: 2
-      input: { includeArtworksByFollowedArtists: true }
-    ) {
-      edges {
-        node {
-          image {
-            url(version: "large")
-          }
-        }
-      }
-    }
-    otherArtworks: filterArtworksConnection(first: 2) {
-      edges {
-        node {
-          image {
-            url(version: "large")
-          }
-        }
+    representativeArtworks {
+      image {
+        url(version: "large")
       }
     }
   }

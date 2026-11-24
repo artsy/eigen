@@ -10,7 +10,6 @@ import {
 } from "app/Components/CardRail/CardRailCard"
 import { MultipleImageLayout } from "app/Components/MultipleImageLayout"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
@@ -26,11 +25,11 @@ export const HomeViewSectionSalesItem: FC<HomeViewSectionSalesItemProps> = ({
 }) => {
   const sale = useFragment(fragment, saleProp)
 
-  const imageURLs = extractNodes(sale.artworksConnection, (artwork) => artwork.image?.url)
-
   // Sales are expected to always have >= 2 artworks, but we should
   // still be cautious to avoid crashes if this assumption is broken.
-  const availableArtworkImageURLs = compact(imageURLs)
+  const availableArtworkImageURLs = compact(
+    (sale.representativeArtworks ?? []).map((artwork) => artwork.image?.url)
+  )
 
   const url = sale.liveURLIfOpen ?? sale.href
 
@@ -65,24 +64,9 @@ const fragment = graphql`
     formattedStartDateTime
     internalID
     slug
-    saleArtworksConnection(first: 3) {
-      edges {
-        node {
-          artwork {
-            image {
-              url(version: "large")
-            }
-          }
-        }
-      }
-    }
-    artworksConnection(first: 3) {
-      edges {
-        node {
-          image {
-            url(version: "large")
-          }
-        }
+    representativeArtworks {
+      image {
+        url(version: "large")
       }
     }
   }

@@ -77,7 +77,9 @@ const CollectionCard: React.FC<CollectionCardProps> = memo(
       return null
     }
 
-    const images = compact(collection?.artworks?.edges?.map((edge) => edge?.node?.image?.url)) ?? []
+    const images = compact(
+      collection?.representativeArtworks?.map((artwork) => artwork?.image?.url)
+    )
 
     return (
       <RouterLink
@@ -110,13 +112,9 @@ export const FairCollectionsFragmentContainer = createFragmentContainer(FairColl
         slug
         title
         category
-        artworks: artworksConnection(first: 3) {
-          edges {
-            node {
-              image {
-                url(version: "larger")
-              }
-            }
+        representativeArtworks {
+          image {
+            url(version: "larger")
           }
         }
       }
