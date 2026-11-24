@@ -11,7 +11,7 @@ export interface ResaleSubmission {
   state: resaleSubmission_resaleSubmission$data["state"]
   channel: SupportedSellChannel | null
   /** The recommended price range, like “US$2,800–US$3,600”, or null without both ends */
-  estimate: string | null
+  recommendedPriceRange: string | null
 }
 
 /** A submission whose channel the app can show */
@@ -45,7 +45,7 @@ export const toResaleSubmission = (
     internalID,
     state,
     channel: isSupportedSellChannel(channel) ? channel : null,
-    estimate: min && max ? `${min}–${max}` : null,
+    recommendedPriceRange: min && max ? `${min}–${max}` : null,
   }
 }
 

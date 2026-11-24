@@ -7,7 +7,7 @@ const resaleSubmission = (overrides: Partial<ResaleSubmission>): ResaleSubmissio
   internalID: "resale-submission-1",
   state: "ACCEPTED",
   channel: "MARKETPLACE",
-  estimate: null,
+  recommendedPriceRange: null,
   ...overrides,
 })
 
