@@ -9,6 +9,10 @@ import { SellSubmittedBottomSheet } from "app/Scenes/Sell/Components/SellSubmitt
 import { SellWorkCard } from "app/Scenes/Sell/Components/SellWorkCard"
 import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { SellLocationStore } from "app/Scenes/Sell/State/SellLocationStore"
+import {
+  sellAuctionLocationSchema,
+  sellMarketplaceShippingSchema,
+} from "app/Scenes/Sell/State/sellLocationSchema"
 import { useSaveResaleSubmission } from "app/Scenes/Sell/hooks/useUpdateResaleSubmission"
 import {
   ResaleSubmissionWithChannel,
@@ -110,12 +114,12 @@ interface FormProps {
 }
 
 const AuctionLocationForm: React.FC<FormProps> = ({ artwork, me, resaleSubmission, onSubmit }) => {
-  const { locationComplete, phoneNumber } = SellLocationStore.useStoreState((state) => state)
+  const answers = SellLocationStore.useStoreState((state) => state)
 
   return (
     <SellFormLayout
       buttonLabel="Submit for Review"
-      buttonDisabled={!locationComplete || !phoneNumber.trim()}
+      buttonDisabled={!sellAuctionLocationSchema.isValidSync(answers)}
       onButtonPress={onSubmit}
     >
       <SellStepIntro stepName="LocationAndContact" channelKind="AUCTION" px={2} />
@@ -140,23 +144,19 @@ const MarketplaceShippingForm: React.FC<FormProps> = ({
   resaleSubmission,
   onSubmit,
 }) => {
-  const { locationComplete, shippingComplete, phoneNumber, packaging, packer, delivery } =
-    SellLocationStore.useStoreState((state) => state)
+  const answers = SellLocationStore.useStoreState((state) => state)
   const { save, saving } = useSaveResaleSubmission({ onSaved: onSubmit })
 
   // Listing the work, the address and the phone number wait on backend support
   const saveAndSubmit = () => {
-    if (!packaging || !packer || !delivery) {
-      return
-    }
-
+    const { packaging, packer, delivery } = sellMarketplaceShippingSchema.validateSync(answers)
     save({ id: resaleSubmission.internalID, ...toShippingAnswers({ packaging, packer, delivery }) })
   }
 
   return (
     <SellFormLayout
       buttonLabel="List Artwork"
-      buttonDisabled={!locationComplete || !shippingComplete || !phoneNumber.trim()}
+      buttonDisabled={!sellMarketplaceShippingSchema.isValidSync(answers)}
       buttonLoading={saving}
       onButtonPress={saveAndSubmit}
     >

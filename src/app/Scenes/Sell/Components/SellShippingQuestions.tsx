@@ -45,13 +45,11 @@ const DELIVERY_OPTIONS: SellOption<SellDelivery>[] = [
 
 /** Locked until the location is complete, then each question waits for the one before it */
 export const SellShippingQuestions: React.FC = () => {
-  const { locationComplete, packaging, packer, delivery } = SellLocationStore.useStoreState(
-    (state) => state
-  )
+  const { address, packaging, packer, delivery } = SellLocationStore.useStoreState((state) => state)
   const { setPackaging, setPacker, setDelivery } = SellLocationStore.useStoreActions(
     (actions) => actions
   )
-  const disabled = !locationComplete
+  const disabled = !address
 
   return (
     <Flex gap={4}>

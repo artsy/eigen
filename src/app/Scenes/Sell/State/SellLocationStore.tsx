@@ -1,6 +1,6 @@
 import { SellLocationFields_me$data } from "__generated__/SellLocationFields_me.graphql"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { Action, Computed, action, computed, createContextStore } from "easy-peasy"
+import { Action, action, createContextStore } from "easy-peasy"
 
 export type SellSavedAddress = ExtractNodeType<SellLocationFields_me$data["addressConnection"]>
 
@@ -18,8 +18,6 @@ export interface SellLocationStoreModel {
   packaging: SellPackaging | null
   packer: SellPacker | null
   delivery: SellDelivery | null
-  locationComplete: Computed<this, boolean>
-  shippingComplete: Computed<this, boolean>
   /** Also fills an empty phone number from the address */
   setAddress: Action<this, SellSavedAddress>
   setPhoneNumber: Action<this, string>
@@ -34,8 +32,6 @@ export const sellLocationStoreModel: SellLocationStoreModel = {
   packaging: null,
   packer: null,
   delivery: null,
-  locationComplete: computed((state) => !!state.address),
-  shippingComplete: computed((state) => !!state.packaging && !!state.packer && !!state.delivery),
   setAddress: action((state, address) => {
     state.address = address
     state.phoneNumber ||= address.phoneNumber ?? ""
