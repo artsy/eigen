@@ -231,7 +231,7 @@ describe("Sell", () => {
     await fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
     await fireEvent.press(screen.getByText("Verify If Sellable"))
     await resolveVerify(view)
-    view.unmount()
+    await view.unmount()
 
     // Throws if the screen reads its cached copy instead of asking again
     await renderWithRelay({
