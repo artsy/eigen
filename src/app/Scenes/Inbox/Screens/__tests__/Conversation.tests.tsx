@@ -158,7 +158,7 @@ describe("partner offer banner priority", () => {
     Conversation: () => ({
       internalID: "conversation-id",
       items: [{ item: { __typename: "Artwork" }, liveArtwork: { __typename: "Artwork" } }],
-      activeOrders: { edges: activeOrderEdges },
+      activeCollectorOrders: { edges: activeOrderEdges },
       collectorPartnerOffersConnection: {
         edges: [
           {
@@ -193,7 +193,11 @@ describe("partner offer banner priority", () => {
   })
 
   it("hides the partner offer banner when there is an active order", () => {
-    renderWithRelay(offerResolvers([{ node: { internalID: "order-1" } }]))
+    renderWithRelay(
+      offerResolvers([
+        { node: { internalID: "order-1", impulseConversationId: "conversation-id" } },
+      ])
+    )
 
     expect(screen.queryByTestId("conversation-partner-offer-cta")).not.toBeOnTheScreen()
   })

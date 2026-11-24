@@ -13,7 +13,7 @@ import { useTracking } from "react-tracking"
 export interface ReviewOfferButtonProps {
   conversationID: string
   kind: ReviewOfferCTAKind
-  activeOrder: ExtractNodeType<ConversationCTA_conversation$data["activeOrders"]>
+  activeOrder: ExtractNodeType<ConversationCTA_conversation$data["activeCollectorOrders"]>
 }
 
 export type ReviewOfferCTAKind =
@@ -29,17 +29,17 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
   activeOrder,
   kind,
 }) => {
-  const { internalID: orderID, offers } = activeOrder
+  const { internalID: orderID, submittedOffers } = activeOrder
   const { trackEvent } = useTracking()
 
   const { hoursTillEnd, minutes } = useEventTiming({
     currentTime: DateTime.local().toString(),
-    startAt: activeOrder.lastOffer?.createdAt,
-    endAt: activeOrder.stateExpiresAt || undefined,
+    startAt: activeOrder.lastSubmittedOffer?.createdAt ?? undefined,
+    endAt: activeOrder.buyerStateExpiresAt || undefined,
   })
 
   const expiresIn = Number(hoursTillEnd) < 1 ? `${minutes}m` : `${Math.round(hoursTillEnd)}hr`
-  const offerType = (offers?.edges?.length || 0) > 1 ? "Counteroffer" : "Offer"
+  const offerType = (submittedOffers?.length ?? 0) > 1 ? "Counteroffer" : "Offer"
 
   let ctaAttributes: {
     backgroundColor: Color

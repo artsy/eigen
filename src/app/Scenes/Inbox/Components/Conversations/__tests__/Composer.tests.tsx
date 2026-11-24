@@ -96,7 +96,7 @@ describe("inquiry offer", () => {
             },
           },
         ],
-        activeOrders: { edges: [] },
+        activeCollectorOrders: { edges: [] },
       }),
     })
     expect(screen.getByText(INQUIRY_BUTTON_TEXT)).toBeOnTheScreen()
@@ -111,12 +111,15 @@ describe("inquiry offer", () => {
               __typename: "Artwork",
             },
             liveArtwork: {
-              isOfferableFromInquiry: true,
+              isOfferableFromInquiry: false,
+              isOfferable: false,
+              isAcquireable: false,
               __typename: "Artwork",
               internalID: "123",
             },
           },
         ],
+        activeCollectorOrders: { edges: [] },
       }),
     })
     expect(screen.queryByText(INQUIRY_BUTTON_TEXT)).not.toBeOnTheScreen()
@@ -132,7 +135,7 @@ describe("inquiry offer", () => {
             },
           },
         ],
-        activeOrders: { edges: [] },
+        activeCollectorOrders: { edges: [] },
       }),
     })
 
@@ -152,15 +155,15 @@ describe("inquiry offer", () => {
               },
             },
           ],
-          activeOrders: {
+          internalID: "conversation-id",
+          activeCollectorOrders: {
             edges: [
               {
                 node: {
                   mode: "OFFER",
-                  state: "SUBMITTED",
-                  lastOffer: {
-                    fromParticipant: "BUYER",
-                  },
+                  buyerState: "SUBMITTED",
+                  buyerAction: null,
+                  impulseConversationId: "conversation-id",
                 },
               },
             ],
@@ -186,19 +189,16 @@ describe("inquiry offer", () => {
               },
             },
           ],
-          activeOrders: {
+          internalID: "conversation-id",
+          activeCollectorOrders: {
             edges: [
               {
                 node: {
                   mode: "OFFER",
-                  state: "SUBMITTED",
-                  lastOffer: {
-                    fromParticipant: "SELLER",
-                    offerAmountChanged: true,
-                  },
-                  offers: {
-                    edges: [{}, {}],
-                  },
+                  buyerState: "OFFER_RECEIVED",
+                  buyerAction: "OFFER_RECEIVED",
+                  impulseConversationId: "conversation-id",
+                  submittedOffers: [{}, {}],
                 },
               },
             ],
@@ -223,19 +223,17 @@ describe("inquiry offer", () => {
               },
             },
           ],
-          activeOrders: {
+          internalID: "conversation-id",
+          activeCollectorOrders: {
             edges: [
               {
                 node: {
                   mode: "OFFER",
-                  state: "APPROVED",
-                  lastOffer: {
-                    fromParticipant: "BUYER",
-                  },
-                  offers: {
-                    // plural offers => counteroffer
-                    edges: [{}, {}],
-                  },
+                  buyerState: "APPROVED",
+                  buyerAction: "OFFER_ACCEPTED",
+                  impulseConversationId: "conversation-id",
+                  // plural offers => counteroffer
+                  submittedOffers: [{}, {}],
                 },
               },
             ],
@@ -260,7 +258,7 @@ describe("inquiry offer", () => {
               },
             },
           ],
-          activeOrders: { edges: [] },
+          activeCollectorOrders: { edges: [] },
           orderConnection: {
             edges: [
               {
@@ -299,19 +297,16 @@ describe("inquiry offer", () => {
               },
             },
           ],
-          activeOrders: {
+          internalID: "conversation-id",
+          activeCollectorOrders: {
             edges: [
               {
                 node: {
                   mode: "OFFER",
-                  state: "SUBMITTED",
-                  lastTransactionFailed: true,
-                  lastOffer: {
-                    fromParticipant: "BUYER",
-                  },
-                  offers: {
-                    edges: [{}],
-                  },
+                  buyerState: "PAYMENT_FAILED",
+                  buyerAction: "PAYMENT_FAILED",
+                  impulseConversationId: "conversation-id",
+                  submittedOffers: [{}],
                 },
               },
             ],
@@ -336,7 +331,7 @@ describe("inquiry offer", () => {
               },
             },
           ],
-          activeOrders: { edges: [] },
+          activeCollectorOrders: { edges: [] },
           orderConnection: {
             edges: [
               {
