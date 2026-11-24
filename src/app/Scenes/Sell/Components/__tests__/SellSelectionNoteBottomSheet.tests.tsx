@@ -37,10 +37,23 @@ describe("SellSelectionNoteBottomSheet", () => {
     renderSheet({})
 
     expect(screen.getByText(/We can help you with 1\/2 of the works/)).toBeOnTheScreen()
+    expect(
+      screen.getByText("Please untick any works which are currently outside the US.")
+    ).toBeOnTheScreen()
     expect(screen.getByRole("checkbox", { name: "Artist A, Sellable Work" })).toBeChecked()
     expect(screen.getByText("Not able to sell yet")).toBeOnTheScreen()
     expect(screen.getByText("Unsellable Work")).toBeOnTheScreen()
     expect(screen.getAllByRole("checkbox")).toHaveLength(1)
+  })
+
+  it("talks about a single work when only one was selected", () => {
+    renderSheet({ unsellableWorks: [], selectedWorkIDs: ["id-a2"] })
+
+    expect(
+      screen.getByText("We can help you with this work, as long as it’s currently in the US.")
+    ).toBeOnTheScreen()
+    expect(screen.queryByText(/Please untick/)).not.toBeOnTheScreen()
+    expect(screen.getByRole("checkbox", { name: "Artist A, Sellable Work" })).toBeChecked()
   })
 
   it("hides the sellable section when nothing can be sold", () => {

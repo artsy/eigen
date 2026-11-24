@@ -333,7 +333,7 @@ describe("Sell", () => {
     fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
 
     expect(await resolveVerify(view)).toEqual(["id-a2"])
-    expect(await screen.findByText(/We can help you with 1\/1 of the works/)).toBeOnTheScreen()
+    expect(await screen.findByText(/We can help you with this work/)).toBeOnTheScreen()
   })
 
   it("walks through every step and shows the confirmation on submit", async () => {

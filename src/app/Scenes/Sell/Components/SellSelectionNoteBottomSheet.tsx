@@ -45,6 +45,7 @@ export const SellSelectionNoteBottomSheet: React.FC<SellSelectionNoteBottomSheet
   const space = useSpace()
   const color = useColor()
 
+  const selectionCount = sellableWorks.length + unsellableWorks.length
   const canProceed = sellableWorks.some((work) => selectedWorkIDs.includes(work.internalID))
 
   return (
@@ -63,14 +64,21 @@ export const SellSelectionNoteBottomSheet: React.FC<SellSelectionNoteBottomSheet
           {sellableWorks.length > 0 && (
             <Flex gap={1}>
               <SectionTitle>Works we can sell</SectionTitle>
-              <Text variant="sm" color="mono60">
-                We can help you with {sellableWorks.length}/
-                {sellableWorks.length + unsellableWorks.length} of the works you selected, as long
-                as they are currently in the US.
-              </Text>
-              <Text variant="sm" weight="medium">
-                Please untick any works which are currently outside the US.
-              </Text>
+              {selectionCount === 1 ? (
+                <Text variant="sm" color="mono60">
+                  We can help you with this work, as long as it’s currently in the US.
+                </Text>
+              ) : (
+                <>
+                  <Text variant="sm" color="mono60">
+                    We can help you with {sellableWorks.length}/{selectionCount} of the works you
+                    selected, as long as they are currently in the US.
+                  </Text>
+                  <Text variant="sm" weight="medium">
+                    Please untick any works which are currently outside the US.
+                  </Text>
+                </>
+              )}
 
               <Join separator={<Flex height={space(1)} />}>
                 {sellableWorks.map((work) => {
