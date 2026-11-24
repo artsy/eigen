@@ -11,7 +11,7 @@ import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { SellLocationStore } from "app/Scenes/Sell/State/SellLocationStore"
 import {
   ResaleSubmissionWithChannel,
-  hasSupportedChannel,
+  isResaleSubmissionSellable,
   toResaleSubmission,
 } from "app/Scenes/Sell/utils/resaleSubmission"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -50,7 +50,7 @@ const LocationAndContactContent: React.FC<{ resaleSubmissionID: string }> = with
 
     const resaleSubmission = me?.resaleSubmission && toResaleSubmission(me.resaleSubmission)
 
-    if (!me || !resaleSubmission || !hasSupportedChannel(resaleSubmission) || !artwork) {
+    if (!me || !isResaleSubmissionSellable(resaleSubmission) || !artwork) {
       return <LocationAndContactError />
     }
 

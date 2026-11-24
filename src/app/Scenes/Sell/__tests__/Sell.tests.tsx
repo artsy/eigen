@@ -415,6 +415,43 @@ describe("Sell", () => {
     expect(goBack).toHaveBeenCalledTimes(1)
   })
 
+  it("shows an error on step 2 when the submission is no longer accepted", async () => {
+    const view = await renderSell()
+    await fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
+    await fireEvent.press(screen.getByText("Verify If Sellable"))
+    await resolveVerify(view)
+    await fireEvent.press(await screen.findByText("Proceed to Listing"))
+    await fireEvent.press(await screen.findByText("Start Submission"))
+
+    const artwork = { internalID: "id-b4", artistNames: "Artist C" }
+    const resolvers = activeWorkResolvers(artwork)
+    await resolveWhenPending(view, "ConditionQuery", {
+      ...resolvers,
+      ResaleSubmission: () => ({ ...resolvers.ResaleSubmission(), state: "REJECTED" }),
+    })
+
+    expect(await screen.findByText("We couldn’t load this work.")).toBeOnTheScreen()
+    expect(screen.queryByText("Continue")).not.toBeOnTheScreen()
+  })
+
+  it("shows an error on step 3 when the submission is no longer accepted", async () => {
+    const view = await renderSell()
+    await openAuctionConditionStep(view)
+    await fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
+    await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
+    await fireEvent.press(screen.getByText("Continue"))
+
+    const artwork = { internalID: "id-b4", artistNames: "Artist C" }
+    const resolvers = activeWorkResolvers(artwork)
+    await resolveWhenPending(view, "LocationAndContactQuery", {
+      ...resolvers,
+      ResaleSubmission: () => ({ ...resolvers.ResaleSubmission(), state: "LISTED" }),
+    })
+
+    expect(await screen.findByText("We couldn’t load this work.")).toBeOnTheScreen()
+    expect(screen.queryByText("Submit for Review")).not.toBeOnTheScreen()
+  })
+
   it("asks auction works for a condition, then a location and phone number", async () => {
     const view = await renderSell()
     await openAuctionConditionStep(view)

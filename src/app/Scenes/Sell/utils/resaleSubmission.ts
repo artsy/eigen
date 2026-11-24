@@ -22,7 +22,7 @@ export const hasSupportedChannel = (
 ): resaleSubmission is ResaleSubmissionWithChannel => resaleSubmission.channel !== null
 
 export const isResaleSubmissionSellable = (
-  resaleSubmission: ResaleSubmission | undefined
+  resaleSubmission: ResaleSubmission | null | undefined
 ): resaleSubmission is ResaleSubmissionWithChannel =>
   resaleSubmission?.state === "ACCEPTED" && hasSupportedChannel(resaleSubmission)
 

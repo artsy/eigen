@@ -12,7 +12,7 @@ import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { useConfirmLeavingConditionStep } from "app/Scenes/Sell/hooks/useConfirmLeavingConditionStep"
 import {
   ResaleSubmissionWithChannel,
-  hasSupportedChannel,
+  isResaleSubmissionSellable,
   toResaleSubmission,
 } from "app/Scenes/Sell/utils/resaleSubmission"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -44,7 +44,7 @@ const ConditionContent: React.FC<{ resaleSubmissionID: string }> = withSuspense(
       data.me?.resaleSubmission && toResaleSubmission(data.me.resaleSubmission)
     const artwork = data.me?.resaleSubmission?.submittedArtwork
 
-    if (!resaleSubmission || !hasSupportedChannel(resaleSubmission) || !artwork) {
+    if (!isResaleSubmissionSellable(resaleSubmission) || !artwork) {
       return <ConditionError />
     }
 
