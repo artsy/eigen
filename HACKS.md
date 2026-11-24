@@ -406,22 +406,6 @@ When moti ships types that don't import `PerspectiveTransform`, `RotateTransform
 
 React Native's [Strict TypeScript API](https://reactnative.dev/docs/strict-typescript-api) (the default since 0.88) no longer exports the individual transform types. moti 0.30's `build/core/types.d.ts` imports them, so they became `any` (hidden by `skipLibCheck`), which collapsed `MotiTransition` to an index signature and made every `transition={{ type: "timing" }}` a type error. The patch declares those transform types locally in the `.d.ts`. Types only, no runtime change.
 
-## Patch for @artsy/palette-mobile (Strict TypeScript API types)
-
-#### When can we remove this:
-
-When palette-mobile releases the same type fixes and builds against the Strict TypeScript API (its tsconfig still uses Node10 resolution with a `paths` mapping to `react-native/types_DEPRECATED`, which React Native removes after 0.89).
-
-#### Explanation/Context:
-
-palette's published `.d.ts` files were generated against React Native's legacy types. Under the Strict TypeScript API:
-
-- `Box` and `Flex` type their ref as `View`, which is now the component function rather than its instance, so no ref we create could be passed to them. They now use `ViewInstance`.
-- `export type Input = TextInput` made `useRef<Input>` refs lose `focus` / `blur`. It now points at palette's `InputRef`, which is what `Input`'s `forwardRef` exposes.
-- `useHasSeenItem` imports `ViewToken` / `ViewabilityConfig`, which aren't exported any more. It now uses `ListViewToken` and the `viewabilityConfig` prop type.
-
-Types only (`dist/**/*.d.ts`), no runtime change.
-
 ## patch for AFNetworking
 
 #### When can we remove this:

@@ -63,9 +63,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/palette-mobile@npm:25.0.0":
-  version: 25.0.0
-  resolution: "@artsy/palette-mobile@npm:25.0.0"
+"@artsy/palette-mobile@npm:25.1.0--canary.543.6994.0":
+  version: 25.1.0--canary.543.6994.0
+  resolution: "@artsy/palette-mobile@npm:25.1.0--canary.543.6994.0"
   dependencies:
     "@artsy/palette-tokens": "npm:7.0.0"
     "@react-spring/native": "npm:10.0.3"
@@ -86,34 +86,7 @@ __metadata:
     react-native-svg: "*"
     react-native-worklets: "*"
     styled-components: ">= 5"
-  checksum: 10c0/deb3d25793fc989d42daf25884f5fedcdcda6fcacdd97cc3e88560b41760625aa87e16560d144e3798adb67c1a27b1cbb88be1b1e363416afbde0a96248e45a6
-  languageName: node
-  linkType: hard
-
-"@artsy/palette-mobile@patch:@artsy/palette-mobile@npm%3A25.0.0#~/.yarn/patches/@artsy-palette-mobile-npm-25.0.0-8e7a0da03c.patch":
-  version: 25.0.0
-  resolution: "@artsy/palette-mobile@patch:@artsy/palette-mobile@npm%3A25.0.0#~/.yarn/patches/@artsy-palette-mobile-npm-25.0.0-8e7a0da03c.patch::version=25.0.0&hash=d38c9c"
-  dependencies:
-    "@artsy/palette-tokens": "npm:7.0.0"
-    "@react-spring/native": "npm:10.0.3"
-    "@styled-system/theme-get": "npm:^5.1.2"
-    events: "npm:3.3.0"
-    react-nanny: "npm:2.15.0"
-    react-native-popover-view: "npm:^6.1.0"
-  peerDependencies:
-    "@d11/react-native-fast-image": "*"
-    react: "*"
-    react-native: "*"
-    react-native-blurhash: "*"
-    react-native-collapsible-tab-view: "*"
-    react-native-haptic-feedback: "*"
-    react-native-linear-gradient: "*"
-    react-native-pager-view: "*"
-    react-native-reanimated: "*"
-    react-native-svg: "*"
-    react-native-worklets: "*"
-    styled-components: ">= 5"
-  checksum: 10c0/60284b2da1fc2a05737a1f9fb35e68cfc9d5af9600067d4d6259077f30de4ceaffaf1c57c1155011cb96d72686f9d556a4de82d8f30f1a0a195a970c76f40086
+  checksum: 10c0/20405eb9b9e047876b8a294f00bd89af558f7c07b71c5f73a3577b647ae2ded87575450c7df416865febeb431095ef1525d54cf5f84a749d17143ce6d355696f
   languageName: node
   linkType: hard
 
@@ -14005,7 +13978,7 @@ __metadata:
     "@artsy/changelog": "npm:0.1.0"
     "@artsy/cohesion": "npm:4.425.0"
     "@artsy/icons": "npm:3.86.0"
-    "@artsy/palette-mobile": "patch:@artsy/palette-mobile@npm%3A25.0.0#~/.yarn/patches/@artsy-palette-mobile-npm-25.0.0-8e7a0da03c.patch"
+    "@artsy/palette-mobile": "npm:25.1.0--canary.543.6994.0"
     "@artsy/to-title-case": "npm:1.2.1"
     "@artsy/update-repo": "npm:0.8.3"
     "@babel/core": "npm:7.29.7"
