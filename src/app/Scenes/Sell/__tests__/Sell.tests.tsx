@@ -1,4 +1,3 @@
-import { Spinner } from "@artsy/palette-mobile"
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { Sell } from "app/Scenes/Sell/Sell"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -312,7 +311,7 @@ describe("Sell", () => {
     expect(screen.queryByText("Proceed to Listing")).not.toBeOnTheScreen()
 
     // The toast shows a moment before the button stops loading, and a loading button ignores presses
-    await waitFor(() => expect(screen.UNSAFE_queryByType(Spinner)).toBeNull())
+    await waitFor(() => expect(screen.getByText("Verify If Sellable")).toBeVisible())
     await fireEvent.press(screen.getByText("Verify If Sellable"))
     expect(await resolveVerify(view)).toEqual(["id-b4"])
     expect(await screen.findByText("Proceed to Listing")).toBeOnTheScreen()
@@ -326,7 +325,7 @@ describe("Sell", () => {
     await waitFor(() =>
       expect(operationNames(view)).toContain("useCreateResaleSubmissionsMutation")
     )
-    view.mockRejectLastOperation(new Error("Network request failed"))
+    await view.mockRejectLastOperation(new Error("Network request failed"))
 
     await waitFor(() =>
       expect(mockShowToast).toHaveBeenCalledWith(
