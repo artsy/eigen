@@ -47,11 +47,11 @@ describe("ReviewOfferButton", () => {
       kind,
       activeOrder: {
         internalID: "order-id",
-        stateExpiresAt: new Date().toISOString(),
-        lastOffer: { createdAt: new Date().toISOString() },
-        offers: { edges: [{} as any] },
+        buyerStateExpiresAt: new Date().toISOString(),
+        lastSubmittedOffer: { createdAt: new Date().toISOString() },
+        submittedOffers: [{ internalID: "offer-1" }],
         ...activeOrder,
-      } as ExtractNodeType<ConversationCTA_conversation$data["activeOrders"]>,
+      } as ExtractNodeType<ConversationCTA_conversation$data["activeCollectorOrders"]>,
     }
     return renderWithWrappers(<ReviewOfferButton {...props} />)
   }
@@ -62,28 +62,32 @@ describe("ReviewOfferButton", () => {
   })
 
   it("shows correct message for accepted offers", async () => {
-    await getWrapper("OFFER_ACCEPTED", { offers: { edges: [{} as any] } })
+    await getWrapper("OFFER_ACCEPTED", { submittedOffers: [{ internalID: "offer-1" }] })
 
     expectText("Offer Accepted")
     expect(screen.getAllByTestId("money-fill-icon")).toHaveLength(1)
   })
 
   it("shows correct message for accepted offers", async () => {
-    await getWrapper("OFFER_ACCEPTED_CONFIRM_NEEDED", { offers: { edges: [{} as any] } })
+    await getWrapper("OFFER_ACCEPTED_CONFIRM_NEEDED", {
+      submittedOffers: [{ internalID: "offer-1" }],
+    })
 
     expectText("Offer Accepted - Confirm total")
     expect(screen.getAllByTestId("alert-fill-icon")).toHaveLength(1)
   })
 
   it("shows correct message for accepted offers", async () => {
-    await getWrapper("OFFER_RECEIVED_CONFIRM_NEEDED", { offers: { edges: [{} as any] } })
+    await getWrapper("OFFER_RECEIVED_CONFIRM_NEEDED", {
+      submittedOffers: [{ internalID: "offer-1" }],
+    })
 
     expectText("Counteroffer Received - Confirm Total")
     expect(screen.getAllByTestId("alert-fill-icon")).toHaveLength(1)
   })
 
   it("shows correct message for accepted offers", async () => {
-    await getWrapper("PROVISIONAL_OFFER_ACCEPTED", { offers: { edges: [{} as any] } })
+    await getWrapper("PROVISIONAL_OFFER_ACCEPTED", { submittedOffers: [{ internalID: "offer-1" }] })
 
     expectText("Offer Accepted")
     expect(screen.getAllByTestId("money-fill-icon")).toHaveLength(1)
@@ -97,14 +101,16 @@ describe("ReviewOfferButton", () => {
   })
 
   it("shows correct message and icon for received offers", async () => {
-    await getWrapper("OFFER_RECEIVED", { offers: { edges: [{} as any] } })
+    await getWrapper("OFFER_RECEIVED", { submittedOffers: [{ internalID: "offer-1" }] })
 
     expectText("Offer Received")
     expect(screen.getAllByTestId("alert-fill-icon")).toHaveLength(1)
   })
 
   it("shows correct messaging and icon when offer is a counteroffer", async () => {
-    await getWrapper("OFFER_RECEIVED", { offers: { edges: [{} as any, {} as any] } })
+    await getWrapper("OFFER_RECEIVED", {
+      submittedOffers: [{ internalID: "offer-1" }, { internalID: "offer-2" }],
+    })
 
     expectText("Counteroffer Received")
     expect(screen.getAllByTestId("alert-fill-icon")).toHaveLength(1)
@@ -113,8 +119,8 @@ describe("ReviewOfferButton", () => {
   it("shows correct expiration in minutes when there is less than 1 hour left", async () => {
     const expirationTime = DateTime.local().plus({ minutes: 31 })
     await getWrapper("OFFER_RECEIVED", {
-      offers: { edges: [{} as any, {} as any] },
-      stateExpiresAt: expirationTime.toString(),
+      submittedOffers: [{ internalID: "offer-1" }, { internalID: "offer-2" }],
+      buyerStateExpiresAt: expirationTime.toString(),
     })
 
     expectText("Counteroffer Received")
@@ -124,8 +130,8 @@ describe("ReviewOfferButton", () => {
   it("shows correct expiration in hours when there is more than 1 hour left", async () => {
     const expirationTime = DateTime.local().plus({ hours: 10 })
     await getWrapper("OFFER_RECEIVED", {
-      offers: { edges: [{} as any, {} as any] },
-      stateExpiresAt: expirationTime.toString(),
+      submittedOffers: [{ internalID: "offer-1" }, { internalID: "offer-2" }],
+      buyerStateExpiresAt: expirationTime.toString(),
     })
 
     expectText("Counteroffer Received")
@@ -135,8 +141,8 @@ describe("ReviewOfferButton", () => {
   it("shows correct expiration in hours when there is more than 24 hours left", async () => {
     const expirationTime = DateTime.local().plus({ hours: 72 })
     await getWrapper("OFFER_RECEIVED", {
-      offers: { edges: [{} as any, {} as any] },
-      stateExpiresAt: expirationTime.toString(),
+      submittedOffers: [{ internalID: "offer-1" }, { internalID: "offer-2" }],
+      buyerStateExpiresAt: expirationTime.toString(),
     })
 
     expectText("Counteroffer Received")
@@ -144,7 +150,9 @@ describe("ReviewOfferButton", () => {
   })
 
   it("tapping it opens the review offer webview with the correct modal title and tracks event", async () => {
-    await getWrapper("OFFER_RECEIVED", { offers: { edges: [{} as any, {} as any] } })
+    await getWrapper("OFFER_RECEIVED", {
+      submittedOffers: [{ internalID: "offer-1" }, { internalID: "offer-2" }],
+    })
 
     // A TouchableWithoutFeedback, which only responds to responder events.
     await userEvent.press(screen.getByRole("button"))
@@ -162,7 +170,9 @@ describe("ReviewOfferButton", () => {
   })
 
   it("tapping it opens the correct webview with the correct title for offers where payment fails", async () => {
-    await getWrapper("PAYMENT_FAILED", { offers: { edges: [{} as any, {} as any] } })
+    await getWrapper("PAYMENT_FAILED", {
+      submittedOffers: [{ internalID: "offer-1" }, { internalID: "offer-2" }],
+    })
 
     // A TouchableWithoutFeedback, which only responds to responder events.
     await userEvent.press(screen.getByRole("button"))

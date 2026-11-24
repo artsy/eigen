@@ -1,7 +1,12 @@
-import { ConversationCTA_conversation$key } from "__generated__/ConversationCTA_conversation.graphql"
+import {
+  ConversationCTA_conversation$data,
+  ConversationCTA_conversation$key,
+} from "__generated__/ConversationCTA_conversation.graphql"
 import { ConversationPartnerOfferCTA } from "app/Scenes/Inbox/Components/Conversations/ConversationPartnerOfferCTA"
+import { findActiveConversationOrder } from "app/Scenes/Inbox/Components/Conversations/utils/findActiveConversationOrder"
 import { usePartnerOffer } from "app/Scenes/Inbox/hooks/usePartnerOffer"
 import { extractNodes } from "app/utils/extractNodes"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { graphql, useFragment } from "react-relay"
 import { CTAPopUp } from "./CTAPopUp"
 import { OpenInquiryModalButtonFragmentContainer } from "./OpenInquiryModalButton"
@@ -20,24 +25,27 @@ export const ConversationCTA: React.FC<Props> = ({ conversation: _conversation, 
     artworkId: liveArtwork?.__typename === "Artwork" ? liveArtwork.internalID : null,
   })
 
-  if (!conversation || liveArtwork?.__typename !== "Artwork") {
+  if (!conversation?.internalID || liveArtwork?.__typename !== "Artwork") {
     return null
   }
 
-  const isOfferableFromInquiry = liveArtwork?.isOfferableFromInquiry
-  const isOfferableConversationalBuyNow = liveArtwork?.isOfferable
-  const conversationalBuyNow = liveArtwork?.isAcquireable
+  const activeOrder = findActiveConversationOrder(
+    extractNodes(conversation.activeCollectorOrders),
+    conversation.internalID
+  )
 
-  const activeOrder = extractNodes(conversation.activeOrders)[0]
-
-  if (!activeOrder && !!conversation.internalID) {
+  if (!activeOrder) {
     // When there's an active partner offer, the dedicated offer banner replaces
     // the inquiry transaction buttons.
     if (hasActivePartnerOffer) {
       return <ConversationPartnerOfferCTA conversation={conversation} />
     }
 
-    if (isOfferableFromInquiry || isOfferableConversationalBuyNow || conversationalBuyNow) {
+    if (
+      liveArtwork.isOfferableFromInquiry ||
+      liveArtwork.isOfferable ||
+      liveArtwork.isAcquireable
+    ) {
       return (
         <CTAPopUp show={show}>
           <OpenInquiryModalButtonFragmentContainer
@@ -47,52 +55,41 @@ export const ConversationCTA: React.FC<Props> = ({ conversation: _conversation, 
         </CTAPopUp>
       )
     }
+
     return null
   }
 
-  const { lastTransactionFailed, state, lastOffer, mode } = activeOrder
-  let kind: ReviewOfferCTAKind | null = null
+  const kind = getReviewOfferCTAKind(activeOrder)
 
-  if (mode === "BUY") {
-    kind = null
-  } else if (lastTransactionFailed) {
-    kind = "PAYMENT_FAILED"
-  } else if (state === "SUBMITTED" && lastOffer?.fromParticipant === "SELLER") {
-    if (lastOffer.definesTotal) {
-      // provisional inquery checkout offer scenarios where metadata was initially missing
-      if (lastOffer.offerAmountChanged) {
-        // Brown CTA: 'Counteroffer received - confirm total'
-        kind = "OFFER_RECEIVED_CONFIRM_NEEDED"
-      } else {
-        // Brown CTA: 'Offer accepted - confirm total'
-        kind = "OFFER_ACCEPTED_CONFIRM_NEEDED"
-      }
-    } else {
-      // regular counter offer. either a definite offer on artwork with all metadata, or a provisional offer but metadata was provided in previous back and forth
-      if (lastOffer.offerAmountChanged) {
-        // Brown CTA: 'Counteroffer received'
-        kind = "OFFER_RECEIVED"
-      }
-    }
-  } else if (state === "FULFILLED") {
-    kind = "OFFER_ACCEPTED"
-  } else if (state === "APPROVED") {
-    const isProvisionalOffer = lastOffer?.fromParticipant === "SELLER" && lastOffer?.definesTotal
-    kind = isProvisionalOffer ? "PROVISIONAL_OFFER_ACCEPTED" : "OFFER_ACCEPTED"
+  if (!kind) {
+    return null
   }
 
-  if (!!kind && !!conversation.internalID) {
-    return (
-      <CTAPopUp show={show}>
-        <ReviewOfferButton
-          kind={kind}
-          activeOrder={activeOrder}
-          conversationID={conversation.internalID}
-        />
-      </CTAPopUp>
-    )
-  }
+  return (
+    <CTAPopUp show={show}>
+      <ReviewOfferButton
+        kind={kind}
+        activeOrder={activeOrder}
+        conversationID={conversation.internalID}
+      />
+    </CTAPopUp>
+  )
+}
 
+type ActiveOrder = ExtractNodeType<ConversationCTA_conversation$data["activeCollectorOrders"]>
+
+/**
+ * The banner comes from Exchange's `buyerAction`. Fulfilled offers (SHIPPED or
+ * COMPLETED) have no action, but the app has always shown them as accepted.
+ */
+const getReviewOfferCTAKind = ({
+  buyerAction,
+  buyerState,
+  mode,
+}: ActiveOrder): ReviewOfferCTAKind | null => {
+  if (mode === "BUY") return null
+  if (buyerAction && buyerAction !== "%future added value") return buyerAction
+  if (buyerState === "SHIPPED" || buyerState === "COMPLETED") return "OFFER_ACCEPTED"
   return null
 }
 
@@ -120,32 +117,34 @@ const conversationFragment = graphql`
         }
       }
     }
-    activeOrders: orderConnection(
+    activeCollectorOrders: collectorOrdersConnection(
       first: 10
-      states: [APPROVED, FULFILLED, SUBMITTED, REFUNDED, PROCESSING_APPROVAL]
+      buyerState: [
+        SUBMITTED
+        OFFER_RECEIVED
+        COUNTEROFFER_SENT
+        PAYMENT_FAILED
+        PROCESSING_PAYMENT
+        PROCESSING_OFFLINE_PAYMENT
+        APPROVED
+        SHIPPED
+        COMPLETED
+        REFUNDED
+      ]
     ) {
       edges {
         node {
           internalID
           mode
-          state
-          stateReason
-          stateExpiresAt
-          lastTransactionFailed
-          ... on CommerceOfferOrder {
-            lastOffer {
-              fromParticipant
-              createdAt
-              definesTotal
-              offerAmountChanged
-            }
-            offers(first: 5) {
-              edges {
-                node {
-                  internalID
-                }
-              }
-            }
+          buyerAction
+          buyerState
+          buyerStateExpiresAt
+          impulseConversationId
+          lastSubmittedOffer {
+            createdAt
+          }
+          submittedOffers {
+            internalID
           }
         }
       }
