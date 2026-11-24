@@ -115,114 +115,33 @@ const CollectionHubRailsArtistSeriesFixture = {
             id: "collection1",
             title: "Cindy Sherman: Untitled Film Stills",
             priceGuidance: 20000,
-            artworksConnection: {
-              id: "conn1",
-              edges: [
-                {
-                  node: {
-                    id: "artwork1",
-                    title: "Untitled (Film Still) Tray",
-                    image: {
-                      url: "https://cindy-sherman-untitled-film-stills/medium.jpg",
-                    },
-                  },
-                },
-                {
-                  node: {
-                    id: "artwork2",
-                    title: "Untitled (Film Still) Tray 2",
-                    image: {
-                      url: "https://cindy-sherman-untitled-film-stills-2/medium.jpg",
-                    },
-                  },
-                },
-                {
-                  node: {
-                    id: "artwork3",
-                    title: "Untitled (Film Still) Tray 3",
-                    image: {
-                      url: "https://cindy-sherman-untitled-film-stills-3/medium.jpg",
-                    },
-                  },
-                },
-              ],
-            },
+            representativeArtworks: [
+              { image: { url: "https://cindy-sherman-untitled-film-stills/medium.jpg" } },
+              { image: { url: "https://cindy-sherman-untitled-film-stills-2/medium.jpg" } },
+              { image: { url: "https://cindy-sherman-untitled-film-stills-3/medium.jpg" } },
+            ],
           },
           {
             slug: "damien-hirst-butterflies",
             id: "collection2",
             title: "Damien Hirst: Butterflies",
             priceGuidance: 7500,
-            artworksConnection: {
-              id: "conn2",
-              edges: [
-                {
-                  node: {
-                    id: "artwork4",
-                    title: "Untitled (Film Still) Tray",
-                    image: {
-                      url: "https://damien-hirst-butterflies/larger.jpg",
-                    },
-                  },
-                },
-                {
-                  node: {
-                    id: "artwork5",
-                    title: "Untitled (Film Still) Tray 2",
-                    image: {
-                      url: "https://damien-hirst-butterflies-2/larger.jpg",
-                    },
-                  },
-                },
-                {
-                  node: {
-                    id: "artwork6",
-                    title: "Untitled (Film Still) Tray 3",
-                    image: {
-                      url: "https://damien-hirst-butterflies-3/larger.jpg",
-                    },
-                  },
-                },
-              ],
-            },
+            representativeArtworks: [
+              { image: { url: "https://damien-hirst-butterflies/larger.jpg" } },
+              { image: { url: "https://damien-hirst-butterflies-2/larger.jpg" } },
+              { image: { url: "https://damien-hirst-butterflies-3/larger.jpg" } },
+            ],
           },
           {
             slug: "hunt-slonem-bunnies",
             id: "collection3",
             title: "Hunt Slonem: Bunnies",
             priceGuidance: 2000,
-            artworksConnection: {
-              id: "conn3",
-              edges: [
-                {
-                  node: {
-                    id: "artwork7",
-                    title: "Untitled",
-                    image: {
-                      url: "https://hunt-slonem-bunnies/medium.jpg",
-                    },
-                  },
-                },
-                {
-                  node: {
-                    id: "artwork8",
-                    title: "Untitled2",
-                    image: {
-                      url: "https://hunt-slonem-bunnies-2/medium.jpg",
-                    },
-                  },
-                },
-                {
-                  node: {
-                    id: "artwork9",
-                    title: "Untitled3",
-                    image: {
-                      url: "https://hunt-slonem-bunnies-3/medium.jpg",
-                    },
-                  },
-                },
-              ],
-            },
+            representativeArtworks: [
+              { image: { url: "https://hunt-slonem-bunnies/medium.jpg" } },
+              { image: { url: "https://hunt-slonem-bunnies-2/medium.jpg" } },
+              { image: { url: "https://hunt-slonem-bunnies-3/medium.jpg" } },
+            ],
           },
         ],
       },
