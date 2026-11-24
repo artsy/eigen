@@ -20,11 +20,12 @@ jest.mock("app/Components/BottomSheet/AutomountedBottomSheetModal", () => {
   }
 })
 
-const TestPriceSection: React.FC<{ rating?: SellConditionStoreModel["rating"] }> = ({
-  rating = "FAIR",
-}) => (
+const TestPriceSection: React.FC<{
+  rating?: SellConditionStoreModel["rating"]
+  recommendedPriceRange?: string | null
+}> = ({ rating = "FAIR", recommendedPriceRange = "US$2,800–US$3,600" }) => (
   <SellConditionStore.Provider runtimeModel={{ ...sellConditionStoreModel, rating }}>
-    <SellPriceSection artistNames="Theo Bardsley" />
+    <SellPriceSection artistNames="Theo Bardsley" recommendedPriceRange={recommendedPriceRange} />
   </SellConditionStore.Provider>
 )
 
@@ -36,8 +37,17 @@ describe("SellPriceSection", () => {
   it("shows the recommended range for the artwork", async () => {
     await renderWithWrappers(<TestPriceSection />)
 
-    expect(screen.getByText("US$3,000–3,400")).toBeOnTheScreen()
+    expect(screen.getByText("US$2,800–US$3,600")).toBeOnTheScreen()
     expect(screen.getByText("Based on comparable sales by Theo Bardsley")).toBeOnTheScreen()
+  })
+
+  it("hides the recommendation and the insights link without a range", async () => {
+    await renderWithWrappers(<TestPriceSection recommendedPriceRange={null} />)
+
+    expect(screen.queryByText("Recommended price range")).not.toBeOnTheScreen()
+    expect(screen.queryByText(/Based on comparable sales/)).not.toBeOnTheScreen()
+    expect(screen.queryByText("See more Insights >")).not.toBeOnTheScreen()
+    expect(screen.getByLabelText("Asking price")).toBeOnTheScreen()
   })
 
   it("formats the asking price and updates the payout", async () => {

@@ -88,7 +88,10 @@ const ConditionForm: React.FC<{
 
       {!!isMarketplace && (
         <Flex px={2} pt={4}>
-          <SellPriceSection artistNames={artwork.artistNames} />
+          <SellPriceSection
+            artistNames={artwork.artistNames}
+            recommendedPriceRange={resaleSubmission.recommendedPriceRange}
+          />
         </Flex>
       )}
     </SellFormLayout>
