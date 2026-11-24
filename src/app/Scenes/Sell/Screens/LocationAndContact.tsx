@@ -41,14 +41,13 @@ export const LocationAndContact: React.FC = () => {
 
 const LocationAndContactContent: React.FC<{ resaleSubmissionID: string }> = withSuspense({
   Component: ({ resaleSubmissionID }) => {
-    const data = useLazyLoadQuery<LocationAndContactQuery>(locationAndContactQuery, {
+    const { me } = useLazyLoadQuery<LocationAndContactQuery>(locationAndContactQuery, {
       resaleSubmissionID,
     })
     const [submitted, setSubmitted] = useState(false)
-    const me = data.me
-    const artwork = me?.resaleSubmission?.submittedArtwork
-
-    const resaleSubmission = me?.resaleSubmission && toResaleSubmission(me.resaleSubmission)
+    const { resaleSubmission: submission } = me ?? {}
+    const resaleSubmission = submission && toResaleSubmission(submission)
+    const artwork = submission?.submittedArtwork
 
     if (!me || !isResaleSubmissionSellable(resaleSubmission) || !artwork) {
       return <LocationAndContactError />

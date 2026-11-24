@@ -39,10 +39,10 @@ export const Condition: React.FC = () => {
 const ConditionContent: React.FC<{ resaleSubmissionID: string }> = withSuspense({
   Component: ({ resaleSubmissionID }) => {
     const navigation = useNavigation<SellNavigationProp>()
-    const data = useLazyLoadQuery<ConditionQuery>(conditionQuery, { resaleSubmissionID })
-    const resaleSubmission =
-      data.me?.resaleSubmission && toResaleSubmission(data.me.resaleSubmission)
-    const artwork = data.me?.resaleSubmission?.submittedArtwork
+    const { me } = useLazyLoadQuery<ConditionQuery>(conditionQuery, { resaleSubmissionID })
+    const { resaleSubmission: submission } = me ?? {}
+    const resaleSubmission = submission && toResaleSubmission(submission)
+    const artwork = submission?.submittedArtwork
 
     if (!isResaleSubmissionSellable(resaleSubmission) || !artwork) {
       return <ConditionError />
