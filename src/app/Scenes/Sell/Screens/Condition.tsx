@@ -99,7 +99,7 @@ const ConditionForm: React.FC<{
         throw new Error("updateResaleSubmission failed")
       }
     } catch {
-      toast.show("We couldn’t save your price. Please try again.", "bottom", {
+      toast.show("We couldn’t save your answers. Please try again.", "bottom", {
         backgroundColor: "red100",
       })
       return
