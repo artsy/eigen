@@ -66,7 +66,7 @@ const CityCuratedGuides: React.FC<{ citySlug: string }> = ({ citySlug }) => {
                     <Flex py={2}>
                       <Spinner color="mono0" />
                     </Flex>
-                  ) : null
+                  ) : undefined
                 }
                 renderItem={renderItem}
               />

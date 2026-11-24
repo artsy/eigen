@@ -1,5 +1,5 @@
 import { RefObject, useEffect, useRef, useState } from "react"
-import { Dimensions, View } from "react-native"
+import { Dimensions, ViewInstance } from "react-native"
 
 /** How often the anchor is re-measured while we wait for it to stop moving. */
 export const ANCHOR_SETTLE_INTERVAL_MS = 100
@@ -29,7 +29,7 @@ export const ANCHOR_SETTLE_INTERVAL_MS = 100
  * that has left the screen, so the caller can give up whatever it holds while it waits.
  */
 export const useAnchorSettled = (
-  anchorRef: RefObject<View | null> | undefined,
+  anchorRef: RefObject<ViewInstance | null> | undefined,
   isRequested: boolean,
   { resetKey = 0, onOffScreen }: { resetKey?: number; onOffScreen?: () => void } = {}
 ) => {

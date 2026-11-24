@@ -9,7 +9,7 @@ import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQuer
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 import { Schema } from "app/utils/track"
 import { useEffect, useRef, useState } from "react"
-import { ScrollView } from "react-native"
+import { ScrollViewInstance } from "react-native"
 import { useTracking } from "react-tracking"
 import useThrottle from "react-use/lib/useThrottle"
 
@@ -17,7 +17,7 @@ export const useSearch = ({ query }: { query: string }) => {
   const throttledQuery = useThrottle(query, SEARCH_THROTTLE_INTERVAL)
 
   const didMount = useRef(false)
-  const searchPillsRef = useRef<ScrollView>(null)
+  const searchPillsRef = useRef<ScrollViewInstance>(null)
 
   const {
     data: queryData,

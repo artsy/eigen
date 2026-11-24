@@ -6,7 +6,7 @@ import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnbo
 import { GlobalStore } from "app/store/GlobalStore"
 import { ProgressiveOnboardingKey } from "app/store/ProgressiveOnboardingModel"
 import React, { useRef } from "react"
-import { StyleProp, View, ViewProps, ViewStyle } from "react-native"
+import { StyleProp, ViewProps, ViewStyle, ViewInstance } from "react-native"
 
 interface OnboardingPopoverProps {
   /** Doubles as the popover lock's owner id, so the lock is readable in Sentry. */
@@ -66,7 +66,7 @@ export const OnboardingPopover: React.FC<React.PropsWithChildren<OnboardingPopov
 
   const isDisplayable = when && !isDismissed(id).status
 
-  const anchorRef = useRef<View>(null)
+  const anchorRef = useRef<ViewInstance>(null)
 
   const { isVisible, remountKey, onOpenComplete, onCloseComplete } = usePopoverCoordinator({
     id,
@@ -111,8 +111,9 @@ export const OnboardingPopover: React.FC<React.PropsWithChildren<OnboardingPopov
       </Flex>
       <Popover
         key={remountKey}
-        // The library types `from` without React 19's nullable `current`.
-        from={anchorRef as React.RefObject<View>}
+        // The library types `from` as a class-component ref (legacy React Native types); with the
+        // Strict TypeScript API a host ref is a `ViewInstance`, which it measures the same way.
+        from={anchorRef as unknown as React.RefObject<React.Component>}
         visible={isVisible}
         onDismiss={handleDismiss}
         onPressOutside={handleDismiss}

@@ -1,5 +1,5 @@
 import { MapPinIcon } from "@artsy/icons/native"
-import { Flex, Input, InputComponentProps, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Input, InputComponentProps, Text, Touchable, InputRef } from "@artsy/palette-mobile"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import {
   LocationWithDetails,
@@ -16,7 +16,7 @@ interface LocationAutocompleteProps extends Omit<InputComponentProps, "onChange"
   initialLocation?: LocationWithDetails | null
   displayLocation?: string
   allowCustomLocation?: boolean
-  inputRef?: React.Ref<Input>
+  inputRef?: React.Ref<InputRef>
   showError?: boolean
   onChange: (l: LocationWithDetails) => void
   FooterComponent?: () => React.JSX.Element
@@ -51,7 +51,7 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
   const [predictions, setPredictions] = useState<SimpleLocation[]>([])
   const [selectedLocation, setSelectedLocation] = useState(initialLocation)
   const [query, setQuery] = useState(selectedLocation?.name || displayLocation)
-  const innerRef = useRef<Input>(null)
+  const innerRef = useRef<InputRef>(null)
   const ref = inputRef || innerRef
 
   const selectedLocationQuery = selectedLocation?.name || displayLocation

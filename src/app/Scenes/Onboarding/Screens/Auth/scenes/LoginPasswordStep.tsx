@@ -8,6 +8,7 @@ import {
   Text,
   Touchable,
   useTheme,
+  InputRef,
 } from "@artsy/palette-mobile"
 import { useToast } from "app/Components/Toast/toastHook"
 import {
@@ -118,7 +119,7 @@ const LoginPasswordStepForm: React.FC = () => {
 
   const navigation = useAuthNavigation()
   const screen = useAuthScreen()
-  const passwordRef = useRef<Input>(null)
+  const passwordRef = useRef<InputRef>(null)
 
   const { color } = useTheme()
 

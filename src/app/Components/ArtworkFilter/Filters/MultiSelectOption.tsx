@@ -15,7 +15,7 @@ interface MultiSelectOptionScreenProps {
   /** Utilize a search input to further filter results */
   searchable?: boolean
   noResultsLabel?: string
-  footerComponent?: React.ComponentType<any> | React.ReactElement | null
+  footerComponent?: React.ComponentType<any> | React.JSX.Element
   useScrollView?: boolean
   rightButtonText?: string
   isSelected?: (item: FilterData) => boolean

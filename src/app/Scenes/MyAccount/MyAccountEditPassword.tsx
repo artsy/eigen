@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Input, Spacer, Text, InputRef } from "@artsy/palette-mobile"
 import { useAfterTransitionEnd } from "app/Scenes/MyAccount/utils/useFocusAfterTransitionEnd"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { getCurrentEmissionState, GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
@@ -9,7 +9,7 @@ import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 
 export const MyAccountEditPassword: React.FC<{}> = ({}) => {
-  const currentPasswordRef = useRef<Input>(null)
+  const currentPasswordRef = useRef<InputRef>(null)
 
   const [currentPassword, setCurrentPassword] = useState<string>("")
   const [newPassword, setNewPassword] = useState<string>("")

@@ -1,4 +1,4 @@
-import { Flex, Input } from "@artsy/palette-mobile"
+import { Flex, Input, InputRef } from "@artsy/palette-mobile"
 import { EditableLocation } from "__generated__/updateMyUserProfileMutation.graphql"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { LocationAutocomplete, buildLocationDisplay } from "app/Components/LocationAutocomplete"
@@ -52,12 +52,12 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({ bottomShee
   const formikBag = useFormikContext<UserProfileFormikSchema>()
   const { values, setFieldValue, handleChange, errors, validateForm } = formikBag
 
-  const nameInputRef = useRef<Input>(null)
-  const locationInputRef = useRef<Input>(null)
-  const professionInputRef = useRef<Input>(null)
-  const relevantPositionsInputRef = useRef<Input>(null)
-  const instagramInputRef = useRef<Input>(null)
-  const linkedInInputRef = useRef<Input>(null)
+  const nameInputRef = useRef<InputRef>(null)
+  const locationInputRef = useRef<InputRef>(null)
+  const professionInputRef = useRef<InputRef>(null)
+  const relevantPositionsInputRef = useRef<InputRef>(null)
+  const instagramInputRef = useRef<InputRef>(null)
+  const linkedInInputRef = useRef<InputRef>(null)
 
   const InputComponent = bottomSheetInput ? BottomSheetInput : Input
 

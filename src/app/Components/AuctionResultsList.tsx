@@ -1,10 +1,11 @@
 import { Spacer, Flex, Text, SkeletonBox, SkeletonText, Screen } from "@artsy/palette-mobile"
 import { AuctionResultListItem_auctionResult$key } from "__generated__/AuctionResultListItem_auctionResult.graphql"
+import { ViewabilityConfig } from "app/utils/hooks/useViewabilityConfig"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { groupBy } from "lodash"
 import { DateTime } from "luxon"
 import React, { useMemo, useState, useCallback, useEffect } from "react"
-import { RefreshControl, ViewabilityConfig, ViewToken } from "react-native"
+import { ListViewToken, RefreshControl } from "react-native"
 import {
   AUCTION_RESULT_CARD_IMAGE_HEIGHT,
   AUCTION_RESULT_CARD_IMAGE_WIDTH,
@@ -103,7 +104,7 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
   }
 
   const onViewableItemsChanged = useCallback(
-    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+    ({ viewableItems }: { viewableItems: ListViewToken[] }) => {
       if (viewableItems.length === 0) return
 
       // Find first visible auction item

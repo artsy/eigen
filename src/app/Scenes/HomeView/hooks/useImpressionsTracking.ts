@@ -3,9 +3,11 @@ import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useViewabilityConfig } from "app/utils/hooks/useViewabilityConfig"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { ViewToken } from "react-native"
 import { runOnJS, useAnimatedReaction, useSharedValue } from "react-native-reanimated"
 import { useTracking } from "react-tracking"
+
+// Shared by FlatList (ListViewToken, index: number | undefined) and FlashList (ViewToken, index: number | null).
+type ViewableItem = { item: any; index?: number | null }
 
 type TrackableItem = { id: string; index: number | null }
 export type TrackableItemType = "artwork" | "card"
@@ -66,12 +68,12 @@ export const useItemsImpressionsTracking = ({
   )
 
   const onViewableItemsChanged = useRef(
-    ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
+    ({ viewableItems }: { viewableItems: ViewableItem[]; changed: ViewableItem[] }) => {
       if (enableItemsViewsTracking) {
         const newRenderedItems: Array<TrackableItem> = []
 
         viewableItems.forEach(({ item, index }) => {
-          newRenderedItems.push({ id: item.internalID ?? item.entityID, index })
+          newRenderedItems.push({ id: item.internalID ?? item.entityID, index: index ?? null })
         })
 
         if (__TEST__) {

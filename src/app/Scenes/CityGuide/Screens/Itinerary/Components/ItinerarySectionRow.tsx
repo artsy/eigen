@@ -7,7 +7,7 @@ import {
   ItinerarySection,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { RefObject, useEffect, useMemo, useRef, useState } from "react"
-import { ScrollView } from "react-native"
+import { ScrollViewInstance } from "react-native"
 import { SortableContainer, SortableItem, useSortableList } from "react-native-drax"
 
 /** Drax sorts the stop ids; the row each one renders is looked up by id below. */
@@ -36,7 +36,7 @@ interface Props {
   /** False on a curated guide or a shared link — neither is yours to reorder. */
   canReorder?: boolean
   /** The screen's scroll view, which drax scrolls on its own while a stop is held near an edge. */
-  scrollRef: RefObject<ScrollView | null>
+  scrollRef: RefObject<ScrollViewInstance | null>
   /** Every section shares the screen's one scroll view, so each registers its own listeners
    *  with it rather than owning a scroll view of its own. */
   registerScrollHandlers: (sectionID: string, handlers: ItineraryScrollHandlers | null) => void

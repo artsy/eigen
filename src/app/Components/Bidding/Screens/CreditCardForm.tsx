@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Input, Spacer, Text, useSpace } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Input, Spacer, Text, useSpace, InputRef } from "@artsy/palette-mobile"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { createToken } from "@stripe/stripe-react-native"
 import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
@@ -123,12 +123,12 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   }
 
   // Inputs refs
-  const addressLine1Ref = useRef<Input>(null)
-  const addressLine2Ref = useRef<Input>(null)
-  const cityRef = useRef<Input>(null)
-  const stateRef = useRef<Input>(null)
-  const postalCodeRef = useRef<Input>(null)
-  const phoneRef = useRef<Input>(null)
+  const addressLine1Ref = useRef<InputRef>(null)
+  const addressLine2Ref = useRef<InputRef>(null)
+  const cityRef = useRef<InputRef>(null)
+  const stateRef = useRef<InputRef>(null)
+  const postalCodeRef = useRef<InputRef>(null)
+  const phoneRef = useRef<InputRef>(null)
   const countryPickerRef = useRef<SelectRef>(null)
 
   return (

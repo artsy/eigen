@@ -1,6 +1,6 @@
 import { DateTime, Duration } from "luxon"
 import React from "react"
-import { AppState, AppStateStatus, NativeEventSubscription } from "react-native"
+import { AppState, NativeEventSubscription } from "react-native"
 
 interface Props {
   startAt?: string | null
@@ -11,7 +11,7 @@ interface Props {
 
 interface State {
   timeLeftInMilliseconds: number
-  appState: AppStateStatus
+  appState: typeof AppState.currentState
 }
 
 export class DurationProvider extends React.Component<Props, State> {
@@ -28,7 +28,7 @@ export class DurationProvider extends React.Component<Props, State> {
   componentDidMount() {
     this.intervalId = setInterval(this.timer, 1000)
     this.appStateSubscription = AppState.addEventListener("change", (nextAppState) => {
-      if (this.state.appState.match(/inactive|background/) && nextAppState === "active") {
+      if (this.state.appState?.match(/inactive|background/) && nextAppState === "active") {
         // recalculate timeLeftInMilliseconds
         if (this.props.startAt) {
           this.setState({

@@ -5,7 +5,7 @@ import { ItinerarySection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/i
 import { dropSortableItem, resetSortableListSpy } from "app/utils/tests/draxSortableListSpy"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { createRef } from "react"
-import { ScrollView } from "react-native"
+import { ScrollViewInstance } from "react-native"
 import { DraxProvider } from "react-native-drax"
 
 jest.mock("react-native-reanimated", () =>
@@ -51,7 +51,7 @@ const renderSection = (props: Partial<React.ComponentProps<typeof ItinerarySecti
         citySlug="london-united-kingdom"
         itineraryId="guide-1"
         cityName="London"
-        scrollRef={createRef<ScrollView>()}
+        scrollRef={createRef<ScrollViewInstance>()}
         registerScrollHandlers={jest.fn()}
         {...props}
       />

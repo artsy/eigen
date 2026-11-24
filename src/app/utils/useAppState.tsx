@@ -20,7 +20,7 @@ export default function useAppState({ onForeground, onBackground, onChange }: Ap
     const _handleAppStateChange = (nextAppState: AppStateStatus) => {
       // App has come to the foreground
       if (
-        appState.current.match(/inactive|background/) &&
+        appState.current?.match(/inactive|background/) &&
         nextAppState === "active" &&
         onForeground
       ) {
@@ -28,7 +28,7 @@ export default function useAppState({ onForeground, onBackground, onChange }: Ap
       }
 
       // App has come to the background
-      if (appState.current.match(/active/) && nextAppState === "background" && onBackground) {
+      if (appState.current?.match(/active/) && nextAppState === "background" && onBackground) {
         onBackground()
       }
 

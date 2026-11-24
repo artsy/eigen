@@ -66,7 +66,7 @@ export const CityGuideEventList: React.FC<Props> = memo(
         )
       }
 
-      return null
+      return undefined
     }
 
     const hasEvents = bucket.length > 0

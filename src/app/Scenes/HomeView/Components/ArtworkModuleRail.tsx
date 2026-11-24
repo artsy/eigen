@@ -9,7 +9,7 @@ import {
 } from "app/utils/track/ArtworkActions"
 import { compact } from "lodash"
 import React, { memo, useImperativeHandle, useRef } from "react"
-import { FlatList, View } from "react-native"
+import { FlatList, ViewInstance } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RailScrollProps } from "./types"
@@ -51,7 +51,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
   ...otherProps
 }) => {
   const tracking = useTracking()
-  const railRef = useRef<View>(null)
+  const railRef = useRef<ViewInstance>(null)
   const listRef = useRef<FlatList<any>>(null)
   useImperativeHandle(scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),

@@ -3,7 +3,7 @@ import { SearchPills_viewer$key } from "__generated__/SearchPills_viewer.graphql
 import { TOP_PILL } from "app/Scenes/Search/constants"
 import { PillType } from "app/Scenes/Search/types"
 import React from "react"
-import { ScrollView } from "react-native"
+import { ScrollView, ScrollViewInstance } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 export interface SearchPillsProps {
@@ -14,7 +14,7 @@ export interface SearchPillsProps {
   isLoading: boolean
 }
 
-export const SearchPills = React.forwardRef<ScrollView, SearchPillsProps>(
+export const SearchPills = React.forwardRef<ScrollViewInstance, SearchPillsProps>(
   ({ pills, onPillPress, isSelected, viewer }, ref) => {
     const space = useSpace()
 

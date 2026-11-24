@@ -3,7 +3,7 @@ import {
   ANCHOR_SETTLE_INTERVAL_MS,
   useAnchorSettled,
 } from "app/Components/ProgressiveOnboarding/useAnchorSettled"
-import { View } from "react-native"
+import { ViewInstance } from "react-native"
 
 // This hook is globally mocked in setupJest so that other tests don't wait on
 // measurements. Here we want the real thing
@@ -15,7 +15,7 @@ const makeAnchor = (position: { x: number; y: number }) => {
     callback(position.x, position.y, 100, 40)
   )
   return {
-    ref: { current: { measureInWindow } as unknown as View },
+    ref: { current: { measureInWindow } as unknown as ViewInstance },
     measureInWindow,
   }
 }

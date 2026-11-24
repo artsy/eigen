@@ -7,7 +7,7 @@ import { delay } from "app/utils/delay"
 import { useScreenDimensions } from "app/utils/hooks"
 import { compact } from "lodash"
 import React, { RefAttributes, useCallback, useEffect, useMemo, useRef } from "react"
-import { View } from "react-native"
+import { ViewInstance } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useFragment } from "react-relay"
@@ -102,7 +102,7 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
 
   // using our custom background to ensure backgroundColor is white
   const renderBackground = useCallback(
-    (props: React.JSX.IntrinsicAttributes & BoxProps & RefAttributes<View>) => (
+    (props: React.JSX.IntrinsicAttributes & BoxProps & RefAttributes<ViewInstance>) => (
       <Flex {...props} backgroundColor="mono0" borderTopRightRadius={10} borderTopLeftRadius={10} />
     ),
     []

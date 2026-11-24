@@ -111,7 +111,7 @@ export const AddressSearchSheet: React.FC<AddressSearchSheetProps> = ({
             <Text variant="sm" color="mono60" px={2} pt={1}>
               No matching addresses.
             </Text>
-          ) : null
+          ) : undefined
         }
         renderItem={({ item }: { item: SimpleLocation }) => (
           <Touchable accessibilityRole="button" onPress={() => selectPrediction(item)}>

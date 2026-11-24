@@ -17,7 +17,7 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { isNumber } from "lodash"
 import { memo, useCallback, useMemo, useRef, useState } from "react"
-import { FlatList, ViewToken } from "react-native"
+import { FlatList, ListViewToken } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionHeroUnitsProps extends FlexProps {
@@ -36,15 +36,17 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
 
     const [currentIndex, setCurrentIndex] = useState(0)
 
-    const onViewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken[] }) => {
-      if (viewableItems.length > 0) {
-        const index = viewableItems[0].index
+    const onViewableItemsChanged = useRef(
+      ({ viewableItems }: { viewableItems: ListViewToken[] }) => {
+        if (viewableItems.length > 0) {
+          const index = viewableItems[0].index
 
-        if (isNumber(index)) {
-          setCurrentIndex(index)
+          if (isNumber(index)) {
+            setCurrentIndex(index)
+          }
         }
       }
-    })
+    )
 
     const viewabilityConfig = useViewabilityConfig()
 

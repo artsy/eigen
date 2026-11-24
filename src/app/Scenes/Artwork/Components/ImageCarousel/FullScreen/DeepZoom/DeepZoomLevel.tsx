@@ -19,9 +19,9 @@ import { getVisibleRowsAndColumns, ZoomScaleBoundaries } from "./deepZoomGeometr
  * to show at a given point in time.
  */
 export const DeepZoomLevel: React.FC<{
-  $contentOffsetX: Animated.Animated
-  $contentOffsetY: Animated.Animated
-  $zoomScale: Animated.Animated
+  $contentOffsetX: Animated.Value
+  $contentOffsetY: Animated.Value
+  $zoomScale: Animated.Value
   imageFittedWithinScreen: Size & { marginHorizontal: number; marginVertical: number }
   level: number
   levelDimensions: Size

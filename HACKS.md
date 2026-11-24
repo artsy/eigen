@@ -274,11 +274,13 @@ Note that `expo install --fix` silently strips `patch:` protocol descriptors fro
 
 #### When can we remove this:
 
-When the upstream @d11/react-native-fast-image closes and releases this PR https://github.com/dream-horizon-org/react-native-fast-image/pull/354/changes
+When the upstream @d11/react-native-fast-image closes and releases this PR https://github.com/dream-horizon-org/react-native-fast-image/pull/354/changes, and a release stops importing `FlexStyle` / `ShadowStyleIOS` from `react-native`.
 
 #### Explanation/Context:
 
 Another dependency in the Expo/react-native ecosystem has brought in com.caverock:androidsvg-aar:1.4, the aar version of the library, which causes duplicate symbols errors when linking.
+
+The patch also fixes the `ImageStyle` types (`src/index.tsx` and `dist/index.d.ts`). They extend `FlexStyle` and `ShadowStyleIOS`, which React Native's [Strict TypeScript API](https://reactnative.dev/docs/strict-typescript-api) no longer exports, so the base types silently became `any` (hidden by `skipLibCheck`) and layout props like `width`, `flex` or `alignSelf` were rejected on FastImage and palette's `Image`. `ImageStyle` now extends `ViewStyle` minus the props it redeclares.
 
 ## patch for expo-updates
 
@@ -394,15 +396,15 @@ When we can upgrade `@react-native-menu/menu` past `1.2.2` — zeego pins exactl
 
 `MenuViewManager.mm` and `NewArch/MenuView.mm` used quoted imports (`#import "RCTBridge.h"`, `#import "RCTFabricComponentsPlugins.h"`) that only resolved through React Native's old header search paths. With React Native 0.88's prebuilt `React.framework` they fail with "'RCTBridge.h' file not found". The patch switches them to framework imports (`<React/RCTBridge.h>`), which is where the prebuilt headers live.
 
-## Legacy React Native TypeScript types (`tsconfig.json` customConditions)
+## Patch for moti (Strict TypeScript API types)
 
 #### When can we remove this:
 
-Before upgrading past React Native 0.88 — the `react-native-legacy-deep-imports` condition (and `types_DEPRECATED`) is removed after 0.88.
+When moti ships types that don't import `PerspectiveTransform`, `RotateTransform` and the other transform types from `react-native`, or when we replace moti with Reanimated (moti hasn't had a release in over a year).
 
 #### Explanation/Context:
 
-React Native 0.88 makes the [Strict TypeScript API](https://reactnative.dev/docs/strict-typescript-api) the default. Our code still types refs as component names (`useRef<ScrollView>`, `useRef<TextInput>`), uses removed type exports (`ViewToken`, `ViewabilityConfig`) and `Image` style types that no longer accept view styles — about 200 errors. `"customConditions": ["react-native-legacy-deep-imports", "react-native"]` keeps the legacy types until we migrate (mostly `ScrollViewInstance` / `TextInputInstance` style refs).
+React Native's [Strict TypeScript API](https://reactnative.dev/docs/strict-typescript-api) (the default since 0.88) no longer exports the individual transform types. moti 0.30's `build/core/types.d.ts` imports them, so they became `any` (hidden by `skipLibCheck`), which collapsed `MotiTransition` to an index signature and made every `transition={{ type: "timing" }}` a type error. The patch declares those transform types locally in the `.d.ts`. Types only, no runtime change.
 
 ## patch for AFNetworking
 

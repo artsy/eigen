@@ -12,7 +12,7 @@ import { INPUT_HEIGHT } from "app/Components/Input"
 import { SearchInput } from "app/Components/SearchInput"
 import { SelectOption } from "app/Components/Select/Select"
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
-import { FlatList, Modal, TouchableOpacity, View } from "react-native"
+import { FlatList, Modal, TouchableOpacity, View, ViewInstance } from "react-native"
 
 export const SelectModal: React.FC<{
   options: Array<SelectOption<unknown>>
@@ -83,7 +83,7 @@ export const SelectModal: React.FC<{
   }, [autocomplete, searchTerm, options])
 
   const flatListRef = useRef<FlatList>(null)
-  const flatListContainerRef = useRef<View>(null)
+  const flatListContainerRef = useRef<ViewInstance>(null)
   const flatListHeight = useRef<number | null>(null)
 
   useLayoutEffect(() => {

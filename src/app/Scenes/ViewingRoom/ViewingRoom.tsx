@@ -11,7 +11,7 @@ import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { once } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
-import { FlatList, LayoutAnimation, TouchableOpacity, View, ViewToken } from "react-native"
+import { FlatList, LayoutAnimation, TouchableOpacity, View, ListViewToken } from "react-native"
 import RNShare from "react-native-share"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -150,7 +150,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
       <View style={{ flex: 1, position: "relative" }}>
         <FlatList<ViewingRoomSection>
           onViewableItemsChanged={useCallback(
-            ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+            ({ viewableItems }: { viewableItems: ListViewToken[] }) => {
               if (viewableItems.find((viewableItem) => viewableItem.item.key === "body")) {
                 trackBodyImpression()
                 LayoutAnimation.configureNext({
