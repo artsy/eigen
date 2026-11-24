@@ -109,7 +109,9 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
                 You haven’t started an itinerary here yet.
               </Text>
             }
-            ListFooterComponent={isLoadingNext ? <Spinner style={{ marginVertical: 20 }} /> : null}
+            ListFooterComponent={
+              isLoadingNext ? <Spinner style={{ marginVertical: 20 }} /> : undefined
+            }
             refreshControl={refreshControl}
             renderItem={({ item }) => (
               <ItineraryListItem

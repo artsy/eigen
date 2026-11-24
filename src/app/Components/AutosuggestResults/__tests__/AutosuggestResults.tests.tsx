@@ -153,13 +153,13 @@ describe("AutosuggestResults", () => {
   })
 
   it(`has no elements to begin with`, async () => {
-    renderWithWrappers(<TestWrapper query="" />)
+    await renderWithWrappers(<TestWrapper query="" />)
 
     expect(screen.queryAllByTestId(RESULT_TEST_ID)).toHaveLength(0)
   })
 
   it(`has some elements to begin with if you give it some`, async () => {
-    renderWithWrappers(<TestWrapper query="michael" />)
+    await renderWithWrappers(<TestWrapper query="michael" />)
 
     expect(screen.queryAllByTestId(RESULT_TEST_ID)).toHaveLength(0)
 
@@ -168,16 +168,16 @@ describe("AutosuggestResults", () => {
     )
     expect(env.mock.getMostRecentOperation().request.variables.query).toBe("michael")
 
-    act(() => {
+    await act(() => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
     })
 
     expect(screen.getAllByTestId(RESULT_TEST_ID)).toHaveLength(1)
   })
 
-  it(`doesn't call loadMore until you start scrolling`, () => {
-    renderWithWrappers(<TestWrapper query="michael" />)
-    act(() => {
+  it(`doesn't call loadMore until you start scrolling`, async () => {
+    await renderWithWrappers(<TestWrapper query="michael" />)
+    await act(() => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
     })
 
@@ -186,11 +186,11 @@ describe("AutosuggestResults", () => {
     expect(env.mock.getAllOperations()).toHaveLength(0)
 
     // even if InfiniteScrollFlashList calls onEndReached, we ignore it until the user explicitly scrolls
-    fireEvent(screen.getByTestId("autosuggest-results-list"), "onEndReached")
+    await fireEvent(screen.getByTestId("autosuggest-results-list"), "onEndReached")
 
     expect(env.mock.getAllOperations()).toHaveLength(0)
 
-    fireEvent(screen.getByTestId("autosuggest-results-list"), "scrollBeginDrag")
+    await fireEvent(screen.getByTestId("autosuggest-results-list"), "scrollBeginDrag")
 
     expect(env.mock.getAllOperations()).toHaveLength(1)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
@@ -198,7 +198,7 @@ describe("AutosuggestResults", () => {
     )
     expect(env.mock.getMostRecentOperation().request.variables.cursor).toBe("page-2")
 
-    act(() => {
+    await act(() => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage2 })
     })
 
@@ -207,14 +207,14 @@ describe("AutosuggestResults", () => {
     expect(screen.getByText("Andy Warhol")).toBeOnTheScreen()
 
     // and it works if onEndReached is called now
-    fireEvent(screen.getByTestId("autosuggest-results-list"), "onEndReached")
+    await fireEvent(screen.getByTestId("autosuggest-results-list"), "onEndReached")
     expect(env.mock.getAllOperations()).toHaveLength(1)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
       "AutosuggestResultsPaginationQuery"
     )
     expect(env.mock.getMostRecentOperation().request.variables.cursor).toBe("page-3")
 
-    act(() => {
+    await act(() => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage3 })
     })
 
@@ -226,25 +226,25 @@ describe("AutosuggestResults", () => {
   })
 
   it(`shows the loading spinner until there's no more data`, async () => {
-    renderWithWrappers(<TestWrapper query="michael" />)
-    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
+    await renderWithWrappers(<TestWrapper query="michael" />)
+    await act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
 
     expect(screen.getByTestId("autosuggest-results-spinner")).toBeOnTheScreen()
 
-    fireEvent(screen.getByTestId("autosuggest-results-list"), "scrollBeginDrag")
-    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage2 }))
+    await fireEvent(screen.getByTestId("autosuggest-results-list"), "scrollBeginDrag")
+    await act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage2 }))
 
     expect(screen.getByTestId("autosuggest-results-spinner")).toBeOnTheScreen()
 
-    fireEvent(screen.getByTestId("autosuggest-results-list"), "onEndReached")
-    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage3 }))
+    await fireEvent(screen.getByTestId("autosuggest-results-list"), "onEndReached")
+    await act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage3 }))
 
     expect(screen.queryByTestId("autosuggest-results-spinner")).not.toBeOnTheScreen()
   })
 
-  it(`gives an appropriate message when there's no search results`, () => {
-    renderWithWrappers(<TestWrapper query="michael" />)
-    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixtureEmpty }))
+  it(`gives an appropriate message when there's no search results`, async () => {
+    await renderWithWrappers(<TestWrapper query="michael" />)
+    await act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixtureEmpty }))
 
     expect(screen.queryAllByTestId(RESULT_TEST_ID)).toHaveLength(0)
     expect(screen.getByText("Sorry, we couldn’t find anything for “michael.”")).toBeOnTheScreen()
@@ -253,49 +253,51 @@ describe("AutosuggestResults", () => {
     ).toBeOnTheScreen()
   })
 
-  it(`optionally hides the result type`, () => {
-    renderWithWrappers(<TestWrapper query="michael" showResultType={false} />)
-    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
+  it(`optionally hides the result type`, async () => {
+    await renderWithWrappers(<TestWrapper query="michael" showResultType={false} />)
+    await act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
 
     expect(screen.queryByText("Artist")).not.toBeOnTheScreen()
   })
 
-  it(`allows for custom touch handlers on search result items`, () => {
+  it(`allows for custom touch handlers on search result items`, async () => {
     const spy = jest.fn()
-    renderWithWrappers(<TestWrapper query="michael" showResultType={false} onResultPress={spy} />)
-    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
+    await renderWithWrappers(
+      <TestWrapper query="michael" showResultType={false} onResultPress={spy} />
+    )
+    await act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
 
-    fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
+    await fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
     expect(spy).toHaveBeenCalledWith(expect.objectContaining({ displayLabel: "Banksy" }))
   })
 
-  it("should show the loading placeholder ", () => {
-    renderWithWrappers(<TestWrapper query="michael" />)
+  it("should show the loading placeholder ", async () => {
+    await renderWithWrappers(<TestWrapper query="michael" />)
 
     expect(screen.getByLabelText("Autosuggest results are loading")).toBeOnTheScreen()
   })
 
-  it("should hide the loading placeholder when results are received", () => {
-    renderWithWrappers(<TestWrapper query="michael" />)
+  it("should hide the loading placeholder when results are received", async () => {
+    await renderWithWrappers(<TestWrapper query="michael" />)
 
-    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
+    await act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
 
     expect(screen.queryByLabelText("Autosuggest results are loading")).toBeFalsy()
   })
 
   it("should show the default error message", async () => {
-    renderWithWrappers(<TestWrapper query="michael" />)
+    await renderWithWrappers(<TestWrapper query="michael" />)
 
-    rejectMostRecentRelayOperation(env, new Error("Bad connection"))
+    await rejectMostRecentRelayOperation(env, new Error("Bad connection"))
 
     expect(screen.getByText("There seems to be a problem with the connection.")).toBeTruthy()
     expect(screen.getByText("Please try again shortly.")).toBeTruthy()
   })
 
-  it("should show the unable to load error message when showOnRetryErrorMessage prop is true", () => {
-    renderWithWrappers(<TestWrapper query="michael" showOnRetryErrorMessage />)
+  it("should show the unable to load error message when showOnRetryErrorMessage prop is true", async () => {
+    await renderWithWrappers(<TestWrapper query="michael" showOnRetryErrorMessage />)
 
-    rejectMostRecentRelayOperation(env, new Error("Bad connection"))
+    await rejectMostRecentRelayOperation(env, new Error("Bad connection"))
 
     expect(screen.getByText("Something went wrong.")).toBeTruthy()
     expect(screen.getByText("Please adjust your query or try again shortly.")).toBeTruthy()

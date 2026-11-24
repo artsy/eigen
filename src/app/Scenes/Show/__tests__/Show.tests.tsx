@@ -1,4 +1,4 @@
-import { act, screen } from "@testing-library/react-native"
+import { screen } from "@testing-library/react-native"
 import { ShowTestsQuery } from "__generated__/ShowTestsQuery.graphql"
 import { ShowFragmentContainer } from "app/Scenes/Show/Show"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -21,8 +21,8 @@ describe("Show", () => {
     },
   })
 
-  it("renders the show", () => {
-    renderWithRelay({
+  it("renders the show", async () => {
+    await renderWithRelay({
       Show: () => ({
         name: "The big show",
         formattedStartAt: "October 23",
@@ -41,8 +41,8 @@ describe("Show", () => {
     expect(screen.getByText("Presented by Example Partner")).toBeTruthy()
   })
 
-  it("renders the installation shots", () => {
-    renderWithRelay({
+  it("renders the installation shots", async () => {
+    await renderWithRelay({
       Show: () => ({
         images: [{ caption: "First install shot" }, { caption: "Second install shot" }],
       }),
@@ -52,58 +52,56 @@ describe("Show", () => {
     expect(screen.getByText("Second install shot")).toBeTruthy()
   })
 
-  it("renders the context card", () => {
-    renderWithRelay()
+  it("renders the context card", async () => {
+    await renderWithRelay()
 
     expect(screen.getByTestId("ShowContextCard")).toBeTruthy()
   })
 
-  it("renders artworks filter header", () => {
-    renderWithRelay()
+  it("renders artworks filter header", async () => {
+    await renderWithRelay()
 
     expect(screen.getByTestId("HeaderArtworksFilter")).toBeTruthy()
   })
 
   it("renders the note of the City Guide stop it was opened from", async () => {
-    const { mockResolveLastOperation } = renderWithRelay({}, { stopID: "stop-1" })
+    const { mockResolveLastOperation } = await renderWithRelay({}, { stopID: "stop-1" })
 
-    act(() => {
-      mockResolveLastOperation({ ItineraryStop: () => ({ note: "Head upstairs first." }) })
-    })
+    await mockResolveLastOperation({ ItineraryStop: () => ({ note: "Head upstairs first." }) })
 
     expect(await screen.findByText("Don't miss")).toBeOnTheScreen()
     expect(screen.getByText("Head upstairs first.")).toBeOnTheScreen()
   })
 
-  it("asks for no stop note when not opened from a City Guide stop", () => {
-    renderWithRelay()
+  it("asks for no stop note when not opened from a City Guide stop", async () => {
+    await renderWithRelay()
 
     expect(screen.queryByText("Don't miss")).not.toBeOnTheScreen()
   })
 
-  it("puts a share button in the navigation header", () => {
+  it("puts a share button in the navigation header", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableShareShowPartnerFeature: true })
     const setOptions = jest.fn()
     jest
       .spyOn(jest.requireMock("@react-navigation/native"), "useNavigation")
       .mockReturnValue({ setOptions, navigate: jest.fn(), addListener: jest.fn() })
 
-    renderWithRelay({ Show: () => ({ name: "The big show", slug: "the-big-show" }) })
+    await renderWithRelay({ Show: () => ({ name: "The big show", slug: "the-big-show" }) })
 
     const { headerRight } = setOptions.mock.calls[setOptions.mock.calls.length - 1][0]
-    renderWithWrappers(headerRight())
+    await renderWithWrappers(headerRight())
 
     expect(screen.getByLabelText("Share Show")).toBeOnTheScreen()
   })
 
-  it("leaves the navigation header alone when sharing is off", () => {
+  it("leaves the navigation header alone when sharing is off", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableShareShowPartnerFeature: false })
     const setOptions = jest.fn()
     jest
       .spyOn(jest.requireMock("@react-navigation/native"), "useNavigation")
       .mockReturnValue({ setOptions, navigate: jest.fn(), addListener: jest.fn() })
 
-    renderWithRelay()
+    await renderWithRelay()
 
     expect(setOptions).not.toHaveBeenCalled()
   })

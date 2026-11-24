@@ -17,7 +17,7 @@ describe("PartnerFollowButton", () => {
   })
 
   it("renders the followers count correctly", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Partner: () => ({
         hasVisibleFollowsCount: true,
         profile: {
@@ -34,7 +34,7 @@ describe("PartnerFollowButton", () => {
   })
 
   it("renders without followers count correctly", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Partner: () => ({
         hasVisibleFollowsCount: false,
         profile: {
@@ -48,7 +48,7 @@ describe("PartnerFollowButton", () => {
   })
 
   it("renders button state correctly", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Partner: () => ({
         profile: {
           name: "White Cube",

@@ -22,47 +22,47 @@ describe("ArtworkMontageStep", () => {
     jest.useRealTimers()
   })
 
-  it("renders all 5 onboarding images", () => {
-    renderWithWrappers(<ArtworkMontageStep onNext={jest.fn()} />)
+  it("renders all 5 onboarding images", async () => {
+    await renderWithWrappers(<ArtworkMontageStep onNext={jest.fn()} />)
 
     expect(screen.getAllByTestId("onboarding-montage-image")).toHaveLength(5)
   })
 
-  it("does not call onNext before the montage duration elapses, and does so right after", () => {
+  it("does not call onNext before the montage duration elapses, and does so right after", async () => {
     const onNext = jest.fn()
-    renderWithWrappers(<ArtworkMontageStep onNext={onNext} />)
+    await renderWithWrappers(<ArtworkMontageStep onNext={onNext} />)
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(ARTWORKS_DURATION - 1)
     })
 
     expect(onNext).not.toHaveBeenCalled()
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(1)
     })
 
     expect(onNext).toHaveBeenCalledTimes(1)
   })
 
-  it("clears the timer on unmount and does not call onNext afterward", () => {
+  it("clears the timer on unmount and does not call onNext afterward", async () => {
     const onNext = jest.fn()
-    const { unmount } = renderWithWrappers(<ArtworkMontageStep onNext={onNext} />)
+    const { unmount } = await renderWithWrappers(<ArtworkMontageStep onNext={onNext} />)
 
-    unmount()
+    await unmount()
 
-    act(() => {
+    await act(() => {
       jest.runAllTimers()
     })
 
     expect(onNext).not.toHaveBeenCalled()
   })
 
-  it("skips the montage and calls onNext immediately when Reduce Motion is enabled", () => {
+  it("skips the montage and calls onNext immediately when Reduce Motion is enabled", async () => {
     ;(useReducedMotion as jest.Mock).mockReturnValue(true)
 
     const onNext = jest.fn()
-    renderWithWrappers(<ArtworkMontageStep onNext={onNext} />)
+    await renderWithWrappers(<ArtworkMontageStep onNext={onNext} />)
 
     expect(onNext).toHaveBeenCalledTimes(1)
     expect(screen.queryAllByTestId("onboarding-montage-image")).toHaveLength(0)

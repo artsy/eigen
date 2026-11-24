@@ -32,8 +32,8 @@ describe("ArticleSlideShowImage", () => {
     `,
   })
 
-  it("renders Artwork", () => {
-    renderWithRelay({
+  it("renders Artwork", async () => {
+    await renderWithRelay({
       Article: () => article,
       ArticleSectionImageCollectionFigure: () => ({
         __typename: "Artwork",
@@ -41,13 +41,13 @@ describe("ArticleSlideShowImage", () => {
       Artwork: () => ({ image }),
     })
 
-    fireEvent(screen.getByTestId("image-container"), "layout", layoutEvent)
+    await fireEvent(screen.getByTestId("image-container"), "layout", layoutEvent)
 
     expect(screen.getByTestId("slide-image")).toBeOnTheScreen()
   })
 
-  it("renders ArticleImageSection", () => {
-    renderWithRelay({
+  it("renders ArticleImageSection", async () => {
+    await renderWithRelay({
       Article: () => article,
       ArticleSectionImageCollectionFigure: () => ({
         __typename: "ArticleImageSection",
@@ -55,13 +55,13 @@ describe("ArticleSlideShowImage", () => {
       ArticleImageSection: () => ({ image }),
     })
 
-    fireEvent(screen.getByTestId("image-container"), "layout", layoutEvent)
+    await fireEvent(screen.getByTestId("image-container"), "layout", layoutEvent)
 
     expect(screen.getByTestId("slide-image")).toBeOnTheScreen()
   })
 
-  it("renders ArticleUnpublishedArtwork", () => {
-    renderWithRelay({
+  it("renders ArticleUnpublishedArtwork", async () => {
+    await renderWithRelay({
       Article: () => article,
       ArticleSectionImageCollectionFigure: () => ({
         __typename: "ArticleUnpublishedArtwork",
@@ -69,7 +69,7 @@ describe("ArticleSlideShowImage", () => {
       ArticleUnpublishedArtwork: () => ({ image }),
     })
 
-    fireEvent(screen.getByTestId("image-container"), "layout", layoutEvent)
+    await fireEvent(screen.getByTestId("image-container"), "layout", layoutEvent)
 
     expect(screen.getByTestId("slide-image")).toBeOnTheScreen()
   })

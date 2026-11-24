@@ -60,35 +60,35 @@ const setupFlags = ({
 describe("useEnableLiveHomeRecommendations", () => {
   afterEach(() => jest.clearAllMocks())
 
-  it("enables the behavior only for the treatment arm when Gravity is ready", () => {
+  it("enables the behavior only for the treatment arm when Gravity is ready", async () => {
     setupFlags({ gravity: true, wtyl: { name: "variant", enabled: true } })
 
-    const { result } = renderHook(() => useEnableLiveHomeRecommendations())
+    const { result } = await renderHook(() => useEnableLiveHomeRecommendations())
 
     expect(result.current.enabled).toBe(true)
   })
 
-  it("does not enable the behavior for the control arm", () => {
+  it("does not enable the behavior for the control arm", async () => {
     setupFlags({ gravity: true, wtyl: { name: "control", enabled: true } })
 
-    const { result } = renderHook(() => useEnableLiveHomeRecommendations())
+    const { result } = await renderHook(() => useEnableLiveHomeRecommendations())
 
     expect(result.current.enabled).toBe(false)
   })
 
-  it("is disabled when its Gravity flag is not ready, even for the treatment arm", () => {
+  it("is disabled when its Gravity flag is not ready, even for the treatment arm", async () => {
     // WTYL's own gravity off, NWFY's gravity on — WTYL must still be disabled.
     setupFlags({ wtylGravity: false, nwfyGravity: true, wtyl: { name: "variant", enabled: true } })
 
-    const { result } = renderHook(() => useEnableLiveHomeRecommendations())
+    const { result } = await renderHook(() => useEnableLiveHomeRecommendations())
 
     expect(result.current.enabled).toBe(false)
   })
 
-  it("is disabled when the user has not been assigned a variant", () => {
+  it("is disabled when the user has not been assigned a variant", async () => {
     setupFlags({ gravity: true, wtyl: DISABLED })
 
-    const { result } = renderHook(() => useEnableLiveHomeRecommendations())
+    const { result } = await renderHook(() => useEnableLiveHomeRecommendations())
 
     expect(result.current.enabled).toBe(false)
   })
@@ -97,23 +97,23 @@ describe("useEnableLiveHomeRecommendations", () => {
 describe("useEnableLiveNewWorksForYou", () => {
   afterEach(() => jest.clearAllMocks())
 
-  it("enables the behavior only for the experiment arm", () => {
+  it("enables the behavior only for the experiment arm", async () => {
     setupFlags({ nwfy: { name: "experiment", enabled: true } })
 
-    const { result } = renderHook(() => useEnableLiveNewWorksForYou())
+    const { result } = await renderHook(() => useEnableLiveNewWorksForYou())
 
     expect(result.current.enabled).toBe(true)
   })
 
-  it("does not enable the behavior for the control arm", () => {
+  it("does not enable the behavior for the control arm", async () => {
     setupFlags({ nwfy: { name: "control", enabled: true } })
 
-    const { result } = renderHook(() => useEnableLiveNewWorksForYou())
+    const { result } = await renderHook(() => useEnableLiveNewWorksForYou())
 
     expect(result.current.enabled).toBe(false)
   })
 
-  it("is disabled when its Gravity flag is not ready, even for the experiment arm", () => {
+  it("is disabled when its Gravity flag is not ready, even for the experiment arm", async () => {
     // NWFY's own gravity off, WTYL's gravity on — NWFY must still be disabled.
     setupFlags({
       nwfyGravity: false,
@@ -121,15 +121,15 @@ describe("useEnableLiveNewWorksForYou", () => {
       nwfy: { name: "experiment", enabled: true },
     })
 
-    const { result } = renderHook(() => useEnableLiveNewWorksForYou())
+    const { result } = await renderHook(() => useEnableLiveNewWorksForYou())
 
     expect(result.current.enabled).toBe(false)
   })
 
-  it("is disabled when the user has not been assigned a variant", () => {
+  it("is disabled when the user has not been assigned a variant", async () => {
     setupFlags({ nwfy: DISABLED })
 
-    const { result } = renderHook(() => useEnableLiveNewWorksForYou())
+    const { result } = await renderHook(() => useEnableLiveNewWorksForYou())
 
     expect(result.current.enabled).toBe(false)
   })
@@ -141,39 +141,39 @@ describe("useLiveHomeViewSectionIDs", () => {
   const TREATMENT_WTYL: Variant = { name: "variant", enabled: true }
   const TREATMENT_NWFY: Variant = { name: "experiment", enabled: true }
 
-  it("returns no section IDs when both experiments are off", () => {
+  it("returns no section IDs when both experiments are off", async () => {
     setupFlags({ wtyl: DISABLED, nwfy: DISABLED })
 
-    const { result } = renderHook(() => useLiveHomeViewSectionIDs())
+    const { result } = await renderHook(() => useLiveHomeViewSectionIDs())
 
     expect(result.current).toEqual([])
   })
 
-  it("returns only WTYL when only its experiment is on", () => {
+  it("returns only WTYL when only its experiment is on", async () => {
     setupFlags({ wtyl: TREATMENT_WTYL, nwfy: DISABLED })
 
-    const { result } = renderHook(() => useLiveHomeViewSectionIDs())
+    const { result } = await renderHook(() => useLiveHomeViewSectionIDs())
 
     expect(result.current).toEqual([RECOMMENDED_ARTWORKS_SECTION_ID])
   })
 
-  it("returns only NWFY when only its experiment is on", () => {
+  it("returns only NWFY when only its experiment is on", async () => {
     setupFlags({ wtyl: DISABLED, nwfy: TREATMENT_NWFY })
 
-    const { result } = renderHook(() => useLiveHomeViewSectionIDs())
+    const { result } = await renderHook(() => useLiveHomeViewSectionIDs())
 
     expect(result.current).toEqual([NEW_WORKS_FOR_YOU_SECTION_ID])
   })
 
-  it("returns both when both experiments are on", () => {
+  it("returns both when both experiments are on", async () => {
     setupFlags({ wtyl: TREATMENT_WTYL, nwfy: TREATMENT_NWFY })
 
-    const { result } = renderHook(() => useLiveHomeViewSectionIDs())
+    const { result } = await renderHook(() => useLiveHomeViewSectionIDs())
 
     expect(result.current).toEqual([RECOMMENDED_ARTWORKS_SECTION_ID, NEW_WORKS_FOR_YOU_SECTION_ID])
   })
 
-  it("requires each rail's own gravity flag — one couple's gravity does not enable the other", () => {
+  it("requires each rail's own gravity flag — one couple's gravity does not enable the other", async () => {
     // Both refresh experiments in their enabled arm, but only WTYL's gravity flag is on.
     setupFlags({
       wtylGravity: true,
@@ -182,17 +182,17 @@ describe("useLiveHomeViewSectionIDs", () => {
       nwfy: TREATMENT_NWFY,
     })
 
-    const { result } = renderHook(() => useLiveHomeViewSectionIDs())
+    const { result } = await renderHook(() => useLiveHomeViewSectionIDs())
 
     // Only WTYL goes live; NWFY stays off because onyx_nwfy-gravity is off.
     expect(result.current).toEqual([RECOMMENDED_ARTWORKS_SECTION_ID])
   })
 
-  it("does not enable a rail from gravity alone without its refresh experiment", () => {
+  it("does not enable a rail from gravity alone without its refresh experiment", async () => {
     // Both gravity flags on, but neither refresh experiment is in its enabled arm.
     setupFlags({ wtylGravity: true, nwfyGravity: true, wtyl: DISABLED, nwfy: DISABLED })
 
-    const { result } = renderHook(() => useLiveHomeViewSectionIDs())
+    const { result } = await renderHook(() => useLiveHomeViewSectionIDs())
 
     expect(result.current).toEqual([])
   })

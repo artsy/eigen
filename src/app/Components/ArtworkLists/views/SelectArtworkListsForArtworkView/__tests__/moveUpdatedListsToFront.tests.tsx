@@ -43,12 +43,12 @@ const twoCustomLists = {
 }
 
 describe("moveUpdatedListsToFront", () => {
-  it("moves a list saved to, to the front of the connection", () => {
-    const { env } = renderWithRelay(twoCustomLists)
+  it("moves a list saved to, to the front of the connection", async () => {
+    const { env } = await renderWithRelay(twoCustomLists)
 
     expectOrder(["List A", "List B"])
 
-    act(() => {
+    await act(() => {
       commitLocalUpdate(env, (store) => {
         moveUpdatedListsToFront(store, {
           addedToArtworkLists: [{ internalID: "list-b", default: false }],
@@ -59,12 +59,12 @@ describe("moveUpdatedListsToFront", () => {
     expectOrder(["List B", "List A"])
   })
 
-  it("moves a list removed from, to the front of the connection", () => {
-    const { env } = renderWithRelay(twoCustomLists)
+  it("moves a list removed from, to the front of the connection", async () => {
+    const { env } = await renderWithRelay(twoCustomLists)
 
     expectOrder(["List A", "List B"])
 
-    act(() => {
+    await act(() => {
       commitLocalUpdate(env, (store) => {
         moveUpdatedListsToFront(store, {
           removedFromArtworkLists: [{ internalID: "list-b", default: false }],
@@ -75,10 +75,10 @@ describe("moveUpdatedListsToFront", () => {
     expectOrder(["List B", "List A"])
   })
 
-  it("leaves order untouched when only the default list changed", () => {
-    const { env } = renderWithRelay(twoCustomLists)
+  it("leaves order untouched when only the default list changed", async () => {
+    const { env } = await renderWithRelay(twoCustomLists)
 
-    act(() => {
+    await act(() => {
       commitLocalUpdate(env, (store) => {
         // The default "Saved Artworks" list isn't part of this connection.
         moveUpdatedListsToFront(store, {

@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { screen, waitFor } from "@testing-library/react-native"
 import { ViewingRoomsListScreen } from "app/Scenes/ViewingRoom/ViewingRoomsList"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
@@ -12,13 +12,15 @@ describe("ViewingRoomsList", () => {
   })
 
   it("renders viewing rooms", async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <RelayEnvironmentProvider environment={mockEnvironment}>
         <ViewingRoomsListScreen />
       </RelayEnvironmentProvider>
     )
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    expect(screen.getByTestId("viewing-rooms-list-placeholder")).toBeOnTheScreen()
+
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
         viewingRoomsConnection: {
           edges: [
@@ -30,7 +32,9 @@ describe("ViewingRoomsList", () => {
         },
       }),
     })
-    await waitForElementToBeRemoved(() => screen.queryByTestId("viewing-rooms-list-placeholder"))
+    await waitFor(() =>
+      expect(screen.queryByTestId("viewing-rooms-list-placeholder")).not.toBeOnTheScreen()
+    )
 
     // ViewingRoomsListItem renders each viewing room's title
     expect(screen.getAllByText(/^(one|two|three|four)$/).length).toBeGreaterThanOrEqual(2)

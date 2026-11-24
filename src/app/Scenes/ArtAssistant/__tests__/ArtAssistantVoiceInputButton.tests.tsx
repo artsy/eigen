@@ -23,9 +23,9 @@ describe("ArtAssistantVoiceInputButton", () => {
     jest.mocked(useReducedMotion).mockReturnValue(false)
   })
 
-  it("shows the microphone and starts dictation", () => {
+  it("shows the microphone and starts dictation", async () => {
     const onPress = jest.fn()
-    renderWithWrappers(
+    await renderWithWrappers(
       <ArtAssistantVoiceInputButton
         isHearing={false}
         isListening={false}
@@ -35,14 +35,14 @@ describe("ArtAssistantVoiceInputButton", () => {
       />
     )
 
-    fireEvent.press(screen.getByRole("button", { name: "Dictate a prompt" }))
+    await fireEvent.press(screen.getByRole("button", { name: "Dictate a prompt" }))
 
     expect(onPress).toHaveBeenCalled()
     expect(screen.queryByTestId("art-assistant-voice-input-ring")).not.toBeOnTheScreen()
   })
 
-  it("shows the stop button without rings while the recognizer starts", () => {
-    renderWithWrappers(
+  it("shows the stop button without rings while the recognizer starts", async () => {
+    await renderWithWrappers(
       <ArtAssistantVoiceInputButton
         isHearing={false}
         isListening
@@ -56,8 +56,8 @@ describe("ArtAssistantVoiceInputButton", () => {
     expect(screen.queryByTestId("art-assistant-voice-input-ring")).not.toBeOnTheScreen()
   })
 
-  it("spreads the rings with the volume", () => {
-    renderWithWrappers(
+  it("spreads the rings with the volume", async () => {
+    await renderWithWrappers(
       <ArtAssistantVoiceInputButton
         isHearing
         isListening
@@ -73,8 +73,8 @@ describe("ArtAssistantVoiceInputButton", () => {
     expect(loudScales.every((scale) => scale > 1)).toBe(true)
     expect(loudScales[1]).toBeGreaterThan(loudScales[0])
 
-    screen.unmount()
-    renderWithWrappers(
+    await screen.unmount()
+    await renderWithWrappers(
       <ArtAssistantVoiceInputButton
         isHearing
         isListening
@@ -87,9 +87,9 @@ describe("ArtAssistantVoiceInputButton", () => {
     ringScales().forEach((scale, index) => expect(loudScales[index]).toBeGreaterThan(scale))
   })
 
-  it("keeps the rings still with Reduce Motion on", () => {
+  it("keeps the rings still with Reduce Motion on", async () => {
     jest.mocked(useReducedMotion).mockReturnValue(true)
-    renderWithWrappers(
+    await renderWithWrappers(
       <ArtAssistantVoiceInputButton
         isHearing
         isListening
@@ -102,8 +102,8 @@ describe("ArtAssistantVoiceInputButton", () => {
     // With Reduce Motion the rings must not move with the volume, so loud and quiet match.
     const loudScales = ringScales()
 
-    screen.unmount()
-    renderWithWrappers(
+    await screen.unmount()
+    await renderWithWrappers(
       <ArtAssistantVoiceInputButton
         isHearing
         isListening

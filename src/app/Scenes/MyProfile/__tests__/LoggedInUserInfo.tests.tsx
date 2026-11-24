@@ -17,18 +17,18 @@ describe(UserProfileQueryRenderer, () => {
     env = getMockRelayEnvironment()
   })
 
-  it("spins until the operation resolves", () => {
-    renderWithWrappers(<UserProfileQueryRenderer />)
+  it("spins until the operation resolves", async () => {
+    await renderWithWrappers(<UserProfileQueryRenderer />)
     expect(screen.getAllByTestId("spinner")).toHaveLength(1)
   })
 
-  it("renders upon sucess", () => {
-    renderWithWrappers(<UserProfileQueryRenderer />)
+  it("renders upon sucess", async () => {
+    await renderWithWrappers(<UserProfileQueryRenderer />)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
       "LoggedInUserInfoQuery"
     )
 
-    act(() => {
+    await act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
         data: {
@@ -46,10 +46,10 @@ describe(UserProfileQueryRenderer, () => {
     expect(screen.getByText("Logged in as: Unit Test User (example@example.com)")).toBeOnTheScreen()
   })
 
-  it("renders null upon failure", () => {
-    renderWithWrappers(<UserProfileQueryRenderer />)
+  it("renders null upon failure", async () => {
+    await renderWithWrappers(<UserProfileQueryRenderer />)
 
-    rejectMostRecentRelayOperation(env, new Error())
+    await rejectMostRecentRelayOperation(env, new Error())
 
     // Nothing is rendered: no spinner and no text
     expect(screen.queryByTestId("spinner")).not.toBeOnTheScreen()

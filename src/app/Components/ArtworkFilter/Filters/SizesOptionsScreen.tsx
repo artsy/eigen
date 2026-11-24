@@ -298,7 +298,7 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
             handleMetricChange={handleMetricChange}
             metric={selectedMetric}
           />
-        ) : null
+        ) : undefined
       }
       {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
     />

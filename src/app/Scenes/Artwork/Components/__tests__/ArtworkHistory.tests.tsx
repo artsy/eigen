@@ -4,7 +4,7 @@ import { ArtworkHistory } from "app/Scenes/Artwork/Components/ArtworkHistory"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("Artwork History", () => {
-  it("renders everything correctly", () => {
+  it("renders everything correctly", async () => {
     const artworkHistoryInfo: ArtworkHistory_artwork$data = {
       " $fragmentType": "ArtworkHistory_artwork",
       provenance: "vegas",
@@ -12,14 +12,14 @@ describe("Artwork History", () => {
       literature: "bibliography",
     }
 
-    renderWithWrappers(<ArtworkHistory artwork={artworkHistoryInfo} />)
+    await renderWithWrappers(<ArtworkHistory artwork={artworkHistoryInfo} />)
 
     expect(screen.getByText("Provenance")).toBeOnTheScreen()
     expect(screen.getByText("Exhibition history")).toBeOnTheScreen()
     expect(screen.getByText("Bibliography")).toBeOnTheScreen()
   })
 
-  it("renders only set keys", () => {
+  it("renders only set keys", async () => {
     const artworkHistoryInfo: ArtworkHistory_artwork$data = {
       " $fragmentType": "ArtworkHistory_artwork",
       provenance: "vegas",
@@ -27,14 +27,14 @@ describe("Artwork History", () => {
       literature: "bibliography",
     }
 
-    renderWithWrappers(<ArtworkHistory artwork={artworkHistoryInfo} />)
+    await renderWithWrappers(<ArtworkHistory artwork={artworkHistoryInfo} />)
 
     expect(screen.getByText("Provenance")).toBeOnTheScreen()
     expect(screen.queryByText("Exhibition history")).not.toBeOnTheScreen()
     expect(screen.getByText("Bibliography")).toBeOnTheScreen()
   })
 
-  it("doesn't render anything without data", () => {
+  it("doesn't render anything without data", async () => {
     const artworkHistoryInfo: ArtworkHistory_artwork$data = {
       " $fragmentType": "ArtworkHistory_artwork",
       provenance: null,
@@ -42,7 +42,7 @@ describe("Artwork History", () => {
       literature: null,
     }
 
-    const { toJSON } = renderWithWrappers(<ArtworkHistory artwork={artworkHistoryInfo} />)
+    const { toJSON } = await renderWithWrappers(<ArtworkHistory artwork={artworkHistoryInfo} />)
 
     expect(screen.queryByText("Provenance")).not.toBeOnTheScreen()
     expect(screen.queryByText("Exhibition history")).not.toBeOnTheScreen()

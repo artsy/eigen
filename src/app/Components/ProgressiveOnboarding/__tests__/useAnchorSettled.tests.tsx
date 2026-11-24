@@ -3,7 +3,7 @@ import {
   ANCHOR_SETTLE_INTERVAL_MS,
   useAnchorSettled,
 } from "app/Components/ProgressiveOnboarding/useAnchorSettled"
-import { View } from "react-native"
+import { ViewInstance } from "react-native"
 
 // This hook is globally mocked in setupJest so that other tests don't wait on
 // measurements. Here we want the real thing
@@ -15,7 +15,7 @@ const makeAnchor = (position: { x: number; y: number }) => {
     callback(position.x, position.y, 100, 40)
   )
   return {
-    ref: { current: { measureInWindow } as unknown as View },
+    ref: { current: { measureInWindow } as unknown as ViewInstance },
     measureInWindow,
   }
 }
@@ -24,50 +24,50 @@ describe("useAnchorSettled", () => {
   beforeEach(() => jest.useFakeTimers())
   afterEach(() => jest.useRealTimers())
 
-  it("settles once two measurements agree", () => {
+  it("settles once two measurements agree", async () => {
     const { ref } = makeAnchor({ x: 0, y: 200 })
-    const { result } = renderHook(() => useAnchorSettled(ref, true))
+    const { result } = await renderHook(() => useAnchorSettled(ref, true))
 
     expect(result.current).toBe(false)
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(ANCHOR_SETTLE_INTERVAL_MS)
     })
 
     expect(result.current).toBe(true)
   })
 
-  it("waits while the anchor is still moving", () => {
+  it("waits while the anchor is still moving", async () => {
     const position = { x: 0, y: 400 }
     const { ref } = makeAnchor(position)
-    const { result } = renderHook(() => useAnchorSettled(ref, true))
+    const { result } = await renderHook(() => useAnchorSettled(ref, true))
 
     // Momentum scroll: the anchor keeps moving up between measurements.
     for (let i = 0; i < 3; i++) {
       position.y -= 50
-      act(() => {
+      await act(() => {
         jest.advanceTimersByTime(ANCHOR_SETTLE_INTERVAL_MS)
       })
       expect(result.current).toBe(false)
     }
 
     // Scroll comes to rest.
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(ANCHOR_SETTLE_INTERVAL_MS)
     })
 
     expect(result.current).toBe(true)
   })
 
-  it("keeps waiting for as long as the anchor keeps moving", () => {
+  it("keeps waiting for as long as the anchor keeps moving", async () => {
     const position = { x: 0, y: 0 }
     const { ref } = makeAnchor(position)
-    const { result } = renderHook(() => useAnchorSettled(ref, true))
+    const { result } = await renderHook(() => useAnchorSettled(ref, true))
 
     // Far longer than any popover's open watchdog: still nothing, because no Modal exists.
     for (let i = 0; i < 100; i++) {
       position.y += 10
-      act(() => {
+      await act(() => {
         jest.advanceTimersByTime(ANCHOR_SETTLE_INTERVAL_MS)
       })
     }
@@ -75,50 +75,50 @@ describe("useAnchorSettled", () => {
     expect(result.current).toBe(false)
   })
 
-  it("waits while the anchor is off screen, and shows once it is scrolled back", () => {
+  it("waits while the anchor is off screen, and shows once it is scrolled back", async () => {
     // Scrolled away above the viewport, and not moving.
     const position = { x: 0, y: -600 }
     const { ref } = makeAnchor(position)
-    const { result } = renderHook(() => useAnchorSettled(ref, true))
+    const { result } = await renderHook(() => useAnchorSettled(ref, true))
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(ANCHOR_SETTLE_INTERVAL_MS * 5)
     })
     expect(result.current).toBe(false)
 
     position.y = 200
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(ANCHOR_SETTLE_INTERVAL_MS * 2)
     })
     expect(result.current).toBe(true)
   })
 
-  it("hides immediately when no longer requested, and waits again next time", () => {
+  it("hides immediately when no longer requested, and waits again next time", async () => {
     const { ref, measureInWindow } = makeAnchor({ x: 0, y: 200 })
-    const { result, rerender } = renderHook(
+    const { result, rerender } = await renderHook(
       ({ isRequested }: { isRequested: boolean }) => useAnchorSettled(ref, isRequested),
       { initialProps: { isRequested: true } }
     )
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(ANCHOR_SETTLE_INTERVAL_MS)
     })
     expect(result.current).toBe(true)
 
-    rerender({ isRequested: false })
+    await rerender({ isRequested: false })
     expect(result.current).toBe(false)
 
     measureInWindow.mockClear()
-    rerender({ isRequested: true })
+    await rerender({ isRequested: true })
     expect(result.current).toBe(false)
     expect(measureInWindow).toHaveBeenCalledTimes(1)
   })
 
-  it("never measures when not requested", () => {
+  it("never measures when not requested", async () => {
     const { ref, measureInWindow } = makeAnchor({ x: 0, y: 0 })
-    const { result } = renderHook(() => useAnchorSettled(ref, false))
+    const { result } = await renderHook(() => useAnchorSettled(ref, false))
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(ANCHOR_SETTLE_INTERVAL_MS * 20)
     })
 
@@ -126,35 +126,35 @@ describe("useAnchorSettled", () => {
     expect(measureInWindow).not.toHaveBeenCalled()
   })
 
-  it("starts over when the reset key changes", () => {
+  it("starts over when the reset key changes", async () => {
     const { ref, measureInWindow } = makeAnchor({ x: 0, y: 200 })
-    const { result, rerender } = renderHook(
+    const { result, rerender } = await renderHook(
       ({ resetKey }: { resetKey: number }) => useAnchorSettled(ref, true, { resetKey }),
       { initialProps: { resetKey: 0 } }
     )
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(ANCHOR_SETTLE_INTERVAL_MS)
     })
     expect(result.current).toBe(true)
 
     measureInWindow.mockClear()
-    rerender({ resetKey: 1 })
+    await rerender({ resetKey: 1 })
     expect(result.current).toBe(false)
     expect(measureInWindow).toHaveBeenCalledTimes(1)
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(ANCHOR_SETTLE_INTERVAL_MS)
     })
     expect(result.current).toBe(true)
   })
 
-  it("stops and reports an anchor off screen when asked to", () => {
+  it("stops and reports an anchor off screen when asked to", async () => {
     const { ref, measureInWindow } = makeAnchor({ x: 0, y: -600 })
     const onOffScreen = jest.fn()
-    const { result } = renderHook(() => useAnchorSettled(ref, true, { onOffScreen }))
+    const { result } = await renderHook(() => useAnchorSettled(ref, true, { onOffScreen }))
 
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(ANCHOR_SETTLE_INTERVAL_MS * 5)
     })
 
@@ -163,17 +163,17 @@ describe("useAnchorSettled", () => {
     expect(measureInWindow).toHaveBeenCalledTimes(1)
   })
 
-  it("keeps waiting on a moving anchor that is on screen, even when asked to report off screen", () => {
+  it("keeps waiting on a moving anchor that is on screen, even when asked to report off screen", async () => {
     const position = { x: 0, y: 400 }
     const { ref } = makeAnchor(position)
     const onOffScreen = jest.fn()
-    const { result } = renderHook(() => useAnchorSettled(ref, true, { onOffScreen }))
+    const { result } = await renderHook(() => useAnchorSettled(ref, true, { onOffScreen }))
 
     position.y -= 50
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(ANCHOR_SETTLE_INTERVAL_MS)
     })
-    act(() => {
+    await act(() => {
       jest.advanceTimersByTime(ANCHOR_SETTLE_INTERVAL_MS)
     })
 

@@ -32,8 +32,8 @@ describe("HomeViewSectionArtists", () => {
     `,
   })
 
-  it("renders nothing when no artists are available", () => {
-    const { toJSON } = renderWithRelay({
+  it("renders nothing when no artists are available", async () => {
+    const { toJSON } = await renderWithRelay({
       HomeViewComponent: () => ({
         title: "Recommended Artists",
       }),
@@ -47,8 +47,8 @@ describe("HomeViewSectionArtists", () => {
     expect(toJSON()).toBeNull()
   })
 
-  it("renders a list of artists", () => {
-    renderWithRelay({
+  it("renders a list of artists", async () => {
+    await renderWithRelay({
       HomeViewSectionArtists: () => ({
         internalID: "home-view-section-recommended-artists",
         component: {
@@ -81,7 +81,7 @@ describe("HomeViewSectionArtists", () => {
     expect(screen.getByText(/Artist 1/)).toBeOnTheScreen()
     expect(screen.getByText(/Artist 2/)).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText(/Artist 2/))
+    await fireEvent.press(screen.getByText(/Artist 2/))
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
         [

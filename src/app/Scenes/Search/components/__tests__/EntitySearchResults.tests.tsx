@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { screen, waitFor } from "@testing-library/react-native"
 import { EntitySearchResultsQuery } from "__generated__/EntitySearchResultsQuery.graphql"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { EntitySearchResultsScreen } from "app/Scenes/Search/components/EntitySearchResults"
@@ -22,7 +22,7 @@ describe("EntitySearchResults", () => {
   })
 
   it("renders results component without throwing an error", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Query: () => ({
         searchConnection: {
           totalCount: 10,
@@ -31,11 +31,11 @@ describe("EntitySearchResults", () => {
       }),
     })
 
-    expect(screen.getByTestId("SingleIndexSearchPlaceholder")).toBeTruthy()
-
-    await waitForElementToBeRemoved(() => screen.queryByTestId("SingleIndexSearchPlaceholder"), {
-      timeout: 10000,
-    })
+    // renderWithRelay resolves the query before returning, so the placeholder is already gone
+    await waitFor(
+      () => expect(screen.queryByTestId("SingleIndexSearchPlaceholder")).not.toBeOnTheScreen(),
+      { timeout: 10000 }
+    )
 
     expect(screen.getByLabelText("Artist search results list")).toBeTruthy()
 
@@ -51,7 +51,7 @@ describe("EntitySearchResults", () => {
   })
 
   it("renders the empty message when no results", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Query: () => ({
         searchConnection: {
           totalCount: 0,
@@ -60,11 +60,11 @@ describe("EntitySearchResults", () => {
       }),
     })
 
-    expect(screen.getByTestId("SingleIndexSearchPlaceholder")).toBeTruthy()
-
-    await waitForElementToBeRemoved(() => screen.queryByTestId("SingleIndexSearchPlaceholder"), {
-      timeout: 10000,
-    })
+    // renderWithRelay resolves the query before returning, so the placeholder is already gone
+    await waitFor(
+      () => expect(screen.queryByTestId("SingleIndexSearchPlaceholder")).not.toBeOnTheScreen(),
+      { timeout: 10000 }
+    )
 
     expect(screen.getByLabelText("Artist search results list")).toBeTruthy()
 

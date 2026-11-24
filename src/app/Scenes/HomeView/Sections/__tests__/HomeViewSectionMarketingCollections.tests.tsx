@@ -29,8 +29,8 @@ describe("HomeViewSectionMarketingCollections", () => {
     `,
   })
 
-  it("renders nothing when there are no marketing colections", () => {
-    const { toJSON } = renderWithRelay({
+  it("renders nothing when there are no marketing colections", async () => {
+    const { toJSON } = await renderWithRelay({
       HomeViewComponent: () => ({
         title: "Marketing Collections",
       }),
@@ -42,8 +42,8 @@ describe("HomeViewSectionMarketingCollections", () => {
     expect(toJSON()).toBeNull()
   })
 
-  it("renders a list of marketing collections", () => {
-    renderWithRelay({
+  it("renders a list of marketing collections", async () => {
+    await renderWithRelay({
       HomeViewComponent: () => ({
         title: "Marketing Collections",
         behaviors: {
@@ -72,7 +72,7 @@ describe("HomeViewSectionMarketingCollections", () => {
     expect(screen.getByText(/Marketing collection 1/)).toBeOnTheScreen()
     expect(screen.getByText(/Marketing collection 2/)).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Marketing Collections"))
+    await fireEvent.press(screen.getByText("Marketing Collections"))
 
     expect(navigate).toHaveBeenCalledWith("/collections")
     expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -84,8 +84,8 @@ describe("HomeViewSectionMarketingCollections", () => {
     })
   })
 
-  it("navigates and tracks clicks on an individual collection", () => {
-    renderWithRelay({
+  it("navigates and tracks clicks on an individual collection", async () => {
+    await renderWithRelay({
       HomeViewSectionMarketingCollections: () => ({
         internalID: "home-view-section-marketing-collections",
         component: {
@@ -117,7 +117,7 @@ describe("HomeViewSectionMarketingCollections", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText(/Marketing collection 2/))
+    await fireEvent.press(screen.getByText(/Marketing collection 2/))
 
     expect(navigate).toHaveBeenCalledWith("/collection/marketing-collection-slug-2")
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`

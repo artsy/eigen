@@ -32,8 +32,8 @@ describe("ArticleSlideShowCaption", () => {
     `,
   })
 
-  it("renders Artwork", () => {
-    renderWithRelay({
+  it("renders Artwork", async () => {
+    await renderWithRelay({
       Article: () => article,
       ArticleSectionImageCollectionFigure: () => ({
         __typename: "Artwork",
@@ -46,8 +46,8 @@ describe("ArticleSlideShowCaption", () => {
     expect(screen.getByText("Test Artwork")).toBeOnTheScreen()
   })
 
-  it("renders ArticleImageSection", () => {
-    renderWithRelay({
+  it("renders ArticleImageSection", async () => {
+    await renderWithRelay({
       Article: () => article,
       ArticleSectionImageCollectionFigure: () => ({
         __typename: "ArticleImageSection",
@@ -58,8 +58,8 @@ describe("ArticleSlideShowCaption", () => {
     expect(screen.getByText("Test caption")).toBeOnTheScreen()
   })
 
-  it("renders ArticleUnpublishedArtwork", () => {
-    renderWithRelay({
+  it("renders ArticleUnpublishedArtwork", async () => {
+    await renderWithRelay({
       Article: () => article,
       ArticleSectionImageCollectionFigure: () => ({
         __typename: "ArticleUnpublishedArtwork",

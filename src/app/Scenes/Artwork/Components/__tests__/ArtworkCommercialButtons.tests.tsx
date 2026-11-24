@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkCommercialButtons_Test_Query } from "__generated__/ArtworkCommercialButtons_Test_Query.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore, ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
@@ -71,7 +71,7 @@ describe("ArtworkCommercialButtons", () => {
     `,
   })
 
-  it("renders Purchase button if artwork isAcquireable", () => {
+  it("renders Purchase button if artwork isAcquireable", async () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: true,
@@ -79,7 +79,7 @@ describe("ArtworkCommercialButtons", () => {
       isInquireable: false,
     }
 
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => artwork,
       Me: () => meFixture,
     })
@@ -89,7 +89,7 @@ describe("ArtworkCommercialButtons", () => {
     expect(screen.queryByText("Contact Gallery")).not.toBeOnTheScreen()
   })
 
-  it("renders Make an Offer button if artwork isOfferable", () => {
+  it("renders Make an Offer button if artwork isOfferable", async () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: false,
@@ -97,7 +97,7 @@ describe("ArtworkCommercialButtons", () => {
       isInquireable: false,
     }
 
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => artwork,
       Me: () => meFixture,
     })
@@ -107,7 +107,7 @@ describe("ArtworkCommercialButtons", () => {
     expect(screen.queryByText("Contact Gallery")).not.toBeOnTheScreen()
   })
 
-  it("renders Contact Gallery button if artwork isInquireable", () => {
+  it("renders Contact Gallery button if artwork isInquireable", async () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: false,
@@ -115,7 +115,7 @@ describe("ArtworkCommercialButtons", () => {
       isInquireable: true,
     }
 
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => artwork,
       Me: () => meFixture,
     })
@@ -125,14 +125,14 @@ describe("ArtworkCommercialButtons", () => {
     expect(screen.getByText("Contact Gallery")).toBeOnTheScreen()
   })
 
-  it("renders both Purchase and Make an Offer buttons if artwork isOfferable and isAcquireable", () => {
+  it("renders both Purchase and Make an Offer buttons if artwork isOfferable and isAcquireable", async () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: true,
       isOfferable: true,
       isInquireable: false,
     }
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => artwork,
       Me: () => meFixture,
     })
@@ -142,14 +142,14 @@ describe("ArtworkCommercialButtons", () => {
     expect(screen.queryByText("Contact Gallery")).not.toBeOnTheScreen()
   })
 
-  it("renders both Make an Offer and Contact Gallery buttons if artwork isOfferable and isInquireable", () => {
+  it("renders both Make an Offer and Contact Gallery buttons if artwork isOfferable and isInquireable", async () => {
     const artwork = {
       ...ArtworkFixture,
       isOfferable: true,
       isInquireable: true,
     }
 
-    renderWithRelay(
+    await renderWithRelay(
       {
         Artwork: () => artwork,
         Me: () => meFixture,
@@ -164,7 +164,7 @@ describe("ArtworkCommercialButtons", () => {
     expect(screen.getByText("Contact Gallery")).toBeOnTheScreen()
   })
 
-  it("renders Bid button if artwork is in acution and biddable", () => {
+  it("renders Bid button if artwork is in acution and biddable", async () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: false,
@@ -192,7 +192,7 @@ describe("ArtworkCommercialButtons", () => {
       },
     }
 
-    renderWithRelay(
+    await renderWithRelay(
       {
         Artwork: () => artwork,
         Me: () => meFixture,
@@ -203,7 +203,7 @@ describe("ArtworkCommercialButtons", () => {
     expect(screen.getByText("Bid")).toBeOnTheScreen()
   })
 
-  it("renders Purchase and Bid buttons if artwork is in auction and buynowable", () => {
+  it("renders Purchase and Bid buttons if artwork is in auction and buynowable", async () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: true,
@@ -227,7 +227,7 @@ describe("ArtworkCommercialButtons", () => {
       },
     }
 
-    renderWithRelay(
+    await renderWithRelay(
       {
         Artwork: () => artwork,
         Me: () => meFixture,
@@ -242,7 +242,7 @@ describe("ArtworkCommercialButtons", () => {
   })
 
   describe("with an active partner offer", () => {
-    it("renders Purchase button if artwork isAcquireable", () => {
+    it("renders Purchase button if artwork isAcquireable", async () => {
       const artwork = {
         ...ArtworkFixture,
         isAcquireable: true,
@@ -250,7 +250,7 @@ describe("ArtworkCommercialButtons", () => {
         isInquireable: false,
       }
 
-      renderWithRelay({
+      await renderWithRelay({
         Artwork: () => artwork,
         Me: () => meWithPartnerOfferFixture,
       })
@@ -260,7 +260,7 @@ describe("ArtworkCommercialButtons", () => {
       expect(screen.queryByText("Contact Gallery")).not.toBeOnTheScreen()
     })
 
-    it("renders both Purchase and Make an Offer buttons if artwork isOfferable", () => {
+    it("renders both Purchase and Make an Offer buttons if artwork isOfferable", async () => {
       const artwork = {
         ...ArtworkFixture,
         isAcquireable: false,
@@ -268,7 +268,7 @@ describe("ArtworkCommercialButtons", () => {
         isInquireable: false,
       }
 
-      renderWithRelay({
+      await renderWithRelay({
         Artwork: () => artwork,
         Me: () => meWithPartnerOfferFixture,
       })
@@ -278,14 +278,14 @@ describe("ArtworkCommercialButtons", () => {
       expect(screen.queryByText("Contact Gallery")).not.toBeOnTheScreen()
     })
 
-    it("renders both Purchase and Make an Offer buttons if artwork isOfferable and isAcquireable", () => {
+    it("renders both Purchase and Make an Offer buttons if artwork isOfferable and isAcquireable", async () => {
       const artwork = {
         ...ArtworkFixture,
         isAcquireable: true,
         isOfferable: true,
         isInquireable: false,
       }
-      renderWithRelay({
+      await renderWithRelay({
         Artwork: () => artwork,
         Me: () => meWithPartnerOfferFixture,
       })
@@ -295,14 +295,14 @@ describe("ArtworkCommercialButtons", () => {
       expect(screen.queryByText("Contact Gallery")).not.toBeOnTheScreen()
     })
 
-    it("renders both Purchase and Contact Gallery buttons if artwork isOfferable and isInquireable", () => {
+    it("renders both Purchase and Contact Gallery buttons if artwork isOfferable and isInquireable", async () => {
       const artwork = {
         ...ArtworkFixture,
         isOfferable: true,
         isInquireable: true,
       }
 
-      renderWithRelay({
+      await renderWithRelay({
         Artwork: () => artwork,
         Me: () => meWithPartnerOfferFixture,
       })
@@ -312,14 +312,14 @@ describe("ArtworkCommercialButtons", () => {
       expect(screen.getByText("Contact Gallery")).toBeOnTheScreen()
     })
 
-    it("renders both Purchase and Contact Gallery buttons if artwork isInquireable", () => {
+    it("renders both Purchase and Contact Gallery buttons if artwork isInquireable", async () => {
       const artwork = {
         ...ArtworkFixture,
         isOfferable: false,
         isInquireable: true,
       }
 
-      renderWithRelay({
+      await renderWithRelay({
         Artwork: () => artwork,
         Me: () => meWithPartnerOfferFixture,
       })
@@ -354,27 +354,25 @@ describe("ArtworkCommercialButtons", () => {
         },
       }
 
-      const { mockResolveLastOperation, env } = renderWithRelay({
+      const { mockResolveLastOperation, env } = await renderWithRelay({
         Artwork: () => artwork,
         Me: () => meWithPartnerOffer,
       })
 
-      fireEvent.press(screen.getByText("Purchase"))
+      await fireEvent.press(screen.getByText("Purchase"))
 
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
         "usePartnerOfferCheckoutMutation"
       )
 
-      await waitFor(() =>
-        mockResolveLastOperation({
-          CommerceOrderWithMutationSuccess: () => ({
-            order: {
-              internalID: "buyNowID",
-              mode: "BUY",
-            },
-          }),
-        })
-      )
+      await mockResolveLastOperation({
+        CommerceOrderWithMutationSuccess: () => ({
+          order: {
+            internalID: "buyNowID",
+            mode: "BUY",
+          },
+        }),
+      })
 
       expect(navigate).toHaveBeenCalledWith("/orders/buyNowID", {
         passProps: {
@@ -391,26 +389,24 @@ describe("ArtworkCommercialButtons", () => {
         isInquireable: false,
       }
 
-      const { mockResolveLastOperation, env } = renderWithRelay({
+      const { mockResolveLastOperation, env } = await renderWithRelay({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
 
-      fireEvent.press(screen.getByText("Purchase"))
+      await fireEvent.press(screen.getByText("Purchase"))
 
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
         "useCreateOrderMutation"
       )
-      await waitFor(() =>
-        mockResolveLastOperation({
-          CommerceOrderWithMutationSuccess: () => ({
-            order: {
-              internalID: "buyNowID",
-              mode: "BUY",
-            },
-          }),
-        })
-      )
+      await mockResolveLastOperation({
+        CommerceOrderWithMutationSuccess: () => ({
+          order: {
+            internalID: "buyNowID",
+            mode: "BUY",
+          },
+        }),
+      })
 
       expect(navigate).toHaveBeenCalledWith("/orders/buyNowID", {
         passProps: {
@@ -419,7 +415,7 @@ describe("ArtworkCommercialButtons", () => {
       })
     })
 
-    it("the Make Offer mutation", () => {
+    it("the Make Offer mutation", async () => {
       const artwork = {
         ...ArtworkFixture,
         isAcquireable: true,
@@ -427,14 +423,14 @@ describe("ArtworkCommercialButtons", () => {
         isInquireable: false,
       }
 
-      const { mockResolveLastOperation } = renderWithRelay({
+      const { mockResolveLastOperation } = await renderWithRelay({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
 
-      fireEvent.press(screen.getByText("Make an Offer"))
+      await fireEvent.press(screen.getByText("Make an Offer"))
 
-      mockResolveLastOperation({
+      await mockResolveLastOperation({
         CommerceOrderWithMutationSuccess: () => ({
           order: {
             internalID: "makeOfferID",
@@ -453,7 +449,7 @@ describe("ArtworkCommercialButtons", () => {
   })
 
   describe("tracking", () => {
-    it("trackEvent called when Contact Gallery pressed given Offerable and Inquireable artwork", () => {
+    it("trackEvent called when Contact Gallery pressed given Offerable and Inquireable artwork", async () => {
       const artwork = {
         ...ArtworkFixture,
         isOfferable: true,
@@ -461,7 +457,7 @@ describe("ArtworkCommercialButtons", () => {
         collectorSignals: null,
       }
 
-      renderWithRelay(
+      await renderWithRelay(
         {
           Artwork: () => artwork,
           Me: () => meFixture,
@@ -469,7 +465,7 @@ describe("ArtworkCommercialButtons", () => {
         { auctionState: AuctionTimerState.LIVE_INTEGRATION_UPCOMING }
       )
 
-      fireEvent.press(screen.getByText("Contact Gallery"))
+      await fireEvent.press(screen.getByText("Contact Gallery"))
 
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
         [
@@ -484,7 +480,7 @@ describe("ArtworkCommercialButtons", () => {
       `)
     })
 
-    it("trackEvent called when Contact Gallery pressed given Inquireable artwork", () => {
+    it("trackEvent called when Contact Gallery pressed given Inquireable artwork", async () => {
       const artwork = {
         ...ArtworkFixture,
         isOfferable: true,
@@ -492,7 +488,7 @@ describe("ArtworkCommercialButtons", () => {
         collectorSignals: null,
       }
 
-      renderWithRelay(
+      await renderWithRelay(
         {
           Artwork: () => artwork,
           Me: () => meFixture,
@@ -502,7 +498,7 @@ describe("ArtworkCommercialButtons", () => {
         }
       )
 
-      fireEvent.press(screen.getByText("Contact Gallery"))
+      await fireEvent.press(screen.getByText("Contact Gallery"))
 
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
         [
@@ -518,7 +514,7 @@ describe("ArtworkCommercialButtons", () => {
     })
 
     describe("with an active partner offer", () => {
-      it("trackEvent called when Contact Gallery pressed given Offerable and Inquireable artwork", () => {
+      it("trackEvent called when Contact Gallery pressed given Offerable and Inquireable artwork", async () => {
         const artwork = {
           ...ArtworkFixture,
           isOfferable: true,
@@ -526,7 +522,7 @@ describe("ArtworkCommercialButtons", () => {
           collectorSignals: { partnerOffer: { internalID: "partnerOfferID" }, auction: null },
         }
 
-        renderWithRelay(
+        await renderWithRelay(
           {
             Artwork: () => artwork,
             Me: () => meFixture,
@@ -534,7 +530,7 @@ describe("ArtworkCommercialButtons", () => {
           { auctionState: AuctionTimerState.LIVE_INTEGRATION_UPCOMING }
         )
 
-        fireEvent.press(screen.getByText("Contact Gallery"))
+        await fireEvent.press(screen.getByText("Contact Gallery"))
 
         expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
           [
@@ -550,7 +546,7 @@ describe("ArtworkCommercialButtons", () => {
         `)
       })
 
-      it("trackEvent called when Contact Gallery pressed given Inquireable artwork", () => {
+      it("trackEvent called when Contact Gallery pressed given Inquireable artwork", async () => {
         const artwork = {
           ...ArtworkFixture,
           isOfferable: true,
@@ -558,7 +554,7 @@ describe("ArtworkCommercialButtons", () => {
           collectorSignals: { partnerOffer: { internalID: "partnerOfferID" }, auction: null },
         }
 
-        renderWithRelay(
+        await renderWithRelay(
           {
             Artwork: () => artwork,
             Me: () => meFixture,
@@ -568,7 +564,7 @@ describe("ArtworkCommercialButtons", () => {
           }
         )
 
-        fireEvent.press(screen.getByText("Contact Gallery"))
+        await fireEvent.press(screen.getByText("Contact Gallery"))
 
         expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
           [
@@ -586,7 +582,7 @@ describe("ArtworkCommercialButtons", () => {
     })
 
     describe("with auction signals", () => {
-      it("trackEvent called when Contact Gallery pressed given Offerable and Inquireable artwork", () => {
+      it("trackEvent called when Contact Gallery pressed given Offerable and Inquireable artwork", async () => {
         const artwork = {
           ...ArtworkFixture,
           isOfferable: true,
@@ -602,7 +598,7 @@ describe("ArtworkCommercialButtons", () => {
           },
         }
 
-        renderWithRelay(
+        await renderWithRelay(
           {
             Artwork: () => artwork,
             Me: () => meFixture,
@@ -610,7 +606,7 @@ describe("ArtworkCommercialButtons", () => {
           { auctionState: AuctionTimerState.LIVE_INTEGRATION_UPCOMING }
         )
 
-        fireEvent.press(screen.getByText("Contact Gallery"))
+        await fireEvent.press(screen.getByText("Contact Gallery"))
 
         expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
           [
@@ -628,7 +624,7 @@ describe("ArtworkCommercialButtons", () => {
         `)
       })
 
-      it("trackEvent called when Contact Gallery pressed given Inquireable artwork", () => {
+      it("trackEvent called when Contact Gallery pressed given Inquireable artwork", async () => {
         const artwork = {
           ...ArtworkFixture,
           isOfferable: true,
@@ -638,7 +634,7 @@ describe("ArtworkCommercialButtons", () => {
           },
         }
 
-        renderWithRelay(
+        await renderWithRelay(
           {
             Artwork: () => artwork,
             Me: () => meFixture,
@@ -648,7 +644,7 @@ describe("ArtworkCommercialButtons", () => {
           }
         )
 
-        fireEvent.press(screen.getByText("Contact Gallery"))
+        await fireEvent.press(screen.getByText("Contact Gallery"))
 
         expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
           [
@@ -683,17 +679,17 @@ describe("ArtworkCommercialButtons", () => {
         isInquireable: false,
       }
 
-      it("does not render the Purchase and Make Offer buttons when edition set is not selected ", () => {
-        renderWithRelay({ Artwork: () => artworkWithEditionSets, Me: () => meFixture })
+      it("does not render the Purchase and Make Offer buttons when edition set is not selected ", async () => {
+        await renderWithRelay({ Artwork: () => artworkWithEditionSets, Me: () => meFixture })
 
         expect(screen.queryByText("Purchase")).not.toBeOnTheScreen()
         expect(screen.queryByText("Make an Offer")).not.toBeOnTheScreen()
       })
 
-      it("renders the Purchase and Make Offer buttons when edition set is selected ", () => {
-        renderWithRelay({ Artwork: () => artworkWithEditionSets, Me: () => meFixture })
+      it("renders the Purchase and Make Offer buttons when edition set is selected ", async () => {
+        await renderWithRelay({ Artwork: () => artworkWithEditionSets, Me: () => meFixture })
 
-        act(() => {
+        await act(() => {
           mockArtworkStore.getActions().setSelectedEditionId(editionSets[0].internalID)
         })
 
@@ -711,10 +707,10 @@ describe("ArtworkCommercialButtons", () => {
         isInquireable: false,
       }
 
-      it("renders the Purchase and Make Offer buttons even if the edition set is not selected ", () => {
-        renderWithRelay({ Artwork: () => artworkWithEditionSets, Me: () => meFixture })
+      it("renders the Purchase and Make Offer buttons even if the edition set is not selected ", async () => {
+        await renderWithRelay({ Artwork: () => artworkWithEditionSets, Me: () => meFixture })
 
-        act(() => {
+        await act(() => {
           mockArtworkStore.getActions().setSelectedEditionId(null)
         })
 

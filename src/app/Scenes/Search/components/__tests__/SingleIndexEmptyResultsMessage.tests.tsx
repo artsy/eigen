@@ -12,8 +12,8 @@ describe("SingleIndexEmptyResultsMessage", () => {
     jest.mocked(useEnableArtAssistant).mockReturnValue(false)
   })
 
-  it("shoud render correctly with the an article for artist", () => {
-    renderWithWrappers(
+  it("shoud render correctly with the an article for artist", async () => {
+    await renderWithWrappers(
       <SingleIndexEmptyResultsMessage
         query="query"
         selectedPill={{
@@ -27,8 +27,8 @@ describe("SingleIndexEmptyResultsMessage", () => {
     expect(screen.queryByText("Please try searching again with a different spelling."))
   })
 
-  it("shoud render correctly with the a article for artist", () => {
-    renderWithWrappers(
+  it("shoud render correctly with the a article for artist", async () => {
+    await renderWithWrappers(
       <SingleIndexEmptyResultsMessage
         query="query"
         selectedPill={{
@@ -42,10 +42,10 @@ describe("SingleIndexEmptyResultsMessage", () => {
     expect(screen.queryByText("Please try searching again with a different spelling."))
   })
 
-  it("shows the Art Assistant suggestion instead of the message when it is enabled", () => {
+  it("shows the Art Assistant suggestion instead of the message when it is enabled", async () => {
     jest.mocked(useEnableArtAssistant).mockReturnValue(true)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <SingleIndexEmptyResultsMessage
         query="query"
         selectedPill={{

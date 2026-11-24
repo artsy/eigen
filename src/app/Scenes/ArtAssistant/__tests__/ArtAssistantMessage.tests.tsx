@@ -6,10 +6,10 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { AccessibilityInfo } from "react-native"
 
 describe("ArtAssistantMessage", () => {
-  it("asks for feedback on a completed answer and reports the vote", () => {
+  it("asks for feedback on a completed answer and reports the vote", async () => {
     const onRate = jest.fn()
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <ArtAssistantMessage
         message={{
           id: "assistant-1",
@@ -24,12 +24,12 @@ describe("ArtAssistantMessage", () => {
 
     expect(screen.getByText("Was this helpful?")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByLabelText("Bad response"))
+    await fireEvent.press(screen.getByLabelText("Bad response"))
 
     expect(onRate).toHaveBeenCalledWith("assistant-1", "THUMBS_DOWN")
   })
 
-  it("announces the prompt when the vote changes, not on first render", () => {
+  it("announces the prompt when the vote changes, not on first render", async () => {
     const announce = jest.spyOn(AccessibilityInfo, "announceForAccessibility")
     const answer = (feedbackRating?: "THUMBS_UP", id = "assistant-1") => (
       <ArtAssistantMessage
@@ -45,27 +45,27 @@ describe("ArtAssistantMessage", () => {
       />
     )
 
-    const { rerender } = render(answer(), { wrapper: Theme })
+    const { rerender } = await render(answer(), { wrapper: Theme })
     expect(announce).not.toHaveBeenCalled()
 
-    rerender(answer("THUMBS_UP"))
+    await rerender(answer("THUMBS_UP"))
     expect(announce).toHaveBeenLastCalledWith("Thanks for the feedback")
 
     // A failed vote reverts, and that is announced too.
-    rerender(answer())
+    await rerender(answer())
     expect(announce).toHaveBeenLastCalledWith("Was this helpful?")
 
     // A recycled list cell showing another, rated answer is not a vote.
     announce.mockClear()
-    rerender(answer("THUMBS_UP", "assistant-2"))
+    await rerender(answer("THUMBS_UP", "assistant-2"))
     expect(announce).not.toHaveBeenCalled()
   })
 
   it.each([
     ["the answer has no feedbackID", { phase: "complete" as const }],
     ["the answer is still coming in", { phase: "responding" as const, feedbackID: "fb-1" }],
-  ])("doesn't ask for feedback when %s", (_, message) => {
-    renderWithWrappers(
+  ])("doesn't ask for feedback when %s", async (_, message) => {
+    await renderWithWrappers(
       <ArtAssistantMessage
         message={{ id: "assistant-1", role: "assistant", text: "I found a few works.", ...message }}
         onRate={jest.fn()}
@@ -75,8 +75,8 @@ describe("ArtAssistantMessage", () => {
     expect(screen.queryByTestId("art-assistant-feedback")).not.toBeOnTheScreen()
   })
 
-  it("renders user messages like Inbox", () => {
-    renderWithWrappers(
+  it("renders user messages like Inbox", async () => {
+    await renderWithWrappers(
       <ArtAssistantMessage message={{ id: "user-1", role: "user", text: "Blue painting" }} />
     )
 
@@ -88,8 +88,8 @@ describe("ArtAssistantMessage", () => {
     expect(screen.getByText("Blue painting")).toHaveStyle({ color: "#FFFFFF" })
   })
 
-  it("renders assistant messages like Inbox", () => {
-    renderWithWrappers(
+  it("renders assistant messages like Inbox", async () => {
+    await renderWithWrappers(
       <ArtAssistantMessage
         message={{
           id: "assistant-1",
@@ -108,8 +108,8 @@ describe("ArtAssistantMessage", () => {
     expect(screen.getByText("I found a few works.")).toHaveStyle({ color: "#000000" })
   })
 
-  it("renders activity separately from assistant messages", () => {
-    renderWithWrappers(
+  it("renders activity separately from assistant messages", async () => {
+    await renderWithWrappers(
       <ArtAssistantMessage
         message={{
           id: "assistant-1",
@@ -132,8 +132,8 @@ describe("ArtAssistantMessage", () => {
     expect(screen.getByText("Searching Artsy…")).toHaveStyle({ color: "#707070" })
   })
 
-  it("uses dark theme colors for activity", () => {
-    render(
+  it("uses dark theme colors for activity", async () => {
+    await render(
       <Theme theme="v3dark">
         <ArtAssistantMessage
           message={{
@@ -153,8 +153,8 @@ describe("ArtAssistantMessage", () => {
     expect(screen.getByText("Thinking...")).toHaveStyle({ color: "#C2C2C2" })
   })
 
-  it("renders a grid/rail per section, dispatching on the section type", () => {
-    renderWithWrappers(
+  it("renders a grid/rail per section, dispatching on the section type", async () => {
+    await renderWithWrappers(
       <ArtAssistantMessage
         message={{
           id: "assistant-1",
@@ -173,8 +173,8 @@ describe("ArtAssistantMessage", () => {
     expect(screen.getByTestId("art-assistant-artist-rail-loading")).toBeOnTheScreen()
   })
 
-  it("renders no rail for a text-only answer", () => {
-    renderWithWrappers(
+  it("renders no rail for a text-only answer", async () => {
+    await renderWithWrappers(
       <ArtAssistantMessage
         message={{
           id: "assistant-1",
@@ -198,30 +198,30 @@ describe("ArtAssistantMessage", () => {
       error: "conversation_limit" as const,
     }
 
-    it("renders the error with its actions", () => {
+    it("renders the error with its actions", async () => {
       const onSelectErrorAction = jest.fn()
-      renderWithWrappers(
+      await renderWithWrappers(
         <ArtAssistantMessage message={failed} onSelectErrorAction={onSelectErrorAction} />
       )
 
       expect(screen.getByText(ART_ASSISTANT_ERRORS.conversation_limit.message)).toBeOnTheScreen()
 
-      fireEvent.press(screen.getByText("Yes! Open a new chat window"))
-      fireEvent.press(screen.getByText("No, I'm done for now"))
+      await fireEvent.press(screen.getByText("Yes! Open a new chat window"))
+      await fireEvent.press(screen.getByText("No, I'm done for now"))
 
       expect(onSelectErrorAction.mock.calls).toEqual([["newChat"], ["close"]])
     })
 
-    it("does not offer actions on an earlier error", () => {
-      renderWithWrappers(<ArtAssistantMessage message={failed} />)
+    it("does not offer actions on an earlier error", async () => {
+      await renderWithWrappers(<ArtAssistantMessage message={failed} />)
 
       expect(screen.getByText(ART_ASSISTANT_ERRORS.conversation_limit.message)).toBeOnTheScreen()
       expect(screen.queryByTestId("art-assistant-error-actions")).not.toBeOnTheScreen()
     })
   })
 
-  it("shows an attached image without an empty bubble", () => {
-    renderWithWrappers(
+  it("shows an attached image without an empty bubble", async () => {
+    await renderWithWrappers(
       <ArtAssistantMessage
         message={{
           id: "user-1",
@@ -236,8 +236,8 @@ describe("ArtAssistantMessage", () => {
     expect(screen.queryByTestId("art-assistant-user-message")).not.toBeOnTheScreen()
   })
 
-  it("shows an attached image above the text sent with it", () => {
-    renderWithWrappers(
+  it("shows an attached image above the text sent with it", async () => {
+    await renderWithWrappers(
       <ArtAssistantMessage
         message={{
           id: "user-1",
@@ -261,21 +261,21 @@ describe("ArtAssistantMessage", () => {
       suggestedReplies: ["Show me cheaper ones", "Only paintings"],
     }
 
-    it("sends the tapped reply", () => {
+    it("sends the tapped reply", async () => {
       const onSelectSuggestedReply = jest.fn()
-      renderWithWrappers(
+      await renderWithWrappers(
         <ArtAssistantMessage message={answered} onSelectSuggestedReply={onSelectSuggestedReply} />
       )
 
       expect(screen.getByText("Suggestions")).toBeOnTheScreen()
 
-      fireEvent.press(screen.getByText("Only paintings"))
+      await fireEvent.press(screen.getByText("Only paintings"))
 
       expect(onSelectSuggestedReply).toHaveBeenCalledWith("Only paintings", 1, "assistant-1")
     })
 
-    it("are not offered on an earlier answer", () => {
-      renderWithWrappers(<ArtAssistantMessage message={answered} />)
+    it("are not offered on an earlier answer", async () => {
+      await renderWithWrappers(<ArtAssistantMessage message={answered} />)
 
       expect(screen.queryByTestId("art-assistant-suggested-replies")).not.toBeOnTheScreen()
     })

@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { ShowArtworksTestsQuery } from "__generated__/ShowArtworksTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ShowArtworks } from "app/Scenes/Show/Components/ShowArtworks"
@@ -33,24 +34,24 @@ describe("ShowArtworks", () => {
   })
 
   it("renders a grid of artworks", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     await act(async () => {
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Show: () => show,
       })
 
       await flushPromiseQueue()
     })
 
-    expect(getByText("Show Artwork")).toBeTruthy()
+    expect(screen.getByText("Show Artwork")).toBeTruthy()
   })
 
   it("renders empty view if there are no artworks", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     await act(async () => {
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Show: () => ({
           showArtworks: {
             ...show.showArtworks,
@@ -65,7 +66,7 @@ describe("ShowArtworks", () => {
       await flushPromiseQueue()
     })
 
-    expect(getByText(/This show is currently unavailable./)).toBeTruthy()
+    expect(screen.getByText(/This show is currently unavailable./)).toBeTruthy()
   })
 })
 

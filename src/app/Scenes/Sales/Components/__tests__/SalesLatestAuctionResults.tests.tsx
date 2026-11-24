@@ -14,18 +14,18 @@ describe("SalesLatestAuctionResults", () => {
     query: SalesLatestAuctionResultsScreenQuery,
   })
 
-  it("renders without throwing errors", () => {
-    renderWithRelay()
+  it("renders without throwing errors", async () => {
+    await renderWithRelay()
 
     expect(screen.getByText("Auction Results for Artists You Follow")).toBeOnTheScreen()
   })
 
-  it("navigates and tracks header tap with the correct event data", () => {
-    renderWithRelay()
+  it("navigates and tracks header tap with the correct event data", async () => {
+    await renderWithRelay()
 
     const header = screen.getByText("Auction Results for Artists You Follow")
 
-    fireEvent.press(header)
+    await fireEvent.press(header)
 
     expect(navigate).toHaveBeenCalledWith("/auction-results-for-artists-you-follow")
     expect(mockTrackEvent).toHaveBeenCalledWith({

@@ -57,17 +57,17 @@ describe("ShowLocation", () => {
     />
   )
 
-  const getWrapper = (mockResolvers = {}) => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+  const getWrapper = async (mockResolvers = {}) => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
     })
   }
 
-  it("renders the show location if there is a valid show location", () => {
-    getWrapper({
+  it("renders the show location if there is a valid show location", async () => {
+    await getWrapper({
       Show: () => ({ fair: null }),
       Partner: () => ({ name: "Example Partner Name" }),
       Location: () => COMPLETE_PARTNER_LOCATION_FIXTURE,
@@ -79,8 +79,8 @@ describe("ShowLocation", () => {
     expect(screen.getByText(/New York, 10002/)).toBeOnTheScreen()
   })
 
-  it("renders the fair location if there is a valid fair location", () => {
-    getWrapper({
+  it("renders the fair location if there is a valid fair location", async () => {
+    await getWrapper({
       Partner: () => ({ name: "Example Partner Name" }),
       Location: () => COMPLETE_FAIR_LOCATION_FIXTURE,
     })

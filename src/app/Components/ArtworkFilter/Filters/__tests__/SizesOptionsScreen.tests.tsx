@@ -85,8 +85,8 @@ describe("SizesOptionsScreen", () => {
     )
   }
 
-  it("renders the options", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("renders the options", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     expect(screen.getByText("Small (under 16in)")).toBeTruthy()
     expect(screen.getByText("Medium (16in – 40in)")).toBeTruthy()
@@ -99,10 +99,10 @@ describe("SizesOptionsScreen", () => {
     expect(screen.getByLabelText("Maximum Height Input")).toBeTruthy()
   })
 
-  it("single option can be selected", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("single option can be selected", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
-    fireEvent.press(screen.getByText("Small (under 16in)"))
+    await fireEvent.press(screen.getByText("Small (under 16in)"))
 
     const filters = getFilters(screen.getByTestId("debug"))
     const sizesFilter = getSizesFilterOption(filters)
@@ -130,11 +130,11 @@ describe("SizesOptionsScreen", () => {
     })
   })
 
-  it("multiple options can be selected", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("multiple options can be selected", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
-    fireEvent.press(screen.getByText("Small (under 16in)"))
-    fireEvent.press(screen.getByText("Large (over 40in)"))
+    await fireEvent.press(screen.getByText("Small (under 16in)"))
+    await fireEvent.press(screen.getByText("Large (over 40in)"))
 
     const filters = getFilters(screen.getByTestId("debug"))
     const sizesFilter = getSizesFilterOption(filters)
@@ -162,8 +162,8 @@ describe("SizesOptionsScreen", () => {
     })
   })
 
-  it("correctly select/unselect the same option", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("correctly select/unselect the same option", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     const options = screen.getAllByTestId("multi-select-option-button")
     const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
@@ -184,14 +184,14 @@ describe("SizesOptionsScreen", () => {
     expect(checkboxes[2]).toHaveProp("selected", false)
     expect(checkboxes[3]).toHaveProp("selected", false)
 
-    fireEvent.press(screen.getByText("Small (under 16in)"))
+    await fireEvent.press(screen.getByText("Small (under 16in)"))
     // ensures that the checked elements are the selected filter and one radio button
     expect(checkboxes[0]).toHaveProp("selected", true)
     expect(checkboxes[1]).toHaveProp("selected", false)
     expect(checkboxes[2]).toHaveProp("selected", false)
     expect(checkboxes[3]).toHaveProp("selected", false)
 
-    fireEvent.press(screen.getByText("Small (under 16in)"))
+    await fireEvent.press(screen.getByText("Small (under 16in)"))
 
     const filters = getFilters(screen.getByTestId("debug"))
     const sizesFilter = getSizesFilterOption(filters)
@@ -210,11 +210,11 @@ describe("SizesOptionsScreen", () => {
   })
 
   describe("Metric Radio Buttons", () => {
-    it("should convert successfully the predefined sizes and placeholders on metric change", () => {
+    it("should convert successfully the predefined sizes and placeholders on metric change", async () => {
       __globalStoreTestUtils__?.injectState({
         userPrefs: { metric: "in" },
       })
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
       expect(screen.getByLabelText("in")).toBeTruthy()
       expect(screen.getByLabelText("in")).toHaveProp("accessibilityState", { checked: true })
@@ -226,7 +226,7 @@ describe("SizesOptionsScreen", () => {
       // makes sure that "cm" appears in the screen only once for the radio button
       expect(screen.queryAllByText("cm")).toHaveLength(1)
 
-      fireEvent.press(screen.getByLabelText("cm"))
+      await fireEvent.press(screen.getByLabelText("cm"))
 
       expect(screen.getByLabelText("in")).toHaveProp("accessibilityState", { checked: false })
       expect(screen.getByLabelText("cm")).toHaveProp("accessibilityState", { checked: true })
@@ -245,10 +245,10 @@ describe("SizesOptionsScreen", () => {
   })
 
   describe("Custom Size", () => {
-    it("should select the custom size option when a custom value is specified", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("should select the custom size option when a custom value is specified", async () => {
+      await renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
+      await fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
 
       const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
 
@@ -258,12 +258,12 @@ describe("SizesOptionsScreen", () => {
       expect(checkboxes[3]).toHaveProp("selected", true)
     })
 
-    it("should clear custom values in filters when the custom size option is unselected", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("should clear custom values in filters when the custom size option is unselected", async () => {
+      await renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
+      await fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
 
-      fireEvent.press(screen.getAllByRole("checkbox")[0])
+      await fireEvent.press(screen.getAllByRole("checkbox")[0])
 
       const filters = getFilters(screen.getByTestId("debug"))
       const widthFilter = getWidthFilterOption(filters)
@@ -271,28 +271,28 @@ describe("SizesOptionsScreen", () => {
       expect(widthFilter?.paramValue).toBeUndefined()
     })
 
-    it("should restore the previous custom values when the custom size options is selected again", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("should restore the previous custom values when the custom size options is selected again", async () => {
+      await renderWithWrappers(<TestRenderer />)
       let filters
       let widthFilter
 
-      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
+      await fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
 
-      fireEvent.press(screen.getByText("Custom Size"))
+      await fireEvent.press(screen.getByText("Custom Size"))
       filters = getFilters(screen.getByTestId("debug"))
       widthFilter = getWidthFilterOption(filters)
       expect(widthFilter?.paramValue).toBeUndefined()
 
-      fireEvent.press(screen.getByText("Custom Size"))
+      await fireEvent.press(screen.getByText("Custom Size"))
       filters = getFilters(screen.getByTestId("debug"))
       widthFilter = getWidthFilterOption(filters)
       expect(widthFilter?.paramValue).toBe("5-*")
     })
 
-    it("should unselect the custom size option when custom inputs are empty", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("should unselect the custom size option when custom inputs are empty", async () => {
+      await renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
+      await fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
 
       const options = screen.getAllByTestId("multi-select-option-button")
       const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
@@ -301,24 +301,24 @@ describe("SizesOptionsScreen", () => {
 
       expect(checkboxes[3]).toHaveProp("selected", true)
 
-      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "")
+      await fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "")
       // ensures that the checked element is one radio button
       expect(checkboxes[3]).toHaveProp("selected", false)
     })
 
-    it("should keep custom inputs filled in if a predefined value is selected", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("should keep custom inputs filled in if a predefined value is selected", async () => {
+      await renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
-      fireEvent.changeText(screen.getByLabelText("Maximum Width Input"), "10")
-      fireEvent.press(screen.getByText("Small (under 16in)"))
+      await fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
+      await fireEvent.changeText(screen.getByLabelText("Maximum Width Input"), "10")
+      await fireEvent.press(screen.getByText("Small (under 16in)"))
 
       expect(screen.getByDisplayValue("5")).toBeTruthy()
       expect(screen.getByDisplayValue("10")).toBeTruthy()
     })
 
-    it("should clear the previously selected option if a custom value is entered", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("should clear the previously selected option if a custom value is entered", async () => {
+      await renderWithWrappers(<TestRenderer />)
 
       const options = screen.getAllByTestId("multi-select-option-button")
       const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
@@ -333,14 +333,14 @@ describe("SizesOptionsScreen", () => {
       expect(checkboxes[2]).toHaveProp("selected", false)
       expect(checkboxes[3]).toHaveProp("selected", false)
 
-      fireEvent.press(screen.getByText("Small (under 16in)"))
+      await fireEvent.press(screen.getByText("Small (under 16in)"))
 
       expect(checkboxes[0]).toHaveProp("selected", true)
       expect(checkboxes[1]).toHaveProp("selected", false)
       expect(checkboxes[2]).toHaveProp("selected", false)
       expect(checkboxes[3]).toHaveProp("selected", false)
 
-      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
+      await fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
 
       expect(checkboxes[0]).toHaveProp("selected", false)
       expect(checkboxes[1]).toHaveProp("selected", false)
@@ -363,10 +363,10 @@ describe("SizesOptionsScreen", () => {
       })
     })
 
-    it("returns width option with minimum value", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("returns width option with minimum value", async () => {
+      await renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
+      await fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
 
       const filters = getFilters(screen.getByTestId("debug"))
       const widthFilter = getWidthFilterOption(filters)
@@ -376,10 +376,10 @@ describe("SizesOptionsScreen", () => {
       expect(heightFilter).toBeUndefined()
     })
 
-    it("returns width option with maximum value", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("returns width option with maximum value", async () => {
+      await renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(screen.getByLabelText("Maximum Width Input"), "10")
+      await fireEvent.changeText(screen.getByLabelText("Maximum Width Input"), "10")
 
       const filters = getFilters(screen.getByTestId("debug"))
       const widthFilter = getWidthFilterOption(filters)
@@ -389,11 +389,11 @@ describe("SizesOptionsScreen", () => {
       expect(heightFilter).toBeUndefined()
     })
 
-    it("returns width option with minimum and maximum values", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("returns width option with minimum and maximum values", async () => {
+      await renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
-      fireEvent.changeText(screen.getByLabelText("Maximum Width Input"), "10")
+      await fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
+      await fireEvent.changeText(screen.getByLabelText("Maximum Width Input"), "10")
 
       const filters = getFilters(screen.getByTestId("debug"))
       const widthFilter = getWidthFilterOption(filters)
@@ -403,10 +403,10 @@ describe("SizesOptionsScreen", () => {
       expect(heightFilter).toBeUndefined()
     })
 
-    it("returns height option with minimum value", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("returns height option with minimum value", async () => {
+      await renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(screen.getByLabelText("Minimum Height Input"), "5")
+      await fireEvent.changeText(screen.getByLabelText("Minimum Height Input"), "5")
 
       const filters = getFilters(screen.getByTestId("debug"))
       const widthFilter = getWidthFilterOption(filters)
@@ -416,10 +416,10 @@ describe("SizesOptionsScreen", () => {
       expect(widthFilter).toBeUndefined()
     })
 
-    it("returns height option with maximum value", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("returns height option with maximum value", async () => {
+      await renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(screen.getByLabelText("Maximum Height Input"), "10")
+      await fireEvent.changeText(screen.getByLabelText("Maximum Height Input"), "10")
 
       const filters = getFilters(screen.getByTestId("debug"))
       const widthFilter = getWidthFilterOption(filters)
@@ -429,11 +429,11 @@ describe("SizesOptionsScreen", () => {
       expect(widthFilter).toBeUndefined()
     })
 
-    it("returns height option with minimum and maximum values", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("returns height option with minimum and maximum values", async () => {
+      await renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(screen.getByLabelText("Minimum Height Input"), "5")
-      fireEvent.changeText(screen.getByLabelText("Maximum Height Input"), "10")
+      await fireEvent.changeText(screen.getByLabelText("Minimum Height Input"), "5")
+      await fireEvent.changeText(screen.getByLabelText("Maximum Height Input"), "10")
 
       const filters = getFilters(screen.getByTestId("debug"))
       const widthFilter = getWidthFilterOption(filters)
@@ -443,11 +443,11 @@ describe("SizesOptionsScreen", () => {
       expect(widthFilter).toBeUndefined()
     })
 
-    it("returns width option with minimum value and height option with maximum value", () => {
-      renderWithWrappers(<TestRenderer />)
+    it("returns width option with minimum value and height option with maximum value", async () => {
+      await renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
-      fireEvent.changeText(screen.getByLabelText("Maximum Height Input"), "10")
+      await fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
+      await fireEvent.changeText(screen.getByLabelText("Maximum Height Input"), "10")
 
       const filters = getFilters(screen.getByTestId("debug"))
       const widthFilter = getWidthFilterOption(filters)
@@ -459,26 +459,26 @@ describe("SizesOptionsScreen", () => {
   })
 
   describe("Clear button", () => {
-    it('should not display "Clear" if nothing is selected', () => {
-      renderWithWrappers(<TestRenderer />)
+    it('should not display "Clear" if nothing is selected', async () => {
+      await renderWithWrappers(<TestRenderer />)
 
       expect(screen.queryByText("Clear")).toBeFalsy()
     })
 
-    it('should clear selected predefined values if "Clear" button is pressed', () => {
-      renderWithWrappers(<TestRenderer />)
+    it('should clear selected predefined values if "Clear" button is pressed', async () => {
+      await renderWithWrappers(<TestRenderer />)
 
       const options = screen.getAllByTestId("multi-select-option-button")
       const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
 
-      fireEvent.press(screen.getByText("Small (under 16in)"))
+      await fireEvent.press(screen.getByText("Small (under 16in)"))
 
       expect(checkboxes[0]).toHaveProp("selected", true)
       expect(checkboxes[1]).toHaveProp("selected", false)
       expect(checkboxes[2]).toHaveProp("selected", false)
       expect(checkboxes[3]).toHaveProp("selected", false)
 
-      fireEvent.press(screen.getByText("Clear"))
+      await fireEvent.press(screen.getByText("Clear"))
 
       expect(options[0]).toHaveTextContent("Small (under 16in)")
 
@@ -489,8 +489,8 @@ describe("SizesOptionsScreen", () => {
       expect(checkboxes[3]).toHaveProp("selected", false)
     })
 
-    it('should clear selected custom values if "Clear" button is pressed', () => {
-      renderWithWrappers(<TestRenderer />)
+    it('should clear selected custom values if "Clear" button is pressed', async () => {
+      await renderWithWrappers(<TestRenderer />)
 
       const options = screen.getAllByTestId("multi-select-option-button")
       const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
@@ -498,11 +498,11 @@ describe("SizesOptionsScreen", () => {
       expect(options[3]).toHaveTextContent("Custom Size")
       expect(checkboxes[3]).toHaveProp("selected", false)
 
-      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
+      await fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
 
       expect(checkboxes[3]).toHaveProp("selected", true)
 
-      fireEvent.press(screen.getByText("Clear"))
+      await fireEvent.press(screen.getByText("Clear"))
 
       // only one of unit radio buttons is selected
       expect(checkboxes[3]).toHaveProp("selected", false)

@@ -1,13 +1,12 @@
 import { Flex, Spinner } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { NavigationContainer } from "@react-navigation/native"
-import { screen } from "@testing-library/react-native"
+import { act, screen } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import {
   PREVIOUS_LAUNCH_COUNT_KEY,
   useReloadedDevNavigationState,
 } from "app/system/navigation/useReloadedDevNavigationState"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("app/system/navigation/useReloadedDevNavigationState", () => ({
@@ -15,6 +14,22 @@ jest.mock("app/system/navigation/useReloadedDevNavigationState", () => ({
 }))
 
 const MOCK_NAVIGATION_STATE_KEY = "MOCK_NAVIGATION_STATE_KEY"
+
+// Queries only see host elements, so record the props the hook's state reaches the container with
+const MockNavigationContainer = jest.fn(
+  (props: React.ComponentProps<typeof NavigationContainer>) => <NavigationContainer {...props} />
+)
+
+const lastInitialState = () => MockNavigationContainer.mock.lastCall?.[0].initialState
+
+// Lets a test look at the loading state before AsyncStorage answers
+const deferred = <T,>() => {
+  let resolve!: (value: T) => void
+  const promise = new Promise<T>((r) => {
+    resolve = r
+  })
+  return { promise, resolve }
+}
 
 describe("useReloadedDevNavigationState", () => {
   const Test = () => {
@@ -25,7 +40,7 @@ describe("useReloadedDevNavigationState", () => {
 
     return (
       <Flex testID="content">
-        <NavigationContainer initialState={initialState} children={undefined} />
+        <MockNavigationContainer initialState={initialState} children={undefined} />
       </Flex>
     )
   }
@@ -36,54 +51,51 @@ describe("useReloadedDevNavigationState", () => {
 
   describe("when the launch count is different", () => {
     it("should return initialState as undefined", async () => {
-      jest
-        .spyOn(AsyncStorage, "getItem")
-        .mockResolvedValueOnce(JSON.stringify(reactNavigationMockState))
+      const previousSessionState = deferred<string | null>()
+      jest.spyOn(AsyncStorage, "getItem").mockReturnValueOnce(previousSessionState.promise)
       jest.spyOn(AsyncStorage, "getItem").mockResolvedValueOnce("2")
 
-      renderWithWrappers(<Test />)
+      await renderWithWrappers(<Test />)
 
       expect(screen.getByTestId("spinner")).toBeTruthy()
 
       expect(AsyncStorage.getItem).toHaveBeenCalledWith(MOCK_NAVIGATION_STATE_KEY)
 
-      await flushPromiseQueue()
+      await act(async () => {
+        previousSessionState.resolve(JSON.stringify(reactNavigationMockState))
+      })
       expect(AsyncStorage.getItem).toHaveBeenCalledWith(PREVIOUS_LAUNCH_COUNT_KEY)
 
-      expect(screen.getByTestId("content")).toBeTruthy()
+      expect(await screen.findByTestId("content")).toBeTruthy()
+      expect(screen.queryByTestId("spinner")).not.toBeOnTheScreen()
 
-      // eslint-disable-next-line testing-library/no-node-access
-      const navigationContainerProps = screen.getByTestId("content").children[0]
-      const injectedState = (navigationContainerProps as any).initialState
-
-      expect(injectedState).toBeUndefined()
+      expect(MockNavigationContainer).toHaveBeenCalled()
+      expect(lastInitialState()).toBeUndefined()
     })
   })
   describe("when the launch count is the same", () => {
     it("should return the cached nav state", async () => {
-      jest
-        .spyOn(AsyncStorage, "getItem")
-        .mockResolvedValueOnce(JSON.stringify(reactNavigationMockState))
+      const previousSessionState = deferred<string | null>()
+      jest.spyOn(AsyncStorage, "getItem").mockReturnValueOnce(previousSessionState.promise)
       jest.spyOn(AsyncStorage, "getItem").mockResolvedValueOnce("1")
       jest.spyOn(AsyncStorage, "setItem").mockResolvedValueOnce()
 
-      renderWithWrappers(<Test />)
+      await renderWithWrappers(<Test />)
 
       expect(screen.getByTestId("spinner")).toBeTruthy()
 
       expect(AsyncStorage.getItem).toHaveBeenCalledWith(MOCK_NAVIGATION_STATE_KEY)
 
-      await flushPromiseQueue()
+      await act(async () => {
+        previousSessionState.resolve(JSON.stringify(reactNavigationMockState))
+      })
 
       expect(AsyncStorage.getItem).toHaveBeenCalledWith(PREVIOUS_LAUNCH_COUNT_KEY)
 
-      expect(screen.getByTestId("content")).toBeTruthy()
+      expect(await screen.findByTestId("content")).toBeTruthy()
+      expect(screen.queryByTestId("spinner")).not.toBeOnTheScreen()
 
-      // eslint-disable-next-line testing-library/no-node-access
-      const navigationContainerProps = screen.getByTestId("content").children[0]
-      const injectedState = (navigationContainerProps as any).props.initialState
-
-      expect(injectedState).toEqual(reactNavigationMockState)
+      expect(lastInitialState()).toEqual(reactNavigationMockState)
     })
   })
   describe("when DTDisableNavigationStateRehydration is enabled", () => {
@@ -98,7 +110,7 @@ describe("useReloadedDevNavigationState", () => {
       jest.spyOn(AsyncStorage, "getItem").mockResolvedValueOnce("1")
       jest.spyOn(AsyncStorage, "setItem").mockResolvedValueOnce()
 
-      renderWithWrappers(<Test />)
+      await renderWithWrappers(<Test />)
 
       expect(() => screen.getByTestId("spinner")).toThrow()
 
@@ -106,11 +118,8 @@ describe("useReloadedDevNavigationState", () => {
 
       expect(screen.getByTestId("content")).toBeTruthy()
 
-      // eslint-disable-next-line testing-library/no-node-access
-      const navigationContainerProps = screen.getByTestId("content").children[0]
-      const injectedState = (navigationContainerProps as any).props.initialState
-
-      expect(injectedState).toEqual(undefined)
+      expect(MockNavigationContainer).toHaveBeenCalled()
+      expect(lastInitialState()).toEqual(undefined)
     })
   })
 })

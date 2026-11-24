@@ -19,7 +19,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { getAppVersion } from "app/utils/appVersion"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { presentEmailComposer } from "app/utils/email/presentEmailComposer"
-import { Alert, ScrollView } from "react-native"
+import { Alert, ScrollView, ScrollViewInstance } from "react-native"
 import { useTracking } from "react-tracking"
 
 export const MyProfileSettings: React.FC = () => {
@@ -36,7 +36,7 @@ const MyProfileSettingsContent: React.FC = () => {
   const { value: userIsDev } = GlobalStore.useAppState((store) => store.artsyPrefs.userIsDev)
   const tracking = useTracking()
 
-  const scrollableRef = useBottomTabsScrollToTop() as React.RefObject<ScrollView>
+  const scrollableRef = useBottomTabsScrollToTop() as React.RefObject<ScrollViewInstance>
 
   return (
     <Screen>

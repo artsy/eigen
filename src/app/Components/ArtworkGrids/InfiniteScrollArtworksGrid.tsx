@@ -456,7 +456,8 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   )
 }
 
-interface Styles {
+// A type alias, not an interface: StyleSheet.create needs an index signature.
+type Styles = {
   container: ViewStyle
   section: ViewStyle
 }

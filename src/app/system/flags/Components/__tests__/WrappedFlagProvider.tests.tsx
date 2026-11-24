@@ -4,7 +4,7 @@ import { useUnleashEnvironment } from "app/system/flags/hooks/useUnleashEnvironm
 import { useUnleashInitializer } from "app/system/flags/hooks/useUnleashInitializer"
 import { useUnleashListener } from "app/system/flags/hooks/useUnleashListener"
 import { getAppVersion } from "app/utils/appVersion"
-import { Platform } from "react-native"
+import { Platform, Text } from "react-native"
 import Keys from "react-native-keys"
 
 jest.mock("@unleash/proxy-client-react", () => ({
@@ -56,10 +56,10 @@ describe("WrappedFlagProvider", () => {
     ;(global as any).__unleashConfig = undefined
   })
 
-  it("provides app version and platform OS in context", () => {
-    render(
+  it("provides app version and platform OS in context", async () => {
+    await render(
       <WrappedFlagProvider>
-        <div>Test Child</div>
+        <Text>Test Child</Text>
       </WrappedFlagProvider>
     )
 
@@ -70,7 +70,7 @@ describe("WrappedFlagProvider", () => {
     expect(mockGetAppVersion).toHaveBeenCalled()
   })
 
-  it("uses Android platform when Platform.OS is android", () => {
+  it("uses Android platform when Platform.OS is android", async () => {
     // Mock Platform.OS for this test
     const originalPlatform = Platform.OS
     Object.defineProperty(Platform, "OS", {
@@ -78,9 +78,9 @@ describe("WrappedFlagProvider", () => {
       configurable: true,
     })
 
-    render(
+    await render(
       <WrappedFlagProvider>
-        <div>Test Child</div>
+        <Text>Test Child</Text>
       </WrappedFlagProvider>
     )
 
@@ -94,10 +94,10 @@ describe("WrappedFlagProvider", () => {
     })
   })
 
-  it("calls required hooks", () => {
-    render(
+  it("calls required hooks", async () => {
+    await render(
       <WrappedFlagProvider>
-        <div>Test Child</div>
+        <Text>Test Child</Text>
       </WrappedFlagProvider>
     )
 
@@ -106,7 +106,7 @@ describe("WrappedFlagProvider", () => {
     expect(mockUseUnleashListener).toHaveBeenCalled()
   })
 
-  it("configures production URL when environment is production", () => {
+  it("configures production URL when environment is production", async () => {
     mockUseUnleashEnvironment.mockReturnValue({ unleashEnv: "production" })
     mockKeys.secureFor.mockImplementation((key: string) => {
       if (key === "UNLEASH_PROXY_URL_PRODUCTION") return "prod-url"
@@ -114,9 +114,9 @@ describe("WrappedFlagProvider", () => {
       return "fallback"
     })
 
-    render(
+    await render(
       <WrappedFlagProvider>
-        <div>Test Child</div>
+        <Text>Test Child</Text>
       </WrappedFlagProvider>
     )
 
@@ -125,7 +125,7 @@ describe("WrappedFlagProvider", () => {
     expect(config.clientKey).toBe("prod-secret")
   })
 
-  it("configures staging URL when environment is staging", () => {
+  it("configures staging URL when environment is staging", async () => {
     mockUseUnleashEnvironment.mockReturnValue({ unleashEnv: "staging" })
     mockKeys.secureFor.mockImplementation((key: string) => {
       if (key === "UNLEASH_PROXY_URL_STAGING") return "staging-url"
@@ -133,9 +133,9 @@ describe("WrappedFlagProvider", () => {
       return "fallback"
     })
 
-    render(
+    await render(
       <WrappedFlagProvider>
-        <div>Test Child</div>
+        <Text>Test Child</Text>
       </WrappedFlagProvider>
     )
 

@@ -6,7 +6,7 @@ import {
   useRecentPriceRanges,
 } from "app/store/RecentPriceRangesModel"
 import { useRef } from "react"
-import { Platform, ScrollView, TouchableOpacity } from "react-native"
+import { Platform, ScrollView, TouchableOpacity, ScrollViewInstance } from "react-native"
 import { parsePriceRange, parsePriceRangeLabel, PriceRange } from "./Filters/helpers"
 
 interface RecentPriceRangeEntity {
@@ -28,7 +28,7 @@ export const RecentPriceRanges: React.FC<RecentPriceRangesProps> = ({
 }) => {
   const priceRanges = usePriceRanges()
   const space = useSpace()
-  const recentPriceRangeScrollRef = useRef<ScrollView>(null)
+  const recentPriceRangeScrollRef = useRef<ScrollViewInstance>(null)
   const isEmptyPriceRanges = priceRanges.length === 0
   const hasCustomPriceRange = priceRanges.some((range) => !range.isCollectorProfileSources)
 
@@ -91,7 +91,7 @@ const RecentPriceRangesList: React.FC<RecentPriceRangesListProps> = ({
   const priceRanges = usePriceRanges()
   const priceRangesRef = useRef(priceRanges)
   const space = useSpace()
-  const recentPriceRangeScrollRef = useRef<ScrollView>(null)
+  const recentPriceRangeScrollRef = useRef<ScrollViewInstance>(null)
 
   const isSelectedPriceRange = (price: string) => {
     const [min, max] = parsePriceRange(price)

@@ -47,25 +47,25 @@ describe("ArtistCard", () => {
     `,
   })
 
-  it("renders the artist meta", () => {
-    renderWithRelay({ Artist: () => mockArtist })
+  it("renders the artist meta", async () => {
+    await renderWithRelay({ Artist: () => mockArtist })
 
     expect(screen.getByText("Juan Gris")).toBeOnTheScreen()
     expect(screen.getByText("Spanish, 1887–1927")).toBeOnTheScreen()
   })
 
-  it("navigates to the artist page when tapped", () => {
-    renderWithRelay({ Artist: () => mockArtist })
+  it("navigates to the artist page when tapped", async () => {
+    await renderWithRelay({ Artist: () => mockArtist })
 
-    fireEvent.press(screen.getByText("Juan Gris"))
+    await fireEvent.press(screen.getByText("Juan Gris"))
 
     expect(navigate).toHaveBeenCalledWith("/artist/juan-gris")
   })
 
-  it("follows the artist when tapped", () => {
-    renderWithRelay({ Artist: () => mockArtist })
+  it("follows the artist when tapped", async () => {
+    await renderWithRelay({ Artist: () => mockArtist })
 
-    fireEvent.press(screen.getByText("Follow"))
+    await fireEvent.press(screen.getByText("Follow"))
 
     expect(mockCommit).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -76,8 +76,8 @@ describe("ArtistCard", () => {
     )
   })
 
-  it("renders an image for each representative artwork", () => {
-    renderWithRelay({ Artist: () => mockArtist })
+  it("renders an image for each representative artwork", async () => {
+    await renderWithRelay({ Artist: () => mockArtist })
 
     const images = screen.getAllByTestId("artist-card-image")
     expect(images).toHaveLength(2)
@@ -87,14 +87,16 @@ describe("ArtistCard", () => {
     expect(screen.queryByTestId("artist-card-images-empty")).not.toBeOnTheScreen()
   })
 
-  it("caps the rendered images at 3 even if more are returned", () => {
-    renderWithRelay({ Artist: () => ({ ...mockArtist, representativeArtworks: resizedImages(5) }) })
+  it("caps the rendered images at 3 even if more are returned", async () => {
+    await renderWithRelay({
+      Artist: () => ({ ...mockArtist, representativeArtworks: resizedImages(5) }),
+    })
 
     expect(screen.getAllByTestId("artist-card-image")).toHaveLength(3)
   })
 
-  it("renders the empty state when there are no representative artworks", () => {
-    renderWithRelay({ Artist: () => ({ ...mockArtist, representativeArtworks: [] }) })
+  it("renders the empty state when there are no representative artworks", async () => {
+    await renderWithRelay({ Artist: () => ({ ...mockArtist, representativeArtworks: [] }) })
 
     expect(screen.queryAllByTestId("artist-card-image")).toHaveLength(0)
     expect(screen.getByTestId("artist-card-images-empty")).toBeOnTheScreen()

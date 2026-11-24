@@ -32,8 +32,8 @@ describe("RegisterToBidButton", () => {
     `,
   })
 
-  it("shows button when not registered", () => {
-    renderWithRelay({
+  it("shows button when not registered", async () => {
+    await renderWithRelay({
       Sale: () => ({
         startAt: null,
         endAt: null,
@@ -45,8 +45,8 @@ describe("RegisterToBidButton", () => {
     expect(screen.getByText("Register to bid")).toBeOnTheScreen()
   })
 
-  it("shows green checkmark when registered", () => {
-    renderWithRelay({
+  it("shows green checkmark when registered", async () => {
+    await renderWithRelay({
       Sale: () => ({
         startAt: null,
         endAt: null,
@@ -63,8 +63,8 @@ describe("RegisterToBidButton", () => {
     expect(screen.getByText("You're approved to bid")).toBeOnTheScreen()
   })
 
-  it("hides the approve to bid hint if the user has active lots standing", () => {
-    renderWithRelay({
+  it("hides the approve to bid hint if the user has active lots standing", async () => {
+    await renderWithRelay({
       Sale: () => ({
         startAt: null,
         endAt: null,

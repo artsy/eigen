@@ -199,7 +199,7 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  * @example
  *
  *       ```ts
- *      import { fireEvent } from "@testing-library/react-native"
+ *      import { fireEvent, screen } from "@testing-library/react-native"
  *      import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
  *      import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
  *       *
@@ -210,13 +210,13 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *      // make it reset between tests
  *      beforeEach(jest.resetAllMocks)
  *
- *      it("calls the draft created event", () => {
+ *      it("calls the draft created event", async () => {
  *
  *        // Use rntl to render the component tree
- *        const { getByText } = renderWithWrappers(<Overview [...] />)
+ *        await renderWithWrappers(<Overview [...] />)
  *
  *        // Run the function which triggers the tracking call
- *        fireEvent.press(getByText("button"))
+ *        await fireEvent.press(screen.getByText("button"))
  *
  *        // Check that the native event for the analytics call is sent
  *        expect(mockTrackEvent).toHaveBeenCalledTimes(1)

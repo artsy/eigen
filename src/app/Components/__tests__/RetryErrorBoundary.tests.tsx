@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
@@ -11,14 +12,14 @@ afterEach(() => {
 
 describe("RetryErrorBoundary", () => {
   describe("when the rendered component crashes", () => {
-    it("renders Unable to load", () => {
-      const { getByText } = renderWithWrappers(
+    it("renders Unable to load", async () => {
+      await renderWithWrappers(
         <RetryErrorBoundary>
           <CrashingComponent shouldCrash />
         </RetryErrorBoundary>
       )
 
-      expect(getByText("Unable to load")).toBeDefined()
+      expect(screen.getByText("Unable to load")).toBeDefined()
     })
   })
 
@@ -37,14 +38,14 @@ describe("RetryErrorBoundary", () => {
       },
     }
 
-    it("renders NotFoundFailureView", () => {
-      const { getByText } = renderWithWrappers(
+    it("renders NotFoundFailureView", async () => {
+      await renderWithWrappers(
         <RetryErrorBoundary>
           <CrashingComponent shouldCrash error={error} />
         </RetryErrorBoundary>
       )
 
-      expect(getByText("Not Found")).toBeDefined()
+      expect(screen.getByText("Not Found")).toBeDefined()
     })
   })
 })

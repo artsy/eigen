@@ -1,4 +1,13 @@
-import { BackButton, Button, Flex, Input, Spacer, Text, useTheme } from "@artsy/palette-mobile"
+import {
+  BackButton,
+  Button,
+  Flex,
+  Input,
+  Spacer,
+  Text,
+  useTheme,
+  InputRef,
+} from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { EmailSubscriptionCheckbox } from "app/Scenes/Onboarding/Components/EmailSubscriptionCheckbox"
 import { TermsOfServiceCheckbox } from "app/Scenes/Onboarding/Components/TermsOfServiceCheckbox"
@@ -92,7 +101,7 @@ const SignUpNameStepForm: React.FC = () => {
   const parentNavigation = useNavigation<NavigationProp<OnboardingNavigationStack>>()
   const { isAutomaticallySubscribed } = useCountryCode()
   const { color } = useTheme()
-  const nameRef = useRef<Input>(null)
+  const nameRef = useRef<InputRef>(null)
 
   useInputAutofocus({
     screenName: "SignUpNameStep",

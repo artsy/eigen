@@ -23,7 +23,7 @@ import { useEnableArtAssistant } from "app/utils/hooks/useEnableArtAssistant"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { Schema } from "app/utils/track"
 import { memo, RefObject, Suspense, useRef, useState } from "react"
-import { ScrollView } from "react-native"
+import { ScrollView, ScrollViewInstance } from "react-native"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { SearchResults } from "./SearchResults"
@@ -48,7 +48,7 @@ export const Search: React.FC = () => {
   const space = useSpace()
   useEnableProgressiveOnboarding()
 
-  const searchPillsRef = useRef<ScrollView>(null)
+  const searchPillsRef = useRef<ScrollViewInstance>(null)
   const searchInputRef = useRef<GlobalSearchInput>(null)
 
   const [searchQuery, setSearchQuery] = useState<string>("")
@@ -145,7 +145,7 @@ export const Search: React.FC = () => {
           </Box>
         ) : (
           <ScrollView
-            ref={scrollableRef as RefObject<ScrollView>}
+            ref={scrollableRef as RefObject<ScrollViewInstance>}
             onScroll={handleScroll}
             keyboardDismissMode="on-drag"
             keyboardShouldPersistTaps="handled"

@@ -41,7 +41,7 @@ describe("CityItineraries", () => {
   })
 
   it("renders the title and a row per itinerary", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       connection([itinerary("a", "London Oct 2026", [10, 6]), itinerary("b", "Berlin", [3])]),
       props
     )
@@ -53,7 +53,7 @@ describe("CityItineraries", () => {
   })
 
   it("tracks the screen view", async () => {
-    renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
+    await renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
 
     await screen.findByText("Your Itineraries")
 
@@ -65,23 +65,23 @@ describe("CityItineraries", () => {
   })
 
   it("opens an itinerary when its row is tapped", async () => {
-    renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
+    await renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
 
-    fireEvent.press(await screen.findByText("London Oct 2026"))
+    await fireEvent.press(await screen.findByText("London Oct 2026"))
 
     expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/itinerary/a")
   })
 
   it("renders a share control per row", async () => {
-    renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
+    await renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
 
     expect(await screen.findByLabelText("Share London Oct 2026")).toBeOnTheScreen()
   })
 
   it("mints a share token and shares the link when pressed", async () => {
-    const view = renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
+    const view = await renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
 
-    fireEvent.press(await screen.findByLabelText("Share London Oct 2026"))
+    await fireEvent.press(await screen.findByLabelText("Share London Oct 2026"))
 
     await waitFor(() =>
       expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
@@ -117,12 +117,12 @@ describe("CityItineraries", () => {
   })
 
   it("tracks tappedShare against the list screen, not the itinerary", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       connection([{ ...itinerary("a", "London Oct 2026", [1]), shareToken: "abc123" }]),
       props
     )
 
-    fireEvent.press(await screen.findByLabelText("Share London Oct 2026"))
+    await fireEvent.press(await screen.findByLabelText("Share London Oct 2026"))
 
     await waitFor(() =>
       expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -136,20 +136,20 @@ describe("CityItineraries", () => {
   })
 
   it("says so when the user has no itineraries here", async () => {
-    renderWithRelay(connection([]), props)
+    await renderWithRelay(connection([]), props)
 
     expect(await screen.findByText(/haven’t started an itinerary/)).toBeOnTheScreen()
   })
 
   it("refetches the list on pull to refresh", async () => {
-    const view = renderWithRelay(
+    const view = await renderWithRelay(
       { Me: () => ({ itinerariesConnection: { edges: [{ node: itinerary("a", "A", [2]) }] } }) },
       props
     )
 
     await screen.findByText("A")
 
-    act(() => {
+    await act(() => {
       pullToRefresh()
     })
 
@@ -161,7 +161,19 @@ describe("CityItineraries", () => {
         )
 
     await waitFor(() => expect(listOperations().length).toBe(1))
-    expect(listOperations()[0].request.node.params.name).toBe("CityItinerariesPaginationQuery")
-    expect(screen.getByText("A")).toBeOnTheScreen()
+    const refetchOperation = listOperations()[0]
+    expect(refetchOperation.request.node.params.name).toBe("CityItinerariesPaginationQuery")
+
+    // The refetch suspends the list (Suspense hides it) until the query resolves
+    await act(() => {
+      view.env.mock.resolve(
+        refetchOperation,
+        MockPayloadGenerator.generate(refetchOperation, {
+          Me: () => ({ itinerariesConnection: { edges: [{ node: itinerary("a", "A", [2]) }] } }),
+        })
+      )
+    })
+
+    expect(await screen.findByText("A")).toBeOnTheScreen()
   })
 })

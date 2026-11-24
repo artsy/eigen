@@ -10,7 +10,7 @@ import {
   PROGRESSIVE_ONBOARDING_OFFER_SETTINGS,
   PROGRESSIVE_ONBOARDING_SAVE_ARTWORK,
 } from "app/store/ProgressiveOnboardingModel"
-import { View } from "react-native"
+import { ViewInstance } from "react-native"
 
 // The rest of the coordinator tests run with `useAnchorSettled` mocked as a pass-through.
 // These drive anchor measurements through the real hook, to cover how its two checks
@@ -32,7 +32,7 @@ const makeAnchor = (position: { x: number; y: number }) => ({
   current: {
     measureInWindow: (callback: (...args: number[]) => void) =>
       callback(position.x, position.y, 100, 40),
-  } as unknown as View,
+  } as unknown as ViewInstance,
 })
 
 const advance = (ms: number) =>
@@ -49,9 +49,9 @@ describe("usePopoverCoordinator with anchor measurements", () => {
   })
   afterEach(() => jest.useRealTimers())
 
-  it("does not take the lock while its anchor is off screen", () => {
+  it("does not take the lock while its anchor is off screen", async () => {
     const anchorRef = makeAnchor({ x: 0, y: -600 })
-    const { result } = renderHook(
+    const { result } = await renderHook(
       () =>
         usePopoverCoordinator({
           id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK,
@@ -61,16 +61,16 @@ describe("usePopoverCoordinator with anchor measurements", () => {
       { wrapper }
     )
 
-    advance(ANCHOR_SETTLE_INTERVAL_MS * 10)
+    await advance(ANCHOR_SETTLE_INTERVAL_MS * 10)
 
     expect(result.current.isVisible).toBe(false)
     expect(lock()).toBeUndefined()
   })
 
-  it("gives the lock back when its anchor leaves the screen after taking it", () => {
+  it("gives the lock back when its anchor leaves the screen after taking it", async () => {
     const position = { x: 0, y: 200 }
     const anchorRef = makeAnchor(position)
-    const { result: holder } = renderHook(
+    const { result: holder } = await renderHook(
       () =>
         usePopoverCoordinator({
           id: PROGRESSIVE_ONBOARDING_SAVE_ARTWORK,
@@ -81,12 +81,12 @@ describe("usePopoverCoordinator with anchor measurements", () => {
     )
 
     // Still and on screen: takes the lock, then checks the anchor again before showing.
-    advance(ANCHOR_SETTLE_INTERVAL_MS)
+    await advance(ANCHOR_SETTLE_INTERVAL_MS)
     expect(lock()).toBe(PROGRESSIVE_ONBOARDING_SAVE_ARTWORK)
     expect(holder.current.isVisible).toBe(false)
 
     // A sibling whose anchor is in plain view queues behind it.
-    const { result: sibling, rerender: rerenderSibling } = renderHook<
+    const { result: sibling, rerender: rerenderSibling } = await renderHook<
       ReturnType<typeof usePopoverCoordinator>,
       { isDisplayable: boolean }
     >(
@@ -97,22 +97,22 @@ describe("usePopoverCoordinator with anchor measurements", () => {
 
     // Scrolled away before the second check settles.
     position.y = -600
-    advance(ANCHOR_SETTLE_INTERVAL_MS)
+    await advance(ANCHOR_SETTLE_INTERVAL_MS)
     expect(holder.current.isVisible).toBe(false)
 
-    advance(POPOVER_RELEASE_GRACE_MS)
+    await advance(POPOVER_RELEASE_GRACE_MS)
 
     expect(lock()).toBe(PROGRESSIVE_ONBOARDING_OFFER_SETTINGS)
     expect(sibling.current.isVisible).toBe(true)
 
     // Once the sibling is dismissed and the anchor is back, the popover shows after all.
-    rerenderSibling({ isDisplayable: false })
-    act(() => sibling.current.onCloseComplete())
+    await rerenderSibling({ isDisplayable: false })
+    await act(() => sibling.current.onCloseComplete())
     position.y = 200
     // Both checks settle again. One interval at a time: the second check only starts once
     // React has re-rendered with the lock, which happens between `act` calls.
     for (let i = 0; i < 4; i++) {
-      advance(ANCHOR_SETTLE_INTERVAL_MS)
+      await advance(ANCHOR_SETTLE_INTERVAL_MS)
     }
 
     expect(lock()).toBe(PROGRESSIVE_ONBOARDING_SAVE_ARTWORK)

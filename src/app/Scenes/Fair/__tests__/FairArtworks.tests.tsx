@@ -22,7 +22,7 @@ describe("FairArtworks", () => {
   })
 
   it("renders", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Fair: () => ({
         fairArtworks: {
           edges: [{ node: { title: "Artwork Title" } }],
@@ -37,7 +37,7 @@ describe("FairArtworks", () => {
   })
 
   it("renders empty view if there are no artworks", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Fair: () => ({
         fairArtworks: {
           edges: [],

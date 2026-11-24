@@ -40,7 +40,7 @@ describe("MyAccountEditEmailQueryRenderer", () => {
   })
 
   it("show email input", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         email: "old-email@test.com",
       }),

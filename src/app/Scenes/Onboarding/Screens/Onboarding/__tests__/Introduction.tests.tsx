@@ -55,45 +55,45 @@ describe("Introduction", () => {
     jest.clearAllMocks()
   })
 
-  it("shows the artwork montage step initially", () => {
-    renderWithWrappers(<Introduction />)
+  it("shows the artwork montage step initially", async () => {
+    await renderWithWrappers(<Introduction />)
     expect(screen.getByText("Montage next")).toBeOnTheScreen()
   })
 
-  it("fires startedOnboarding when it mounts", () => {
-    renderWithWrappers(<Introduction />)
+  it("fires startedOnboarding when it mounts", async () => {
+    await renderWithWrappers(<Introduction />)
 
     expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.startedOnboarding })
   })
 
-  it("routes through ArtworkMontageStep → WelcomeStep → QuestionStep in order", () => {
-    renderWithWrappers(<Introduction />)
+  it("routes through ArtworkMontageStep → WelcomeStep → QuestionStep in order", async () => {
+    await renderWithWrappers(<Introduction />)
 
-    fireEvent.press(screen.getByText("Montage next"))
+    await fireEvent.press(screen.getByText("Montage next"))
     expect(screen.getByText("Welcome next")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Welcome next"))
+    await fireEvent.press(screen.getByText("Welcome next"))
     expect(screen.getByText("Select beginner")).toBeOnTheScreen()
     expect(screen.getByText("Select experienced")).toBeOnTheScreen()
   })
 
   describe("experienced path", () => {
-    it("navigates directly to FollowArtists", () => {
-      renderWithWrappers(<Introduction />)
+    it("navigates directly to FollowArtists", async () => {
+      await renderWithWrappers(<Introduction />)
 
-      fireEvent.press(screen.getByText("Montage next"))
-      fireEvent.press(screen.getByText("Welcome next"))
-      fireEvent.press(screen.getByText("Select experienced"))
+      await fireEvent.press(screen.getByText("Montage next"))
+      await fireEvent.press(screen.getByText("Welcome next"))
+      await fireEvent.press(screen.getByText("Select experienced"))
 
       expect(mockReplace).toHaveBeenCalledWith("FollowArtists")
     })
 
-    it("tracks the selected answer", () => {
-      renderWithWrappers(<Introduction />)
+    it("tracks the selected answer", async () => {
+      await renderWithWrappers(<Introduction />)
 
-      fireEvent.press(screen.getByText("Montage next"))
-      fireEvent.press(screen.getByText("Welcome next"))
-      fireEvent.press(screen.getByText("Select experienced"))
+      await fireEvent.press(screen.getByText("Montage next"))
+      await fireEvent.press(screen.getByText("Welcome next"))
+      await fireEvent.press(screen.getByText("Select experienced"))
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: ActionType.onboardingUserInputData,
@@ -104,15 +104,15 @@ describe("Introduction", () => {
   })
 
   describe("beginner path", () => {
-    it("routes through BrowsePromptStep before navigating to InfiniteDiscovery", () => {
-      renderWithWrappers(<Introduction />)
+    it("routes through BrowsePromptStep before navigating to InfiniteDiscovery", async () => {
+      await renderWithWrappers(<Introduction />)
 
-      fireEvent.press(screen.getByText("Montage next"))
-      fireEvent.press(screen.getByText("Welcome next"))
-      fireEvent.press(screen.getByText("Select beginner"))
+      await fireEvent.press(screen.getByText("Montage next"))
+      await fireEvent.press(screen.getByText("Welcome next"))
+      await fireEvent.press(screen.getByText("Select beginner"))
       expect(screen.getByText("Browse next")).toBeOnTheScreen()
 
-      fireEvent.press(screen.getByText("Browse next"))
+      await fireEvent.press(screen.getByText("Browse next"))
       expect(mockNavigate).toHaveBeenCalledWith("InfiniteDiscovery")
     })
   })

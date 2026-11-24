@@ -43,7 +43,7 @@ describe("ViewingRoom", () => {
 
   describe("not yet open", () => {
     it("does not render normal sections", async () => {
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
       await act(async () => {
         mockEnvironment.mock.resolveMostRecentOperation((operation) => {
@@ -64,7 +64,7 @@ describe("ViewingRoom", () => {
     })
 
     it("renders an 'opening soon' message", async () => {
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
       await act(async () => {
         mockEnvironment.mock.resolveMostRecentOperation((operation) => {
@@ -89,7 +89,7 @@ describe("ViewingRoom", () => {
     }
     describe("without any artworks", () => {
       it("doesn't render artworks rail", async () => {
-        renderWithWrappers(<TestRenderer />)
+        await renderWithWrappers(<TestRenderer />)
 
         await act(async () => {
           mockEnvironment.mock.resolveMostRecentOperation((operation) => {
@@ -116,7 +116,7 @@ describe("ViewingRoom", () => {
     })
     describe("with artworks", () => {
       it("renders all sections", async () => {
-        renderWithWrappers(<TestRenderer />)
+        await renderWithWrappers(<TestRenderer />)
 
         await act(async () => {
           mockEnvironment.mock.resolveMostRecentOperation((operation) => {
@@ -142,7 +142,7 @@ describe("ViewingRoom", () => {
       })
 
       it("renders a button + calls tracking when body enters viewport", async () => {
-        renderWithWrappers(<TestRenderer />)
+        await renderWithWrappers(<TestRenderer />)
 
         await act(async () => {
           mockEnvironment.mock.resolveMostRecentOperation((operation) => {
@@ -163,7 +163,7 @@ describe("ViewingRoom", () => {
         expect(screen.getByTestId("animated-bottom-button")).toHaveProp("isVisible", false)
 
         // The event bubbles up from a list item to the FlatList's `onViewableItemsChanged` handler
-        fireEvent(screen.getByTestId("body"), "viewableItemsChanged", {
+        await fireEvent(screen.getByTestId("body"), "viewableItemsChanged", {
           viewableItems: [{ item: { key: "body" } }],
         })
 
@@ -180,7 +180,7 @@ describe("ViewingRoom", () => {
 
   describe("closed (past end datetime)", () => {
     it("renders share button and no subsections", async () => {
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
       await act(async () => {
         mockEnvironment.mock.resolveMostRecentOperation((operation) => {
@@ -201,7 +201,7 @@ describe("ViewingRoom", () => {
     })
 
     it("renders a 'closed' message", async () => {
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
       await act(async () => {
         mockEnvironment.mock.resolveMostRecentOperation((operation) => {

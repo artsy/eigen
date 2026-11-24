@@ -45,8 +45,8 @@ describe("InfiniteDiscoveryNegativeSignals", () => {
     ;(RNShare.open as jest.Mock).mockResolvedValue({ success: true, message: "shared" })
   })
 
-  it("renders artwork information", () => {
-    renderWithRelay({
+  it("renders artwork information", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         artistNames: "Test Artist",
         date: "2023",
@@ -74,7 +74,7 @@ describe("InfiniteDiscoveryNegativeSignals", () => {
   })
 
   it("opens share sheet when share button is pressed", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         artistNames: "Test Artist",
         date: "2023",
@@ -90,7 +90,7 @@ describe("InfiniteDiscoveryNegativeSignals", () => {
         },
       }),
     })
-    fireEvent.press(screen.getByLabelText("Share artwork"))
+    await fireEvent.press(screen.getByLabelText("Share artwork"))
 
     expect(mockTrack.tappedShare).toHaveBeenCalledWith("artwork-id", "test-artwork", "artwork")
     expect(RNShare.open).toHaveBeenLastCalledWith({
@@ -100,7 +100,7 @@ describe("InfiniteDiscoveryNegativeSignals", () => {
       failOnCancel: false,
     })
 
-    fireEvent.press(screen.getByLabelText("Share artist"))
+    await fireEvent.press(screen.getByLabelText("Share artist"))
 
     expect(mockTrack.tappedShare).toHaveBeenCalledWith("artist-id", "artist-slug", "artist")
     expect(RNShare.open).toHaveBeenLastCalledWith({
@@ -111,8 +111,8 @@ describe("InfiniteDiscoveryNegativeSignals", () => {
     })
   })
 
-  it("shows alert when 'See fewer artworks by this artist' is pressed", () => {
-    renderWithRelay({
+  it("shows alert when 'See fewer artworks by this artist' is pressed", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         artistNames: "Test Artist",
         date: "2023",
@@ -127,7 +127,7 @@ describe("InfiniteDiscoveryNegativeSignals", () => {
     })
 
     const excludeButton = screen.getByText("See fewer artworks by this artist")
-    fireEvent.press(excludeButton)
+    await fireEvent.press(excludeButton)
 
     expect(mockTrack.tappedSeeFewerWorks).toHaveBeenCalledWith(
       "artwork-id",
@@ -145,8 +145,8 @@ describe("InfiniteDiscoveryNegativeSignals", () => {
     )
   })
 
-  it("executes mutation when user confirms exclusion", () => {
-    renderWithRelay({
+  it("executes mutation when user confirms exclusion", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         artistNames: "Test Artist",
         date: "2023",
@@ -161,7 +161,7 @@ describe("InfiniteDiscoveryNegativeSignals", () => {
     })
 
     const excludeButton = screen.getByText("See fewer artworks by this artist")
-    fireEvent.press(excludeButton)
+    await fireEvent.press(excludeButton)
 
     // Simulate user pressing "Yes"
     const alertCall = (Alert.alert as jest.Mock).mock.calls[0]

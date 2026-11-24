@@ -36,8 +36,8 @@ describe("ExploreByCategoryCards", () => {
     `,
   })
 
-  it("renders the title", () => {
-    renderWithRelay({
+  it("renders the title", async () => {
+    await renderWithRelay({
       DiscoveryCategoriesConnectionConnection: () => ({
         edges: mockCategories.map((category) => ({ node: category })),
       }),
@@ -46,8 +46,8 @@ describe("ExploreByCategoryCards", () => {
     expect(screen.getByText("Explore by Category")).toBeOnTheScreen()
   })
 
-  it("renders the correct number of category cards", () => {
-    renderWithRelay({
+  it("renders the correct number of category cards", async () => {
+    await renderWithRelay({
       DiscoveryCategoriesConnectionConnection: () => ({
         edges: mockCategories.map((category) => ({ node: category })),
       }),
@@ -57,8 +57,8 @@ describe("ExploreByCategoryCards", () => {
     expect(categoryCards).toHaveLength(mockCategories.length)
   })
 
-  it("renders nothing when no categories", () => {
-    renderWithRelay({
+  it("renders nothing when no categories", async () => {
+    await renderWithRelay({
       DiscoveryCategoriesConnectionConnection: () => ({
         edges: [],
       }),

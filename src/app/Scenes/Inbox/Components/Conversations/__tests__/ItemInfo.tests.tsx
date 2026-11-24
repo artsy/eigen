@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { ItemInfoFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/ItemInfo"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -20,8 +21,8 @@ describe("ItemInfoFragmentContainer", () => {
     `,
   })
 
-  it("render Artwork", () => {
-    const { getByText } = renderWithRelay({
+  it("render Artwork", async () => {
+    await renderWithRelay({
       Conversation: () => ({
         items: [
           {
@@ -33,11 +34,11 @@ describe("ItemInfoFragmentContainer", () => {
       }),
     })
 
-    expect(getByText("Artwork")).toBeDefined()
+    expect(screen.getByText("Artwork")).toBeDefined()
   })
 
-  it("render Show", () => {
-    const { getByText } = renderWithRelay({
+  it("render Show", async () => {
+    await renderWithRelay({
       Conversation: () => ({
         items: [
           {
@@ -49,11 +50,11 @@ describe("ItemInfoFragmentContainer", () => {
       }),
     })
 
-    expect(getByText("Show")).toBeDefined()
+    expect(screen.getByText("Show")).toBeDefined()
   })
 
-  it("throw error given unsupported __typename", () => {
-    expect(() =>
+  it("throw error given unsupported __typename", async () => {
+    await expect(
       renderWithRelay({
         Conversation: () => ({
           items: [
@@ -65,6 +66,6 @@ describe("ItemInfoFragmentContainer", () => {
           ],
         }),
       })
-    ).toThrowError("ConversationDetails ItemInfo: type not supported")
+    ).rejects.toThrow("ConversationDetails ItemInfo: type not supported")
   })
 })

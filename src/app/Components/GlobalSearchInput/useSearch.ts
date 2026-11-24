@@ -10,7 +10,7 @@ import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import { Schema } from "app/utils/track"
 import { useEffect, useRef, useState } from "react"
-import { ScrollView } from "react-native"
+import { ScrollViewInstance } from "react-native"
 import { useTracking } from "react-tracking"
 import useThrottle from "react-use/lib/useThrottle"
 
@@ -23,7 +23,7 @@ export const useSearch = ({ query }: { query: string }) => {
 
   const didMount = useRef(false)
   const previousQueryRef = useRef(query)
-  const searchPillsRef = useRef<ScrollView>(null)
+  const searchPillsRef = useRef<ScrollViewInstance>(null)
 
   const {
     data: queryData,

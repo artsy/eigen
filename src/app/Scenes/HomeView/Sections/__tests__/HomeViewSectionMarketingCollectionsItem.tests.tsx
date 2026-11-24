@@ -18,14 +18,14 @@ describe("HomeViewSectionMarketingCollectionsItem", () => {
     `,
   })
 
-  it("renders the collection meta", () => {
-    renderWithRelay({ MarketingCollection: () => mockCollection })
+  it("renders the collection meta", async () => {
+    await renderWithRelay({ MarketingCollection: () => mockCollection })
 
     expect(screen.getByText("Trending Now")).toBeOnTheScreen()
   })
 
-  it("renders images sourced from representative artworks", () => {
-    renderWithRelay({ MarketingCollection: () => mockCollection })
+  it("renders images sourced from representative artworks", async () => {
+    await renderWithRelay({ MarketingCollection: () => mockCollection })
 
     const uris = screen.getAllByTestId("five-up-image").map((image) => image.props.source.uri)
     expect(uris.slice(0, 3)).toEqual([
@@ -35,8 +35,8 @@ describe("HomeViewSectionMarketingCollectionsItem", () => {
     ])
   })
 
-  it("renders without image URLs when there are no representative artworks", () => {
-    renderWithRelay({
+  it("renders without image URLs when there are no representative artworks", async () => {
+    await renderWithRelay({
       MarketingCollection: () => ({ ...mockCollection, representativeArtworks: [] }),
     })
 

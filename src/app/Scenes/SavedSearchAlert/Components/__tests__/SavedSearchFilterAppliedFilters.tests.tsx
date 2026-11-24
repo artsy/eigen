@@ -17,10 +17,10 @@ describe("SavedSearchFilterAppliedFilters", () => {
     jest.clearAllMocks()
   })
 
-  it("shows all selected filters", () => {
+  it("shows all selected filters", async () => {
     ;(useSavedSearchPills as jest.Mock).mockImplementationOnce(() => [banksyPill, openEditionPill])
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterAppliedFilters />
       </SavedSearchStoreProvider>
@@ -30,12 +30,12 @@ describe("SavedSearchFilterAppliedFilters", () => {
     expect(screen.getByText("Banksy")).toBeDefined()
   })
 
-  it("removes filter when tapped", () => {
+  it("removes filter when tapped", async () => {
     ;(useSavedSearchPills as jest.Mock)
       .mockImplementationOnce(() => [banksyPill, openEditionPill])
       .mockImplementationOnce(() => [banksyPill])
 
-    const { rerender } = renderWithWrappers(
+    const { rerender } = await renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterAppliedFilters />
       </SavedSearchStoreProvider>
@@ -43,9 +43,9 @@ describe("SavedSearchFilterAppliedFilters", () => {
 
     expect(screen.getByText("Open Edition")).toBeDefined()
 
-    fireEvent.press(screen.getByText("Open Edition"))
+    await fireEvent.press(screen.getByText("Open Edition"))
 
-    rerender(
+    await rerender(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterAppliedFilters />
       </SavedSearchStoreProvider>
@@ -54,10 +54,10 @@ describe("SavedSearchFilterAppliedFilters", () => {
     expect(screen.queryByText("Open Edition")).not.toBeOnTheScreen()
   })
 
-  it("can't remove artist pill", () => {
+  it("can't remove artist pill", async () => {
     ;(useSavedSearchPills as jest.Mock).mockImplementationOnce(() => [banksyPill, openEditionPill])
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterAppliedFilters />
       </SavedSearchStoreProvider>
@@ -65,7 +65,7 @@ describe("SavedSearchFilterAppliedFilters", () => {
 
     expect(screen.getByText("Banksy")).toBeDefined()
 
-    fireEvent.press(screen.getByText("Banksy"), "onPress")
+    await fireEvent.press(screen.getByText("Banksy"))
 
     expect(screen.getByText("Banksy")).toBeDefined()
   })

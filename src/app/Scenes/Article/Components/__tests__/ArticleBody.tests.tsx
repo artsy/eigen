@@ -34,8 +34,8 @@ describe("ArticleBody", () => {
     `,
   })
 
-  it("renders", () => {
-    renderWithRelay({
+  it("renders", async () => {
+    await renderWithRelay({
       Article: () => ({
         hero: {
           media: null,

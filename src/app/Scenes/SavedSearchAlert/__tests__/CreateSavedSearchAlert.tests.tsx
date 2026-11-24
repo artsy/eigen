@@ -83,6 +83,9 @@ describe("CreateSavedSearchAlert", () => {
     notificationPermissions.mockClear()
   })
 
+  const waitForPendingOperation = () =>
+    waitFor(() => expect(mockEnvironment.mock.getAllOperations()).not.toHaveLength(0))
+
   const TestRenderer = (params: Partial<CreateSavedSearchAlertParams>) => {
     return (
       <ArtworkFiltersStoreProvider
@@ -109,15 +112,14 @@ describe("CreateSavedSearchAlert", () => {
       }
     })
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockResolvers)
+    await resolveMostRecentRelayOperation(mockEnvironment, mockResolvers)
   }
 
   it("renders without throwing an error", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
 
-    await waitFor(() => {
-      resolveMostRecentRelayOperation(mockEnvironment)
-    })
+    await waitForPendingOperation()
+    await resolveMostRecentRelayOperation(mockEnvironment)
 
     expect(screen.getByText("Bid")).toBeTruthy()
     expect(screen.getByText("Open Edition")).toBeTruthy()
@@ -125,9 +127,9 @@ describe("CreateSavedSearchAlert", () => {
 
   it("should call onClosePress handler when the close button is pressed", async () => {
     const onClosePressMock = jest.fn()
-    renderWithWrappers(<TestRenderer onClosePress={onClosePressMock} />)
+    await renderWithWrappers(<TestRenderer onClosePress={onClosePressMock} />)
 
-    fireEvent.press(screen.getByTestId("fancy-modal-header-left-button"))
+    await fireEvent.press(screen.getByTestId("fancy-modal-header-left-button"))
 
     expect(onClosePressMock).toBeCalled()
   })
@@ -136,15 +138,15 @@ describe("CreateSavedSearchAlert", () => {
     const onCompleteMock = jest.fn()
 
     setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
-    renderWithWrappers(<TestRenderer onComplete={onCompleteMock} />)
+    await renderWithWrappers(<TestRenderer onComplete={onCompleteMock} />)
 
-    await waitFor(() => {
-      resolveMostRecentRelayOperation(mockEnvironment)
-      resolveMostRecentRelayOperation(mockEnvironment)
-    })
+    await waitForPendingOperation()
+    await resolveMostRecentRelayOperation(mockEnvironment)
+    await waitForPendingOperation()
+    await resolveMostRecentRelayOperation(mockEnvironment)
 
-    fireEvent.changeText(screen.getByTestId("alert-input-details"), "something new")
-    fireEvent.press(screen.getByTestId("save-alert-button"))
+    await fireEvent.changeText(screen.getByTestId("alert-input-details"), "something new")
+    await fireEvent.press(screen.getByTestId("save-alert-button"))
 
     // Check alert duplicate
     await mockOperationByName("getAlertByCriteriaQuery", {
@@ -172,18 +174,18 @@ describe("CreateSavedSearchAlert", () => {
   describe("Notification toggles", () => {
     it("email toggle is enabled by default if the user has allowed email notifications", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
-      await waitFor(() => {
-        resolveMostRecentRelayOperation(mockEnvironment)
+      await waitForPendingOperation()
+      await resolveMostRecentRelayOperation(mockEnvironment)
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Viewer: () => ({
-            notificationPreferences: [
-              { status: "SUBSCRIBED", name: "custom_alerts", channel: "email" },
-            ],
-          }),
-        })
+      await waitForPendingOperation()
+      await resolveMostRecentRelayOperation(mockEnvironment, {
+        Viewer: () => ({
+          notificationPreferences: [
+            { status: "SUBSCRIBED", name: "custom_alerts", channel: "email" },
+          ],
+        }),
       })
 
       await flushPromiseQueue()
@@ -195,16 +197,15 @@ describe("CreateSavedSearchAlert", () => {
 
     it("email toggle is disabled by default if the user has not allowed email notifications", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
-      await waitFor(() => {
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Viewer: () => ({
-            notificationPreferences: [
-              { status: "UNSUBSCRIBED", name: "custom_alerts", channel: "email" },
-            ],
-          }),
-        })
+      await waitForPendingOperation()
+      await resolveMostRecentRelayOperation(mockEnvironment, {
+        Viewer: () => ({
+          notificationPreferences: [
+            { status: "UNSUBSCRIBED", name: "custom_alerts", channel: "email" },
+          ],
+        }),
       })
 
       await flushPromiseQueue()
@@ -216,11 +217,10 @@ describe("CreateSavedSearchAlert", () => {
 
     it("push toggle is enabled by default when push permissions are enabled", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
-      await waitFor(() => {
-        resolveMostRecentRelayOperation(mockEnvironment)
-      })
+      await waitForPendingOperation()
+      await resolveMostRecentRelayOperation(mockEnvironment)
 
       expect(screen.queryByLabelText("Push Notifications Toggler")).toHaveProp(
         "accessibilityState",
@@ -232,9 +232,9 @@ describe("CreateSavedSearchAlert", () => {
 
     it("push toggle is disabled by default when push permissions are denied", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Denied)
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Viewer: () => ({
           notificationPreferences: [{ status: "SUBSCRIBED" }],
         }),
@@ -252,9 +252,9 @@ describe("CreateSavedSearchAlert", () => {
 
     it("push toggle is disabled by default when push permissions are not determined", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.NotDetermined)
-      renderWithWrappers(<TestRenderer />)
+      await renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Viewer: () => ({
           notificationPreferences: [{ status: "SUBSCRIBED" }],
         }),

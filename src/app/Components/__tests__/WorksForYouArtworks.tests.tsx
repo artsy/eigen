@@ -42,9 +42,9 @@ describe("NewWorksForYouGrid", () => {
   })
 
   it("renders the grid items properly", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Viewer: () => viewer,
     })
 

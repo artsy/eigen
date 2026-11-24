@@ -23,7 +23,7 @@ describe("SharedArtworkList", () => {
 
   describe("null collection", () => {
     it("shows an unavailable message", async () => {
-      renderWithRelay({ Query: () => ({ collection: null }) })
+      await renderWithRelay({ Query: () => ({ collection: null }) })
 
       await waitFor(() => {
         expect(screen.getByText("This list is private or no longer available.")).toBeOnTheScreen()
@@ -33,7 +33,7 @@ describe("SharedArtworkList", () => {
 
   describe("empty list", () => {
     it("shows an empty state message", async () => {
-      renderWithRelay({ Collection: () => ({ ...collection, artworks: { totalCount: 0 } }) })
+      await renderWithRelay({ Collection: () => ({ ...collection, artworks: { totalCount: 0 } }) })
 
       await waitFor(() => {
         expect(screen.getByText("This list has no artworks yet.")).toBeOnTheScreen()
@@ -47,7 +47,7 @@ describe("SharedArtworkList", () => {
     })
 
     it("shows the contextual menu button", async () => {
-      renderWithRelay({ Collection: () => collection })
+      await renderWithRelay({ Collection: () => collection })
 
       await waitFor(() => {
         expect(screen.getByLabelText("Contextual Menu Button")).toBeOnTheScreen()
@@ -55,10 +55,10 @@ describe("SharedArtworkList", () => {
     })
 
     it("hides Edit List and Delete List for the default Saved Artworks list, keeping Share List", async () => {
-      renderWithRelay({ Collection: () => ({ ...collection, default: true }) })
+      await renderWithRelay({ Collection: () => ({ ...collection, default: true }) })
 
       await screen.findByTestId("fancy-modal-header-right-button")
-      fireEvent.press(screen.getByTestId("fancy-modal-header-right-button"))
+      await fireEvent.press(screen.getByTestId("fancy-modal-header-right-button"))
 
       expect(screen.queryByText("Edit List")).not.toBeOnTheScreen()
       expect(screen.queryByText("Delete List")).not.toBeOnTheScreen()
@@ -72,7 +72,7 @@ describe("SharedArtworkList", () => {
     })
 
     it("hides the contextual menu button", async () => {
-      renderWithRelay({ Collection: () => collection })
+      await renderWithRelay({ Collection: () => collection })
 
       // Wait for the list to render before asserting absence, otherwise the negative check
       // passes trivially while the Suspense placeholder is still showing.

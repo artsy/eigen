@@ -69,7 +69,7 @@ describe("AddEditArtwork", () => {
     __globalStoreTestUtils__?.reset()
   })
 
-  it("renders correct components on Add", () => {
+  it("renders correct components on Add", async () => {
     const artworkForm = (
       <MyCollectionArtworkStore.Provider
         runtimeModel={{
@@ -82,7 +82,7 @@ describe("AddEditArtwork", () => {
         <MyCollectionArtworkFormMain navigation={mockNav as any} route={null as any} />
       </MyCollectionArtworkStore.Provider>
     )
-    renderWithWrappers(artworkForm)
+    await renderWithWrappers(artworkForm)
     expect(screen.getByTestId("mock-navigation-header-right-button")).toBeOnTheScreen()
     expect(screen.getByTestId("mock-category-picker")).toBeOnTheScreen()
     expect(screen.getByTestId("mock-dimensions")).toBeOnTheScreen()
@@ -92,7 +92,7 @@ describe("AddEditArtwork", () => {
     expect(screen.getByTestId("PhotosButton")).toBeOnTheScreen()
   })
 
-  it("renders correct components on Edit", () => {
+  it("renders correct components on Edit", async () => {
     const artworkForm = (
       <MyCollectionArtworkStore.Provider
         runtimeModel={{
@@ -105,12 +105,12 @@ describe("AddEditArtwork", () => {
         <MyCollectionArtworkFormMain navigation={mockNav as any} route={null as any} />
       </MyCollectionArtworkStore.Provider>
     )
-    renderWithWrappers(artworkForm)
+    await renderWithWrappers(artworkForm)
     expect(screen.getByTestId("CompleteButton")).toBeOnTheScreen()
     expect(screen.getByTestId("DeleteButton")).toBeOnTheScreen()
   })
 
-  it("fires clear form on header Clear button click", () => {
+  it("fires clear form on header Clear button click", async () => {
     const mockDelete = jest.fn()
 
     const artworkForm = (
@@ -138,8 +138,8 @@ describe("AddEditArtwork", () => {
       },
     }))
 
-    renderWithWrappers(artworkForm)
-    fireEvent.press(screen.getByTestId("mock-navigation-header-right-button"))
+    await renderWithWrappers(artworkForm)
+    await fireEvent.press(screen.getByTestId("mock-navigation-header-right-button"))
 
     expect(mockShowActionSheetWithOptions).toHaveBeenCalled()
 
@@ -148,7 +148,7 @@ describe("AddEditArtwork", () => {
     callback(0) // confirm discard
   })
 
-  it("fires formik's handleSubmit on complete button click", () => {
+  it("fires formik's handleSubmit on complete button click", async () => {
     const spy = jest.fn()
     // CompleteButton is disabled unless the form is valid and dirty
     useFormikContextMock.mockImplementation(() => ({
@@ -191,15 +191,15 @@ describe("AddEditArtwork", () => {
       </MyCollectionArtworkStore.Provider>
     )
 
-    renderWithWrappers(artworkForm)
+    await renderWithWrappers(artworkForm)
 
-    fireEvent.press(screen.getByTestId("CompleteButton"))
+    await fireEvent.press(screen.getByTestId("CompleteButton"))
 
     expect(spy).toHaveBeenCalled()
   })
 
   describe("delete artwork button", () => {
-    it("can be pressed", () => {
+    it("can be pressed", async () => {
       const artworkForm = (
         <MyCollectionArtworkStore.Provider
           runtimeModel={{
@@ -213,9 +213,9 @@ describe("AddEditArtwork", () => {
         </MyCollectionArtworkStore.Provider>
       )
 
-      renderWithWrappers(artworkForm)
+      await renderWithWrappers(artworkForm)
 
-      fireEvent.press(screen.getByTestId("DeleteButton"))
+      await fireEvent.press(screen.getByTestId("DeleteButton"))
     })
   })
 })

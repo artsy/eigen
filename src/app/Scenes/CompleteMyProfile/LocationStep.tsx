@@ -1,4 +1,4 @@
-import { Flex, Input, Screen, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Screen, Spacer, Text, InputRef } from "@artsy/palette-mobile"
 import { LocationAutocomplete, buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
@@ -8,7 +8,7 @@ import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingCo
 import { FC, useRef } from "react"
 
 export const LocationStep: FC = () => {
-  const ref = useRef<Input>(null)
+  const ref = useRef<InputRef>(null)
   const { goNext } = useCompleteProfile()
 
   const location = CompleteMyProfileStore.useStoreState((state) => state.progressState.location)

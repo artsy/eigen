@@ -28,68 +28,68 @@ jest.mock("@artsy/icons/native", () => {
 })
 
 describe("CityGuideSaveButton", () => {
-  it("renders the add icon when not saved", () => {
-    renderWithWrappers(<CityGuideSaveButton isSaved={false} onPress={jest.fn()} />)
+  it("renders the add icon when not saved", async () => {
+    await renderWithWrappers(<CityGuideSaveButton isSaved={false} onPress={jest.fn()} />)
 
     expect(screen.getByTestId("city-guide-save-button-add-icon")).toBeTruthy()
     expect(screen.queryByTestId("city-guide-save-button-check-icon")).toBeNull()
   })
 
-  it("renders the check icon when saved", () => {
-    renderWithWrappers(<CityGuideSaveButton isSaved onPress={jest.fn()} />)
+  it("renders the check icon when saved", async () => {
+    await renderWithWrappers(<CityGuideSaveButton isSaved onPress={jest.fn()} />)
 
     expect(screen.getByTestId("city-guide-save-button-check-icon")).toBeTruthy()
     expect(screen.queryByTestId("city-guide-save-button-add-icon")).toBeNull()
   })
 
-  it("renders a filled checkmark when saved", () => {
-    renderWithWrappers(<CityGuideSaveButton isSaved onPress={jest.fn()} />)
+  it("renders a filled checkmark when saved", async () => {
+    await renderWithWrappers(<CityGuideSaveButton isSaved onPress={jest.fn()} />)
 
     expect(screen.getByTestId("mock-checkmark-fill-icon")).toBeOnTheScreen()
     expect(screen.queryByTestId("mock-checkmark-icon")).not.toBeOnTheScreen()
   })
 
-  it("calls onPress when tapped", () => {
+  it("calls onPress when tapped", async () => {
     const onPress = jest.fn()
-    renderWithWrappers(<CityGuideSaveButton isSaved={false} onPress={onPress} />)
+    await renderWithWrappers(<CityGuideSaveButton isSaved={false} onPress={onPress} />)
 
-    fireEvent.press(screen.getByTestId("city-guide-save-button"))
+    await fireEvent.press(screen.getByTestId("city-guide-save-button"))
 
     expect(onPress).toHaveBeenCalledTimes(1)
   })
 
-  it("shows the check icon while pressed", () => {
-    renderWithWrappers(<CityGuideSaveButton isSaved={false} onPress={jest.fn()} />)
+  it("shows the check icon while pressed", async () => {
+    await renderWithWrappers(<CityGuideSaveButton isSaved={false} onPress={jest.fn()} />)
 
-    fireEvent(screen.getByTestId("city-guide-save-button"), "pressIn")
+    await fireEvent(screen.getByTestId("city-guide-save-button"), "pressIn")
 
     expect(screen.getByTestId("city-guide-save-button-check-icon")).toBeTruthy()
     expect(screen.queryByTestId("city-guide-save-button-add-icon")).toBeNull()
 
-    fireEvent(screen.getByTestId("city-guide-save-button"), "pressOut")
+    await fireEvent(screen.getByTestId("city-guide-save-button"), "pressOut")
 
     expect(screen.getByTestId("city-guide-save-button-add-icon")).toBeTruthy()
   })
 
-  it("triggers a light haptic when tapped", () => {
-    renderWithWrappers(<CityGuideSaveButton isSaved={false} onPress={jest.fn()} />)
+  it("triggers a light haptic when tapped", async () => {
+    await renderWithWrappers(<CityGuideSaveButton isSaved={false} onPress={jest.fn()} />)
 
-    fireEvent.press(screen.getByTestId("city-guide-save-button"))
+    await fireEvent.press(screen.getByTestId("city-guide-save-button"))
 
     expect(Haptic.trigger).toHaveBeenCalledWith("impactLight")
   })
 
-  it("does not call onPress while saving", () => {
+  it("does not call onPress while saving", async () => {
     const onPress = jest.fn()
-    renderWithWrappers(<CityGuideSaveButton isSaved={false} onPress={onPress} isSaving />)
+    await renderWithWrappers(<CityGuideSaveButton isSaved={false} onPress={onPress} isSaving />)
 
-    fireEvent.press(screen.getByTestId("city-guide-save-button"))
+    await fireEvent.press(screen.getByTestId("city-guide-save-button"))
 
     expect(onPress).not.toHaveBeenCalled()
   })
 
-  it("exposes its saved state for accessibility", () => {
-    renderWithWrappers(<CityGuideSaveButton isSaved onPress={jest.fn()} />)
+  it("exposes its saved state for accessibility", async () => {
+    await renderWithWrappers(<CityGuideSaveButton isSaved onPress={jest.fn()} />)
 
     expect(screen.getByTestId("city-guide-save-button")).toHaveProp(
       "accessibilityState",

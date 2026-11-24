@@ -53,20 +53,20 @@ describe("ArtworkStickyBottomContent", () => {
     `,
   })
 
-  it("should NOT be rendered when artwork is NOT for sale", () => {
-    renderWithRelay({ Artwork: () => ({ ...artwork, isForSale: false }) })
+  it("should NOT be rendered when artwork is NOT for sale", async () => {
+    await renderWithRelay({ Artwork: () => ({ ...artwork, isForSale: false }) })
 
     expect(screen.queryByLabelText("Sticky bottom commercial section")).not.toBeOnTheScreen()
   })
 
-  it("should NOT be rendered when artwork is sold", () => {
-    renderWithRelay({ Artwork: () => ({ ...artwork, isSold: true }) })
+  it("should NOT be rendered when artwork is sold", async () => {
+    await renderWithRelay({ Artwork: () => ({ ...artwork, isSold: true }) })
 
     expect(screen.queryByLabelText("Sticky bottom commercial section")).not.toBeOnTheScreen()
   })
 
-  it("should NOT be rendered when auction is closed", () => {
-    renderWithRelay(
+  it("should NOT be rendered when auction is closed", async () => {
+    await renderWithRelay(
       { Artwork: () => artwork },
       { initialData: { auctionState: AuctionTimerState.CLOSED } }
     )
@@ -74,8 +74,8 @@ describe("ArtworkStickyBottomContent", () => {
     expect(screen.queryByLabelText("Sticky bottom commercial section")).not.toBeOnTheScreen()
   })
 
-  it("should NOT be rendered when lot is ended", () => {
-    renderWithRelay(
+  it("should NOT be rendered when lot is ended", async () => {
+    await renderWithRelay(
       {
         Artwork: () => ({
           ...artwork,
@@ -88,8 +88,8 @@ describe("ArtworkStickyBottomContent", () => {
     expect(screen.queryByLabelText("Sticky bottom commercial section")).not.toBeOnTheScreen()
   })
 
-  it("should NOT be rendered when extended lot is ended", () => {
-    renderWithRelay(
+  it("should NOT be rendered when extended lot is ended", async () => {
+    await renderWithRelay(
       {
         Artwork: () => ({
           ...artwork,
@@ -106,8 +106,8 @@ describe("ArtworkStickyBottomContent", () => {
     expect(screen.queryByLabelText("Sticky bottom commercial section")).not.toBeOnTheScreen()
   })
 
-  it("should be rendered", () => {
-    renderWithRelay({ Artwork: () => artwork })
+  it("should be rendered", async () => {
+    await renderWithRelay({ Artwork: () => artwork })
 
     expect(screen.getByLabelText("Sticky bottom commercial section")).toBeOnTheScreen()
   })

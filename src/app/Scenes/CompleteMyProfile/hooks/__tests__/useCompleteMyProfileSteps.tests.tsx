@@ -12,7 +12,7 @@ describe("useCompleteMyProfileSteps", () => {
     env.mockClear()
   })
 
-  it("returns the next route and steps", () => {
+  it("returns the next route and steps", async () => {
     env.mock.queueOperationResolver((operation) =>
       MockPayloadGenerator.generate(operation, {
         Me: () => ({
@@ -24,7 +24,7 @@ describe("useCompleteMyProfileSteps", () => {
       })
     )
 
-    const { result } = renderHook(() => useCompleteMyProfileSteps(), { wrapper })
+    const { result } = await renderHook(() => useCompleteMyProfileSteps(), { wrapper })
 
     expect(result.current.steps).toEqual([
       "ProfessionStep",
@@ -35,14 +35,14 @@ describe("useCompleteMyProfileSteps", () => {
     expect(result.current.nextRoute("ProfessionStep")).toBe("AvatarStep")
   })
 
-  it("returns only 2 steps given only 1 field missing", () => {
+  it("returns only 2 steps given only 1 field missing", async () => {
     env.mock.queueOperationResolver((operation) =>
       MockPayloadGenerator.generate(operation, {
         Me: () => ({ isIdentityVerified: false }),
       })
     )
 
-    const { result } = renderHook(() => useCompleteMyProfileSteps(), { wrapper })
+    const { result } = await renderHook(() => useCompleteMyProfileSteps(), { wrapper })
 
     expect(result.current.steps).toEqual(["IdentityVerificationStep", "ChangesSummary"])
     expect(result.current.nextRoute("IdentityVerificationStep")).toBe("ChangesSummary")

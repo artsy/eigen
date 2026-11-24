@@ -47,14 +47,14 @@ describe("ArtworkPrice", () => {
   })
 
   describe("Auction bid info", () => {
-    it("should be displayed", () => {
-      renderWithRelay({ Artwork: () => ({ isInAuction: true }) })
+    it("should be displayed", async () => {
+      await renderWithRelay({ Artwork: () => ({ isInAuction: true }) })
 
       expect(screen.getByLabelText("Auction Bid Info")).toBeOnTheScreen()
     })
 
-    it("should NOT be displayed for live sale in progress", () => {
-      renderWithRelay(
+    it("should NOT be displayed for live sale in progress", async () => {
+      await renderWithRelay(
         { Artwork: () => ({ isInAuction: true }) },
         { initialData: { auctionState: AuctionTimerState.LIVE_INTEGRATION_ONGOING } }
       )
@@ -63,8 +63,8 @@ describe("ArtworkPrice", () => {
     })
   })
 
-  it("should render the sale message of the selected edition set", () => {
-    renderWithRelay(
+  it("should render the sale message of the selected edition set", async () => {
+    await renderWithRelay(
       {
         Artwork: () => ({
           isInAuction: false,
@@ -81,8 +81,8 @@ describe("ArtworkPrice", () => {
     expect(screen.getByText("$1000")).toBeOnTheScreen()
   })
 
-  it("should render the sale message", () => {
-    renderWithRelay({
+  it("should render the sale message", async () => {
+    await renderWithRelay({
       Artwork: () => ({ isInAuction: false, saleMessage: "$1000" }),
       Me: () => ({ partnerOffersConnection: { edges: [] } }),
     })
@@ -91,8 +91,8 @@ describe("ArtworkPrice", () => {
   })
 
   describe("Partner Offer", () => {
-    it("should NOT render if there is not partner offers", () => {
-      renderWithRelay({
+    it("should NOT render if there is not partner offers", async () => {
+      await renderWithRelay({
         Artwork: () => ({ isInAuction: false }),
         Me: () => ({ partnerOffersConnection: { edges: [] } }),
       })
@@ -100,8 +100,8 @@ describe("ArtworkPrice", () => {
       expect(screen.queryByText("Limited-Time Offer")).not.toBeOnTheScreen()
     })
 
-    it("should NOT render if the partner offer is not available", () => {
-      renderWithRelay({
+    it("should NOT render if the partner offer is not available", async () => {
+      await renderWithRelay({
         Artwork: () => ({ isInAuction: false }),
         Me: () => ({ partnerOffersConnection: { edges: [{ node: unavailablePartnerOffer }] } }),
       })
@@ -110,8 +110,8 @@ describe("ArtworkPrice", () => {
     })
 
     describe("when a Partner Offer is available", () => {
-      it("should render the partner offer details", () => {
-        renderWithRelay({
+      it("should render the partner offer details", async () => {
+        await renderWithRelay({
           Artwork: () => ({ isInAuction: false, isPriceHidden: false, saleMessage: "US$500" }),
           Me: () => ({ partnerOffersConnection: { edges: [{ node: testPartnerOffer }] } }),
         })
@@ -121,8 +121,8 @@ describe("ArtworkPrice", () => {
         expect(screen.getByText("(List Price: US$500)")).toBeOnTheScreen()
       })
 
-      it("should render 'Not publicly listed' if the artwork price is hidden", () => {
-        renderWithRelay({
+      it("should render 'Not publicly listed' if the artwork price is hidden", async () => {
+        await renderWithRelay({
           Artwork: () => ({ isInAuction: false, isPriceHidden: true }),
           Me: () => ({ partnerOffersConnection: { edges: [{ node: testPartnerOffer }] } }),
         })

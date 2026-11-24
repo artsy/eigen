@@ -8,6 +8,7 @@ import {
   LayoutAnimation,
   Platform,
   TextInput,
+  TextInputInstance,
   TextInputProps,
   TextStyle,
   TouchableOpacity,
@@ -73,7 +74,7 @@ export interface InputRef {
   clear: () => void
 }
 
-export type Input = TextInput
+export type Input = InputRef
 
 export const Input = forwardRef<InputRef, InputProps>(
   (
@@ -106,7 +107,7 @@ export const Input = forwardRef<InputRef, InputProps>(
     const [focused, setFocused] = useState(false)
     const [showPassword, setShowPassword] = useState(!secureTextEntry)
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
-    const inputRef = useRef<TextInput>(null)
+    const inputRef = useRef<TextInputInstance>(null)
 
     const localClear = () => {
       inputRef.current?.clear()

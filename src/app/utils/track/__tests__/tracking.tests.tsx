@@ -32,12 +32,12 @@ describe("Tracking", () => {
   it("works for tracking events with decorators", async () => {
     expect(postEventToProviders).toHaveBeenCalledTimes(0)
 
-    renderWithWrappers(<TestComponentDecorators />)
+    await renderWithWrappers(<TestComponentDecorators />)
 
     expect(postEventToProviders).toHaveBeenCalledTimes(1)
     expect(postEventToProviders).toHaveBeenNthCalledWith(1, { aScreen: "a class screen" })
 
-    fireEvent.press(screen.getByRole("button", { name: "track me" }))
+    await fireEvent.press(screen.getByRole("button", { name: "track me" }))
     expect(postEventToProviders).toHaveBeenCalledTimes(2)
     expect(postEventToProviders).toHaveBeenNthCalledWith(2, {
       aScreen: "a class screen",

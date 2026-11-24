@@ -22,8 +22,8 @@ describe("ArticleWebViewScreen", () => {
     `,
   })
 
-  it("renders correctly", () => {
-    renderWithRelay({
+  it("renders correctly", async () => {
+    await renderWithRelay({
       Article: () => ({
         href: "/article/foo",
         title: "Example Article",

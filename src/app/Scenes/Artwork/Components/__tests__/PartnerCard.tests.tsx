@@ -23,16 +23,16 @@ describe("PartnerCard", () => {
     `,
   })
 
-  it("renders partner name correctly", () => {
-    renderWithRelay({
+  it("renders partner name correctly", async () => {
+    await renderWithRelay({
       Artwork: () => PartnerCardArtwork,
     })
 
     expect(screen.getByText("Test Gallery")).toBeTruthy()
   })
 
-  it("renders partner image", () => {
-    renderWithRelay({
+  it("renders partner image", async () => {
+    await renderWithRelay({
       Artwork: () => PartnerCardArtwork,
     })
 
@@ -40,15 +40,15 @@ describe("PartnerCard", () => {
     expect(screen.queryByLabelText("Avatar")).not.toBeOnTheScreen()
   })
 
-  it("renders partner type", () => {
-    renderWithRelay({
+  it("renders partner type", async () => {
+    await renderWithRelay({
       Artwork: () => PartnerCardArtwork,
     })
 
     expect(screen.getByText("Gallery")).toBeTruthy()
   })
 
-  it("renders partner type correctly for institutional sellers", () => {
+  it("renders partner type correctly for institutional sellers", async () => {
     const PartnerCardArtworkInstitutionalSeller = {
       ...PartnerCardArtwork,
       partner: {
@@ -57,14 +57,14 @@ describe("PartnerCard", () => {
       },
     }
 
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => PartnerCardArtworkInstitutionalSeller,
     })
 
     expect(screen.getByText("Institution")).toBeTruthy()
   })
 
-  it("doesn't render partner type for partners that aren't institutions or galleries", () => {
+  it("doesn't render partner type for partners that aren't institutions or galleries", async () => {
     const PartnerCardArtworkOtherType = {
       ...PartnerCardArtwork,
       partner: {
@@ -72,7 +72,7 @@ describe("PartnerCard", () => {
         type: "Some Other Partner Type",
       },
     }
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => PartnerCardArtworkOtherType,
     })
 
@@ -80,7 +80,7 @@ describe("PartnerCard", () => {
     expect(screen.queryByText("At gallery")).toBeFalsy()
   })
 
-  it("renders partner initials when no image is present", () => {
+  it("renders partner initials when no image is present", async () => {
     const PartnerCardArtworkWithoutImage = {
       ...PartnerCardArtwork,
       partner: {
@@ -88,7 +88,7 @@ describe("PartnerCard", () => {
         profile: null,
       },
     }
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => PartnerCardArtworkWithoutImage,
     })
 
@@ -97,15 +97,15 @@ describe("PartnerCard", () => {
     expect(screen.getByLabelText("Avatar")).toBeOnTheScreen()
   })
 
-  it("truncates partner locations correctly", () => {
-    renderWithRelay({
+  it("truncates partner locations correctly", async () => {
+    await renderWithRelay({
       Artwork: () => PartnerCardArtwork,
     })
 
     expect(screen.getByText("Miami, New York, +3 more")).toBeTruthy()
   })
 
-  it("does not render when the partner is an auction house", () => {
+  it("does not render when the partner is an auction house", async () => {
     const PartnerCardArtworkAuctionHouse: PartnerCard_artwork$data = {
       ...PartnerCardArtwork,
       partner: {
@@ -113,14 +113,14 @@ describe("PartnerCard", () => {
         type: "Auction House",
       },
     }
-    const { toJSON } = renderWithRelay({
+    const { toJSON } = await renderWithRelay({
       Artwork: () => PartnerCardArtworkAuctionHouse,
     })
 
     expect(toJSON()).toBeNull()
   })
 
-  it("does not render when the artwork is in a benefit or gallery auction", () => {
+  it("does not render when the artwork is in a benefit or gallery auction", async () => {
     const PartnerCardArtworkAuction = {
       ...PartnerCardArtwork,
       sale: {
@@ -128,7 +128,7 @@ describe("PartnerCard", () => {
         isGalleryAuction: true,
       },
     }
-    const { toJSON } = renderWithRelay({
+    const { toJSON } = await renderWithRelay({
       Artwork: () => PartnerCardArtworkAuction,
     })
 

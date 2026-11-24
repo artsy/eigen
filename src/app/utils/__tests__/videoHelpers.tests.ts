@@ -171,7 +171,7 @@ describe("useVimeoVideoMetadata", () => {
   it("requests only the cover field and returns the cover", async () => {
     const fetchMock = jest.spyOn(global, "fetch").mockResolvedValue(vimeoResponse(200) as any)
 
-    const { result } = renderHook(() => useVimeoVideoMetadata("123"))
+    const { result } = await renderHook(() => useVimeoVideoMetadata("123"))
 
     await waitFor(() => expect(result.current.coverImage).toEqual("https://i.vimeocdn.com/4.jpg"))
     expect(fetchMock.mock.calls[0][0]).toEqual(
@@ -183,7 +183,7 @@ describe("useVimeoVideoMetadata", () => {
   it("returns no cover for a response that isn't OK", async () => {
     jest.spyOn(global, "fetch").mockResolvedValue(vimeoResponse(429) as any)
 
-    const { result } = renderHook(() => useVimeoVideoMetadata("123"))
+    const { result } = await renderHook(() => useVimeoVideoMetadata("123"))
 
     await waitFor(() => expect(result.current.isCoverUnavailable).toBe(true))
     expect(result.current.coverImage).toBeUndefined()
@@ -198,7 +198,7 @@ describe("useVimeoVideoMetadata", () => {
         })
     )
 
-    const { result } = renderHook(() => useVimeoVideoMetadata("123"))
+    const { result } = await renderHook(() => useVimeoVideoMetadata("123"))
 
     await act(async () => {
       jest.advanceTimersByTime(5000)

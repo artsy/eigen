@@ -261,7 +261,7 @@ const CityEventList: React.FC<Props> = ({ citySlug, section: rawSection }) => {
                         {`Showing ${fetchedCount} of ${totalCount}`}
                       </Text>
                     </Flex>
-                  ) : null
+                  ) : undefined
                 }
               />
             )}

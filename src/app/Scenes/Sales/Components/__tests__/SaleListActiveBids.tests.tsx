@@ -24,8 +24,8 @@ describe("SaleListActiveBids", () => {
     `,
   })
 
-  it("renders nothing when no artworks", () => {
-    renderWithRelay({
+  it("renders nothing when no artworks", async () => {
+    await renderWithRelay({
       Me: () => ({
         lotStandings: [],
       }),
@@ -35,8 +35,8 @@ describe("SaleListActiveBids", () => {
     expect(screen.queryAllByText(/.*/)).toHaveLength(0)
   })
 
-  it("renders a list of artworks", () => {
-    renderWithRelay({
+  it("renders a list of artworks", async () => {
+    await renderWithRelay({
       Me: () => ({
         lotStandings: [
           {
@@ -67,7 +67,7 @@ describe("SaleListActiveBids", () => {
     expect(screen.getByText(/Artwork 1/)).toBeOnTheScreen()
     expect(screen.getByText(/Artwork 2/)).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText(/Artwork 2/))
+    await fireEvent.press(screen.getByText(/Artwork 2/))
 
     expect(navigate).toHaveBeenCalledWith("/artwork-2-href")
   })

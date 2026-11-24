@@ -9,7 +9,7 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   Platform,
-  View,
+  ViewInstance,
 } from "react-native"
 import { isTablet } from "react-native-device-info"
 import {
@@ -183,7 +183,7 @@ const EmbeddedItem: React.FC<{
   item: ImageCarouselMedia
   index: number
   measurements: ImageMeasurements[]
-  embeddedImageRefs: View[]
+  embeddedImageRefs: ViewInstance[]
   embeddedCardBoundingBox: { width: number; height: number }
   images: ImageDescriptor[]
   goFullScreen: () => void

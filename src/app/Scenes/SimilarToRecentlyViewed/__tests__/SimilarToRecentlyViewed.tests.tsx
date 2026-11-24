@@ -17,7 +17,7 @@ describe("SimilarToRecentlyViewed", () => {
   })
 
   it("renders SimilarToRecentlyViewed", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Query: () => mockResponse,
     })
 

@@ -19,11 +19,11 @@ describe("useEnableArtAssistant", () => {
     { echo: true, unleash: true, expected: true },
   ])(
     "returns $expected when Echo is $echo and Unleash is $unleash",
-    ({ echo, unleash, expected }) => {
+    async ({ echo, unleash, expected }) => {
       jest.mocked(useFeatureFlag).mockReturnValue(echo)
       jest.mocked(useExperimentFlag).mockReturnValue(unleash)
 
-      const { result } = renderHook(() => useEnableArtAssistant())
+      const { result } = await renderHook(() => useEnableArtAssistant())
 
       expect(result.current).toBe(expected)
       expect(useFeatureFlag).toHaveBeenCalledWith("AREnableArtAssistant")

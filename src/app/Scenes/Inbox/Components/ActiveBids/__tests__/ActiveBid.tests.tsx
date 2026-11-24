@@ -2,17 +2,17 @@ import { screen } from "@testing-library/react-native"
 import ActiveBid from "app/Scenes/Inbox/Components/ActiveBids/ActiveBid"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-it("renders without throwing a error", () => {
-  renderWithWrappers(<ActiveBid bid={bid()} />)
+it("renders without throwing a error", async () => {
+  await renderWithWrappers(<ActiveBid bid={bid()} />)
 })
 
-it("looks right for bids in live open auctions", () => {
-  renderWithWrappers(<ActiveBid bid={bid(true, true)} />)
+it("looks right for bids in live open auctions", async () => {
+  await renderWithWrappers(<ActiveBid bid={bid(true, true)} />)
   expect(screen.getByText(/Live bidding now open/)).toBeOnTheScreen()
 })
 
-it("looks right for bids in live closed auctions", () => {
-  renderWithWrappers(<ActiveBid bid={bid(false, true)} />)
+it("looks right for bids in live closed auctions", async () => {
+  await renderWithWrappers(<ActiveBid bid={bid(false, true)} />)
   expect(screen.getByText(/Live auction/)).toBeOnTheScreen()
 })
 

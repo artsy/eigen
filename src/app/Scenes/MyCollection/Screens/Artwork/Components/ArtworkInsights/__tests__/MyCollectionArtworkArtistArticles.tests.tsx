@@ -21,8 +21,8 @@ describe("MyCollectionArtworkArtistArticles", () => {
     `,
   })
 
-  it("renders without throwing an error", () => {
-    renderWithRelay({
+  it("renders without throwing an error", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         artist: {
           name: "Banksy",
@@ -41,21 +41,21 @@ describe("MyCollectionArtworkArtistArticles", () => {
     expect(screen.getByText("publishedAt")).toBeOnTheScreen()
   })
 
-  it("navigates to correct article on click", () => {
-    renderWithRelay({
+  it("navigates to correct article on click", async () => {
+    await renderWithRelay({
       Article: () => ({
         slug: "article-slug",
         thumbnailTitle: "Some Article Title",
       }),
     })
 
-    fireEvent.press(screen.getByText("Some Article Title"))
+    await fireEvent.press(screen.getByText("Some Article Title"))
 
     expect(navigate).toHaveBeenCalledWith("/article/article-slug")
   })
 
-  it("navigates to all articles on click", () => {
-    renderWithRelay({
+  it("navigates to all articles on click", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         artist: {
           slug: "banksy",
@@ -63,13 +63,13 @@ describe("MyCollectionArtworkArtistArticles", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("See all articles"))
+    await fireEvent.press(screen.getByText("See all articles"))
 
     expect(navigate).toHaveBeenCalledWith("/artist/banksy/articles")
   })
 
-  it("tracks taps on all articles button", () => {
-    renderWithRelay({
+  it("tracks taps on all articles button", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         internalID: "some-id",
         slug: "some-slug",
@@ -79,7 +79,7 @@ describe("MyCollectionArtworkArtistArticles", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("See all articles"))
+    await fireEvent.press(screen.getByText("See all articles"))
 
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenCalledWith({

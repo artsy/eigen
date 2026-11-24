@@ -23,9 +23,10 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   NativeTouchEvent,
-  ScrollView,
   TouchableWithoutFeedback,
   View,
+  ScrollViewInstance,
+  ViewInstance,
 } from "react-native"
 import { DeepZoomOverlay } from "./DeepZoom/DeepZoomOverlay"
 import { calculateMaxZoomViewScale } from "./DeepZoom/deepZoomGeometry"
@@ -43,7 +44,7 @@ export interface ImageZoomViewProps {
   index: number
 }
 
-const measure = (ref: View): Promise<Rect> =>
+const measure = (ref: ViewInstance): Promise<Rect> =>
   new Promise((resolve) =>
     ref.measure((_, __, width, height, x, y) => resolve({ x, y, width, height }))
   )
@@ -60,7 +61,7 @@ async function getTransitionOffset({
   fromRef,
   toBox,
 }: {
-  fromRef: View
+  fromRef: ViewInstance
   toBox: Rect
 }): Promise<TransitionOffset> {
   const fromBox = await measure(fromRef)
@@ -184,7 +185,7 @@ export const ImageZoomView =
 
     // we need to be able to reset the scroll view zoom level when the user
     // swipes to another image
-    const scrollViewRef = useRef<ScrollView>(null)
+    const scrollViewRef = useRef<ScrollViewInstance>(null)
     const zoomScale = useRef<number>(1)
     const contentOffset = useRef<Position>({
       x: -imageFittedWithinScreen.marginHorizontal,
@@ -291,7 +292,7 @@ export const ImageZoomView =
     const $zoomScale = useAnimatedValue(1)
 
     const onScroll = useCallback((ev: NativeSyntheticEvent<NativeScrollEvent>) => {
-      zoomScale.current = Math.max(ev.nativeEvent.zoomScale, 1)
+      zoomScale.current = Math.max(ev.nativeEvent.zoomScale ?? 1, 1)
       contentOffset.current = { ...ev.nativeEvent.contentOffset }
       viewPortChanges.dispatch({
         x: ev.nativeEvent.contentOffset.x / zoomScale.current,

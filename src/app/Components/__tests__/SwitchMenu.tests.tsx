@@ -15,31 +15,31 @@ describe("SwitchMenu", () => {
     jest.clearAllMocks()
   })
 
-  it("renders with the provided title and description", () => {
-    renderWithWrappers(<SwitchMenu {...defaultProps} />)
+  it("renders with the provided title and description", async () => {
+    await renderWithWrappers(<SwitchMenu {...defaultProps} />)
 
     expect(screen.getByText("Test Title")).toBeTruthy()
     expect(screen.getByText("Test Description")).toBeTruthy()
   })
 
-  it("renders with the correct switch value", () => {
-    renderWithWrappers(<SwitchMenu {...defaultProps} value={true} />)
+  it("renders with the correct switch value", async () => {
+    await renderWithWrappers(<SwitchMenu {...defaultProps} value={true} />)
 
     const switchComponent = screen.getByTestId("test-switch")
     expect(switchComponent.props.value).toBe(true)
   })
 
-  it("calls onChange when switch is toggled", () => {
-    renderWithWrappers(<SwitchMenu {...defaultProps} />)
+  it("calls onChange when switch is toggled", async () => {
+    await renderWithWrappers(<SwitchMenu {...defaultProps} />)
 
     const switchComponent = screen.getByTestId("test-switch")
-    fireEvent(switchComponent, "valueChange", true)
+    await fireEvent(switchComponent, "valueChange", true)
 
     expect(defaultProps.onChange).toHaveBeenCalledWith(true)
   })
 
-  it("renders in disabled state when specified", () => {
-    renderWithWrappers(<SwitchMenu {...defaultProps} disabled />)
+  it("renders in disabled state when specified", async () => {
+    await renderWithWrappers(<SwitchMenu {...defaultProps} disabled />)
 
     const switchComponent = screen.getByTestId("test-switch")
     expect(switchComponent.props.disabled).toBe(true)

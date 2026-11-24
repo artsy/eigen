@@ -4,8 +4,8 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
 
 describe("Expandable", () => {
-  it("renders with the provided label", () => {
-    renderWithWrappers(
+  it("renders with the provided label", async () => {
+    await renderWithWrappers(
       <Expandable label="Test Label">
         <Text>Hidden Content</Text>
       </Expandable>
@@ -16,8 +16,8 @@ describe("Expandable", () => {
     expect(screen.queryByText("Hidden Content")).toBeNull()
   })
 
-  it("shows content when expanded prop is true", () => {
-    renderWithWrappers(
+  it("shows content when expanded prop is true", async () => {
+    await renderWithWrappers(
       <Expandable label="Test Label" expanded={true}>
         <Text>Visible Content</Text>
       </Expandable>
@@ -27,8 +27,8 @@ describe("Expandable", () => {
     expect(screen.getByText("Visible Content")).toBeTruthy()
   })
 
-  it("toggles content visibility when pressed", () => {
-    renderWithWrappers(
+  it("toggles content visibility when pressed", async () => {
+    await renderWithWrappers(
       <Expandable label="Click Me">
         <Text>Toggle Content</Text>
       </Expandable>
@@ -38,29 +38,29 @@ describe("Expandable", () => {
     expect(screen.queryByText("Toggle Content")).toBeNull()
 
     // Click to expand
-    fireEvent.press(screen.getByText("Click Me"))
+    await fireEvent.press(screen.getByText("Click Me"))
 
     // Now visible
     expect(screen.getByText("Toggle Content")).toBeTruthy()
 
     // Click to collapse
-    fireEvent.press(screen.getByText("Click Me"))
+    await fireEvent.press(screen.getByText("Click Me"))
 
     // Hidden again
     expect(screen.queryByText("Toggle Content")).toBeNull()
   })
 
-  it("calls onTrack when toggled", () => {
+  it("calls onTrack when toggled", async () => {
     const trackMock = jest.fn()
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <Expandable label="Track Me" onTrack={trackMock}>
         <Text>Tracked Content</Text>
       </Expandable>
     )
 
     // Toggle and check if onTrack was called
-    fireEvent.press(screen.getByText("Track Me"))
+    await fireEvent.press(screen.getByText("Track Me"))
     expect(trackMock).toHaveBeenCalledTimes(1)
   })
 })

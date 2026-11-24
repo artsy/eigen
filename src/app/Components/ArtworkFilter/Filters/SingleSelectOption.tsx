@@ -82,7 +82,7 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
             ListHeaderComponent={ListHeaderComponent}
             keyExtractor={keyExtractor}
             data={filterOptions}
-            ItemSeparatorComponent={null}
+            ItemSeparatorComponent={undefined}
             renderItem={({ item }) => renderItem(item)}
           />
         )}

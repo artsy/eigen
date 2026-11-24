@@ -21,22 +21,22 @@ describe("useE2EInitialization", () => {
   const localOverrides = () =>
     __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.localOverrides
 
-  it("turns on the feature flags named in enableFeatureFlags", () => {
+  it("turns on the feature flags named in enableFeatureFlags", async () => {
     mockLaunchArguments({
       useE2EInit: true,
       enableFeatureFlags: "AREnableShareShowPartnerFeature, NotARealFlag",
     })
 
-    renderWithWrappers(<TestComponent />)
+    await renderWithWrappers(<TestComponent />)
 
     expect(localOverrides()).toMatchObject({ AREnableShareShowPartnerFeature: true })
     expect(localOverrides()).not.toHaveProperty("NotARealFlag")
   })
 
-  it("ignores enableFeatureFlags outside e2e runs", () => {
+  it("ignores enableFeatureFlags outside e2e runs", async () => {
     mockLaunchArguments({ enableFeatureFlags: "AREnableShareShowPartnerFeature" })
 
-    renderWithWrappers(<TestComponent />)
+    await renderWithWrappers(<TestComponent />)
 
     expect(localOverrides()).not.toHaveProperty("AREnableShareShowPartnerFeature")
   })
@@ -54,7 +54,7 @@ describe("useE2EInitialization", () => {
       __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "token" } })
       mockLaunchArguments({ useE2EInit: true, shouldSignOut: true })
 
-      renderWithWrappers(<TestComponent />)
+      await renderWithWrappers(<TestComponent />)
 
       expect(signOut).toHaveBeenCalled()
       await waitFor(() => expect(pushPromptLogic()?.pushPermissionsRequestedThisSession).toBe(true))
@@ -76,35 +76,35 @@ describe("useE2EInitialization", () => {
       signIn.mockRestore()
     })
 
-    it("signs in when signed out", () => {
+    it("signs in when signed out", async () => {
       __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: null, userEmail: null } })
       mockLaunchArguments({ useE2EInit: true, email: "e2e@artsy.net", password: mockPassword })
 
-      renderWithWrappers(<TestComponent />)
+      await renderWithWrappers(<TestComponent />)
 
       expect(signIn).toHaveBeenCalledWith(
         expect.objectContaining({ email: "e2e@artsy.net", password: mockPassword })
       )
     })
 
-    it("keeps the session when already signed in as the same email", () => {
+    it("keeps the session when already signed in as the same email", async () => {
       __globalStoreTestUtils__?.injectState({
         auth: { userAccessToken: "token", userEmail: "E2E@artsy.net" },
       })
       mockLaunchArguments({ useE2EInit: true, email: "e2e@artsy.net", password: mockPassword })
 
-      renderWithWrappers(<TestComponent />)
+      await renderWithWrappers(<TestComponent />)
 
       expect(signIn).not.toHaveBeenCalled()
     })
 
-    it("signs in when signed in as a different email", () => {
+    it("signs in when signed in as a different email", async () => {
       __globalStoreTestUtils__?.injectState({
         auth: { userAccessToken: "token", userEmail: "someone-else@artsy.net" },
       })
       mockLaunchArguments({ useE2EInit: true, email: "e2e@artsy.net", password: mockPassword })
 
-      renderWithWrappers(<TestComponent />)
+      await renderWithWrappers(<TestComponent />)
 
       expect(signIn).toHaveBeenCalled()
     })

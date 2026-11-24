@@ -18,7 +18,7 @@ describe(FeatureQueryRenderer, () => {
       AREnableShareShowPartnerFeature: true,
     })
 
-    renderWithWrappers(<FeatureQueryRenderer slug="anything" />)
+    await renderWithWrappers(<FeatureQueryRenderer slug="anything" />)
 
     await act(async () => {
       mockRelayEnvironment.mock.resolveMostRecentOperation((op) => {

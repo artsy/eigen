@@ -8,12 +8,12 @@ import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
  * Please use `setupTestWrapper` and destrucure
  * const { mockResolveLastOperation } = renderWithRelay() instead
  */
-export function resolveMostRecentRelayOperation(
+export async function resolveMostRecentRelayOperation(
   mockEnvironment: ReturnType<typeof createMockEnvironment>,
   mockResolvers?: MockResolvers
 ) {
   resetMockResolverState()
-  act(() => {
+  await act(() => {
     // Wrapping in act will ensure that components
     // are fully updated to their final state.
     // https://relay.dev/docs/guides/testing-relay-components/

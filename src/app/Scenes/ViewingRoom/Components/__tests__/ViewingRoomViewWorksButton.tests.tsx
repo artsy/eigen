@@ -23,8 +23,8 @@ describe("ViewingRoomViewWorksButton", () => {
     `,
   })
 
-  it("navigates to artworks page + calls tracking on button press", () => {
-    renderWithRelay({
+  it("navigates to artworks page + calls tracking on button press", async () => {
+    await renderWithRelay({
       ViewingRoom: () => ({
         artworksForCount: { totalCount: 42 },
         slug: "gallery-name-viewing-room-name",
@@ -32,7 +32,7 @@ describe("ViewingRoomViewWorksButton", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("View works (42)"))
+    await fireEvent.press(screen.getByText("View works (42)"))
 
     expect(navigate).toHaveBeenCalledWith("/viewing-room/gallery-name-viewing-room-name/artworks")
 

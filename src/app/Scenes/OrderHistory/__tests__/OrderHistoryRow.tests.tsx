@@ -57,45 +57,45 @@ describe("OrderHistoryRow", () => {
     `,
   })
 
-  it("displays the artist name", () => {
-    renderWithRelay({ Order: () => mockOrder })
+  it("displays the artist name", async () => {
+    await renderWithRelay({ Order: () => mockOrder })
 
     expect(screen.getByText("Torbjørn Rødland")).toBeOnTheScreen()
   })
 
-  it("displays the partner name", () => {
-    renderWithRelay({ Order: () => mockOrder })
+  it("displays the partner name", async () => {
+    await renderWithRelay({ Order: () => mockOrder })
 
     expect(screen.getByText("Andrea Festa Fine Art")).toBeOnTheScreen()
   })
 
-  it("displays the order creation date", () => {
-    renderWithRelay({ Order: () => mockOrder })
+  it("displays the order creation date", async () => {
+    await renderWithRelay({ Order: () => mockOrder })
 
     expect(screen.getByText("5/18/2021")).toBeOnTheScreen()
   })
 
-  it("displays the price", () => {
-    renderWithRelay({ Order: () => mockOrder })
+  it("displays the price", async () => {
+    await renderWithRelay({ Order: () => mockOrder })
 
     expect(screen.getByText("11,200")).toBeOnTheScreen()
   })
 
-  it("displays the buyer state", () => {
-    renderWithRelay({ Order: () => mockOrder })
+  it("displays the buyer state", async () => {
+    await renderWithRelay({ Order: () => mockOrder })
 
     expect(screen.getByText("pending")).toBeOnTheScreen()
   })
 
   describe("artwork image", () => {
-    it("displays the image", () => {
-      renderWithRelay({ Order: () => mockOrder })
+    it("displays the image", async () => {
+      await renderWithRelay({ Order: () => mockOrder })
 
       expect(screen.getByTestId("image")).toBeOnTheScreen()
     })
 
-    it("displays a gray box unless there is an image", () => {
-      renderWithRelay({
+    it("displays a gray box unless there is an image", async () => {
+      await renderWithRelay({
         Order: () => ({
           ...mockOrder,
           lineItems: [
@@ -114,8 +114,8 @@ describe("OrderHistoryRow", () => {
   })
 
   describe("track package button", () => {
-    it("is visible when a tracking URL is provided in deliveryInfo", () => {
-      renderWithRelay({
+    it("is visible when a tracking URL is provided in deliveryInfo", async () => {
+      await renderWithRelay({
         Order: () => ({
           ...mockOrder,
           deliveryInfo: { trackingURL: "https://tracking.com", trackingNumber: null },
@@ -125,8 +125,8 @@ describe("OrderHistoryRow", () => {
       expect(screen.getByTestId("track-package-button")).toBeOnTheScreen()
     })
 
-    it("is not visible unless tracking information is provided", () => {
-      renderWithRelay({
+    it("is not visible unless tracking information is provided", async () => {
+      await renderWithRelay({
         Order: () => ({
           ...mockOrder,
           deliveryInfo: null,
@@ -138,8 +138,8 @@ describe("OrderHistoryRow", () => {
   })
 
   describe("update payment method button", () => {
-    it("includes a message and button go fix payment when the buyerState is PAYMENT_FAILED", () => {
-      renderWithRelay({
+    it("includes a message and button go fix payment when the buyerState is PAYMENT_FAILED", async () => {
+      await renderWithRelay({
         Order: () => ({
           ...mockOrder,
           internalID: "internal-id",
@@ -156,15 +156,15 @@ describe("OrderHistoryRow", () => {
       const button = screen.getByTestId("update-payment-button")
       expect(button).toBeOnTheScreen()
 
-      fireEvent.press(button!)
+      await fireEvent.press(button!)
 
       expect(navigate).toHaveBeenCalledWith("/orders/internal-id/payment/new", {
         modal: true,
         passProps: { orderID: "internal-id", title: "Update Payment Details" },
       })
     })
-    it("is not visible when the buyerState is not PAYMENT_FAILED", () => {
-      renderWithRelay({
+    it("is not visible when the buyerState is not PAYMENT_FAILED", async () => {
+      await renderWithRelay({
         Order: () => ({
           ...mockOrder,
           internalID: "internal-id",
@@ -178,8 +178,8 @@ describe("OrderHistoryRow", () => {
   })
 
   describe("view order button", () => {
-    it("is visible when the order is submitted and has an actionPrompt", () => {
-      renderWithRelay({
+    it("is visible when the order is submitted and has an actionPrompt", async () => {
+      await renderWithRelay({
         Order: () => ({
           ...mockOrder,
           buyerState: "SUBMITTED",
@@ -193,8 +193,8 @@ describe("OrderHistoryRow", () => {
       expect(screen.getByTestId("view-order-button")).toBeOnTheScreen()
     })
 
-    it("is not visible when the order is canceled (terminal state)", () => {
-      renderWithRelay({
+    it("is not visible when the order is canceled (terminal state)", async () => {
+      await renderWithRelay({
         Order: () => ({
           ...mockOrder,
           buyerState: "CANCELED",
@@ -208,8 +208,8 @@ describe("OrderHistoryRow", () => {
       expect(screen.queryByTestId("view-order-button")).not.toBeOnTheScreen()
     })
 
-    it("is not visible when the order is refunded (terminal state)", () => {
-      renderWithRelay({
+    it("is not visible when the order is refunded (terminal state)", async () => {
+      await renderWithRelay({
         Order: () => ({
           ...mockOrder,
           buyerState: "REFUNDED",
@@ -223,8 +223,8 @@ describe("OrderHistoryRow", () => {
       expect(screen.queryByTestId("view-order-button")).not.toBeOnTheScreen()
     })
 
-    it("is not visible for DECLINED_BY_SELLER state", () => {
-      renderWithRelay({
+    it("is not visible for DECLINED_BY_SELLER state", async () => {
+      await renderWithRelay({
         Order: () => ({
           ...mockOrder,
           buyerState: "DECLINED_BY_SELLER",
@@ -238,8 +238,8 @@ describe("OrderHistoryRow", () => {
       expect(screen.queryByTestId("view-order-button")).not.toBeOnTheScreen()
     })
 
-    it("is not visible for DECLINED_BY_BUYER state", () => {
-      renderWithRelay({
+    it("is not visible for DECLINED_BY_BUYER state", async () => {
+      await renderWithRelay({
         Order: () => ({
           ...mockOrder,
           buyerState: "DECLINED_BY_BUYER",
@@ -253,8 +253,8 @@ describe("OrderHistoryRow", () => {
       expect(screen.queryByTestId("view-order-button")).not.toBeOnTheScreen()
     })
 
-    it("shows the actionPrompt text for a submitted order", () => {
-      renderWithRelay({
+    it("shows the actionPrompt text for a submitted order", async () => {
+      await renderWithRelay({
         Order: () => ({
           ...mockOrder,
           buyerState: "SUBMITTED",
@@ -269,8 +269,8 @@ describe("OrderHistoryRow", () => {
       expect(screen.getByTestId("view-order-button")).toHaveTextContent("View Order")
     })
 
-    it("shows 'View Order' as default when actionPrompt is null for BUY mode", () => {
-      renderWithRelay({
+    it("shows 'View Order' as default when actionPrompt is null for BUY mode", async () => {
+      await renderWithRelay({
         Order: () => ({
           ...mockOrder,
           buyerState: "SUBMITTED",
@@ -285,8 +285,8 @@ describe("OrderHistoryRow", () => {
       expect(screen.getByTestId("view-order-button")).toHaveTextContent("View Order")
     })
 
-    it("shows 'View Offer' as default when actionPrompt is null for OFFER mode", () => {
-      renderWithRelay({
+    it("shows 'View Offer' as default when actionPrompt is null for OFFER mode", async () => {
+      await renderWithRelay({
         Order: () => ({
           ...mockOrder,
           buyerState: "SUBMITTED",
@@ -301,8 +301,8 @@ describe("OrderHistoryRow", () => {
       expect(screen.getByTestId("view-order-button")).toHaveTextContent("View Offer")
     })
 
-    it("navigates to the counteroffer when the order has OFFER_RECEIVED state", () => {
-      renderWithRelay({
+    it("navigates to the counteroffer when the order has OFFER_RECEIVED state", async () => {
+      await renderWithRelay({
         Order: () => ({
           ...mockOrder,
           internalID: "internal-id",
@@ -315,7 +315,7 @@ describe("OrderHistoryRow", () => {
       })
       const button = screen.getByTestId("counteroffer-button")
 
-      fireEvent.press(button)
+      await fireEvent.press(button)
 
       expect(navigate).toHaveBeenCalledWith("/orders/internal-id/respond", {
         modal: true,
@@ -323,8 +323,8 @@ describe("OrderHistoryRow", () => {
       })
     })
 
-    it("navigates to the correct order details", () => {
-      renderWithRelay({
+    it("navigates to the correct order details", async () => {
+      await renderWithRelay({
         Order: () => ({
           ...mockOrder,
           internalID: "internal-id",
@@ -336,7 +336,7 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      fireEvent.press(screen.getByTestId("view-order-button"))
+      await fireEvent.press(screen.getByTestId("view-order-button"))
 
       expect(navigate).toHaveBeenCalledWith("/orders/internal-id/details")
     })

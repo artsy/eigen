@@ -5,11 +5,11 @@ import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("MyCollectionInsightsEmptyState", () => {
-  it("navigates to add work page when the user presses on add works", () => {
-    renderWithWrappers(<MyCollectionInsightsEmptyState />)
+  it("navigates to add work page when the user presses on add works", async () => {
+    await renderWithWrappers(<MyCollectionInsightsEmptyState />)
     const uploadArtworkButton = screen.getAllByText("Add Artworks")[0]
 
-    fireEvent(uploadArtworkButton, "press")
+    await fireEvent(uploadArtworkButton, "press")
     expect(navigate).toHaveBeenCalledWith("my-collection/artworks/new", {
       passProps: {
         source: Tab.insights,

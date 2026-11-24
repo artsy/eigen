@@ -14,19 +14,19 @@ describe("useEnableProgressiveOnboarding", () => {
     mockUseIsFocusedMock.mockReturnValue(true)
   })
 
-  it("sets isReady", () => {
-    renderHook(() => useEnableProgressiveOnboarding(), { wrapper })
+  it("sets isReady", async () => {
+    await renderHook(() => useEnableProgressiveOnboarding(), { wrapper })
   })
 
-  it("does not set isReady if is not focused", () => {
+  it("does not set isReady if is not focused", async () => {
     mockUseIsFocusedMock.mockReturnValue(true)
-    renderHook(() => useEnableProgressiveOnboarding(), { wrapper })
+    await renderHook(() => useEnableProgressiveOnboarding(), { wrapper })
   })
 
-  it("does not set isReady if isReady is true", () => {
+  it("does not set isReady if isReady is true", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: { sessionState: { isReady: true } },
     })
-    renderHook(() => useEnableProgressiveOnboarding(), { wrapper })
+    await renderHook(() => useEnableProgressiveOnboarding(), { wrapper })
   })
 })

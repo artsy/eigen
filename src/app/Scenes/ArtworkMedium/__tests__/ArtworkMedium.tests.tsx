@@ -13,8 +13,8 @@ const { renderWithRelay } = setupTestWrapper<ArtworkMediumQuery>({
 })
 
 describe("ArtworkMedium", () => {
-  it("renders correctly", () => {
-    renderWithRelay({
+  it("renders correctly", async () => {
+    await renderWithRelay({
       ArtworkMedium: () => ({
         name: "Painting",
         longDescription: "Paint on a support, presumably.",

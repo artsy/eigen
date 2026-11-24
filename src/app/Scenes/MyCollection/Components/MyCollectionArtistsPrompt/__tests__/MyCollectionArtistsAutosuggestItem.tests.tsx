@@ -36,8 +36,8 @@ describe("MyCollectionArtistsAutosuggestItem", () => {
     jest.clearAllMocks()
   })
 
-  it("renders", () => {
-    renderWithRelay()
+  it("renders", async () => {
+    await renderWithRelay()
 
     expect(
       screen.getByText(/mock-value-for-field-"formattedNationalityAndBirthday"/)
@@ -45,8 +45,8 @@ describe("MyCollectionArtistsAutosuggestItem", () => {
     expect(screen.getByText(/mock-value-for-field-"name"/)).toBeOnTheScreen()
   })
 
-  it("renders selected artist", () => {
-    renderWithRelay({ Artist: () => ({ internalID: "artist-1" }) })
+  it("renders selected artist", async () => {
+    await renderWithRelay({ Artist: () => ({ internalID: "artist-1" }) })
 
     expect(screen.getByText("Selected")).toBeOnTheScreen()
   })

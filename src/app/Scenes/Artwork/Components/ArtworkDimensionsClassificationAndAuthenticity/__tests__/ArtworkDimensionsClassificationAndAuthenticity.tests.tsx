@@ -16,8 +16,8 @@ describe("ArtworkDimensionsClassificationAndAuthenticity", () => {
     `,
   })
 
-  it("renders dimensions correctly", () => {
-    renderWithRelay({
+  it("renders dimensions correctly", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         dimensions: { in: "4 × 3 1/2 in", cm: "10.2 × 8.9 cm" },
         editionSets: null,
@@ -27,50 +27,50 @@ describe("ArtworkDimensionsClassificationAndAuthenticity", () => {
     expect(screen.getByText("4 × 3 1/2 in | 10.2 × 8.9 cm")).toBeTruthy()
   })
 
-  it("renders rarity correctly", () => {
-    renderWithRelay({
+  it("renders rarity correctly", async () => {
+    await renderWithRelay({
       Artwork: () => ({ attributionClass: { shortArrayDescription: ["", "Unique work"] } }),
     })
 
     expect(screen.getByText("Unique work")).toBeTruthy()
   })
 
-  it("navigates to artwork classifications when tapped", () => {
-    renderWithRelay({
+  it("navigates to artwork classifications when tapped", async () => {
+    await renderWithRelay({
       Artwork: () => ({ attributionClass: { shortArrayDescription: ["", "Unique work"] } }),
     })
 
-    fireEvent.press(screen.getByText("Unique work"))
+    await fireEvent.press(screen.getByText("Unique work"))
     expect(navigate).toHaveBeenCalledWith(`/artwork-classifications`)
   })
 
-  it("renders authenticity correctly", () => {
-    renderWithRelay({
+  it("renders authenticity correctly", async () => {
+    await renderWithRelay({
       Artwork: () => ({ hasCertificateOfAuthenticity: true, isBiddable: false }),
     })
 
     expect(screen.getByText("Certificate of Authenticity")).toBeTruthy()
   })
 
-  it("navigates to artwork certificate of authenticity when tapped", () => {
-    renderWithRelay({
+  it("navigates to artwork certificate of authenticity when tapped", async () => {
+    await renderWithRelay({
       Artwork: () => ({ hasCertificateOfAuthenticity: true, isBiddable: false }),
     })
 
-    fireEvent.press(screen.getByText("Certificate of Authenticity"))
+    await fireEvent.press(screen.getByText("Certificate of Authenticity"))
     expect(navigate).toHaveBeenCalledWith(`/artwork-certificate-of-authenticity`)
   })
 
-  it("renders 'Frame not included' when there is no frame", () => {
-    renderWithRelay({
+  it("renders 'Frame not included' when there is no frame", async () => {
+    await renderWithRelay({
       Artwork: () => ({ framed: { details: "not included" } }),
     })
 
     expect(screen.getByText("Frame not included")).toBeTruthy()
   })
 
-  it("does not render a frame string when artwork is not unlisted", () => {
-    renderWithRelay({
+  it("does not render a frame string when artwork is not unlisted", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         framed: { details: "not included" },
         isUnlisted: false,
@@ -80,16 +80,16 @@ describe("ArtworkDimensionsClassificationAndAuthenticity", () => {
     expect(screen.queryByText("Frame not included")).toBeFalsy()
   })
 
-  it("renders 'Frame included' when the frame is included", () => {
-    renderWithRelay({
+  it("renders 'Frame included' when the frame is included", async () => {
+    await renderWithRelay({
       Artwork: () => ({ framed: { details: "Included" } }),
     })
 
     expect(screen.getByText("Frame included")).toBeTruthy()
   })
 
-  it("renders framed dimensions with 'with frame included' text when framed dimensions exist", () => {
-    renderWithRelay({
+  it("renders framed dimensions with 'with frame included' text when framed dimensions exist", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
         framedDimensions: { in: "24 × 34 in", cm: "61 × 86 cm" },
@@ -101,8 +101,8 @@ describe("ArtworkDimensionsClassificationAndAuthenticity", () => {
     expect(screen.queryByText("20 × 30 in | 50 × 76 cm")).not.toBeOnTheScreen()
   })
 
-  it("does not render frame status text when framed dimensions exist", () => {
-    renderWithRelay({
+  it("does not render frame status text when framed dimensions exist", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
         framedDimensions: { in: "24 × 34 in", cm: "61 × 86 cm" },
@@ -116,8 +116,8 @@ describe("ArtworkDimensionsClassificationAndAuthenticity", () => {
     expect(screen.queryByText("Frame not included")).not.toBeOnTheScreen()
   })
 
-  it("shows regular dimensions when framed dimensions do not exist", () => {
-    renderWithRelay({
+  it("shows regular dimensions when framed dimensions do not exist", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
         framedDimensions: null,
@@ -128,8 +128,8 @@ describe("ArtworkDimensionsClassificationAndAuthenticity", () => {
     expect(screen.getByText("20 × 30 in | 50 × 76 cm")).toBeOnTheScreen()
   })
 
-  it("shows regular dimensions and frame text when no framed dimensions", () => {
-    renderWithRelay({
+  it("shows regular dimensions and frame text when no framed dimensions", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         dimensions: { in: "18 × 24 in", cm: "45 × 61 cm" },
         framedDimensions: null,
@@ -142,8 +142,8 @@ describe("ArtworkDimensionsClassificationAndAuthenticity", () => {
     expect(screen.getByText("Frame included")).toBeOnTheScreen()
   })
 
-  it("hides all dimension info when both dimensions and framed dimensions are null", () => {
-    renderWithRelay({
+  it("hides all dimension info when both dimensions and framed dimensions are null", async () => {
+    await renderWithRelay({
       Artwork: () => ({ dimensions: null, framedDimensions: null, editionSets: null }),
     })
 
@@ -152,8 +152,8 @@ describe("ArtworkDimensionsClassificationAndAuthenticity", () => {
   })
 
   describe("with edition sets", () => {
-    it("uses single edition set framed dimensions when there is exactly one edition set", () => {
-      renderWithRelay({
+    it("uses single edition set framed dimensions when there is exactly one edition set", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
           framedDimensions: { in: "24 × 34 in", cm: "61 × 86 cm" },
@@ -173,8 +173,8 @@ describe("ArtworkDimensionsClassificationAndAuthenticity", () => {
       ).not.toBeOnTheScreen()
     })
 
-    it("shows regular edition set dimensions when single edition set has no framed dimensions", () => {
-      renderWithRelay({
+    it("shows regular edition set dimensions when single edition set has no framed dimensions", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
           framedDimensions: { in: "24 × 34 in", cm: "61 × 86 cm" },
@@ -192,8 +192,8 @@ describe("ArtworkDimensionsClassificationAndAuthenticity", () => {
       expect(screen.queryByText("20 × 30 in | 50 × 76 cm")).not.toBeOnTheScreen()
     })
 
-    it("hides dimension text when there are multiple edition sets", () => {
-      renderWithRelay({
+    it("hides dimension text when there are multiple edition sets", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
           framedDimensions: { in: "24 × 34 in", cm: "61 × 86 cm" },

@@ -50,13 +50,13 @@ describe("ActivityItem", () => {
   })
 
   it("should the basic info", async () => {
-    renderWithRelay({ Notification: () => notificationWithFF })
+    await renderWithRelay({ Notification: () => notificationWithFF })
 
     await screen.findByText("Notification Headline")
   })
 
   it("should render the formatted publication date", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Notification: () => notification,
     })
 
@@ -64,7 +64,7 @@ describe("ActivityItem", () => {
   })
 
   it("should render artwork images", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Notification: () => notification,
     })
 
@@ -72,11 +72,11 @@ describe("ActivityItem", () => {
   })
 
   it("should track event when an item is tapped", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Notification: () => notificationWithFF,
     })
 
-    fireEvent.press(await screen.findByText("Notification Headline"))
+    await fireEvent.press(await screen.findByText("Notification Headline"))
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       [
@@ -89,11 +89,11 @@ describe("ActivityItem", () => {
   })
 
   it("navigates to notification screen when supported", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Notification: () => notificationWithFF,
     })
 
-    fireEvent.press(await screen.findByText("Notification Headline"))
+    await fireEvent.press(await screen.findByText("Notification Headline"))
 
     await waitFor(() =>
       expect(navigate).toHaveBeenCalledWith('/notification/<mock-value-for-field-"internalID">')
@@ -101,7 +101,7 @@ describe("ActivityItem", () => {
   })
 
   it("does not navigate given a notificationItem of type 'PartnerOfferCreatedNotificationItem'", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Notification: () => ({
         ...notificationWithFF,
         item: {
@@ -111,17 +111,17 @@ describe("ActivityItem", () => {
       }),
     })
 
-    fireEvent.press(await screen.findByText("Tell us a little bit more about you."))
+    await fireEvent.press(await screen.findByText("Tell us a little bit more about you."))
 
     expect(navigate).not.toHaveBeenCalled()
   })
 
   it("should NOT call `mark as read` mutation if the notification has already been read", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Notification: () => notificationWithFF,
     })
 
-    fireEvent.press(await screen.findByText("Notification Headline"))
+    await fireEvent.press(await screen.findByText("Notification Headline"))
 
     await waitFor(() =>
       expect(() => mockEnvironment.mock.getMostRecentOperation()).toThrowError(
@@ -132,7 +132,7 @@ describe("ActivityItem", () => {
 
   describe("Unread notification indicator", () => {
     it("should NOT be rendered by default", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Notification: () => notificationWithFF,
       })
 
@@ -140,7 +140,7 @@ describe("ActivityItem", () => {
     })
 
     it("should be rendered when notification is unread", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Notification: () => ({
           ...notification,
           isUnread: true,
@@ -151,7 +151,7 @@ describe("ActivityItem", () => {
     })
 
     it("should be removed after the activity item is pressed", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Notification: () => ({
           ...notificationWithFF,
           isUnread: true,
@@ -159,14 +159,14 @@ describe("ActivityItem", () => {
       })
 
       await screen.findByLabelText("Unread notification indicator")
-      fireEvent.press(screen.getByText("Notification Headline"))
+      await fireEvent.press(screen.getByText("Notification Headline"))
       expect(screen.queryByLabelText("Unread notification indicator")).toBeFalsy()
     })
   })
 
   describe("Notification type", () => {
     it("should render 'Alert'", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Notification: () => ({
           ...notification,
           notificationType: "ARTWORK_ALERT",
@@ -177,7 +177,7 @@ describe("ActivityItem", () => {
     })
 
     it("should render 'Offer'", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Notification: () => ({
           ...notificationWithFF,
           notificationType: "PARTNER_OFFER_CREATED",
@@ -191,7 +191,7 @@ describe("ActivityItem", () => {
 
   describe("remaining artworks count", () => {
     it("should NOT be rendered if there are less or equal to 4", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Notification: () => ({
           ...notification,
           objectsCount: 4,
@@ -202,7 +202,7 @@ describe("ActivityItem", () => {
     })
 
     it("should NOT be rendered if notification is not artwork-based", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Notification: () => ({
           ...notification,
           notificationType: "PARTNER_SHOW_OPENED",
@@ -214,7 +214,7 @@ describe("ActivityItem", () => {
     })
 
     it("should be rendered if there are more than 4", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Notification: () => ({
           ...notification,
           objectsCount: 5,

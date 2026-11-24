@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { screen, waitFor } from "@testing-library/react-native"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
@@ -16,23 +16,23 @@ describe("GalleriesForYouScreen", () => {
   })
 
   it("renders GalleriesForYou", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Query: () => ({
         partnersConnection,
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("PlaceholderGrid"))
+    await waitFor(() => expect(screen.queryByTestId("PlaceholderGrid")).not.toBeOnTheScreen())
 
     expect(screen.getAllByText("Galleries for You")).toBeTruthy()
     expect(
-      screen.queryByText("Find galleries in your area with artists you follow.")
+      screen.getByText("Find galleries in your area with artists you follow.")
     ).toBeOnTheScreen()
 
-    expect(screen.queryByText("GALERIA AZUR")).toBeOnTheScreen()
-    expect(screen.queryByText("Gallery Fedorova")).toBeOnTheScreen()
+    expect(screen.getByText("GALERIA AZUR")).toBeOnTheScreen()
+    expect(screen.getByText("Gallery Fedorova")).toBeOnTheScreen()
 
-    expect(screen.queryByText("Nearest City and 2 more locations")).toBeOnTheScreen()
+    expect(screen.getByText("Nearest City and 2 more locations")).toBeOnTheScreen()
   })
 })
 

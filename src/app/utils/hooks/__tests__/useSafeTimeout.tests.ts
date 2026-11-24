@@ -10,9 +10,9 @@ describe("useSafeTimeout", () => {
     jest.useRealTimers()
   })
 
-  it("fires the callback after the delay when still mounted", () => {
+  it("fires the callback after the delay when still mounted", async () => {
     const fn = jest.fn()
-    const { result } = renderHook(() => useSafeTimeout())
+    const { result } = await renderHook(() => useSafeTimeout())
 
     result.current(fn, 100)
     jest.advanceTimersByTime(100)
@@ -20,12 +20,12 @@ describe("useSafeTimeout", () => {
     expect(fn).toHaveBeenCalledTimes(1)
   })
 
-  it("does not fire pending callbacks after unmount", () => {
+  it("does not fire pending callbacks after unmount", async () => {
     const fn = jest.fn()
-    const { result, unmount } = renderHook(() => useSafeTimeout())
+    const { result, unmount } = await renderHook(() => useSafeTimeout())
 
     result.current(fn, 100)
-    unmount()
+    await unmount()
     jest.advanceTimersByTime(100)
 
     expect(fn).not.toHaveBeenCalled()

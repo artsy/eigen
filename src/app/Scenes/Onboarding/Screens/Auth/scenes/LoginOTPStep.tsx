@@ -8,6 +8,7 @@ import {
   Text,
   Touchable,
   useTheme,
+  InputRef,
 } from "@artsy/palette-mobile"
 import {
   useAuthNavigation,
@@ -28,7 +29,7 @@ export const LoginOTPStep: React.FC = () => {
 
   const navigation = useAuthNavigation()
   const screen = useAuthScreen()
-  const otpRef = useRef<Input>(null)
+  const otpRef = useRef<InputRef>(null)
 
   const { color } = useTheme()
 

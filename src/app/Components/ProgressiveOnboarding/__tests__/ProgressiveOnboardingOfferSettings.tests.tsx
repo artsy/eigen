@@ -52,19 +52,19 @@ describe("ProgressiveOnboardingOfferSettings", () => {
     })
   })
 
-  it("renders", () => {
-    wrapper()
+  it("renders", async () => {
+    await wrapper()
 
     expect(screen.getByText("I'm not real")).toBeOnTheScreen()
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
   })
 
-  it("shows the popover given all the conditions are met", () => {
+  it("shows the popover given all the conditions are met", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: { sessionState: { isReady: true } },
     })
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkListOfferability: true })
-    wrapper()
+    await wrapper()
 
     expect(screen.getByText("Popover")).toBeOnTheScreen()
   })
@@ -74,9 +74,9 @@ describe("ProgressiveOnboardingOfferSettings", () => {
       progressiveOnboarding: { sessionState: { isReady: true } },
     })
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkListOfferability: true })
-    wrapper()
+    await wrapper()
 
-    fireEvent.press(screen.getByText("Popover"))
+    await fireEvent.press(screen.getByText("Popover"))
 
     const state = __globalStoreTestUtils__?.getCurrentState()
     expect(state?.progressiveOnboarding.dismissed).toStrictEqual([
@@ -85,10 +85,10 @@ describe("ProgressiveOnboardingOfferSettings", () => {
     ])
   })
 
-  it("does not show the popover given isFocused false", () => {
+  it("does not show the popover given isFocused false", async () => {
     mockUseIsFocusedMock.mockReturnValue(false)
 
-    wrapper()
+    await wrapper()
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
   })
 })

@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { OrderInformation_Test_Query } from "__generated__/OrderInformation_Test_Query.graphql"
 import { OrderInformationFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/OrderInformation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -33,8 +34,8 @@ describe("PaymentMethodFragmentContainer", () => {
     `,
   })
 
-  it("render", () => {
-    const { getByText } = renderWithRelay({
+  it("render", async () => {
+    await renderWithRelay({
       CommerceOrderConnectionWithTotalCount: () => ({
         edges: [
           {
@@ -60,21 +61,21 @@ describe("PaymentMethodFragmentContainer", () => {
       }),
     })
 
-    expect(getByText("Order No. 1234")).toBeDefined()
-    expect(getByText("Your offer")).toBeDefined()
-    expect(getByText("$900.00")).toBeDefined()
-    expect(getByText("List price")).toBeDefined()
-    expect(getByText("$1,000.00")).toBeDefined()
-    expect(getByText("Shipping")).toBeDefined()
-    expect(getByText("$100.00")).toBeDefined()
-    expect(getByText("Tax")).toBeDefined()
-    expect(getByText("$0.00")).toBeDefined()
-    expect(getByText("Total")).toBeDefined()
-    expect(getByText("$1,100.00")).toBeDefined()
+    expect(screen.getByText("Order No. 1234")).toBeDefined()
+    expect(screen.getByText("Your offer")).toBeDefined()
+    expect(screen.getByText("$900.00")).toBeDefined()
+    expect(screen.getByText("List price")).toBeDefined()
+    expect(screen.getByText("$1,000.00")).toBeDefined()
+    expect(screen.getByText("Shipping")).toBeDefined()
+    expect(screen.getByText("$100.00")).toBeDefined()
+    expect(screen.getByText("Tax")).toBeDefined()
+    expect(screen.getByText("$0.00")).toBeDefined()
+    expect(screen.getByText("Total")).toBeDefined()
+    expect(screen.getByText("$1,100.00")).toBeDefined()
   })
 
-  it("render given last offer from seller", () => {
-    const { getByText } = renderWithRelay({
+  it("render given last offer from seller", async () => {
+    await renderWithRelay({
       CommerceOrderConnectionWithTotalCount: () => ({
         edges: [
           {
@@ -90,7 +91,7 @@ describe("PaymentMethodFragmentContainer", () => {
       }),
     })
 
-    expect(getByText("Seller's offer")).toBeDefined()
-    expect(getByText("$200.00")).toBeDefined()
+    expect(screen.getByText("Seller's offer")).toBeDefined()
+    expect(screen.getByText("$200.00")).toBeDefined()
   })
 })

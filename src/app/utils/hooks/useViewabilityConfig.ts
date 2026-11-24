@@ -1,6 +1,9 @@
 import { useEchoMessage } from "app/utils/hooks/useEchoMessage"
 import { useRef } from "react"
-import { ViewabilityConfig } from "react-native"
+import { FlatListProps } from "react-native"
+
+// React Native's Strict TypeScript API doesn't export ViewabilityConfig, so derive it from the list props.
+export type ViewabilityConfig = NonNullable<FlatListProps<unknown>["viewabilityConfig"]>
 
 const DEFAULT_ITEM_VISIBLE_PERCENT_THRESHOLD = 50
 const DEFAULT_MINIMUM_VIEW_TIME_MILLISECONDS = 1000

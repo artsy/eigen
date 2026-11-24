@@ -20,27 +20,27 @@ const initialProps: SearchResultItemProps = {
 }
 
 describe("EntitySearchResult", () => {
-  it("renders the expected information", () => {
-    renderWithWrappers(<SearchResult {...initialProps} />)
+  it("renders the expected information", async () => {
+    await renderWithWrappers(<SearchResult {...initialProps} />)
 
     expect(screen.getByText("Banksy")).toBeTruthy()
     expect(screen.getByTestId("search-result-image-Banksy")).toBeTruthy()
   })
 
-  it("navigates to the artist page when the result is pressed", () => {
-    renderWithWrappers(<SearchResult {...initialProps} />)
+  it("navigates to the artist page when the result is pressed", async () => {
+    await renderWithWrappers(<SearchResult {...initialProps} />)
 
-    fireEvent.press(screen.getByText("Banksy"))
+    await fireEvent.press(screen.getByText("Banksy"))
 
     // navigates to the artist page
     expect(navigate).toHaveBeenCalledTimes(1)
     expect(navigate).toHaveBeenCalledWith("/artist/banksy")
   })
 
-  it("tracks the tap event", () => {
-    renderWithWrappers(<SearchResult {...initialProps} />)
+  it("tracks the tap event", async () => {
+    await renderWithWrappers(<SearchResult {...initialProps} />)
 
-    fireEvent.press(screen.getByText("Banksy"))
+    await fireEvent.press(screen.getByText("Banksy"))
 
     // tracks the press event
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)

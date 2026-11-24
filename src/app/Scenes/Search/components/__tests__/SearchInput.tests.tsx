@@ -8,28 +8,28 @@ describe("SearchInput", () => {
     <SearchInput {...defaultProps} {...props} />
   )
 
-  it("renders without throwing an error", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("renders without throwing an error", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     expect(screen.getByTestId("search-input")).toBeTruthy()
   })
 
-  it("should call handlers when the text is changed", () => {
+  it("should call handlers when the text is changed", async () => {
     const onChangeTextMock = jest.fn()
     const refineMock = jest.fn()
 
-    renderWithWrappers(<TestRenderer onTextChange={onChangeTextMock} refine={refineMock} />)
+    await renderWithWrappers(<TestRenderer onTextChange={onChangeTextMock} refine={refineMock} />)
 
-    fireEvent.changeText(screen.getByTestId("search-input"), "text")
+    await fireEvent.changeText(screen.getByTestId("search-input"), "text")
 
     expect(onChangeTextMock).toBeCalledWith("text")
     expect(refineMock).toBeCalledWith("text")
   })
 
-  it("track event when the text is changed", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("track event when the text is changed", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
-    fireEvent.changeText(screen.getByTestId("search-input"), "text")
+    await fireEvent.changeText(screen.getByTestId("search-input"), "text")
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       [
@@ -41,11 +41,11 @@ describe("SearchInput", () => {
     `)
   })
 
-  it("track event when the text is cleared", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("track event when the text is cleared", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
-    fireEvent.changeText(screen.getByTestId("search-input"), "text")
-    fireEvent.press(screen.getByTestId("clear-input-button"))
+    await fireEvent.changeText(screen.getByTestId("search-input"), "text")
+    await fireEvent.press(screen.getByTestId("clear-input-button"))
 
     expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
       [

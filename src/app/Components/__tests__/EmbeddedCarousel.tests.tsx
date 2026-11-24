@@ -16,8 +16,8 @@ describe("EmbeddedCarousel", () => {
     </View>
   )
 
-  it("renders with title and items", () => {
-    renderWithWrappers(
+  it("renders with title and items", async () => {
+    await renderWithWrappers(
       <EmbeddedCarousel
         testID="test-carousel"
         title="Test Carousel"
@@ -32,8 +32,8 @@ describe("EmbeddedCarousel", () => {
     expect(screen.getByText("Item 3")).toBeTruthy()
   })
 
-  it("does not render when data is empty", () => {
-    renderWithWrappers(
+  it("does not render when data is empty", async () => {
+    await renderWithWrappers(
       <EmbeddedCarousel
         testID="empty-carousel"
         title="Empty Carousel"
@@ -46,10 +46,10 @@ describe("EmbeddedCarousel", () => {
     expect(screen.queryByText("Empty Carousel")).toBeNull()
   })
 
-  it("handles onCardPress event", () => {
+  it("handles onCardPress event", async () => {
     const onCardPressMock = jest.fn()
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <EmbeddedCarousel
         testID="clickable-carousel"
         title="Clickable Carousel"
@@ -60,13 +60,13 @@ describe("EmbeddedCarousel", () => {
     )
 
     // Click on the first item
-    fireEvent.press(screen.getByText("Item 1"))
+    await fireEvent.press(screen.getByText("Item 1"))
 
     expect(onCardPressMock).toHaveBeenCalledTimes(1)
   })
 
-  it("renders without title", () => {
-    renderWithWrappers(
+  it("renders without title", async () => {
+    await renderWithWrappers(
       <EmbeddedCarousel testID="no-title-carousel" data={mockData} renderItem={mockRenderItem} />
     )
 

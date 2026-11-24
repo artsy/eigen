@@ -9,7 +9,7 @@ import {
   extractArtworkActionTrackingProps,
 } from "app/utils/track/ArtworkActions"
 import { memo, useRef } from "react"
-import { View } from "react-native"
+import { View, ViewInstance } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -26,7 +26,7 @@ export const RecommendedAuctionLotsRail: React.FC<RecommendedAuctionLotsRailProp
 
     const data = useFragment(artworksFragment, artworkConnection)
 
-    const railRef = useRef<View>(null)
+    const railRef = useRef<ViewInstance>(null)
 
     const artworks = extractNodes(data?.artworksForUser)
 

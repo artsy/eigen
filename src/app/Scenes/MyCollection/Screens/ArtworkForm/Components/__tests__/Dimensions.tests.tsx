@@ -20,8 +20,8 @@ describe("Dimensions", () => {
     }))
   })
 
-  it("displays correct dimensions", () => {
-    renderWithWrappers(<Dimensions />)
+  it("displays correct dimensions", async () => {
+    await renderWithWrappers(<Dimensions />)
     expect(screen.getByTestId("HeightInput")).toHaveDisplayValue("20")
     expect(screen.getByTestId("WidthInput")).toHaveDisplayValue("30")
     expect(screen.getByTestId("DepthInput")).toHaveDisplayValue("40")

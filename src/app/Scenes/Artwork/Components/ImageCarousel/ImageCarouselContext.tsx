@@ -2,7 +2,7 @@ import { ImageCarousel_figures$data } from "__generated__/ImageCarousel_figures.
 import { Schema } from "app/utils/track"
 import { GlobalState, useGlobalState } from "app/utils/useGlobalState"
 import React, { useMemo, useRef } from "react"
-import { Animated, FlatList, View } from "react-native"
+import { Animated, FlatList, ViewInstance } from "react-native"
 import { useTracking } from "react-tracking"
 
 export type ImageCarouselImage = Extract<ImageCarousel_figures$data[0], { __typename: "Image" }>
@@ -54,7 +54,7 @@ export type FullScreenState =
 export interface ImageCarouselContext {
   dispatch(action: ImageCarouselAction): void
   embeddedFlatListRef: React.RefObject<FlatList<any> | null>
-  embeddedImageRefs: View[]
+  embeddedImageRefs: ViewInstance[]
   fullScreenState: GlobalState<FullScreenState>
   imageIndex: GlobalState<number>
   images: ImageCarouselImage[]
@@ -74,7 +74,7 @@ export function useNewImageCarouselContext({
 }: Pick<ImageCarouselContext, "images" | "setVideoAsCover" | "videos"> & {
   onImageIndexChange?: (imageIndex: number) => void
 }): ImageCarouselContext {
-  const embeddedImageRefs = useMemo<View[]>(() => [], [])
+  const embeddedImageRefs = useMemo<ViewInstance[]>(() => [], [])
   const embeddedFlatListRef = useRef<FlatList<any>>(null)
   const xScrollOffsetAnimatedValue = useRef<Animated.Value>(new Animated.Value(0))
   const [imageIndex, setImageIndex] = useGlobalState(0)

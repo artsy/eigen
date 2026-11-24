@@ -67,7 +67,7 @@ export const ModalCarouselContainer: React.FC<React.PropsWithChildren<FullScreen
   const handleCloseModal = () => {
     switchTab("profile")
     toggleModal(false)
-    return null
+    return false
   }
 
   useEffect(() => {

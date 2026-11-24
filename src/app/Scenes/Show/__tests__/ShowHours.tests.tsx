@@ -33,25 +33,25 @@ describe("ShowHours", () => {
     />
   )
 
-  const getWrapper = (mockResolvers = {}) => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+  const getWrapper = async (mockResolvers = {}) => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
     })
   }
 
-  it("renders nothing if there is no show location or fair location", () => {
-    getWrapper({
+  it("renders nothing if there is no show location or fair location", async () => {
+    await getWrapper({
       Show: () => ({ location: null, fair: null }),
     })
 
     expect(screen.queryAllByText(/.+/)).toHaveLength(0)
   })
 
-  it("renders the custom fair location if there is a fair", () => {
-    getWrapper({
+  it("renders the custom fair location if there is a fair", async () => {
+    await getWrapper({
       Location: () => ({ openingHours: { __typename: "OpeningHoursText" } }),
       OpeningHoursText: () => ({ text: "Custom schedule text" }),
     })
@@ -59,8 +59,8 @@ describe("ShowHours", () => {
     expect(screen.getByText("Custom schedule text")).toBeOnTheScreen()
   })
 
-  it("renders the show location schedules if there is no fair", () => {
-    getWrapper({
+  it("renders the show location schedules if there is no fair", async () => {
+    await getWrapper({
       Show: () => ({ fair: null }),
       OpeningHoursArray: () => ({
         schedules: [

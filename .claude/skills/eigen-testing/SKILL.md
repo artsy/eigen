@@ -32,7 +32,7 @@ import { graphql } from "react-relay"
 1. **File Location**: Always place tests in `__tests__` directories colocated with source files
 2. **File Naming**: Use `.tests.tsx` (not `.test.tsx` or `.spec.tsx`)
 3. **Never Use Deprecated Utilities**: Avoid `resolveMostRecentRelayOperation` and `flushPromiseQueue` (the LEGACY helpers, `extractText`, `waitUntil` and `renderWithLayout` have been removed)
-4. **Stay RNTL v14-compatible**: no `react-test-renderer` imports (import `act` from RNTL), no `UNSAFE_*` queries / `UNSAFE_root`, no `*ByA11yHint` (use `*ByHintText`), no `.root.findAllByType` / `toJSON()` tree walking, and no calling `element.props.onPress()` directly — use `fireEvent`. Assert on what the user sees, not on child component props
+4. **Await everything (RNTL v14)**: `renderWithWrappers`, `renderWithRelay`, `renderHook`, `fireEvent.*`, `act`, `mockResolveLastOperation` and `mockRejectLastOperation` all return promises. Never wrap the mock resolvers in `act` or call them inside `waitFor`. No `react-test-renderer`, `UNSAFE_*` queries, `*ByA11yHint` (use `*ByHintText`), tree walking or `element.props.onPress()` — use `fireEvent`. Assert on what the user sees, not on child component props
 5. **Analytics Testing**: Always use `toMatchInlineSnapshot()` pattern for tracking events
 6. **Async Operations**: Use `findBy*` queries, not `waitUntil` or promise flushing
 
@@ -42,12 +42,12 @@ Follow Arrange-Act-Assert:
 
 ```typescript
 describe("ComponentName", () => {
-  it("does something specific", () => {
+  it("does something specific", async () => {
     // Arrange: Set up and render
-    renderWithWrappers(<Component />)
+    await renderWithWrappers(<Component />)
 
     // Act: Trigger behavior
-    fireEvent.press(screen.getByTestId("button-id"))
+    await fireEvent.press(screen.getByTestId("button-id"))
 
     // Assert: Verify outcome
     expect(mockNavigate).toHaveBeenCalledWith("/path")
@@ -78,7 +78,7 @@ expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot()
 ### Testing Relay Data
 
 ```typescript
-renderWithRelay({
+await renderWithRelay({
   Me: () => ({
     name: "John Doe",
     artworks: {
@@ -91,8 +91,8 @@ renderWithRelay({
 ### Testing Error States
 
 ```typescript
-const { mockRejectLastOperation } = renderWithRelay()
-mockRejectLastOperation(new Error("Network error"))
+const { mockRejectLastOperation } = await renderWithRelay()
+await mockRejectLastOperation(new Error("Network error"))
 ```
 
 ## Detailed Guidelines

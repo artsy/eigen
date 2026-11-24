@@ -5,8 +5,8 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 describe(MyAccountEditPassword, () => {
   jest.clearAllMocks()
 
-  it("has the right titles", () => {
-    renderWithWrappers(<MyAccountEditPassword />)
+  it("has the right titles", async () => {
+    await renderWithWrappers(<MyAccountEditPassword />)
 
     expect(screen.getByText("Current password")).toBeTruthy()
     expect(screen.getAllByText("New password")).toBeTruthy()

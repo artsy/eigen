@@ -39,7 +39,7 @@ import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { MotiView } from "moti"
 import { useCallback, useMemo, useRef, useState } from "react"
-import { RefreshControl, ScrollView } from "react-native"
+import { RefreshControl, ScrollView, ScrollViewInstance } from "react-native"
 import { DraxProvider } from "react-native-drax"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
@@ -153,7 +153,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
     `ScrollView` rather than palette's `Screen.ScrollView`: that one leaves `ref` off its
     props type and folds a caller's `onScroll` into its own handler, and drax needs both.
   */
-  const scrollRef = useRef<ScrollView>(null)
+  const scrollRef = useRef<ScrollViewInstance>(null)
   const scrollHandlers = useRef(new Map<string, ItineraryScrollHandlers>())
   const registerScrollHandlers = useCallback(
     (sectionID: string, handlers: ItineraryScrollHandlers | null) => {

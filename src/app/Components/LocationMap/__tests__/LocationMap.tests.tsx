@@ -1,8 +1,8 @@
 import { LocationMap } from "app/Components/LocationMap/LocationMap"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-it("renders without throwing an error", () => {
-  renderWithWrappers(<LocationMap {...(data as any)} />)
+it("renders without throwing an error", async () => {
+  await renderWithWrappers(<LocationMap {...(data as any)} />)
 })
 
 const data = {

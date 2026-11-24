@@ -44,8 +44,8 @@ describe("ImageCarouselFullScreen", () => {
     )
   }
 
-  it("render only the current zoomable image as a perf optimisation", () => {
-    renderWithWrappers(<Mock />)
+  it("render only the current zoomable image as a perf optimisation", async () => {
+    await renderWithWrappers(<Mock />)
 
     expect(screen.getAllByLabelText("Full Screen Image")).toHaveLength(1)
     expect(screen.getAllByLabelText("Full Screen Image Blank Box")).toHaveLength(1)

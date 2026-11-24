@@ -23,18 +23,18 @@ describe("useAppState", () => {
     }
   })
 
-  it("returns the current app state on mount", () => {
+  it("returns the current app state on mount", async () => {
     Object.defineProperty(AppState, "currentState", {
       configurable: true,
       value: "background",
     })
 
-    const { result } = renderHook(() => useAppState({}))
+    const { result } = await renderHook(() => useAppState({}))
 
     expect(result.current.appState).toBe("background")
   })
 
-  it("preserves the foreground, background, and change callbacks", () => {
+  it("preserves the foreground, background, and change callbacks", async () => {
     Object.defineProperty(AppState, "currentState", {
       configurable: true,
       value: "active",
@@ -43,25 +43,25 @@ describe("useAppState", () => {
     const onBackground = jest.fn()
     const onChange = jest.fn()
 
-    renderHook(() => useAppState({ onForeground, onBackground, onChange }))
+    await renderHook(() => useAppState({ onForeground, onBackground, onChange }))
 
-    act(() => handleStateChange("inactive"))
+    await act(() => handleStateChange("inactive"))
     expect(onBackground).not.toHaveBeenCalled()
 
-    act(() => handleStateChange("active"))
+    await act(() => handleStateChange("active"))
     expect(onForeground).toHaveBeenCalledTimes(1)
 
-    act(() => handleStateChange("background"))
+    await act(() => handleStateChange("background"))
     expect(onBackground).toHaveBeenCalledTimes(1)
     expect(onChange).toHaveBeenNthCalledWith(1, "inactive")
     expect(onChange).toHaveBeenNthCalledWith(2, "active")
     expect(onChange).toHaveBeenNthCalledWith(3, "background")
   })
 
-  it("removes the app state listener on unmount", () => {
-    const { unmount } = renderHook(() => useAppState({}))
+  it("removes the app state listener on unmount", async () => {
+    const { unmount } = await renderHook(() => useAppState({}))
 
-    unmount()
+    await unmount()
 
     expect(remove).toHaveBeenCalledTimes(1)
   })

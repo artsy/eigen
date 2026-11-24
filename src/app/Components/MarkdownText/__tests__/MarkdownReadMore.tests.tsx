@@ -5,13 +5,13 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 const layout = (height: number) => ({ nativeEvent: { layout: { height, width: 300, x: 0, y: 0 } } })
 
-const measure = ({ full, clamped }: { full: number; clamped: number }) => {
-  fireEvent(
+const measure = async ({ full, clamped }: { full: number; clamped: number }) => {
+  await fireEvent(
     screen.getByTestId("read-more-measure", { includeHiddenElements: true }),
     "layout",
     layout(full)
   )
-  fireEvent(screen.getByTestId("read-more-content"), "layout", layout(clamped))
+  await fireEvent(screen.getByTestId("read-more-content"), "layout", layout(clamped))
 }
 
 describe("MarkdownReadMore", () => {
@@ -19,36 +19,38 @@ describe("MarkdownReadMore", () => {
     jest.clearAllMocks()
   })
 
-  it("renders the content", () => {
-    renderWithWrappers(<MarkdownReadMore maxChars={100} content="Some **markdown** content" />)
+  it("renders the content", async () => {
+    await renderWithWrappers(
+      <MarkdownReadMore maxChars={100} content="Some **markdown** content" />
+    )
 
     expect(screen.getByText(/Some \*\*markdown\*\* content/)).toBeOnTheScreen()
   })
 
-  it("doesn't show 'Read more' when the content fits within the clamp", () => {
-    renderWithWrappers(<MarkdownReadMore maxChars={100} content="Short text" />)
+  it("doesn't show 'Read more' when the content fits within the clamp", async () => {
+    await renderWithWrappers(<MarkdownReadMore maxChars={100} content="Short text" />)
 
-    measure({ full: 40, clamped: 40 })
+    await measure({ full: 40, clamped: 40 })
 
     expect(screen.queryByText("Read more")).not.toBeOnTheScreen()
   })
 
-  it("shows 'Read more' when the content overflows and expands on press", () => {
+  it("shows 'Read more' when the content overflows and expands on press", async () => {
     const onExpand = jest.fn()
-    renderWithWrappers(
+    await renderWithWrappers(
       <MarkdownReadMore maxChars={10} content="A much longer text" onExpand={onExpand} />
     )
 
-    measure({ full: 200, clamped: 40 })
-    fireEvent.press(screen.getByText("Read more"))
+    await measure({ full: 200, clamped: 40 })
+    await fireEvent.press(screen.getByText("Read more"))
 
     expect(onExpand).toHaveBeenCalledWith(true)
     expect(screen.queryByText("Read more")).not.toBeOnTheScreen()
   })
 
-  it("shows 'Read Less' after expanding when enabled", () => {
+  it("shows 'Read Less' after expanding when enabled", async () => {
     const onExpand = jest.fn()
-    renderWithWrappers(
+    await renderWithWrappers(
       <MarkdownReadMore
         maxChars={10}
         content="A much longer text"
@@ -57,16 +59,16 @@ describe("MarkdownReadMore", () => {
       />
     )
 
-    measure({ full: 200, clamped: 40 })
-    fireEvent.press(screen.getByText("Read more"))
-    fireEvent.press(screen.getByText("Read Less"))
+    await measure({ full: 200, clamped: 40 })
+    await fireEvent.press(screen.getByText("Read more"))
+    await fireEvent.press(screen.getByText("Read Less"))
 
     expect(onExpand).toHaveBeenLastCalledWith(false)
     expect(screen.getByText("Read more")).toBeOnTheScreen()
   })
 
-  it("opens links modally when specified", () => {
-    renderWithWrappers(
+  it("opens links modally when specified", async () => {
+    await renderWithWrappers(
       <MarkdownReadMore
         maxChars={100}
         presentLinksModally
@@ -74,7 +76,7 @@ describe("MarkdownReadMore", () => {
       />
     )
 
-    fireEvent.press(screen.getAllByText("Andy Warhol")[0])
+    await fireEvent.press(screen.getAllByText("Andy Warhol")[0])
 
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol", { modal: true })
   })

@@ -5,7 +5,7 @@ import { ItinerarySection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/i
 import { dropSortableItem, resetSortableListSpy } from "app/utils/tests/draxSortableListSpy"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { createRef } from "react"
-import { ScrollView } from "react-native"
+import { ScrollViewInstance } from "react-native"
 import { DraxProvider } from "react-native-drax"
 
 jest.mock("react-native-reanimated", () =>
@@ -51,7 +51,7 @@ const renderSection = (props: Partial<React.ComponentProps<typeof ItinerarySecti
         citySlug="london-united-kingdom"
         itineraryId="guide-1"
         cityName="London"
-        scrollRef={createRef<ScrollView>()}
+        scrollRef={createRef<ScrollViewInstance>()}
         registerScrollHandlers={jest.fn()}
         {...props}
       />
@@ -63,40 +63,40 @@ describe("ItinerarySectionRow", () => {
     resetSortableListSpy()
   })
 
-  it("renders the title and its stops expanded by default", () => {
-    renderSection()
+  it("renders the title and its stops expanded by default", async () => {
+    await renderSection()
 
     expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
     expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
     expect(screen.getByText("Museum")).toBeTruthy()
   })
 
-  it("hides the stops when the header is tapped", () => {
-    renderSection()
+  it("hides the stops when the header is tapped", async () => {
+    await renderSection()
 
-    fireEvent.press(screen.getByTestId("itinerary-section-header"))
+    await fireEvent.press(screen.getByTestId("itinerary-section-header"))
 
     expect(screen.queryByText("Coffee at London Cafe")).toBeNull()
     expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
   })
 
-  it("renders no header when the title was cleared to an empty string", () => {
-    renderSection({ section: { ...section, title: "" } })
+  it("renders no header when the title was cleared to an empty string", async () => {
+    await renderSection({ section: { ...section, title: "" } })
 
     expect(screen.queryByTestId("itinerary-section-header")).toBeNull()
     expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
   })
 
-  it("falls back to a Day N label when the title is null", () => {
-    renderSection({ section: { ...section, title: null }, sectionIndex: 2 })
+  it("falls back to a Day N label when the title is null", async () => {
+    await renderSection({ section: { ...section, title: null }, sectionIndex: 2 })
 
     expect(screen.getByText("Day 3")).toBeTruthy()
   })
 
-  it("registers its scroll listeners with the screen's scroll view", () => {
+  it("registers its scroll listeners with the screen's scroll view", async () => {
     const registerScrollHandlers = jest.fn()
 
-    renderSection({ registerScrollHandlers })
+    await renderSection({ registerScrollHandlers })
 
     expect(registerScrollHandlers).toHaveBeenCalledWith("day-1", expect.any(Object))
   })
@@ -104,22 +104,22 @@ describe("ItinerarySectionRow", () => {
   // Drax reports a drop by index; the screen reorders by stop id. That translation is the
   // only logic this component adds to the drag, so it is what's worth pinning down.
   describe("a dropped stop", () => {
-    it("reports the section, the dragged stop's id and both indices", () => {
+    it("reports the section, the dragged stop's id and both indices", async () => {
       const onReorderStop = jest.fn()
 
-      renderSection({ canReorder: true, onReorderStop })
+      await renderSection({ canReorder: true, onReorderStop })
 
-      act(() => dropSortableItem(0, 1, 0))
+      await act(() => dropSortableItem(0, 1, 0))
 
       expect(onReorderStop).toHaveBeenCalledWith("day-1", "stop-2", 1, 0)
     })
 
-    it("reports nothing when the index names no stop", () => {
+    it("reports nothing when the index names no stop", async () => {
       const onReorderStop = jest.fn()
 
-      renderSection({ canReorder: true, onReorderStop })
+      await renderSection({ canReorder: true, onReorderStop })
 
-      act(() => dropSortableItem(0, 7, 0))
+      await act(() => dropSortableItem(0, 7, 0))
 
       expect(onReorderStop).not.toHaveBeenCalled()
     })

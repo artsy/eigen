@@ -21,7 +21,8 @@ import type {
  *   )
  */
 const ReanimatedSwipeable = forwardRef<SwipeableMethods, SwipeableProps>(
-  ({ children, renderLeftActions, renderRightActions, ...rest }, ref) => {
+  // hitSlop is RNGH's (it allows null), not a View prop, so keep it off the View.
+  ({ children, renderLeftActions, renderRightActions, hitSlop: _hitSlop, ...rest }, ref) => {
     const progress = useSharedValue(0)
     const translation = useSharedValue(0)
 

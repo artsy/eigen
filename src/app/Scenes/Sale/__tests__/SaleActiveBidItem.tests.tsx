@@ -71,8 +71,8 @@ describe("SaleActiveBidItem", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  it("navigates to the sale artwork screen on press", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("navigates to the sale artwork screen on press", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     const highestBidLot = {
       ...lotStanding,
@@ -86,14 +86,14 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    await resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
-    fireEvent.press(screen.getByRole("button"))
+    await fireEvent.press(screen.getByRole("button"))
     expect(navigate).toBeCalledWith("artwork-href")
   })
 
-  it("renders highest bid if a lot is the highest bid", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("renders highest bid if a lot is the highest bid", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     const highestBidLot = {
       ...lotStanding,
@@ -107,13 +107,13 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    await resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(screen.getAllByText("Highest bid")).toHaveLength(1)
   })
 
-  it("renders ReserveNotMet if the reserve has not been met", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("renders ReserveNotMet if the reserve has not been met", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     const reserveNotMetBidLot = {
       ...lotStanding,
@@ -133,13 +133,13 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    await resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(screen.getAllByText("Reserve not met")).toHaveLength(1)
   })
 
-  it("renders Outbid if the user has been outbid", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("renders Outbid if the user has been outbid", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     const outbidBidLot = {
       ...lotStanding,
@@ -153,13 +153,13 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    await resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(screen.getAllByText("Outbid")).toHaveLength(1)
   })
 
-  it("renders BiddingLiveNow and hides bids info if the sale is in live bidding state", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("renders BiddingLiveNow and hides bids info if the sale is in live bidding state", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     const liveBiddingLot = {
       ...lotStanding,
@@ -179,14 +179,14 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    await resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(screen.queryByText(/1 bid/)).not.toBeOnTheScreen()
     expect(screen.getAllByText("Bidding live now")).toHaveLength(1)
   })
 
-  it("renders LiveAuction and hides bids info if the sale is past live bidding start time", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("renders LiveAuction and hides bids info if the sale is past live bidding start time", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     const liveBiddingLot = {
       ...lotStanding,
@@ -206,14 +206,14 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    await resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(screen.queryByText(/1 bid/)).not.toBeOnTheScreen()
     expect(screen.getAllByText("Live auction")).toHaveLength(1)
   })
 
-  it("renders the right bid count if the user has only 1 bid", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("renders the right bid count if the user has only 1 bid", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     const oneBidLot = {
       ...lotStanding,
@@ -233,13 +233,13 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    await resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(screen.getByText(/1 bid/)).toBeOnTheScreen()
   })
 
-  it("renders the right bid count if the user has more than 1 bid", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("renders the right bid count if the user has more than 1 bid", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     const fiveBidsLot = {
       ...lotStanding,
@@ -259,7 +259,7 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    await resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(screen.getByText(/5 bids/)).toBeOnTheScreen()
   })

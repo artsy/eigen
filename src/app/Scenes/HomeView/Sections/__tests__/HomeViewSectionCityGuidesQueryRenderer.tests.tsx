@@ -15,18 +15,18 @@ describe("HomeViewSectionCityGuidesQueryRenderer", () => {
       .mock.getAllOperations()
       .map((operation) => operation.request.node.operation.name)
 
-  it("doesn't fetch the section when AREnableHomeViewCityGuidesRail is off", () => {
+  it("doesn't fetch the section when AREnableHomeViewCityGuidesRail is off", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableHomeViewCityGuidesRail: false })
 
-    renderQueryRenderer()
+    await renderQueryRenderer()
 
     expect(operationNames()).not.toContain("HomeViewSectionCityGuidesQuery")
   })
 
-  it("fetches the section when AREnableHomeViewCityGuidesRail is on", () => {
+  it("fetches the section when AREnableHomeViewCityGuidesRail is on", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableHomeViewCityGuidesRail: true })
 
-    renderQueryRenderer()
+    await renderQueryRenderer()
 
     expect(operationNames()).toContain("HomeViewSectionCityGuidesQuery")
   })

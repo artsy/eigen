@@ -12,67 +12,67 @@ describe("MyProfileSettings", () => {
     jest.spyOn(Linking, "openURL").mockImplementation(() => Promise.resolve())
   })
 
-  it("renders Transactions section", () => {
-    renderWithWrappers(<MyProfileSettings />)
+  it("renders Transactions section", async () => {
+    await renderWithWrappers(<MyProfileSettings />)
 
     expect(screen.getByText("Transactions")).toBeOnTheScreen()
 
     const transactions = screen.getByText("Your Orders")
     expect(transactions).toBeOnTheScreen()
-    fireEvent.press(transactions)
+    await fireEvent.press(transactions)
     expect(navigate).toHaveBeenCalledWith("/orders")
   })
 
-  it("renders Preferences section", () => {
-    renderWithWrappers(<MyProfileSettings />)
+  it("renders Preferences section", async () => {
+    await renderWithWrappers(<MyProfileSettings />)
 
     expect(screen.getByText("Preferences")).toBeOnTheScreen()
 
     const priceRange = screen.getByText("Artwork Budget")
     expect(priceRange).toBeOnTheScreen()
-    fireEvent.press(priceRange)
+    await fireEvent.press(priceRange)
     expect(navigate).toHaveBeenCalledWith("/my-account/edit-price-range")
 
     const darkMode = screen.getByText("Dark Mode")
     expect(darkMode).toBeOnTheScreen()
-    fireEvent.press(darkMode)
+    await fireEvent.press(darkMode)
     expect(navigate).toHaveBeenCalledWith("/my-account/dark-mode")
   })
 
-  it("renders Account section", () => {
-    renderWithWrappers(<MyProfileSettings />)
+  it("renders Account section", async () => {
+    await renderWithWrappers(<MyProfileSettings />)
 
     expect(screen.getAllByText("Account")).toHaveLength(2)
 
     const loginAndSecurity = screen.getByText("Login and Security")
     expect(loginAndSecurity).toBeOnTheScreen()
-    fireEvent.press(loginAndSecurity)
+    await fireEvent.press(loginAndSecurity)
     expect(navigate).toHaveBeenCalledWith("my-account")
 
     const payments = screen.getByText("Payments")
     expect(payments).toBeOnTheScreen()
-    fireEvent.press(payments)
+    await fireEvent.press(payments)
     expect(navigate).toHaveBeenCalledWith("my-profile/payment")
 
     const notifications = screen.getByText("Notifications")
     expect(notifications).toBeOnTheScreen()
-    fireEvent.press(notifications)
+    await fireEvent.press(notifications)
     expect(navigate).toHaveBeenCalledWith("my-profile/push-notifications")
   })
 
-  it("renders Support section", () => {
-    renderWithWrappers(<MyProfileSettings />)
+  it("renders Support section", async () => {
+    await renderWithWrappers(<MyProfileSettings />)
 
     expect(screen.getByText("Support")).toBeOnTheScreen()
 
     const helpCenter = screen.getByText("Help Center")
     expect(helpCenter).toBeOnTheScreen()
-    fireEvent.press(helpCenter)
+    await fireEvent.press(helpCenter)
     expect(navigate).toHaveBeenCalledWith("https://support.artsy.net/")
 
     const sendFeedback = screen.getByText("Send Feedback")
     expect(sendFeedback).toBeOnTheScreen()
-    fireEvent.press(sendFeedback)
+    await fireEvent.press(sendFeedback)
     expect(Linking.openURL).toHaveBeenCalledWith(
       expect.stringMatching(
         /^mailto:support@artsy.net\?subject=Feedback%20from%20the%20Artsy%20app*$/
@@ -80,29 +80,29 @@ describe("MyProfileSettings", () => {
     )
   })
 
-  it("renders Legal section", () => {
-    renderWithWrappers(<MyProfileSettings />)
+  it("renders Legal section", async () => {
+    await renderWithWrappers(<MyProfileSettings />)
 
     expect(screen.getByText("Legal")).toBeOnTheScreen()
 
     const termsAndConditions = screen.getByText("Terms and Conditions")
     expect(termsAndConditions).toBeOnTheScreen()
-    fireEvent.press(termsAndConditions)
+    await fireEvent.press(termsAndConditions)
     expect(navigate).toHaveBeenCalledWith("my-profile/terms-and-conditions")
 
     const privacy = screen.getByText("Privacy")
     expect(privacy).toBeOnTheScreen()
-    fireEvent.press(privacy)
+    await fireEvent.press(privacy)
     expect(navigate).toHaveBeenCalledWith("my-profile/privacy")
   })
 
-  it("renders Log out", () => {
-    renderWithWrappers(<MyProfileSettings />)
+  it("renders Log out", async () => {
+    await renderWithWrappers(<MyProfileSettings />)
 
     const logOut = screen.getByText("Log out")
 
     expect(logOut).toBeOnTheScreen()
-    fireEvent.press(logOut)
+    await fireEvent.press(logOut)
     expect(Alert.alert).toHaveBeenCalled()
   })
 

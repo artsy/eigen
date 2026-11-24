@@ -21,8 +21,8 @@ describe("ArtworkSocialSignal", () => {
   })
 
   describe("increased interest signal", () => {
-    it("renders the increased interest signal", () => {
-      renderWithRelay({
+    it("renders the increased interest signal", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           collectorSignals: {
             increasedInterest: true,
@@ -34,8 +34,8 @@ describe("ArtworkSocialSignal", () => {
       expect(screen.getByText("Increased Interest")).toBeOnTheScreen()
     })
 
-    it("does not render the increased interest signal when it is hidden", () => {
-      renderWithRelay(
+    it("does not render the increased interest signal when it is hidden", async () => {
+      await renderWithRelay(
         {
           Artwork: () => ({
             collectorSignals: {
@@ -50,8 +50,8 @@ describe("ArtworkSocialSignal", () => {
       expect(screen.queryByText("Increased Interest")).not.toBeOnTheScreen()
     })
 
-    it("renders the curator's pick signal even if with increased interest singal available", () => {
-      renderWithRelay({
+    it("renders the curator's pick signal even if with increased interest singal available", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           collectorSignals: {
             increasedInterest: true,
@@ -65,8 +65,8 @@ describe("ArtworkSocialSignal", () => {
   })
 
   describe("curator's pick signal", () => {
-    it("renders the curator's pick signal", () => {
-      renderWithRelay({
+    it("renders the curator's pick signal", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           collectorSignals: {
             increasedInterest: false,
@@ -78,8 +78,8 @@ describe("ArtworkSocialSignal", () => {
       expect(screen.getByText("Curators’ Pick")).toBeOnTheScreen()
     })
 
-    it("does not render the curators pick signal when it is hidden", () => {
-      renderWithRelay(
+    it("does not render the curators pick signal when it is hidden", async () => {
+      await renderWithRelay(
         {
           Artwork: () => ({
             collectorSignals: {

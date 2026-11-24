@@ -23,8 +23,8 @@ describe("Biography", () => {
   })
 
   describe("when no biography text exists", () => {
-    it("returns null and does not render", () => {
-      renderWithRelay({
+    it("returns null and does not render", async () => {
+      await renderWithRelay({
         Artist: () => ({
           biographyBlurb: null,
         }),
@@ -33,8 +33,8 @@ describe("Biography", () => {
       expect(screen.toJSON()).toBeNull()
     })
 
-    it("returns null when text is empty", () => {
-      renderWithRelay({
+    it("returns null when text is empty", async () => {
+      await renderWithRelay({
         Artist: () => ({
           biographyBlurb: {
             text: "",
@@ -48,10 +48,10 @@ describe("Biography", () => {
   })
 
   describe("when biography text exists without credit", () => {
-    it("renders biography text without credit", () => {
+    it("renders biography text without credit", async () => {
       const biographyText = "This is a short biography about the artist."
 
-      renderWithRelay({
+      await renderWithRelay({
         Artist: () => ({
           biographyBlurb: {
             text: biographyText,
@@ -63,10 +63,10 @@ describe("Biography", () => {
       expect(screen.getByText(biographyText)).toBeOnTheScreen()
     })
 
-    it("renders biography text when credit is empty string", () => {
+    it("renders biography text when credit is empty string", async () => {
       const biographyText = "This is a short biography about the artist."
 
-      renderWithRelay({
+      await renderWithRelay({
         Artist: () => ({
           biographyBlurb: {
             text: biographyText,
@@ -80,11 +80,11 @@ describe("Biography", () => {
   })
 
   describe("when biography text exists with credit", () => {
-    it("renders biography text with credit appended with space", () => {
+    it("renders biography text with credit appended with space", async () => {
       const biographyText = "This is a biography about the artist."
       const credit = "Source: Museum of Modern Art"
 
-      renderWithRelay({
+      await renderWithRelay({
         Artist: () => ({
           biographyBlurb: {
             text: biographyText,
@@ -100,8 +100,8 @@ describe("Biography", () => {
   describe("truncation behavior", () => {
     const longText = "a".repeat(MAX_CHARS + 20)
 
-    it("shows Read More button when text is longer than MAX_CHARS", () => {
-      renderWithRelay({
+    it("shows Read More button when text is longer than MAX_CHARS", async () => {
+      await renderWithRelay({
         Artist: () => ({
           biographyBlurb: {
             text: longText,
@@ -113,10 +113,10 @@ describe("Biography", () => {
       expect(screen.getByLabelText("Read More")).toBeOnTheScreen()
     })
 
-    it("does not show Read More button when text is shorter than MAX_CHARS", () => {
+    it("does not show Read More button when text is shorter than MAX_CHARS", async () => {
       const shortText = "Short biography text"
 
-      renderWithRelay({
+      await renderWithRelay({
         Artist: () => ({
           biographyBlurb: {
             text: shortText,
@@ -128,8 +128,8 @@ describe("Biography", () => {
       expect(screen.queryByLabelText("Read More")).toBeNull()
     })
 
-    it("shows truncated text initially when text is long", () => {
-      renderWithRelay({
+    it("shows truncated text initially when text is long", async () => {
+      await renderWithRelay({
         Artist: () => ({
           biographyBlurb: {
             text: longText,
@@ -146,8 +146,8 @@ describe("Biography", () => {
   describe("expand/collapse functionality", () => {
     const longText = "a".repeat(MAX_CHARS + 20)
 
-    it("expands text when Read More is pressed", () => {
-      renderWithRelay({
+    it("expands text when Read More is pressed", async () => {
+      await renderWithRelay({
         Artist: () => ({
           biographyBlurb: {
             text: longText,
@@ -156,14 +156,14 @@ describe("Biography", () => {
         }),
       })
 
-      fireEvent.press(screen.getByLabelText("Read More"))
+      await fireEvent.press(screen.getByLabelText("Read More"))
 
       expect(screen.getByText("Read Less")).toBeOnTheScreen()
       expect(screen.getByText(longText)).toBeOnTheScreen()
     })
 
-    it("collapses text when Read Less is pressed", () => {
-      renderWithRelay({
+    it("collapses text when Read Less is pressed", async () => {
+      await renderWithRelay({
         Artist: () => ({
           biographyBlurb: {
             text: longText,
@@ -172,8 +172,8 @@ describe("Biography", () => {
         }),
       })
 
-      fireEvent.press(screen.getByLabelText("Read More"))
-      fireEvent.press(screen.getByText("Read Less"))
+      await fireEvent.press(screen.getByLabelText("Read More"))
+      await fireEvent.press(screen.getByText("Read Less"))
 
       expect(screen.getByLabelText("Read More")).toBeOnTheScreen()
       const truncatedText = longText.slice(0, 250)
@@ -185,8 +185,8 @@ describe("Biography", () => {
     const longText = "a".repeat(MAX_CHARS - 20)
     const credit = "Museum of Modern Art"
 
-    it("includes credit in expanded state when text is long", () => {
-      renderWithRelay({
+    it("includes credit in expanded state when text is long", async () => {
+      await renderWithRelay({
         Artist: () => ({
           biographyBlurb: {
             text: longText,
@@ -195,13 +195,13 @@ describe("Biography", () => {
         }),
       })
 
-      fireEvent.press(screen.getByLabelText("Read More"))
+      await fireEvent.press(screen.getByLabelText("Read More"))
 
       expect(screen.getByText(credit, { exact: false })).toBeOnTheScreen()
     })
 
-    it("shows Read More button when text with credit exceeds MAX_CHARS", () => {
-      renderWithRelay({
+    it("shows Read More button when text with credit exceeds MAX_CHARS", async () => {
+      await renderWithRelay({
         Artist: () => ({
           biographyBlurb: {
             text: longText,
@@ -222,8 +222,8 @@ describe("Biography", () => {
       nativeEvent: { layout: { height, width: 300, x: 0, y: 0 } },
     })
 
-    it("renders the biography with the native markdown renderer", () => {
-      renderWithRelay({
+    it("renders the biography with the native markdown renderer", async () => {
+      await renderWithRelay({
         Artist: () => ({
           biographyBlurb: { text: "Some **bio**", credit: null },
         }),
@@ -233,8 +233,8 @@ describe("Biography", () => {
       expect(screen.getAllByText("Some **bio**").length).toBeGreaterThan(0)
     })
 
-    it("shows Read More once the clamped content is measured as overflowing", () => {
-      renderWithRelay({
+    it("shows Read More once the clamped content is measured as overflowing", async () => {
+      await renderWithRelay({
         Artist: () => ({
           biographyBlurb: { text: "a".repeat(MAX_CHARS + 20), credit: null },
         }),
@@ -242,12 +242,12 @@ describe("Biography", () => {
 
       expect(screen.queryByLabelText("Read More")).toBeNull()
 
-      fireEvent(
+      await fireEvent(
         screen.getByTestId("read-more-measure", { includeHiddenElements: true }),
         "layout",
         layout(200)
       )
-      fireEvent(screen.getByTestId("read-more-content"), "layout", layout(40))
+      await fireEvent(screen.getByTestId("read-more-content"), "layout", layout(40))
 
       expect(screen.getByLabelText("Read More")).toBeOnTheScreen()
     })

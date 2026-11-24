@@ -112,7 +112,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
         listRef={listRef}
         data={artists}
         keyExtractor={(artist) => artist.id}
-        ItemSeparatorComponent={null}
+        ItemSeparatorComponent={undefined}
         // I noticed that sometimes FlatList seemed to get confused about where cards should be
         // and making this explicit fixes that.
         getItemLayout={(_data, index) => ({

@@ -36,7 +36,7 @@ describe("HomeViewSectionCards", () => {
   })
 
   it("renders the section properly", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       HomeViewSectionCards: () => ({
         internalID: "home-view-section-auctions-hub",
         ...cardsConnection,
@@ -52,7 +52,7 @@ describe("HomeViewSectionCards", () => {
   })
 
   it("handles View All press", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       HomeViewSectionCards: () => ({
         internalID: "home-view-section-auctions-hub",
         contextModule: "auctionsHubRail",
@@ -61,7 +61,7 @@ describe("HomeViewSectionCards", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("Section Title"))
+    await fireEvent.press(screen.getByText("Section Title"))
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedCardGroup",
       context_module: "auctionsHubRail",
@@ -74,7 +74,7 @@ describe("HomeViewSectionCards", () => {
   })
 
   it("handles navigation when tapping on a card", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       HomeViewSectionCards: () => ({
         internalID: "home-view-section-auctions-hub",
         ...component,
@@ -82,7 +82,7 @@ describe("HomeViewSectionCards", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("Card Title 0"))
+    await fireEvent.press(screen.getByText("Card Title 0"))
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedCardGroup",
       context_module: "lotsForYouCard",
@@ -95,7 +95,7 @@ describe("HomeViewSectionCards", () => {
     })
     expect(navigate).toHaveBeenCalledWith("/0-route")
 
-    fireEvent.press(screen.getByText("Card Title 1"))
+    await fireEvent.press(screen.getByText("Card Title 1"))
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedCardGroup",
       context_module: "auctionResultsForArtistsYouFollowCard",
@@ -108,7 +108,7 @@ describe("HomeViewSectionCards", () => {
     })
     expect(navigate).toHaveBeenCalledWith("/1-route")
 
-    fireEvent.press(screen.getByText("Card Title 2"))
+    await fireEvent.press(screen.getByText("Card Title 2"))
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedCardGroup",
       context_module: "auctionsCard",
@@ -123,7 +123,7 @@ describe("HomeViewSectionCards", () => {
   })
 
   it("renders empty state images when empty state image is present", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       HomeViewSectionCards: () => ({
         internalID: "home-view-section-auctions-hub",
         ...component,

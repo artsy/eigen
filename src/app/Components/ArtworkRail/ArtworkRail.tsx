@@ -9,10 +9,11 @@ import {
   ARTWORK_RAIL_CARD_MIN_WIDTH,
 } from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
+import { ViewabilityConfig } from "app/utils/hooks/useViewabilityConfig"
 import { RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import { memo, ReactElement, useCallback, useMemo } from "react"
-import { FlatList, ListRenderItem, ViewabilityConfig } from "react-native"
+import { FlatList, ListRenderItem } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
@@ -110,7 +111,8 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
         horizontal
         keyExtractor={(item: Artwork) => item.internalID}
         ListFooterComponent={listFooterComponent}
-        ListHeaderComponent={ListHeaderComponent}
+        // null means "no header" here, but the strict list types only accept undefined
+        ListHeaderComponent={ListHeaderComponent ?? undefined}
         ref={listRef}
         onEndReached={onEndReached}
         onEndReachedThreshold={onEndReachedThreshold}

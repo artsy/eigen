@@ -49,9 +49,9 @@ const locale = (languageTag: string) => {
 const deviceLocale = (languageTag: string) =>
   jest.mocked(getLocales).mockReturnValue([locale(languageTag)])
 
-const renderVoiceInput = () => {
+const renderVoiceInput = async () => {
   const onTranscript = jest.fn()
-  const utils = renderHook(() => useArtAssistantVoiceInput(onTranscript))
+  const utils = await renderHook(() => useArtAssistantVoiceInput(onTranscript))
 
   return { ...utils, onTranscript }
 }
@@ -76,7 +76,7 @@ describe("useArtAssistantVoiceInput", () => {
     jest
       .mocked(ExpoSpeechRecognitionModule.getSupportedLocales)
       .mockResolvedValue({ installedLocales: [], locales: ["en-US", "zh-CN", "zh-TW"] })
-    const { result: hook } = renderVoiceInput()
+    const { result: hook } = await renderVoiceInput()
 
     await act(() => hook.current.start())
 
@@ -90,7 +90,7 @@ describe("useArtAssistantVoiceInput", () => {
     jest
       .mocked(ExpoSpeechRecognitionModule.getSupportedLocales)
       .mockRejectedValue(new Error("package_not_found"))
-    const { result: hook } = renderVoiceInput()
+    const { result: hook } = await renderVoiceInput()
 
     await act(() => hook.current.start())
 
@@ -101,7 +101,7 @@ describe("useArtAssistantVoiceInput", () => {
 
   it("listens in the device language and passes every transcript on", async () => {
     deviceLocale("fr-FR")
-    const { result: hook, onTranscript } = renderVoiceInput()
+    const { result: hook, onTranscript } = await renderVoiceInput()
 
     await act(() => hook.current.start())
 
@@ -110,11 +110,11 @@ describe("useArtAssistantVoiceInput", () => {
       expect.objectContaining({ interimResults: true, lang: "fr-FR" })
     )
 
-    act(() => emit("start"))
+    await act(() => emit("start"))
 
     expect(hook.current.status).toBe("listening")
 
-    act(() => {
+    await act(() => {
       emit("result", result("des paysages"))
       emit("result", result("des paysages marins", true))
     })
@@ -122,13 +122,13 @@ describe("useArtAssistantVoiceInput", () => {
     expect(onTranscript).toHaveBeenNthCalledWith(1, "des paysages")
     expect(onTranscript).toHaveBeenNthCalledWith(2, "des paysages marins")
 
-    act(() => emit("end"))
+    await act(() => emit("end"))
 
     expect(hook.current.status).toBe("idle")
   })
 
   it("follows the microphone level from 0 to 1 and resets it when listening ends", async () => {
-    const { result: hook } = renderVoiceInput()
+    const { result: hook } = await renderVoiceInput()
 
     await act(() => hook.current.start())
 
@@ -138,34 +138,34 @@ describe("useArtAssistantVoiceInput", () => {
       })
     )
 
-    act(() => emit("volumechange", { value: 5 }))
+    await act(() => emit("volumechange", { value: 5 }))
     expect(hook.current.volume.get()).toBe(0.5)
 
-    act(() => emit("volumechange", { value: -2 }))
+    await act(() => emit("volumechange", { value: -2 }))
     expect(hook.current.volume.get()).toBe(0)
 
-    act(() => emit("volumechange", { value: 12 }))
+    await act(() => emit("volumechange", { value: 12 }))
     expect(hook.current.volume.get()).toBe(1)
 
-    act(() => emit("end"))
+    await act(() => emit("end"))
     expect(hook.current.volume.get()).toBe(0)
   })
 
   it("ignores empty transcripts", async () => {
-    const { result: hook, onTranscript } = renderVoiceInput()
+    const { result: hook, onTranscript } = await renderVoiceInput()
 
     await act(() => hook.current.start())
-    act(() => emit("result", result("")))
+    await act(() => emit("result", result("")))
 
     expect(onTranscript).not.toHaveBeenCalled()
   })
 
   it("stops the recognizer and keeps the transcript", async () => {
-    const { result: hook } = renderVoiceInput()
+    const { result: hook } = await renderVoiceInput()
 
     await act(() => hook.current.start())
-    act(() => emit("start"))
-    act(() => hook.current.stop())
+    await act(() => emit("start"))
+    await act(() => hook.current.stop())
 
     expect(ExpoSpeechRecognitionModule.stop).toHaveBeenCalled()
     expect(ExpoSpeechRecognitionModule.abort).not.toHaveBeenCalled()
@@ -178,7 +178,7 @@ describe("useArtAssistantVoiceInput", () => {
     jest
       .mocked(ExpoSpeechRecognitionModule.requestPermissionsAsync)
       .mockResolvedValue(permission(false, false))
-    const { result: hook } = renderVoiceInput()
+    const { result: hook } = await renderVoiceInput()
 
     await act(() => hook.current.start())
 
@@ -192,7 +192,7 @@ describe("useArtAssistantVoiceInput", () => {
     jest
       .mocked(ExpoSpeechRecognitionModule.getPermissionsAsync)
       .mockResolvedValue(permission(false, false))
-    const { result: hook } = renderVoiceInput()
+    const { result: hook } = await renderVoiceInput()
 
     await act(() => hook.current.start())
 
@@ -215,13 +215,13 @@ describe("useArtAssistantVoiceInput", () => {
         grant = resolve
       })
     )
-    const { result: hook } = renderVoiceInput()
+    const { result: hook } = await renderVoiceInput()
 
     let pending: Promise<void> = Promise.resolve()
     await act(async () => {
       pending = hook.current.start()
     })
-    act(() => hook.current.stop())
+    await act(() => hook.current.stop())
     await act(async () => {
       grant(permission(true, true))
       await pending
@@ -233,10 +233,10 @@ describe("useArtAssistantVoiceInput", () => {
 
   it("falls back to English when the device language is not supported", async () => {
     deviceLocale("hy-AM")
-    const { result: hook } = renderVoiceInput()
+    const { result: hook } = await renderVoiceInput()
 
     await act(() => hook.current.start())
-    act(() => {
+    await act(() => {
       emit("error", { error: "language-not-supported", message: "Locale hy-AM is not supported" })
       emit("end")
     })
@@ -249,10 +249,10 @@ describe("useArtAssistantVoiceInput", () => {
   })
 
   it("reports a failure when English is not supported either", async () => {
-    const { result: hook } = renderVoiceInput()
+    const { result: hook } = await renderVoiceInput()
 
     await act(() => hook.current.start())
-    act(() => {
+    await act(() => {
       emit("error", { error: "language-not-supported", message: "Locale en-US is not supported" })
       emit("end")
     })
@@ -265,10 +265,10 @@ describe("useArtAssistantVoiceInput", () => {
   })
 
   it("reports unexpected recognizer errors", async () => {
-    const { result: hook } = renderVoiceInput()
+    const { result: hook } = await renderVoiceInput()
 
     await act(() => hook.current.start())
-    act(() => emit("error", { error: "client", message: "Client failed" }))
+    await act(() => emit("error", { error: "client", message: "Client failed" }))
 
     expect(captureException).toHaveBeenCalledWith(expect.any(Error), {
       tags: { source: "art_assistant_voice_input", speech_recognition_error: "client" },
@@ -281,10 +281,10 @@ describe("useArtAssistantVoiceInput", () => {
   it.each(["audio-capture", "busy", "network", "service-not-allowed"] as const)(
     "tells the user about a %s error without reporting it",
     async (error) => {
-      const { result: hook } = renderVoiceInput()
+      const { result: hook } = await renderVoiceInput()
 
       await act(() => hook.current.start())
-      act(() => emit("error", { error, message: "Device condition" }))
+      await act(() => emit("error", { error, message: "Device condition" }))
 
       expect(captureException).not.toHaveBeenCalled()
       expect(mockShowToast).toHaveBeenCalledWith(ART_ASSISTANT_VOICE_INPUT_ERROR, "bottom", {
@@ -297,7 +297,7 @@ describe("useArtAssistantVoiceInput", () => {
     jest
       .mocked(ExpoSpeechRecognitionModule.getPermissionsAsync)
       .mockRejectedValue(new Error("Permissions unavailable"))
-    const { result: hook } = renderVoiceInput()
+    const { result: hook } = await renderVoiceInput()
 
     await act(() => hook.current.start())
 
@@ -311,10 +311,10 @@ describe("useArtAssistantVoiceInput", () => {
   })
 
   it("stays quiet when nothing was said", async () => {
-    const { result: hook } = renderVoiceInput()
+    const { result: hook } = await renderVoiceInput()
 
     await act(() => hook.current.start())
-    act(() => {
+    await act(() => {
       emit("error", { error: "no-speech", message: "No speech detected" })
       emit("end")
     })
@@ -325,12 +325,12 @@ describe("useArtAssistantVoiceInput", () => {
   })
 
   it("drops results that arrive after a cancel", async () => {
-    const { result: hook, onTranscript } = renderVoiceInput()
+    const { result: hook, onTranscript } = await renderVoiceInput()
 
     await act(() => hook.current.start())
-    act(() => emit("start"))
-    act(() => hook.current.cancel())
-    act(() => emit("result", result("too late", true)))
+    await act(() => emit("start"))
+    await act(() => hook.current.cancel())
+    await act(() => emit("result", result("too late", true)))
 
     expect(ExpoSpeechRecognitionModule.abort).toHaveBeenCalled()
     expect(onTranscript).not.toHaveBeenCalled()
@@ -338,15 +338,15 @@ describe("useArtAssistantVoiceInput", () => {
   })
 
   it("does not let a cancelled session's late end stop the next one", async () => {
-    const { result: hook } = renderVoiceInput()
+    const { result: hook } = await renderVoiceInput()
 
     await act(() => hook.current.start())
-    act(() => emit("start"))
-    act(() => hook.current.cancel())
+    await act(() => emit("start"))
+    await act(() => hook.current.cancel())
     await act(() => hook.current.start())
     // The aborted session reports its end only now, after the new one has started.
-    act(() => emit("end"))
-    act(() => emit("start"))
+    await act(() => emit("end"))
+    await act(() => emit("start"))
 
     expect(hook.current.status).toBe("listening")
   })
@@ -361,13 +361,13 @@ describe("useArtAssistantVoiceInput", () => {
         grant = resolve
       })
     )
-    const { result: hook, unmount } = renderVoiceInput()
+    const { result: hook, unmount } = await renderVoiceInput()
 
     let pending: Promise<void> = Promise.resolve()
     await act(async () => {
       pending = hook.current.start()
     })
-    unmount()
+    await unmount()
     grant(permission(true, true))
     await pending
 
@@ -375,17 +375,17 @@ describe("useArtAssistantVoiceInput", () => {
   })
 
   it("turns the microphone off when the screen goes away", async () => {
-    const { result: hook, unmount } = renderVoiceInput()
+    const { result: hook, unmount } = await renderVoiceInput()
 
     await act(() => hook.current.start())
-    unmount()
+    await unmount()
 
     expect(ExpoSpeechRecognitionModule.abort).toHaveBeenCalled()
   })
 
   it("does nothing when the device has no speech recognizer", async () => {
     jest.mocked(ExpoSpeechRecognitionModule.isRecognitionAvailable).mockReturnValue(false)
-    const { result: hook } = renderVoiceInput()
+    const { result: hook } = await renderVoiceInput()
 
     await act(() => hook.current.start())
 

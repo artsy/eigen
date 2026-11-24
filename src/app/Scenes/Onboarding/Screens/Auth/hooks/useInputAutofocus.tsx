@@ -1,4 +1,4 @@
-import { Input } from "@artsy/palette-mobile"
+import { InputRef } from "@artsy/palette-mobile"
 import { AuthScreen } from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
 import { useAuthScreen } from "app/Scenes/Onboarding/Screens/Auth/hooks/useAuthNavigation"
 import { useEffect } from "react"
@@ -6,7 +6,7 @@ import { useEffect } from "react"
 interface UseInputAutofocusProps {
   delay?: number
   enabled?: boolean
-  inputRef: React.RefObject<Input | null>
+  inputRef: React.RefObject<InputRef | null>
   screenName: AuthScreen["name"]
 }
 

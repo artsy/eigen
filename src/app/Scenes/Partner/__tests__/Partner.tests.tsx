@@ -21,16 +21,16 @@ describe("Partner", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableShareShowPartnerFeature: true })
   })
 
-  it("puts a share button in the header of a full partner page", () => {
-    renderWithRelay({
+  it("puts a share button in the header of a full partner page", async () => {
+    await renderWithRelay({
       Partner: () => ({ name: "A Gallery", slug: "a-gallery", displayFullPartnerPage: true }),
     })
 
     expect(screen.getByLabelText("Share Partner")).toBeOnTheScreen()
   })
 
-  it("puts a share button in the header of a limited partner page", () => {
-    renderWithRelay({
+  it("puts a share button in the header of a limited partner page", async () => {
+    await renderWithRelay({
       Partner: () => ({
         name: "A Gallery",
         slug: "a-gallery",
@@ -42,10 +42,10 @@ describe("Partner", () => {
     expect(screen.getByLabelText("Share Partner")).toBeOnTheScreen()
   })
 
-  it("hides the share button when sharing is off", () => {
+  it("hides the share button when sharing is off", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableShareShowPartnerFeature: false })
 
-    renderWithRelay({ Partner: () => ({ displayFullPartnerPage: true }) })
+    await renderWithRelay({ Partner: () => ({ displayFullPartnerPage: true }) })
 
     expect(screen.queryByLabelText("Share Partner")).not.toBeOnTheScreen()
   })

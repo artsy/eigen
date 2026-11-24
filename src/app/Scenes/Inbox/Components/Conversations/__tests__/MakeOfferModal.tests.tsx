@@ -103,9 +103,9 @@ const mockSingleEditionResolver = {
   }),
 }
 
-const renderAndResolve = (mockResolvers = mockResolver, renderer = renderComponent) => {
-  renderWithWrappers(<TestRenderer renderer={renderer} />)
-  act(() => {
+const renderAndResolve = async (mockResolvers = mockResolver, renderer = renderComponent) => {
+  await renderWithWrappers(<TestRenderer renderer={renderer} />)
+  await act(() => {
     env.mock.resolveMostRecentOperation((operation) => {
       return MockPayloadGenerator.generate(operation, mockResolvers)
     })
@@ -113,14 +113,14 @@ const renderAndResolve = (mockResolvers = mockResolver, renderer = renderCompone
 }
 
 /** Presses Confirm and returns the edition set the make offer mutation was sent with. */
-const confirmAndGetEditionSetID = () => {
-  fireEvent.press(screen.getByText("Confirm"))
+const confirmAndGetEditionSetID = async () => {
+  await fireEvent.press(screen.getByText("Confirm"))
   const operation = env.mock.getMostRecentOperation()
   expect(operation.request.node.params.name).toBe("InquiryMakeOfferButtonOrderMutation")
   const editionSetID = operation.request.variables.input.editionSetId
 
   // Let the mutation finish, so the button accepts the next press.
-  act(() => {
+  await act(() => {
     env.mock.resolve(
       operation,
       MockPayloadGenerator.generate(operation, {
@@ -144,56 +144,56 @@ beforeEach(() => {
 })
 
 describe("<MakeOfferModal />", () => {
-  it("renders the modal", () => {
-    renderAndResolve()
+  it("renders the modal", async () => {
+    await renderAndResolve()
     expect(screen.getByText("Select edition set")).toBeOnTheScreen()
   })
-  it("displays the correct artwork", () => {
-    renderAndResolve()
+  it("displays the correct artwork", async () => {
+    await renderAndResolve()
     expect(screen.getByText(/^test-artwork/)).toBeOnTheScreen()
   })
-  it("doesn't display edition checkboxes and can be confirmed", () => {
-    renderAndResolve()
+  it("doesn't display edition checkboxes and can be confirmed", async () => {
+    await renderAndResolve()
     expect(screen.queryAllByRole("radio")).toHaveLength(0)
     expect(screen.getByText("Confirm")).toBeEnabled()
   })
   // EDITIONS
   describe("when artwork is edition set", () => {
-    it("shows edition selection when it's an edition", () => {
-      renderAndResolve(mockEditionsResolver)
+    it("shows edition selection when it's an edition", async () => {
+      await renderAndResolve(mockEditionsResolver)
       expect(screen.getAllByRole("radio")).toHaveLength(3)
     })
-    it("disables the confirm button until an edition is selected", () => {
-      renderAndResolve(mockEditionsResolver)
+    it("disables the confirm button until an edition is selected", async () => {
+      await renderAndResolve(mockEditionsResolver)
       expect(screen.getByText("Confirm")).toBeDisabled()
     })
 
-    it("doesn't disable the confirm button if an editioned work only has one edition", () => {
-      renderAndResolve(mockSingleEditionResolver)
+    it("doesn't disable the confirm button if an editioned work only has one edition", async () => {
+      await renderAndResolve(mockSingleEditionResolver)
       expect(screen.getByText("Confirm")).toBeEnabled()
     })
 
     it("shows unavailable editions as unavailable and doesn't allow selection", async () => {
-      renderAndResolve(mockEditionsResolver)
+      await renderAndResolve(mockEditionsResolver)
       expect(screen.getByText("Unavailable")).toBeOnTheScreen()
       expect(screen.queryByText("€200")).not.toBeOnTheScreen()
-      fireEvent.press(screen.getByText("Unavailable"))
+      await fireEvent.press(screen.getByText("Unavailable"))
       await flushPromiseQueue()
       expect(screen.getByText("Confirm")).toBeDisabled()
       // Nothing was selected, so pressing Confirm doesn't create an order.
-      fireEvent.press(screen.getByText("Confirm"))
+      await fireEvent.press(screen.getByText("Confirm"))
       expect(env.mock.getAllOperations()).toHaveLength(0)
     })
     it("allows the user to toggle between available editions and confirm", async () => {
-      renderAndResolve(mockEditionsResolver)
-      fireEvent.press(screen.getByText("€100"))
+      await renderAndResolve(mockEditionsResolver)
+      await fireEvent.press(screen.getByText("€100"))
       await flushPromiseQueue()
       expect(screen.getByText("Confirm")).toBeEnabled()
-      expect(confirmAndGetEditionSetID()).toBe("edition-1")
-      fireEvent.press(screen.getByText("€300"))
+      expect(await confirmAndGetEditionSetID()).toBe("edition-1")
+      await fireEvent.press(screen.getByText("€300"))
       await flushPromiseQueue()
       expect(screen.getByText("Confirm")).toBeEnabled()
-      expect(confirmAndGetEditionSetID()).toBe("edition-3")
+      expect(await confirmAndGetEditionSetID()).toBe("edition-3")
     })
   })
 })

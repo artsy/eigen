@@ -11,7 +11,7 @@ jest.mock("app/Components/LineGraph/LineGraphChart", () => {
 
 describe(LineGraph, () => {
   it("renders correctly", async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <LineGraph
         data={testChartData}
         bands={[{ name: "3 yrs" }, { name: "8 yrs" }]}
@@ -35,8 +35,8 @@ describe(LineGraph, () => {
     expect(screen.getByTestId("line-graph-category-picker")).toBeOnTheScreen()
   })
 
-  it("Does not render CategoryPicker if there are no categories", () => {
-    renderWithWrappers(
+  it("Does not render CategoryPicker if there are no categories", async () => {
+    await renderWithWrappers(
       <LineGraph
         data={testChartData}
         bands={[{ name: "3 yrs" }, { name: "8 yrs" }]}

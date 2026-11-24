@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Input, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { Input, Spacer, Text, Touchable, InputRef } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { useStripe } from "@stripe/stripe-react-native"
 import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
@@ -16,7 +16,7 @@ import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Action, Computed, action, computed, useLocalStore } from "easy-peasy"
 import { useEffect, useRef, useState } from "react"
-import { Alert, ScrollView } from "react-native"
+import { Alert, ScrollViewInstance } from "react-native"
 import { commitMutation, graphql } from "react-relay"
 
 interface CreditCardInputParams {
@@ -93,16 +93,16 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
     }),
   }))
 
-  const addressLine1Ref = useRef<Input>(null)
-  const addressLine2Ref = useRef<Input>(null)
-  const cityRef = useRef<Input>(null)
-  const postalCodeRef = useRef<Input>(null)
-  const stateRef = useRef<Input>(null)
+  const addressLine1Ref = useRef<InputRef>(null)
+  const addressLine2Ref = useRef<InputRef>(null)
+  const cityRef = useRef<InputRef>(null)
+  const postalCodeRef = useRef<InputRef>(null)
+  const stateRef = useRef<InputRef>(null)
   const countryRef = useRef<SelectRef>(null)
 
   const navigation = useNavigation()
 
-  const scrollViewRef = useRef<ScrollView>(null)
+  const scrollViewRef = useRef<ScrollViewInstance>(null)
 
   useEffect(() => {
     const isValid = state.allPresent

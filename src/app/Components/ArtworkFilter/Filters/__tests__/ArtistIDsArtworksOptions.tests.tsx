@@ -66,7 +66,7 @@ describe("Artist options screen", () => {
     )
   }
 
-  it("shows the correct number of artist options", () => {
+  it("shows the correct number of artist options", async () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [],
       appliedFilters: [],
@@ -81,7 +81,7 @@ describe("Artist options screen", () => {
       showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
-    renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
+    await renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
     const checkboxes = screen.getAllByRole("checkbox")
 
@@ -89,7 +89,7 @@ describe("Artist options screen", () => {
   })
 
   describe("selecting an artist option", () => {
-    it("selects only the option that is tapped", () => {
+    it("selects only the option that is tapped", async () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [
           {
@@ -111,7 +111,7 @@ describe("Artist options screen", () => {
         sizeMetric: "cm",
       }
 
-      renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
+      await renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
       const options = screen.getAllByTestId("multi-select-option-button")
       const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
@@ -120,7 +120,7 @@ describe("Artist options screen", () => {
       expect(checkboxes[2]).toHaveProp("selected", true)
     })
 
-    it("allows multiple artist options to be selected", () => {
+    it("allows multiple artist options to be selected", async () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [],
         appliedFilters: [],
@@ -136,13 +136,13 @@ describe("Artist options screen", () => {
         sizeMetric: "cm",
       }
 
-      renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
+      await renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
       const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
 
-      fireEvent.press(screen.getByText("All Artists I Follow"))
-      fireEvent.press(screen.getByText("Artist 1"))
-      fireEvent.press(screen.getByText("Artist 2"))
+      await fireEvent.press(screen.getByText("All Artists I Follow"))
+      await fireEvent.press(screen.getByText("Artist 1"))
+      await fireEvent.press(screen.getByText("Artist 2"))
 
       expect(checkboxes[0]).toHaveProp("selected", true)
       expect(checkboxes[1]).toHaveProp("selected", true)
@@ -152,7 +152,7 @@ describe("Artist options screen", () => {
       expect(checkboxes[5]).toHaveProp("selected", false)
     })
 
-    it("deselects artist option if it is already selected and then tapped again", () => {
+    it("deselects artist option if it is already selected and then tapped again", async () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [
           {
@@ -174,7 +174,7 @@ describe("Artist options screen", () => {
         sizeMetric: "cm",
       }
 
-      renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
+      await renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
       const options = screen.getAllByTestId("multi-select-option-button")
       const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
@@ -182,14 +182,14 @@ describe("Artist options screen", () => {
       expect(options[2]).toHaveTextContent("Artist 2")
       expect(checkboxes[2]).toHaveProp("selected", true)
 
-      fireEvent.press(screen.getByText("Artist 2"))
+      await fireEvent.press(screen.getByText("Artist 2"))
 
       expect(checkboxes[2]).toHaveProp("selected", false)
     })
   })
 
   describe("Artists I follow option", () => {
-    it("should be visible if there are followed artists in the aggregation", () => {
+    it("should be visible if there are followed artists in the aggregation", async () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [],
         appliedFilters: [],
@@ -205,12 +205,12 @@ describe("Artist options screen", () => {
         sizeMetric: "cm",
       }
 
-      renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
+      await renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
       expect(screen.getByText("All Artists I Follow")).toBeOnTheScreen()
     })
 
-    it("should be visible if counts has followedArtists ", () => {
+    it("should be visible if counts has followedArtists ", async () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [],
         appliedFilters: [],
@@ -226,12 +226,12 @@ describe("Artist options screen", () => {
         sizeMetric: "cm",
       }
 
-      renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
+      await renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
       expect(screen.getByText("All Artists I Follow")).toBeOnTheScreen()
     })
 
-    it("should be hidden if there are no followed artists in the aggregation", () => {
+    it("should be hidden if there are no followed artists in the aggregation", async () => {
       const aggregations: Aggregations = [
         {
           slice: "ARTIST",
@@ -260,14 +260,14 @@ describe("Artist options screen", () => {
         sizeMetric: "cm",
       }
 
-      renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
+      await renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
       expect(screen.queryByText("All Artists I Follow")).not.toBeOnTheScreen()
     })
   })
 
   describe("Clear button", () => {
-    it("is hidden when no artist is selected", () => {
+    it("is hidden when no artist is selected", async () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [],
         appliedFilters: [],
@@ -283,12 +283,12 @@ describe("Artist options screen", () => {
         sizeMetric: "cm",
       }
 
-      renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
+      await renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
       expect(screen.queryByText("Clear")).not.toBeOnTheScreen()
     })
 
-    it("is shown and clears selected artists when tapped", () => {
+    it("is shown and clears selected artists when tapped", async () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [
           {
@@ -310,19 +310,19 @@ describe("Artist options screen", () => {
         sizeMetric: "cm",
       }
 
-      renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
+      await renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
       const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
 
       expect(screen.getByText("Clear")).toBeOnTheScreen()
       expect(checkboxes[2]).toHaveProp("selected", true)
 
-      fireEvent.press(screen.getByText("Clear"))
+      await fireEvent.press(screen.getByText("Clear"))
 
       expect(checkboxes[2]).toHaveProp("selected", false)
     })
 
-    it("is shown when only 'All Artists I Follow' is selected and clears it when tapped", () => {
+    it("is shown when only 'All Artists I Follow' is selected and clears it when tapped", async () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [
           {
@@ -344,14 +344,14 @@ describe("Artist options screen", () => {
         sizeMetric: "cm",
       }
 
-      renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
+      await renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
       const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
 
       expect(screen.getByText("Clear")).toBeOnTheScreen()
       expect(checkboxes[0]).toHaveProp("selected", true)
 
-      fireEvent.press(screen.getByText("Clear"))
+      await fireEvent.press(screen.getByText("Clear"))
 
       expect(checkboxes[0]).toHaveProp("selected", false)
     })

@@ -30,14 +30,14 @@ describe("HomeViewSectionSalesItem", () => {
     `,
   })
 
-  it("renders the sale meta", () => {
-    renderWithRelay({ Sale: () => mockSale })
+  it("renders the sale meta", async () => {
+    await renderWithRelay({ Sale: () => mockSale })
 
     expect(screen.getByText("Phillips Editions")).toBeOnTheScreen()
   })
 
-  it("renders an image for each representative artwork", () => {
-    renderWithRelay({ Sale: () => mockSale })
+  it("renders an image for each representative artwork", async () => {
+    await renderWithRelay({ Sale: () => mockSale })
 
     // ImageWithFallback resizes via Gemini, which embeds the source URL as an encoded `src` param.
     const uriFor = (testID: string) =>
@@ -47,8 +47,8 @@ describe("HomeViewSectionSalesItem", () => {
     expect(uriFor("image-3")).toContain(encodeURIComponent("https://example.com/image-3.jpg"))
   })
 
-  it("renders fallbacks when there are no representative artworks", () => {
-    renderWithRelay({ Sale: () => ({ ...mockSale, representativeArtworks: [] }) })
+  it("renders fallbacks when there are no representative artworks", async () => {
+    await renderWithRelay({ Sale: () => ({ ...mockSale, representativeArtworks: [] }) })
 
     expect(screen.queryByTestId("image-1")).not.toBeOnTheScreen()
     expect(screen.getByTestId("fallback-image")).toBeOnTheScreen()

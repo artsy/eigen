@@ -14,7 +14,7 @@ describe("LotProgressBar", () => {
   }
 
   describe("Shows A ProgressBar", () => {
-    it("Shows if extendedBiddingEndAt or endAt is in the future and within now and extendedBiddingIntervalMinutes", () => {
+    it("Shows if extendedBiddingEndAt or endAt is in the future and within now and extendedBiddingIntervalMinutes", async () => {
       const props = {
         extendedBiddingPeriodMinutes: 2,
         extendedBiddingIntervalMinutes: 2,
@@ -24,7 +24,7 @@ describe("LotProgressBar", () => {
         duration: null,
       }
 
-      getWrapper(props)
+      await getWrapper(props)
 
       expect(screen.getAllByTestId("progress-bar-track")).toHaveLength(1)
     })
@@ -35,7 +35,7 @@ describe("LotProgressBar", () => {
       jest.clearAllMocks()
     })
 
-    it("Does not show if extendedBiddingEndAt or endAt is past", () => {
+    it("Does not show if extendedBiddingEndAt or endAt is past", async () => {
       const props = {
         extendedBiddingPeriodMinutes: 2,
         extendedBiddingIntervalMinutes: 2,
@@ -45,12 +45,12 @@ describe("LotProgressBar", () => {
         duration: null,
       }
 
-      getWrapper(props)
+      await getWrapper(props)
 
       expect(screen.queryByTestId("progress-bar-track")).not.toBeOnTheScreen()
     })
 
-    it("ProgressBar disappears when time elapses", () => {
+    it("ProgressBar disappears when time elapses", async () => {
       const now = new Date(Date.now()).toISOString()
       const props = {
         extendedBiddingPeriodMinutes: 2,
@@ -61,7 +61,7 @@ describe("LotProgressBar", () => {
         duration: Duration.fromMillis(0),
       }
 
-      getWrapper(props)
+      await getWrapper(props)
 
       expect(screen.queryByTestId("progress-bar-track")).not.toBeOnTheScreen()
     })

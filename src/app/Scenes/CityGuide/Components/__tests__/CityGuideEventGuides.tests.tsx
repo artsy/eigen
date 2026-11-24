@@ -6,8 +6,8 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-// React-test-renderer has issues with memo components, so we need to mock the palette-mobile
-// Image component. See https://github.com/facebook/react/issues/17301
+// palette-mobile's Image puts `testID` on a wrapping Flex and `src`/`style` on an inner
+// FastImage. Swap in RN's Image so the testID, `src` and `style` live on one element.
 jest.mock("@artsy/palette-mobile", () => ({
   ...jest.requireActual("@artsy/palette-mobile"),
   Image: require("react-native").Image,
@@ -60,10 +60,10 @@ describe("CityGuideEventGuides", () => {
     )
 
   it("opens the city’s curated guides when the section title is tapped", async () => {
-    renderWithRelay(connection(guides(5)), props)
+    await renderWithRelay(connection(guides(5)), props)
 
     expect(await screen.findByText("City Guides")).toBeOnTheScreen()
-    fireEvent.press(screen.getByTestId("touchable-wrapper"))
+    await fireEvent.press(screen.getByTestId("touchable-wrapper"))
     expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/curated-guides")
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedExploreGroup",
@@ -77,7 +77,7 @@ describe("CityGuideEventGuides", () => {
   })
 
   it("leaves the section title untappable with 4 or fewer guides", async () => {
-    renderWithRelay(connection(guides(4)), props)
+    await renderWithRelay(connection(guides(4)), props)
 
     expect(await screen.findByText("City Guides")).toBeOnTheScreen()
     expect(screen.queryByTestId("touchable-wrapper")).not.toBeOnTheScreen()
@@ -85,14 +85,14 @@ describe("CityGuideEventGuides", () => {
   })
 
   it("shows at most 4 guides", async () => {
-    renderWithRelay(connection(guides(6)), props)
+    await renderWithRelay(connection(guides(6)), props)
 
     expect(await screen.findAllByTestId("event-guide-row")).toHaveLength(4)
     expect(screen.queryByText("Guide 5")).not.toBeOnTheScreen()
   })
 
   it("counts the featured guide toward the 4, even when it came back last", async () => {
-    renderWithRelay(connection(guides(6, { featured: true })), props)
+    await renderWithRelay(connection(guides(6, { featured: true })), props)
 
     expect(await screen.findByTestId("event-guide-featured")).toBeOnTheScreen()
     expect(screen.getAllByTestId("event-guide-row")).toHaveLength(3)
@@ -100,7 +100,7 @@ describe("CityGuideEventGuides", () => {
   })
 
   it("renders the city's curated guides", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       connection([
         itinerary("chill-vibes-only", "Chill Vibes Only"),
         itinerary("36-hours-in-london", "36 Hours in London"),
@@ -114,7 +114,7 @@ describe("CityGuideEventGuides", () => {
   })
 
   it("hides a draft guide the requesting editor authored", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       connection([
         itinerary("chill-vibes-only", "Chill Vibes Only"),
         itinerary(null, "Editor's Private Draft", { visibility: "PRIVATE" }),
@@ -129,7 +129,7 @@ describe("CityGuideEventGuides", () => {
   })
 
   it("renders nothing when every guide is an unpublished draft", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       connection([itinerary(null, "Editor's Private Draft", { visibility: "PRIVATE" })]),
       props
     )
@@ -141,7 +141,7 @@ describe("CityGuideEventGuides", () => {
   it("shows a guide's subtitle above its author", async () => {
     const withoutSubtitle = itinerary("36-hours-in-london", "36 Hours in London")
 
-    renderWithRelay(
+    await renderWithRelay(
       connection([
         itinerary("chill-vibes-only", "Chill Vibes Only"),
         { ...withoutSubtitle, subtitle: null },
@@ -156,7 +156,7 @@ describe("CityGuideEventGuides", () => {
   it("drops the byline for a guide with no author", async () => {
     const anonymous = itinerary("36-hours-in-london", "36 Hours in London")
 
-    renderWithRelay(
+    await renderWithRelay(
       connection([
         itinerary("chill-vibes-only", "Chill Vibes Only"),
         { ...anonymous, authorName: "" },
@@ -170,7 +170,7 @@ describe("CityGuideEventGuides", () => {
   })
 
   it("navigates to the itinerary when a guide is tapped", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       connection([
         itinerary("chill-vibes-only", "Chill Vibes Only"),
         itinerary("36-hours-in-london", "36 Hours in London"),
@@ -178,7 +178,7 @@ describe("CityGuideEventGuides", () => {
       props
     )
 
-    fireEvent.press((await screen.findAllByTestId("event-guide-row"))[0])
+    await fireEvent.press((await screen.findAllByTestId("event-guide-row"))[0])
 
     expect(navigate).toHaveBeenCalledWith(
       "/city-guide/london-united-kingdom/itinerary/chill-vibes-only"
@@ -186,7 +186,7 @@ describe("CityGuideEventGuides", () => {
   })
 
   it("tracks the tap on a guide row", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       connection([
         itinerary("chill-vibes-only", "Chill Vibes Only"),
         itinerary("36-hours-in-london", "36 Hours in London"),
@@ -194,7 +194,7 @@ describe("CityGuideEventGuides", () => {
       props
     )
 
-    fireEvent.press((await screen.findAllByTestId("event-guide-row"))[0])
+    await fireEvent.press((await screen.findAllByTestId("event-guide-row"))[0])
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -212,7 +212,7 @@ describe("CityGuideEventGuides", () => {
   // A curated guide is published and so has a slug, but an unpublished one still has to be
   // reachable rather than linking nowhere.
   it("addresses an itinerary with no slug by its id", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       connection([
         itinerary(null, "Unpublished Guide"),
         itinerary("36-hours-in-london", "36 Hours in London"),
@@ -220,7 +220,7 @@ describe("CityGuideEventGuides", () => {
       props
     )
 
-    fireEvent.press((await screen.findAllByTestId("event-guide-row"))[0])
+    await fireEvent.press((await screen.findAllByTestId("event-guide-row"))[0])
 
     expect(navigate).toHaveBeenCalledWith(
       "/city-guide/london-united-kingdom/itinerary/id-for-Unpublished Guide"
@@ -228,7 +228,7 @@ describe("CityGuideEventGuides", () => {
   })
 
   it("shows a placeholder when a guide has no hero image", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       connection([
         { ...itinerary("chill-vibes-only", "Chill Vibes Only"), heroImage: null },
         { ...itinerary("36-hours-in-london", "36 Hours in London"), heroImage: null },
@@ -242,7 +242,7 @@ describe("CityGuideEventGuides", () => {
   })
 
   it("renders nothing for a city with no curated guides", async () => {
-    renderWithRelay(connection([]), props)
+    await renderWithRelay(connection([]), props)
 
     // Nothing to await: the section renders null, so assert the tree never gains the list.
     expect(screen.queryByTestId("city-guides-list")).not.toBeOnTheScreen()
@@ -251,7 +251,7 @@ describe("CityGuideEventGuides", () => {
 
   describe("the featured guide", () => {
     it("leads the section whatever position it came back in", async () => {
-      renderWithRelay(
+      await renderWithRelay(
         connection([
           itinerary("chill-vibes-only", "Chill Vibes Only"),
           itinerary("36-hours-in-london", "36 Hours in London", { featured: true }),
@@ -268,7 +268,7 @@ describe("CityGuideEventGuides", () => {
       // The flagged guide is the only one opened up; the other stays a plain row.
       expect(screen.getAllByTestId("event-guide-row")).toHaveLength(1)
 
-      fireEvent.press(featured)
+      await fireEvent.press(featured)
 
       expect(navigate).toHaveBeenCalledWith(
         "/city-guide/london-united-kingdom/itinerary/36-hours-in-london"
@@ -276,7 +276,7 @@ describe("CityGuideEventGuides", () => {
     })
 
     it("falls back to a placeholder with no hero image", async () => {
-      renderWithRelay(
+      await renderWithRelay(
         connection([
           {
             ...itinerary("chill-vibes-only", "Chill Vibes Only", { featured: true }),
@@ -294,7 +294,7 @@ describe("CityGuideEventGuides", () => {
     // Nothing is promoted by position alone: with no flag and more than one guide, the
     // section is all plain rows.
     it("is absent when no guide is flagged", async () => {
-      renderWithRelay(
+      await renderWithRelay(
         connection([
           itinerary("chill-vibes-only", "Chill Vibes Only"),
           itinerary("36-hours-in-london", "36 Hours in London"),
@@ -309,7 +309,7 @@ describe("CityGuideEventGuides", () => {
     // A city with a single guide always leads with it, flagged or not, so the section
     // never looks like it's missing a lead item.
     it("promotes a lone unflagged guide", async () => {
-      renderWithRelay(connection([itinerary("chill-vibes-only", "Chill Vibes Only")]), props)
+      await renderWithRelay(connection([itinerary("chill-vibes-only", "Chill Vibes Only")]), props)
 
       expect(await screen.findByTestId("event-guide-featured")).toBeOnTheScreen()
       expect(screen.queryByTestId("event-guide-row")).not.toBeOnTheScreen()

@@ -34,47 +34,47 @@ describe("DynamicIslandEnvironmentIndicator", () => {
     DeviceInfo.getDeviceId = jest.fn(() => "iPhone18,1")
   })
 
-  it("renders nothing outside staging and previews", () => {
+  it("renders nothing outside staging and previews", async () => {
     mockUseEnvironmentColor.mockReturnValue(null)
-    renderWithWrappers(<DynamicIslandEnvironmentIndicator />)
+    await renderWithWrappers(<DynamicIslandEnvironmentIndicator />)
 
     expect(screen.queryByTestId("EnvironmentIndicatorRing")).not.toBeOnTheScreen()
   })
 
-  it("rings the Dynamic Island, placed from the top inset", () => {
-    renderWithWrappers(<DynamicIslandEnvironmentIndicator />)
+  it("rings the Dynamic Island, placed from the top inset", async () => {
+    await renderWithWrappers(<DynamicIslandEnvironmentIndicator />)
 
     const ring = screen.getByTestId("EnvironmentIndicatorRing")
     expect(StyleSheet.flatten(ring.props.style).top).toBeCloseTo(12.83)
     expect(ring).toHaveStyle({ left: 136.5, width: 129, backgroundColor: "#DA6722" })
   })
 
-  it("uses the known island width of models that differ", () => {
+  it("uses the known island width of models that differ", async () => {
     DeviceInfo.getDeviceId = jest.fn(() => "iPhone19,2")
-    renderWithWrappers(<DynamicIslandEnvironmentIndicator />)
+    await renderWithWrappers(<DynamicIslandEnvironmentIndicator />)
 
     expect(screen.getByTestId("EnvironmentIndicatorRing")).toHaveStyle({ left: 151.5, width: 99 })
   })
 
-  it("uses the staging colour", () => {
+  it("uses the staging colour", async () => {
     mockUseEnvironmentColor.mockReturnValue("devpurple")
-    renderWithWrappers(<DynamicIslandEnvironmentIndicator />)
+    await renderWithWrappers(<DynamicIslandEnvironmentIndicator />)
 
     expect(screen.getByTestId("EnvironmentIndicatorRing")).toHaveStyle({
       backgroundColor: "#6E1EFF",
     })
   })
 
-  it("renders nothing on iPhones without a Dynamic Island", () => {
+  it("renders nothing on iPhones without a Dynamic Island", async () => {
     mockInsets.top = 47
-    renderWithWrappers(<DynamicIslandEnvironmentIndicator />)
+    await renderWithWrappers(<DynamicIslandEnvironmentIndicator />)
 
     expect(screen.queryByTestId("EnvironmentIndicatorRing")).not.toBeOnTheScreen()
   })
 
-  it("renders nothing on Android", () => {
+  it("renders nothing on Android", async () => {
     Platform.OS = "android"
-    renderWithWrappers(<DynamicIslandEnvironmentIndicator />)
+    await renderWithWrappers(<DynamicIslandEnvironmentIndicator />)
 
     expect(screen.queryByTestId("EnvironmentIndicatorRing")).not.toBeOnTheScreen()
   })

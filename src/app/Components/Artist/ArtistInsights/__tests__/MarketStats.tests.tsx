@@ -29,18 +29,18 @@ describe("MarketStats", () => {
     )
   }
 
-  it("renders market stats", () => {
-    renderWithWrappers(<TestWrapper />)
-    resolveMostRecentRelayOperation(environment)
+  it("renders market stats", async () => {
+    await renderWithWrappers(<TestWrapper />)
+    await resolveMostRecentRelayOperation(environment)
 
     expect(screen.getByText("Market Signals")).toBeOnTheScreen()
     expect(screen.getByTestId("annualLotsSold")).toBeOnTheScreen()
   })
 
   describe("available mediums", () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       // eslint-disable-next-line testing-library/no-render-in-lifecycle
-      renderWithWrappers(<TestWrapper />)
+      await renderWithWrappers(<TestWrapper />)
 
       const priceInsights = {
         edges: [
@@ -48,7 +48,7 @@ describe("MarketStats", () => {
           { node: { medium: "fingerpaint", annualLotsSold: 456 } },
         ],
       }
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         PriceInsightConnection: () => priceInsights,
       })
     })
@@ -58,20 +58,20 @@ describe("MarketStats", () => {
     })
 
     it("shows data for other mediums when selected", async () => {
-      fireEvent.press(screen.getByTestId("select-medium"))
-      fireEvent.press(await screen.findByText("fingerpaint"))
+      await fireEvent.press(screen.getByTestId("select-medium"))
+      await fireEvent.press(await screen.findByText("fingerpaint"))
 
       expect(screen.getByTestId("annualLotsSold")).toHaveTextContent("456")
     })
   })
 
   describe("median sale over estimate icons", () => {
-    function renderWithOnePriceInsightNode(
+    async function renderWithOnePriceInsightNode(
       nodeSpecs: Partial<
         NonNullable<NonNullable<MarketStats_priceInsightsConnection$data["edges"]>[0]>["node"]
       >
     ) {
-      renderWithWrappers(<TestWrapper />)
+      await renderWithWrappers(<TestWrapper />)
       const priceInsights = {
         edges: [
           {
@@ -82,21 +82,21 @@ describe("MarketStats", () => {
         ],
       }
 
-      resolveMostRecentRelayOperation(environment, {
+      await resolveMostRecentRelayOperation(environment, {
         PriceInsightConnection: () => priceInsights,
       })
     }
 
-    it("displays down arrow when percentage is negative", () => {
-      renderWithOnePriceInsightNode({
+    it("displays down arrow when percentage is negative", async () => {
+      await renderWithOnePriceInsightNode({
         medianSaleOverEstimatePercentage: -10,
       })
 
       expect(screen.getByTestId("arrow-down-icon")).toBeOnTheScreen()
     })
 
-    it("displays no arrow when percentage is 0", () => {
-      renderWithOnePriceInsightNode({
+    it("displays no arrow when percentage is 0", async () => {
+      await renderWithOnePriceInsightNode({
         medianSaleOverEstimatePercentage: 0,
       })
 
@@ -104,8 +104,8 @@ describe("MarketStats", () => {
       expect(screen.queryByTestId("arrow-up-icon")).not.toBeOnTheScreen()
     })
 
-    it("displays up arrow when percentage is positive", () => {
-      renderWithOnePriceInsightNode({
+    it("displays up arrow when percentage is positive", async () => {
+      await renderWithOnePriceInsightNode({
         medianSaleOverEstimatePercentage: 10,
       })
 
@@ -114,11 +114,11 @@ describe("MarketStats", () => {
   })
 
   describe("tracking", () => {
-    it("tracks the correct event when info bubble is tapped", () => {
-      renderWithWrappers(<TestWrapper />)
-      resolveMostRecentRelayOperation(environment)
+    it("tracks the correct event when info bubble is tapped", async () => {
+      await renderWithWrappers(<TestWrapper />)
+      await resolveMostRecentRelayOperation(environment)
 
-      fireEvent.press(screen.getByText("Market Signals"))
+      await fireEvent.press(screen.getByText("Market Signals"))
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: "tappedInfoBubble",

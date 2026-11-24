@@ -1,4 +1,13 @@
-import { BackButton, Button, Flex, Input, Spacer, Text, useTheme } from "@artsy/palette-mobile"
+import {
+  BackButton,
+  Button,
+  Flex,
+  Input,
+  Spacer,
+  Text,
+  useTheme,
+  InputRef,
+} from "@artsy/palette-mobile"
 import {
   useAuthNavigation,
   useAuthScreen,
@@ -62,7 +71,7 @@ const ForgotPasswordStepForm: React.FC = () => {
   const navigation = useAuthNavigation()
   const screen = useAuthScreen()
   const { color } = useTheme()
-  const forgotPasswordRef = useRef<Input>(null)
+  const forgotPasswordRef = useRef<InputRef>(null)
 
   const handleBackButtonPress = () => {
     navigation.goBack()

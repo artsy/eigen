@@ -43,21 +43,21 @@ describe("ProgressiveOnboardingAlertReminder", () => {
     })
   })
 
-  it("renders", () => {
-    wrapper()
+  it("renders", async () => {
+    await wrapper()
 
     expect(screen.getByText("Test Children")).toBeOnTheScreen()
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
   })
 
-  it("shows the popover given all the conditions are met", () => {
+  it("shows the popover given all the conditions are met", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         sessionState: { isReady: true },
         dismissed: [{ key: "alert-finish", timestamp: Date.now() }],
       },
     })
-    wrapper()
+    await wrapper()
 
     expect(screen.getByText("Popover")).toBeOnTheScreen()
   })
@@ -69,9 +69,9 @@ describe("ProgressiveOnboardingAlertReminder", () => {
         dismissed: [{ key: "alert-finish", timestamp: Date.now() }],
       },
     })
-    wrapper()
+    await wrapper()
 
-    fireEvent.press(screen.getByText("Popover"))
+    await fireEvent.press(screen.getByText("Popover"))
 
     const state = __globalStoreTestUtils__?.getCurrentState()
     expect(state?.progressiveOnboarding.dismissed).toStrictEqual([
@@ -86,7 +86,7 @@ describe("ProgressiveOnboardingAlertReminder", () => {
     ])
   })
 
-  it("does not show the popover given another popover is active", () => {
+  it("does not show the popover given another popover is active", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         sessionState: { isReady: true, activePopover: "save-artwork" },
@@ -94,11 +94,11 @@ describe("ProgressiveOnboardingAlertReminder", () => {
       },
     })
 
-    wrapper()
+    await wrapper()
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
   })
 
-  it("renders the second reminder only after 7 days", () => {
+  it("renders the second reminder only after 7 days", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         sessionState: { isReady: true },
@@ -107,11 +107,11 @@ describe("ProgressiveOnboardingAlertReminder", () => {
       },
     })
 
-    wrapper()
+    await wrapper()
     expect(screen.getByText("Popover")).toBeOnTheScreen()
   })
 
-  it("does not render the second reminder after less than 7 days", () => {
+  it("does not render the second reminder after less than 7 days", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         sessionState: { isReady: true },
@@ -120,14 +120,14 @@ describe("ProgressiveOnboardingAlertReminder", () => {
       },
     })
 
-    wrapper()
+    await wrapper()
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
   })
 
-  it("does not show the popover given isFocused false", () => {
+  it("does not show the popover given isFocused false", async () => {
     mockUseIsFocusedMock.mockReturnValue(false)
 
-    wrapper()
+    await wrapper()
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
   })
 })

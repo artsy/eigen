@@ -47,8 +47,8 @@ describe("Colors options screen", () => {
     )
   }
 
-  it("shows the correct number of color options", () => {
-    renderWithWrappers(
+  it("shows the correct number of color options", async () => {
+    await renderWithWrappers(
       <MockColorScreen aggregations={[]} {...getEssentialProps()} initialData={initialState} />
     )
 
@@ -59,7 +59,7 @@ describe("Colors options screen", () => {
   })
 
   describe("selecting a color filter", () => {
-    it("displays a color filter option when selected", () => {
+    it("displays a color filter option when selected", async () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [
           {
@@ -81,13 +81,15 @@ describe("Colors options screen", () => {
         sizeMetric: "cm",
       }
 
-      renderWithWrappers(<MockColorScreen {...getEssentialProps()} initialData={injectedState} />)
+      await renderWithWrappers(
+        <MockColorScreen {...getEssentialProps()} initialData={injectedState} />
+      )
 
       const selectedOption = selectedColorOptions()[0]
       expect(selectedOption.name).toMatch(COLORS[0].name)
     })
 
-    it("allows multiple color options to be selected when several are tapped", () => {
+    it("allows multiple color options to be selected when several are tapped", async () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [
           {
@@ -109,11 +111,13 @@ describe("Colors options screen", () => {
         sizeMetric: "cm",
       }
 
-      renderWithWrappers(<MockColorScreen {...getEssentialProps()} initialData={injectedState} />)
+      await renderWithWrappers(
+        <MockColorScreen {...getEssentialProps()} initialData={injectedState} />
+      )
 
-      fireEvent.press(screen.getByText(COLORS[0].name))
-      fireEvent.press(screen.getByText(COLORS[1].name))
-      fireEvent.press(screen.getByText(COLORS[2].name))
+      await fireEvent.press(screen.getByText(COLORS[0].name))
+      await fireEvent.press(screen.getByText(COLORS[1].name))
+      await fireEvent.press(screen.getByText(COLORS[2].name))
 
       const selectedOptions = selectedColorOptions()
       expect(selectedOptions).toHaveLength(3)
@@ -124,7 +128,7 @@ describe("Colors options screen", () => {
       ])
     })
 
-    it("deselects color option on second tap", () => {
+    it("deselects color option on second tap", async () => {
       const injectedState: ArtworkFiltersState = {
         selectedFilters: [],
         appliedFilters: [],
@@ -140,15 +144,17 @@ describe("Colors options screen", () => {
         sizeMetric: "cm",
       }
 
-      renderWithWrappers(<MockColorScreen {...getEssentialProps()} initialData={injectedState} />)
+      await renderWithWrappers(
+        <MockColorScreen {...getEssentialProps()} initialData={injectedState} />
+      )
 
-      fireEvent.press(screen.getByText(COLORS[1].name))
+      await fireEvent.press(screen.getByText(COLORS[1].name))
 
       const selectedOptions = selectedColorOptions()
       expect(selectedOptions).toHaveLength(1)
       expect(selectedOptions[0].name).toMatch(COLORS[1].name)
 
-      fireEvent.press(screen.getByText(COLORS[1].name))
+      await fireEvent.press(screen.getByText(COLORS[1].name))
 
       const afterSecondTapOptions = selectedColorOptions()
       expect(afterSecondTapOptions).toHaveLength(0)

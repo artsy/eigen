@@ -17,7 +17,7 @@ describe("MyCollectionArtworkFormDeleteArtworkModal", () => {
   })
 
   it("deletes an artwork without deleting artist by default", async () => {
-    renderWithHookWrappersTL(
+    await renderWithHookWrappersTL(
       <MyCollectionArtworkFormDeleteArtworkModal
         visible
         hideModal={mockHideModal}
@@ -28,7 +28,7 @@ describe("MyCollectionArtworkFormDeleteArtworkModal", () => {
     )
 
     await act(async () => {
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({
           name: "Amoako Boafo",
         }),
@@ -39,13 +39,13 @@ describe("MyCollectionArtworkFormDeleteArtworkModal", () => {
 
     const deleteButton = screen.getByText("Delete Artwork")
 
-    fireEvent.press(deleteButton)
+    await fireEvent.press(deleteButton)
 
     expect(mockDeleteArtwork).toHaveBeenCalledWith(false)
   })
 
   it("deletes the artwork then artist when artworks count is 1 and user checked artwork deletion box", async () => {
-    renderWithHookWrappersTL(
+    await renderWithHookWrappersTL(
       <MyCollectionArtworkFormDeleteArtworkModal
         visible
         hideModal={mockHideModal}
@@ -56,7 +56,7 @@ describe("MyCollectionArtworkFormDeleteArtworkModal", () => {
     )
 
     await act(async () => {
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({
           name: "Amoako Boafo",
         }),
@@ -76,17 +76,17 @@ describe("MyCollectionArtworkFormDeleteArtworkModal", () => {
       "Remove Amoako Boafo from the artists you collect"
     )
 
-    fireEvent(deleteArtistCheckbox, "onPress")
+    await fireEvent(deleteArtistCheckbox, "onPress")
 
     await flushPromiseQueue()
 
-    fireEvent.press(deleteButton)
+    await fireEvent.press(deleteButton)
 
     expect(mockDeleteArtwork).toHaveBeenCalledWith(true)
   })
 
   it("can not delete artist when artworks count more than 1", async () => {
-    renderWithHookWrappersTL(
+    await renderWithHookWrappersTL(
       <MyCollectionArtworkFormDeleteArtworkModal
         visible
         hideModal={mockHideModal}
@@ -97,7 +97,7 @@ describe("MyCollectionArtworkFormDeleteArtworkModal", () => {
     )
 
     await act(async () => {
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({
           name: "Amoako Boafo",
         }),
@@ -117,17 +117,17 @@ describe("MyCollectionArtworkFormDeleteArtworkModal", () => {
       "Remove Amoako Boafo from the artists you collect"
     )
 
-    fireEvent(deleteArtistCheckbox, "onPress")
+    await fireEvent(deleteArtistCheckbox, "onPress")
 
     await flushPromiseQueue()
 
-    fireEvent.press(deleteButton)
+    await fireEvent.press(deleteButton)
 
     expect(mockDeleteArtwork).toHaveBeenCalledWith(false)
   })
 
   it("Hides modal when the user clicks on delete", async () => {
-    renderWithHookWrappersTL(
+    await renderWithHookWrappersTL(
       <MyCollectionArtworkFormDeleteArtworkModal
         visible
         hideModal={mockHideModal}
@@ -138,7 +138,7 @@ describe("MyCollectionArtworkFormDeleteArtworkModal", () => {
     )
 
     await act(async () => {
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({
           name: "Amoako Boafo",
         }),
@@ -149,7 +149,7 @@ describe("MyCollectionArtworkFormDeleteArtworkModal", () => {
 
     const cancelButton = screen.getByText("Cancel")
 
-    fireEvent.press(cancelButton)
+    await fireEvent.press(cancelButton)
 
     expect(mockHideModal).toHaveBeenCalled()
     expect(mockDeleteArtwork).not.toHaveBeenCalled()

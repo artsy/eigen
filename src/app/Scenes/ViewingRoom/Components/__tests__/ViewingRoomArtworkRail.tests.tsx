@@ -23,21 +23,21 @@ describe("ViewingRoomArtworkRail", () => {
     `,
   })
 
-  it("renders a title for the rail", () => {
-    renderWithRelay()
+  it("renders a title for the rail", async () => {
+    await renderWithRelay()
 
-    expect(screen.queryByText("Artworks")).toBeTruthy()
+    expect(screen.getByText("Artworks")).toBeTruthy()
   })
 
-  it("navigates to the artworks screen + calls tracking when title is tapped", () => {
-    renderWithRelay({
+  it("navigates to the artworks screen + calls tracking when title is tapped", async () => {
+    await renderWithRelay({
       ViewingRoom: () => ({
         slug: "gallery-name-viewing-room-name",
         internalID: "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
       }),
     })
 
-    fireEvent.press(screen.getByText("Artworks"))
+    await fireEvent.press(screen.getByText("Artworks"))
 
     expect(navigate).toHaveBeenCalledWith("/viewing-room/gallery-name-viewing-room-name/artworks")
     expect(postEventToProviders).toHaveBeenCalledWith(
@@ -48,8 +48,8 @@ describe("ViewingRoomArtworkRail", () => {
     )
   })
 
-  it("renders artworks", () => {
-    renderWithRelay({
+  it("renders artworks", async () => {
+    await renderWithRelay({
       ViewingRoom: () => ({
         artworks: {
           edges: [{ node: { title: "Guernica" } }, { node: { title: "The big wave" } }],
@@ -57,7 +57,7 @@ describe("ViewingRoomArtworkRail", () => {
       }),
     })
 
-    expect(screen.queryByText(/Guernica/)).toBeTruthy()
-    expect(screen.queryByText(/The big wave/)).toBeTruthy()
+    expect(screen.getByText(/Guernica/)).toBeTruthy()
+    expect(screen.getByText(/The big wave/)).toBeTruthy()
   })
 })
