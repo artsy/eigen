@@ -11,7 +11,6 @@ import {
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { SelectionCheck } from "app/Components/SelectionCheck/SelectionCheck"
-import { isWorkSellable } from "app/Scenes/Sell/utils/isWorkSellable"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const THUMBNAIL_SIZE = 40
@@ -25,7 +24,8 @@ export interface SellSelectionWork {
 
 interface SellSelectionNoteBottomSheetProps {
   visible: boolean
-  works: readonly SellSelectionWork[]
+  sellableWorks: readonly SellSelectionWork[]
+  unsellableWorks: readonly SellSelectionWork[]
   selectedWorkIDs: string[]
   onToggleWork: (internalID: string) => void
   onProceed: () => void
@@ -34,7 +34,8 @@ interface SellSelectionNoteBottomSheetProps {
 
 export const SellSelectionNoteBottomSheet: React.FC<SellSelectionNoteBottomSheetProps> = ({
   visible,
-  works,
+  sellableWorks,
+  unsellableWorks,
   selectedWorkIDs,
   onToggleWork,
   onProceed,
@@ -44,8 +45,7 @@ export const SellSelectionNoteBottomSheet: React.FC<SellSelectionNoteBottomSheet
   const space = useSpace()
   const color = useColor()
 
-  const sellableWorks = works.filter((work) => isWorkSellable(work.internalID))
-  const unsellableWorks = works.filter((work) => !isWorkSellable(work.internalID))
+  const selectionCount = sellableWorks.length + unsellableWorks.length
   const canProceed = sellableWorks.some((work) => selectedWorkIDs.includes(work.internalID))
 
   return (
@@ -64,13 +64,21 @@ export const SellSelectionNoteBottomSheet: React.FC<SellSelectionNoteBottomSheet
           {sellableWorks.length > 0 && (
             <Flex gap={1}>
               <SectionTitle>Works we can sell</SectionTitle>
-              <Text variant="sm" color="mono60">
-                We can help you with {sellableWorks.length}/{works.length} of the works you
-                selected, as long as they are currently in the US.
-              </Text>
-              <Text variant="sm" weight="medium">
-                Please untick any works which are currently outside the US.
-              </Text>
+              {selectionCount === 1 ? (
+                <Text variant="sm" color="mono60">
+                  We can help you with this work, as long as it’s currently in the US.
+                </Text>
+              ) : (
+                <>
+                  <Text variant="sm" color="mono60">
+                    We can help you with {sellableWorks.length}/{selectionCount} of the works you
+                    selected, as long as they are currently in the US.
+                  </Text>
+                  <Text variant="sm" weight="medium">
+                    Please untick any works which are currently outside the US.
+                  </Text>
+                </>
+              )}
 
               <Join separator={<Flex height={space(1)} />}>
                 {sellableWorks.map((work) => {

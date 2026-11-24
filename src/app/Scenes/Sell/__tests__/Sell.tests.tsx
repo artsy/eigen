@@ -1,3 +1,4 @@
+import { Spinner } from "@artsy/palette-mobile"
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { Sell } from "app/Scenes/Sell/Sell"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -6,9 +7,15 @@ import { getLocationDetails, getLocationPredictions } from "app/utils/googleMaps
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Alert, BackHandler } from "react-native"
+import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 
 // setupJest stubs useNavigation, but this test drives the real stack
 jest.mock("@react-navigation/native", () => jest.requireActual("@react-navigation/native"))
+
+const mockShowToast = jest.fn()
+jest.mock("app/Components/Toast/toastHook", () => ({
+  useToast: () => ({ show: mockShowToast }),
+}))
 
 jest.mock("app/utils/googleMaps", () => ({
   getLocationPredictions: jest.fn(),
@@ -62,9 +69,24 @@ const mockHardwareBack = () => {
   }
 }
 
-// isWorkSellable reads the last hex digit (even is sellable), getSellChannel the one before it
+// What createResaleSubmissions answers for each work in the collection
+const RESALE_SUBMISSIONS: Record<string, { state: string; channel: string | null }> = {
+  "id-a2": { state: "ACCEPTED", channel: "MARKETPLACE" },
+  "id-c3": { state: "REJECTED", channel: null },
+  "id-b4": { state: "ACCEPTED", channel: "AUCTION" },
+}
+
+const resaleSubmissionFor = (artworkID: string) => ({
+  internalID: `resaleSubmission-${artworkID}`,
+  recommendedPriceMin: null,
+  recommendedPriceMax: null,
+  ...RESALE_SUBMISSIONS[artworkID],
+})
+
+// `me` keeps one id across queries, as it does in the app
 const collection = {
   Me: () => ({
+    id: "me",
     myCollectionConnection: {
       edges: [
         {
@@ -73,7 +95,6 @@ const collection = {
             internalID: "id-a2",
             title: "Sellable Work",
             artistNames: "Artist A",
-            activeResaleSubmission: null,
           },
         },
         {
@@ -82,7 +103,6 @@ const collection = {
             internalID: "id-c3",
             title: "Unsellable Work",
             artistNames: "Artist B",
-            activeResaleSubmission: null,
           },
         },
         {
@@ -91,7 +111,6 @@ const collection = {
             internalID: "id-b4",
             title: "Auction Work",
             artistNames: "Artist C",
-            activeResaleSubmission: null,
           },
         },
       ],
@@ -101,13 +120,38 @@ const collection = {
 
 const { renderWithRelay } = setupTestWrapper({ Component: Sell })
 
-const renderSell = async () => {
-  const view = renderWithRelay(collection)
+const renderSell = async (resolvers: MockResolvers = collection) => {
+  const view = renderWithRelay(resolvers)
   await screen.findByTestId("artworkGridItem-Sellable Work")
   return view
 }
 
 type SellView = Awaited<ReturnType<typeof renderSell>>
+
+const operationNames = (view: SellView) =>
+  view.env.mock.getAllOperations().map((operation) => operation.request.node.operation.name)
+
+/** Answers the create call for each work it sent, failing the ones in `failedIDs` */
+const resolveVerify = async (view: SellView, failedIDs: string[] = []) => {
+  await waitFor(() => expect(operationNames(view)).toContain("useCreateResaleSubmissionsMutation"))
+  const { artworkIDs } = view.env.mock.getMostRecentOperation().request.variables.input
+
+  view.mockResolveLastOperation({
+    CreateResaleSubmissionsPayload: () => ({
+      resaleSubmissionsOrErrors: artworkIDs.map((artworkID: string) =>
+        failedIDs.includes(artworkID)
+          ? { __typename: "CreateResaleSubmissionFailure", artworkID }
+          : {
+              __typename: "CreateResaleSubmissionSuccess",
+              artworkID,
+              resaleSubmission: resaleSubmissionFor(artworkID),
+            }
+      ),
+    }),
+  })
+
+  return artworkIDs as string[]
+}
 
 type ActiveArtwork = { internalID: string; artistNames: string; title?: string }
 
@@ -142,15 +186,17 @@ const resolveLocationStep = (view: SellView, artwork: ActiveArtwork) =>
 const openAuctionConditionStep = async (view: SellView) => {
   fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
   fireEvent.press(screen.getByText("Verify If Sellable"))
+  await resolveVerify(view)
   fireEvent.press(await screen.findByText("Proceed to Listing"))
   fireEvent.press(await screen.findByText("Start Submission"))
   await resolveActiveArtwork(view, { internalID: "id-b4", artistNames: "Artist C" })
   await screen.findByText("Step 2 · Condition")
 }
 
-const openWorksSummary = async () => {
+const openWorksSummary = async (view: SellView) => {
   fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
   fireEvent.press(screen.getByText("Verify If Sellable"))
+  await resolveVerify(view)
   fireEvent.press(await screen.findByText("Proceed to Listing"))
   await screen.findByText("Start Listing")
 }
@@ -181,28 +227,25 @@ describe("Sell", () => {
     expect(dismissModal).toHaveBeenCalledTimes(1)
   })
 
-  it("labels works with the status of their active resale submission", async () => {
+  it("hides a work verified on an earlier visit when the flow opens again", async () => {
+    const view = await renderSell()
+    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
+    fireEvent.press(screen.getByText("Verify If Sellable"))
+    await resolveVerify(view)
+    view.unmount()
+
+    // Throws if the screen reads its cached copy instead of asking again
     renderWithRelay({
       Me: () => {
         const me = collection.Me()
-        const [sellable, unsellable, auction] = me.myCollectionConnection.edges
-        return {
-          ...me,
-          myCollectionConnection: {
-            edges: [
-              sellable,
-              unsellable,
-              {
-                node: { ...auction.node, activeResaleSubmission: { statusMessage: "In progress" } },
-              },
-            ],
-          },
-        }
+        // The server leaves out works with an active resale submission
+        const [, ...rest] = me.myCollectionConnection.edges
+        return { ...me, myCollectionConnection: { edges: rest } }
       },
     })
 
-    expect(await screen.findByText("In progress")).toBeOnTheScreen()
-    expect(screen.getAllByText("In progress")).toHaveLength(1)
+    expect(await screen.findByTestId("artworkGridItem-Auction Work")).toBeOnTheScreen()
+    expect(screen.queryByTestId("artworkGridItem-Sellable Work")).not.toBeOnTheScreen()
   })
 
   it("keeps the verify button disabled until a work is selected", async () => {
@@ -219,12 +262,14 @@ describe("Sell", () => {
   })
 
   it("previews only the sellable works still ticked, each with its sales channel", async () => {
-    await renderSell()
+    const view = await renderSell()
 
     fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
     fireEvent.press(screen.getByTestId("artworkGridItem-Unsellable Work"))
     fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
     fireEvent.press(screen.getByText("Verify If Sellable"))
+    expect(await resolveVerify(view)).toEqual(["id-a2", "id-c3", "id-b4"])
+    expect(await screen.findByText("Not able to sell yet")).toBeOnTheScreen()
 
     fireEvent.press(await screen.findByRole("checkbox", { name: "Artist C, Auction Work" }))
     fireEvent.press(screen.getByText("Proceed to Listing"))
@@ -237,10 +282,77 @@ describe("Sell", () => {
     expect(screen.queryByText("Start Submission")).not.toBeOnTheScreen()
   })
 
+  it("sends a work only once, even when verified again", async () => {
+    const view = await renderSell()
+    await openWorksSummary(view)
+
+    fireEvent.press(screen.getByLabelText("Go back"))
+    fireEvent.press(await screen.findByTestId("artworkGridItem-Auction Work"))
+    fireEvent.press(screen.getByText("Verify If Sellable"))
+
+    expect(await resolveVerify(view)).toEqual(["id-b4"])
+    expect(await screen.findByText("Proceed to Listing")).toBeOnTheScreen()
+  })
+
+  it("keeps the sheet closed when a work fails, then retries only that work", async () => {
+    const view = await renderSell()
+
+    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
+    fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
+    fireEvent.press(screen.getByText("Verify If Sellable"))
+    await resolveVerify(view, ["id-b4"])
+
+    await waitFor(() =>
+      expect(mockShowToast).toHaveBeenCalledWith(
+        "We couldn’t check your works. Please try again.",
+        "bottom",
+        expect.objectContaining({ backgroundColor: "red100" })
+      )
+    )
+    expect(screen.queryByText("Proceed to Listing")).not.toBeOnTheScreen()
+
+    // The toast shows a moment before the button stops loading, and a loading button ignores presses
+    await waitFor(() => expect(screen.UNSAFE_queryByType(Spinner)).toBeNull())
+    fireEvent.press(screen.getByText("Verify If Sellable"))
+    expect(await resolveVerify(view)).toEqual(["id-b4"])
+    expect(await screen.findByText("Proceed to Listing")).toBeOnTheScreen()
+  })
+
+  it("shows an error when the request fails", async () => {
+    const view = await renderSell()
+
+    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
+    fireEvent.press(screen.getByText("Verify If Sellable"))
+    await waitFor(() =>
+      expect(operationNames(view)).toContain("useCreateResaleSubmissionsMutation")
+    )
+    view.mockRejectLastOperation(new Error("Network request failed"))
+
+    await waitFor(() =>
+      expect(mockShowToast).toHaveBeenCalledWith(
+        "We couldn’t check your works. Please try again.",
+        "bottom",
+        expect.objectContaining({ backgroundColor: "red100" })
+      )
+    )
+    expect(screen.getByText("Verify If Sellable")).toBeEnabled()
+  })
+
+  it("ignores taps on the grid while the works are being checked", async () => {
+    const view = await renderSell()
+
+    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
+    fireEvent.press(screen.getByText("Verify If Sellable"))
+    fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
+
+    expect(await resolveVerify(view)).toEqual(["id-a2"])
+    expect(await screen.findByText(/We can help you with this work/)).toBeOnTheScreen()
+  })
+
   it("walks through every step and shows the confirmation on submit", async () => {
     const view = await renderSell()
 
-    await openWorksSummary()
+    await openWorksSummary(view)
     expect(screen.getByText("Step 1 · Decide Which Works to Sell")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 1 of 3")).toBeOnTheScreen()
     expect(screen.getByText(/We reviewed demand for these works/)).toBeOnTheScreen()
@@ -383,9 +495,9 @@ describe("Sell", () => {
   })
 
   it("goes back from the works summary to the work selection, then leaves the flow", async () => {
-    await renderSell()
+    const view = await renderSell()
 
-    await openWorksSummary()
+    await openWorksSummary(view)
 
     fireEvent.press(screen.getByLabelText("Go back"))
     expect(await screen.findByText("Verify If Sellable")).toBeEnabled()
@@ -399,7 +511,7 @@ describe("Sell", () => {
     const pressHardwareBack = mockHardwareBack()
     const view = await renderSell()
 
-    await openWorksSummary()
+    await openWorksSummary(view)
 
     pressHardwareBack()
     expect(await screen.findByText("Verify If Sellable")).toBeOnTheScreen()
@@ -441,7 +553,7 @@ describe("Sell", () => {
     expect(screen.getByRole("radio", { name: /^Fair\./ })).toBeChecked()
 
     act(() => buttons.find((button) => button.text === "Go back")?.onPress?.())
-    // The work is already in the Relay store, so step 2 opens without a new query
+    // The submission is already in the Relay store, so step 2 opens without a new query
     fireEvent.press(await screen.findByText("Start Submission"))
 
     expect(await screen.findByRole("radio", { name: /^Fair\./ })).not.toBeChecked()
@@ -449,9 +561,9 @@ describe("Sell", () => {
 
   it("asks for confirmation before closing the flow past the first screen", async () => {
     const alertSpy = jest.spyOn(Alert, "alert")
-    await renderSell()
+    const view = await renderSell()
 
-    await openWorksSummary()
+    await openWorksSummary(view)
 
     fireEvent.press(screen.getByLabelText("Close"))
     expect(alertSpy).toHaveBeenCalledWith("Leave this flow?", expect.any(String), expect.any(Array))

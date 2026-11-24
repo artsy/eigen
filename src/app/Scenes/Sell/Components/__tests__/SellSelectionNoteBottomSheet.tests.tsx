@@ -5,17 +5,25 @@ import {
 } from "app/Scenes/Sell/Components/SellSelectionNoteBottomSheet"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-// isWorkSellable treats an even last hex digit as sellable
-const works: SellSelectionWork[] = [
-  { internalID: "id-a2", artistNames: "Artist A", title: "Sellable Work", thumbnail: null },
-  { internalID: "id-c3", artistNames: "Artist B", title: "Unsellable Work", thumbnail: null },
-]
+const sellableWork: SellSelectionWork = {
+  internalID: "id-a2",
+  artistNames: "Artist A",
+  title: "Sellable Work",
+  thumbnail: null,
+}
+const unsellableWork: SellSelectionWork = {
+  internalID: "id-c3",
+  artistNames: "Artist B",
+  title: "Unsellable Work",
+  thumbnail: null,
+}
 
 const renderSheet = (props: Partial<React.ComponentProps<typeof SellSelectionNoteBottomSheet>>) =>
   renderWithWrappers(
     <SellSelectionNoteBottomSheet
       visible
-      works={works}
+      sellableWorks={[sellableWork]}
+      unsellableWorks={[unsellableWork]}
       selectedWorkIDs={["id-a2", "id-c3"]}
       onToggleWork={jest.fn()}
       onProceed={jest.fn()}
@@ -25,18 +33,31 @@ const renderSheet = (props: Partial<React.ComponentProps<typeof SellSelectionNot
   )
 
 describe("SellSelectionNoteBottomSheet", () => {
-  it("splits the works into ones we can and can’t sell", () => {
+  it("lists the works we can and can’t sell", () => {
     renderSheet({})
 
     expect(screen.getByText(/We can help you with 1\/2 of the works/)).toBeOnTheScreen()
+    expect(
+      screen.getByText("Please untick any works which are currently outside the US.")
+    ).toBeOnTheScreen()
     expect(screen.getByRole("checkbox", { name: "Artist A, Sellable Work" })).toBeChecked()
     expect(screen.getByText("Not able to sell yet")).toBeOnTheScreen()
     expect(screen.getByText("Unsellable Work")).toBeOnTheScreen()
     expect(screen.getAllByRole("checkbox")).toHaveLength(1)
   })
 
+  it("talks about a single work when only one was selected", () => {
+    renderSheet({ unsellableWorks: [], selectedWorkIDs: ["id-a2"] })
+
+    expect(
+      screen.getByText("We can help you with this work, as long as it’s currently in the US.")
+    ).toBeOnTheScreen()
+    expect(screen.queryByText(/Please untick/)).not.toBeOnTheScreen()
+    expect(screen.getByRole("checkbox", { name: "Artist A, Sellable Work" })).toBeChecked()
+  })
+
   it("hides the sellable section when nothing can be sold", () => {
-    renderSheet({ works: [works[1]], selectedWorkIDs: ["id-c3"] })
+    renderSheet({ sellableWorks: [], selectedWorkIDs: ["id-c3"] })
 
     expect(screen.queryByText("Works we can sell")).not.toBeOnTheScreen()
     expect(screen.getByText("Proceed to Listing")).toBeDisabled()
