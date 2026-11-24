@@ -45,8 +45,9 @@ export type FeatureName = keyof typeof features
 
 export const features = {
   ARDefaultToLastSavedList: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Default artwork save to the last-used list",
+    echoFlagKey: "ARDefaultToLastSavedList",
     showInDevMenu: true,
   },
   ARDarkModeSupport: {
