@@ -1,9 +1,8 @@
-import { act, waitFor } from "@testing-library/react-native"
+import { act, screen } from "@testing-library/react-native"
 import { ViewingRoomsListFeaturedTestsQuery } from "__generated__/ViewingRoomsListFeaturedTestsQuery.graphql"
-import { MediumCard } from "app/Components/Cards"
 import { FeaturedRail } from "app/Scenes/ViewingRoom/Components/ViewingRoomsListFeatured"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer, RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
@@ -31,7 +30,7 @@ describe(FeaturedRail, () => {
   })
 
   it("shows some cards", async () => {
-    const view = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -62,10 +61,8 @@ describe(FeaturedRail, () => {
       )
     })
 
-    // Wait for the elements to appear after Relay mock resolution
-    await waitFor(async () => {
-      const cards = await view.root.findAllByType(MediumCard)
-      expect(cards).toHaveLength(2)
-    })
+    // Wait for the cards (MediumCard) to appear after Relay mock resolution
+    expect(await screen.findByText("ok")).toBeOnTheScreen()
+    expect(screen.getByText("oak")).toBeOnTheScreen()
   })
 })

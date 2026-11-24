@@ -15,13 +15,13 @@ afterEach(() => {
 
 describe("TimeSince", () => {
   it("renders null when time is null", () => {
-    const { toJSON } = renderWithWrappers(<TimeSince time={null} />)
-    expect(toJSON()).toBeNull()
+    renderWithWrappers(<TimeSince time={null} />)
+    expect(screen.queryAllByText(/./)).toHaveLength(0)
   })
 
   it("renders null when time is undefined", () => {
-    const { toJSON } = renderWithWrappers(<TimeSince time={undefined} />)
-    expect(toJSON()).toBeNull()
+    renderWithWrappers(<TimeSince time={undefined} />)
+    expect(screen.queryAllByText(/./)).toHaveLength(0)
   })
 
   describe("exact mode", () => {
@@ -55,8 +55,8 @@ describe("TimeSince", () => {
   describe("relative mode (default)", () => {
     it("renders without crashing for a valid time", () => {
       const oneHourAgo = new Date(NOW - 60 * 60 * 1000).toISOString()
-      const { toJSON } = renderWithWrappers(<TimeSince time={oneHourAgo} />)
-      expect(toJSON()).not.toBeNull()
+      renderWithWrappers(<TimeSince time={oneHourAgo} />)
+      expect(screen.getByText(relativeDate(oneHourAgo)!)).toBeOnTheScreen()
     })
   })
 })

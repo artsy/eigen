@@ -615,6 +615,11 @@ type Alert {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -732,7 +737,7 @@ type Alert {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -2438,6 +2443,11 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -2555,7 +2565,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -3121,6 +3131,11 @@ type ArtistPartnerEdge {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -3238,7 +3253,7 @@ type ArtistPartnerEdge {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -3403,6 +3418,11 @@ type ArtistSeries implements Node {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -3520,7 +3540,7 @@ type ArtistSeries implements Node {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -3853,9 +3873,19 @@ type ArtnetArtwork {
   deleteInFlight: Boolean
 
   """
+  Artnet holds images the Artsy artwork does not. `syncImages` then does nothing, and Artnet's images change only through `addImageIDs`, `removeImageIDs` and `uploadImageS3Locations` on `updateArtnetArtwork`.
+  """
+  hasSeparateImageSets: Boolean
+
+  """
   A globally unique ID.
   """
   id: ID!
+
+  """
+  The images Artnet holds for this artwork, and those sent to it.
+  """
+  images: [ArtnetArtworkImage]
 
   """
   A type-specific ID likely used as a database ID.
@@ -3889,6 +3919,11 @@ type ArtnetArtwork {
   Whether the artwork is published on Artnet.
   """
   published: Boolean
+
+  """
+  What the last push of this artwork to Artnet had to say, if anything. Null once a later push settles cleanly — a working push is what clears these, nothing acknowledges them.
+  """
+  pushMessages: ArtnetPushMessages
   updatedAt(
     format: String
 
@@ -3897,6 +3932,62 @@ type ArtnetArtwork {
     """
     timezone: String
   ): String
+}
+
+"""
+An image of an artwork on Artnet, or one sent to Artnet.
+"""
+type ArtnetArtworkImage {
+  """
+  The artwork image on Artsy that this is a copy of. Null for an image only Artnet has.
+  """
+  artsyImageID: String
+  createdAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  Where Artnet serves the image. Null until Artnet holds the image.
+  """
+  imageURL: String
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+  status: ArtnetArtworkImageStatus!
+}
+
+enum ArtnetArtworkImageStatus {
+  """
+  Sent to Artnet, which did not add it (for example an image under 500 x 500 px). Send it again with `addImageIDs`.
+  """
+  NOT_ADDED
+
+  """
+  Artnet holds this image.
+  """
+  ON_ARTNET
+
+  """
+  Sent to Artnet, which has not confirmed it yet.
+  """
+  PENDING_ADD
+
+  """
+  Artnet has been asked to remove it and has not confirmed yet.
+  """
+  PENDING_REMOVE
 }
 
 """
@@ -4115,6 +4206,21 @@ enum ArtnetImportState {
 }
 
 """
+What Artnet had to say about the last push of this artwork. Artnet reports no severity and no failure state — work that went wrong comes back complete, carrying messages — so these say only that the push had something to report, not that it failed. Read `gaveUp` for the one hard distinction.
+"""
+type ArtnetPushMessages {
+  """
+  True when Gravity stopped asking how the push turned out, so the outcome is unknown rather than bad. False when Artnet itself reported these messages.
+  """
+  gaveUp: Boolean
+
+  """
+  What Artnet said about the push, verbatim, plus Gravity's own reason when it gave up. A message can be a warning about work that still succeeded, such as an image Artnet could not add to an artwork it did create.
+  """
+  messages: [String]
+}
+
+"""
 A field the push could not send but did not refuse to push over, because Artnet's own limits leave it no form to send it in.
 """
 type ArtnetPushSkip {
@@ -4189,6 +4295,10 @@ type ArtsyShippingOptInResponse {
 }
 
 type Artwork implements Node & Searchable & Sellable {
+  """
+  The current user’s active resale submission for this artwork, if there is one.
+  """
+  activeResaleSubmission: ResaleSubmission
   additionalInformation(format: Format): String
   artaShippingEnabled: Boolean
     @deprecated(reason: "Prefer to use `processWithArtsyShippingDomestic`. [Will be removed in v2]")
@@ -5325,6 +5435,11 @@ type ArtworkFilterNode {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -5442,7 +5557,7 @@ type ArtworkFilterNode {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -6139,7 +6254,12 @@ enum ArtworkSearchProfile {
   DEFAULT
 
   """
-  Inventory search for a partner. Requires partnerID and partner access; ignored otherwise.
+  Inventory search for a partner, matching the medium type instead of the catalog medium. Requires partnerID and partner access; ignored otherwise.
+  """
+  PARTNER_CMS
+
+  """
+  Inventory search for a partner, matching the catalog medium. Requires partnerID and partner access; ignored otherwise.
   """
   PARTNER_INVENTORY
 }
@@ -8140,6 +8260,16 @@ type BuyersPremium {
 }
 
 type CRMActivity {
+  """
+  The artists this activity is about. Deleted ones are left out
+  """
+  artists: [Artist!]!
+
+  """
+  The artworks this activity is about. Deleted ones are left out
+  """
+  artworks: [Artwork!]!
+  channel: CRMActivityChannel
   createdAt(
     format: String
 
@@ -8149,6 +8279,7 @@ type CRMActivity {
     timezone: String
   ): String
   crmContactID: String!
+  description: String
 
   """
   Null for activities that are not emails
@@ -8174,6 +8305,29 @@ type CRMActivity {
     timezone: String
   ): String
   partnerID: String!
+  subject: String
+  updatedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
+  The user who added this activity
+  """
+  userID: String
+}
+
+"""
+How the activity happened, apart from its kind
+"""
+enum CRMActivityChannel {
+  EMAIL
+  IN_PERSON
+  SYSTEM
 }
 
 """
@@ -8209,7 +8363,10 @@ type CRMActivityEdge {
 }
 
 enum CRMActivityKind {
+  CALL
   EMAIL
+  INTEREST
+  MEETING
   NOTE
 }
 
@@ -8568,6 +8725,36 @@ Price Insights Calendar year
 type CalendarYearPriceInsights {
   calendarYearMarketPriceInsights: [CalendarYearMarketPriceInsights!]
   medium: String!
+}
+
+type CancelResaleSubmissionFailure {
+  mutationError: GravityMutationError
+}
+
+input CancelResaleSubmissionInput {
+  clientMutationId: String
+
+  """
+  The internal ID of the resale submission to cancel.
+  """
+  id: String!
+}
+
+type CancelResaleSubmissionPayload {
+  clientMutationId: String
+
+  """
+  On success: the canceled resale submission.
+  """
+  resaleSubmissionOrError: CancelResaleSubmissionResponseOrError
+}
+
+union CancelResaleSubmissionResponseOrError =
+    CancelResaleSubmissionFailure
+  | CancelResaleSubmissionSuccess
+
+type CancelResaleSubmissionSuccess {
+  resaleSubmission: ResaleSubmission
 }
 
 type Card {
@@ -9088,6 +9275,11 @@ type Collection {
   """
   name: String!
   private: Boolean!
+
+  """
+  Representative artworks (ordered), resolved from their ids.
+  """
+  representativeArtworks: [Artwork!]
 
   """
   True if this collection represents artworks explicitly saved by the user, false otherwise.
@@ -12593,6 +12785,11 @@ type Conversation implements Node {
   collectorOrdersConnection(
     after: String
     before: String
+
+    """
+    Filter by buyer states
+    """
+    buyerState: [OrderBuyerStateEnum]
     first: Int
     last: Int
     page: Int
@@ -12795,6 +12992,11 @@ type Conversation implements Node {
     first: Int
     last: Int
     page: Int
+
+    """
+    Filter by seller states
+    """
+    sellerState: [OrderSellerStateEnum]
     size: Int
   ): PartnerOrdersConnection
 
@@ -13647,6 +13849,65 @@ union CreateBrandKitResponseOrError = CreateBrandKitFailure | CreateBrandKitSucc
 
 type CreateBrandKitSuccess {
   brandKit: BrandKit
+}
+
+type CreateCRMActivityFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateCRMActivityInput {
+  """
+  Artists the partner shows or represents that the activity is about. An INTEREST needs an artwork or an artist
+  """
+  artistIDs: [String!]
+
+  """
+  Artworks of the partner that the activity is about
+  """
+  artworkIDs: [String!]
+
+  """
+  How the activity happened. Defaults to SYSTEM
+  """
+  channel: CRMActivityChannel
+  clientMutationId: String
+  crmContactID: String!
+
+  """
+  Required for NOTE
+  """
+  description: String
+
+  """
+  Kind of activity. EMAIL is not accepted
+  """
+  kind: CRMActivityKind!
+
+  """
+  ISO 8601 time the activity happened. Defaults to now on create
+  """
+  occurredAt: String
+  subject: String
+
+  """
+  The user who added the activity, who must belong to the activity's partner. Defaults to the current user, null leaves it unset
+  """
+  userID: String
+}
+
+type CreateCRMActivityPayload {
+  clientMutationId: String
+
+  """
+  On success: the created activity
+  """
+  crmActivityOrError: CreateCRMActivityResponseOrError
+}
+
+union CreateCRMActivityResponseOrError = CreateCRMActivityFailure | CreateCRMActivitySuccess
+
+type CreateCRMActivitySuccess {
+  crmActivity: CRMActivity
 }
 
 type CreateCRMContactEmailFailure {
@@ -15002,6 +15263,43 @@ type CreatePurchaseSuccess {
   purchase: Purchase
 }
 
+type CreateResaleSubmissionFailure {
+  """
+  The artwork this result is for.
+  """
+  artworkID: String!
+  mutationError: GravityMutationError
+}
+
+union CreateResaleSubmissionResponseOrError =
+    CreateResaleSubmissionFailure
+  | CreateResaleSubmissionSuccess
+
+type CreateResaleSubmissionSuccess {
+  """
+  The artwork this result is for.
+  """
+  artworkID: String!
+  resaleSubmission: ResaleSubmission
+}
+
+input CreateResaleSubmissionsInput {
+  """
+  The internal IDs of the artworks to assess.
+  """
+  artworkIDs: [String!]!
+  clientMutationId: String
+}
+
+type CreateResaleSubmissionsPayload {
+  clientMutationId: String
+
+  """
+  One result per distinct artwork, in the order first sent. On success: the new resale submission.
+  """
+  resaleSubmissionsOrErrors: [CreateResaleSubmissionResponseOrError!]!
+}
+
 type CreateSaleAgreementFailure {
   mutationError: GravityMutationError
 }
@@ -15823,6 +16121,34 @@ type DeleteBrandKitSuccess {
   success: Boolean
 }
 
+type DeleteCRMActivityFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteCRMActivityInput {
+  clientMutationId: String
+
+  """
+  The internal ID of the activity
+  """
+  id: String!
+}
+
+type DeleteCRMActivityPayload {
+  clientMutationId: String
+
+  """
+  On success: the removed activity
+  """
+  crmActivityOrError: DeleteCRMActivityResponseOrError
+}
+
+union DeleteCRMActivityResponseOrError = DeleteCRMActivityFailure | DeleteCRMActivitySuccess
+
+type DeleteCRMActivitySuccess {
+  crmActivity: CRMActivity
+}
+
 type DeleteCRMContactEmailFailure {
   mutationError: GravityMutationError
 }
@@ -16527,6 +16853,41 @@ union DeletePurchaseResponseOrError = DeletePurchaseFailure | DeletePurchaseSucc
 
 type DeletePurchaseSuccess {
   purchase: Purchase
+}
+
+type DeleteResaleSubmissionImageFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteResaleSubmissionImageInput {
+  clientMutationId: String
+
+  """
+  The internal ID of the resale submission.
+  """
+  id: String!
+
+  """
+  The internal ID of the condition photo to remove.
+  """
+  imageID: String!
+}
+
+type DeleteResaleSubmissionImagePayload {
+  clientMutationId: String
+
+  """
+  On success: the resale submission without the photo.
+  """
+  resaleSubmissionOrError: DeleteResaleSubmissionImageResponseOrError
+}
+
+union DeleteResaleSubmissionImageResponseOrError =
+    DeleteResaleSubmissionImageFailure
+  | DeleteResaleSubmissionImageSuccess
+
+type DeleteResaleSubmissionImageSuccess {
+  resaleSubmission: ResaleSubmission
 }
 
 type DeleteShippingPresetFailure {
@@ -17863,6 +18224,11 @@ interface EntityWithFilterArtworksConnectionInterface {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -17979,7 +18345,7 @@ interface EntityWithFilterArtworksConnectionInterface {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -18368,6 +18734,11 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -18485,7 +18856,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -19219,6 +19590,11 @@ input FilterArtworksInput {
   attributionClass: [String]
   availability: String
   before: String
+
+  """
+  Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+  """
+  catalogArtworkAvailability: String
   categories: [String]
 
   """
@@ -19335,7 +19711,7 @@ input FilterArtworksInput {
   saleID: ID
 
   """
-  Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+  Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
   """
   searchProfile: ArtworkSearchProfile
   showID: String
@@ -20048,6 +20424,11 @@ type Gene implements Node & Searchable {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -20165,7 +20546,7 @@ type Gene implements Node & Searchable {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -23674,6 +24055,11 @@ type MarketingCollection implements Node {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -23791,7 +24177,7 @@ type MarketingCollection implements Node {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -24729,6 +25115,22 @@ type Me implements Node {
     page: Int
   ): ArtworkConnection
     @deprecated(reason: "These genomic recs are deprecated. Use artworkRecommendations instead.")
+  resaleSubmission(id: String!): ResaleSubmission
+
+  """
+  The current user’s resale submissions.
+  """
+  resaleSubmissionsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    """
+    Newest first when omitted.
+    """
+    sort: ResaleSubmissionSorts
+  ): ResaleSubmissionConnection
   saleRegistrationsConnection(
     after: String
     auctionState: AuctionState
@@ -25538,6 +25940,11 @@ type Mutation {
   ): BulkUpdateArtworksMetadataMutationPayload
 
   """
+  Cancel an accepted resale submission. The submission is kept, with state CANCELED.
+  """
+  cancelResaleSubmission(input: CancelResaleSubmissionInput!): CancelResaleSubmissionPayload
+
+  """
   Creates a pending offer on an pending order.
   """
   commerceAddInitialOfferToOrder(
@@ -25894,6 +26301,11 @@ type Mutation {
   createBuyerOffer(input: createBuyerOfferInput!): createBuyerOfferPayload
 
   """
+  Add an activity to a CRM contact's timeline. Email activities can't be created.
+  """
+  createCRMActivity(input: CreateCRMActivityInput!): CreateCRMActivityPayload
+
+  """
   Create a CRM contact. It needs at least one of firstName, lastName, company or an email. Creation is all-or-nothing: a failing email or location creates nothing.
   """
   createCRMContact(input: CreateCRMContactInput!): CreateCRMContactPayload
@@ -26124,6 +26536,11 @@ type Mutation {
   createPurchase(input: createPurchaseInput!): createPurchasePayload
 
   """
+  Submit My Collection works for resale assessment.
+  """
+  createResaleSubmissions(input: CreateResaleSubmissionsInput!): CreateResaleSubmissionsPayload
+
+  """
   Creates a static Markdown-backed sale agreement.
   """
   createSaleAgreement(input: CreateSaleAgreementMutationInput!): CreateSaleAgreementMutationPayload
@@ -26239,6 +26656,11 @@ type Mutation {
   Remove the logo from a brand kit
   """
   deleteBrandKitLogo(input: DeleteBrandKitLogoInput!): DeleteBrandKitLogoPayload
+
+  """
+  Remove an activity from a CRM contact's timeline. Email activities can't be removed.
+  """
+  deleteCRMActivity(input: DeleteCRMActivityInput!): DeleteCRMActivityPayload
 
   """
   Remove an email from a CRM contact. Fails when it is the contact's last email and the contact has no name or company.
@@ -26433,6 +26855,13 @@ type Mutation {
   Deletes a purchase
   """
   deletePurchase(input: deletePurchaseInput!): deletePurchasePayload
+
+  """
+  Remove a condition photo from a resale submission.
+  """
+  deleteResaleSubmissionImage(
+    input: DeleteResaleSubmissionImageInput!
+  ): DeleteResaleSubmissionImagePayload
 
   """
   Deletes a shipping preset for a partner.
@@ -26969,7 +27398,7 @@ type Mutation {
   updateArtistStoryVideo(input: updateArtistStoryVideoInput!): updateArtistStoryVideoPayload
 
   """
-  Updates an ArtnetArtwork and pushes the supported changes to Artnet. At least one of `published`, `availability`, `primaryMedium`, `additionalMediums`, `materials`, `priceFromMinor`, `priceToMinor` or `syncOn` is required. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
+  Updates an ArtnetArtwork and pushes the supported changes to Artnet. At least one of `published`, `availability`, `primaryMedium`, `additionalMediums`, `materials`, `priceFromMinor`, `priceToMinor`, `syncOn`, `syncImages`, `addImageIDs`, `removeImageIDs`, `uploadImageS3Locations` or `copyImageIDs` is required. Requires the `X-Artnet-Token` and `X-Artnet-User-Id` headers.
   """
   updateArtnetArtwork(input: UpdateArtnetArtworkMutationInput!): UpdateArtnetArtworkMutationPayload
 
@@ -27011,6 +27440,11 @@ type Mutation {
   updateCMSLastAccessTimestamp(
     input: UpdateCMSLastAccessTimestampMutationInput!
   ): UpdateCMSLastAccessTimestampMutationPayload
+
+  """
+  Change an activity. Email activities can't be changed.
+  """
+  updateCRMActivity(input: UpdateCRMActivityInput!): UpdateCRMActivityPayload
 
   """
   Update a CRM contact's own fields. Emails and locations have their own mutations, and a contact can't change partner.
@@ -27271,6 +27705,11 @@ type Mutation {
   Update a quiz artwork interacted_with flag
   """
   updateQuiz(input: updateQuizMutationInput!): updateQuizMutationPayload
+
+  """
+  Update the asking price, shipping preferences and condition photos of a resale submission. Omitted or null fields are left unchanged.
+  """
+  updateResaleSubmission(input: UpdateResaleSubmissionInput!): UpdateResaleSubmissionPayload
 
   """
   Updates a saleAgreement.
@@ -27924,6 +28363,11 @@ type Offer {
   ): String
 
   """
+  Whether this offer defines the total (amount, shipping and tax) for the first time in the negotiation
+  """
+  definesTotal: Boolean
+
+  """
   Who the offer is from
   """
   fromParticipant: FromParticipantEnum!
@@ -27944,6 +28388,11 @@ type Offer {
   note: String
 
   """
+  Whether this offer's amount differs from the offer it responds to
+  """
+  offerAmountChanged: Boolean
+
+  """
   The order this offer belongs to
   """
   order: Order
@@ -27952,6 +28401,11 @@ type Offer {
   Pricing breakdown lines
   """
   pricingBreakdownLines: [PricingBreakdownLineUnion]!
+
+  """
+  The offer this offer responds to (i.e. the offer being countered), if any
+  """
+  respondsTo: Offer
 
   """
   The shipping total for this offer
@@ -28057,6 +28511,11 @@ type Order {
   Check if the bank account has sufficient balance for this order
   """
   bankAccountBalanceCheck: BankAccountBalanceCheck
+
+  """
+  Type of action the buyer needs to perform in response to the last submitted offer. Only present for offer orders fetched as the buyer.
+  """
+  buyerAction: OrderBuyerActionEnum
 
   """
   Phone number of the buyer
@@ -28247,6 +28706,41 @@ type Order {
 
 type OrderActionData {
   clientSecret: String!
+}
+
+"""
+Type of action the buyer needs to perform in response to the last submitted offer
+"""
+enum OrderBuyerActionEnum {
+  """
+  Buyer's offer is accepted and final
+  """
+  OFFER_ACCEPTED
+
+  """
+  Buyer's offer accepted, needs to confirm tax and shipping
+  """
+  OFFER_ACCEPTED_CONFIRM_NEEDED
+
+  """
+  Buyer received a counter offer
+  """
+  OFFER_RECEIVED
+
+  """
+  Buyer received a counter, offer needs to confirm tax and shipping
+  """
+  OFFER_RECEIVED_CONFIRM_NEEDED
+
+  """
+  Buyer's payment failed
+  """
+  PAYMENT_FAILED
+
+  """
+  Provisional offer is accepted and tax/shipping confirmed
+  """
+  PROVISIONAL_OFFER_ACCEPTED
 }
 
 enum OrderBuyerStateEnum {
@@ -28942,7 +29436,7 @@ type Partner implements Node {
     query: String!
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` matches title, artist, medium type and full or partial inventory ID.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` match title, artist, medium and full or partial inventory ID. `PARTNER_INVENTORY` matches the catalog medium, and `PARTNER_CMS` the medium type.
     """
     searchProfile: ArtworkSearchProfile
     size: Int
@@ -29083,6 +29577,11 @@ type Partner implements Node {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -29200,7 +29699,7 @@ type Partner implements Node {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -29735,6 +30234,11 @@ type PartnerArtist {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -29852,7 +30356,7 @@ type PartnerArtist {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -30054,6 +30558,11 @@ type PartnerArtistEdge {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -30171,7 +30680,7 @@ type PartnerArtistEdge {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -30765,6 +31274,11 @@ type PartnerList {
   publication: PartnerListPublication
 
   """
+  Public-facing path of this list's private viewing room, from the same inline key as published. Null if no publication exists yet.
+  """
+  publicationHref: String
+
+  """
   Whether this list's private viewing room publication is live. Null if no publication exists yet.
   """
   published: Boolean
@@ -30890,9 +31404,19 @@ type PartnerListPublication {
   applyBrand: Boolean
 
   """
+  Number of artwork columns, 2 to 4 (viewing rooms rebuild). Null on a room published before the rebuild.
+  """
+  artworkColumns: Int
+
+  """
   Per-field visibility toggles for artworks in the room. Any key the gallery hasn't set is null.
   """
   artworkFieldVisibility: ArtworkFieldVisibility
+
+  """
+  Artworks as a grid or masonry (viewing rooms rebuild). Null on a room published before the rebuild.
+  """
+  artworkLayout: ViewingRoomArtworkLayout
 
   """
   Number of artworks currently snapshotted into this publication.
@@ -30900,7 +31424,7 @@ type PartnerListPublication {
   artworksCount: Int!
 
   """
-  Cover image for the room's hero banner (viewing rooms rebuild). Not shown to visitors yet.
+  Cover image for the room's hero banner (viewing rooms rebuild), as currently uploaded. Visitors see the one from the last publish, via PrivateViewingRoom.coverImageURL.
   """
   coverImage: Image
   createdAt(
@@ -30913,15 +31437,25 @@ type PartnerListPublication {
   ): String
 
   """
-  Long plain-text curatorial text introducing the works (viewing rooms rebuild). Not shown to visitors yet.
+  Long plain-text curatorial text introducing the works (viewing rooms rebuild).
   """
   curatorialText: String
   description: String
 
   """
+  Where each element of the room is aligned (viewing rooms rebuild). Null on a room published before the elements could be aligned one by one, which falls back to textAlignment for its text.
+  """
+  elementAlignments: ViewingRoomElementAlignments
+
+  """
   Optional heading shown on the published room.
   """
   heading: String
+
+  """
+  Hero banner style (viewing rooms rebuild). Null on a room published before the rebuild.
+  """
+  heroStyle: ViewingRoomHeroStyle
 
   """
   Public-facing path for this private viewing room.
@@ -30966,7 +31500,22 @@ type PartnerListPublication {
   Whether the gallery name is shown on the public page.
   """
   showGalleryName: Boolean
+
+  """
+  Whether the gallery's brand kit logo is shown on the public page, apart from the gallery name. Null on a room published before the logo had its own setting.
+  """
+  showLogo: Boolean
   slug: String
+
+  """
+  Optional subtitle under the heading (viewing rooms rebuild). Null when the gallery didn't add one.
+  """
+  subtitle: String
+
+  """
+  Alignment of the heading and text (viewing rooms rebuild). Null on a room published before the rebuild.
+  """
+  textAlignment: ViewingRoomTextAlignment
   updatedAt(
     format: String
 
@@ -31962,9 +32511,34 @@ union PricingBreakdownLineUnion = ShippingLine | SubtotalLine | TaxLine | TotalL
 
 type PrivateViewingRoom {
   applyBrand: Boolean
+
+  """
+  Number of artwork columns, 2 to 4 (viewing rooms rebuild). Omitted like heroStyle.
+  """
+  artworkColumns: Int
+
+  """
+  Artworks as a grid or masonry (viewing rooms rebuild). Omitted like heroStyle.
+  """
+  artworkLayout: ViewingRoomArtworkLayout
   artworks: [PrivateViewingRoomArtwork!]
   brandKit: BrandKit
+
+  """
+  URL of the room's cover image as of the last publish (viewing rooms rebuild), for the hero banner. Omitted without a cover, and for a gated room until authenticated.
+  """
+  coverImageURL: String
+
+  """
+  Long plain-text curatorial text introducing the works (viewing rooms rebuild). Omitted when the gallery didn't add any, and for a gated room until authenticated.
+  """
+  curatorialText: String
   description: String
+
+  """
+  Where each element of the room is aligned (viewing rooms rebuild). Omitted like heroStyle; a room without it falls back to textAlignment for its text.
+  """
+  elementAlignments: ViewingRoomElementAlignments
 
   """
   The gallery's name, omitted when the gallery has chosen to hide it (show_gallery_name).
@@ -31973,9 +32547,29 @@ type PrivateViewingRoom {
   heading: String
 
   """
+  Hero banner style (viewing rooms rebuild). Omitted on a room published before the rebuild, which keeps its original layout, and for a gated room until authenticated.
+  """
+  heroStyle: ViewingRoomHeroStyle
+
+  """
   Whether this room requires a passcode to view.
   """
   passcodeRequired: Boolean!
+
+  """
+  Whether to show the brand kit logo, apart from the gallery name. Null on a room published before the logo had its own setting, which shows the logo in place of the name when the brand is applied. The brand kit also comes with it when only the logo is on; apply its colors and font only when applyBrand is true.
+  """
+  showLogo: Boolean
+
+  """
+  Optional subtitle under the heading (viewing rooms rebuild). Omitted when the gallery didn't add one, and for a gated room until authenticated.
+  """
+  subtitle: String
+
+  """
+  Alignment of the heading and text (viewing rooms rebuild). Omitted like heroStyle.
+  """
+  textAlignment: ViewingRoomTextAlignment
 }
 
 type PrivateViewingRoomArtwork {
@@ -32024,15 +32618,60 @@ type PrivateViewingRoomArtworkEditionInfo {
 
 type PrivateViewingRoomContents {
   applyBrand: Boolean
+
+  """
+  Number of artwork columns, 2 to 4 (viewing rooms rebuild). Omitted like heroStyle.
+  """
+  artworkColumns: Int
+
+  """
+  Artworks as a grid or masonry (viewing rooms rebuild). Omitted like heroStyle.
+  """
+  artworkLayout: ViewingRoomArtworkLayout
   artworks: [PrivateViewingRoomArtwork!]
   brandKit: BrandKit
+
+  """
+  URL of the room's cover image as of the last publish (viewing rooms rebuild), for the hero banner. Omitted without a cover, and for a gated room until authenticated.
+  """
+  coverImageURL: String
+
+  """
+  Long plain-text curatorial text introducing the works (viewing rooms rebuild). Omitted when the gallery didn't add any, and for a gated room until authenticated.
+  """
+  curatorialText: String
   description: String
+
+  """
+  Where each element of the room is aligned (viewing rooms rebuild). Omitted like heroStyle; a room without it falls back to textAlignment for its text.
+  """
+  elementAlignments: ViewingRoomElementAlignments
 
   """
   The gallery's name, omitted when the gallery has chosen to hide it (show_gallery_name).
   """
   galleryName: String
   heading: String
+
+  """
+  Hero banner style (viewing rooms rebuild). Omitted on a room published before the rebuild, which keeps its original layout, and for a gated room until authenticated.
+  """
+  heroStyle: ViewingRoomHeroStyle
+
+  """
+  Whether to show the brand kit logo, apart from the gallery name. Null on a room published before the logo had its own setting, which shows the logo in place of the name when the brand is applied. The brand kit also comes with it when only the logo is on; apply its colors and font only when applyBrand is true.
+  """
+  showLogo: Boolean
+
+  """
+  Optional subtitle under the heading (viewing rooms rebuild). Omitted when the gallery didn't add one, and for a gated room until authenticated.
+  """
+  subtitle: String
+
+  """
+  Alignment of the heading and text (viewing rooms rebuild). Omitted like heroStyle.
+  """
+  textAlignment: ViewingRoomTextAlignment
 }
 
 type Profile {
@@ -32155,9 +32794,19 @@ input PublishPartnerListPublicationMutationInput {
   applyBrand: Boolean
 
   """
+  Number of artwork columns, 2 to 4 (viewing rooms rebuild). Gravity rejects other values.
+  """
+  artworkColumns: Int
+
+  """
   Per-field visibility toggles for artworks in the room.
   """
   artworkFieldVisibility: ArtworkFieldVisibilityInput
+
+  """
+  Artworks as a grid or masonry (viewing rooms rebuild).
+  """
+  artworkLayout: ViewingRoomArtworkLayout
   clientMutationId: String
 
   """
@@ -32171,9 +32820,19 @@ input PublishPartnerListPublicationMutationInput {
   description: String
 
   """
+  Where each element of the room is aligned, one by one (viewing rooms rebuild).
+  """
+  elementAlignments: ViewingRoomElementAlignmentsInput
+
+  """
   Optional heading shown on the published room.
   """
   heading: String
+
+  """
+  Hero banner style (viewing rooms rebuild).
+  """
+  heroStyle: ViewingRoomHeroStyle
 
   """
   The ID of the partner list to publish as a viewing room.
@@ -32189,6 +32848,21 @@ input PublishPartnerListPublicationMutationInput {
   Whether to show the gallery name on the public page.
   """
   showGalleryName: Boolean
+
+  """
+  Whether to show the gallery's brand kit logo on the public page, apart from the gallery name.
+  """
+  showLogo: Boolean
+
+  """
+  Optional subtitle under the heading (viewing rooms rebuild). Blank hides it.
+  """
+  subtitle: String
+
+  """
+  Alignment of the heading and text (viewing rooms rebuild).
+  """
+  textAlignment: ViewingRoomTextAlignment
 }
 
 type PublishPartnerListPublicationMutationPayload {
@@ -32649,6 +33323,11 @@ type Query {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -32766,7 +33445,7 @@ type Query {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -33153,9 +33832,9 @@ type Query {
     before: String
 
     """
-    Only contacts with this category. Case-insensitive, one value only.
+    Only contacts with any of these categories. Case-insensitive.
     """
-    category: String
+    categories: [String!]
     first: Int
 
     """
@@ -33282,6 +33961,11 @@ type Query {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -33409,7 +34093,7 @@ type Query {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -35572,6 +36256,188 @@ type RequestPriceEstimatedMutationSuccess {
   submittedPriceEstimateParams: SubmittedPriceEstimateParams
 }
 
+"""
+A collector’s request to resell a work from their My Collection.
+"""
+type ResaleSubmission {
+  canceledAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
+  Auction, marketplace, or null if rejected.
+  """
+  channel: ResaleSubmissionChannel
+
+  """
+  Photos the seller added to show the work’s condition, oldest first.
+  """
+  conditionPhotos: [Image!]!
+
+  """
+  The seller’s answer to how the work will get to its buyer.
+  """
+  courierHandoff: ResaleSubmissionCourierHandoff
+  createdAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+
+  """
+  Answers still needed before the submission can be listed.
+  """
+  missingRequirements: [String!]!
+
+  """
+  The seller’s answer to how the work will be packed.
+  """
+  packaging: ResaleSubmissionPackaging
+
+  """
+  The seller’s answer to who will pack the work.
+  """
+  packer: ResaleSubmissionPacker
+
+  """
+  The seller’s asking price.
+  """
+  priceListed: Money
+
+  """
+  Upper end of recommended price range, per automated valuation.
+  """
+  recommendedPriceMax: Money
+
+  """
+  Lower end of recommended price range, per automated valuation.
+  """
+  recommendedPriceMin: Money
+
+  """
+  Why the submission was rejected.
+  """
+  rejectionReasons: [ResaleSubmissionRejectionReason!]!
+  state: ResaleSubmissionState!
+
+  """
+  A simple user-facing message to indicate the status of this submission, derived from current state.
+  """
+  statusMessage: String!
+
+  """
+  The My Collection artwork being resold.
+  """
+  submittedArtwork: Artwork
+
+  """
+  ID of the My Collection artwork being resold.
+  """
+  submittedArtworkID: String!
+  updatedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+}
+
+enum ResaleSubmissionChannel {
+  AUCTION
+  MARKETPLACE
+}
+
+"""
+A connection to a list of items.
+"""
+type ResaleSubmissionConnection {
+  """
+  A list of edges.
+  """
+  edges: [ResaleSubmissionEdge]
+  pageCursors: PageCursors!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+enum ResaleSubmissionCourierHandoff {
+  COURIER_PICKUP
+  NO_PREFERENCE
+  SELLER_DROPOFF
+}
+
+"""
+An edge in a connection.
+"""
+type ResaleSubmissionEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge
+  """
+  node: ResaleSubmission
+}
+
+enum ResaleSubmissionPackaging {
+  FRAMED
+  NO_PREFERENCE
+  ROLLED
+}
+
+enum ResaleSubmissionPacker {
+  COURIER
+  NO_PREFERENCE
+  SELLER
+}
+
+enum ResaleSubmissionRejectionReason {
+  MEDIUM_NOT_SUPPORTED
+  NOT_PURCHASED_ON_ARTSY
+  OUTSIDE_US
+}
+
+enum ResaleSubmissionSorts {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+}
+
+enum ResaleSubmissionState {
+  ACCEPTED
+  AUCTION_REVIEW
+  CANCELED
+  LISTED
+  REJECTED
+}
+
 type ResizedImageUrl {
   cachePolicy: String
   factor: Float!
@@ -37202,6 +38068,11 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -37319,7 +38190,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -38150,6 +39021,11 @@ type Tag implements Node {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -38267,7 +39143,7 @@ type Tag implements Node {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -38879,6 +39755,11 @@ type UpdateArtnetArtworkFailure {
 
 input UpdateArtnetArtworkMutationInput {
   """
+  IDs of the Artsy artwork's images to send to Artnet. An image Artnet already holds is ignored; one it did not add before is tried again.
+  """
+  addImageIDs: [String!]
+
+  """
   The artwork's other mediums on Artnet, from Artnet's accepted mediums. Replaces them: what is missing is removed, and an empty list removes them all. Omit to leave them unchanged.
   """
   additionalMediums: [String!]
@@ -38888,6 +39769,11 @@ input UpdateArtnetArtworkMutationInput {
   """
   availability: String
   clientMutationId: String
+
+  """
+  IDs of `ArtnetArtworkImage`s to copy onto the Artsy artwork. Nothing is sent to Artnet. Once the artwork has every image Artnet holds, `hasSeparateImageSets` turns false and `syncImages` applies to it.
+  """
+  copyImageIDs: [String!]
 
   """
   The ID of the ArtnetArtwork.
@@ -38920,9 +39806,29 @@ input UpdateArtnetArtworkMutationInput {
   published: Boolean
 
   """
-  Also push the artwork-sourced fields (title, artist, dimensions, description, medium, materials, editions), making Gravity the source of truth for them. The artist is resolved to Artnet's own artist record by best match. Set when the edit came from an inventory row rather than the Artnet row.
+  IDs of `ArtnetArtworkImage`s to remove from Artnet. Artnet keeps at least one image on an artwork. When `hasSeparateImageSets` is false, an image still on the Artsy artwork cannot be removed this way: delete it from the artwork and send `syncImages`.
+  """
+  removeImageIDs: [String!]
+
+  """
+  Push only title, artist, dimensions and description, plus the editions for their dimensions. Price, availability, medium and materials stay as Artnet has them. Set after an inventory edit when the partner's Auto-Update is off. Ignored when `syncOn` is set.
+  """
+  syncCore: Boolean
+
+  """
+  Add the Artsy artwork's new images to Artnet and remove its deleted ones. Send after an image save. Does nothing when `hasSeparateImageSets` is true, and is ignored when images are named in the same request.
+  """
+  syncImages: Boolean
+
+  """
+  Also push the artwork-sourced fields (title, artist, dimensions, description, medium, materials, editions), making Gravity the source of truth for them. The artist is resolved to Artnet's own artist record by best match. Also sends price and availability from the catalog. Set when the edit came from an inventory row rather than the Artnet row.
   """
   syncOn: Boolean
+
+  """
+  Image files already uploaded to S3, to add to Artnet without adding them to the Artsy artwork.
+  """
+  uploadImageS3Locations: [S3LocationInput!]
 }
 
 type UpdateArtnetArtworkMutationPayload {
@@ -39519,6 +40425,65 @@ union UpdateCMSLastAccessTimestampResponseOrError =
 
 type UpdateCMSLastAccessTimestampSuccess {
   partner: Partner
+}
+
+type UpdateCRMActivityFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateCRMActivityInput {
+  """
+  Replaces the artists the activity is about. An empty list clears them, leaving it out keeps them
+  """
+  artistIDs: [String!]
+
+  """
+  Replaces the artworks the activity is about. An empty list clears them, leaving it out keeps them
+  """
+  artworkIDs: [String!]
+
+  """
+  How the activity happened
+  """
+  channel: CRMActivityChannel
+  clientMutationId: String
+  description: String
+
+  """
+  The internal ID of the activity
+  """
+  id: String!
+
+  """
+  Switch between NOTE, CALL, MEETING and INTEREST
+  """
+  kind: CRMActivityKind
+
+  """
+  ISO 8601 time the activity happened. Defaults to now on create
+  """
+  occurredAt: String
+  subject: String
+
+  """
+  The user who added the activity, who must belong to the activity's partner. Null clears it, leaving it out keeps it
+  """
+  userID: String
+}
+
+type UpdateCRMActivityPayload {
+  clientMutationId: String
+
+  """
+  On success: the updated activity
+  """
+  crmActivityOrError: UpdateCRMActivityResponseOrError
+}
+
+union UpdateCRMActivityResponseOrError = UpdateCRMActivityFailure | UpdateCRMActivitySuccess
+
+type UpdateCRMActivitySuccess {
+  crmActivity: CRMActivity
 }
 
 type UpdateCRMContactEmailFailure {
@@ -41575,6 +42540,61 @@ type UpdatePurchaseSuccess {
   purchase: Purchase
 }
 
+type UpdateResaleSubmissionFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateResaleSubmissionInput {
+  clientMutationId: String
+
+  """
+  How the work will get to its buyer.
+  """
+  courierHandoff: ResaleSubmissionCourierHandoff
+
+  """
+  S3 URLs of uploaded photos to add as condition photos, in order, at most 10. Each is added separately: if one fails, the ones before it stay saved, so reload conditionPhotos before retrying.
+  """
+  externalImageUrls: [String]
+
+  """
+  The internal ID of the resale submission to update.
+  """
+  id: String!
+
+  """
+  How the work will be packed.
+  """
+  packaging: ResaleSubmissionPackaging
+
+  """
+  Who will pack the work.
+  """
+  packer: ResaleSubmissionPacker
+
+  """
+  The asking price in US dollars, as a plain number like “2500” or “2500.50”, without a currency symbol or separators.
+  """
+  priceListed: String
+}
+
+type UpdateResaleSubmissionPayload {
+  clientMutationId: String
+
+  """
+  On success: the updated resale submission.
+  """
+  resaleSubmissionOrError: UpdateResaleSubmissionResponseOrError
+}
+
+union UpdateResaleSubmissionResponseOrError =
+    UpdateResaleSubmissionFailure
+  | UpdateResaleSubmissionSuccess
+
+type UpdateResaleSubmissionSuccess {
+  resaleSubmission: ResaleSubmission
+}
+
 type UpdateSaleAgreementFailure {
   mutationError: GravityMutationError
 }
@@ -43157,6 +44177,11 @@ type Viewer {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -43274,7 +44299,7 @@ type Viewer {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -43597,9 +44622,9 @@ type Viewer {
     before: String
 
     """
-    Only contacts with this category. Case-insensitive, one value only.
+    Only contacts with any of these categories. Case-insensitive.
     """
-    category: String
+    categories: [String!]
     first: Int
 
     """
@@ -43726,6 +44751,11 @@ type Viewer {
     attributionClass: [String]
     availability: String
     before: String
+
+    """
+    Filter by catalog availability: each edition set's, or the catalog artwork's, falling back to `availability`. Needs partner access, and is ignored otherwise.
+    """
+    catalogArtworkAvailability: String
     categories: [String]
 
     """
@@ -43853,7 +44883,7 @@ type Viewer {
     saleID: ID
 
     """
-    Which search behaviour to use. `PARTNER_INVENTORY` needs `partnerID` and partner access, and is ignored otherwise.
+    Which search behaviour to use. `PARTNER_INVENTORY` and `PARTNER_CMS` need `partnerID` and partner access, and are ignored otherwise.
     """
     searchProfile: ArtworkSearchProfile
     showID: String
@@ -45253,6 +46283,11 @@ input ViewingRoomArtworkInput {
   position: Int
 }
 
+enum ViewingRoomArtworkLayout {
+  GRID
+  MASONRY
+}
+
 input ViewingRoomAttributes {
   body: String
 
@@ -45311,6 +46346,41 @@ type ViewingRoomEdge {
   node: ViewingRoom
 }
 
+enum ViewingRoomElementAlignment {
+  CENTER
+  LEFT
+  RIGHT
+}
+
+"""
+Where each element of the room is aligned. Null for an element the gallery hasn't aligned.
+"""
+type ViewingRoomElementAlignments {
+  artworks: ViewingRoomElementAlignment
+  curatorialText: ViewingRoomElementAlignment
+  description: ViewingRoomElementAlignment
+  galleryName: ViewingRoomElementAlignment
+  heading: ViewingRoomElementAlignment
+  subtitle: ViewingRoomElementAlignment
+}
+
+"""
+Where each element of the room is aligned.
+"""
+input ViewingRoomElementAlignmentsInput {
+  artworks: ViewingRoomElementAlignment
+  curatorialText: ViewingRoomElementAlignment
+  description: ViewingRoomElementAlignment
+  galleryName: ViewingRoomElementAlignment
+  heading: ViewingRoomElementAlignment
+  subtitle: ViewingRoomElementAlignment
+}
+
+enum ViewingRoomHeroStyle {
+  EDITORIAL
+  FULL_IMAGE
+}
+
 union ViewingRoomOrErrorsUnion = Errors | ViewingRoom
 
 type ViewingRoomPublishedNotificationItem {
@@ -45359,6 +46429,11 @@ input ViewingRoomSubsectionInput {
   delete: Boolean = false
   image: ARImageInput
   internalID: ID
+}
+
+enum ViewingRoomTextAlignment {
+  CENTER
+  LEFT
 }
 
 """

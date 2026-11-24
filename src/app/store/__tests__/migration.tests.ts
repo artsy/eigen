@@ -1365,4 +1365,24 @@ describe("App version Versions.AddInfiniteDiscoveryModel", () => {
       expect(migratedState.onboarding.onboardingArtQuizState).toEqual(undefined)
     })
   })
+
+  describe("App version Versions.AddLastSavedListModel", () => {
+    it("should add the lastSavedList model", () => {
+      const migrationToTest = Versions.AddLastSavedListModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      expect(previousState.lastSavedList).toEqual(undefined)
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.lastSavedList).toEqual({ lastSavedList: null })
+    })
+  })
 })

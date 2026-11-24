@@ -1,18 +1,20 @@
-import { ArrowDownIcon, ArrowUpIcon } from "@artsy/icons/native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
-import {
-  MarketStatsFragmentContainer,
-  MarketStatsQueryRenderer,
-} from "app/Components/Artist/ArtistInsights/MarketStats"
-import { InfoButton } from "app/Components/Buttons/InfoButton"
-import { extractText } from "app/utils/tests/extractText"
+import { MarketStatsQueryRenderer } from "app/Components/Artist/ArtistInsights/MarketStats"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { act } from "react"
 import { Environment } from "react-relay"
-import { ReactTestInstance } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
+
+jest.mock("@artsy/icons/native", () => {
+  const { View } = require("react-native")
+  return {
+    ...jest.requireActual("@artsy/icons/native"),
+    ArrowDownIcon: () => <View testID="arrow-down-icon" />,
+    ArrowUpIcon: () => <View testID="arrow-up-icon" />,
+  }
+})
 
 describe("MarketStats", () => {
   let environment: ReturnType<typeof createMockEnvironment>
@@ -28,17 +30,17 @@ describe("MarketStats", () => {
   }
 
   it("renders market stats", () => {
-    const tree = renderWithWrappersLEGACY(<TestWrapper />).root
+    renderWithWrappers(<TestWrapper />)
     resolveMostRecentRelayOperation(environment)
-    // eslint-disable-next-line testing-library/await-async-queries
-    expect(tree.findAllByType(MarketStatsFragmentContainer).length).toEqual(1)
+
+    expect(screen.getByText("Market Signals")).toBeOnTheScreen()
+    expect(screen.getByTestId("annualLotsSold")).toBeOnTheScreen()
   })
 
   describe("available mediums", () => {
-    let tree: ReactTestInstance
     beforeEach(() => {
       // eslint-disable-next-line testing-library/no-render-in-lifecycle
-      tree = renderWithWrappersLEGACY(<TestWrapper />).root
+      renderWithWrappers(<TestWrapper />)
 
       const priceInsights = {
         edges: [
@@ -51,19 +53,15 @@ describe("MarketStats", () => {
       })
     })
 
-    it("shows data for first medium", async () => {
-      // eslint-disable-next-line testing-library/await-async-queries
-      expect(extractText(tree.findByProps({ testID: "annualLotsSold" }))).toEqual("123")
+    it("shows data for first medium", () => {
+      expect(screen.getByTestId("annualLotsSold")).toHaveTextContent("123")
     })
 
     it("shows data for other mediums when selected", async () => {
-      await act(async () => {
-        // eslint-disable-next-line testing-library/await-async-queries
-        tree.findByProps({ testID: "select-medium" }).props.onSelectValue("fingerpaint")
-      })
+      fireEvent.press(screen.getByTestId("select-medium"))
+      fireEvent.press(await screen.findByText("fingerpaint"))
 
-      // eslint-disable-next-line testing-library/await-async-queries
-      expect(extractText(tree.findByProps({ testID: "annualLotsSold" }))).toEqual("456")
+      expect(screen.getByTestId("annualLotsSold")).toHaveTextContent("456")
     })
   })
 
@@ -73,7 +71,7 @@ describe("MarketStats", () => {
         NonNullable<NonNullable<MarketStats_priceInsightsConnection$data["edges"]>[0]>["node"]
       >
     ) {
-      const tree = renderWithWrappersLEGACY(<TestWrapper />).root
+      renderWithWrappers(<TestWrapper />)
       const priceInsights = {
         edges: [
           {
@@ -87,51 +85,40 @@ describe("MarketStats", () => {
       resolveMostRecentRelayOperation(environment, {
         PriceInsightConnection: () => priceInsights,
       })
-
-      return tree
     }
 
     it("displays down arrow when percentage is negative", () => {
-      // eslint-disable-next-line testing-library/render-result-naming-convention
-      const tree = renderWithOnePriceInsightNode({
+      renderWithOnePriceInsightNode({
         medianSaleOverEstimatePercentage: -10,
       })
 
-      // eslint-disable-next-line testing-library/await-async-queries
-      expect(tree.findByType(ArrowDownIcon)).toBeDefined()
+      expect(screen.getByTestId("arrow-down-icon")).toBeOnTheScreen()
     })
 
     it("displays no arrow when percentage is 0", () => {
-      // eslint-disable-next-line testing-library/render-result-naming-convention
-      const tree = renderWithOnePriceInsightNode({
+      renderWithOnePriceInsightNode({
         medianSaleOverEstimatePercentage: 0,
       })
 
-      // eslint-disable-next-line testing-library/await-async-queries
-      expect(tree.findAllByType(ArrowDownIcon).length).toEqual(0)
-      // eslint-disable-next-line testing-library/await-async-queries
-      expect(tree.findAllByType(ArrowUpIcon).length).toEqual(0)
+      expect(screen.queryByTestId("arrow-down-icon")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("arrow-up-icon")).not.toBeOnTheScreen()
     })
 
     it("displays up arrow when percentage is positive", () => {
-      // eslint-disable-next-line testing-library/render-result-naming-convention
-      const tree = renderWithOnePriceInsightNode({
+      renderWithOnePriceInsightNode({
         medianSaleOverEstimatePercentage: 10,
       })
 
-      // eslint-disable-next-line testing-library/await-async-queries
-      expect(tree.findByType(ArrowUpIcon)).toBeDefined()
+      expect(screen.getByTestId("arrow-up-icon")).toBeOnTheScreen()
     })
   })
 
   describe("tracking", () => {
     it("tracks the correct event when info bubble is tapped", () => {
-      const tree = renderWithWrappersLEGACY(<TestWrapper />).root
+      renderWithWrappers(<TestWrapper />)
       resolveMostRecentRelayOperation(environment)
 
-      // eslint-disable-next-line testing-library/await-async-queries
-      const infoBubble = tree.findByType(InfoButton)
-      infoBubble.props.trackEvent()
+      fireEvent.press(screen.getByText("Market Signals"))
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: "tappedInfoBubble",

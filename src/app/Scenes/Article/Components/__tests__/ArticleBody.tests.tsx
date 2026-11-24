@@ -1,10 +1,26 @@
 import { screen } from "@testing-library/react-native"
 import { ArticleBody } from "app/Scenes/Article/Components/ArticleBody"
-import { ArticleHero } from "app/Scenes/Article/Components/ArticleHero"
-import { ArticleSection } from "app/Scenes/Article/Components/ArticleSection"
-import { ArticleSectionImageCollection } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollection"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
+
+jest.mock("app/Scenes/Article/Components/ArticleHero", () => {
+  const { Text } = require("react-native")
+  return { ArticleHero: () => <Text testID="ArticleHero">ArticleHero</Text> }
+})
+
+// ArticleSectionImageCollection is only rendered through ArticleSection, so its presence
+// also verifies that ArticleSection rendered
+jest.mock(
+  "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollection",
+  () => {
+    const { Text } = require("react-native")
+    return {
+      ArticleSectionImageCollection: () => (
+        <Text testID="ArticleSectionImageCollection">ArticleSectionImageCollection</Text>
+      ),
+    }
+  }
+)
 
 describe("ArticleBody", () => {
   const { renderWithRelay } = setupTestWrapper({
@@ -27,8 +43,7 @@ describe("ArticleBody", () => {
       }),
     })
 
-    expect(screen.UNSAFE_getByType(ArticleHero)).toBeTruthy()
-    expect(screen.UNSAFE_getByType(ArticleSection)).toBeTruthy()
-    expect(screen.UNSAFE_getByType(ArticleSectionImageCollection)).toBeTruthy()
+    expect(screen.getByTestId("ArticleHero")).toBeOnTheScreen()
+    expect(screen.getByTestId("ArticleSectionImageCollection")).toBeOnTheScreen()
   })
 })

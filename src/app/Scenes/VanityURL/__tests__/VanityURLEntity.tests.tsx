@@ -1,17 +1,32 @@
-import { screen } from "@testing-library/react-native"
-import { Fair } from "app/Scenes/Fair/Fair"
-import { PartnerContainer } from "app/Scenes/Partner/Partner"
+import { act, screen } from "@testing-library/react-native"
 import { VanityURLEntityRenderer } from "app/Scenes/VanityURL/VanityURLEntity"
-import { VanityURLPossibleRedirect } from "app/Scenes/VanityURL/VanityURLPossibleRedirect"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlaceholder"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
-jest.mock("../VanityURLPossibleRedirect", () => ({
-  VanityURLPossibleRedirect: () => null,
-}))
+jest.mock("../VanityURLPossibleRedirect", () => {
+  const { View } = require("react-native")
+  return {
+    VanityURLPossibleRedirect: () => <View testID="VanityURLPossibleRedirect" />,
+  }
+})
+
+jest.mock("app/Scenes/Fair/Fair", () => {
+  const { View } = require("react-native")
+  return {
+    ...jest.requireActual("app/Scenes/Fair/Fair"),
+    Fair: () => <View testID="Fair" />,
+  }
+})
+
+jest.mock("app/Scenes/Partner/Partner", () => {
+  const { View } = require("react-native")
+  return {
+    ...jest.requireActual("app/Scenes/Partner/Partner"),
+    PartnerContainer: () => <View testID="PartnerContainer" />,
+  }
+})
 
 jest.mock("app/utils/queryPrefetching", () => {
   const queryPrefetching = jest.requireActual("app/utils/queryPrefetching")
@@ -46,26 +61,26 @@ describe("VanityURLEntity", () => {
       env.mock.resolveMostRecentOperation({ data: undefined, errors: [{ message: "404" }] })
     })
 
-    expect(screen.UNSAFE_getAllByType(VanityURLPossibleRedirect)).toHaveLength(1)
+    expect(screen.getAllByTestId("VanityURLPossibleRedirect")).toHaveLength(1)
   })
 
   describe("rendering a profile", () => {
     it("shows a fair placeholder when entityType is fair", () => {
       renderWithWrappers(<TestRenderer entity="fair" slugType="profileID" slug="some-fair" />)
 
-      expect(screen.getByTestId("FairPlaceholder")).toBeTruthy()
+      expect(screen.getByTestId("FairPlaceholder")).toBeOnTheScreen()
     })
 
     it("shows a partner placeholder when entityType is partner", () => {
       renderWithWrappers(<TestRenderer entity="partner" slugType="profileID" slug="some-partner" />)
 
-      expect(screen.getByTestId("PartnerPlaceholder")).toBeTruthy()
+      expect(screen.getByTestId("PartnerPlaceholder")).toBeOnTheScreen()
     })
 
     it("shows a spinner when entityType is unknown", () => {
       renderWithWrappers(<TestRenderer entity="unknown" slugType="profileID" slug="some-partner" />)
 
-      expect(screen.getByTestId("LoadingSpinner")).toBeTruthy()
+      expect(screen.getByTestId("LoadingSpinner")).toBeOnTheScreen()
     })
 
     it("renders a partner when a partner is returned", () => {
@@ -89,8 +104,7 @@ describe("VanityURLEntity", () => {
         )
       })
 
-      const partnerComponent = screen.UNSAFE_getByType(PartnerContainer)
-      expect(partnerComponent).toBeTruthy()
+      expect(screen.getByTestId("PartnerContainer")).toBeOnTheScreen()
     })
 
     it("renders a fair when a fair is returned", () => {
@@ -112,8 +126,7 @@ describe("VanityURLEntity", () => {
         )
       })
 
-      const fairComponent = screen.UNSAFE_getByType(Fair)
-      expect(fairComponent).toBeTruthy()
+      expect(screen.getByTestId("Fair")).toBeOnTheScreen()
     })
 
     it("renders a webview when an unknown profile type is returned", () => {
@@ -135,8 +148,7 @@ describe("VanityURLEntity", () => {
           },
         })
       })
-      const webComponent = screen.UNSAFE_getByType(VanityURLPossibleRedirect)
-      expect(webComponent).toBeTruthy()
+      expect(screen.getByTestId("VanityURLPossibleRedirect")).toBeOnTheScreen()
     })
   })
 })

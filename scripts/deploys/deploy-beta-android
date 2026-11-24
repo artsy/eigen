@@ -6,4 +6,7 @@ source ./scripts/ci/ci-setup-export-vars
 ./scripts/deploys/check_version_synced
 ./scripts/deploys/check_build_status_gh android
 
-git push origin "$LOCAL_BRANCH:beta-android" -f --no-verify
+git push origin "$LOCAL_BRANCH:beta-android" -f --no-verify || {
+  echo "Error: push to beta-android failed. If a running beta was cancelled above, no android beta is building now. Re-run this script."
+  exit 1
+}

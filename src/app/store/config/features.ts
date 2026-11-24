@@ -44,6 +44,11 @@ export type FeatureDescriptor = (
 export type FeatureName = keyof typeof features
 
 export const features = {
+  ARDefaultToLastSavedList: {
+    readyForRelease: false,
+    description: "Default artwork save to the last-used list",
+    showInDevMenu: true,
+  },
   ARDarkModeSupport: {
     readyForRelease: true,
     description: "Support dark mode",
@@ -336,9 +341,6 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
         toast.show("Sentry debugging disabled", "middle")
       }
     },
-  },
-  DTFPSCounter: {
-    description: "FPS counter",
   },
   DTUseProductionUnleash: {
     description: "Use Production Unleash",

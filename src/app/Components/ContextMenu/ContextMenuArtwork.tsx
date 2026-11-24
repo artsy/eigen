@@ -29,9 +29,10 @@ import { useEchoMessage } from "app/utils/hooks/useEchoMessage"
 import { useEnableArtsyLens } from "app/utils/hooks/useEnableArtsyLens"
 import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
 import { useDislikeArtwork } from "app/utils/mutations/useDislikeArtwork"
+import { runAfterInteractions } from "app/utils/runAfterInteractions"
 import { Schema } from "app/utils/track"
 import { useState } from "react"
-import { InteractionManager, Platform } from "react-native"
+import { Platform } from "react-native"
 import { TouchableHighlight } from "react-native-gesture-handler"
 import { HapticFeedbackTypes, trigger } from "react-native-haptic-feedback"
 import { SafeAreaView } from "react-native-safe-area-context"
@@ -138,7 +139,7 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
         systemIcon: "square.and.arrow.up",
         onPress: () => {
           if (title && href) {
-            InteractionManager.runAfterInteractions(() => {
+            runAfterInteractions(() => {
               const imageUrl = artwork.contextMenuImage?.url || artwork.image?.url
               showShareSheet({
                 type: "artwork",
@@ -167,7 +168,7 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
         title: "View in room",
         systemIcon: "eye",
         onPress: () => {
-          InteractionManager.runAfterInteractions(() => {
+          runAfterInteractions(() => {
             openViewInRoom()
           })
         },
@@ -179,7 +180,7 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
         title: "Find similar",
         systemIcon: "sparkle.magnifyingglass",
         onPress: () => {
-          InteractionManager.runAfterInteractions(() => {
+          runAfterInteractions(() => {
             trackEvent(
               tappedFindSimilarArtworks({
                 contextModule: ContextModule.longPressContextMenu,
@@ -198,7 +199,7 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
         title: "Not interested",
         systemIcon: "rectangle.slash",
         onPress: () => {
-          InteractionManager.runAfterInteractions(() => {
+          runAfterInteractions(() => {
             onSupressArtwork?.()
             dislikeArtworkMutation({ variables: { artworkID: internalID } })
           })
@@ -212,7 +213,7 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
         title: "Create alert",
         systemIcon: "bell",
         onPress: () => {
-          InteractionManager.runAfterInteractions(() => {
+          runAfterInteractions(() => {
             trackCreateAlertTap()
             onCreateAlertActionPress?.()
           })

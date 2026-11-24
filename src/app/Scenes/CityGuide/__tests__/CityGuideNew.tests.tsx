@@ -5,8 +5,8 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { DefaultMockResolvers } from "app/utils/tests/mockEdges"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { DefaultMockResolvers } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { MockPayloadGenerator } from "relay-test-utils"
 
 jest.mock("app/utils/hooks/useLocation", () => ({ useLocation: () => ({ location: null }) }))

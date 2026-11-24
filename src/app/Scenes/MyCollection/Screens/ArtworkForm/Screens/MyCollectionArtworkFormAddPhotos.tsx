@@ -99,6 +99,7 @@ const ImageItem: React.FC<{ item: ImageProps; imageSize: number }> = ({ item, im
   return (
     <Flex mt={0.5}>
       <Image
+        testID="artwork-form-photo"
         style={{ width: imageSize, height: imageSize, resizeMode: "cover" }}
         source={{ uri: imageUrl || item.path }}
       />
@@ -123,6 +124,7 @@ const AddPhotosButton: React.FC<{ imageSize: number }> = ({ imageSize }) => {
   return (
     <TouchableOpacity
       accessibilityRole="button"
+      accessibilityLabel="Add photos"
       onPress={() => {
         showPhotoActionSheet(showActionSheetWithOptions, true).then((images) => {
           artworkActions.addPhotos(images)
@@ -154,6 +156,7 @@ const DeletePhotoButton: React.FC<{ photo: ImageProps; onDelete: () => void }> =
     <Box position="absolute" right={-4} top={-5}>
       <TouchableOpacity
         accessibilityRole="button"
+        accessibilityLabel="Delete photo"
         hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }}
         onPress={() => {
           onDelete()

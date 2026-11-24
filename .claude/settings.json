@@ -1,9 +1,10 @@
 {
   "permissions": {
-    "allow": [
-
-    ],
+    "allow": [],
     "deny": [
+      "Read(.env.e2e.android)",
+      "Read(.env.e2e.ios)",
+      "Read(.env.maestro)",
       "Read(.env.maestro.android)",
       "Read(.env.maestro.ios)",
       "Read(.env.releases)",

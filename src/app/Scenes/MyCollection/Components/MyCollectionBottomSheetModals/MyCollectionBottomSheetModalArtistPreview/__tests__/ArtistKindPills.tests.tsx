@@ -1,8 +1,15 @@
-import { Pill } from "@artsy/palette-mobile"
 import { screen } from "@testing-library/react-native"
 import { ArtistKindPills } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistPreview/ArtistKindPills"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
+
+jest.mock("@artsy/palette-mobile", () => {
+  const { Text } = jest.requireActual("react-native")
+  return {
+    ...jest.requireActual("@artsy/palette-mobile"),
+    Pill: ({ children }: { children: React.ReactNode }) => <Text testID="pill">{children}</Text>,
+  }
+})
 
 describe("ArtistKindPills", () => {
   const { renderWithRelay } = setupTestWrapper({
@@ -28,7 +35,7 @@ describe("ArtistKindPills", () => {
       }),
     })
 
-    expect(screen.UNSAFE_queryAllByType(Pill)).toHaveLength(1)
+    expect(screen.getAllByTestId("pill")).toHaveLength(1)
     expect(screen.getByText("Fancy pants")).toBeOnTheScreen()
   })
 
@@ -39,6 +46,6 @@ describe("ArtistKindPills", () => {
       }),
     })
 
-    expect(screen.UNSAFE_queryAllByType(Pill)).toHaveLength(0)
+    expect(screen.queryAllByTestId("pill")).toHaveLength(0)
   })
 })

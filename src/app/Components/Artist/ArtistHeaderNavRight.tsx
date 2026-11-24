@@ -73,6 +73,9 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
           haptic
           isFollowed={isFollowed}
           followCount={artist?.counts.follows}
+          // Without a label, screen readers read the follower count too ("Follow 1.2K"), which
+          // doesn't say who is being followed
+          accessibilityLabel={`${isFollowed ? "Following" : "Follow"} ${artist?.name ?? "artist"}`}
           onPress={() => setIsFollowed(!isFollowed)}
         />
       </MotiView>

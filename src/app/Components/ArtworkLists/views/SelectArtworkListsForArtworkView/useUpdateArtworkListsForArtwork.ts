@@ -2,8 +2,8 @@ import {
   useUpdateArtworkListsForArtworkMutation,
   useUpdateArtworkListsForArtworkMutation$data,
 } from "__generated__/useUpdateArtworkListsForArtworkMutation.graphql"
-import { UseMutationConfig, graphql, useMutation } from "react-relay"
-import { Disposable } from "relay-runtime"
+import { ConnectionHandler, UseMutationConfig, graphql, useMutation } from "react-relay"
+import { Disposable, RecordSourceSelectorProxy } from "relay-runtime"
 
 interface Counts {
   custom: number
@@ -29,13 +29,18 @@ export const useUpdateArtworkListsForArtwork = (artworkID: string): MutationResu
     return initialCommit({
       ...config,
       updater: (store, data) => {
+        const response = data?.artworksCollectionsBatchUpdate?.responseOrError
+
+        // Independent of the artwork/`entity` records below, so run it before
+        // their early returns — a missing store count shouldn't skip the reorder.
+        moveUpdatedListsToFront(store, response)
+
         const artwork = store.get(artworkID)
 
         if (!artwork) {
           return
         }
 
-        const response = data?.artworksCollectionsBatchUpdate?.responseOrError
         const addedCounts = getArtworkListsCountByType(response?.addedToArtworkLists)
         const removedCounts = getArtworkListsCountByType(response?.removedFromArtworkLists)
 
@@ -73,6 +78,61 @@ export const useUpdateArtworkListsForArtwork = (artworkID: string): MutationResu
   }
 
   return [commit, isInProgress]
+}
+
+type ReorderableList = { readonly internalID: string; readonly default: boolean } | null | undefined
+
+/**
+ * Gravity sorts the lists UPDATED_AT_DESC, so any list whose membership just
+ * changed — saved to or removed from — jumps to the front on the next fetch.
+ * Mirror that in the store up front, otherwise store-and-network paints the
+ * stale order for a frame before the network response reorders it. The default
+ * "Saved Artworks" list isn't part of this connection, so it's skipped.
+ */
+export const moveUpdatedListsToFront = (
+  store: RecordSourceSelectorProxy,
+  response:
+    | {
+        readonly addedToArtworkLists?: ReadonlyArray<ReorderableList> | null
+        readonly removedFromArtworkLists?: ReadonlyArray<ReorderableList> | null
+      }
+    | null
+    | undefined
+) => {
+  const updatedCustomListIDs = [
+    ...(response?.addedToArtworkLists ?? []),
+    ...(response?.removedFromArtworkLists ?? []),
+  ]
+    .filter((list) => list && !list.default)
+    .map((list) => list?.internalID)
+
+  if (!updatedCustomListIDs.length) {
+    return
+  }
+
+  const me = store.getRoot().getLinkedRecord("me")
+  const connection = me && ConnectionHandler.getConnection(me, "ArtworkLists_customArtworkLists")
+
+  if (!connection) {
+    return
+  }
+
+  const edges = connection.getLinkedRecords("edges") ?? []
+
+  updatedCustomListIDs.forEach((internalID) => {
+    const node = edges
+      .find((edge) => edge?.getLinkedRecord("node")?.getValue("internalID") === internalID)
+      ?.getLinkedRecord("node")
+    const nodeID = node?.getValue("id")
+
+    if (!node || typeof nodeID !== "string") {
+      return
+    }
+
+    ConnectionHandler.deleteNode(connection, nodeID)
+    const newEdge = ConnectionHandler.createEdge(store, connection, node, "Collection")
+    ConnectionHandler.insertEdgeBefore(connection, newEdge)
+  })
 }
 
 export const getArtworkListsCountByType = (artworkLists: ArtworkListEntity) => {

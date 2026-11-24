@@ -69,22 +69,24 @@ describe(@"concerning loading a VC from a URL and reporting analytics", ^{
         [appDelegateMock stopMocking];
     });
 
-    it(@"routes the Spotlight link to the appropriate view controller and shows it", ^{
+    // Under the scene life cycle React Native's app-delegate handler returns NO, and links reach JS
+    // through `SceneDelegate` (`RCTLinkingManager scene:continueUserActivity:`) instead.
+    it(@"leaves the Spotlight link to the scene delegate", ^{
         NSUserActivity *activity = [[NSUserActivity alloc] initWithActivityType:CSSearchableItemActionType];
         activity.userInfo = @{ CSSearchableItemActivityIdentifier: URL.absoluteString };
 
         expect([delegate application:app
                 continueUserActivity:activity
-                  restorationHandler:^(NSArray *_) {}]).to.beTruthy();
+                  restorationHandler:^(NSArray *_) {}]).to.beFalsy();
     });
 
-    it(@"routes the WebBrowsing link to the appropriate view controller and shows it", ^{
+    it(@"leaves the WebBrowsing link to the scene delegate", ^{
         NSUserActivity *activity = [[NSUserActivity alloc] initWithActivityType:NSUserActivityTypeBrowsingWeb];
         activity.webpageURL = URL;
 
         expect([delegate application:app
                 continueUserActivity:activity
-                  restorationHandler:^(NSArray *_) {}]).to.beTruthy();
+                  restorationHandler:^(NSArray *_) {}]).to.beFalsy();
     });
 });
 

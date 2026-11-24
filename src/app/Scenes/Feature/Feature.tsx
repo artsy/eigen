@@ -58,7 +58,9 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
   const shareButton = enableShare ? (
     <ShareHeaderButton
       href={`/feature/${feature.slug}`}
+      internalID={feature.internalID}
       name={feature.name ?? ""}
+      slug={feature.slug}
       utmContent="feature-share"
       accessibilityLabel="Share Feature"
     />
@@ -249,6 +251,7 @@ const FeatureFragmentContainer = createFragmentContainer(FeatureApp, {
       ...FeatureHeader_feature
       description
       callout
+      internalID
       slug
       name
       video {

@@ -14,6 +14,7 @@ import {
   AutoHeightBottomSheetProps,
 } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { HeaderMenuArtworkListEntity } from "app/Scenes/ArtworkList/types"
+import { GlobalStore } from "app/store/GlobalStore"
 import { FormikHelpers } from "formik"
 import { FC } from "react"
 import { useTracking } from "react-tracking"
@@ -60,6 +61,10 @@ export const EditArtworkListView: FC<EditArtworkListViewProps> = ({
       },
       onCompleted: () => {
         helpers.setSubmitting(false)
+        GlobalStore.actions.lastSavedList.renameListIfMatches({
+          internalID: artworkListEntity.internalID,
+          name: values.name,
+        })
         toast.changesSaved()
         trackAnalytics()
         dismissAll()

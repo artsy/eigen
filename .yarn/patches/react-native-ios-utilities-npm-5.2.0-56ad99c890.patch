@@ -1,3 +1,26 @@
+diff --git a/ios/Sources/Deprecated/RNIImage/RNIImageRemoteURLMaker.swift b/ios/Sources/Deprecated/RNIImage/RNIImageRemoteURLMaker.swift
+index a3e77ce55203e0f192ccda452c08ee777fac8060..87420ac90f15525e187833d079d6e47c1e26b122 100644
+--- a/ios/Sources/Deprecated/RNIImage/RNIImageRemoteURLMaker.swift
++++ b/ios/Sources/Deprecated/RNIImage/RNIImageRemoteURLMaker.swift
+@@ -104,14 +104,16 @@ public class RNIImageRemoteURLMaker {
+   // MARK: - Properties
+   // ------------------
+   
+-  public lazy var imageLoader: RCTImageLoaderWithAttributionProtocol? = {
++  // PATCHED: React Native 0.88 dropped RCTImageLoaderWithAttributionProtocol from the React umbrella
++  // header, so Swift can't see it. `loadImage(with:callback:)` is declared on RCTImageLoaderProtocol.
++  public lazy var imageLoader: RCTImageLoaderProtocol? = {
+     guard let bridge = RCTBridge.current(),
+           let imageLoaderModuleRaw = bridge.module(forName: "ImageLoader")
+     else {
+       return nil
+     };
+     
+-    return imageLoaderModuleRaw as? RCTImageLoaderWithAttributionProtocol;
++    return imageLoaderModuleRaw as? RCTImageLoaderProtocol;
+   }();
+   
+   public var state: State = .INITIAL;
 diff --git a/ios/Sources/Extensions+Helpers/RCTView+Helpers.swift b/ios/Sources/Extensions+Helpers/RCTView+Helpers.swift
 index 09be306d5aa39337c5114c2ad6ba7513218e0751..4258ba40401a993a3b3839f3fef77b244f5e90b2 100644
 --- a/ios/Sources/Extensions+Helpers/RCTView+Helpers.swift
@@ -33,3 +56,149 @@ index 09be306d5aa39337c5114c2ad6ba7513218e0751..4258ba40401a993a3b3839f3fef77b24
 +    return nil;
    };
  };
+diff --git a/ios/Sources/ObjcHelpers/UIApplication+RNIHelpers.mm b/ios/Sources/ObjcHelpers/UIApplication+RNIHelpers.mm
+index a3cb9522f3727cc7f9f148675bf4c35cc7a19e27..6d2cfb53ee3332da79c78f59a84a50800b466fc2 100644
+--- a/ios/Sources/ObjcHelpers/UIApplication+RNIHelpers.mm
++++ b/ios/Sources/ObjcHelpers/UIApplication+RNIHelpers.mm
+@@ -113,7 +113,11 @@
+ 
+ - (RCTSurfacePresenterBridgeAdapter *)reactBridgeAdapter
+ {
+-  #ifdef USE_RCT_APP_DELEGATE
++  #ifdef RCT_REMOVE_LEGACY_ARCH
++  // PATCHED: React Native 0.88 compiles RCTSurfacePresenterBridgeAdapter out. (Upstream also
++  // recursed into itself here whenever the app delegate wasn't an RCTAppDelegate.)
++  return nil;
++  #elif defined(USE_RCT_APP_DELEGATE)
+   RCTAppDelegate *reactAppDelegate = [self reactAppDelegate];
+   
+   if(reactAppDelegate == nil){
+@@ -134,6 +138,10 @@
+ 
+ - (RCTSurfacePresenter *) reactSurfacePresenter
+ {
++  #ifdef RCT_REMOVE_LEGACY_ARCH
++  // PATCHED: see -reactBridgeAdapter.
++  return nil;
++  #else
+   RCTSurfacePresenterBridgeAdapter *reactBridgeAdapter = [self reactBridgeAdapter];
+   
+   if(reactBridgeAdapter == nil){
+@@ -141,6 +149,7 @@
+   };
+   
+   return [reactBridgeAdapter surfacePresenter];
++  #endif
+ }
+ 
+ - (RCTMountingManager *)reactMountingManager
+diff --git a/ios/Sources/ObjcHelpers/UIView+RNIPaperHelpers.mm b/ios/Sources/ObjcHelpers/UIView+RNIPaperHelpers.mm
+index 4083b045e1a2ccf7edf23a382c48d1ca98e7e944..fa28541fbb992917a85252447a1689c8e312dc78 100644
+--- a/ios/Sources/ObjcHelpers/UIView+RNIPaperHelpers.mm
++++ b/ios/Sources/ObjcHelpers/UIView+RNIPaperHelpers.mm
+@@ -27,12 +27,16 @@
+ - (RCTBridge *)reactGetPaperBridge
+ {
+   #if RCT_NEW_ARCH_ENABLED
++  #ifndef RCT_REMOVE_LEGACY_ARCH
+   RCTSurfacePresenterBridgeAdapter *reactBridgeAdapter =
+     [[UIApplication sharedApplication] reactBridgeAdapter];
+     
+   if(reactBridgeAdapter != nil){
+     return reactBridgeAdapter.bridge;
+   };
++  #endif
++  // PATCHED: React Native 0.88 compiles RCTSurfacePresenterBridgeAdapter out
++  // (RCT_REMOVE_LEGACY_ARCH); there is no bridge in the bridgeless app.
+   #else
+   RCTRootView *reactPaperRootView = [self reactGetPaperRootView];
+   if(reactPaperRootView != nil){
+diff --git a/ios/Sources/RNIBaseView/RNIBaseView.mm b/ios/Sources/RNIBaseView/RNIBaseView.mm
+index 7aeb0eb72ad15db55bf7d1fff7a0d0238c295fe2..408a5703219b9b6d44f1ffba9e1c34cf4a6fab55 100644
+--- a/ios/Sources/RNIBaseView/RNIBaseView.mm
++++ b/ios/Sources/RNIBaseView/RNIBaseView.mm
+@@ -25,7 +25,7 @@
+ #include "RNIBaseViewProps.h"
+ #include "RNIBaseViewEventEmitter.h"
+ 
+-#import "RCTFabricComponentsPlugins.h"
++#import <React/RCTFabricComponentsPlugins.h>
+ 
+ #import "RNIUtilitiesFollyConvert.h"
+ #import <React/RCTSurfaceTouchHandler.h>
+diff --git a/ios/Sources/RNIDetachedView/RNIDetachedViewManager.mm b/ios/Sources/RNIDetachedView/RNIDetachedViewManager.mm
+index 333b40537e41190a433ac261ca521bf7f693c313..b5e57263d5b2863d115a4630756e8493e5f4cbf5 100644
+--- a/ios/Sources/RNIDetachedView/RNIDetachedViewManager.mm
++++ b/ios/Sources/RNIDetachedView/RNIDetachedViewManager.mm
+@@ -10,7 +10,7 @@
+ 
+ #import "RNIBaseViewUtils.h"
+ 
+-#import "RCTBridge.h"
++#import <React/RCTBridge.h>
+ #import <React/RCTViewManager.h>
+ #import <React/RCTUIManager.h>
+ 
+diff --git a/ios/Sources/RNIDummyTestView/RNIDummyTestViewManager.mm b/ios/Sources/RNIDummyTestView/RNIDummyTestViewManager.mm
+index cc137e21f376661224eb6d4d0ca0b2448d00845f..e65fa78109c65ab8ca057a3161a100450b2fad02 100644
+--- a/ios/Sources/RNIDummyTestView/RNIDummyTestViewManager.mm
++++ b/ios/Sources/RNIDummyTestView/RNIDummyTestViewManager.mm
+@@ -13,7 +13,7 @@
+ 
+ #import <React/RCTViewManager.h>
+ #import <React/RCTUIManager.h>
+-#import "RCTBridge.h"
++#import <React/RCTBridge.h>
+ 
+ 
+ @interface RNIDummyTestViewManager : RCTViewManager
+diff --git a/ios/Sources/RNIUtilitiesModule/RNIUtilitiesFollyConvert.h b/ios/Sources/RNIUtilitiesModule/RNIUtilitiesFollyConvert.h
+index bdf7ca90c1f224f0704acf65353cf881751724f6..9193ba3b8ffd04a37b85526c1878659c12f7aeb2 100644
+--- a/ios/Sources/RNIUtilitiesModule/RNIUtilitiesFollyConvert.h
++++ b/ios/Sources/RNIUtilitiesModule/RNIUtilitiesFollyConvert.h
+@@ -7,7 +7,7 @@
+   // `use_frameworks! :linkage => :static` users will need to import FollyConvert this way
+   #import "FollyConvert.h"
+ #elif __has_include("RCTFollyConvert.h")
+-  #import "RCTFollyConvert.h"
++  #import <React/RCTFollyConvert.h>
+ #else
+   #error "FollyConvert.h not found. Ensure React-utils & RCT-Folly pods are installed."
+ #endif
+diff --git a/ios/Sources/RNIUtilitiesModule/RNIUtilitiesModule.mm b/ios/Sources/RNIUtilitiesModule/RNIUtilitiesModule.mm
+index 0e53f8489c5d1fbeba5325071da985b16490507b..ca40593bb190a5a089f2ca6a70c52f59d0981869 100644
+--- a/ios/Sources/RNIUtilitiesModule/RNIUtilitiesModule.mm
++++ b/ios/Sources/RNIUtilitiesModule/RNIUtilitiesModule.mm
+@@ -75,6 +75,11 @@ static RNIUtilitiesModule *RNIUtilitiesModuleShared = nil;
+     return;
+   };
+   
++#if RCT_NEW_ARCH_ENABLED
++  // PATCHED: React Native 0.88 removed RCTCxxBridge. Under the bridgeless New Architecture there
++  // was never an RCTCxxBridge to read the runtime from, so this path already returned early.
++  return;
++#else
+   RCTBridge *bridge = [RCTBridge currentBridge];
+   
+   RCTCxxBridge *cxxBridge = (RCTCxxBridge *)bridge;
+@@ -248,6 +253,7 @@ static RNIUtilitiesModule *RNIUtilitiesModuleShared = nil;
+   );
+   
+   self->_didInstallHostObject = YES;
++#endif
+ }
+ 
+ // MARK: Module Commands
+diff --git a/ios/Sources/RNIWrapperView/RNIWrapperViewManager.mm b/ios/Sources/RNIWrapperView/RNIWrapperViewManager.mm
+index 94ca7d29cc8b6282e516503d8ded253be23ff46e..e07e9914782047877f69f2007de18cdd80aa715e 100644
+--- a/ios/Sources/RNIWrapperView/RNIWrapperViewManager.mm
++++ b/ios/Sources/RNIWrapperView/RNIWrapperViewManager.mm
+@@ -10,7 +10,7 @@
+ 
+ #import "RNIBaseViewUtils.h"
+ 
+-#import "RCTBridge.h"
++#import <React/RCTBridge.h>
+ #import <React/RCTViewManager.h>
+ #import <React/RCTUIManager.h>
+ 

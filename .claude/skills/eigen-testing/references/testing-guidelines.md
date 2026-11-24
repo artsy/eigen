@@ -198,7 +198,7 @@ Use `findBy*` for async operations:
 it("loads data asynchronously", async () => {
   renderWithRelay()
 
-  await screen.findByText("Loaded Data").toBeOnTheScreen()
+  expect(await screen.findByText("Loaded Data")).toBeOnTheScreen()
 })
 ```
 
@@ -208,19 +208,31 @@ it("loads data asynchronously", async () => {
 
 `mockTrackEvent` and `mockPostEventToProviders` are automatically cleared in `beforeEach`. No manual clearing needed.
 
-### 2. Do not use Deprecated Utilities
+### 2. Do not use Deprecated or Removed APIs
 
-These utilities are deprecated - avoid in new tests:
+These have been removed from the codebase and must not come back:
 
-- `renderWithWrappersLEGACY` → use `renderWithWrappers`
-- `setupTestWrapper_LEGACY` → use `setupTestWrapper`
+- `renderWithWrappersLEGACY`, `setupTestWrapper_LEGACY`, `renderWithLayout` → use `renderWithWrappers` / `setupTestWrapper`
+- `extractText` → use `toHaveTextContent` / `getByText`
+- `waitUntil` → use `waitFor` / `findBy*`
+
+These are still around but deprecated, so avoid them in new tests:
+
 - `resolveMostRecentRelayOperation` → use `setupTestWrapper`
 - `flushPromiseQueue` → use `findBy*`
-- `waitUntil` → use `waitFor`
-- `extractText` → use Testing Library queries
-- `renderWithLayout` → use `renderWithWrappers`
 
-### 3. TestID Naming
+### 3. Keep tests ready for React Native Testing Library v14
+
+v14 drops `react-test-renderer`, and queries only see host elements (View, Text, TextInput…), never composite components. ESLint enforces the first two rules below in test files.
+
+- Never import from `react-test-renderer`. Import `act` from `@testing-library/react-native`.
+- Never use `UNSAFE_getByType`, `UNSAFE_*ByProps`, `UNSAFE_root`, or `*ByA11yHint` (use `*ByHintText`).
+- Don't walk the tree (`.root`, `findAllByType`, `toJSON()`) or call `element.props.onPress()` directly. Use `fireEvent`.
+- Assert on what the user sees, not on a child component's props. Query priority: `getByRole` > `getByLabelText` > `getByPlaceholderText` > `getByText` > `getByTestId`.
+- When asserting on handler arguments from `fireEvent.press` / `fireEvent.scroll`, use `expect.objectContaining(...)`.
+- Text in mocks must be wrapped in `<Text>`.
+
+### 4. TestID Naming
 
 Use descriptive, kebab-case test IDs:
 

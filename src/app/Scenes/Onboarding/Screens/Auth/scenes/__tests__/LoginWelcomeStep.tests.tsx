@@ -43,14 +43,14 @@ describe("LoginWelcomeStep", () => {
   it("expands the modal when the input field is tapped", () => {
     renderWelcomeStep()
 
-    expect(screen.queryByA11yHint("Go back to the previous screen")).not.toBeOnTheScreen()
-    expect(screen.queryByA11yHint("Continue to the next screen")).not.toBeOnTheScreen()
+    expect(screen.queryByHintText("Go back to the previous screen")).not.toBeOnTheScreen()
+    expect(screen.queryByHintText("Continue to the next screen")).not.toBeOnTheScreen()
     expect(screen.getByTestId("social-signin-and-disclaimers")).toHaveStyle({ opacity: 1 })
 
-    fireEvent(screen.getByA11yHint("Enter your email address"), "focus")
+    fireEvent(screen.getByHintText("Enter your email address"), "focus")
 
-    expect(screen.getByA11yHint("Go back to the previous screen")).toBeOnTheScreen()
-    expect(screen.getByA11yHint("Continue to the next screen")).toBeOnTheScreen()
+    expect(screen.getByHintText("Go back to the previous screen")).toBeOnTheScreen()
+    expect(screen.getByHintText("Continue to the next screen")).toBeOnTheScreen()
     expect(screen.queryByTestId("social-signin-and-disclaimers")).not.toBeOnTheScreen()
   })
 
@@ -58,13 +58,13 @@ describe("LoginWelcomeStep", () => {
     it("closes the modal when the back icon is tapped", () => {
       renderExpandedWelcomeStep()
 
-      fireEvent.press(screen.getByA11yHint("Go back to the previous screen"))
+      fireEvent.press(screen.getByHintText("Go back to the previous screen"))
       act(() => {
         jest.advanceTimersByTime(1000)
       })
 
-      expect(screen.queryByA11yHint("Go back to the previous screen")).not.toBeOnTheScreen()
-      expect(screen.queryByA11yHint("Continue to the next screen")).not.toBeOnTheScreen()
+      expect(screen.queryByHintText("Go back to the previous screen")).not.toBeOnTheScreen()
+      expect(screen.queryByHintText("Continue to the next screen")).not.toBeOnTheScreen()
       expect(screen.getByTestId("social-signin-and-disclaimers")).toHaveStyle({
         opacity: 1,
       })
@@ -82,10 +82,10 @@ describe("LoginWelcomeStep", () => {
 
       renderExpandedWelcomeStep()
 
-      fireEvent.changeText(screen.getByA11yHint("Enter your email address"), "foo@bar.baz")
+      fireEvent.changeText(screen.getByHintText("Enter your email address"), "foo@bar.baz")
 
       // eslint-disable-next-line testing-library/no-unnecessary-act
-      await act(() => fireEvent.press(screen.getByA11yHint("Continue to the next screen")))
+      await act(() => fireEvent.press(screen.getByHintText("Continue to the next screen")))
 
       expect(navigateSpy).toHaveBeenCalledWith({
         name: "SignUpPasswordStep",
@@ -103,11 +103,11 @@ describe("LoginWelcomeStep", () => {
 
       renderExpandedWelcomeStep()
 
-      fireEvent.changeText(screen.getByA11yHint("Enter your email address"), "foo@bar.baz")
-      fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+      fireEvent.changeText(screen.getByHintText("Enter your email address"), "foo@bar.baz")
+      fireEvent.press(screen.getByHintText("Continue to the next screen"))
 
       // eslint-disable-next-line testing-library/no-unnecessary-act
-      await act(() => fireEvent.press(screen.getByA11yHint("Continue to the next screen")))
+      await act(() => fireEvent.press(screen.getByHintText("Continue to the next screen")))
 
       expect(navigateSpy).toHaveBeenCalledWith({
         name: "LoginPasswordStep",
@@ -145,11 +145,11 @@ describe("LoginWelcomeStep", () => {
 
       renderExpandedWelcomeStep()
 
-      fireEvent.changeText(screen.getByA11yHint("Enter your email address"), "foo@bar.baz")
+      fireEvent.changeText(screen.getByHintText("Enter your email address"), "foo@bar.baz")
 
       // eslint-disable-next-line testing-library/no-unnecessary-act
       await act(async () => {
-        fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+        fireEvent.press(screen.getByHintText("Continue to the next screen"))
         jest.runAllTimers()
       })
 
@@ -183,11 +183,11 @@ describe("LoginWelcomeStep", () => {
 
       renderExpandedWelcomeStep()
 
-      fireEvent.changeText(screen.getByA11yHint("Enter your email address"), "foo@bar.baz")
+      fireEvent.changeText(screen.getByHintText("Enter your email address"), "foo@bar.baz")
 
       // eslint-disable-next-line testing-library/no-unnecessary-act
       await act(async () => {
-        fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+        fireEvent.press(screen.getByHintText("Continue to the next screen"))
       })
 
       act(() => {
@@ -223,11 +223,11 @@ describe("LoginWelcomeStep", () => {
 
       renderExpandedWelcomeStep()
 
-      fireEvent.changeText(screen.getByA11yHint("Enter your email address"), "foo@bar.baz")
+      fireEvent.changeText(screen.getByHintText("Enter your email address"), "foo@bar.baz")
 
       // eslint-disable-next-line testing-library/no-unnecessary-act
       await act(async () => {
-        fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+        fireEvent.press(screen.getByHintText("Continue to the next screen"))
         jest.runAllTimers()
       })
 
@@ -242,11 +242,11 @@ describe("LoginWelcomeStep", () => {
 
     it("shows an inline error for invalid email format", async () => {
       renderExpandedWelcomeStep()
-      fireEvent.changeText(screen.getByA11yHint("Enter your email address"), "invalidemail")
+      fireEvent.changeText(screen.getByHintText("Enter your email address"), "invalidemail")
 
       // eslint-disable-next-line testing-library/no-unnecessary-act
       await act(async () => {
-        fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+        fireEvent.press(screen.getByHintText("Continue to the next screen"))
       })
 
       act(() => {
@@ -259,25 +259,25 @@ describe("LoginWelcomeStep", () => {
   it("shows the Sign in with Apple button on iOS versions >= 13 ", () => {
     mockOSMajorVersion.mockReturnValue(13)
     renderWelcomeStep()
-    expect(screen.getByA11yHint("Sign in with Apple")).toBeOnTheScreen()
+    expect(screen.getByHintText("Sign in with Apple")).toBeOnTheScreen()
   })
 
   it("shows the Sign in with Apple button on iOS versions < 13", () => {
     mockOSMajorVersion.mockReturnValue(12)
     renderWelcomeStep()
-    expect(screen.queryByA11yHint("Sign in with Apple")).not.toBeOnTheScreen()
+    expect(screen.queryByHintText("Sign in with Apple")).not.toBeOnTheScreen()
   })
 
   it("hides the Sign in with Apple button on Android", () => {
     Platform.OS = "android"
     renderWelcomeStep()
-    expect(screen.queryByA11yHint("Sign in with Apple")).not.toBeOnTheScreen()
+    expect(screen.queryByHintText("Sign in with Apple")).not.toBeOnTheScreen()
   })
 
   it("provides a link to the terms and conditions", async () => {
     renderWelcomeStep()
 
-    fireEvent.press(screen.getByA11yHint("View the Terms and Conditions"))
+    fireEvent.press(screen.getByHintText("View the Terms and Conditions"))
 
     expect(mockNavigate).toHaveBeenCalledWith("OnboardingWebView", { url: "/terms" })
   })
@@ -285,7 +285,7 @@ describe("LoginWelcomeStep", () => {
   it("provides a link to the privacy policy", async () => {
     renderWelcomeStep()
 
-    fireEvent.press(screen.getByA11yHint("View the Privacy Policy"))
+    fireEvent.press(screen.getByHintText("View the Privacy Policy"))
 
     expect(mockNavigate).toHaveBeenCalledWith("OnboardingWebView", { url: "/privacy" })
   })
@@ -302,6 +302,6 @@ const renderWelcomeStep = () => {
 
 const renderExpandedWelcomeStep = () => {
   renderWelcomeStep()
-  fireEvent(screen.getByA11yHint("Enter your email address"), "focus")
+  fireEvent(screen.getByHintText("Enter your email address"), "focus")
   jest.advanceTimersByTime(1000)
 }

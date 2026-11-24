@@ -1,11 +1,22 @@
 import { screen } from "@testing-library/react-native"
 import { ArtistListItemTestsQuery } from "__generated__/ArtistListItemTestsQuery.graphql"
 import { ArtistListItemContainer, formatTombstoneText } from "app/Components/ArtistListItem"
-import { RouterLink } from "app/system/navigation/RouterLink"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
+
+jest.mock("app/system/navigation/RouterLink", () => {
+  const { View } = require("react-native")
+  return {
+    // Render a host element exposing `noFeedback` so the test can assert on it
+    RouterLink: ({ children, noFeedback }: { children: React.ReactNode; noFeedback?: boolean }) => (
+      <View testID="router-link" noFeedback={noFeedback}>
+        {children}
+      </View>
+    ),
+  }
+})
 
 describe("ArtistListItem", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -48,15 +59,15 @@ describe("ArtistListItem", () => {
   })
 
   it("renders without feedback without throwing an error", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+    renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment)
-    expect(tree.findByType(RouterLink).props.noFeedback).toBe(true)
+    expect(screen.getByTestId("router-link")).toHaveProp("noFeedback", true)
   })
 
   it("renders with feedback without throwing an error", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer withFeedback />).root
+    renderWithWrappers(<TestRenderer withFeedback />)
     resolveMostRecentRelayOperation(mockEnvironment)
-    expect(tree.findByType(RouterLink).props.noFeedback).toBe(false)
+    expect(screen.getByTestId("router-link")).toHaveProp("noFeedback", false)
   })
 
   it("shows uploaded artworks counts when specified", () => {
@@ -81,6 +92,15 @@ describe("ArtistListItem", () => {
     renderWithWrappers(<TestRenderer withFeedback showFollowButton />)
     resolveMostRecentRelayOperation(mockEnvironment)
     expect(() => screen.getByTestId("follow-artist-button")).toBeTruthy()
+  })
+
+  it("labels the FollowButton with the artist's name", () => {
+    renderWithWrappers(<TestRenderer showFollowButton />)
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artist: () => ({ name: "Test Artist", is_followed: true }),
+    })
+    // Palette's Button repeats the label on an inner view, so match the button role
+    expect(screen.getByRole("button", { name: "Following Test Artist" })).toBeOnTheScreen()
   })
 })
 

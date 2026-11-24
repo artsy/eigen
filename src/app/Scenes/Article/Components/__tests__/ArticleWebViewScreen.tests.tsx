@@ -3,6 +3,13 @@ import { ArticleWebViewScreen } from "app/Scenes/Article/Components/ArticleWebVi
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
+jest.mock("app/Components/ArtsyWebView", () => {
+  const { Text } = require("react-native")
+  return {
+    ArtsyWebView: ({ url }: { url: string }) => <Text testID="ArtsyWebView">{url}</Text>,
+  }
+})
+
 describe("ArticleWebViewScreen", () => {
   const { renderWithRelay } = setupTestWrapper({
     Component: ArticleWebViewScreen,
@@ -23,6 +30,6 @@ describe("ArticleWebViewScreen", () => {
       }),
     })
 
-    expect(screen.UNSAFE_getByProps({ url: "/article/foo" })).toBeTruthy()
+    expect(screen.getByTestId("ArtsyWebView")).toHaveTextContent("/article/foo")
   })
 })

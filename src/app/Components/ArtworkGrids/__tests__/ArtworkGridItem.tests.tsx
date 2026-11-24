@@ -589,6 +589,104 @@ describe("ArtworkGridItem", () => {
         expect(screen.queryByTestId("follow-icon-filled")).not.toBeOnTheScreen()
       })
     })
+
+    describe("ARDefaultToLastSavedList", () => {
+      describe("when the flag is enabled", () => {
+        beforeEach(() => {
+          __globalStoreTestUtils__?.injectFeatureFlags({ ARDefaultToLastSavedList: true })
+        })
+
+        it("saves to the last-used list instead of the default collection", () => {
+          __globalStoreTestUtils__?.injectState({
+            lastSavedList: {
+              lastSavedList: { internalID: "list-123", name: "My List", default: false },
+            },
+          })
+
+          const { env } = renderWithRelay({ Artwork: () => artwork })
+
+          fireEvent.press(screen.getByTestId("save-artwork-icon"))
+
+          const operation = env.mock.getMostRecentOperation()
+          expect(operation.request.node.operation.name).toBe(
+            "useUpdateArtworkListsForArtworkMutation"
+          )
+          expect(operation.request.variables.input.addToCollectionIDs).toEqual(["list-123"])
+
+          // Heart fills optimistically, before the server replies.
+          expect(screen.getByTestId("filled-heart-icon")).toBeOnTheScreen()
+        })
+
+        it("forgets the remembered list when the server rejects the save", () => {
+          __globalStoreTestUtils__?.injectState({
+            lastSavedList: {
+              lastSavedList: { internalID: "list-123", name: "My List", default: false },
+            },
+          })
+
+          const { mockResolveLastOperation } = renderWithRelay({ Artwork: () => artwork })
+
+          fireEvent.press(screen.getByTestId("save-artwork-icon"))
+
+          mockResolveLastOperation({
+            Mutation: () => ({
+              artworksCollectionsBatchUpdate: {
+                responseOrError: {
+                  __typename: "ArtworksCollectionsBatchUpdateFailure",
+                  mutationError: { statusCode: 422 },
+                },
+              },
+            }),
+          })
+
+          expect(__globalStoreTestUtils__?.getCurrentState().lastSavedList.lastSavedList).toBeNull()
+        })
+
+        it("falls back to the default collection when the last-used list is the default", () => {
+          __globalStoreTestUtils__?.injectState({
+            lastSavedList: {
+              lastSavedList: { internalID: "some-id", name: "Saved Artworks", default: true },
+            },
+          })
+
+          const { env } = renderWithRelay({ Artwork: () => artwork })
+
+          fireEvent.press(screen.getByTestId("save-artwork-icon"))
+
+          const operation = env.mock.getMostRecentOperation()
+          expect(operation.request.node.operation.name).toBe("useSaveArtworkMutation")
+        })
+
+        it("saves to the default collection when there is no last-used list", () => {
+          __globalStoreTestUtils__?.injectState({
+            lastSavedList: { lastSavedList: null },
+          })
+
+          const { env } = renderWithRelay({ Artwork: () => artwork })
+
+          fireEvent.press(screen.getByTestId("save-artwork-icon"))
+
+          const operation = env.mock.getMostRecentOperation()
+          expect(operation.request.node.operation.name).toBe("useSaveArtworkMutation")
+        })
+      })
+
+      it("uses the default collection when the flag is off, even with a last-used list", () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ ARDefaultToLastSavedList: false })
+        __globalStoreTestUtils__?.injectState({
+          lastSavedList: {
+            lastSavedList: { internalID: "list-123", name: "My List", default: false },
+          },
+        })
+
+        const { env } = renderWithRelay({ Artwork: () => artwork })
+
+        fireEvent.press(screen.getByTestId("save-artwork-icon"))
+
+        const operation = env.mock.getMostRecentOperation()
+        expect(operation.request.node.operation.name).toBe("useSaveArtworkMutation")
+      })
+    })
   })
 
   describe("unlisted artworks", () => {

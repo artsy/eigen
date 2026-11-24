@@ -1,3 +1,4 @@
+import { BottomSheetFlatList } from "@gorhom/bottom-sheet"
 import { ArtworkLists_me$data, ArtworkLists_me$key } from "__generated__/ArtworkLists_me.graphql"
 import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ArtworkListsLoadingIndicator } from "app/Components/ArtworkLists/components/ArtworkListsLoadingIndicator"
@@ -5,7 +6,6 @@ import { ArtworkListMode, ArtworkListOfferSettingsMode } from "app/Components/Ar
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { FC, useCallback, useEffect } from "react"
-import { FlatList } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
 import { ArtworkListItem, PressedArtworkListItem } from "./ArtworkListItem"
 
@@ -130,7 +130,7 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
   }, [])
 
   return (
-    <FlatList
+    <BottomSheetFlatList
       keyboardShouldPersistTaps="always"
       data={artworkLists}
       keyExtractor={(item: ArtworkList) => item.internalID}

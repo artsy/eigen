@@ -4,12 +4,20 @@ import { Swipeable } from "app/Components/Swipeable/Swipeable"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import ReactNativeHapticFeedback from "react-native-haptic-feedback"
 
+jest.mock("react-native-gesture-handler/ReanimatedSwipeable", () =>
+  require("app/utils/tests/mockReanimatedSwipeable")
+)
+
 jest.mock("react-native-haptic-feedback", () => ({
   trigger: jest.fn(),
 }))
 
 describe("Swipeable Component", () => {
   const mockAction = jest.fn()
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
 
   it("should render without crashing", () => {
     renderWithWrappers(
@@ -29,12 +37,12 @@ describe("Swipeable Component", () => {
     expect(mockAction).toHaveBeenCalled()
   })
 
-  it("should trigger haptic feedback on swipe", () => {
+  it("should trigger haptic feedback when the action is pressed", () => {
     renderWithWrappers(
-      <Swipeable {...mockProps} actionComponentWidth={80} actionOnSwipe={mockAction} />
+      <Swipeable {...mockProps} actionComponentWidth={80} actionOnPress={mockAction} />
     )
 
-    fireEvent(screen.getByTestId("swipeable-component"), "onSwipeableOpen")
+    fireEvent.press(screen.getByText("Swipe Me"))
 
     expect(ReactNativeHapticFeedback.trigger).toHaveBeenCalledWith("impactLight")
   })

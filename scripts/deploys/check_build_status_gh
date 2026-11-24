@@ -21,6 +21,9 @@ set -euo pipefail
 #
 # Overriding an `rc-v*` tip would corrupt the build about to ship, so that case
 # refuses a plain "y" and requires typing `override-rc`.
+#
+# Overriding cancels the running betas listed in (2) before the caller pushes,
+# so the old and new builds don't both ship into the same build number.
 
 source .env.releases
 
@@ -79,6 +82,7 @@ commit_subject() {
 
 conflicts=""
 rc_conflict=false
+running_run_ids=()
 
 # --- 1. has this hour's build number already been used? -----------------------
 # These tags are annotated, so we want `refs/tags/X^{}` (the commit) and not
@@ -115,12 +119,13 @@ for WORKFLOW_FILE in "${WORKFLOW_FILES[@]}"; do
   fi
 
   matches=$(echo "$response" | jq -r \
-    '.workflow_runs[] | [.head_sha, .name, .display_title, .html_url] | @tsv')
+    '.workflow_runs[] | [.id, .head_sha, .name, .display_title, .html_url] | @tsv')
 
   [ -z "$matches" ] && continue
 
-  while IFS=$'\t' read -r sha name title url; do
+  while IFS=$'\t' read -r run_id sha name title url; do
     [ -z "$sha" ] && continue
+    running_run_ids+=("$run_id")
     marker=""
     if is_rc_sha "$sha"; then
       marker="  🚨 RELEASE CANDIDATE"
@@ -143,6 +148,51 @@ if [ "$minute" -ge 50 ]; then
   echo "   Waiting until the top of the hour makes the build number predictable."
 fi
 
+# Cancels the runs found in (2) and waits for them to stop, so a superseded run
+# can't push its tag or upload its build after the override's push.
+cancel_running_betas() {
+  [ ${#running_run_ids[@]} -eq 0 ] && return 0
+
+  echo "Cancelling ${#running_run_ids[@]} running $PLATFORM beta run(s)..."
+  local run_id http_code failed=false
+  for run_id in "${running_run_ids[@]}"; do
+    http_code=$(curl -s -o /dev/null -w '%{http_code}' -X POST \
+      -H "Authorization: Bearer $GITHUB_TOKEN" \
+      -H "Accept: application/vnd.github.v3+json" \
+      "https://api.github.com/repos/artsy/eigen/actions/runs/${run_id}/cancel")
+    # 202: cancel requested. 409: the run already finished.
+    if [ "$http_code" != "202" ] && [ "$http_code" != "409" ]; then
+      echo "  - could not cancel run ${run_id} (HTTP ${http_code})"
+      failed=true
+    fi
+  done
+
+  if [ "$failed" = true ]; then
+    echo
+    echo "Error: could not cancel every running beta. Your GITHUB_TOKEN may lack"
+    echo "the 'actions: write' permission. Cancel them on GitHub and re-run this script."
+    exit 1
+  fi
+
+  local deadline=$((SECONDS + 120)) pending status
+  while :; do
+    pending=0
+    for run_id in "${running_run_ids[@]}"; do
+      # An API error (e.g. rate limit) has no .status, so it counts as not stopped.
+      status=$(gh_api "actions/runs/${run_id}" | jq -r '.status // "unknown"')
+      [ "$status" != "completed" ] && pending=$((pending + 1))
+    done
+    [ "$pending" -eq 0 ] && break
+    if [ "$SECONDS" -ge "$deadline" ]; then
+      echo "Error: could not confirm ${pending} run(s) stopped after 2 minutes. Check them on GitHub and re-run this script."
+      exit 1
+    fi
+    echo "  waiting for ${pending} run(s) to stop..."
+    sleep 5
+  done
+  echo "Running $PLATFORM betas cancelled."
+}
+
 if [ -z "$conflicts" ]; then
   echo "Build ${BUILD_NUMBER} is free and no $PLATFORM beta is running. Proceeding with creating the $PLATFORM beta..."
   exit 0
@@ -160,22 +210,34 @@ echo
 
 if [ "$rc_conflict" = true ]; then
   echo "🚨 The conflict is a RELEASE CANDIDATE — DO NOT override."
-  echo "   Overriding will corrupt the build that is about to ship. Wait for the RC"
-  echo "   builds to finish and check with the release owner first."
+  if [ ${#running_run_ids[@]} -gt 0 ]; then
+    echo "   Overriding cancels the running $PLATFORM beta(s) listed above, including"
+    echo "   the RC build, so it will not ship. Wait for the RC builds to finish and"
+    echo "   check with the release owner first."
+  else
+    echo "   Overriding will corrupt the build that is about to ship. Wait for the RC"
+    echo "   builds to finish and check with the release owner first."
+  fi
   echo
   read -r -p "   If you are certain, type 'override-rc' to continue (anything else aborts): " REPLY
   echo
   if [ "$REPLY" = "override-rc" ]; then
-    echo "Overriding a release candidate on purpose. Proceeding with the $PLATFORM beta..."
+    echo "Overriding a release candidate on purpose."
+    cancel_running_betas
+    echo "Proceeding with the $PLATFORM beta..."
     exit 0
   fi
   echo "Aborting..."
   exit 1
 fi
 
+if [ ${#running_run_ids[@]} -gt 0 ]; then
+  echo "Deploying anyway cancels the running $PLATFORM beta(s) listed above."
+fi
 read -r -p "Are you sure you want to deploy anyway? (y/n) " -n 1
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
+  cancel_running_betas
   echo "Proceeding with creating the $PLATFORM beta..."
 else
   echo "Aborting..."

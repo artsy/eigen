@@ -32,6 +32,7 @@ export const AbandonFlowModal: React.FC<AbandonFlowModalProps> = ({
         <NavigationHeader
           hideBottomDivider
           renderRightButton={() => <CloseIcon width={26} height={26} />}
+          rightButtonAccessibilityLabel="Close"
           onRightButtonPress={onDismiss}
         />
         <Box px={2}>

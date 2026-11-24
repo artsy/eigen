@@ -25,13 +25,14 @@ describe("SaleListActiveBids", () => {
   })
 
   it("renders nothing when no artworks", () => {
-    const { toJSON } = renderWithRelay({
+    renderWithRelay({
       Me: () => ({
         lotStandings: [],
       }),
     })
 
-    expect(toJSON()).toBeNull()
+    expect(screen.queryByText("Your Active Bids")).not.toBeOnTheScreen()
+    expect(screen.queryAllByText(/.*/)).toHaveLength(0)
   })
 
   it("renders a list of artworks", () => {

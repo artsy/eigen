@@ -1,5 +1,4 @@
-import { Text } from "@artsy/palette-mobile"
-import { BidInfoRow } from "app/Components/Bidding/Components/BidInfoRow"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { PaymentInfo } from "app/Components/Bidding/Components/PaymentInfo"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
@@ -15,20 +14,16 @@ it("renders without throwing an error", () => {
   renderWithWrappers(<PaymentInfo {...initialProps} />)
 })
 
-it("shows the cc info that the user had typed into the form", async () => {
-  const { root } = renderWithWrappers(<PaymentInfo {...initialProps} />)
+it("shows the cc info that the user had typed into the form", () => {
+  renderWithWrappers(<PaymentInfo {...initialProps} />)
 
-  const creditCardRow = await root.findAllByType(BidInfoRow)
-
-  creditCardRow[0].instance.props.onPress()
+  fireEvent.press(screen.getByText("Credit card"))
   expect(mockNavigator.navigate).toHaveBeenCalledWith("CreditCardForm", {
     billingAddress: initialProps.billingAddress,
     onSubmit: expect.any(Function),
   })
 
-  const creditCardRowText = await creditCardRow[0].findAllByType(Text)
-
-  expect(creditCardRowText[1].props.children).toEqual("VISA •••• 4242")
+  expect(screen.getByText("VISA •••• 4242")).toBeOnTheScreen()
 })
 
 const billingAddress = {

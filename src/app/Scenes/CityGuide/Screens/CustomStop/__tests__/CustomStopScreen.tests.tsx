@@ -5,6 +5,10 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { RefreshControl } from "react-native"
 
+// The React Native jest preset's RefreshControl mock keeps a reference to the last mounted
+// instance, which lets us pull to refresh without walking the render tree.
+const pullToRefresh = () => (RefreshControl as any).latestRef.props.onRefresh()
+
 // React-test-renderer has issues with memo components, so we need to mock the palette-mobile
 // Image component. See https://github.com/facebook/react/issues/17301
 jest.mock("@artsy/palette-mobile", () => ({
@@ -153,7 +157,7 @@ describe("CustomStopScreen", () => {
     await screen.findByText("Coffee at London Cafe")
 
     act(() => {
-      screen.UNSAFE_getByType(RefreshControl).props.onRefresh()
+      pullToRefresh()
     })
 
     await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))

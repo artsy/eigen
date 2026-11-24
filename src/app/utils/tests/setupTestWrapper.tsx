@@ -4,7 +4,7 @@ import { GraphQLTaggedNode, QueryRenderer } from "react-relay"
 import { OperationType } from "relay-runtime"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
-import { renderWithWrappers, renderWithWrappersLEGACY, WrappersProps } from "./renderWithWrappers"
+import { renderWithWrappers, WrappersProps } from "./renderWithWrappers"
 
 interface SetupTestWrapper<T extends OperationType, ComponentProps> {
   Component: React.ComponentType<T["response"] & ComponentProps>
@@ -46,7 +46,7 @@ type RenderWithRelay = RenderResult & {
  *   renderWithRelay({
  *     Me: () => ({ name: "name" })
  *   })
- *   expect(screen.getByText('name')).toBeTruthy()
+ *   expect(screen.getByText('name')).toBeOnTheScreen()
  * })
  *
  * @example - Using fragments
@@ -77,7 +77,7 @@ type RenderWithRelay = RenderResult & {
  *     Me: () => ({ name: 'Mock Name' })
  *   })
  *
- *   expect(screen.getByText('name')).toEqual('Mock Name')
+ *   expect(screen.getByText('Mock Name')).toBeOnTheScreen()
  * })
  */
 export const setupTestWrapper = <T extends OperationType, ComponentProps = {}>({
@@ -146,53 +146,4 @@ export const setupTestWrapper = <T extends OperationType, ComponentProps = {}>({
   }
 
   return { renderWithRelay }
-}
-
-interface setupTestWrapper_LEGACYProps<T extends OperationType> {
-  Component: React.ComponentType<any>
-  query: GraphQLTaggedNode
-  variables?: T["variables"]
-}
-
-/**
- * @deprecated avoid using this, use setupTestWrapper instead.
- */
-
-export const setupTestWrapper_LEGACY = <T extends OperationType>({
-  Component,
-  query,
-  variables = {},
-}: setupTestWrapper_LEGACYProps<T>) => {
-  const getWrapper = (mockResolvers: MockResolvers = {}) => {
-    const env = createMockEnvironment()
-
-    const TestRenderer = () => (
-      <QueryRenderer<T>
-        environment={env}
-        variables={variables}
-        query={query}
-        render={({ props, error }) => {
-          if (error) {
-            console.error(error)
-            return null
-          }
-          if (props) {
-            return <Component {...(props as object)} />
-          }
-        }}
-      />
-    )
-
-    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
-
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
-
-    return wrapper
-  }
-
-  return { getWrapper }
 }

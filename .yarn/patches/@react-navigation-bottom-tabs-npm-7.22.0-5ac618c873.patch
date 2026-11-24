@@ -1,0 +1,83 @@
+diff --git a/lib/module/views/BottomTabBar.js b/lib/module/views/BottomTabBar.js
+index c6e64da5a93253c6e667dc9791e5b90410608719..fbdb38a10f16cd30df4950b8bbd61bb6074e82c5 100644
+--- a/lib/module/views/BottomTabBar.js
++++ b/lib/module/views/BottomTabBar.js
+@@ -124,6 +124,7 @@ export function BottomTabBar({
+     tabBarLabelVisibilityMode,
+     tabBarLabelPosition,
+     tabBarHideOnKeyboard = false,
++    tabBarVisible = false,
+     tabBarVisibilityAnimationConfig,
+     tabBarVariant = 'uikit',
+     tabBarStyle,
+@@ -142,7 +143,7 @@ export function BottomTabBar({
+   }
+   const isKeyboardShown = useIsKeyboardShown();
+   const onHeightChange = React.useContext(BottomTabBarHeightCallbackContext);
+-  const shouldShowTabBar = !(tabBarHideOnKeyboard && isKeyboardShown);
++  const shouldShowTabBar = !(tabBarHideOnKeyboard && isKeyboardShown) && !tabBarVisible;
+   const visibilityAnimationConfigRef = React.useRef(tabBarVisibilityAnimationConfig);
+   React.useEffect(() => {
+     visibilityAnimationConfigRef.current = tabBarVisibilityAnimationConfig;
+@@ -243,8 +244,12 @@ export function BottomTabBar({
+         translateY: visible.interpolate({
+           inputRange: [0, 1],
+           outputRange: [layout.height + insets[tabBarPosition === 'top' ? 'top' : 'bottom'] + StyleSheet.hairlineWidth, 0]
+-        })
++        }),
+       }],
++      opacity: visible.interpolate({
++        inputRange: [0, 1],
++        outputRange: [0, 1]
++     }),
+       // Absolutely position the tab bar so that the content is below it
+       // This is needed to avoid gap at bottom when the tab bar is hidden
+       position: isTabBarHidden ? 'absolute' : undefined
+diff --git a/src/types.tsx b/src/types.tsx
+index 1d20afa948b597f706e2f87ec4b08d33ffbc288a..e08a3996210cc1c615ad38ed5471021c034b16fc 100644
+--- a/src/types.tsx
++++ b/src/types.tsx
+@@ -289,6 +289,11 @@ export type BottomTabNavigationOptions = HeaderOptions & {
+    */
+   tabBarVariant?: Variant;
+ 
++  /**
++   * Whether the tab bar gets hidden when the screen is focused. Defaults to `false`.
++   */
++  tabBarVisible?: boolean;
++
+   /**
+    * Style object for the tab bar container.
+    */
+diff --git a/src/views/BottomTabBar.tsx b/src/views/BottomTabBar.tsx
+index 23b3728f8c333949980b1da495cf567fc1864970..306f6e4603dcd443b597c7d718595aaab55456b6 100644
+--- a/src/views/BottomTabBar.tsx
++++ b/src/views/BottomTabBar.tsx
+@@ -181,6 +181,7 @@ export function BottomTabBar({
+     tabBarVariant = 'uikit',
+     tabBarStyle,
+     tabBarBackground,
++    tabBarVisible = false,
+     tabBarTransparent,
+     tabBarActiveTintColor,
+     tabBarInactiveTintColor,
+@@ -212,7 +213,7 @@ export function BottomTabBar({
+ 
+   const onHeightChange = React.useContext(BottomTabBarHeightCallbackContext);
+ 
+-  const shouldShowTabBar = !(tabBarHideOnKeyboard && isKeyboardShown);
++  const shouldShowTabBar = !(tabBarHideOnKeyboard && isKeyboardShown) && !tabBarVisible
+ 
+   const visibilityAnimationConfigRef = React.useRef(
+     tabBarVisibilityAnimationConfig
+@@ -376,6 +377,10 @@ export function BottomTabBar({
+                         0,
+                       ],
+                     }),
++                    opacity: visible.interpolate({
++                      inputRange: [0, 1],
++                      outputRange: [0, 1],
++                    }),
+                   },
+                 ],
+                 // Absolutely position the tab bar so that the content is below it

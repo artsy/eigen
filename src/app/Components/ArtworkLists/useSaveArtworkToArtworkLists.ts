@@ -1,10 +1,21 @@
+import { ActionType, AddedArtworkToArtworkList, OwnerType } from "@artsy/cohesion"
 import { useSaveArtworkToArtworkLists_artwork$key } from "__generated__/useSaveArtworkToArtworkLists_artwork.graphql"
 import { useArtworkListContext } from "app/Components/ArtworkLists/ArtworkListContext"
 import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ArtworkEntity } from "app/Components/ArtworkLists/types"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
+import { useUpdateArtworkListsForArtwork } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
+import { GlobalStore } from "app/store/GlobalStore"
+import { useLastSavedList } from "app/store/LastSavedListModel"
+import { useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { SaveArtworkOptions, useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
+import { refreshOnArtworkSave } from "app/utils/refreshHelpers"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
+
+/** Slug used to reference the default "Saved Artworks" collection. */
+export const SAVED_ARTWORKS_COLLECTION_ID = "saved-artwork"
 
 interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError"> {
   artworkFragmentRef: useSaveArtworkToArtworkLists_artwork$key
@@ -20,7 +31,14 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     (actions) => actions.openSelectArtworkListsView
   )
 
+  const isLastSavedListEnabled = useFeatureFlag("ARDefaultToLastSavedList")
+  const lastSavedList = useLastSavedList()
+  const setLastSavedList = GlobalStore.actions.lastSavedList.setLastSavedList
+  const analytics = useAnalyticsContext()
+  const { trackEvent } = useTracking()
+
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
+  const [commitListUpdate, isSavingToList] = useUpdateArtworkListsForArtwork(artwork?.id ?? "")
 
   const customArtworkListsCount = artwork?.customArtworkLists?.totalCount ?? 0
   const isSavedToCustomArtworkLists = customArtworkListsCount > 0
@@ -52,7 +70,17 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     id: artwork.id,
     internalID: artwork.internalID,
     isSaved: !!artwork.isSaved,
-    onCompleted,
+    onCompleted: (isArtworkSaved) => {
+      if (isLastSavedListEnabled && isArtworkSaved) {
+        setLastSavedList({
+          internalID: SAVED_ARTWORKS_COLLECTION_ID,
+          name: "Saved Artworks",
+          default: true,
+        })
+      }
+
+      onCompleted?.(isArtworkSaved)
+    },
     optimisticUpdater: (isArtworkSaved, _store, isCalledBefore) => {
       if (isCalledBefore) {
         return
@@ -83,6 +111,90 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     openSelectArtworkListsView(artworkEntity)
   }
 
+  const trackAddedArtworkToArtworkList = (artworkListID: string) => {
+    const event: AddedArtworkToArtworkList = {
+      action: ActionType.addedArtworkToArtworkList,
+      context_owner_id: analytics.contextScreenOwnerId,
+      context_owner_slug: analytics.contextScreenOwnerSlug,
+      context_owner_type: analytics.contextScreenOwnerType || OwnerType.artwork,
+      artwork_ids: [artwork.internalID],
+      owner_ids: [artworkListID],
+    }
+
+    trackEvent(event)
+  }
+
+  const saveArtworkToLastSavedList = () => {
+    if (!lastSavedList || isSavingToList) {
+      return
+    }
+
+    commitListUpdate({
+      variables: {
+        artworkID: artwork.internalID,
+        input: {
+          artworkIDs: [artwork.internalID],
+          addToCollectionIDs: [lastSavedList.internalID],
+          removeFromCollectionIDs: [],
+        },
+      },
+      // Fill the heart immediately so a second tap routes to the picker rather than re-adding.
+      optimisticUpdater: (store) => {
+        const entity = store.get(artwork.id)?.getLinkedRecord("collectionsConnection", {
+          first: 0,
+          default: false,
+          saves: true,
+        })
+
+        if (!entity) {
+          return
+        }
+
+        const prevValue = (entity.getValue("totalCount") ?? 0) as number
+        entity.setValue(prevValue + 1, "totalCount")
+      },
+      onCompleted: (data) => {
+        const responseOrError = data.artworksCollectionsBatchUpdate?.responseOrError
+        const mutationError = responseOrError?.mutationError
+
+        if (mutationError) {
+          // forget the remembered list on any failure
+          setLastSavedList(null)
+
+          if (!suppressToasts) {
+            toast.error()
+          }
+
+          restOptions.onError?.(
+            new Error(
+              `artworksCollectionsBatchUpdate failed (statusCode: ${mutationError.statusCode})`
+            )
+          )
+          return
+        }
+
+        refreshOnArtworkSave()
+        trackAddedArtworkToArtworkList(lastSavedList.internalID)
+        onCompleted?.(true)
+
+        if (!suppressToasts) {
+          toast.savedToLastSavedArtworkList({
+            artworkList: lastSavedList,
+            onToastPress: openSelectArtworkListsForArtworkView,
+          })
+        }
+      },
+      onError: (error) => {
+        // Network/timeout failure — keep the remembered list, just surface the error.
+        if (!suppressToasts) {
+          toast.error()
+        }
+
+        restOptions.onError?.(error)
+      },
+    })
+  }
+
   const saveArtworkToLists = () => {
     if (options.saveToDefaultCollectionOnly) {
       saveArtworkToDefaultArtworkList()
@@ -91,6 +203,11 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
 
     if (artworkListID || isSavedToCustomArtworkLists) {
       openSelectArtworkListsForArtworkView()
+      return
+    }
+
+    if (isLastSavedListEnabled && !isSaved && lastSavedList && !lastSavedList.default) {
+      saveArtworkToLastSavedList()
       return
     }
 

@@ -1,10 +1,7 @@
-import { Text } from "@artsy/palette-mobile"
+import { screen } from "@testing-library/react-native"
 import { ArtistShowsTestsQuery } from "__generated__/ArtistShowsTestsQuery.graphql"
-import { ArtistShow } from "app/Components/Artist/ArtistShows/ArtistShow"
 import { ArtistShowsPaginationContainer } from "app/Scenes/ArtistShows/ArtistShows"
-import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { FlatList } from "react-native"
 import { graphql } from "react-relay"
 
 describe("ArtistShows", () => {
@@ -21,25 +18,30 @@ describe("ArtistShows", () => {
   })
 
   it("Renders artist name", () => {
-    const tree = renderWithRelay({
+    renderWithRelay({
       Artist: () => ({
         name: "Andy Warhol",
       }),
     })
 
-    expect(extractText(tree.UNSAFE_getAllByType(Text)[0])).toEqual("Andy Warhol")
-    expect(extractText(tree.UNSAFE_getAllByType(Text)[1])).toEqual("Past Shows")
+    expect(screen.getByText("Andy Warhol")).toBeOnTheScreen()
+    expect(screen.getByText("Past Shows")).toBeOnTheScreen()
   })
 
   it("Renders list of shows", () => {
-    const tree = renderWithRelay({
+    renderWithRelay({
       // ShowsConnection is named as ShowConnection
       ShowConnection: () => ({
-        edges: [{ node: { id: "show1" } }, { node: { id: "show2" } }, { node: { id: "show3" } }],
+        edges: [
+          { node: { id: "show1", name: "Show One" } },
+          { node: { id: "show2", name: "Show Two" } },
+          { node: { id: "show3", name: "Show Three" } },
+        ],
       }),
     })
 
-    expect(tree.UNSAFE_getAllByType(FlatList).length).toEqual(1)
-    expect(tree.UNSAFE_getAllByType(ArtistShow).length).toEqual(3)
+    expect(screen.getByText("Show One")).toBeOnTheScreen()
+    expect(screen.getByText("Show Two")).toBeOnTheScreen()
+    expect(screen.getByText("Show Three")).toBeOnTheScreen()
   })
 })

@@ -4,8 +4,6 @@ import { AutosuggestSearchResult } from "app/Scenes/Search/components/Autosugges
 import { GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { TouchableOpacity } from "react-native"
-import { act } from "react-test-renderer"
 
 const inputBlurMock = jest.fn()
 const onDeleteMock = jest.fn()
@@ -83,7 +81,7 @@ describe(AutosuggestSearchResult, () => {
   it("blurs the input and navigates to the correct page when tapped", async () => {
     renderWithWrappers(<TestWrapper result={result} />)
     expect(navigate).not.toHaveBeenCalled()
-    screen.UNSAFE_getByType(TouchableOpacity).props.onPress()
+    fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
     await new Promise((r) => setTimeout(r, 50))
     expect(navigate).toHaveBeenCalledWith(`${result.href}`)
   })
@@ -106,9 +104,7 @@ describe(AutosuggestSearchResult, () => {
     renderWithWrappers(<TestWrapper result={result} />)
     expect(navigate).not.toHaveBeenCalled()
     expect(recentSearchesArray).toHaveLength(0)
-    act(() => {
-      screen.UNSAFE_getByType(TouchableOpacity).props.onPress()
-    })
+    fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
     await new Promise((r) => setTimeout(r, 50))
     expect(recentSearchesArray).toHaveLength(1)
   })
@@ -117,9 +113,7 @@ describe(AutosuggestSearchResult, () => {
     renderWithWrappers(<TestWrapper result={result} updateRecentSearchesOnTap={false} />)
     expect(navigate).not.toHaveBeenCalled()
     expect(recentSearchesArray).toHaveLength(0)
-    act(() => {
-      screen.UNSAFE_getByType(TouchableOpacity).props.onPress()
-    })
+    fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
     await new Promise((r) => setTimeout(r, 50))
     expect(recentSearchesArray).toHaveLength(0)
   })
@@ -132,8 +126,16 @@ describe(AutosuggestSearchResult, () => {
   it(`allows for custom touch handlers on search result items`, () => {
     const spy = jest.fn()
     renderWithWrappers(<TestWrapper result={result} onResultPress={spy} />)
-    screen.UNSAFE_getByType(TouchableOpacity).props.onPress()
+    fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
     expect(spy).toHaveBeenCalled()
+  })
+
+  it(`does not navigate when a custom touch handler is passed`, () => {
+    const spy = jest.fn()
+    renderWithWrappers(<TestWrapper result={result} onResultPress={spy} />)
+    fireEvent.press(screen.getByTestId(`autosuggest-search-result-${result.displayLabel}`))
+    expect(spy).toHaveBeenCalledWith(result)
+    expect(navigate).not.toHaveBeenCalled()
   })
 
   it(`navigates correctly when the item is a fair`, async () => {
@@ -149,9 +151,7 @@ describe(AutosuggestSearchResult, () => {
         }}
       />
     )
-    act(() => {
-      screen.UNSAFE_getByType(TouchableOpacity).props.onPress()
-    })
+    fireEvent.press(screen.getByTestId("autosuggest-search-result-Art Expo 2020"))
     await new Promise((r) => setTimeout(r, 50))
     expect(navigate).toHaveBeenCalledWith("/art-expo-diff-profile-slug")
   })

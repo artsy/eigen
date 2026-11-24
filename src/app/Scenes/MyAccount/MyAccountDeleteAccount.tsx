@@ -10,10 +10,11 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
+import { runAfterInteractions } from "app/utils/runAfterInteractions"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import React, { useCallback, useState } from "react"
-import { Alert, InteractionManager, LayoutChangeEvent } from "react-native"
+import { Alert, LayoutChangeEvent } from "react-native"
 import { KeyboardStickyView } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -133,14 +134,22 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
                   setError(mutationError?.message)
                   return
                 }
-                //  Account deleted request submitted successfully
+                //  Account deleted request submitted successfully. Sign out once the alert is
+                // dismissed, so it's read before the screen goes away.
                 Alert.alert(
                   "Account deletion request submitted!",
-                  "It may take up to 7 days to fully delete and remove all of your data."
+                  "It may take up to 7 days to fully delete and remove all of your data.",
+                  [
+                    {
+                      text: "OK",
+                      onPress: () => {
+                        runAfterInteractions(() => {
+                          GlobalStore.actions.auth.signOut()
+                        })
+                      },
+                    },
+                  ]
                 )
-                InteractionManager.runAfterInteractions(() => {
-                  GlobalStore.actions.auth.signOut()
-                })
               } catch (e: any) {
                 setError("Something went wrong")
               } finally {

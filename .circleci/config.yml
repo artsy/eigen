@@ -82,6 +82,20 @@ commands:
           command: yarn relay
   install-gems:
     steps:
+      - run:
+          # The macOS image only ships the rbenv rubies it was built with, so a newer
+          # .ruby-version (e.g. a security patch release) isn't available yet. Use the
+          # latest ruby-build definitions; this is a no-op once the image catches up.
+          name: Install Ruby from .ruby-version
+          command: |
+            if rbenv versions --bare | grep -qx "$(cat .ruby-version)"; then
+              echo "Ruby $(cat .ruby-version) already installed"
+            else
+              git clone --depth 1 https://github.com/rbenv/ruby-build.git /tmp/ruby-build
+              PATH="/tmp/ruby-build/bin:$PATH" RUBY_CONFIGURE_OPTS=--disable-install-doc rbenv install "$(cat .ruby-version)"
+              rbenv rehash
+            fi
+            ruby --version
       - restore_cache:
           key: << pipeline.parameters.gems_cache_key >>
       - run:

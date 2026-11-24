@@ -1,6 +1,6 @@
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import "react-native"
+import { screen } from "@testing-library/react-native"
 import Metadata from "app/Components/Artist/ArtistShows/Metadata"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 it("renders properly", () => {
   const show = {
@@ -16,5 +16,9 @@ it("renders properly", () => {
       city: "Berlin",
     },
   }
-  renderWithWrappersLEGACY(<Metadata show={show as any} />)
+  renderWithWrappers(<Metadata show={show as any} />)
+
+  expect(screen.getByText("Gallery")).toBeOnTheScreen()
+  expect(screen.getByText("Expansive Exhibition")).toBeOnTheScreen()
+  expect(screen.getByText("Berlin, Jan 1 - March 1")).toBeOnTheScreen()
 })

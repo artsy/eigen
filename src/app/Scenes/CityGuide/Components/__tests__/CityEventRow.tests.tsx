@@ -1,7 +1,6 @@
 import { Text } from "@artsy/palette-mobile"
 import { screen } from "@testing-library/react-native"
 import { CityEventRow } from "app/Scenes/CityGuide/Components/CityEventRow"
-import { RouterLink } from "app/system/navigation/RouterLink"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("CityEventRow", () => {
@@ -41,7 +40,7 @@ describe("CityEventRow", () => {
       />
     )
 
-    expect(screen.UNSAFE_getByType(RouterLink).props.style).toEqual({ flex: 1 })
+    expect(screen.getByTestId("city-event-row-link")).toHaveStyle({ flex: 1 })
   })
 
   it("renders whatever save control it is given", () => {

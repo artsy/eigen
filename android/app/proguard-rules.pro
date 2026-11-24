@@ -22,16 +22,21 @@
 # These changes are related to react-native-fast-image
 -keep public class com.dylanvann.fastimage.* {*;}
 -keep public class com.dylanvann.fastimage.** {*;}
--keep public class * implements com.bumptech.glide.module.GlideModule
--keep public class * extends com.bumptech.glide.module.AppGlideModule
+# AGP 9's strict full mode no longer keeps the no-arg constructor implicitly, and Glide creates
+# these modules by reflection, so keep it explicitly.
+-keep public class * implements com.bumptech.glide.module.GlideModule { <init>(...); }
+-keep public class * extends com.bumptech.glide.module.AppGlideModule { <init>(...); }
 -keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
   **[] $VALUES;
   public *;
 }
 
-# Fresco's animated-image backend is referenced but not bundled in this app.
--dontwarn com.facebook.imagepipeline.animated.factory.AnimatedFactoryImpl
-
 # @stripe/stripe-react-native references the optional push-provisioning SDK
 # (com.stripe:stripe-android-issuing-push-provisioning), which we don't depend on.
 -dontwarn com.stripe.android.pushProvisioning.**
+
+# Expo converts nested Records (e.g. expo-speech-recognition's volumeChangeEventOptions) with
+# kotlin-reflect. Once R8 renames @Field and strips its Kotlin metadata, `Field.key` reads as null
+# and the conversion throws a NullPointerException.
+-keep class expo.modules.kotlin.records.Field { *; }
+-keep class expo.modules.kotlin.records.Required { *; }

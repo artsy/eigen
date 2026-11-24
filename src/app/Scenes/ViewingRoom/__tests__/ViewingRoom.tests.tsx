@@ -1,21 +1,25 @@
-import { act } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { ViewingRoomTestsQuery } from "__generated__/ViewingRoomTestsQuery.graphql"
-import { AnimatedBottomButton } from "app/Components/AnimatedBottomButton"
-import { ViewingRoomArtworkRailContainer } from "app/Scenes/ViewingRoom/Components/ViewingRoomArtworkRail"
-import { ViewingRoomSubsections } from "app/Scenes/ViewingRoom/Components/ViewingRoomSubsections"
-import {
-  ClosedNotice,
-  tracks,
-  ViewingRoomFragmentContainer,
-} from "app/Scenes/ViewingRoom/ViewingRoom"
+import { tracks, ViewingRoomFragmentContainer } from "app/Scenes/ViewingRoom/ViewingRoom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { extractText } from "app/utils/tests/extractText"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { FlatList } from "react-native"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
+// Render AnimatedBottomButton as a host view exposing `isVisible` so it can be asserted on
+jest.mock("app/Components/AnimatedBottomButton", () => {
+  const React = jest.requireActual("react")
+  const { View } = jest.requireActual("react-native")
+  return {
+    AnimatedBottomButton: ({ isVisible, children }: any) =>
+      React.createElement(View, { testID: "animated-bottom-button", isVisible }, children),
+  }
+})
+
+// ViewingRoomArtworkRail renders a "<count> artworks" section title
+const ARTWORK_RAIL_TITLE = /^\d* artworks?$/i
 
 describe("ViewingRoom", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -39,7 +43,7 @@ describe("ViewingRoom", () => {
 
   describe("not yet open", () => {
     it("does not render normal sections", async () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       await act(async () => {
         mockEnvironment.mock.resolveMostRecentOperation((operation) => {
@@ -51,15 +55,16 @@ describe("ViewingRoom", () => {
         await flushPromiseQueue()
       })
 
-      expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(0)
-      expect(tree.root.findAllByProps({ testID: "intro-statement" })).toHaveLength(0)
-      expect(tree.root.findAllByProps({ testID: "pull-quote" })).toHaveLength(0)
-      expect(tree.root.findAllByProps({ testID: "body" })).toHaveLength(0)
-      expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(0)
+      expect(screen.queryByText(ARTWORK_RAIL_TITLE)).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("intro-statement")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("pull-quote")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("body")).not.toBeOnTheScreen()
+      // ViewingRoomSubsections
+      expect(screen.queryByTestId("subsection")).not.toBeOnTheScreen()
     })
 
     it("renders an 'opening soon' message", async () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       await act(async () => {
         mockEnvironment.mock.resolveMostRecentOperation((operation) => {
@@ -70,9 +75,11 @@ describe("ViewingRoom", () => {
         })
         await flushPromiseQueue()
       })
-      expect(extractText(tree.root.findByType(ClosedNotice))).toContain(
-        "This viewing room is not yet open. We invite you to view this gallery’s current works."
-      )
+      expect(
+        screen.getByText(
+          "This viewing room is not yet open. We invite you to view this gallery’s current works."
+        )
+      ).toBeOnTheScreen()
     })
   })
 
@@ -82,7 +89,7 @@ describe("ViewingRoom", () => {
     }
     describe("without any artworks", () => {
       it("doesn't render artworks rail", async () => {
-        const tree = renderWithWrappersLEGACY(<TestRenderer />)
+        renderWithWrappers(<TestRenderer />)
 
         await act(async () => {
           mockEnvironment.mock.resolveMostRecentOperation((operation) => {
@@ -99,16 +106,17 @@ describe("ViewingRoom", () => {
           })
           await flushPromiseQueue()
         })
-        expect(extractText(tree.root.findByProps({ testID: "intro-statement" }))).toEqual("Foo")
-        expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(0)
-        expect(extractText(tree.root.findByProps({ testID: "pull-quote" }))).toEqual("Bar")
-        expect(extractText(tree.root.findByProps({ testID: "body" }))).toEqual("Baz")
-        expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(1)
+        expect(screen.getByTestId("intro-statement")).toHaveTextContent("Foo", { exact: true })
+        expect(screen.queryByText(ARTWORK_RAIL_TITLE)).not.toBeOnTheScreen()
+        expect(screen.getByTestId("pull-quote")).toHaveTextContent("Bar", { exact: true })
+        expect(screen.getByTestId("body")).toHaveTextContent("Baz", { exact: true })
+        // ViewingRoomSubsections
+        expect(screen.getAllByTestId("subsection")).toHaveLength(1)
       })
     })
     describe("with artworks", () => {
       it("renders all sections", async () => {
-        const tree = renderWithWrappersLEGACY(<TestRenderer />)
+        renderWithWrappers(<TestRenderer />)
 
         await act(async () => {
           mockEnvironment.mock.resolveMostRecentOperation((operation) => {
@@ -125,15 +133,16 @@ describe("ViewingRoom", () => {
           })
           await flushPromiseQueue()
         })
-        expect(extractText(tree.root.findByProps({ testID: "intro-statement" }))).toEqual("Foo")
-        expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(1)
-        expect(extractText(tree.root.findByProps({ testID: "pull-quote" }))).toEqual("Bar")
-        expect(extractText(tree.root.findByProps({ testID: "body" }))).toEqual("Baz")
-        expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(1)
+        expect(screen.getByTestId("intro-statement")).toHaveTextContent("Foo", { exact: true })
+        expect(screen.getByText("5 Artworks")).toBeOnTheScreen()
+        expect(screen.getByTestId("pull-quote")).toHaveTextContent("Bar", { exact: true })
+        expect(screen.getByTestId("body")).toHaveTextContent("Baz", { exact: true })
+        // ViewingRoomSubsections
+        expect(screen.getAllByTestId("subsection")).toHaveLength(1)
       })
 
       it("renders a button + calls tracking when body enters viewport", async () => {
-        const tree = renderWithWrappersLEGACY(<TestRenderer />)
+        renderWithWrappers(<TestRenderer />)
 
         await act(async () => {
           mockEnvironment.mock.resolveMostRecentOperation((operation) => {
@@ -150,16 +159,15 @@ describe("ViewingRoom", () => {
           await flushPromiseQueue()
         })
 
-        expect(tree.root.findAllByType(AnimatedBottomButton)).toHaveLength(1)
-        expect(tree.root.findAllByType(AnimatedBottomButton)[0].props.isVisible).toBe(false)
+        expect(screen.getAllByTestId("animated-bottom-button")).toHaveLength(1)
+        expect(screen.getByTestId("animated-bottom-button")).toHaveProp("isVisible", false)
 
-        act(() => {
-          tree.root
-            .findByType(FlatList)
-            .props.onViewableItemsChanged({ viewableItems: [{ item: { key: "body" } }] })
+        // The event bubbles up from a list item to the FlatList's `onViewableItemsChanged` handler
+        fireEvent(screen.getByTestId("body"), "viewableItemsChanged", {
+          viewableItems: [{ item: { key: "body" } }],
         })
 
-        expect(tree.root.findAllByType(AnimatedBottomButton)[0].props.isVisible).toBe(true)
+        expect(screen.getByTestId("animated-bottom-button")).toHaveProp("isVisible", true)
         expect(useTracking().trackEvent).toHaveBeenCalledWith(
           tracks.bodyImpression(
             "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
@@ -172,7 +180,7 @@ describe("ViewingRoom", () => {
 
   describe("closed (past end datetime)", () => {
     it("renders share button and no subsections", async () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       await act(async () => {
         mockEnvironment.mock.resolveMostRecentOperation((operation) => {
@@ -184,15 +192,16 @@ describe("ViewingRoom", () => {
         await flushPromiseQueue()
       })
 
-      expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(0)
-      expect(tree.root.findAllByProps({ testID: "intro-statement" })).toHaveLength(0)
-      expect(tree.root.findAllByProps({ testID: "pull-quote" })).toHaveLength(0)
-      expect(tree.root.findAllByProps({ testID: "body" })).toHaveLength(0)
-      expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(0)
+      expect(screen.queryByText(ARTWORK_RAIL_TITLE)).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("intro-statement")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("pull-quote")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("body")).not.toBeOnTheScreen()
+      // ViewingRoomSubsections
+      expect(screen.queryByTestId("subsection")).not.toBeOnTheScreen()
     })
 
     it("renders a 'closed' message", async () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       await act(async () => {
         mockEnvironment.mock.resolveMostRecentOperation((operation) => {
@@ -204,9 +213,11 @@ describe("ViewingRoom", () => {
         await flushPromiseQueue()
       })
 
-      expect(extractText(tree.root.findByType(ClosedNotice))).toContain(
-        "This viewing room is now closed. We invite you to view this gallery’s current works."
-      )
+      expect(
+        screen.getByText(
+          "This viewing room is now closed. We invite you to view this gallery’s current works."
+        )
+      ).toBeOnTheScreen()
     })
   })
 })

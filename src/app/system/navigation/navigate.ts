@@ -7,9 +7,10 @@ import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getValidTargetURL } from "app/system/navigation/utils/getValidTargetURL"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
+import { runAfterInteractions } from "app/utils/runAfterInteractions"
 import { postEventToProviders } from "app/utils/track/providers"
 import { visualize } from "app/utils/visualizer"
-import { InteractionManager, Linking, Platform } from "react-native"
+import { Linking, Platform } from "react-native"
 
 export interface GoBackProps {
   previousScreen?: string
@@ -132,7 +133,7 @@ export function switchTab(tab: BottomTabType, props?: object) {
 export function dismissModal(after?: () => void) {
   // We wait for interaction to finish before dismissing the modal, otherwise,
   // we might get a race condition that causes the UI to freeze
-  InteractionManager.runAfterInteractions(() => {
+  runAfterInteractions(() => {
     internal_navigationRef?.current?.dispatch(StackActions.pop())
 
     if (Platform.OS === "android") {

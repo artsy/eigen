@@ -1,3 +1,4 @@
+import { Spinner } from "@artsy/palette-mobile"
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { Sell } from "app/Scenes/Sell/Sell"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -6,16 +7,44 @@ import { getLocationDetails, getLocationPredictions } from "app/utils/googleMaps
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Alert, BackHandler } from "react-native"
+import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 
 // setupJest stubs useNavigation, but this test drives the real stack
 jest.mock("@react-navigation/native", () => jest.requireActual("@react-navigation/native"))
+
+const mockShowToast = jest.fn()
+jest.mock("app/Components/Toast/toastHook", () => ({
+  useToast: () => ({ show: mockShowToast }),
+}))
 
 jest.mock("app/utils/googleMaps", () => ({
   getLocationPredictions: jest.fn(),
   getLocationDetails: jest.fn(),
 }))
 
-const ADDRESS = { id: "place-1", name: "401 Broadway, New York, NY, USA" }
+const SAVED_ADDRESS = {
+  internalID: "address-1",
+  name: "Collector",
+  addressLine1: "401 Broadway",
+  city: "New York",
+  region: "NY",
+  postalCode: "10013",
+  country: "US",
+  isDefault: true,
+  phoneNumber: "555 0100",
+}
+
+const NEW_PLACE = { id: "place-2", name: "1 Main St, Brooklyn, NY, USA" }
+
+const NEW_ADDRESS = {
+  ...SAVED_ADDRESS,
+  internalID: "address-2",
+  addressLine1: "1 Main St",
+  city: "Brooklyn",
+  postalCode: "11201",
+  isDefault: false,
+  phoneNumber: null,
+}
 
 type BackPressHandler = Parameters<typeof BackHandler.addEventListener>[1]
 
@@ -40,9 +69,24 @@ const mockHardwareBack = () => {
   }
 }
 
-// isWorkSellable reads the last hex digit (even is sellable), getSellChannel the one before it
+// What createResaleSubmissions answers for each work in the collection
+const RESALE_SUBMISSIONS: Record<string, { state: string; channel: string | null }> = {
+  "id-a2": { state: "ACCEPTED", channel: "MARKETPLACE" },
+  "id-c3": { state: "REJECTED", channel: null },
+  "id-b4": { state: "ACCEPTED", channel: "AUCTION" },
+}
+
+const resaleSubmissionFor = (artworkID: string) => ({
+  internalID: `resaleSubmission-${artworkID}`,
+  recommendedPriceMin: null,
+  recommendedPriceMax: null,
+  ...RESALE_SUBMISSIONS[artworkID],
+})
+
+// `me` keeps one id across queries, as it does in the app
 const collection = {
   Me: () => ({
+    id: "me",
     myCollectionConnection: {
       edges: [
         {
@@ -76,50 +120,89 @@ const collection = {
 
 const { renderWithRelay } = setupTestWrapper({ Component: Sell })
 
-const renderSell = async () => {
-  const view = renderWithRelay(collection)
+const renderSell = async (resolvers: MockResolvers = collection) => {
+  const view = renderWithRelay(resolvers)
   await screen.findByTestId("artworkGridItem-Sellable Work")
   return view
 }
 
 type SellView = Awaited<ReturnType<typeof renderSell>>
 
-// Step 2 loads the active work with its own query. Step 3 asks for the same fields, so Relay's
-// store answers it. The shared id keeps a generated one from overwriting another work in step 1.
-const resolveActiveArtwork = (
-  view: SellView,
-  artwork: { internalID: string; artistNames: string; title?: string }
-) => {
-  view.mockResolveLastOperation({ Artwork: () => ({ id: artwork.internalID, ...artwork }) })
+const operationNames = (view: SellView) =>
+  view.env.mock.getAllOperations().map((operation) => operation.request.node.operation.name)
+
+/** Answers the create call for each work it sent, failing the ones in `failedIDs` */
+const resolveVerify = async (view: SellView, failedIDs: string[] = []) => {
+  await waitFor(() => expect(operationNames(view)).toContain("useCreateResaleSubmissionsMutation"))
+  const { artworkIDs } = view.env.mock.getMostRecentOperation().request.variables.input
+
+  view.mockResolveLastOperation({
+    CreateResaleSubmissionsPayload: () => ({
+      resaleSubmissionsOrErrors: artworkIDs.map((artworkID: string) =>
+        failedIDs.includes(artworkID)
+          ? { __typename: "CreateResaleSubmissionFailure", artworkID }
+          : {
+              __typename: "CreateResaleSubmissionSuccess",
+              artworkID,
+              resaleSubmission: resaleSubmissionFor(artworkID),
+            }
+      ),
+    }),
+  })
+
+  return artworkIDs as string[]
 }
 
-const pickAddress = async () => {
-  fireEvent.press(screen.getByTestId("sell-street-address"))
-  fireEvent.changeText(await screen.findByLabelText("Search addresses"), "401 Broad")
-  fireEvent.press(await screen.findByText(ADDRESS.name))
-  await waitFor(() => expect(screen.getByLabelText("Zip code")).toHaveDisplayValue("10013"))
+type ActiveArtwork = { internalID: string; artistNames: string; title?: string }
+
+// Each step starts its query after the step change renders, which can lag behind the press on a
+// busy CI runner. Wait for that operation to be pending, so we resolve it and not an older one.
+const resolveWhenPending = async (
+  view: SellView,
+  operationName: string,
+  resolvers: Parameters<SellView["mockResolveLastOperation"]>[0]
+) => {
+  await waitFor(() =>
+    expect(view.env.mock.getMostRecentOperation().request.node.operation.name).toBe(operationName)
+  )
+  view.mockResolveLastOperation(resolvers)
 }
+
+// Step 2 loads the active work with its own query. Step 3 asks for the same fields, so Relay's
+// store answers it. The shared id keeps a generated one from overwriting another work in step 1.
+const resolveActiveArtwork = (view: SellView, artwork: ActiveArtwork) =>
+  resolveWhenPending(view, "ConditionQuery", {
+    Artwork: () => ({ id: artwork.internalID, ...artwork }),
+  })
+
+// Step 3 also loads the saved addresses, which the earlier steps never asked for
+const resolveLocationStep = (view: SellView, artwork: ActiveArtwork) =>
+  resolveWhenPending(view, "LocationAndContactQuery", {
+    Artwork: () => ({ id: artwork.internalID, ...artwork }),
+    // A fixed id lets a saved address update this list
+    Me: () => ({ id: "me", addressConnection: { edges: [{ node: SAVED_ADDRESS }] } }),
+  })
 
 const openAuctionConditionStep = async (view: SellView) => {
   fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
   fireEvent.press(screen.getByText("Verify If Sellable"))
+  await resolveVerify(view)
   fireEvent.press(await screen.findByText("Proceed to Listing"))
   fireEvent.press(await screen.findByText("Start Submission"))
-  resolveActiveArtwork(view, { internalID: "id-b4", artistNames: "Artist C" })
+  await resolveActiveArtwork(view, { internalID: "id-b4", artistNames: "Artist C" })
   await screen.findByText("Step 2 · Condition")
 }
 
-const openWorksSummary = async () => {
+const openWorksSummary = async (view: SellView) => {
   fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
   fireEvent.press(screen.getByText("Verify If Sellable"))
+  await resolveVerify(view)
   fireEvent.press(await screen.findByText("Proceed to Listing"))
   await screen.findByText("Start Listing")
 }
 
 describe("Sell", () => {
   beforeEach(() => {
-    ;(getLocationPredictions as jest.Mock).mockResolvedValue([ADDRESS])
-    ;(getLocationDetails as jest.Mock).mockResolvedValue({ ...ADDRESS, postalCode: "10013" })
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSellMyCollectionArtwork: true })
   })
 
@@ -144,6 +227,27 @@ describe("Sell", () => {
     expect(dismissModal).toHaveBeenCalledTimes(1)
   })
 
+  it("hides a work verified on an earlier visit when the flow opens again", async () => {
+    const view = await renderSell()
+    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
+    fireEvent.press(screen.getByText("Verify If Sellable"))
+    await resolveVerify(view)
+    view.unmount()
+
+    // Throws if the screen reads its cached copy instead of asking again
+    renderWithRelay({
+      Me: () => {
+        const me = collection.Me()
+        // The server leaves out works with an active resale submission
+        const [, ...rest] = me.myCollectionConnection.edges
+        return { ...me, myCollectionConnection: { edges: rest } }
+      },
+    })
+
+    expect(await screen.findByTestId("artworkGridItem-Auction Work")).toBeOnTheScreen()
+    expect(screen.queryByTestId("artworkGridItem-Sellable Work")).not.toBeOnTheScreen()
+  })
+
   it("keeps the verify button disabled until a work is selected", async () => {
     await renderSell()
 
@@ -158,12 +262,14 @@ describe("Sell", () => {
   })
 
   it("previews only the sellable works still ticked, each with its sales channel", async () => {
-    await renderSell()
+    const view = await renderSell()
 
     fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
     fireEvent.press(screen.getByTestId("artworkGridItem-Unsellable Work"))
     fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
     fireEvent.press(screen.getByText("Verify If Sellable"))
+    expect(await resolveVerify(view)).toEqual(["id-a2", "id-c3", "id-b4"])
+    expect(await screen.findByText("Not able to sell yet")).toBeOnTheScreen()
 
     fireEvent.press(await screen.findByRole("checkbox", { name: "Artist C, Auction Work" }))
     fireEvent.press(screen.getByText("Proceed to Listing"))
@@ -176,16 +282,87 @@ describe("Sell", () => {
     expect(screen.queryByText("Start Submission")).not.toBeOnTheScreen()
   })
 
+  it("sends a work only once, even when verified again", async () => {
+    const view = await renderSell()
+    await openWorksSummary(view)
+
+    fireEvent.press(screen.getByLabelText("Go back"))
+    fireEvent.press(await screen.findByTestId("artworkGridItem-Auction Work"))
+    fireEvent.press(screen.getByText("Verify If Sellable"))
+
+    expect(await resolveVerify(view)).toEqual(["id-b4"])
+    expect(await screen.findByText("Proceed to Listing")).toBeOnTheScreen()
+  })
+
+  it("keeps the sheet closed when a work fails, then retries only that work", async () => {
+    const view = await renderSell()
+
+    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
+    fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
+    fireEvent.press(screen.getByText("Verify If Sellable"))
+    await resolveVerify(view, ["id-b4"])
+
+    await waitFor(() =>
+      expect(mockShowToast).toHaveBeenCalledWith(
+        "We couldn’t check your works. Please try again.",
+        "bottom",
+        expect.objectContaining({ backgroundColor: "red100" })
+      )
+    )
+    expect(screen.queryByText("Proceed to Listing")).not.toBeOnTheScreen()
+
+    // The toast shows a moment before the button stops loading, and a loading button ignores presses
+    await waitFor(() => expect(screen.UNSAFE_queryByType(Spinner)).toBeNull())
+    fireEvent.press(screen.getByText("Verify If Sellable"))
+    expect(await resolveVerify(view)).toEqual(["id-b4"])
+    expect(await screen.findByText("Proceed to Listing")).toBeOnTheScreen()
+  })
+
+  it("shows an error when the request fails", async () => {
+    const view = await renderSell()
+
+    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
+    fireEvent.press(screen.getByText("Verify If Sellable"))
+    await waitFor(() =>
+      expect(operationNames(view)).toContain("useCreateResaleSubmissionsMutation")
+    )
+    view.mockRejectLastOperation(new Error("Network request failed"))
+
+    await waitFor(() =>
+      expect(mockShowToast).toHaveBeenCalledWith(
+        "We couldn’t check your works. Please try again.",
+        "bottom",
+        expect.objectContaining({ backgroundColor: "red100" })
+      )
+    )
+    expect(screen.getByText("Verify If Sellable")).toBeEnabled()
+  })
+
+  it("ignores taps on the grid while the works are being checked", async () => {
+    const view = await renderSell()
+
+    fireEvent.press(screen.getByTestId("artworkGridItem-Sellable Work"))
+    fireEvent.press(screen.getByText("Verify If Sellable"))
+    fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
+
+    expect(await resolveVerify(view)).toEqual(["id-a2"])
+    expect(await screen.findByText(/We can help you with this work/)).toBeOnTheScreen()
+  })
+
   it("walks through every step and shows the confirmation on submit", async () => {
     const view = await renderSell()
 
-    await openWorksSummary()
+    await openWorksSummary(view)
     expect(screen.getByText("Step 1 · Decide Which Works to Sell")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 1 of 3")).toBeOnTheScreen()
     expect(screen.getByText(/We reviewed demand for these works/)).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Start Listing"))
-    resolveActiveArtwork(view, { internalID: "id-a2", artistNames: "Artist A", title: "Work A" })
+    await resolveActiveArtwork(view, {
+      internalID: "id-a2",
+      artistNames: "Artist A",
+      title: "Work A",
+    })
     expect(await screen.findByText("Step 2 · Condition & Price")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 2 of 3")).toBeOnTheScreen()
     expect(screen.getByText("Confirm Listing Price")).toBeDisabled()
@@ -198,17 +375,31 @@ describe("Sell", () => {
     expect(await screen.findByText("US$2,720")).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Confirm Listing Price"))
+    await resolveLocationStep(view, {
+      internalID: "id-a2",
+      artistNames: "Artist A",
+      title: "Work A",
+    })
     expect(await screen.findByText("Step 3 · Shipping Options")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 3 of 3")).toBeOnTheScreen()
     expect(screen.getByText("List Artwork")).toBeDisabled()
-    expect(screen.getByRole("radio", { name: /^Framed\./ })).toBeDisabled()
+    // Step 3 selects the default address in an effect, after its first render
+    await waitFor(() =>
+      expect(screen.getByRole("radio", { name: /^Collector, 401 Broadway/ })).toBeChecked()
+    )
 
-    await pickAddress()
     fireEvent.press(screen.getByRole("radio", { name: /^Framed\./ }))
     fireEvent.press(screen.getByRole("radio", { name: /^Courier packs\./ }))
     expect(screen.getByText("List Artwork")).toBeDisabled()
 
     fireEvent.press(screen.getByRole("radio", { name: /^Courier needs to collect\./ }))
+    await waitFor(() =>
+      expect(screen.getByLabelText("Mobile number")).toHaveDisplayValue("555 0100")
+    )
+    fireEvent.changeText(screen.getByLabelText("Mobile number"), "")
+    expect(screen.getByText("List Artwork")).toBeDisabled()
+
+    fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
     await waitFor(() => expect(screen.getByText("List Artwork")).toBeEnabled())
     fireEvent.press(screen.getByText("List Artwork"))
     expect(await screen.findByText("Your listing is live!")).toBeOnTheScreen()
@@ -228,22 +419,85 @@ describe("Sell", () => {
     fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
     await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
     fireEvent.press(screen.getByText("Continue"))
+    await resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
     expect(await screen.findByText("Step 3 · Location & Contact")).toBeOnTheScreen()
     expect(screen.queryByText("How will this be packed?")).not.toBeOnTheScreen()
+    await waitFor(() =>
+      expect(screen.getByRole("radio", { name: /^Collector, 401 Broadway/ })).toBeChecked()
+    )
+    // The saved address's phone number fills the empty field
+    await waitFor(() =>
+      expect(screen.getByLabelText("Mobile number")).toHaveDisplayValue("555 0100")
+    )
 
-    await pickAddress()
+    fireEvent.changeText(screen.getByLabelText("Mobile number"), "")
+    fireEvent(screen.getByLabelText("Mobile number"), "blur")
     expect(screen.getByText("Submit for Review")).toBeDisabled()
+    expect(await screen.findByText("Phone number is required")).toBeOnTheScreen()
 
-    fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0100")
+    fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
     fireEvent.press(screen.getByText("Submit for Review"))
     expect(await screen.findByText("Submitted!")).toBeOnTheScreen()
     expect(screen.getByText(/One of our specialists will reach out/)).toBeOnTheScreen()
   })
 
-  it("goes back from the works summary to the work selection, then leaves the flow", async () => {
-    await renderSell()
+  it("adds an address from step 3 and selects it there", async () => {
+    ;(getLocationPredictions as jest.Mock).mockResolvedValue([NEW_PLACE])
+    ;(getLocationDetails as jest.Mock).mockResolvedValue({
+      ...NEW_PLACE,
+      street: "1 Main St",
+      city: "Brooklyn",
+      stateCode: "NY",
+      countryCode: "US",
+      postalCode: "11201",
+    })
+    const view = await renderSell()
+    await openAuctionConditionStep(view)
+    fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
+    fireEvent.press(screen.getByText("Continue"))
+    await resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
+    await screen.findByText("Step 3 · Location & Contact")
+    fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
 
-    await openWorksSummary()
+    fireEvent.press(screen.getByLabelText("Add new address"))
+    expect(await screen.findByText("Add address")).toBeOnTheScreen()
+    // The step header has its own close button, so take the modal’s, which renders last
+    fireEvent.press(screen.getAllByLabelText("Close").at(-1)!)
+    await waitFor(() => expect(screen.queryByText("Add address")).not.toBeOnTheScreen())
+    expect(screen.getByLabelText("Mobile number")).toHaveDisplayValue("555 0199")
+
+    fireEvent.press(screen.getByLabelText("Add new address"))
+    await screen.findByText("Add address")
+    fireEvent.changeText(screen.getByLabelText("Full name"), "Collector")
+    fireEvent.press(screen.getByTestId("sell-street-address"))
+    fireEvent.changeText(await screen.findByLabelText("Search addresses"), "1 Main")
+    fireEvent.press(await screen.findByText(NEW_PLACE.name))
+    await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
+    fireEvent.press(screen.getByText("Save Address"))
+
+    await resolveWhenPending(view, "useCreateUserAddressMutation", {
+      CreateUserAddressPayload: () => ({
+        me: {
+          id: "me",
+          addressConnection: {
+            edges: [{ node: SAVED_ADDRESS }, { node: NEW_ADDRESS }],
+          },
+        },
+        userAddressOrErrors: { __typename: "UserAddress", internalID: NEW_ADDRESS.internalID },
+      }),
+    })
+
+    await waitFor(() =>
+      expect(screen.getByRole("radio", { name: /^Collector, 1 Main St/ })).toBeChecked()
+    )
+    expect(screen.queryByText("Add address")).not.toBeOnTheScreen()
+    expect(screen.getByLabelText("Mobile number")).toHaveDisplayValue("555 0199")
+  })
+
+  it("goes back from the works summary to the work selection, then leaves the flow", async () => {
+    const view = await renderSell()
+
+    await openWorksSummary(view)
 
     fireEvent.press(screen.getByLabelText("Go back"))
     expect(await screen.findByText("Verify If Sellable")).toBeEnabled()
@@ -257,7 +511,7 @@ describe("Sell", () => {
     const pressHardwareBack = mockHardwareBack()
     const view = await renderSell()
 
-    await openWorksSummary()
+    await openWorksSummary(view)
 
     pressHardwareBack()
     expect(await screen.findByText("Verify If Sellable")).toBeOnTheScreen()
@@ -265,7 +519,7 @@ describe("Sell", () => {
     fireEvent.press(screen.getByText("Verify If Sellable"))
     fireEvent.press(await screen.findByText("Proceed to Listing"))
     fireEvent.press(await screen.findByText("Start Listing"))
-    resolveActiveArtwork(view, { internalID: "id-a2", artistNames: "Artist A" })
+    await resolveActiveArtwork(view, { internalID: "id-a2", artistNames: "Artist A" })
     await screen.findByText("Step 2 · Condition & Price")
 
     pressHardwareBack()
@@ -299,7 +553,7 @@ describe("Sell", () => {
     expect(screen.getByRole("radio", { name: /^Fair\./ })).toBeChecked()
 
     act(() => buttons.find((button) => button.text === "Go back")?.onPress?.())
-    // The work is already in the Relay store, so step 2 opens without a new query
+    // The submission is already in the Relay store, so step 2 opens without a new query
     fireEvent.press(await screen.findByText("Start Submission"))
 
     expect(await screen.findByRole("radio", { name: /^Fair\./ })).not.toBeChecked()
@@ -307,9 +561,9 @@ describe("Sell", () => {
 
   it("asks for confirmation before closing the flow past the first screen", async () => {
     const alertSpy = jest.spyOn(Alert, "alert")
-    await renderSell()
+    const view = await renderSell()
 
-    await openWorksSummary()
+    await openWorksSummary(view)
 
     fireEvent.press(screen.getByLabelText("Close"))
     expect(alertSpy).toHaveBeenCalledWith("Leave this flow?", expect.any(String), expect.any(Array))

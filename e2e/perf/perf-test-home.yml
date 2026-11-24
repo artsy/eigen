@@ -5,7 +5,7 @@ appId: ${MAESTRO_APP_ID}
     arguments:
       email: ${MAESTRO_TEST_EMAIL}
       password: ${MAESTRO_TEST_PASSWORD}
-      useMaestroInit: "true"
+      useE2EInit: "true"
 - assertVisible:
     id: "search-button"
 

@@ -8,6 +8,7 @@ import {
   ImageSetIcon,
   InstitutionIcon,
   PublicationIcon,
+  SparklesMessageIcon,
 } from "@artsy/icons/native"
 import {
   Flex,
@@ -266,5 +267,6 @@ const SUPPORTED_ICONS: Record<string, React.FC> = {
   ImageSetIcon,
   InstitutionIcon,
   PublicationIcon,
+  SparklesMessageIcon,
   MapPinIcon,
 }

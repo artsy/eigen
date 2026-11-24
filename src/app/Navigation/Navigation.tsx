@@ -4,7 +4,6 @@ import { NavigationContainer, NavigationContainerRef } from "@react-navigation/n
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { useReactNavigationDevTools } from "@rozenite/react-navigation-plugin"
 import { addBreadcrumb } from "@sentry/react-native"
-import { FPSCounter } from "app/Components/FPSCounter"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import {
   AuthenticatedRoutes,
@@ -17,10 +16,8 @@ import { setSentryRouteTag } from "app/system/errorReporting/sentryTags"
 import { navigationInstrumentation } from "app/system/errorReporting/setupSentry"
 import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
 import { conversationIDFromRoute } from "app/system/notifications/visibleConversation"
-import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { logNavigation } from "app/utils/loggers"
-import { Fragment } from "react"
 import { Platform } from "react-native"
 import SiftReactNative from "sift-react-native"
 
@@ -40,7 +37,6 @@ export const Navigation = () => {
   useReactNavigationDevTools({ ref: internal_navigationRef })
 
   const isLoggedIn = GlobalStore.useAppState((state) => state.auth.userID)
-  const fpsCounter = useDevToggle("DTFPSCounter")
 
   const theme = useNavigationTheme()
 
@@ -65,73 +61,70 @@ export const Navigation = () => {
   const trackSiftAndroid = Platform.OS === "android" && enableAdditionalSiftAndroidTracking
 
   return (
-    <Fragment>
-      <NavigationContainer
-        ref={internal_navigationRef}
-        theme={theme}
-        initialState={initialState}
-        onReady={() => {
-          navigationInstrumentation.registerNavigationContainer(internal_navigationRef)
+    <NavigationContainer
+      ref={internal_navigationRef}
+      theme={theme}
+      initialState={initialState}
+      onReady={() => {
+        navigationInstrumentation.registerNavigationContainer(internal_navigationRef)
 
-          setNavigationReady({ isNavigationReady: true })
-          LegacyNativeModules.ARNotificationsManager.didFinishBootstrapping()
+        setNavigationReady({ isNavigationReady: true })
+        LegacyNativeModules.ARNotificationsManager.didFinishBootstrapping()
 
-          const initialRouteName = internal_navigationRef?.current?.getCurrentRoute()?.name
+        const initialRouteName = internal_navigationRef?.current?.getCurrentRoute()?.name
 
-          setSentryRouteTag(initialRouteName)
+        setSentryRouteTag(initialRouteName)
 
-          if (trackSiftAndroid) {
-            SiftReactNative.setPageName(`screen_${initialRouteName}`)
-            SiftReactNative.upload()
-          }
-        }}
-        onStateChange={(state) => {
-          saveSession(state)
+        if (trackSiftAndroid) {
+          SiftReactNative.setPageName(`screen_${initialRouteName}`)
+          SiftReactNative.upload()
+        }
+      }}
+      onStateChange={(state) => {
+        saveSession(state)
 
-          const currentRoute = internal_navigationRef?.current?.getCurrentRoute()
-          const params = currentRoute?.params
+        const currentRoute = internal_navigationRef?.current?.getCurrentRoute()
+        const params = currentRoute?.params
 
-          if (__DEV__ && logNavigation) {
-            console.log(
-              `navigated to ${currentRoute?.name} ${
-                currentRoute?.params ? JSON.stringify(currentRoute.params) : ""
-              } `
-            )
-          }
+        if (__DEV__ && logNavigation) {
+          console.log(
+            `navigated to ${currentRoute?.name} ${
+              currentRoute?.params ? JSON.stringify(currentRoute.params) : ""
+            } `
+          )
+        }
 
-          if (currentRoute && Platform.OS === "ios") {
-            LegacyNativeModules.ARTDeeplinkTimeoutModule.invalidateDeeplinkTimeout()
-          }
+        if (currentRoute && Platform.OS === "ios") {
+          LegacyNativeModules.ARTDeeplinkTimeoutModule.invalidateDeeplinkTimeout()
+        }
 
-          // Let native know which conversation is on screen so an incoming push
-          // for it doesn't interrupt the user reading it. Empty means none.
-          // Android reads the route directly when the notification arrives.
-          LegacyNativeModules.ARNotificationsManager.reactStateUpdated({
-            visibleConversationID: conversationIDFromRoute(currentRoute),
-          })
+        // Let native know which conversation is on screen so an incoming push
+        // for it doesn't interrupt the user reading it. Empty means none.
+        // Android reads the route directly when the notification arrives.
+        LegacyNativeModules.ARNotificationsManager.reactStateUpdated({
+          visibleConversationID: conversationIDFromRoute(currentRoute),
+        })
 
-          // Breadcrumbs aren't searchable, so also tag the route: this is what lets us
-          // group a crash by screen in Sentry, including native crashes.
-          setSentryRouteTag(currentRoute?.name)
+        // Breadcrumbs aren't searchable, so also tag the route: this is what lets us
+        // group a crash by screen in Sentry, including native crashes.
+        setSentryRouteTag(currentRoute?.name)
 
-          addBreadcrumb({
-            message: `navigated to ${currentRoute?.name}`,
-            category: "navigation",
-            data: { ...params },
-            level: "info",
-          })
+        addBreadcrumb({
+          message: `navigated to ${currentRoute?.name}`,
+          category: "navigation",
+          data: { ...params },
+          level: "info",
+        })
 
-          if (trackSiftAndroid) {
-            SiftReactNative.setPageName(`screen_${currentRoute?.name}`)
-            SiftReactNative.upload()
-          }
-        }}
-      >
-        {!isLoggedIn && <OnboardingWelcomeScreens />}
-        {!!isLoggedIn && <AuthenticatedRoutes />}
-      </NavigationContainer>
-      {!!fpsCounter && <FPSCounter style={{ bottom: Platform.OS === "ios" ? 40 : undefined }} />}
-    </Fragment>
+        if (trackSiftAndroid) {
+          SiftReactNative.setPageName(`screen_${currentRoute?.name}`)
+          SiftReactNative.upload()
+        }
+      }}
+    >
+      {!isLoggedIn && <OnboardingWelcomeScreens />}
+      {!!isLoggedIn && <AuthenticatedRoutes />}
+    </NavigationContainer>
   )
 }
 

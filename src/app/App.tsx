@@ -5,7 +5,7 @@ import * as Sentry from "@sentry/react-native"
 import { Navigation } from "app/Navigation/Navigation"
 import { GlobalStore, unsafe__getEnvironment, unsafe_getDevToggle } from "app/store/GlobalStore"
 import { DevMenuWrapper } from "app/system/devTools/DevMenu/DevMenuWrapper"
-import { useMaestroInitialization } from "app/system/devTools/useMaestroInitialization"
+import { useE2EInitialization } from "app/system/devTools/useE2EInitialization"
 import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
 import { setupSentry } from "app/system/errorReporting/setupSentry"
 import { usePushNotifications } from "app/system/notifications/usePushNotifications"
@@ -46,11 +46,6 @@ if (__DEV__) {
   NativeModules.DevSettings.setIsShakeToShowDevMenuEnabled(false)
 }
 
-if (__DEV__) {
-  // include reactotron only on dev
-  require("../../ReactotronConfig.js")
-}
-
 // Sentry must be setup early in the app lifecycle to hook into navigation
 const debugSentry = unsafe_getDevToggle("DTDebugSentry")
 const environment = unsafe__getEnvironment()
@@ -69,7 +64,7 @@ const Main = () => {
   // Rozenite plugins end
 
   useRageShakeDevMenu()
-  useMaestroInitialization()
+  useE2EInitialization()
 
   useEffect(() => {
     const oss = Keys.OSS

@@ -1,11 +1,8 @@
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { FairExhibitorRailTestsQuery } from "__generated__/FairExhibitorRailTestsQuery.graphql"
-import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
-import { SectionTitle } from "app/Components/SectionTitle"
 import { FairExhibitorRail } from "app/Scenes/Fair/Components/FairExhibitorRail"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
@@ -24,7 +21,7 @@ describe("FairExhibitors", () => {
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
-    const wrapper = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <QueryRenderer<FairExhibitorRailTestsQuery>
         environment={env}
         query={graphql`
@@ -56,23 +53,21 @@ describe("FairExhibitors", () => {
         MockPayloadGenerator.generate(operation, mockResolvers)
       )
     })
-
-    return wrapper
   }
 
   it("renders an exhibitor rail", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       Show: () => ({
         partner: {
           name: "First Partner Has Artworks",
         },
       }),
     })
-    expect(extractText(wrapper.root)).toContain("First Partner Has Artworks")
+    expect(screen.getByText("First Partner Has Artworks")).toBeOnTheScreen()
   })
 
   it("tracks taps on artworks in the rail", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       Show: () => ({
         fair: {
           internalID: "abc123",
@@ -91,9 +86,7 @@ describe("FairExhibitors", () => {
         },
       }),
     })
-    const artwork = wrapper.root.findAllByType(ArtworkRailCard)
-
-    act(() => artwork[0].props.onPress())
+    fireEvent.press(screen.getByTestId("artwork-cool-artwork-1"))
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "galleryBoothRail",
@@ -109,7 +102,7 @@ describe("FairExhibitors", () => {
   })
 
   it("tracks taps on artworks with partner offer in the rail", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       Show: () => ({
         fair: {
           internalID: "abc123",
@@ -128,8 +121,7 @@ describe("FairExhibitors", () => {
         },
       }),
     })
-    const artwork = wrapper.root.findAllByType(ArtworkRailCard)
-    act(() => artwork[0].props.onPress())
+    fireEvent.press(screen.getByTestId("artwork-cool-artwork-1"))
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "galleryBoothRail",
@@ -146,7 +138,7 @@ describe("FairExhibitors", () => {
   })
 
   it("tracks taps on artworks with auction signals in the rail", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       Show: () => ({
         fair: {
           internalID: "abc123",
@@ -168,8 +160,7 @@ describe("FairExhibitors", () => {
         },
       }),
     })
-    const artwork = wrapper.root.findAllByType(ArtworkRailCard)
-    act(() => artwork[0].props.onPress())
+    fireEvent.press(screen.getByTestId("artwork-cool-artwork-1"))
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "galleryBoothRail",
@@ -188,7 +179,7 @@ describe("FairExhibitors", () => {
   })
 
   it("tracks taps on the show", () => {
-    const wrapper = getWrapper({
+    getWrapper({
       Show: () => ({
         internalID: "xxx-2",
         slug: "example-2",
@@ -198,8 +189,7 @@ describe("FairExhibitors", () => {
         },
       }),
     })
-    const show = wrapper.root.findAllByType(SectionTitle)
-    act(() => show[0].props.onPress())
+    fireEvent.press(screen.getAllByTestId("touchable-wrapper")[0])
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
       context_module: "galleryBoothRail",

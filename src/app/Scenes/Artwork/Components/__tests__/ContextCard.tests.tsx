@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { ContextCardTestsQuery } from "__generated__/ContextCardTestsQuery.graphql"
 import { ContextCardFragmentContainer } from "app/Scenes/Artwork/Components/ContextCard"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -22,19 +23,19 @@ describe("ContextCard", () => {
   })
 
   it("renders sale name correctly", () => {
-    const { getByText } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => auctionContextArtwork,
     })
 
-    expect(getByText("Christie’s: Prints & Multiples")).toBeTruthy()
+    expect(screen.getByText("Christie’s: Prints & Multiples")).toBeOnTheScreen()
   })
 
   it("renders formatted sale start/end date correctly", () => {
-    const { getByText } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => auctionContextArtwork,
     })
 
-    expect(getByText("Ended Oct 25, 2018")).toBeTruthy()
+    expect(screen.getByText("Ended Oct 25, 2018")).toBeOnTheScreen()
   })
 
   it("if auction is live display in progress", () => {
@@ -45,27 +46,27 @@ describe("ContextCard", () => {
         formattedStartDateTime: "In progress",
       },
     }
-    const { getByText } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => saleContextArtwork,
     })
 
-    expect(getByText("In progress")).toBeTruthy()
+    expect(screen.getByText("In progress")).toBeOnTheScreen()
   })
 
   it("renders sale image", () => {
-    const { getByLabelText } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => auctionContextArtwork,
     })
 
-    expect(getByLabelText("Context Card Image")).toBeTruthy()
+    expect(screen.getByLabelText("Context Card Image")).toBeOnTheScreen()
   })
 
   it("renders 'Auction' if the sale is an auction", () => {
-    const { getByText } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => auctionContextArtwork,
     })
 
-    expect(getByText("Auction")).toBeTruthy()
+    expect(screen.getByText("Auction")).toBeOnTheScreen()
   })
 
   it("renders nothing if the sale is not an auction", () => {

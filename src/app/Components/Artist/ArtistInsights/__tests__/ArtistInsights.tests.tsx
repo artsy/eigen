@@ -1,8 +1,8 @@
+import { screen } from "@testing-library/react-native"
 import { ArtistInsightsTestsQuery } from "__generated__/ArtistInsightsTestsQuery.graphql"
 import { ArtistInsights } from "app/Components/Artist/ArtistInsights/ArtistInsights"
-import { ArtistInsightsAuctionResultsPaginationContainer } from "app/Components/Artist/ArtistInsights/ArtistInsightsAuctionResults"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -45,7 +45,7 @@ describe("ArtistInsights", () => {
   )
 
   it("renders list auction results", async () => {
-    const view = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
@@ -58,14 +58,11 @@ describe("ArtistInsights", () => {
     await flushPromiseQueue()
 
     // now safe to assert
-    const auctionResults = view.root.findAllByType(
-      ArtistInsightsAuctionResultsPaginationContainer
-    )
-    expect(auctionResults.length).toEqual(1)
+    expect(screen.getAllByText("Auction Results")).toHaveLength(1)
   })
 
   it("tracks an auction page view when artist insights is current tab", async () => {
-    renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment)
 

@@ -1,6 +1,4 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { CardRailCard } from "app/Components/CardRail/CardRailCard"
-import { GenericArtistSeriesRail } from "app/Components/GenericArtistSeriesRail"
 import { CollectionArtistSeriesRail } from "app/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -21,13 +19,14 @@ describe("Artist Series Rail", () => {
     it("renders without throwing an error", () => {
       renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
-      expect(screen.UNSAFE_getAllByType(GenericArtistSeriesRail)).toHaveLength(1)
+      // GenericArtistSeriesRail renders the linked collections
+      expect(screen.getByText("Cindy Sherman: Untitled Film Stills")).toBeOnTheScreen()
     })
 
     it("correctly tracks when a collection is tapped", () => {
       renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
-      const railCard = screen.UNSAFE_getAllByType(CardRailCard)[0]
+      const railCard = screen.getByText("Cindy Sherman: Untitled Film Stills")
 
       fireEvent.press(railCard)
 
