@@ -1,4 +1,4 @@
-import { act, fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen, within } from "@testing-library/react-native"
 import { FeaturedCollectionsRailTestsQuery } from "__generated__/FeaturedCollectionsRailTestsQuery.graphql"
 import {
   FeaturedCollectionsRail,
@@ -10,6 +10,20 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ComponentProps } from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
+
+jest.mock("@d11/react-native-fast-image", () => {
+  const React = require("react")
+  const { View } = require("react-native")
+  const FastImage = (props: any) => React.createElement(View, { testID: "fast-image", ...props })
+  FastImage.priority = { low: "low", normal: "normal", high: "high" }
+  FastImage.resizeMode = {
+    contain: "contain",
+    cover: "cover",
+    stretch: "stretch",
+    center: "center",
+  }
+  return FastImage
+})
 
 describe("Featured Collections Rail", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -130,6 +144,18 @@ describe("Featured Collections Rail", () => {
       expect(screen.getByTestId("price-2")).toHaveTextContent("From $35,000", { exact: true })
     })
 
+    it("sources each card image from the first representative artwork", async () => {
+      await renderWithWrappers(<FeaturedCollectionsRail {...props} />)
+
+      const uriFor = (index: number) =>
+        within(screen.getByTestId("image-" + index)).getByTestId("fast-image").props.source.uri
+      expect(uriFor(0)).toContain(encodeURIComponent("https://featured-collection-one/medium.jpg"))
+      expect(uriFor(1)).toContain(encodeURIComponent("https://featured-collection-two/medium.jpg"))
+      expect(uriFor(2)).toContain(
+        encodeURIComponent("https://featured-collection-three/medium.jpg")
+      )
+    })
+
     it("navigates to a new collection when tapped", async () => {
       await renderWithWrappers(<FeaturedCollectionsRail {...props} />)
 
@@ -155,20 +181,15 @@ const FeaturedCollectionsFixture: FeaturedCollectionsRailTestsQuery["rawResponse
             title: "First Featured Collection",
             priceGuidance: 15000,
             descriptionMarkdown: "Featured collection 1 description",
-            featuredCollectionArtworks: {
-              id: "",
-              edges: [
-                {
-                  node: {
-                    id: "",
-                    image: {
-                      url: "https://featured-collection-one/medium.jpg",
-                      blurhash: null,
-                    },
-                  },
+            representativeArtworks: [
+              {
+                id: "artwork-id-1",
+                image: {
+                  url: "https://featured-collection-one/medium.jpg",
+                  blurhash: null,
                 },
-              ],
-            },
+              },
+            ],
           },
           {
             slug: "featured-collection-2",
@@ -176,20 +197,15 @@ const FeaturedCollectionsFixture: FeaturedCollectionsRailTestsQuery["rawResponse
             title: "Second Featured Collection",
             priceGuidance: 25000,
             descriptionMarkdown: "Featured collection 2 description",
-            featuredCollectionArtworks: {
-              id: "",
-              edges: [
-                {
-                  node: {
-                    id: "",
-                    image: {
-                      url: "https://featured-collection-two/medium.jpg",
-                      blurhash: null,
-                    },
-                  },
+            representativeArtworks: [
+              {
+                id: "artwork-id-2",
+                image: {
+                  url: "https://featured-collection-two/medium.jpg",
+                  blurhash: null,
                 },
-              ],
-            },
+              },
+            ],
           },
           {
             slug: "featured-collection-1",
@@ -197,20 +213,15 @@ const FeaturedCollectionsFixture: FeaturedCollectionsRailTestsQuery["rawResponse
             title: "Third Featured Collection",
             priceGuidance: 35000,
             descriptionMarkdown: "Featured collection 3 description",
-            featuredCollectionArtworks: {
-              id: "",
-              edges: [
-                {
-                  node: {
-                    id: "",
-                    image: {
-                      url: "https://featured-collection-three /medium.jpg",
-                      blurhash: null,
-                    },
-                  },
+            representativeArtworks: [
+              {
+                id: "artwork-id-3",
+                image: {
+                  url: "https://featured-collection-three/medium.jpg",
+                  blurhash: null,
                 },
-              ],
-            },
+              },
+            ],
           },
         ],
       },
