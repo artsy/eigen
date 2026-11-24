@@ -22,7 +22,7 @@ describe("LatestAuctionResultsRail", () => {
   })
 
   it("renders the rail of auction results ", async () => {
-    renderWithRelay({ Me: () => mockMe })
+    await renderWithRelay({ Me: () => mockMe })
 
     expect(screen.getByText("Auction Results for Artists You Follow")).toBeTruthy()
     expect(screen.getByText("Artist Name")).toBeTruthy()
@@ -30,7 +30,7 @@ describe("LatestAuctionResultsRail", () => {
   })
 
   it("returns null if there are no auction results", async () => {
-    renderWithRelay({ Me: () => emptyMe })
+    await renderWithRelay({ Me: () => emptyMe })
 
     expect(screen.queryByText("Auction Results for Artists You Follow")).not.toBeOnTheScreen()
     expect(screen.queryByText(/Artist Name/)).not.toBeOnTheScreen()

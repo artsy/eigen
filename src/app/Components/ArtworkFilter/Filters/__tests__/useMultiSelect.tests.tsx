@@ -80,27 +80,27 @@ describe("useMultiSelect", () => {
   }
 
   it("manages the nextParamValues", async () => {
-    renderWithWrappers(<MockComponent initialData={initialState} />)
+    await renderWithWrappers(<MockComponent initialData={initialState} />)
 
     expect(screen.getByTestId("nextParamValues")).toHaveTextContent("[]")
 
-    fireEvent.press(screen.getByText("Example 1"))
+    await fireEvent.press(screen.getByText("Example 1"))
 
     expect(screen.getByTestId("nextParamValues")).toHaveTextContent('["example-1"]')
 
-    fireEvent.press(screen.getByText("Example 3"))
+    await fireEvent.press(screen.getByText("Example 3"))
 
     expect(screen.getByTestId("nextParamValues")).toHaveTextContent('["example-1","example-3"]')
 
-    fireEvent.press(screen.getByText("Example 1"))
+    await fireEvent.press(screen.getByText("Example 1"))
 
     expect(screen.getByTestId("nextParamValues")).toHaveTextContent('["example-3"]')
   })
 
   it("dispatches filter updates", async () => {
-    renderWithWrappers(<MockComponent initialData={initialState} />)
+    await renderWithWrappers(<MockComponent initialData={initialState} />)
 
-    fireEvent.press(screen.getByText("Example 1"))
+    await fireEvent.press(screen.getByText("Example 1"))
     await flushPromiseQueue()
 
     expect(screen.getByTestId("selectedOptions")).toHaveTextContent(
@@ -108,7 +108,7 @@ describe("useMultiSelect", () => {
       { exact: false }
     )
 
-    fireEvent.press(screen.getByText("Example 3"))
+    await fireEvent.press(screen.getByText("Example 3"))
     await flushPromiseQueue()
 
     expect(screen.getByTestId("selectedOptions")).toHaveTextContent(
@@ -116,7 +116,7 @@ describe("useMultiSelect", () => {
       { exact: false }
     )
 
-    fireEvent.press(screen.getByText("Example 2"))
+    await fireEvent.press(screen.getByText("Example 2"))
     await flushPromiseQueue()
 
     expect(screen.getByTestId("selectedOptions")).toHaveTextContent(
@@ -126,9 +126,9 @@ describe("useMultiSelect", () => {
   })
 
   it("resets the state when cleared", async () => {
-    renderWithWrappers(<MockComponent initialData={initialState} />)
+    await renderWithWrappers(<MockComponent initialData={initialState} />)
 
-    fireEvent.press(screen.getByText("Example 1"))
+    await fireEvent.press(screen.getByText("Example 1"))
     await flushPromiseQueue()
 
     expect(screen.getByTestId("selectedOptions")).toHaveTextContent(
@@ -136,7 +136,7 @@ describe("useMultiSelect", () => {
       { exact: false }
     )
 
-    fireEvent.press(screen.getByText("Clear"))
+    await fireEvent.press(screen.getByText("Clear"))
     await flushPromiseQueue()
 
     expect(screen.getByTestId("selectedOptions")).toHaveTextContent(

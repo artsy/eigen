@@ -24,8 +24,8 @@ describe("CountdownTimer", () => {
     Date.now = () => 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
   })
 
-  it("renders upcoming properly", () => {
-    renderWithWrappers(
+  it("renders upcoming properly", async () => {
+    await renderWithWrappers(
       <CountdownTimer
         formattedOpeningHours="Opens May 10 at 8:22pm"
         startAt="2018-05-10T20:22:42+00:00"
@@ -37,8 +37,8 @@ describe("CountdownTimer", () => {
     expect(screen.getByText("Opens May 10 at 8:22pm")).toBeTruthy()
   })
 
-  it("renders current properly", () => {
-    renderWithWrappers(
+  it("renders current properly", async () => {
+    await renderWithWrappers(
       <CountdownTimer
         formattedOpeningHours="Opens Apr 14 at 8:00pm"
         startAt="2018-04-14T20:00:00+00:00"
@@ -50,8 +50,8 @@ describe("CountdownTimer", () => {
     expect(screen.getByText("Opens Apr 14 at 8:00pm")).toBeTruthy()
   })
 
-  it("renders closed properly", () => {
-    renderWithWrappers(
+  it("renders closed properly", async () => {
+    await renderWithWrappers(
       <CountdownTimer
         formattedOpeningHours="Closed"
         startAt={dateString(Date.now() - 2000)}

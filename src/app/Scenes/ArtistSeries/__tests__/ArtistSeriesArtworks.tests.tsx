@@ -21,16 +21,16 @@ describe("Artist Series Artworks", () => {
     `,
   })
 
-  it("renders an artwork grid if artworks", () => {
-    renderWithRelay({})
+  it("renders an artwork grid if artworks", async () => {
+    await renderWithRelay({})
 
     expect(screen.getByTestId("ArtistSeriesArtworksGrid")).toBeOnTheScreen()
 
     expect(screen.queryByText(/No results found/)).not.toBeOnTheScreen()
   })
 
-  it("renders a null component if no artworks", () => {
-    renderWithRelay({
+  it("renders a null component if no artworks", async () => {
+    await renderWithRelay({
       ArtistSeries: () => ({
         artistSeriesArtworks: {
           counts: {

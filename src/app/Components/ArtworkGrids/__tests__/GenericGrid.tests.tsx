@@ -59,8 +59,8 @@ describe("GenericGrid", () => {
     mockMasonryInfiniteScrollArtworkGrid.mockClear()
   })
 
-  it("renders without throwing an error", () => {
-    renderWithRelay({
+  it("renders without throwing an error", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         id: "artwork-long-title",
         slug: "long-title",
@@ -81,8 +81,8 @@ describe("GenericGrid", () => {
     ).toBeOnTheScreen()
   })
 
-  it("renders spinner when loading", () => {
-    renderWithRelay(
+  it("renders spinner when loading", async () => {
+    await renderWithRelay(
       {
         Artwork: () => ({
           id: "artwork-1",
@@ -98,8 +98,8 @@ describe("GenericGrid", () => {
     expect(screen.getByTestId("spinner")).toBeOnTheScreen()
   })
 
-  it("passes analytics context through to the masonry grid", () => {
-    renderWithRelay(
+  it("passes analytics context through to the masonry grid", async () => {
+    await renderWithRelay(
       {
         Artwork: () => ({
           id: "artwork-1",

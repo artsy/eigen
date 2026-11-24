@@ -51,9 +51,9 @@ const TestRenderer = () => {
   )
 }
 
-const renderAndResolve = (mockResolvers = {}) => {
-  renderWithWrappers(<TestRenderer />)
-  act(() => {
+const renderAndResolve = async (mockResolvers = {}) => {
+  await renderWithWrappers(<TestRenderer />)
+  await act(() => {
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, mockResolvers)
     )
@@ -62,9 +62,9 @@ const renderAndResolve = (mockResolvers = {}) => {
 
 describe("Inquiry make offer button", () => {
   it("navigates to the order webview when button is tapped", async () => {
-    renderAndResolve()
+    await renderAndResolve()
 
-    fireEvent.press(screen.getByText("Make an Offer"))
+    await fireEvent.press(screen.getByText("Make an Offer"))
 
     await act(async () => {
       env.mock.resolveMostRecentOperation((operation) => {
@@ -89,9 +89,9 @@ describe("Inquiry make offer button", () => {
   })
 
   it("presents an error dialogue if mutation returns an error response", async () => {
-    renderAndResolve()
+    await renderAndResolve()
 
-    fireEvent.press(screen.getByText("Make an Offer"))
+    await fireEvent.press(screen.getByText("Make an Offer"))
 
     await act(async () => {
       env.mock.resolveMostRecentOperation((operation) => {

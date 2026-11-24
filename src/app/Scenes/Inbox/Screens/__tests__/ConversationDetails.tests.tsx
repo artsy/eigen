@@ -18,8 +18,8 @@ describe("ConversationDetailsFragmentContainer", () => {
     },
   })
 
-  it("render all elements", () => {
-    renderWithRelay()
+  it("render all elements", async () => {
+    await renderWithRelay()
 
     expect(screen.getByText(/Order No/)).toBeDefined()
     expect(screen.getByText("Ship to")).toBeDefined()
@@ -29,8 +29,8 @@ describe("ConversationDetailsFragmentContainer", () => {
     expect(screen.getByText("Inquiries FAQ")).toBeDefined()
   })
 
-  it("does not render order information given no order/offer present", () => {
-    renderWithRelay({
+  it("does not render order information given no order/offer present", async () => {
+    await renderWithRelay({
       Conversation: () => ({
         orderConnection: {
           edges: [{ node: null }],

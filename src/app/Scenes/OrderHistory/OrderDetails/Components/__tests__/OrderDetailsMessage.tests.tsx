@@ -106,8 +106,8 @@ describe("OrderDetailsMessage", () => {
         "Your refund will appear on your bank statement within 5-7 business days.",
         "orders@artsy.net",
       ],
-    ])("renders the correct message for %s", (messageType, firstExpect, secondExpect) => {
-      renderWithRelay({ Order: () => ({ displayTexts: { messageType } }) })
+    ])("renders the correct message for %s", async (messageType, firstExpect, secondExpect) => {
+      await renderWithRelay({ Order: () => ({ displayTexts: { messageType } }) })
 
       expect(screen.getByText(new RegExp(firstExpect))).toBeOnTheScreen()
       expect(screen.getByText(new RegExp(secondExpect))).toBeOnTheScreen()
@@ -163,8 +163,8 @@ describe("OrderDetailsMessage", () => {
       ],
     ])(
       "renders the instructions for %s",
-      (currencyCode, { transferInfo, bankAddress, intermediaryReferenceInfo }) => {
-        renderWithRelay({
+      async (currencyCode, { transferInfo, bankAddress, intermediaryReferenceInfo }) => {
+        await renderWithRelay({
           Order: () => ({ displayTexts: { messageType: "PROCESSING_WIRE" }, currencyCode }),
         })
 
@@ -185,8 +185,8 @@ describe("OrderDetailsMessage", () => {
   })
 
   describe("gallery shipped order", () => {
-    it("renders shipped message with delivery info", () => {
-      renderWithRelay({
+    it("renders shipped message with delivery info", async () => {
+      await renderWithRelay({
         Order: () => ({
           displayTexts: { messageType: "SHIPPED" },
           deliveryInfo: {
@@ -204,13 +204,13 @@ describe("OrderDetailsMessage", () => {
       expect(screen.getByText("Tracking: 1231231234")).toBeOnTheScreen()
       expect(screen.getByText("Estimated delivery: Apr 21, 2024")).toBeOnTheScreen()
 
-      fireEvent.press(screen.getByText("1231231234"))
+      await fireEvent.press(screen.getByText("1231231234"))
 
       expect(navigate).toHaveBeenCalledWith("https://dhl.de/track/123456789")
     })
 
-    it("renders shipped message without delivery info", () => {
-      renderWithRelay({
+    it("renders shipped message without delivery info", async () => {
+      await renderWithRelay({
         Order: () => ({ displayTexts: { messageType: "SHIPPED" }, deliveryInfo: null }),
       })
 
@@ -221,8 +221,8 @@ describe("OrderDetailsMessage", () => {
       expect(screen.queryByText("Estimated delivery:")).not.toBeOnTheScreen()
     })
 
-    it("renders shipped message with estimated delivery window", () => {
-      renderWithRelay({
+    it("renders shipped message with estimated delivery window", async () => {
+      await renderWithRelay({
         Order: () => ({
           displayTexts: {
             messageType: "SHIPPED",
@@ -243,14 +243,14 @@ describe("OrderDetailsMessage", () => {
   })
 
   describe("links", () => {
-    it("navigates the user to Update Payment page when tapping update payment", () => {
-      renderWithRelay({
+    it("navigates the user to Update Payment page when tapping update payment", async () => {
+      await renderWithRelay({
         Order: () => ({ internalID: "order-id", displayTexts: { messageType: "PAYMENT_FAILED" } }),
       })
 
       expect(screen.getByText("update your payment details")).toBeOnTheScreen()
 
-      fireEvent.press(screen.getByText("update your payment details"))
+      await fireEvent.press(screen.getByText("update your payment details"))
 
       expect(navigate).toHaveBeenCalledWith("/orders/order-id/payment/new", {
         modal: true,
@@ -258,12 +258,14 @@ describe("OrderDetailsMessage", () => {
       })
     })
 
-    it("navigates the user to My Collection when tapping your collection", () => {
-      renderWithRelay({ Order: () => ({ displayTexts: { messageType: "COMPLETED_PICKUP" } }) })
+    it("navigates the user to My Collection when tapping your collection", async () => {
+      await renderWithRelay({
+        Order: () => ({ displayTexts: { messageType: "COMPLETED_PICKUP" } }),
+      })
 
       expect(screen.getByText("your Collection on Artsy")).toBeOnTheScreen()
 
-      fireEvent.press(screen.getByText("your Collection on Artsy"))
+      await fireEvent.press(screen.getByText("your Collection on Artsy"))
 
       expect(navigate).toHaveBeenCalledWith("/my-collection")
     })
@@ -272,17 +274,19 @@ describe("OrderDetailsMessage", () => {
       Linking.canOpenURL = jest.fn().mockReturnValue(Promise.resolve(true))
       const openUrlSpy = jest.spyOn(Linking, "openURL")
 
-      renderWithRelay({ Order: () => ({ displayTexts: { messageType: "COMPLETED_PICKUP" } }) })
+      await renderWithRelay({
+        Order: () => ({ displayTexts: { messageType: "COMPLETED_PICKUP" } }),
+      })
 
       expect(screen.getByText("orders@artsy.net")).toBeOnTheScreen()
 
-      fireEvent.press(screen.getByText("orders@artsy.net"))
+      await fireEvent.press(screen.getByText("orders@artsy.net"))
 
       await waitFor(() => expect(openUrlSpy).toHaveBeenCalledWith("mailto:orders@artsy.net"))
     })
 
-    it("opens the conversation when the user clicks 'contact the gallery'", () => {
-      renderWithRelay({
+    it("opens the conversation when the user clicks 'contact the gallery'", async () => {
+      await renderWithRelay({
         Order: () => ({
           internalID: "order-id",
           displayTexts: { messageType: "SUBMITTED_OFFER" },
@@ -292,7 +296,7 @@ describe("OrderDetailsMessage", () => {
 
       expect(screen.getByText("contact the gallery")).toBeOnTheScreen()
 
-      fireEvent.press(screen.getByText("contact the gallery"))
+      await fireEvent.press(screen.getByText("contact the gallery"))
 
       expect(navigate).toBeCalledWith("/user/conversations/conv-123")
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`

@@ -19,17 +19,17 @@ describe("useIOSListenToPushNotifications", () => {
   })
 
   describe("Event listening", () => {
-    it("sets up native event listener on mount", () => {
+    it("sets up native event listener on mount", async () => {
       const mockAddListener = jest.spyOn(mockNotificationsManager, "addListener")
 
-      renderHook(() =>
+      await renderHook(() =>
         useIOSListenToPushNotifications({ setPushNotification: mockSetPushNotification })
       )
 
       expect(mockAddListener).toHaveBeenCalledWith("event", expect.any(Function))
     })
 
-    it("handles NOTIFICATION_RECEIVED event with Tapped action", () => {
+    it("handles NOTIFICATION_RECEIVED event with Tapped action", async () => {
       let eventHandler: (event: any) => void
 
       // Capture the event handler when addListener is called
@@ -39,7 +39,7 @@ describe("useIOSListenToPushNotifications", () => {
         return { remove: jest.fn() } as any
       })
 
-      renderHook(() =>
+      await renderHook(() =>
         useIOSListenToPushNotifications({ setPushNotification: mockSetPushNotification })
       )
 
@@ -54,7 +54,7 @@ describe("useIOSListenToPushNotifications", () => {
         },
       }
 
-      act(() => {
+      await act(() => {
         eventHandler(testEvent)
       })
 
@@ -72,7 +72,7 @@ describe("useIOSListenToPushNotifications", () => {
       })
     })
 
-    it("handles NOTIFICATION_RECEIVED event with undefined payload values", () => {
+    it("handles NOTIFICATION_RECEIVED event with undefined payload values", async () => {
       let eventHandler: (event: any) => void
 
       const mockAddListener = jest.spyOn(mockNotificationsManager, "addListener")
@@ -81,7 +81,7 @@ describe("useIOSListenToPushNotifications", () => {
         return { remove: jest.fn() } as any
       })
 
-      renderHook(() =>
+      await renderHook(() =>
         useIOSListenToPushNotifications({ setPushNotification: mockSetPushNotification })
       )
 
@@ -93,7 +93,7 @@ describe("useIOSListenToPushNotifications", () => {
         },
       }
 
-      act(() => {
+      await act(() => {
         eventHandler!(testEvent)
       })
 
@@ -107,7 +107,7 @@ describe("useIOSListenToPushNotifications", () => {
       })
     })
 
-    it("ignores NOTIFICATION_RECEIVED event without payload", () => {
+    it("ignores NOTIFICATION_RECEIVED event without payload", async () => {
       let eventHandler: (event: any) => void
 
       const mockAddListener = jest.spyOn(mockNotificationsManager, "addListener")
@@ -116,7 +116,7 @@ describe("useIOSListenToPushNotifications", () => {
         return { remove: jest.fn() } as any
       })
 
-      renderHook(() =>
+      await renderHook(() =>
         useIOSListenToPushNotifications({ setPushNotification: mockSetPushNotification })
       )
 
@@ -125,14 +125,14 @@ describe("useIOSListenToPushNotifications", () => {
         // No payload
       }
 
-      act(() => {
+      await act(() => {
         eventHandler!(testEvent)
       })
 
       expect(mockSetPushNotification).not.toHaveBeenCalled()
     })
 
-    it("ignores non-NOTIFICATION_RECEIVED events", () => {
+    it("ignores non-NOTIFICATION_RECEIVED events", async () => {
       let eventHandler: (event: any) => void
 
       const mockAddListener = jest.spyOn(mockNotificationsManager, "addListener")
@@ -141,7 +141,7 @@ describe("useIOSListenToPushNotifications", () => {
         return { remove: jest.fn() } as any
       })
 
-      renderHook(() =>
+      await renderHook(() =>
         useIOSListenToPushNotifications({ setPushNotification: mockSetPushNotification })
       )
 
@@ -160,11 +160,11 @@ describe("useIOSListenToPushNotifications", () => {
         },
       ]
 
-      testEvents.forEach((testEvent) => {
-        act(() => {
+      for (const testEvent of testEvents) {
+        await act(() => {
           eventHandler!(testEvent)
         })
-      })
+      }
 
       expect(mockSetPushNotification).not.toHaveBeenCalled()
     })

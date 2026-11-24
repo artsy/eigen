@@ -29,12 +29,12 @@ describe("when skipping the artist selection", () => {
   })
 
   it("initializes the artist name input field", async () => {
-    const { unmount } = renderWithHookWrappersTL(
+    const { unmount } = await renderWithHookWrappersTL(
       <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
       mockEnvironment
     )
 
-    act(() =>
+    await act(() =>
       mockEnvironment.mock.resolveMostRecentOperation({
         errors: [],
         data: mockCollectedArtistsResult,
@@ -51,34 +51,37 @@ describe("when skipping the artist selection", () => {
       expect(screen.getByPlaceholderText("Search for artists on Artsy")).toBeTruthy()
     })
 
-    fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "foo bar")
+    await fireEvent.changeText(
+      screen.getByPlaceholderText("Search for artists on Artsy"),
+      "foo bar"
+    )
 
-    act(() =>
+    await act(() =>
       mockEnvironment.mock.resolveMostRecentOperation({
         errors: [],
         data: mockArtistSearchResult,
       })
     )
 
-    fireEvent.press(screen.getByTestId("my-collection-artwork-form-artist-skip-button"))
+    await fireEvent.press(screen.getByTestId("my-collection-artwork-form-artist-skip-button"))
 
     await flushPromiseQueue()
 
     // Add Artist Screen
-    fireEvent.changeText(screen.getByTestId("artist-input"), "My Artist")
-    fireEvent.changeText(screen.getByTestId("nationality-input"), "bar foo")
+    await fireEvent.changeText(screen.getByTestId("artist-input"), "My Artist")
+    await fireEvent.changeText(screen.getByTestId("nationality-input"), "bar foo")
 
     await flushPromiseQueue()
 
     expect(true).toBe(true)
 
-    fireEvent.press(screen.getByTestId("submit-add-artist-button"))
+    await fireEvent.press(screen.getByTestId("submit-add-artist-button"))
 
     await waitFor(() => {
       expect(screen.getByTestId("fake-main-form")).toBeTruthy()
     })
 
-    unmount()
+    await unmount()
   })
 })
 

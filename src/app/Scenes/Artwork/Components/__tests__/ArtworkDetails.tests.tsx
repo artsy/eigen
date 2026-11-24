@@ -32,7 +32,7 @@ describe("ArtworkDetails", () => {
   })
 
   it("renders all data correctly", async () => {
-    renderWithRelay({})
+    await renderWithRelay({})
 
     expect(screen.getByText("Medium")).toBeOnTheScreen()
     expect(screen.getByText("Condition")).toBeOnTheScreen()
@@ -45,7 +45,7 @@ describe("ArtworkDetails", () => {
   })
 
   it("doesn't render fields that are null or empty string", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         framed: {
           details: "",
@@ -69,7 +69,7 @@ describe("ArtworkDetails", () => {
   })
 
   it("navigates to medium info when tapped", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         slug: "slug-1",
         mediumType: {
@@ -78,13 +78,13 @@ describe("ArtworkDetails", () => {
       }),
     })
 
-    fireEvent.press(screen.getByText("mediumName"))
+    await fireEvent.press(screen.getByText("mediumName"))
 
     expect(navigate).toHaveBeenCalledWith("/artwork/slug-1/medium")
   })
 
   it("should not render condition report button when canRequestLotConditionsReport false", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         canRequestLotConditionsReport: false,
       }),
@@ -94,8 +94,8 @@ describe("ArtworkDetails", () => {
   })
 
   describe("framed dimensions", () => {
-    it("shows both Size and Framed Size when framed dimensions exist", () => {
-      renderWithRelay({
+    it("shows both Size and Framed Size when framed dimensions exist", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
           framedDimensions: { in: "24 × 34 in", cm: "61 × 86 cm" },
@@ -109,8 +109,8 @@ describe("ArtworkDetails", () => {
       expect(screen.getByText("24 × 34 in | 61 × 86 cm")).toBeOnTheScreen()
     })
 
-    it("hides both Size and Framed Size when framed dimensions do not exist", () => {
-      renderWithRelay({
+    it("hides both Size and Framed Size when framed dimensions do not exist", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
           framedDimensions: null,
@@ -123,8 +123,8 @@ describe("ArtworkDetails", () => {
       expect(screen.queryByText("20 × 30 in | 50 × 76 cm")).not.toBeOnTheScreen()
     })
 
-    it("hides both Size and Framed Size when dimensions are empty", () => {
-      renderWithRelay({
+    it("hides both Size and Framed Size when dimensions are empty", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           dimensions: null,
           framedDimensions: null,
@@ -137,8 +137,8 @@ describe("ArtworkDetails", () => {
     })
 
     describe("with edition sets", () => {
-      it("shows edition set dimensions when there is only one edition set", () => {
-        renderWithRelay({
+      it("shows edition set dimensions when there is only one edition set", async () => {
+        await renderWithRelay({
           Artwork: () => ({
             dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
             framedDimensions: { in: "24 × 34 in", cm: "61 × 86 cm" },
@@ -158,8 +158,8 @@ describe("ArtworkDetails", () => {
         expect(screen.getByText("22 × 32 in | 56 × 81 cm")).toBeOnTheScreen()
       })
 
-      it("hides dimensions when the single edition set has no framed dimensions", () => {
-        renderWithRelay({
+      it("hides dimensions when the single edition set has no framed dimensions", async () => {
+        await renderWithRelay({
           Artwork: () => ({
             dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
             framedDimensions: { in: "24 × 34 in", cm: "61 × 86 cm" },
@@ -177,8 +177,8 @@ describe("ArtworkDetails", () => {
         expect(screen.queryByText("Framed Size")).not.toBeOnTheScreen()
       })
 
-      it("shows selected edition dimensions when there are multiple edition sets", () => {
-        renderWithRelay({
+      it("shows selected edition dimensions when there are multiple edition sets", async () => {
+        await renderWithRelay({
           Artwork: () => ({
             dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
             framedDimensions: { in: "24 × 34 in", cm: "61 × 86 cm" },
@@ -197,7 +197,7 @@ describe("ArtworkDetails", () => {
           }),
         })
 
-        act(() => {
+        await act(() => {
           mockArtworkStore.getActions().setSelectedEditionId("edition-2")
         })
 
@@ -207,8 +207,8 @@ describe("ArtworkDetails", () => {
         expect(screen.getByText("20 × 28 in | 51 × 71 cm")).toBeOnTheScreen()
       })
 
-      it("hides dimensions when selected edition has no framed dimensions", () => {
-        renderWithRelay({
+      it("hides dimensions when selected edition has no framed dimensions", async () => {
+        await renderWithRelay({
           Artwork: () => ({
             dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
             framedDimensions: { in: "24 × 34 in", cm: "61 × 86 cm" },
@@ -227,7 +227,7 @@ describe("ArtworkDetails", () => {
           }),
         })
 
-        act(() => {
+        await act(() => {
           mockArtworkStore.getActions().setSelectedEditionId("edition-2")
         })
 

@@ -17,8 +17,8 @@ describe("ArtistAbout", () => {
     variables: { artistID: "artist-id" },
   })
 
-  it("renders the empty state", () => {
-    renderWithRelay({
+  it("renders the empty state", async () => {
+    await renderWithRelay({
       Artist: () => ({
         hasArtistSeriesConnection: { totalCount: 0 },
         counts: { articles: 0, relatedArtists: 0 },
@@ -37,8 +37,8 @@ describe("ArtistAbout", () => {
   })
 
   describe("Biography", () => {
-    it("is shown when the artist has metadata", () => {
-      renderWithRelay({
+    it("is shown when the artist has metadata", async () => {
+      await renderWithRelay({
         ArtistBlurb: () => {
           return {
             text: "a biography",
@@ -50,8 +50,8 @@ describe("ArtistAbout", () => {
       expect(screen.getByText(/a biography/)).toBeOnTheScreen()
     })
 
-    it("is hidden when the artist has metadata", () => {
-      renderWithRelay({
+    it("is hidden when the artist has metadata", async () => {
+      await renderWithRelay({
         ArtistBlurb: () => {
           return {
             text: "",
@@ -64,8 +64,8 @@ describe("ArtistAbout", () => {
   })
 
   describe("ArtistCareerHighlights", () => {
-    it("is shown when there are insights", () => {
-      renderWithRelay({
+    it("is shown when there are insights", async () => {
+      await renderWithRelay({
         Artist: () => {
           return { insights: [{ label: "Fancy pants", entities: ["A fancy museum"] }] }
         },
@@ -75,8 +75,8 @@ describe("ArtistAbout", () => {
       expect(screen.getByText("Fancy pants")).toBeOnTheScreen()
     })
 
-    it("is hidden when there are no insights", () => {
-      renderWithRelay({
+    it("is hidden when there are no insights", async () => {
+      await renderWithRelay({
         Artist: () => {
           return { insights: [] }
         },
@@ -87,24 +87,24 @@ describe("ArtistAbout", () => {
   })
 
   describe("ArtistAboutShows", () => {
-    it("is rendered by default", () => {
-      renderWithRelay({ Artist: () => ({ name: "Andy Warhol" }) })
+    it("is rendered by default", async () => {
+      await renderWithRelay({ Artist: () => ({ name: "Andy Warhol" }) })
 
       expect(screen.getByText("Shows Featuring Andy Warhol")).toBeOnTheScreen()
     })
   })
 
   describe("ArtistAboutEditorial", () => {
-    it("renders editorial section", () => {
-      renderWithRelay({
+    it("renders editorial section", async () => {
+      await renderWithRelay({
         Artist: () => ({ name: "Andy Warhol" }),
       })
 
       expect(screen.getByText("Artsy Editorial Featuring Andy Warhol")).toBeOnTheScreen()
     })
 
-    it("does not render when there are no articles", () => {
-      renderWithRelay({
+    it("does not render when there are no articles", async () => {
+      await renderWithRelay({
         Artist: () => ({
           counts: { articles: 0 },
         }),

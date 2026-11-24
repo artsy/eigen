@@ -22,14 +22,14 @@ describe("CityGuideEvent", () => {
     Component: CityGuideEvent,
   })
 
-  it("renders properly", () => {
-    renderWithRelay({}, { event: eventData })
+  it("renders properly", async () => {
+    await renderWithRelay({}, { event: eventData })
 
     expect(screen.getByText("Pacita Abad Art Estate")).toBeTruthy()
   })
 
   it("renders a rail of artworks from the show", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       {
         Show: () => ({
           artworksConnection: {

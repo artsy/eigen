@@ -26,13 +26,13 @@ import React, { useCallback, useEffect, useState } from "react"
 import { Alert, Linking, Platform, RefreshControl } from "react-native"
 import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 
-const INSTRUCTIONS = Platform.select({
+const INSTRUCTIONS = {
   ios: `To receive push notifications from Artsy, you will need to enable them in your iOS Settings. Tap 'Artsy' and
   toggle 'Allow Notifications' on.`,
   android: `To receive push notifications from Artsy, you will need to enable them in your device settings.
   Go to 'Apps', Tap on 'Artsy' to access Artsy specific settings, Tap on 'Notifications' and toggle 'Show Notifications' on.`,
   default: "",
-})
+}
 
 export type UserPushNotificationSettings = keyof Omit<
   MyProfilePushNotifications_me$data,
@@ -100,7 +100,7 @@ export const OpenSettingsBanner = () => (
         Artsy would like to send you notifications
       </Text>
       <Text variant="sm" textAlign="center" color="mono60" marginTop={1} marginBottom={2}>
-        {INSTRUCTIONS}
+        {Platform.select(INSTRUCTIONS)}
       </Text>
       <Button
         size="large"

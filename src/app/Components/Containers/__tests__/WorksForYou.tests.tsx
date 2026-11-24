@@ -9,22 +9,22 @@ beforeAll(() => {
 })
 
 describe("with notifications", () => {
-  it("updates the notification count", () => {
+  it("updates the notification count", async () => {
     const me = notificationsResponse().query.me
-    renderWithWrappers(<WorksForYou me={me as any} relay={null as any} />)
+    await renderWithWrappers(<WorksForYou me={me as any} relay={null as any} />)
     expect(LegacyNativeModules.ARTemporaryAPIModule.markNotificationsRead).toBeCalled()
   })
 
-  it("renders without throwing an error", () => {
+  it("renders without throwing an error", async () => {
     const me = notificationsResponse().query.me
-    renderWithWrappers(<WorksForYou me={me as any} relay={null as any} />)
+    await renderWithWrappers(<WorksForYou me={me as any} relay={null as any} />)
   })
 })
 
 describe("without notifications", () => {
-  it("renders without throwing an error", () => {
+  it("renders without throwing an error", async () => {
     const me = emptyStateResponse().query.me
-    renderWithWrappers(<WorksForYou me={me as any} relay={null as any} />)
+    await renderWithWrappers(<WorksForYou me={me as any} relay={null as any} />)
   })
 })
 

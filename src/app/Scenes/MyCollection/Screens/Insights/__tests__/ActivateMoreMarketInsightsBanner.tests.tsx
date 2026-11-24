@@ -10,15 +10,15 @@ describe("MyCollectionInsights banner", () => {
   }
 
   it("renders", async () => {
-    renderWithWrappers(<TestRenderer />)
+    await renderWithWrappers(<TestRenderer />)
 
     expect(await screen.findByText("Unlock More Insights")).toBeTruthy()
   })
 
-  it("navigates to MyCollectionArtworkForm when Upload Another Artwork is pressed", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("navigates to MyCollectionArtworkForm when Upload Another Artwork is pressed", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
-    fireEvent.press(screen.getByTestId("activate-more-market-insights-banner"))
+    await fireEvent.press(screen.getByTestId("activate-more-market-insights-banner"))
     expect(navigate).toHaveBeenCalledWith(
       "my-collection/artworks/new",
       expect.objectContaining({

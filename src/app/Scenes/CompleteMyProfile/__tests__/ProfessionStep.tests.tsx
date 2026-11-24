@@ -20,8 +20,8 @@ describe("ProfessionStep", () => {
     jest.clearAllMocks()
   })
 
-  it("renders", () => {
-    renderWithWrappers(<ProfessionStep />)
+  it("renders", async () => {
+    await renderWithWrappers(<ProfessionStep />)
 
     expect(screen.getByText("Add your profession")).toBeOnTheScreen()
     expect(
@@ -32,21 +32,21 @@ describe("ProfessionStep", () => {
     expect(screen.getByLabelText("Profession")).toBeOnTheScreen()
   })
 
-  it("calls setField on input change", () => {
-    renderWithWrappers(<ProfessionStep />)
+  it("calls setField on input change", async () => {
+    await renderWithWrappers(<ProfessionStep />)
 
     const input = screen.getByLabelText("Profession")
-    fireEvent(input, "changeText", "Artist")
+    await fireEvent(input, "changeText", "Artist")
 
     expect(setProgressState).toHaveBeenCalledWith({ type: "profession", value: "Artist" })
   })
 
-  it("shows the input value from field state", () => {
+  it("shows the input value from field state", async () => {
     stateSpy.mockImplementation((callback) =>
       callback({ progressState: { profession: "Curator" } } as any)
     )
 
-    renderWithWrappers(<ProfessionStep />)
+    await renderWithWrappers(<ProfessionStep />)
 
     expect(screen.getByLabelText("Profession")).toBeOnTheScreen()
   })

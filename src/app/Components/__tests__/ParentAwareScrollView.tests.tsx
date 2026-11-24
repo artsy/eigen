@@ -16,7 +16,7 @@ const scrollEvent = {
 }
 
 describe("<ParentAwareScrollView>", () => {
-  it("receives parent onScroll event when nested in a virtualized list", () => {
+  it("receives parent onScroll event when nested in a virtualized list", async () => {
     // the ParentAwareScrollView nested inside the Flatlist should
     // react to the parent flatlist scroll by calling props.aFunc
     const AFlatList = () => (
@@ -28,10 +28,13 @@ describe("<ParentAwareScrollView>", () => {
         renderItem={({ item }) => item}
       />
     )
-    renderWithWrappers(<AFlatList />)
-    fireEvent.scroll(screen.getByTestId("flat-list"), scrollEvent)
+    await renderWithWrappers(<AFlatList />)
+    await fireEvent.scroll(screen.getByTestId("flat-list"), scrollEvent)
 
     expect(props.aFunc).toHaveBeenCalled()
-    expect(props.aFunc).toHaveBeenCalledWith(expect.objectContaining(scrollEvent))
+    // v14's fireEvent.scroll fills in the rest of a real scroll event, so match on the values we sent
+    expect(props.aFunc).toHaveBeenCalledWith(
+      expect.objectContaining({ nativeEvent: expect.objectContaining(scrollEvent.nativeEvent) })
+    )
   })
 })

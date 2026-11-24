@@ -4,8 +4,8 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
 
 describe(renderWithPlaceholder, () => {
-  it(`renders the placeholder while the graphqls are loading`, () => {
-    renderWithWrappers(
+  it(`renders the placeholder while the graphqls are loading`, async () => {
+    await renderWithWrappers(
       renderWithPlaceholder({
         Container: () => null,
         renderPlaceholder: () => <Text>this is the placeholder</Text>,
@@ -15,8 +15,8 @@ describe(renderWithPlaceholder, () => {
     expect(screen.getByText("this is the placeholder")).toBeTruthy()
   })
 
-  it(`renders the real content when the graphqls are done`, () => {
-    renderWithWrappers(
+  it(`renders the real content when the graphqls are done`, async () => {
+    await renderWithWrappers(
       renderWithPlaceholder({
         Container: () => <Text>the real content</Text>,
         renderPlaceholder: () => <Text>this is the placeholder</Text>,

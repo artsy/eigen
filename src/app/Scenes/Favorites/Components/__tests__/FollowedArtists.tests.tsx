@@ -21,8 +21,8 @@ describe("FollowedArtists", () => {
     `,
   })
 
-  it("renders empty state screen when the user has no followed artists", () => {
-    renderWithRelay({
+  it("renders empty state screen when the user has no followed artists", async () => {
+    await renderWithRelay({
       FollowArtistConnection: () => ({
         totalCount: 0,
       }),
@@ -31,8 +31,8 @@ describe("FollowedArtists", () => {
     expect(screen.getByText("You haven’t followed any artists yet")).toBeTruthy()
   })
 
-  it("renders a list of artists", () => {
-    renderWithRelay({
+  it("renders a list of artists", async () => {
+    await renderWithRelay({
       FollowArtistConnection: () => ({
         totalCount: 2,
         edges: [

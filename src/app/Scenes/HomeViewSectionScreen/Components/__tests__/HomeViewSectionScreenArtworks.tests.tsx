@@ -49,8 +49,8 @@ describe("HomeViewSectionArtworks", () => {
     `,
   })
 
-  it("renders no artworks available when no artworks are available", () => {
-    renderWithRelay({
+  it("renders no artworks available when no artworks are available", async () => {
+    await renderWithRelay({
       HomeViewComponent: () => ({
         title: "New Works for You",
       }),
@@ -63,8 +63,8 @@ describe("HomeViewSectionArtworks", () => {
     expect(screen.getByText(/Nothing yet. Please check back later/)).toBeOnTheScreen()
   })
 
-  it("renders a list of artworks", () => {
-    renderWithRelay({
+  it("renders a list of artworks", async () => {
+    await renderWithRelay({
       HomeViewSectionArtworks: () => ({
         internalID: "home-view-section-new-works-for-you",
         component: {
@@ -99,7 +99,7 @@ describe("HomeViewSectionArtworks", () => {
     expect(screen.getByText(/Artwork 1/)).toBeOnTheScreen()
     expect(screen.getByText(/Artwork 2/)).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText(/Artwork 2/))
+    await fireEvent.press(screen.getByText(/Artwork 2/))
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
         [
@@ -133,8 +133,8 @@ describe("HomeViewSectionArtworks", () => {
       })
     })
 
-    it("renders artwork grid when feature flag is enabled and trackItemImpressions is true", () => {
-      renderWithRelay({
+    it("renders artwork grid when feature flag is enabled and trackItemImpressions is true", async () => {
+      await renderWithRelay({
         HomeViewSectionArtworks: () => ({
           internalID: "home-view-section-new-works-for-you",
           ownerType: "newWorksForYou",
@@ -167,7 +167,7 @@ describe("HomeViewSectionArtworks", () => {
 
       const artworkGrid = screen.getByTestId("masonry-artwork-grid")
 
-      act(() => {
+      await act(() => {
         artworkGrid.props.onViewableItemsChanged({
           viewableItems: [
             { item: { internalID: "artwork-1-id" }, index: 0 },
@@ -196,8 +196,8 @@ describe("HomeViewSectionArtworks", () => {
       })
     })
 
-    it("does not track itemViewed events when trackItemImpressions is false", () => {
-      renderWithRelay({
+    it("does not track itemViewed events when trackItemImpressions is false", async () => {
+      await renderWithRelay({
         HomeViewSectionArtworks: () => ({
           internalID: "home-view-section-new-works-for-you",
           ownerType: "newWorksForYou",
@@ -229,8 +229,8 @@ describe("HomeViewSectionArtworks", () => {
       )
     })
 
-    it("tracks itemViewed events only once per artwork", () => {
-      renderWithRelay({
+    it("tracks itemViewed events only once per artwork", async () => {
+      await renderWithRelay({
         HomeViewSectionArtworks: () => ({
           internalID: "home-view-section-new-works-for-you",
           ownerType: "newWorksForYou",
@@ -254,7 +254,7 @@ describe("HomeViewSectionArtworks", () => {
       })
 
       const artworkGrid = screen.getByTestId("masonry-artwork-grid")
-      act(() => {
+      await act(() => {
         // First time
         artworkGrid.props.onViewableItemsChanged({
           viewableItems: [{ item: { internalID: "artwork-1-id" }, index: 0 }],

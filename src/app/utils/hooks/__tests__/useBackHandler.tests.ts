@@ -29,10 +29,10 @@ describe("useBackHandler Hooks", () => {
   })
 
   describe("useBackHandler", () => {
-    it("should add back press listener on mount", () => {
+    it("should add back press listener on mount", async () => {
       const handler = jest.fn()
 
-      renderHook((props: { handler: () => boolean }) => useBackHandler(props.handler), {
+      await renderHook((props: { handler: () => boolean }) => useBackHandler(props.handler), {
         initialProps: { handler },
       })
 
@@ -40,11 +40,11 @@ describe("useBackHandler Hooks", () => {
       expect(addEventListenerMock).toHaveBeenCalledWith("hardwareBackPress", handler)
     })
 
-    it("should resubscribe when passed handler will change", () => {
+    it("should resubscribe when passed handler will change", async () => {
       const handler = jest.fn()
       const handler2 = jest.fn()
 
-      const { rerender } = renderHook(
+      const { rerender } = await renderHook(
         (props: { handler: () => boolean }) => useBackHandler(props.handler),
         {
           initialProps: { handler },
@@ -53,7 +53,7 @@ describe("useBackHandler Hooks", () => {
 
       expect(addEventListenerMock).toHaveBeenCalledWith("hardwareBackPress", handler)
 
-      rerender({ handler: handler2 })
+      await rerender({ handler: handler2 })
 
       expect(addEventListenerMock).toHaveBeenCalledWith("hardwareBackPress", handler2)
     })

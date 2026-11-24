@@ -12,8 +12,8 @@ describe("SalesActiveBids", () => {
     query: SalesActiveBidsScreenQuery,
   })
 
-  it("renders without throwing errors", () => {
-    renderWithRelay()
+  it("renders without throwing errors", async () => {
+    await renderWithRelay()
 
     expect(screen.getByText("Your Active Bids")).toBeOnTheScreen()
   })

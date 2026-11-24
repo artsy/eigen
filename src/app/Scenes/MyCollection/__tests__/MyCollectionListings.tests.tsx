@@ -4,13 +4,13 @@ import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("MyCollectionListingsEmptyState", () => {
-  it("invites the collector to sell and opens the sell flow", () => {
-    renderWithWrappers(<MyCollectionListingsEmptyState />)
+  it("invites the collector to sell and opens the sell flow", async () => {
+    await renderWithWrappers(<MyCollectionListingsEmptyState />)
 
     expect(screen.getByText("Thought about selling?")).toBeOnTheScreen()
     expect(screen.getByText("BETA")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Sell With Us"))
+    await fireEvent.press(screen.getByText("Sell With Us"))
 
     expect(navigate).toHaveBeenCalledWith("/my-collection/sell")
   })

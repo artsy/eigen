@@ -12,9 +12,9 @@ jest.mock("@artsy/icons/native", () => {
 })
 
 describe("ArrowDetails", () => {
-  it("renders correct components", () => {
+  it("renders correct components", async () => {
     const Noop: React.FC = () => <View testID="noop-child" />
-    renderWithWrappers(
+    await renderWithWrappers(
       <ArrowDetails>
         <Noop />
       </ArrowDetails>

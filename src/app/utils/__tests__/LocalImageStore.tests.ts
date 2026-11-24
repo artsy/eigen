@@ -24,7 +24,7 @@ describe("LocalImageStore", () => {
       width: 10,
       height: 11,
     }
-    storeLocalImage(imageKey, image)
+    await storeLocalImage(imageKey, image)
     const retrievedImage = await getLocalImage(imageKey)
     expect(retrievedImage).toEqual({
       aspectRatio: 0.9090909090909091,

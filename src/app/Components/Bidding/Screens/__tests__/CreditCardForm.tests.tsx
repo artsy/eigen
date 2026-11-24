@@ -64,23 +64,28 @@ describe("CreditCardForm", () => {
   afterEach(() => {
     console.error = originalConsoleError
     jest.clearAllMocks()
+    // `clearAllMocks` keeps queued `mockReturnValueOnce` values, which would leak into later tests
+    ;(createToken as jest.Mock).mockReset()
   })
 
-  it("renders without throwing an error", () => {
-    renderWithWrappers(
+  it("renders without throwing an error", async () => {
+    await renderWithWrappers(
       <CreditCardForm navigation={null!} route={{ params: { onSubmit: onSubmitMock } } as any} />
     )
   })
 
   it("shows a field's error when it is blurred without a value", async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <CreditCardForm navigation={null!} route={{ params: { onSubmit: onSubmitMock } } as any} />
     )
 
     expect(screen.queryByText("Name is required")).not.toBeOnTheScreen()
 
-    fireEvent(screen.getByTestId("input-full-name"), "focus")
-    fireEvent(screen.getByTestId("input-full-name"), "blur", { persist: jest.fn(), target: {} })
+    await fireEvent(screen.getByTestId("input-full-name"), "focus")
+    await fireEvent(screen.getByTestId("input-full-name"), "blur", {
+      persist: jest.fn(),
+      target: {},
+    })
 
     await screen.findByText("Name is required")
     // Only the touched field shows its error
@@ -90,7 +95,7 @@ describe("CreditCardForm", () => {
   it("calls the onSubmit() callback with valid credit card when ADD CREDIT CARD is tapped", async () => {
     ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <CreditCardForm
         navigation={null!}
         route={
@@ -105,7 +110,7 @@ describe("CreditCardForm", () => {
     )
 
     const creditCardField = screen.getByTestId("credit-card-field")
-    fireEvent.changeText(creditCardField, creditCard.number)
+    await fireEvent.changeText(creditCardField, creditCard.number)
 
     const nameInput = screen.getByTestId("input-full-name")
     const address1Input = screen.getByTestId("input-address-1")
@@ -115,17 +120,17 @@ describe("CreditCardForm", () => {
     const postalCodeInput = screen.getByTestId("input-postal-code")
     const phoneInput = screen.getByTestId("input-phone")
 
-    fireEvent.changeText(nameInput, "mockName")
-    fireEvent.changeText(address1Input, "mockAddress1")
-    fireEvent.changeText(address2Input, "mockAddress2")
-    fireEvent.changeText(cityInput, "mockCity")
-    fireEvent.changeText(stateInput, "mockState")
-    fireEvent.changeText(postalCodeInput, "mockPostcode")
-    fireEvent.changeText(phoneInput, "mockPhone")
+    await fireEvent.changeText(nameInput, "mockName")
+    await fireEvent.changeText(address1Input, "mockAddress1")
+    await fireEvent.changeText(address2Input, "mockAddress2")
+    await fireEvent.changeText(cityInput, "mockCity")
+    await fireEvent.changeText(stateInput, "mockState")
+    await fireEvent.changeText(postalCodeInput, "mockPostcode")
+    await fireEvent.changeText(phoneInput, "mockPhone")
 
     const addButton = screen.getByTestId("credit-card-form-button")
 
-    fireEvent.press(addButton)
+    await fireEvent.press(addButton)
 
     await waitFor(() => expect(createToken).toHaveBeenCalled())
 
@@ -144,19 +149,19 @@ describe("CreditCardForm", () => {
     })
   })
 
-  it("is does not call onSubmit while the form is invalid", () => {
+  it("is does not call onSubmit while the form is invalid", async () => {
     ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <CreditCardForm navigation={null!} route={{ params: { onSubmit: onSubmitMock } } as any} />
     )
 
     const creditCardField = screen.getByTestId("credit-card-field")
-    fireEvent.changeText(creditCardField, "4242") // incomplete number
+    await fireEvent.changeText(creditCardField, "4242") // incomplete number
 
     const addButton = screen.getByTestId("credit-card-form-button")
 
-    fireEvent.press(addButton)
+    await fireEvent.press(addButton)
 
     expect(onSubmitMock).not.toHaveBeenCalled()
   })
@@ -164,12 +169,12 @@ describe("CreditCardForm", () => {
   it("is is disabled while the form is invalid", async () => {
     ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <CreditCardForm navigation={null!} route={{ params: { onSubmit: onSubmitMock } } as any} />
     )
 
     const creditCardField = screen.getByTestId("credit-card-field")
-    fireEvent.changeText(creditCardField, "4242") // incomplete number
+    await fireEvent.changeText(creditCardField, "4242") // incomplete number
 
     const addButton = screen.getByTestId("credit-card-form-button")
 
@@ -179,7 +184,7 @@ describe("CreditCardForm", () => {
   it("is enabled while the form is valid", async () => {
     ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <CreditCardForm
         navigation={null!}
         route={
@@ -203,7 +208,7 @@ describe("CreditCardForm", () => {
     )
 
     const creditCardField = screen.getByTestId("credit-card-field")
-    fireEvent.changeText(creditCardField, creditCard.number)
+    await fireEvent.changeText(creditCardField, creditCard.number)
 
     const addButton = screen.getByTestId("credit-card-form-button")
 
@@ -211,7 +216,7 @@ describe("CreditCardForm", () => {
   })
 
   it("is disabled when the form is invalid", async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <CreditCardForm
         navigation={null!}
         route={
@@ -235,7 +240,7 @@ describe("CreditCardForm", () => {
     )
 
     const creditCardField = screen.getByTestId("credit-card-field")
-    fireEvent.changeText(creditCardField, "4242") // incomplete number
+    await fireEvent.changeText(creditCardField, "4242") // incomplete number
 
     const addButton = screen.getByTestId("credit-card-form-button")
 
@@ -244,9 +249,13 @@ describe("CreditCardForm", () => {
 
   it("shows an error when stripe's API returns an error", async () => {
     console.error = jest.fn()
-    ;(createToken as jest.Mock).mockResolvedValueOnce({ error: "error" })
+    // Resolve on a later tick, like a real network call. The form re-validates once the submit has
+    // marked every field as touched, and that result would otherwise overwrite the Stripe error.
+    ;(createToken as jest.Mock).mockImplementationOnce(
+      () => new Promise((resolve) => setTimeout(() => resolve({ error: "error" }), 0))
+    )
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <CreditCardForm
         navigation={null!}
         route={
@@ -270,10 +279,10 @@ describe("CreditCardForm", () => {
     )
 
     const creditCardField = screen.getByTestId("credit-card-field")
-    fireEvent.changeText(creditCardField, creditCard.number)
+    await fireEvent.changeText(creditCardField, creditCard.number)
 
     const addButton = screen.getByTestId("credit-card-form-button")
-    fireEvent.press(addButton)
+    await fireEvent.press(addButton)
 
     await waitFor(() => expect(console.error).toHaveBeenCalled())
 

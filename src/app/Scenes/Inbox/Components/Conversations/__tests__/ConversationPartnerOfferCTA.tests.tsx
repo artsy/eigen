@@ -69,8 +69,8 @@ describe("ConversationPartnerOfferCTA", () => {
   describe.each([["a personalized partner offer"], ["a bulk offer (send offer)"]])(
     "with %s",
     () => {
-      it("renders the offer banner, tracks it, and navigates to the artwork with the partner offer id", () => {
-        renderWithRelay(offerResolvers())
+      it("renders the offer banner, tracks it, and navigates to the artwork with the partner offer id", async () => {
+        await renderWithRelay(offerResolvers())
 
         expect(screen.getByText("Offer received for $450")).toBeTruthy()
 
@@ -80,28 +80,28 @@ describe("ConversationPartnerOfferCTA", () => {
           context_owner_type: "conversation",
         })
 
-        fireEvent.press(screen.getByTestId("partnerOfferActionLink"))
+        await fireEvent.press(screen.getByTestId("partnerOfferActionLink"))
         expect(navigate).toHaveBeenCalledWith(
           "/artwork/some-artwork?partner_offer_id=partner-offer-id"
         )
       })
 
-      it("renders nothing when the offer has expired", () => {
-        renderWithRelay(offerResolvers({ endAt: pastISO() }))
+      it("renders nothing when the offer has expired", async () => {
+        await renderWithRelay(offerResolvers({ endAt: pastISO() }))
 
         expect(screen.queryByTestId("partnerOfferActionLink")).toBeNull()
       })
     }
   )
 
-  it("falls back to a generic title when there is no discounted price", () => {
-    renderWithRelay(offerResolvers({ priceWithDiscount: null }))
+  it("falls back to a generic title when there is no discounted price", async () => {
+    await renderWithRelay(offerResolvers({ priceWithDiscount: null }))
 
     expect(screen.getByText("Offer received")).toBeTruthy()
   })
 
-  it("renders nothing when there is no offer for the artwork", () => {
-    renderWithRelay({
+  it("renders nothing when there is no offer for the artwork", async () => {
+    await renderWithRelay({
       Conversation: () => ({
         items: [{ item: { __typename: "Artwork", internalID: "artwork-id", href: "/foo" } }],
         collectorPartnerOffersConnection: { edges: [] },
@@ -111,28 +111,28 @@ describe("ConversationPartnerOfferCTA", () => {
     expect(screen.queryByTestId("partnerOfferActionLink")).toBeNull()
   })
 
-  it("renders nothing when there is no artwork href", () => {
-    renderWithRelay(offerResolvers({}, { href: null }))
+  it("renders nothing when there is no artwork href", async () => {
+    await renderWithRelay(offerResolvers({}, { href: null }))
 
     expect(screen.queryByTestId("partnerOfferActionLink")).toBeNull()
   })
 
-  it("renders nothing when the offer is unavailable", () => {
-    renderWithRelay(offerResolvers({ isAvailable: false }))
+  it("renders nothing when the offer is unavailable", async () => {
+    await renderWithRelay(offerResolvers({ isAvailable: false }))
 
     expect(screen.queryByTestId("partnerOfferActionLink")).toBeNull()
   })
 
-  it("renders nothing when the feature flag is off", () => {
+  it("renders nothing when the feature flag is off", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationPartnerOffers: false })
 
-    renderWithRelay(offerResolvers())
+    await renderWithRelay(offerResolvers())
 
     expect(screen.queryByTestId("partnerOfferActionLink")).toBeNull()
   })
 
-  it("renders the countdown in red when the offer expires in under an hour", () => {
-    renderWithRelay(offerResolvers({ endAt: futureISO(30) }))
+  it("renders the countdown in red when the offer expires in under an hour", async () => {
+    await renderWithRelay(offerResolvers({ endAt: futureISO(30) }))
 
     // red100 in the v3 (light) theme
     expect(screen.getByText(/Expires in/)).toHaveStyle({ color: "#D71023" })

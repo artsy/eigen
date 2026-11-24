@@ -30,10 +30,10 @@ describe("SimilarArtworks", () => {
     jest.clearAllMocks()
   })
 
-  it("searches by the given artwork", () => {
+  it("searches by the given artwork", async () => {
     const env = getMockRelayEnvironment()
 
-    renderWithWrappers(<SimilarArtworksScreen artworkID="source-artwork" />)
+    await renderWithWrappers(<SimilarArtworksScreen artworkID="source-artwork" />)
 
     const operation = env.mock.getMostRecentOperation()
     expect(operation.request.node.operation.name).toBe("SimilarArtworksQuery")
@@ -41,7 +41,7 @@ describe("SimilarArtworks", () => {
   })
 
   it("renders similar artworks", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         title: "Cool Painting",
         slug: "cool-painting",
@@ -51,13 +51,13 @@ describe("SimilarArtworks", () => {
 
     expect(await screen.findByText("Works similar to this artwork")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByTestId("artworkGridItem-Cool Painting"))
+    await fireEvent.press(screen.getByTestId("artworkGridItem-Cool Painting"))
 
     expect(navigate).toHaveBeenCalledExactlyOnceWith("/artwork/cool-painting")
   })
 
   it("shows the source artwork's image in the header", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({ title: "Cool Painting", image: { url: "https://example.com/image.jpg" } }),
     })
 
@@ -72,7 +72,7 @@ describe("SimilarArtworks", () => {
   })
 
   it("shows an empty state when there are no similar artworks", async () => {
-    renderWithRelay({ FilterArtworksConnection: () => ({ edges: [] }) })
+    await renderWithRelay({ FilterArtworksConnection: () => ({ edges: [] }) })
 
     expect(
       await screen.findByText("We couldn't find similar works for this artwork yet.")
@@ -80,24 +80,24 @@ describe("SimilarArtworks", () => {
   })
 
   it("returns to the previous screen when backing out", async () => {
-    renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+    await renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 
     await screen.findByText("Works similar to this artwork")
 
-    fireEvent.press(screen.getByLabelText("Back"))
+    await fireEvent.press(screen.getByLabelText("Back"))
 
     expect(goBack).toHaveBeenCalledTimes(1)
   })
 
   it("loads more artworks when reaching the end of the list", async () => {
-    const { env, mockResolveLastOperation } = renderWithRelay({
+    const { env, mockResolveLastOperation } = await renderWithRelay({
       FilterArtworksConnection: () => ({
         edges: [{ node: { title: "Artwork 1", slug: "artwork-1" } }],
         pageInfo: { hasNextPage: true, endCursor: "cursor-1" },
       }),
     })
 
-    fireEvent(await screen.findByTestId("masonry-artwork-grid"), "onEndReached")
+    await fireEvent(await screen.findByTestId("masonry-artwork-grid"), "onEndReached")
 
     const operation = env.mock.getMostRecentOperation()
     expect(operation.request.node.operation.name).toBe("SimilarArtworksPaginationQuery")
@@ -106,7 +106,7 @@ describe("SimilarArtworks", () => {
       after: "cursor-1",
     })
 
-    mockResolveLastOperation({
+    await mockResolveLastOperation({
       FilterArtworksConnection: () => ({
         edges: [{ node: { title: "Artwork 2", slug: "artwork-2" } }],
         pageInfo: { hasNextPage: false, endCursor: "cursor-2" },
@@ -120,18 +120,18 @@ describe("SimilarArtworks", () => {
   it("shows a retryable error instead of crashing when the search fails", async () => {
     const env = getMockRelayEnvironment()
 
-    renderWithWrappers(<SimilarArtworksScreen artworkID="source-artwork" />)
+    await renderWithWrappers(<SimilarArtworksScreen artworkID="source-artwork" />)
 
     expect(screen.getByText("Searching for similar works…")).toBeOnTheScreen()
 
-    act(() => {
+    await act(() => {
       env.mock.rejectMostRecentOperation(new Error("Network request failed"))
     })
 
     expect(await screen.findByText("Unable to load")).toBeOnTheScreen()
     expect(screen.getByLabelText("Back")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByLabelText("Retry"))
+    await fireEvent.press(screen.getByLabelText("Retry"))
 
     await waitFor(() =>
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(

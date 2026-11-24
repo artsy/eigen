@@ -77,6 +77,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
   const composerInputRef = useRef<InputRef>(null)
   const messageListRef = useRef<FlashListRef<ArtAssistantMessageType>>(null)
   const pendingScrollIndex = useRef<number | null>(null)
+  const pendingScrollFrame = useRef<number | null>(null)
   const anchoredTurn = useRef<{ id: string; index: number } | null>(null)
   const messageListHeight = useRef(0)
   const didSendInitialPrompt = useRef(false)
@@ -120,6 +121,11 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
   const handleStartNewConversation = () => {
     setIsNewChatDialogVisible(false)
     pendingScrollIndex.current = null
+    // A scroll queued for the old conversation would target a row the new one doesn't have
+    if (pendingScrollFrame.current !== null) {
+      cancelAnimationFrame(pendingScrollFrame.current)
+      pendingScrollFrame.current = null
+    }
     anchoredTurn.current = null
     setMessageHeights({})
     removeImage()
@@ -255,7 +261,8 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({
     pendingScrollIndex.current = null
     // Anchor the latest user turn after Thinking/final response layout changes, but do not
     // keep pulling the user down when artwork images load or while they read older messages.
-    requestAnimationFrame(() => {
+    pendingScrollFrame.current = requestAnimationFrame(() => {
+      pendingScrollFrame.current = null
       messageListRef.current?.scrollToIndex({
         animated: true,
         index,

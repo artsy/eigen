@@ -55,7 +55,7 @@ describe("useAndroidListenToPushNotifications", () => {
 
     mockMessagingInstance.getInitialNotification.mockResolvedValue(initialNotification as any)
 
-    renderHook(() =>
+    await renderHook(() =>
       useAndroidListenToPushNotifications({ setPushNotification: mockSetPushNotification })
     )
 
@@ -77,7 +77,7 @@ describe("useAndroidListenToPushNotifications", () => {
   it("does not set push notification when no initial notification exists", async () => {
     mockMessagingInstance.getInitialNotification.mockResolvedValue(null)
 
-    renderHook(() =>
+    await renderHook(() =>
       useAndroidListenToPushNotifications({ setPushNotification: mockSetPushNotification })
     )
 
@@ -96,7 +96,7 @@ describe("useAndroidListenToPushNotifications", () => {
       return jest.fn()
     })
 
-    renderHook(() =>
+    await renderHook(() =>
       useAndroidListenToPushNotifications({ setPushNotification: mockSetPushNotification })
     )
 
@@ -151,7 +151,7 @@ describe("useAndroidListenToPushNotifications", () => {
       return jest.fn()
     })
 
-    renderHook(() =>
+    await renderHook(() =>
       useAndroidListenToPushNotifications({ setPushNotification: mockSetPushNotification })
     )
 
@@ -170,7 +170,7 @@ describe("useAndroidListenToPushNotifications", () => {
     expect(mockNotifee.displayNotification).not.toHaveBeenCalled()
   })
 
-  it("handles push notification on background (app opened from notification)", () => {
+  it("handles push notification on background (app opened from notification)", async () => {
     let backgroundHandler: any
 
     mockMessagingInstance.onNotificationOpenedApp.mockImplementation((handler: any) => {
@@ -178,7 +178,7 @@ describe("useAndroidListenToPushNotifications", () => {
       return jest.fn()
     })
 
-    renderHook(() =>
+    await renderHook(() =>
       useAndroidListenToPushNotifications({ setPushNotification: mockSetPushNotification })
     )
 
@@ -193,7 +193,7 @@ describe("useAndroidListenToPushNotifications", () => {
       },
     }
 
-    act(() => {
+    await act(() => {
       backgroundHandler(backgroundEvent)
     })
 
@@ -208,7 +208,7 @@ describe("useAndroidListenToPushNotifications", () => {
     })
   })
 
-  it("handles notifee foreground events (notification press)", () => {
+  it("handles notifee foreground events (notification press)", async () => {
     let foregroundEventHandler: any
 
     mockNotifee.onForegroundEvent.mockImplementation((handler) => {
@@ -216,7 +216,7 @@ describe("useAndroidListenToPushNotifications", () => {
       return jest.fn()
     })
 
-    renderHook(() =>
+    await renderHook(() =>
       useAndroidListenToPushNotifications({ setPushNotification: mockSetPushNotification })
     )
 
@@ -234,7 +234,7 @@ describe("useAndroidListenToPushNotifications", () => {
       },
     }
 
-    act(() => {
+    await act(() => {
       foregroundEventHandler(pressEvent)
     })
 
@@ -260,7 +260,7 @@ describe("useAndroidListenToPushNotifications", () => {
       return jest.fn()
     })
 
-    renderHook(() =>
+    await renderHook(() =>
       useAndroidListenToPushNotifications({ setPushNotification: mockSetPushNotification })
     )
 
@@ -288,7 +288,7 @@ describe("useAndroidListenToPushNotifications", () => {
       return jest.fn()
     })
 
-    renderHook(() =>
+    await renderHook(() =>
       useAndroidListenToPushNotifications({ setPushNotification: mockSetPushNotification })
     )
 

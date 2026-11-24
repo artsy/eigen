@@ -16,8 +16,8 @@ describe("Artist Articles", () => {
     `,
   })
 
-  it("renders without throwing an error", () => {
-    renderWithRelay({
+  it("renders without throwing an error", async () => {
+    await renderWithRelay({
       Article: () => ({ thumbnailTitle: "An Article Title" }),
     })
 

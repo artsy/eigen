@@ -3,8 +3,8 @@ import { PartnerBanner } from "app/Components/PartnerBanner"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("PartnerBanner", () => {
-  it("renders with the specified banner text", () => {
-    renderWithWrappers(<PartnerBanner bannerText="Banner Text" />)
+  it("renders with the specified banner text", async () => {
+    await renderWithWrappers(<PartnerBanner bannerText="Banner Text" />)
 
     // The banner repeats the text 2 times
     const bannerTexts = screen.getAllByText("Banner Text")

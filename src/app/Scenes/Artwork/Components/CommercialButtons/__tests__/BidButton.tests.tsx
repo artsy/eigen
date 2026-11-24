@@ -82,12 +82,12 @@ describe("BidButton", () => {
   }
 
   describe("for closed auction", () => {
-    it("does not display anything", () => {
-      const { toJSON } = renderWithWrappers(
+    it("does not display anything", async () => {
+      const { toJSON } = await renderWithWrappers(
         <TestWrapper auctionState={"hasEnded" as AuctionTimerState} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => ArtworkFromClosedAuction,
         Me: () => meFixture,
       })
@@ -97,10 +97,10 @@ describe("BidButton", () => {
   })
 
   describe("for auction preview", () => {
-    it("and not registered bidder", () => {
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.PREVIEW} />)
+    it("and not registered bidder", async () => {
+      await renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.PREVIEW} />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => ArtworkFromAuctionPreview,
         Me: () => meFixture,
       })
@@ -108,7 +108,7 @@ describe("BidButton", () => {
       expect(screen.getByText("Register to bid")).toBeOnTheScreen()
     })
 
-    it("displays 'Identity verification is required' if the sale requires identity verification but the user is not verified", () => {
+    it("displays 'Identity verification is required' if the sale requires identity verification but the user is not verified", async () => {
       const artworkWithIDVRequired = merge({}, ArtworkFromAuctionPreview, {
         sale: { requireIdentityVerification: true },
       })
@@ -116,9 +116,9 @@ describe("BidButton", () => {
         isIdentityVerified: false,
       }
 
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.PREVIEW} />)
+      await renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.PREVIEW} />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artworkWithIDVRequired,
         Me: () => me,
       })
@@ -127,15 +127,15 @@ describe("BidButton", () => {
       expect(screen.getByText(/Identity verification required to bid./)).toBeOnTheScreen()
     })
 
-    it("does not display 'Identity verification is required' if the sale requires identity verification and the user is verified", () => {
+    it("does not display 'Identity verification is required' if the sale requires identity verification and the user is verified", async () => {
       const artworkWithIDVRequired = merge({}, ArtworkFromAuctionPreview, {
         sale: { requireIdentityVerification: true },
       })
       const me = { isIdentityVerified: true }
 
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.PREVIEW} />)
+      await renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.PREVIEW} />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artworkWithIDVRequired,
         Me: () => me,
       })
@@ -144,12 +144,12 @@ describe("BidButton", () => {
       expect(screen.queryByText("Identity verification required to bid.")).not.toBeOnTheScreen()
     })
 
-    it("with bidder registration pending approval", () => {
+    it("with bidder registration pending approval", async () => {
       const artwork = merge({}, ArtworkFromAuctionPreview, BidderPendingApproval)
 
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.PREVIEW} />)
+      await renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.PREVIEW} />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -157,12 +157,12 @@ describe("BidButton", () => {
       expect(screen.getByText("Registration Pending")).toBeOnTheScreen()
     })
 
-    it("with registered bidder", () => {
+    it("with registered bidder", async () => {
       const artwork = merge({}, ArtworkFromAuctionPreview, RegisteredBidder)
 
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.PREVIEW} />)
+      await renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.PREVIEW} />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -172,12 +172,12 @@ describe("BidButton", () => {
   })
 
   describe("for open, timed auction", () => {
-    it("with open registration and not registered bidder ", () => {
+    it("with open registration and not registered bidder ", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, NotRegisteredToBid)
 
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.CLOSING} />)
+      await renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.CLOSING} />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -185,12 +185,12 @@ describe("BidButton", () => {
       expect(screen.getByText("Bid")).toBeOnTheScreen()
     })
 
-    it("with closed registration and not registered bidder ", () => {
+    it("with closed registration and not registered bidder ", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationClosed, NotRegisteredToBid)
 
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.CLOSING} />)
+      await renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.CLOSING} />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -198,12 +198,12 @@ describe("BidButton", () => {
       expect(screen.getByText("Registration closed")).toBeOnTheScreen()
     })
 
-    it("with bidder registration pending approval", () => {
+    it("with bidder registration pending approval", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, BidderPendingApproval)
 
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.CLOSING} />)
+      await renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.CLOSING} />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -211,12 +211,12 @@ describe("BidButton", () => {
       expect(screen.getByText("Registration Pending")).toBeOnTheScreen()
     })
 
-    it("with registered bidder", () => {
+    it("with registered bidder", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, RegisteredBidder)
 
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.CLOSING} />)
+      await renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.CLOSING} />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -224,12 +224,12 @@ describe("BidButton", () => {
       expect(screen.getByText("Bid")).toBeOnTheScreen()
     })
 
-    it("with registered bidder with bids", () => {
+    it("with registered bidder with bids", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, RegistedBidderWithBids)
 
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.CLOSING} />)
+      await renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.CLOSING} />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -242,12 +242,12 @@ describe("BidButton", () => {
         sale: { requireIdentityVerification: true },
       })
 
-      it("displays 'Register to bid' if the user is not verified", () => {
+      it("displays 'Register to bid' if the user is not verified", async () => {
         const me = { isIdentityVerified: false }
 
-        renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.CLOSING} />)
+        await renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.CLOSING} />)
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        await resolveMostRecentRelayOperation(mockEnvironment, {
           Artwork: () => lotWithIDVRequired,
           Me: () => me,
         })
@@ -256,12 +256,12 @@ describe("BidButton", () => {
         expect(screen.getByText(/Identity verification required to bid./)).toBeOnTheScreen()
       })
 
-      it("displays 'Bid' if the user is verified", () => {
+      it("displays 'Bid' if the user is verified", async () => {
         const me = { isIdentityVerified: true }
 
-        renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.CLOSING} />)
+        await renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.CLOSING} />)
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        await resolveMostRecentRelayOperation(mockEnvironment, {
           Artwork: () => lotWithIDVRequired,
           Me: () => me,
         })
@@ -270,7 +270,7 @@ describe("BidButton", () => {
         expect(screen.queryByText("Identity verification required to bid.")).not.toBeOnTheScreen()
       })
 
-      it("displays 'Bid' if the user is not verified but manually approved", () => {
+      it("displays 'Bid' if the user is not verified but manually approved", async () => {
         const artwork = merge(lotWithIDVRequired, {
           sale: {
             registrationStatus: {
@@ -280,9 +280,9 @@ describe("BidButton", () => {
         })
         const me = { isIdentityVerified: false }
 
-        renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.CLOSING} />)
+        await renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.CLOSING} />)
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        await resolveMostRecentRelayOperation(mockEnvironment, {
           Artwork: () => artwork,
           Me: () => me,
         })
@@ -294,12 +294,14 @@ describe("BidButton", () => {
   })
 
   describe("for open, live auction during pre-bidding", () => {
-    it("with open registration and not registered bidder ", () => {
+    it("with open registration and not registered bidder ", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, NotRegisteredToBid)
 
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />)
+      await renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
+      )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -307,12 +309,14 @@ describe("BidButton", () => {
       expect(screen.getByText("Bid")).toBeOnTheScreen()
     })
 
-    it("with closed registration and not registered bidder ", () => {
+    it("with closed registration and not registered bidder ", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationClosed, NotRegisteredToBid)
 
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />)
+      await renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
+      )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -320,12 +324,14 @@ describe("BidButton", () => {
       expect(screen.getByText("Registration closed")).toBeOnTheScreen()
     })
 
-    it("with bidder registration pending approval", () => {
+    it("with bidder registration pending approval", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, BidderPendingApproval)
 
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />)
+      await renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
+      )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -333,12 +339,14 @@ describe("BidButton", () => {
       expect(screen.getByText("Registration Pending")).toBeOnTheScreen()
     })
 
-    it("with registered bidder", () => {
+    it("with registered bidder", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, RegisteredBidder)
 
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />)
+      await renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
+      )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -346,12 +354,14 @@ describe("BidButton", () => {
       expect(screen.getByText("Bid")).toBeOnTheScreen()
     })
 
-    it("with registered bidder with bids", () => {
+    it("with registered bidder with bids", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, RegistedBidderWithBids)
 
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />)
+      await renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
+      )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -364,14 +374,14 @@ describe("BidButton", () => {
         sale: { requireIdentityVerification: true },
       })
 
-      it("displays 'Register to bid' if the user is not verified", () => {
+      it("displays 'Register to bid' if the user is not verified", async () => {
         const me = { isIdentityVerified: false }
 
-        renderWithWrappers(
+        await renderWithWrappers(
           <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
         )
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        await resolveMostRecentRelayOperation(mockEnvironment, {
           Artwork: () => lotWithIDVRequired,
           Me: () => me,
         })
@@ -380,14 +390,14 @@ describe("BidButton", () => {
         expect(screen.getByText(/Identity verification required to bid./)).toBeOnTheScreen()
       })
 
-      it("displays 'Bid' if the user is verified", () => {
+      it("displays 'Bid' if the user is verified", async () => {
         const me = { isIdentityVerified: true }
 
-        renderWithWrappers(
+        await renderWithWrappers(
           <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
         )
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        await resolveMostRecentRelayOperation(mockEnvironment, {
           Artwork: () => lotWithIDVRequired,
           Me: () => me,
         })
@@ -396,7 +406,7 @@ describe("BidButton", () => {
         expect(screen.queryByText("Identity verification required to bid.")).not.toBeOnTheScreen()
       })
 
-      it("displays 'Bid' if the user is not verified but manually approved", () => {
+      it("displays 'Bid' if the user is not verified but manually approved", async () => {
         const artwork = merge(lotWithIDVRequired, {
           sale: {
             registrationStatus: {
@@ -406,11 +416,11 @@ describe("BidButton", () => {
         })
         const me = { isIdentityVerified: false }
 
-        renderWithWrappers(
+        await renderWithWrappers(
           <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
         )
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        await resolveMostRecentRelayOperation(mockEnvironment, {
           Artwork: () => artwork,
           Me: () => me,
         })
@@ -422,11 +432,13 @@ describe("BidButton", () => {
   })
 
   describe("for live auction", () => {
-    it("with open registration and not registered bidder ", () => {
+    it("with open registration and not registered bidder ", async () => {
       const artwork = merge({}, ArtworkFromLiveAuctionRegistrationOpen, NotRegisteredToBid)
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />)
+      await renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />
+      )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -434,12 +446,14 @@ describe("BidButton", () => {
       expect(screen.getByText("Enter live bidding")).toBeOnTheScreen()
     })
 
-    it("with closed registration and not registered bidder ", () => {
+    it("with closed registration and not registered bidder ", async () => {
       const artwork = merge({}, ArtworkFromLiveAuctionRegistrationClosed, NotRegisteredToBid)
 
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />)
+      await renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />
+      )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -448,12 +462,14 @@ describe("BidButton", () => {
       expect(screen.getByText("Watch live bidding")).toBeOnTheScreen()
     })
 
-    it("with bidder registration pending approval", () => {
+    it("with bidder registration pending approval", async () => {
       const artwork = merge({}, ArtworkFromLiveAuctionRegistrationOpen, BidderPendingApproval)
 
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />)
+      await renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />
+      )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -461,12 +477,14 @@ describe("BidButton", () => {
       expect(screen.getByText("Enter live bidding")).toBeOnTheScreen()
     })
 
-    it("with registered bidder", () => {
+    it("with registered bidder", async () => {
       const artwork = merge({}, ArtworkFromLiveAuctionRegistrationOpen, RegisteredBidder)
 
-      renderWithWrappers(<TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />)
+      await renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />
+      )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      await resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
         Me: () => meFixture,
       })

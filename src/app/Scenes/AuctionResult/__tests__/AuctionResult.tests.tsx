@@ -24,12 +24,12 @@ describe("Activity", () => {
   })
 
   it("renders items", async () => {
-    renderWithHookWrappersTL(
+    await renderWithHookWrappersTL(
       <AuctionResultQueryRenderer auctionResultInternalID="auction-result-id" />,
       mockEnvironment
     )
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       AuctionResult: () => auctionResultFixture,
       Artist: () => artistFixture,
     })

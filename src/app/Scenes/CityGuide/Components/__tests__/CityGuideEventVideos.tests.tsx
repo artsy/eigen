@@ -33,14 +33,14 @@ describe("CityGuideEventVideos", () => {
     City: () => ({ cityVideos: attachments }),
   })
 
-  it("renders the section title", () => {
-    renderWithRelay(cityVideos([attachment(video())]))
+  it("renders the section title", async () => {
+    await renderWithRelay(cityVideos([attachment(video())]))
 
     expect(screen.getByText("Videos")).toBeOnTheScreen()
   })
 
-  it("renders nothing, heading included, when the city has no videos", () => {
-    renderWithRelay(cityVideos([]))
+  it("renders nothing, heading included, when the city has no videos", async () => {
+    await renderWithRelay(cityVideos([]))
 
     expect(screen.queryByTestId("city-guide-event-videos")).not.toBeOnTheScreen()
     expect(screen.queryByText("Videos")).not.toBeOnTheScreen()
@@ -50,36 +50,38 @@ describe("CityGuideEventVideos", () => {
     The player only handles Vimeo and YouTube, so a record pointing anywhere else would render
     as an empty heading. It is counted as no video rather than as a video that fails to draw.
   */
-  it("ignores a video the player cannot handle", () => {
-    renderWithRelay(cityVideos([attachment(video({ playerUrl: "https://example.com/clip.mp4" }))]))
+  it("ignores a video the player cannot handle", async () => {
+    await renderWithRelay(
+      cityVideos([attachment(video({ playerUrl: "https://example.com/clip.mp4" }))])
+    )
 
     expect(screen.queryByTestId("city-guide-event-videos")).not.toBeOnTheScreen()
     expect(screen.queryAllByTestId("city-guide-video-card")).toHaveLength(0)
   })
 
   describe("with a single video", () => {
-    it("renders one card and no horizontal rail", () => {
-      renderWithRelay(cityVideos([attachment(video())]))
+    it("renders one card and no horizontal rail", async () => {
+      await renderWithRelay(cityVideos([attachment(video())]))
 
       expect(screen.getAllByTestId("city-guide-video-card")).toHaveLength(1)
     })
 
-    it("renders the video's title underneath it", () => {
-      renderWithRelay(cityVideos([attachment(video())]))
+    it("renders the video's title underneath it", async () => {
+      await renderWithRelay(cityVideos([attachment(video())]))
 
       expect(screen.getByText("A Day at the Fair")).toBeOnTheScreen()
       expect(screen.getByTestId("city-guide-video-title")).toBeOnTheScreen()
     })
 
-    it("renders no title when the video has none", () => {
-      renderWithRelay(cityVideos([attachment(video({ title: "" }))]))
+    it("renders no title when the video has none", async () => {
+      await renderWithRelay(cityVideos([attachment(video({ title: "" }))]))
 
       expect(screen.queryByTestId("city-guide-video-title")).not.toBeOnTheScreen()
       expect(screen.queryByText("A Day at the Fair")).not.toBeOnTheScreen()
     })
 
-    it("shows a YouTube thumbnail before playback", () => {
-      renderWithRelay(cityVideos([attachment(video())]))
+    it("shows a YouTube thumbnail before playback", async () => {
+      await renderWithRelay(cityVideos([attachment(video())]))
 
       const thumbnail = screen.getByTestId("city-guide-video-thumbnail")
 
@@ -88,8 +90,8 @@ describe("CityGuideEventVideos", () => {
       })
     })
 
-    it("shows the fixed placeholder for a video with no YouTube id", () => {
-      renderWithRelay(
+    it("shows the fixed placeholder for a video with no YouTube id", async () => {
+      await renderWithRelay(
         cityVideos([attachment(video({ playerUrl: "https://player.vimeo.com/video/76979871" }))])
       )
 
@@ -97,26 +99,28 @@ describe("CityGuideEventVideos", () => {
       expect(screen.getByTestId("city-guide-video-placeholder")).toBeOnTheScreen()
     })
 
-    it("starts playback in place when the card is tapped", () => {
-      renderWithRelay(cityVideos([attachment(video())]))
+    it("starts playback in place when the card is tapped", async () => {
+      await renderWithRelay(cityVideos([attachment(video())]))
 
       expect(screen.queryByTestId("FeatureVideo")).not.toBeOnTheScreen()
 
-      fireEvent.press(screen.getByTestId("city-guide-video-card"))
+      await fireEvent.press(screen.getByTestId("city-guide-video-card"))
 
       expect(screen.getByTestId("FeatureVideo")).toBeOnTheScreen()
     })
   })
 
   describe("with more than one video", () => {
-    it("renders a rail with one card per video", () => {
-      renderWithRelay(cityVideos([attachment(video()), attachment(video(), "second-attachment")]))
+    it("renders a rail with one card per video", async () => {
+      await renderWithRelay(
+        cityVideos([attachment(video()), attachment(video(), "second-attachment")])
+      )
 
       expect(screen.getAllByTestId("city-guide-video-card")).toHaveLength(2)
     })
 
-    it("plays only one video at a time", () => {
-      renderWithRelay(
+    it("plays only one video at a time", async () => {
+      await renderWithRelay(
         cityVideos([
           attachment(video({ internalID: "video-1" })),
           attachment(video({ internalID: "video-2" }), "second-attachment"),
@@ -125,10 +129,10 @@ describe("CityGuideEventVideos", () => {
 
       const [firstCard, secondCard] = screen.getAllByTestId("city-guide-video-card")
 
-      fireEvent.press(firstCard)
+      await fireEvent.press(firstCard)
       expect(screen.getAllByTestId("FeatureVideo")).toHaveLength(1)
 
-      fireEvent.press(secondCard)
+      await fireEvent.press(secondCard)
       expect(screen.getAllByTestId("FeatureVideo")).toHaveLength(1)
     })
   })

@@ -122,24 +122,24 @@ describe("ConfirmBid", () => {
 
   describe("disclaimer", () => {
     describe("when the user is not registered", () => {
-      it("displays a checkbox", () => {
-        renderWithRelay({ SaleArtwork: () => saleArtwork })
+      it("displays a checkbox", async () => {
+        await renderWithRelay({ SaleArtwork: () => saleArtwork })
 
         expect(screen.getByTestId("disclaimer-checkbox")).toBeOnTheScreen()
       })
 
-      it("displays a disclaimer", () => {
-        renderWithRelay({ SaleArtwork: () => saleArtwork })
+      it("displays a disclaimer", async () => {
+        await renderWithRelay({ SaleArtwork: () => saleArtwork })
 
         expect(screen.getByTestId("disclaimer")).toHaveTextContent(
           /I agree to Artsy's and Christie's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted./
         )
       })
 
-      it("navigates to the conditions of sale when the user taps the link", () => {
-        renderWithRelay({ SaleArtwork: () => saleArtwork })
+      it("navigates to the conditions of sale when the user taps the link", async () => {
+        await renderWithRelay({ SaleArtwork: () => saleArtwork })
 
-        fireEvent.press(
+        await fireEvent.press(
           screen.getByText("Artsy's and Christie's General Terms and Conditions of Sale")
         )
 
@@ -148,14 +148,14 @@ describe("ConfirmBid", () => {
     })
 
     describe("when the user is registered", () => {
-      it("does not display a checkbox", () => {
-        renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
+      it("does not display a checkbox", async () => {
+        await renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
 
         expect(screen.queryByTestId("disclaimer-checkbox")).not.toBeOnTheScreen()
       })
 
-      it("displays a disclaimer", () => {
-        renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
+      it("displays a disclaimer", async () => {
+        await renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
 
         expect(
           screen.getByText(
@@ -164,10 +164,10 @@ describe("ConfirmBid", () => {
         ).toBeOnTheScreen()
       })
 
-      it("navigates to the conditions of sale when the user taps the link", () => {
-        renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
+      it("navigates to the conditions of sale when the user taps the link", async () => {
+        await renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
 
-        fireEvent.press(
+        await fireEvent.press(
           screen.getByText("Artsy's and Christie's General Terms and Conditions of Sale")
         )
 
@@ -176,42 +176,42 @@ describe("ConfirmBid", () => {
     })
   })
 
-  it("enables the bid button when checkbox is ticked", () => {
-    renderWithRelay({
+  it("enables the bid button when checkbox is ticked", async () => {
+    await renderWithRelay({
       Me: () => ({ hasQualifiedCreditCards: true }),
       SaleArtwork: () => saleArtwork,
     })
 
     expect(screen.getByTestId("bid-button")).toBeDisabled()
 
-    fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+    await fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
 
     expect(screen.getByTestId("bid-button")).toBeEnabled()
   })
 
-  it("enables the bid button by default if the user is registered", () => {
-    renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
+  it("enables the bid button by default if the user is registered", async () => {
+    await renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
 
     expect(screen.getByTestId("bid-button")).toBeEnabled()
   })
 
-  it("displays the artwork title correctly with date", () => {
-    renderWithRelay({ SaleArtwork: () => saleArtwork })
+  it("displays the artwork title correctly with date", async () => {
+    await renderWithRelay({ SaleArtwork: () => saleArtwork })
 
     expect(screen.getByText("Meteor Shower, 2015")).toBeOnTheScreen()
   })
 
-  it("displays the artwork title correctly without date", () => {
+  it("displays the artwork title correctly without date", async () => {
     const datelessSaleArtwork = merge({}, saleArtwork, { artwork: { date: null } })
 
-    renderWithRelay({ SaleArtwork: () => datelessSaleArtwork })
+    await renderWithRelay({ SaleArtwork: () => datelessSaleArtwork })
 
     expect(screen.queryByText("Meteor Shower, 2015")).not.toBeOnTheScreen()
     expect(screen.getByText("Meteor Shower")).toBeOnTheScreen()
   })
 
   it("can load and display price summary", async () => {
-    const { env } = renderWithRelay({ SaleArtwork: () => saleArtwork })
+    const { env } = await renderWithRelay({ SaleArtwork: () => saleArtwork })
 
     expect(screen.getByTestId("default-loading-feedback")).toBeOnTheScreen()
 
@@ -249,23 +249,23 @@ describe("ConfirmBid", () => {
   })
 
   describe("checkbox and payment info display", () => {
-    it("shows no checkbox or payment info if the user is registered", () => {
-      renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
+    it("shows no checkbox or payment info if the user is registered", async () => {
+      await renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
 
       expect(screen.queryByTestId("disclaimer-checkbox")).not.toBeOnTheScreen()
       expect(screen.queryByTestId("payment-info-row")).not.toBeOnTheScreen()
       expect(screen.getByText(/I agree to/)).toBeOnTheScreen()
     })
 
-    it("shows a checkbox but no payment info if the user is not registered and has cc on file", () => {
-      renderWithRelay({ SaleArtwork: () => saleArtwork })
+    it("shows a checkbox but no payment info if the user is not registered and has cc on file", async () => {
+      await renderWithRelay({ SaleArtwork: () => saleArtwork })
 
       expect(screen.getByTestId("disclaimer-checkbox")).toBeOnTheScreen()
       expect(screen.queryByTestId("payment-info-row")).not.toBeOnTheScreen()
     })
 
     it("shows a checkbox and payment info if the user is not registered and has no cc on file", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({ hasQualifiedCreditCards: false }),
         SaleArtwork: () => saleArtwork,
       })
@@ -277,39 +277,39 @@ describe("ConfirmBid", () => {
   })
 
   describe("when pressing bid button", () => {
-    it("commits mutation", () => {
-      renderWithRelay({
+    it("commits mutation", async () => {
+      await renderWithRelay({
         Me: () => ({ hasQualifiedCreditCards: true }),
         SaleArtwork: () => saleArtwork,
       })
 
-      fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+      await fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
 
-      fireEvent.press(screen.getByTestId("bid-button"))
+      await fireEvent.press(screen.getByTestId("bid-button"))
       expect(mockTrackEvent).toHaveBeenCalledWith({ action_type: "tap", action_name: "placeBid" })
       expect(mockCreateBidderMutation).toHaveBeenCalled()
     })
 
-    it("shows a spinner", () => {
+    it("shows a spinner", async () => {
       useCreateBidderPositionMock.mockReturnValue([mockCreateBidderMutation, true])
 
-      renderWithRelay({ SaleArtwork: () => saleArtwork })
+      await renderWithRelay({ SaleArtwork: () => saleArtwork })
 
-      fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+      await fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
 
       const placeBidButton = screen.getByTestId("bid-button")
 
-      fireEvent.press(placeBidButton)
+      await fireEvent.press(placeBidButton)
 
       // While loading, the button hides its label (opacity 0) and shows a spinner instead
       expect(within(placeBidButton).getByText("Bid")).not.toBeVisible()
     })
 
-    it("disables tap events while a spinner is being shown", () => {
+    it("disables tap events while a spinner is being shown", async () => {
       const navigator = { push: jest.fn(), pop: jest.fn() }
       useCreateBidderPositionMock.mockReturnValue([mockCreateBidderMutation, true])
 
-      renderWithRelay({ SaleArtwork: () => saleArtwork }, { navigator })
+      await renderWithRelay({ SaleArtwork: () => saleArtwork }, { navigator })
 
       const yourMaxBidRow = screen.getByText("Max bid")
       const conditionsOfSaleLink = screen.getByText(
@@ -317,14 +317,14 @@ describe("ConfirmBid", () => {
       )
       const conditionsOfSaleCheckbox = screen.getByRole("checkbox")
 
-      fireEvent.press(conditionsOfSaleCheckbox)
-      fireEvent.press(screen.getByTestId("bid-button"))
+      await fireEvent.press(conditionsOfSaleCheckbox)
+      await fireEvent.press(screen.getByTestId("bid-button"))
 
-      fireEvent.press(yourMaxBidRow)
+      await fireEvent.press(yourMaxBidRow)
 
       expect(navigator.push).not.toHaveBeenCalled()
 
-      fireEvent.press(conditionsOfSaleLink)
+      await fireEvent.press(conditionsOfSaleLink)
 
       expect(navigateSpy).not.toHaveBeenCalled()
 
@@ -332,42 +332,42 @@ describe("ConfirmBid", () => {
     })
 
     describe("when pressing bid", () => {
-      it("commits the mutation", () => {
-        renderWithRelay({ SaleArtwork: () => saleArtwork })
+      it("commits the mutation", async () => {
+        await renderWithRelay({ SaleArtwork: () => saleArtwork })
 
-        fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+        await fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
 
         bidderPositionQueryMock.mockReturnValueOnce(
           Promise.resolve(mockRequestResponses.pollingForBid.highestBidder)
         )
 
-        fireEvent.press(screen.getByTestId("bid-button"))
+        await fireEvent.press(screen.getByTestId("bid-button"))
 
         expect(useCreateBidderPosition).toHaveBeenCalled()
       })
 
       describe("when mutation fails", () => {
-        it("does not verify bid position", () => {
+        it("does not verify bid position", async () => {
           // Probably due to a network problem.
-          renderWithRelay({
+          await renderWithRelay({
             Me: () => ({ hasQualifiedCreditCards: true }),
             SaleArtwork: () => saleArtwork,
           })
 
-          fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+          await fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
 
           relay.commitMutation = commitMutationMock((_, { onError }) => {
             onError!(new Error("An error occurred."))
             return { dispose: jest.fn() }
           }) as any
 
-          fireEvent.press(screen.getByTestId("bid-button"))
+          await fireEvent.press(screen.getByTestId("bid-button"))
 
           expect(useCreateBidderPosition).toHaveBeenCalled()
           expect(bidderPositionQueryMock).not.toHaveBeenCalled()
         })
 
-        it("displays an error message on a network failure", () => {
+        it("displays an error message on a network failure", async () => {
           const captureMessageSpy = jest.spyOn(Sentry, "captureMessage")
           const erroredCreateBidderPositionMutation = jest
             .fn()
@@ -376,14 +376,14 @@ describe("ConfirmBid", () => {
             })
           useCreateBidderPositionMock.mockReturnValue([erroredCreateBidderPositionMutation, false])
 
-          renderWithRelay({
+          await renderWithRelay({
             Me: () => ({ hasQualifiedCreditCards: true }),
             SaleArtwork: () => saleArtwork,
           })
 
-          fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+          await fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
 
-          fireEvent.press(screen.getByTestId("bid-button"))
+          await fireEvent.press(screen.getByTestId("bid-button"))
 
           expect(captureMessageSpy).toHaveBeenCalledWith(
             expect.stringContaining("#createBidderPosition"),
@@ -417,13 +417,13 @@ describe("ConfirmBid", () => {
             })
           useCreateBidderPositionMock.mockReturnValue([erroredCreateBidderPositionMutation, false])
 
-          renderWithRelay({
+          await renderWithRelay({
             Me: () => ({ hasQualifiedCreditCards: true }),
             SaleArtwork: () => saleArtwork,
           })
 
-          fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
-          fireEvent.press(screen.getByTestId("bid-button"))
+          await fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+          await fireEvent.press(screen.getByTestId("bid-button"))
 
           expect(captureMessageSpy).toHaveBeenCalledWith(
             expect.stringContaining("GraphQL Timeout Error"),
@@ -450,10 +450,10 @@ describe("ConfirmBid", () => {
   })
 
   describe("editing bid amount", () => {
-    it("allows you to go to the max bid edit screen and select a new max bid", () => {
-      renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
+    it("allows you to go to the max bid edit screen and select a new max bid", async () => {
+      await renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
 
-      fireEvent.press(screen.getByText("Edit"))
+      await fireEvent.press(screen.getByText("Edit"))
       expect(mockNavigator.goBack).toHaveBeenCalled()
 
       expect(mockStore.getState().selectedBidIndex).toEqual(0)
@@ -476,12 +476,12 @@ describe("ConfirmBid", () => {
           })
         useCreateBidderPositionMock.mockReturnValue([completedCreateBidderPositionMutation, false])
 
-        renderWithRelay({
+        await renderWithRelay({
           Me: () => ({ hasQualifiedCreditCards: true }),
           SaleArtwork: () => saleArtwork,
         })
 
-        fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+        await fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
 
         let requestCounter = 0 // On the fifth attempt, return highestBidder
 
@@ -494,7 +494,7 @@ describe("ConfirmBid", () => {
           }
         })
 
-        fireEvent.press(screen.getByTestId("bid-button"))
+        await fireEvent.press(screen.getByTestId("bid-button"))
 
         await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
@@ -519,18 +519,18 @@ describe("ConfirmBid", () => {
           })
         useCreateBidderPositionMock.mockReturnValue([completedCreateBidderPositionMutation, false])
 
-        renderWithRelay({
+        await renderWithRelay({
           Me: () => ({ hasQualifiedCreditCards: true }),
           SaleArtwork: () => saleArtwork,
         })
 
-        fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+        await fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
 
         bidderPositionQueryMock.mockReturnValue(
           Promise.resolve(mockRequestResponses.pollingForBid.pending)
         )
 
-        fireEvent.press(screen.getByTestId("bid-button"))
+        await fireEvent.press(screen.getByTestId("bid-button"))
         await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
         expect(mockNavigator.navigate).toHaveBeenCalledWith(
@@ -549,18 +549,18 @@ describe("ConfirmBid", () => {
           })
         useCreateBidderPositionMock.mockReturnValue([completedCreateBidderPositionMutation, false])
 
-        renderWithRelay({
+        await renderWithRelay({
           Me: () => ({ hasQualifiedCreditCards: true }),
           SaleArtwork: () => saleArtwork,
         })
 
-        fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+        await fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
 
         bidderPositionQueryMock.mockReturnValueOnce(
           Promise.resolve(mockRequestResponses.pollingForBid.highestBidder)
         )
 
-        fireEvent.press(screen.getByTestId("bid-button"))
+        await fireEvent.press(screen.getByTestId("bid-button"))
         await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
         expect(mockNavigator.navigate).toHaveBeenCalledWith(
@@ -580,18 +580,18 @@ describe("ConfirmBid", () => {
           })
         useCreateBidderPositionMock.mockReturnValue([completedCreateBidderPositionMutation, false])
 
-        renderWithRelay({
+        await renderWithRelay({
           Me: () => ({ hasQualifiedCreditCards: true }),
           SaleArtwork: () => saleArtwork,
         })
 
-        fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+        await fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
 
         bidderPositionQueryMock.mockReturnValueOnce(
           Promise.resolve(mockRequestResponses.pollingForBid.outbid)
         )
 
-        fireEvent.press(screen.getByTestId("bid-button"))
+        await fireEvent.press(screen.getByTestId("bid-button"))
         await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
         expect(mockNavigator.navigate).toHaveBeenCalledWith(
@@ -610,18 +610,18 @@ describe("ConfirmBid", () => {
           })
         useCreateBidderPositionMock.mockReturnValue([completedCreateBidderPositionMutation, false])
 
-        renderWithRelay({
+        await renderWithRelay({
           Me: () => ({ hasQualifiedCreditCards: true }),
           SaleArtwork: () => saleArtwork,
         })
 
-        fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+        await fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
 
         bidderPositionQueryMock.mockReturnValueOnce(
           Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet)
         )
 
-        fireEvent.press(screen.getByTestId("bid-button"))
+        await fireEvent.press(screen.getByTestId("bid-button"))
         await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
         expect(mockNavigator.navigate).toHaveBeenCalledWith(
@@ -641,18 +641,18 @@ describe("ConfirmBid", () => {
           })
         useCreateBidderPositionMock.mockReturnValue([completedCreateBidderPositionMutation, false])
 
-        renderWithRelay({
+        await renderWithRelay({
           Me: () => ({ hasQualifiedCreditCards: true }),
           SaleArtwork: () => saleArtwork,
         })
 
-        fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+        await fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
 
         bidderPositionQueryMock.mockReturnValueOnce(
           Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet)
         )
 
-        fireEvent.press(screen.getByTestId("bid-button"))
+        await fireEvent.press(screen.getByTestId("bid-button"))
         await waitFor(() => mockPostNotificationName.mock.calls.length > 0)
 
         expect(mockPostNotificationName).toHaveBeenCalledWith(
@@ -718,14 +718,14 @@ describe("ConfirmBid", () => {
           })
         useCreateBidderPositionMock.mockReturnValue([completedCreateBidderPositionMutation, false])
 
-        renderWithRelay({
+        await renderWithRelay({
           Me: () => ({ hasQualifiedCreditCards: true }),
           SaleArtwork: () => saleArtwork,
         })
 
-        fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+        await fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
 
-        fireEvent.press(screen.getByTestId("bid-button"))
+        await fireEvent.press(screen.getByTestId("bid-button"))
 
         await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
@@ -741,23 +741,23 @@ describe("ConfirmBid", () => {
   })
 
   describe("ConfirmBid for unqualified user", () => {
-    const mockFillAndSubmit = () => {
+    const mockFillAndSubmit = async () => {
       // updating bid flow state
       mockStore.getActions().setBillingAddress(billingAddress)
       mockStore.getActions().setCreditCardToken(stripeToken.token as any)
 
       // check the checkbox and press the Bid button
-      fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
-      fireEvent.press(screen.getByTestId("bid-button"))
+      await fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+      await fireEvent.press(screen.getByTestId("bid-button"))
     }
 
-    it("shows the credit card form when the user tap the edit text in the credit card row", () => {
-      renderWithRelay({
+    it("shows the credit card form when the user tap the edit text in the credit card row", async () => {
+      await renderWithRelay({
         Me: () => ({ hasQualifiedCreditCards: false }),
         SaleArtwork: () => saleArtwork,
       })
 
-      fireEvent.press(screen.getByText("Add"))
+      await fireEvent.press(screen.getByText("Add"))
 
       expect(mockNavigator.navigate).toHaveBeenCalledWith("CreditCardForm", expect.any(Object))
     })
@@ -769,12 +769,12 @@ describe("ConfirmBid", () => {
       })
       useCreateCreditCardMock.mockReturnValue([erroredCreateCreditCardMutation, false])
 
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({ hasQualifiedCreditCards: false }),
         SaleArtwork: () => saleArtwork,
       })
 
-      mockFillAndSubmit()
+      await mockFillAndSubmit()
 
       // wait for modal to be displayed
       await screen.findByText(
@@ -787,7 +787,7 @@ describe("ConfirmBid", () => {
       )
 
       // press the dismiss modal button
-      fireEvent.press(screen.getByText("Ok"))
+      await fireEvent.press(screen.getByText("Ok"))
 
       // error modal is dismissed
       expect(
@@ -804,12 +804,12 @@ describe("ConfirmBid", () => {
       })
       useCreateCreditCardMock.mockReturnValue([erroredCreateCreditCardMutation, false])
 
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({ hasQualifiedCreditCards: false }),
         SaleArtwork: () => saleArtwork,
       })
 
-      mockFillAndSubmit()
+      await mockFillAndSubmit()
 
       await screen.findByText("Your card's security code is incorrect.")
 
@@ -819,7 +819,7 @@ describe("ConfirmBid", () => {
       )
 
       // press the dismiss modal button
-      fireEvent.press(screen.getByText("Ok"))
+      await fireEvent.press(screen.getByText("Ok"))
 
       // error modal is dismissed
       expect(screen.queryByText("Your card's security code is incorrect.")).not.toBeOnTheScreen()
@@ -834,12 +834,12 @@ describe("ConfirmBid", () => {
       })
       useCreateCreditCardMock.mockReturnValue([erroredCreateCreditCardMutation, false])
 
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({ hasQualifiedCreditCards: false }),
         SaleArtwork: () => saleArtwork,
       })
 
-      mockFillAndSubmit()
+      await mockFillAndSubmit()
 
       await screen.findByText(
         "There was a problem processing your information. Check your payment details and try again."
@@ -851,7 +851,7 @@ describe("ConfirmBid", () => {
       )
 
       // press the dismiss modal button
-      fireEvent.press(screen.getByText("Ok"))
+      await fireEvent.press(screen.getByText("Ok"))
 
       // error modal is dismissed
       expect(
@@ -869,12 +869,12 @@ describe("ConfirmBid", () => {
       })
       useCreateCreditCardMock.mockReturnValue([erroredCreateCreditCardMutation, false])
 
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({ hasQualifiedCreditCards: false }),
         SaleArtwork: () => saleArtwork,
       })
 
-      mockFillAndSubmit()
+      await mockFillAndSubmit()
 
       await screen.findByText(
         "There was a problem processing your information. Check your payment details and try again."
@@ -886,7 +886,7 @@ describe("ConfirmBid", () => {
       )
 
       // press the dismiss modal button
-      fireEvent.press(screen.getByText("Ok"))
+      await fireEvent.press(screen.getByText("Ok"))
 
       // error modal is dismissed
       expect(
@@ -903,12 +903,12 @@ describe("ConfirmBid", () => {
       })
       useCreateCreditCardMock.mockReturnValue([erroredCreateCreditCardMutation, false])
 
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({ hasQualifiedCreditCards: false }),
         SaleArtwork: () => saleArtwork,
       })
 
-      mockFillAndSubmit()
+      await mockFillAndSubmit()
 
       await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
@@ -960,12 +960,12 @@ describe("ConfirmBid", () => {
           .mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.pending))
           .mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
 
-        renderWithRelay({
+        await renderWithRelay({
           Me: () => ({ hasQualifiedCreditCards: false }),
           SaleArtwork: () => saleArtwork,
         })
 
-        mockFillAndSubmit()
+        await mockFillAndSubmit()
 
         expect(completedUpdateUserPhoneNumberMutation).toHaveBeenCalledWith(
           expect.objectContaining({ variables: { input: { phone: "111 222 4444" } } })
@@ -1003,14 +1003,14 @@ describe("ConfirmBid", () => {
 
       it("displays an error message on polling failure", async () => {
         const captureExceptionSpy = jest.spyOn(Sentry, "captureException")
-        bidderPositionQueryMock.mockReturnValueOnce(Promise.reject({ message: "error" }))
+        bidderPositionQueryMock.mockImplementationOnce(() => Promise.reject({ message: "error" }))
 
-        renderWithRelay({
+        await renderWithRelay({
           Me: () => ({ hasQualifiedCreditCards: false }),
           SaleArtwork: () => saleArtwork,
         })
 
-        mockFillAndSubmit()
+        await mockFillAndSubmit()
 
         await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
@@ -1035,14 +1035,14 @@ describe("ConfirmBid", () => {
   })
 
   describe("cascading end times", () => {
-    it("sale endtime defaults to extendedBiddingEndtime", () => {
-      renderWithRelay({ SaleArtwork: () => cascadingEndTimeSaleArtwork })
+    it("sale endtime defaults to extendedBiddingEndtime", async () => {
+      await renderWithRelay({ SaleArtwork: () => cascadingEndTimeSaleArtwork })
 
       expect(screen.getByText("00d 00h 00m 10s")).toBeOnTheScreen()
     })
 
-    it("shows the sale's end time if the sale does not have cascading end times", () => {
-      renderWithRelay({ SaleArtwork: () => nonCascadeSaleArtwork })
+    it("shows the sale's end time if the sale does not have cascading end times", async () => {
+      await renderWithRelay({ SaleArtwork: () => nonCascadeSaleArtwork })
 
       expect(screen.getByText("00d 00h 00m 10s")).toBeOnTheScreen()
     })

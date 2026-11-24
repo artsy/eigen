@@ -4,8 +4,8 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
 
 describe("FadeIn", () => {
-  it("renders children correctly", () => {
-    renderWithWrappers(
+  it("renders children correctly", async () => {
+    await renderWithWrappers(
       <FadeIn>
         <Text>Test Content</Text>
       </FadeIn>

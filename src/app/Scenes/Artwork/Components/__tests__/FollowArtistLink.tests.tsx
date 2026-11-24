@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { FollowArtistLinkTestsQuery } from "__generated__/FollowArtistLinkTestsQuery.graphql"
 import { FollowArtistLinkFragmentContainer } from "app/Scenes/Artwork/Components/FollowArtistLink"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
@@ -28,72 +28,72 @@ describe("FollowArtistLink", () => {
     jest.clearAllMocks()
   })
 
-  it("renders button text correctly", () => {
-    const { getByText } = renderWithRelay({
+  it("renders button text correctly", async () => {
+    await renderWithRelay({
       Artist: () => followArtistLinkArtist,
     })
 
-    expect(getByText("Follow")).toBeTruthy()
+    expect(screen.getByText("Follow")).toBeTruthy()
   })
 
   describe("Following an artist", () => {
-    it("correctly displays when the artist is already followed, and allows unfollowing", () => {
+    it("correctly displays when the artist is already followed, and allows unfollowing", async () => {
       const followArtistLinkArtistFollowed = {
         ...followArtistLinkArtist,
         is_followed: true,
       }
 
-      const { getByText, queryByText, env } = renderWithRelay({
+      const { env } = await renderWithRelay({
         Artist: () => followArtistLinkArtistFollowed,
       })
 
-      expect(queryByText("Follow")).toBeFalsy()
-      expect(getByText("Following")).toBeTruthy()
+      expect(screen.queryByText("Follow")).toBeFalsy()
+      expect(screen.getByText("Following")).toBeTruthy()
 
-      fireEvent.press(getByText("Following"))
+      await fireEvent.press(screen.getByText("Following"))
 
-      resolveMostRecentRelayOperation(env, {
+      await resolveMostRecentRelayOperation(env, {
         Artist: () => ({
           id: followArtistLinkArtist.id,
           is_followed: false,
         }),
       })
 
-      expect(getByText("Follow")).toBeTruthy()
-      expect(queryByText("Following")).toBeFalsy()
+      expect(screen.getByText("Follow")).toBeTruthy()
+      expect(screen.queryByText("Following")).toBeFalsy()
     })
 
-    it("correctly displays when the artist is not followed, and allows following", () => {
-      const { getByText, queryByText, env } = renderWithRelay({
+    it("correctly displays when the artist is not followed, and allows following", async () => {
+      const { env } = await renderWithRelay({
         Artist: () => followArtistLinkArtist,
       })
 
-      expect(getByText("Follow")).toBeTruthy()
-      expect(queryByText("Following")).toBeFalsy()
+      expect(screen.getByText("Follow")).toBeTruthy()
+      expect(screen.queryByText("Following")).toBeFalsy()
 
-      fireEvent.press(getByText("Follow"))
+      await fireEvent.press(screen.getByText("Follow"))
 
-      resolveMostRecentRelayOperation(env, {
+      await resolveMostRecentRelayOperation(env, {
         Artist: () => ({
           id: followArtistLinkArtist.id,
           is_followed: true,
         }),
       })
 
-      expect(getByText("Following")).toBeTruthy()
-      expect(queryByText("Follow")).toBeFalsy()
+      expect(screen.getByText("Following")).toBeTruthy()
+      expect(screen.queryByText("Follow")).toBeFalsy()
     })
 
     it("handles errors in saving gracefully", async () => {
-      const { getByText, env } = renderWithRelay({
+      const { env } = await renderWithRelay({
         Artist: () => followArtistLinkArtist,
       })
 
-      fireEvent.press(getByText("Follow"))
+      await fireEvent.press(screen.getByText("Follow"))
 
-      rejectMostRecentRelayOperation(env, new Error())
+      await rejectMostRecentRelayOperation(env, new Error())
 
-      expect(getByText("Follow")).toBeTruthy()
+      expect(screen.getByText("Follow")).toBeTruthy()
     })
   })
 })

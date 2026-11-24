@@ -1,4 +1,4 @@
-import { act, fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
@@ -6,13 +6,13 @@ import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
-describe.skip("MyCollectionAddCollectedArtists", () => {
+describe("MyCollectionAddCollectedArtists", () => {
   const { renderWithRelay } = setupTestWrapper({
     Component: MyCollectionAddCollectedArtistsScreen,
   })
 
   it("renders MyCollectionAddCollectedArtists", async () => {
-    renderWithRelay()
+    await renderWithRelay()
 
     await flushPromiseQueue()
 
@@ -20,7 +20,7 @@ describe.skip("MyCollectionAddCollectedArtists", () => {
   })
 
   it("adds collected artists by creating user interests", async () => {
-    const { env } = renderWithRelay({
+    const { env } = await renderWithRelay({
       Me: () => ({ userInterestsConnection: { edges: [] } }),
     })
 
@@ -28,15 +28,15 @@ describe.skip("MyCollectionAddCollectedArtists", () => {
 
     await flushPromiseQueue()
 
-    fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "banksy")
+    await fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "banksy")
 
-    act(() => {
-      resolveMostRecentRelayOperation(env, { SearchableConnection: () => mockArtistSearchResult })
+    await resolveMostRecentRelayOperation(env, {
+      SearchableConnection: () => mockArtistSearchResult,
     })
 
-    fireEvent.press(screen.getByText("Banksy"))
+    await fireEvent.press(screen.getByText("Banksy"))
 
-    fireEvent.press(screen.getByText("Add Selected Artist • 1"))
+    await fireEvent.press(screen.getByText("Add Selected Artist • 1"))
 
     await flushPromiseQueue()
 
@@ -58,14 +58,14 @@ describe.skip("MyCollectionAddCollectedArtists", () => {
         }
       `)
 
-    resolveMostRecentRelayOperation(env, {})
+    await resolveMostRecentRelayOperation(env, {})
     await flushPromiseQueue()
 
     expect(dismissModal).toHaveBeenCalledWith()
   })
 
   it("creates custom artists", async () => {
-    const { env } = renderWithRelay({
+    const { env } = await renderWithRelay({
       Me: () => ({ userInterestsConnection: { edges: [] } }),
     })
 
@@ -73,13 +73,16 @@ describe.skip("MyCollectionAddCollectedArtists", () => {
 
     await flushPromiseQueue()
 
-    fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "My Artist")
+    await fireEvent.changeText(
+      screen.getByPlaceholderText("Search for artists on Artsy"),
+      "My Artist"
+    )
 
-    act(() => {
-      resolveMostRecentRelayOperation(env, { SearchableConnection: () => mockArtistSearchResult })
+    await resolveMostRecentRelayOperation(env, {
+      SearchableConnection: () => mockArtistSearchResult,
     })
 
-    fireEvent.press(screen.getByText("Add their name."))
+    await fireEvent.press(screen.getByText("Add their name."))
 
     expect(navigate).toHaveBeenCalledWith("/my-collection/artists/new", {
       passProps: { artistDisplayName: "My Artist", onSubmit: expect.any(Function) },

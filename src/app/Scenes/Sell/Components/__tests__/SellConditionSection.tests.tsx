@@ -10,11 +10,11 @@ const TestConditionSection: React.FC = () => (
 )
 
 describe("SellConditionSection", () => {
-  it("keeps the rating and notes the user enters", () => {
-    renderWithWrappers(<TestConditionSection />)
+  it("keeps the rating and notes the user enters", async () => {
+    await renderWithWrappers(<TestConditionSection />)
 
-    fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
-    fireEvent.changeText(screen.getByLabelText("Notes"), "Small tear at the corner")
+    await fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
+    await fireEvent.changeText(screen.getByLabelText("Notes"), "Small tear at the corner")
 
     expect(screen.getByRole("radio", { name: /^Fair\./ })).toBeChecked()
     expect(screen.getByLabelText("Notes")).toHaveDisplayValue("Small tear at the corner")

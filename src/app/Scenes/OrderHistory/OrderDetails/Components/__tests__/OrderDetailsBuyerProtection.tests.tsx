@@ -19,12 +19,12 @@ describe("OrderDetailsBuyerProtection", () => {
     `,
   })
 
-  it("renders the Artsy buyer protection section", () => {
-    renderWithRelay({ Order: () => ({ internalID: "order-id" }) })
+  it("renders the Artsy buyer protection section", async () => {
+    await renderWithRelay({ Order: () => ({ internalID: "order-id" }) })
 
     expect(screen.getByText("Artsy’s buyer protection")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Artsy’s buyer protection"))
+    await fireEvent.press(screen.getByText("Artsy’s buyer protection"))
 
     expect(navigate).toBeCalledWith("https://support.artsy.net/s/article/The-Artsy-Guarantee")
 

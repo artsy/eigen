@@ -51,8 +51,8 @@ describe("ArtistNationalitiesOptionsScreen", () => {
     )
   }
 
-  it("renders the options", () => {
-    renderWithWrappers(<TestWrapper />)
+  it("renders the options", async () => {
+    await renderWithWrappers(<TestWrapper />)
 
     expect(screen.getByText("American")).toBeOnTheScreen()
     expect(screen.getByText("British")).toBeOnTheScreen()
@@ -61,7 +61,7 @@ describe("ArtistNationalitiesOptionsScreen", () => {
     expect(screen.getByText("Japanese")).toBeOnTheScreen()
   })
 
-  it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
+  it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
     const initialData: ArtworkFiltersState = {
       ...INITIAL_DATA,
       selectedFilters: [
@@ -73,7 +73,7 @@ describe("ArtistNationalitiesOptionsScreen", () => {
       ],
     }
 
-    renderWithWrappers(<TestWrapper initialData={initialData} />)
+    await renderWithWrappers(<TestWrapper initialData={initialData} />)
 
     const checkboxes = screen.getAllByRole("checkbox")
     expect(checkboxes).toHaveLength(5)
@@ -85,7 +85,7 @@ describe("ArtistNationalitiesOptionsScreen", () => {
     expect(checkboxes[4]).not.toBeChecked() // Japanese
   })
 
-  it("clears all when `Clear` button is tapped", () => {
+  it("clears all when `Clear` button is tapped", async () => {
     const initialData: ArtworkFiltersState = {
       ...INITIAL_DATA,
       selectedFilters: [
@@ -97,7 +97,7 @@ describe("ArtistNationalitiesOptionsScreen", () => {
       ],
     }
 
-    renderWithWrappers(<TestWrapper initialData={initialData} />)
+    await renderWithWrappers(<TestWrapper initialData={initialData} />)
 
     const checkboxes = screen.getAllByRole("checkbox")
 
@@ -107,7 +107,7 @@ describe("ArtistNationalitiesOptionsScreen", () => {
     expect(checkboxes[3]).not.toBeChecked() // Italian
     expect(checkboxes[4]).not.toBeChecked() // Japanese
 
-    fireEvent.press(screen.getByText("Clear"))
+    await fireEvent.press(screen.getByText("Clear"))
 
     expect(checkboxes[0]).not.toBeChecked() // American
     expect(checkboxes[1]).not.toBeChecked() // British

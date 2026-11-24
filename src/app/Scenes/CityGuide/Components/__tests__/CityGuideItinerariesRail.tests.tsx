@@ -41,7 +41,7 @@ describe("CityGuideItinerariesRail", () => {
   })
 
   it("renders a card per itinerary, with its summed stop count", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       connection([
         itinerary("a", "London Oct 2026", [10, 6]),
         itinerary("b", "London Winter", [3]),
@@ -57,17 +57,17 @@ describe("CityGuideItinerariesRail", () => {
   })
 
   it("opens that itinerary when a card is tapped", async () => {
-    renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
+    await renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
 
-    fireEvent.press(await screen.findByText("London Oct 2026"))
+    await fireEvent.press(await screen.findByText("London Oct 2026"))
 
     expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/itinerary/a")
   })
 
   it("tracks the tap on an itinerary card", async () => {
-    renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
+    await renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
 
-    fireEvent.press(await screen.findByText("London Oct 2026"))
+    await fireEvent.press(await screen.findByText("London Oct 2026"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -82,9 +82,9 @@ describe("CityGuideItinerariesRail", () => {
   })
 
   it("opens the full list from the header", async () => {
-    renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
+    await renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
 
-    fireEvent.press(await screen.findByText("Your Itineraries"))
+    await fireEvent.press(await screen.findByText("Your Itineraries"))
 
     expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/itineraries")
     expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -100,18 +100,18 @@ describe("CityGuideItinerariesRail", () => {
 
   // The band it replaces hid itself at a count of zero; an empty grey strip reads as broken.
   it("renders nothing when the user has none for this city", async () => {
-    renderWithRelay(connection([]), props)
+    await renderWithRelay(connection([]), props)
 
     expect(screen.queryByText("Your Itineraries")).not.toBeOnTheScreen()
   })
 
   it("prefers a slug over the id when addressing an itinerary", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       connection([{ ...itinerary("a", "London Oct 2026", [1]), slug: "london-oct-2026" }]),
       props
     )
 
-    fireEvent.press(await screen.findByText("London Oct 2026"))
+    await fireEvent.press(await screen.findByText("London Oct 2026"))
 
     expect(navigate).toHaveBeenCalledWith(
       "/city-guide/london-united-kingdom/itinerary/london-oct-2026"
@@ -121,7 +121,7 @@ describe("CityGuideItinerariesRail", () => {
   // Gravity's listing serializes at :short, and older responses carry no stopsCount. "0 stops"
   // would be a lie, so the line is left out.
   it("shows no count when nothing knows it", async () => {
-    renderWithRelay(
+    await renderWithRelay(
       connection([
         {
           internalID: "a",

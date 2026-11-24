@@ -32,30 +32,30 @@ describe("ShowFollowButton", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableFollowShowsAndFairs: true })
   })
 
-  it("renders nothing when the feature flag is off", () => {
+  it("renders nothing when the feature flag is off", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableFollowShowsAndFairs: false })
 
-    renderWithRelay({ Show: () => ({ isFollowed: false }) })
+    await renderWithRelay({ Show: () => ({ isFollowed: false }) })
 
     expect(screen.toJSON()).toBeNull()
   })
 
-  it("offers to follow a show that is not followed", () => {
-    renderWithRelay({ Show: () => ({ isFollowed: false }) })
+  it("offers to follow a show that is not followed", async () => {
+    await renderWithRelay({ Show: () => ({ isFollowed: false }) })
 
     expect(screen.getByText("Save")).toBeTruthy()
   })
 
-  it("reflects a followed show", () => {
-    renderWithRelay({ Show: () => ({ isFollowed: true }) })
+  it("reflects a followed show", async () => {
+    await renderWithRelay({ Show: () => ({ isFollowed: true }) })
 
     expect(screen.getByText("Saved")).toBeTruthy()
   })
 
-  it("commits a mutation when pressed", () => {
-    const { env } = renderWithRelay({ Show: () => ({ isFollowed: false }) })
+  it("commits a mutation when pressed", async () => {
+    const { env } = await renderWithRelay({ Show: () => ({ isFollowed: false }) })
 
-    fireEvent.press(screen.getByText("Save"))
+    await fireEvent.press(screen.getByText("Save"))
 
     // Asserts that pressing follows, without asserting how the label behaves mid-flight.
     expect(env.mock.getAllOperations().length).toBeGreaterThan(0)
@@ -63,10 +63,10 @@ describe("ShowFollowButton", () => {
 
   it("logs GraphQL errors without crashing", async () => {
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => undefined)
-    const { env } = renderWithRelay({ Show: () => ({ isFollowed: false }) })
+    const { env } = await renderWithRelay({ Show: () => ({ isFollowed: false }) })
 
-    fireEvent.press(screen.getByText("Save"))
-    act(() => {
+    await fireEvent.press(screen.getByText("Save"))
+    await act(() => {
       env.mock.resolveMostRecentOperation({ data: undefined, errors: [{ message: "nope" }] })
     })
 
@@ -79,34 +79,34 @@ describe("ShowFollowButton", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideItineraries: true })
     })
 
-    it("renders when the show has a location and the itinerary flag is on", () => {
-      renderIconVariant({
+    it("renders when the show has a location and the itinerary flag is on", async () => {
+      await renderIconVariant({
         Show: () => ({ isOnlineExclusive: false, location: { address: "123 Main St" } }),
       })
 
       expect(screen.getByTestId("show-follow-icon")).toBeOnTheScreen()
     })
 
-    it("renders nothing when the itinerary flag is off", () => {
+    it("renders nothing when the itinerary flag is off", async () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideItineraries: false })
 
-      renderIconVariant({
+      await renderIconVariant({
         Show: () => ({ isOnlineExclusive: false, location: { address: "123 Main St" } }),
       })
 
       expect(screen.toJSON()).toBeNull()
     })
 
-    it("renders nothing for an online-exclusive show", () => {
-      renderIconVariant({
+    it("renders nothing for an online-exclusive show", async () => {
+      await renderIconVariant({
         Show: () => ({ isOnlineExclusive: true, location: { address: "123 Main St" } }),
       })
 
       expect(screen.toJSON()).toBeNull()
     })
 
-    it("renders nothing for a show with no address", () => {
-      renderIconVariant({ Show: () => ({ isOnlineExclusive: false, location: null }) })
+    it("renders nothing for a show with no address", async () => {
+      await renderIconVariant({ Show: () => ({ isOnlineExclusive: false, location: null }) })
 
       expect(screen.toJSON()).toBeNull()
     })

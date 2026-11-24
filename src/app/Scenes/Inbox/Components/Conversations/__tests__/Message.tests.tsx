@@ -3,8 +3,8 @@ import { Message } from "app/Scenes/Inbox/Components/Conversations/Message"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("Message", () => {
-  it("renders body text for a regular message", () => {
-    renderWithWrappers(<Message message={mockMessage} conversationId="conversation-123" />)
+  it("renders body text for a regular message", async () => {
+    await renderWithWrappers(<Message message={mockMessage} conversationId="conversation-123" />)
 
     expect(
       screen.getByText(
@@ -13,8 +13,8 @@ describe("Message", () => {
     ).toBeOnTheScreen()
   })
 
-  it("renders null when body is empty and isFirstMessage is false", () => {
-    renderWithWrappers(
+  it("renders null when body is empty and isFirstMessage is false", async () => {
+    await renderWithWrappers(
       <Message message={{ ...mockMessage, body: null }} conversationId="conversation-123" />
     )
 
@@ -24,8 +24,8 @@ describe("Message", () => {
   })
 
   describe("first message with formattedFirstMessage", () => {
-    it("renders formattedFirstMessage instead of body", () => {
-      renderWithWrappers(
+    it("renders formattedFirstMessage instead of body", async () => {
+      await renderWithWrappers(
         <Message
           message={{ ...mockMessage, isFirstMessage: true }}
           conversationId="conversation-123"
@@ -42,8 +42,8 @@ describe("Message", () => {
       ).not.toBeOnTheScreen()
     })
 
-    it("falls back to body when formattedFirstMessage is not provided", () => {
-      renderWithWrappers(
+    it("falls back to body when formattedFirstMessage is not provided", async () => {
+      await renderWithWrappers(
         <Message
           message={{ ...mockMessage, isFirstMessage: true }}
           conversationId="conversation-123"

@@ -58,48 +58,48 @@ describe("ImageCarouselVimeoVideo", () => {
     jest.clearAllMocks()
   })
 
-  it("shows the player without our play button while there is no cover", () => {
+  it("shows the player without our play button while there is no cover", async () => {
     mockUseVimeoVideoMetadata.mockReturnValue({ coverImage: undefined, isCoverUnavailable: false })
-    renderWithWrappers(<TestWrapper index={0} />)
+    await renderWithWrappers(<TestWrapper index={0} />)
 
     expect(screen.getByTestId("vimeo-player-webview")).toBeOnTheScreen()
     expect(screen.queryByLabelText("Vimeo Play Button")).not.toBeOnTheScreen()
   })
 
-  it("loads the player of a far away slide once the cover request fails", () => {
+  it("loads the player of a far away slide once the cover request fails", async () => {
     mockUseVimeoVideoMetadata.mockReturnValue(withoutCover)
-    renderWithWrappers(<TestWrapper index={3} />)
+    await renderWithWrappers(<TestWrapper index={3} />)
 
     expect(screen.getByTestId("vimeo-player-webview")).toBeOnTheScreen()
   })
 
-  it("hides the cover once playback starts from the player's own button", () => {
-    renderWithWrappers(<TestWrapper index={0} />)
+  it("hides the cover once playback starts from the player's own button", async () => {
+    await renderWithWrappers(<TestWrapper index={0} />)
 
-    fireEvent(screen.getByTestId("vimeo-player-webview"), "message", {
+    await fireEvent(screen.getByTestId("vimeo-player-webview"), "message", {
       nativeEvent: { data: "play" },
     })
 
     expect(screen.queryByLabelText("Vimeo Play Button")).not.toBeOnTheScreen()
   })
 
-  it("loads the player behind the cover when the slide is next to the current one", () => {
-    renderWithWrappers(<TestWrapper index={1} />)
+  it("loads the player behind the cover when the slide is next to the current one", async () => {
+    await renderWithWrappers(<TestWrapper index={1} />)
 
     expect(screen.getByTestId("vimeo-player-webview")).toBeOnTheScreen()
     expect(screen.getByLabelText("Vimeo Play Button")).toBeOnTheScreen()
   })
 
-  it("does not load the player when the slide is far from the current one", () => {
-    renderWithWrappers(<TestWrapper index={3} />)
+  it("does not load the player when the slide is far from the current one", async () => {
+    await renderWithWrappers(<TestWrapper index={3} />)
 
     expect(screen.queryByTestId("vimeo-player-webview")).not.toBeOnTheScreen()
   })
 
-  it("hides the cover and starts the player on tap", () => {
-    renderWithWrappers(<TestWrapper index={0} />)
+  it("hides the cover and starts the player on tap", async () => {
+    await renderWithWrappers(<TestWrapper index={0} />)
 
-    fireEvent.press(screen.getByLabelText("Vimeo Play Button"))
+    await fireEvent.press(screen.getByLabelText("Vimeo Play Button"))
 
     expect(screen.queryByLabelText("Vimeo Play Button")).not.toBeOnTheScreen()
     expect(mockInjectJavaScript).toHaveBeenCalledWith(PLAY_SCRIPT)

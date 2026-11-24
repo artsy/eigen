@@ -1,4 +1,4 @@
-import { act, fireEvent } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { CareerHighlightsRailTestQuery } from "__generated__/CareerHighlightsRailTestQuery.graphql"
 import { CareerHighlightsRail } from "app/Scenes/MyCollection/Screens/Insights/CareerHighlightsRail"
 import { navigate } from "app/system/navigation/navigate"
@@ -27,7 +27,7 @@ describe("CareerHighlightsRail", () => {
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   it("renders the rail with data", async () => {
-    const { getByTestId, getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation({
@@ -48,25 +48,25 @@ describe("CareerHighlightsRail", () => {
       await flushPromiseQueue()
     })
 
-    expect(getByTestId("career-highlight-cards-flatlist")).toBeTruthy()
+    expect(screen.getByTestId("career-highlight-cards-flatlist")).toBeTruthy()
     // singular
-    expect(getByText("Artist was included in a major biennial.")).toBeTruthy()
-    expect(getByText("Artist was in a group show at a major institution.")).toBeTruthy()
+    expect(screen.getByText("Artist was included in a major biennial.")).toBeTruthy()
+    expect(screen.getByText("Artist was in a group show at a major institution.")).toBeTruthy()
 
     // plural
-    expect(getByText("Artists are collected by major institutions.")).toBeTruthy()
-    expect(getByText("Artists were reviewed by major art publications.")).toBeTruthy()
+    expect(screen.getByText("Artists are collected by major institutions.")).toBeTruthy()
+    expect(screen.getByText("Artists were reviewed by major art publications.")).toBeTruthy()
 
     // promo card
-    expect(getByText("Discover career highlights for your artists.")).toBeTruthy()
+    expect(screen.getByText("Discover career highlights for your artists.")).toBeTruthy()
 
-    expect(() => getByText("Artist had a solo show at a major institution.")).toThrow(
+    expect(() => screen.getByText("Artist had a solo show at a major institution.")).toThrow(
       "Unable to find an element with text: Artist had a solo show at a major institution."
     )
   })
 
   it("does not render when the count is 0 for all kinds", async () => {
-    const { queryByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation({
@@ -87,11 +87,11 @@ describe("CareerHighlightsRail", () => {
       await flushPromiseQueue()
     })
 
-    expect(queryByTestId("career-highlight-cards-flatlist")).toBeFalsy()
+    expect(screen.queryByTestId("career-highlight-cards-flatlist")).toBeFalsy()
   })
 
   it("navigates to the correct screen with correct passProps", async () => {
-    const { getByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    await renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation({
@@ -108,7 +108,7 @@ describe("CareerHighlightsRail", () => {
       await flushPromiseQueue()
     })
 
-    fireEvent(getByTestId("career-highlight-card-item"), "press")
+    await fireEvent(screen.getByTestId("career-highlight-card-item"), "press")
     expect(navigate).toHaveBeenCalledWith("/my-collection/career-highlights", {
       passProps: { careerHighlightsAvailableTypes: ["BIENNIAL"], type: "BIENNIAL" },
     })

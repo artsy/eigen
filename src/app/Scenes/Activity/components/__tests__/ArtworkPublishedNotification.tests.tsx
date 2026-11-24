@@ -38,7 +38,7 @@ describe("ArtworkPublishedNotification", () => {
   })
 
   it("renders all elements", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         notification,
       }),
@@ -56,7 +56,7 @@ describe("ArtworkPublishedNotification", () => {
 
   describe("'View all works by ...' link", () => {
     it("links to follows target href", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({
           notification,
         }),
@@ -68,7 +68,7 @@ describe("ArtworkPublishedNotification", () => {
 
       const viewAllWorksByLink = screen.getByText("View all works by Tracey Emin")
 
-      fireEvent.press(viewAllWorksByLink)
+      await fireEvent.press(viewAllWorksByLink)
 
       await act(async () => {
         await flushPromiseQueue()

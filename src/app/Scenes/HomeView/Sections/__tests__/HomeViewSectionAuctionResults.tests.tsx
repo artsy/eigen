@@ -32,8 +32,8 @@ describe("HomeViewSectionAuctionResults", () => {
     `,
   })
 
-  it("renders nothing when there are no auction results", () => {
-    const { toJSON } = renderWithRelay({
+  it("renders nothing when there are no auction results", async () => {
+    const { toJSON } = await renderWithRelay({
       HomeViewComponent: () => ({
         title: "Auction Results for Artists You Follow",
       }),
@@ -46,8 +46,8 @@ describe("HomeViewSectionAuctionResults", () => {
     expect(toJSON()).toBeNull()
   })
 
-  it("renders a list of auction results", () => {
-    renderWithRelay({
+  it("renders a list of auction results", async () => {
+    await renderWithRelay({
       HomeViewSectionAuctionResults: () => ({
         internalID: "home-view-section-latest-auction-results",
         component: {
@@ -81,7 +81,7 @@ describe("HomeViewSectionAuctionResults", () => {
     expect(screen.getByText(/Auction result 1/)).toBeOnTheScreen()
     expect(screen.getByText(/Auction result 2/)).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText(/Auction result 2/))
+    await fireEvent.press(screen.getByText(/Auction result 2/))
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
         [
@@ -101,8 +101,8 @@ describe("HomeViewSectionAuctionResults", () => {
     expect(navigate).toHaveBeenCalledWith("/artist/artist-2/auction-result/auction-result-2-id")
   })
 
-  it("navigates to requested `href` destination when the user taps the 'View All' button", () => {
-    renderWithRelay({
+  it("navigates to requested `href` destination when the user taps the 'View All' button", async () => {
+    await renderWithRelay({
       HomeViewSectionAuctionResults: () => ({
         internalID: "home-view-section-latest-auction-results",
         component: {
@@ -128,7 +128,7 @@ describe("HomeViewSectionAuctionResults", () => {
     })
 
     expect(screen.getByText("View All")).toBeOnTheScreen()
-    fireEvent.press(screen.getByText("View All"))
+    await fireEvent.press(screen.getByText("View All"))
 
     expect(navigate).toHaveBeenCalledWith("/example-href")
   })

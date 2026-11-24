@@ -23,58 +23,60 @@ describe("useInitialLocation", () => {
     })
   })
 
-  it("returns the default city when nothing else is available", () => {
-    const { result } = renderHook(() => useInitialLocation(cities), { wrapper })
+  it("returns the default city when nothing else is available", async () => {
+    const { result } = await renderHook(() => useInitialLocation(cities), { wrapper })
 
     expect(result.current).toBe("new-york-ny-usa")
   })
 
-  it("ignores a previously selected city that is no longer in the list", () => {
+  it("ignores a previously selected city that is no longer in the list", async () => {
     __globalStoreTestUtils__?.injectState({
       userPrefs: { previouslySelectedCitySlug: "atlantis" },
     })
 
-    const { result } = renderHook(() => useInitialLocation(cities), { wrapper })
+    const { result } = await renderHook(() => useInitialLocation(cities), { wrapper })
 
     expect(result.current).toBe("new-york-ny-usa")
   })
 
-  it("returns the previously selected city when there is no preselected slug", () => {
+  it("returns the previously selected city when there is no preselected slug", async () => {
     __globalStoreTestUtils__?.injectState({
       userPrefs: { previouslySelectedCitySlug: "berlin-germany" },
     })
 
-    const { result } = renderHook(() => useInitialLocation(cities), { wrapper })
+    const { result } = await renderHook(() => useInitialLocation(cities), { wrapper })
 
     expect(result.current).toBe("berlin-germany")
   })
 
-  it("prefers a valid preselected city slug over the previously selected city", () => {
+  it("prefers a valid preselected city slug over the previously selected city", async () => {
     __globalStoreTestUtils__?.injectState({
       userPrefs: { previouslySelectedCitySlug: "berlin-germany" },
     })
 
-    const { result } = renderHook(() => useInitialLocation(cities, "london-united-kingdom"), {
+    const { result } = await renderHook(() => useInitialLocation(cities, "london-united-kingdom"), {
       wrapper,
     })
 
     expect(result.current).toBe("london-united-kingdom")
   })
 
-  it("falls back to the default behavior when the preselected city slug is invalid", () => {
+  it("falls back to the default behavior when the preselected city slug is invalid", async () => {
     __globalStoreTestUtils__?.injectState({
       userPrefs: { previouslySelectedCitySlug: "berlin-germany" },
     })
 
-    const { result } = renderHook(() => useInitialLocation(cities, "not-a-real-city"), { wrapper })
+    const { result } = await renderHook(() => useInitialLocation(cities, "not-a-real-city"), {
+      wrapper,
+    })
 
     expect(result.current).toBe("berlin-germany")
   })
 
-  it("prefers a valid preselected city slug over the nearest city by location", () => {
+  it("prefers a valid preselected city slug over the nearest city by location", async () => {
     ;(useLocation as jest.Mock).mockReturnValueOnce({ location: { lat: 52.52, lng: 13.405 } })
 
-    const { result } = renderHook(() => useInitialLocation(cities, "london-united-kingdom"), {
+    const { result } = await renderHook(() => useInitialLocation(cities, "london-united-kingdom"), {
       wrapper,
     })
 

@@ -18,20 +18,20 @@ describe("ArtistHeader", () => {
     `,
   })
 
-  it("displays the artwork count for an artist when present", () => {
-    renderWithRelay({ Artist: () => mockArtist })
+  it("displays the artwork count for an artist when present", async () => {
+    await renderWithRelay({ Artist: () => mockArtist })
 
     expect(screen.getByLabelText("Marcel cover image")).toBeOnTheScreen()
   })
 
-  it("displays represented by list given verifiedRepresentatives", () => {
+  it("displays represented by list given verifiedRepresentatives", async () => {
     const partner = {
       internalID: "representative-id",
       name: "Test representative",
       href: "representative-href",
       profile: { icon: { url: "image-url" } },
     }
-    renderWithRelay({
+    await renderWithRelay({
       Artist: () => ({
         ...mockArtist,
         verifiedRepresentatives: [{ partner }],
@@ -41,7 +41,7 @@ describe("ArtistHeader", () => {
     const representative = screen.getByText("Test representative")
     expect(representative).toBeOnTheScreen()
 
-    fireEvent.press(representative)
+    await fireEvent.press(representative)
     expect(navigate).toHaveBeenCalledWith("representative-href")
     expect(mockTrackEvent).toHaveBeenCalledWith(
       tracks.tappedVerifiedRepresentative(mockArtist as any, partner)

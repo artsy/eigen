@@ -44,7 +44,7 @@ describe("ArticleSectionImageCollectionImage", () => {
   })
 
   it("renders", async () => {
-    renderWithRelay()
+    await renderWithRelay()
 
     await waitFor(() => {
       expect(screen.getByTestId("palette-image")).toBeOnTheScreen()
@@ -52,7 +52,7 @@ describe("ArticleSectionImageCollectionImage", () => {
   })
 
   it("renders Artwork type", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       ArticleSectionImageCollection: () => ({
         figures: [{ __typename: "Artwork" }],
       }),

@@ -27,8 +27,8 @@ describe("ShowItem", () => {
     `,
   })
 
-  it("renders", () => {
-    renderWithRelay({ Show: () => show })
+  it("renders", async () => {
+    await renderWithRelay({ Show: () => show })
 
     expect(screen.getByTestId("show-cover")).toBeOnTheScreen()
     expect(screen.getByText(show.name)).toBeOnTheScreen()
@@ -36,10 +36,10 @@ describe("ShowItem", () => {
     expect(screen.getByText(show.exhibitionPeriod)).toBeOnTheScreen()
   })
 
-  it("navigates to the show", () => {
-    renderWithRelay({ Show: () => show })
+  it("navigates to the show", async () => {
+    await renderWithRelay({ Show: () => show })
 
-    fireEvent.press(screen.getByTestId("show-cover"))
+    await fireEvent.press(screen.getByTestId("show-cover"))
 
     expect(navigate).toHaveBeenCalledWith(show.href)
   })

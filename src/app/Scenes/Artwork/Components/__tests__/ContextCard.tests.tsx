@@ -22,23 +22,23 @@ describe("ContextCard", () => {
     `,
   })
 
-  it("renders sale name correctly", () => {
-    renderWithRelay({
+  it("renders sale name correctly", async () => {
+    await renderWithRelay({
       Artwork: () => auctionContextArtwork,
     })
 
     expect(screen.getByText("Christie’s: Prints & Multiples")).toBeOnTheScreen()
   })
 
-  it("renders formatted sale start/end date correctly", () => {
-    renderWithRelay({
+  it("renders formatted sale start/end date correctly", async () => {
+    await renderWithRelay({
       Artwork: () => auctionContextArtwork,
     })
 
     expect(screen.getByText("Ended Oct 25, 2018")).toBeOnTheScreen()
   })
 
-  it("if auction is live display in progress", () => {
+  it("if auction is live display in progress", async () => {
     const saleContextArtwork = {
       ...auctionContextArtwork,
       context: {
@@ -46,30 +46,30 @@ describe("ContextCard", () => {
         formattedStartDateTime: "In progress",
       },
     }
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => saleContextArtwork,
     })
 
     expect(screen.getByText("In progress")).toBeOnTheScreen()
   })
 
-  it("renders sale image", () => {
-    renderWithRelay({
+  it("renders sale image", async () => {
+    await renderWithRelay({
       Artwork: () => auctionContextArtwork,
     })
 
     expect(screen.getByLabelText("Context Card Image")).toBeOnTheScreen()
   })
 
-  it("renders 'Auction' if the sale is an auction", () => {
-    renderWithRelay({
+  it("renders 'Auction' if the sale is an auction", async () => {
+    await renderWithRelay({
       Artwork: () => auctionContextArtwork,
     })
 
     expect(screen.getByText("Auction")).toBeOnTheScreen()
   })
 
-  it("renders nothing if the sale is not an auction", () => {
+  it("renders nothing if the sale is not an auction", async () => {
     const saleContextArtwork = {
       ...auctionContextArtwork,
       context: {
@@ -77,7 +77,7 @@ describe("ContextCard", () => {
         isAuction: false,
       },
     }
-    const { toJSON } = renderWithRelay({
+    const { toJSON } = await renderWithRelay({
       Artwork: () => saleContextArtwork,
     })
 

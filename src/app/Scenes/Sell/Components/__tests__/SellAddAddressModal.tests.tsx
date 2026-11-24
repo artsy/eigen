@@ -35,9 +35,9 @@ const renderAddAddress = (name: string | null = "Collector") =>
   )
 
 const pickPlace = async (place = PLACE) => {
-  fireEvent.press(screen.getByTestId("sell-street-address"))
-  fireEvent.changeText(await screen.findByLabelText("Search addresses"), "Broad")
-  fireEvent.press(await screen.findByText(place.name))
+  await fireEvent.press(screen.getByTestId("sell-street-address"))
+  await fireEvent.changeText(await screen.findByLabelText("Search addresses"), "Broad")
+  await fireEvent.press(await screen.findByText(place.name))
   await waitFor(() => expect(screen.queryByLabelText("Search addresses")).not.toBeOnTheScreen())
 }
 
@@ -73,8 +73,8 @@ describe("SellAddAddressModal", () => {
     jest.clearAllMocks()
   })
 
-  it("prefills the name and locks the country to the US", () => {
-    renderAddAddress()
+  it("prefills the name and locks the country to the US", async () => {
+    await renderAddAddress()
 
     expect(screen.getByLabelText("Full name")).toHaveDisplayValue("Collector")
     expect(screen.getByLabelText("Country")).toHaveDisplayValue("United States")
@@ -82,7 +82,7 @@ describe("SellAddAddressModal", () => {
   })
 
   it("fills the city, state and ZIP code from the picked street", async () => {
-    renderAddAddress()
+    await renderAddAddress()
 
     await pickPlace()
 
@@ -96,9 +96,9 @@ describe("SellAddAddressModal", () => {
   })
 
   it("clears the fields the newly picked place doesn’t have", async () => {
-    renderAddAddress()
+    await renderAddAddress()
     await pickPlace()
-    fireEvent.changeText(screen.getByLabelText("Apt, floor, suite, etc."), "Floor 3")
+    await fireEvent.changeText(screen.getByLabelText("Apt, floor, suite, etc."), "Floor 3")
     ;(getLocationPredictions as jest.Mock).mockResolvedValue([OTHER_PLACE])
     ;(getLocationDetails as jest.Mock).mockResolvedValue({
       ...OTHER_PLACE,
@@ -122,7 +122,7 @@ describe("SellAddAddressModal", () => {
       countryCode: "US",
       postalCode: "10013",
     })
-    renderAddAddress()
+    await renderAddAddress()
 
     await pickPlace()
 
@@ -130,35 +130,35 @@ describe("SellAddAddressModal", () => {
     expect(await screen.findByText("Enter a street number.")).toBeOnTheScreen()
     expect(screen.getByText("Save Address")).toBeDisabled()
 
-    fireEvent.changeText(screen.getByLabelText("Address line 1"), "401")
+    await fireEvent.changeText(screen.getByLabelText("Address line 1"), "401")
     expect(await screen.findByText("Enter a street name.")).toBeOnTheScreen()
     expect(screen.getByText("Save Address")).toBeDisabled()
 
-    fireEvent.changeText(screen.getByLabelText("Address line 1"), "401 Broadway")
+    await fireEvent.changeText(screen.getByLabelText("Address line 1"), "401 Broadway")
     await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
   })
 
   it("doesn’t take a numbered street for a building number", async () => {
-    renderAddAddress()
+    await renderAddAddress()
     await pickPlace()
 
-    fireEvent.changeText(screen.getByLabelText("Address line 1"), "5th Avenue")
+    await fireEvent.changeText(screen.getByLabelText("Address line 1"), "5th Avenue")
     expect(await screen.findByText("Enter a street number.")).toBeOnTheScreen()
     expect(screen.getByText("Save Address")).toBeDisabled()
 
-    fireEvent.changeText(screen.getByLabelText("Address line 1"), "1 5th Avenue")
+    await fireEvent.changeText(screen.getByLabelText("Address line 1"), "1 5th Avenue")
     await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
   })
 
   it("saves an address typed without the search", async () => {
-    renderAddAddress()
+    await renderAddAddress()
 
-    fireEvent.changeText(screen.getByLabelText("Address line 1"), "401 Broadway")
-    fireEvent.changeText(screen.getByLabelText("City"), "New York")
-    fireEvent.changeText(screen.getByLabelText("State, region or province"), "NY")
-    fireEvent.changeText(screen.getByLabelText("ZIP/Postal code"), "10013")
+    await fireEvent.changeText(screen.getByLabelText("Address line 1"), "401 Broadway")
+    await fireEvent.changeText(screen.getByLabelText("City"), "New York")
+    await fireEvent.changeText(screen.getByLabelText("State, region or province"), "NY")
+    await fireEvent.changeText(screen.getByLabelText("ZIP/Postal code"), "10013")
     await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
-    fireEvent.press(screen.getByText("Save Address"))
+    await fireEvent.press(screen.getByText("Save Address"))
 
     await waitFor(() =>
       expect(
@@ -169,40 +169,40 @@ describe("SellAddAddressModal", () => {
   })
 
   it("accepts street numbers that don’t lead the line", async () => {
-    renderAddAddress()
+    await renderAddAddress()
     await pickPlace()
 
-    fireEvent.changeText(screen.getByLabelText("Address line 1"), "W156 N8480 Pilgrim Rd")
+    await fireEvent.changeText(screen.getByLabelText("Address line 1"), "W156 N8480 Pilgrim Rd")
 
     await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
   })
 
   it("keeps Save off until the required fields are filled", async () => {
-    renderAddAddress(null)
+    await renderAddAddress(null)
 
     await waitFor(() => expect(screen.getByText("Save Address")).toBeDisabled())
 
     await pickPlace()
     expect(screen.getByText("Save Address")).toBeDisabled()
 
-    fireEvent.changeText(screen.getByLabelText("Full name"), "Collector")
+    await fireEvent.changeText(screen.getByLabelText("Full name"), "Collector")
     await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
 
-    fireEvent.changeText(screen.getByLabelText("ZIP/Postal code"), "10a0")
+    await fireEvent.changeText(screen.getByLabelText("ZIP/Postal code"), "10a0")
     expect(screen.getByLabelText("ZIP/Postal code")).toHaveDisplayValue("100")
     await waitFor(() => expect(screen.getByText("Save Address")).toBeDisabled())
 
-    fireEvent.changeText(screen.getByLabelText("ZIP/Postal code"), "10013")
+    await fireEvent.changeText(screen.getByLabelText("ZIP/Postal code"), "10013")
     await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
   })
 
   it("saves the address and hands it back", async () => {
-    renderAddAddress()
+    await renderAddAddress()
 
     await pickPlace()
-    fireEvent.changeText(screen.getByLabelText("Apt, floor, suite, etc."), "Floor 3")
+    await fireEvent.changeText(screen.getByLabelText("Apt, floor, suite, etc."), "Floor 3")
     await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
-    fireEvent.press(screen.getByText("Save Address"))
+    await fireEvent.press(screen.getByText("Save Address"))
 
     await waitFor(() =>
       expect(
@@ -226,11 +226,11 @@ describe("SellAddAddressModal", () => {
   })
 
   it("shows the error when the address can’t be saved", async () => {
-    renderAddAddress()
+    await renderAddAddress()
 
     await pickPlace()
     await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
-    fireEvent.press(screen.getByText("Save Address"))
+    await fireEvent.press(screen.getByText("Save Address"))
 
     await waitFor(() =>
       expect(
@@ -247,41 +247,41 @@ describe("SellAddAddressModal", () => {
   })
 
   it("stays open while saving", async () => {
-    renderAddAddress()
+    await renderAddAddress()
 
     await pickPlace()
     await waitFor(() => expect(screen.getByText("Save Address")).toBeEnabled())
-    fireEvent.press(screen.getByText("Save Address"))
+    await fireEvent.press(screen.getByText("Save Address"))
     await waitFor(() =>
       expect(
         getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name
       ).toBe("useCreateUserAddressMutation")
     )
 
-    pressAndroidBack()
-    fireEvent.press(screen.getByLabelText("Close"))
+    await pressAndroidBack()
+    await fireEvent.press(screen.getByLabelText("Close"))
 
     expect(onDismiss).not.toHaveBeenCalled()
   })
 
   it("closes the street search before the form on Android Back", async () => {
-    renderAddAddress()
+    await renderAddAddress()
 
-    fireEvent.press(screen.getByTestId("sell-street-address"))
+    await fireEvent.press(screen.getByTestId("sell-street-address"))
     expect(await screen.findByLabelText("Search addresses")).toBeOnTheScreen()
 
-    act(() => pressAndroidBack())
+    await act(() => pressAndroidBack())
     await waitFor(() => expect(screen.queryByLabelText("Search addresses")).not.toBeOnTheScreen())
     expect(onDismiss).not.toHaveBeenCalled()
 
-    act(() => pressAndroidBack())
+    await act(() => pressAndroidBack())
     expect(onDismiss).toHaveBeenCalled()
   })
 
-  it("closes without saving", () => {
-    renderAddAddress()
+  it("closes without saving", async () => {
+    await renderAddAddress()
 
-    fireEvent.press(screen.getByLabelText("Close"))
+    await fireEvent.press(screen.getByLabelText("Close"))
 
     expect(onDismiss).toHaveBeenCalled()
     expect(onSaved).not.toHaveBeenCalled()

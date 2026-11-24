@@ -23,8 +23,8 @@ describe("OtherWorks", () => {
     `,
   })
 
-  it("renders no grids if there are none provided", () => {
-    const { toJSON } = renderWithRelay({
+  it("renders no grids if there are none provided", async () => {
+    const { toJSON } = await renderWithRelay({
       Artwork: () => ({
         contextGrids: null,
       }),
@@ -33,8 +33,8 @@ describe("OtherWorks", () => {
     expect(toJSON()).toBeNull()
   })
 
-  it("renders no grids if an empty array is provided", () => {
-    const { toJSON } = renderWithRelay({
+  it("renders no grids if an empty array is provided", async () => {
+    const { toJSON } = await renderWithRelay({
       Artwork: () => ({
         contextGrids: [],
       }),
@@ -43,8 +43,8 @@ describe("OtherWorks", () => {
     expect(toJSON()).toBeNull()
   })
 
-  it("renders the grid if one is provided", () => {
-    renderWithRelay({
+  it("renders the grid if one is provided", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         contextGrids: [firstArtworkGridItem],
       }),
@@ -52,12 +52,12 @@ describe("OtherWorks", () => {
 
     expect(screen.getByText("Other works by Andy Warhol")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByLabelText("Context Grid CTA"))
+    await fireEvent.press(screen.getByLabelText("Context Grid CTA"))
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
   })
 
-  it("renders the grids if multiple are provided", () => {
-    renderWithRelay({
+  it("renders the grids if multiple are provided", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         contextGrids: [firstArtworkGridItem, secondArtworkGridItem],
       }),
@@ -68,14 +68,14 @@ describe("OtherWorks", () => {
 
     const buttons = screen.getAllByLabelText("Context Grid CTA")
 
-    fireEvent.press(buttons[0])
+    await fireEvent.press(buttons[0])
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
 
-    fireEvent.press(buttons[1])
+    await fireEvent.press(buttons[1])
     expect(navigate).toHaveBeenCalledWith("/gagosian-gallery")
   })
 
-  it("renders only grids with artworks", () => {
+  it("renders only grids with artworks", async () => {
     const contextGrids = [
       firstArtworkGridItem,
       {
@@ -92,7 +92,7 @@ describe("OtherWorks", () => {
       },
     ]
 
-    renderWithRelay({
+    await renderWithRelay({
       Artwork: () => ({
         contextGrids,
       }),

@@ -21,19 +21,19 @@ describe("ClearAllButton", () => {
   })
 
   it("Is enabled when there are active filters", async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <ClearAllButton />
       </SavedSearchStoreProvider>
     )
 
-    fireEvent(screen.getByText("Clear All"), "onPress")
+    await fireEvent(screen.getByText("Clear All"), "onPress")
 
     expect(Alert.alert).toHaveBeenCalled()
   })
 
   it("Is disabled on load", async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <SavedSearchStoreProvider
         runtimeModel={{
           ...initialData,
@@ -44,13 +44,13 @@ describe("ClearAllButton", () => {
       </SavedSearchStoreProvider>
     )
 
-    fireEvent(screen.getByText("Clear All"), "onPress")
+    await fireEvent(screen.getByText("Clear All"), "onPress")
 
     expect(Alert.alert).not.toHaveBeenCalled()
   })
 
   it("Is disabled when array attrbutes are empty", async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <SavedSearchStoreProvider
         runtimeModel={{
           ...initialData,
@@ -63,7 +63,7 @@ describe("ClearAllButton", () => {
       </SavedSearchStoreProvider>
     )
 
-    fireEvent(screen.getByText("Clear All"), "onPress")
+    await fireEvent(screen.getByText("Clear All"), "onPress")
 
     expect(Alert.alert).not.toHaveBeenCalled()
   })

@@ -50,7 +50,7 @@ describe("AvatarStep", () => {
   })
 
   it("renders", async () => {
-    renderWithRelay({ Me: () => user })
+    await renderWithRelay({ Me: () => user })
 
     expect(await screen.findByText("Add a profile image")).toBeOnTheScreen()
     expect(
@@ -65,10 +65,10 @@ describe("AvatarStep", () => {
   it("sets the image", async () => {
     const spy = jest.spyOn(imageUtils, "getConvertedImageUrlFromS3").mockResolvedValue("geminiUrl")
 
-    renderWithRelay({ Me: () => user })
+    await renderWithRelay({ Me: () => user })
 
     const imageButton = await screen.findByText("Choose an Image")
-    fireEvent.press(imageButton)
+    await fireEvent.press(imageButton)
 
     await waitFor(() => expect(spy).toHaveBeenCalledWith(photos[0].path))
 
@@ -81,7 +81,7 @@ describe("AvatarStep", () => {
   it("renders given an image already set", async () => {
     progressState = { iconUrl: { localPath: "localPath", geminiUrl: "geminiUrl" } }
 
-    renderWithRelay({ Me: () => user })
+    await renderWithRelay({ Me: () => user })
 
     expect(await screen.findByText("Change Image")).toBeOnTheScreen()
   })

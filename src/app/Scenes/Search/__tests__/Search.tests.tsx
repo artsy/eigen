@@ -27,7 +27,7 @@ describe("Search", () => {
   })
 
   it("should render a text input with placeholder and no pills", async () => {
-    renderWithWrappers(<SearchScreen route={{} as any} navigation={{} as any} />)
+    await renderWithWrappers(<SearchScreen route={{} as any} navigation={{} as any} />)
 
     await screen.findByPlaceholderText("Search Artsy")
 
@@ -42,11 +42,11 @@ describe("Search", () => {
     expect(screen.getByText("Discover Daily")).toBeOnTheScreen()
     expect(screen.queryByText("Explore art on view")).not.toBeOnTheScreen()
 
-    fireEvent.changeText(searchInput, "Ba")
+    await fireEvent.changeText(searchInput, "Ba")
   })
 
   it("hides the Art Assistant entry point when its experiment is off", async () => {
-    renderWithWrappers(<SearchScreen route={{} as any} navigation={{} as any} />)
+    await renderWithWrappers(<SearchScreen route={{} as any} navigation={{} as any} />)
 
     await screen.findByPlaceholderText("Search Artsy")
 
@@ -56,14 +56,14 @@ describe("Search", () => {
   it("opens Art Assistant when its experiment is on", async () => {
     jest.mocked(useEnableArtAssistant).mockReturnValue(true)
 
-    renderWithWrappers(<SearchScreen route={{} as any} navigation={{} as any} />)
+    await renderWithWrappers(<SearchScreen route={{} as any} navigation={{} as any} />)
 
     await screen.findByPlaceholderText("Search Artsy")
     const button = screen.getByTestId("art-assistant-search-button")
 
     expect(button).toHaveProp("hitSlop", ICON_HIT_SLOP)
 
-    fireEvent.press(button)
+    await fireEvent.press(button)
 
     expect(navigate).toHaveBeenCalledWith("/art-assistant")
   })
@@ -71,11 +71,11 @@ describe("Search", () => {
   it("reports the Art Assistant entry point as the search header icon", async () => {
     jest.mocked(useEnableArtAssistant).mockReturnValue(true)
 
-    renderWithWrappers(<SearchScreen route={{} as any} navigation={{} as any} />)
+    await renderWithWrappers(<SearchScreen route={{} as any} navigation={{} as any} />)
 
     await screen.findByPlaceholderText("Search Artsy")
 
-    fireEvent.press(screen.getByTestId("art-assistant-search-button"))
+    await fireEvent.press(screen.getByTestId("art-assistant-search-button"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedArtAssistant",
@@ -86,10 +86,10 @@ describe("Search", () => {
     })
   })
 
-  it("reserves space for the Art Assistant entry point while Search is loading", () => {
+  it("reserves space for the Art Assistant entry point while Search is loading", async () => {
     jest.mocked(useEnableArtAssistant).mockReturnValue(true)
 
-    renderWithWrappers(<SearchPlaceholder />)
+    await renderWithWrappers(<SearchPlaceholder />)
 
     expect(screen.getByTestId("art-assistant-search-button-placeholder")).toBeOnTheScreen()
   })

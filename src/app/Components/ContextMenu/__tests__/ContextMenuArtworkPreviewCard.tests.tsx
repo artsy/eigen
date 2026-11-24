@@ -16,8 +16,8 @@ describe("ContextMenuArtworkPreviewCard", () => {
     `,
   })
 
-  it("renders artwork details correctly", () => {
-    renderWithRelay({
+  it("renders artwork details correctly", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         artistNames: "John Doe",
         title: "Example Artwork",
@@ -31,8 +31,8 @@ describe("ContextMenuArtworkPreviewCard", () => {
     expect(screen.getByText("Gallery A")).toBeOnTheScreen()
   })
 
-  it("renders artwork image", () => {
-    renderWithRelay({
+  it("renders artwork image", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         contextMenuImage: {
           aspectRatio: 1.5,

@@ -10,7 +10,7 @@ describe(ExecutionQueue, () => {
     let startedTask2 = false
 
     // task 1
-    queue?.executeInQueue(
+    const task1 = queue.executeInQueue(
       async () =>
         await new Promise<void>((resolve) => {
           startedTask1 = true
@@ -26,7 +26,7 @@ describe(ExecutionQueue, () => {
     expect(finishedTask1).toBe(false)
 
     // task 2
-    queue?.executeInQueue(async () => {
+    const task2 = queue.executeInQueue(async () => {
       startedTask2 = true
     })
 
@@ -40,5 +40,7 @@ describe(ExecutionQueue, () => {
     await flushPromiseQueue()
 
     expect(startedTask2).toBe(true)
+
+    await Promise.all([task1, task2])
   })
 })

@@ -3,8 +3,8 @@ import { CityEventSectionHeader } from "app/Scenes/CityGuide/Components/CityEven
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("CityEventSectionHeader", () => {
-  it("renders its title and reports itself expanded", () => {
-    renderWithWrappers(
+  it("renders its title and reports itself expanded", async () => {
+    await renderWithWrappers(
       <CityEventSectionHeader title="Farringdon" isExpanded onToggle={jest.fn()} />
     )
 
@@ -14,8 +14,8 @@ describe("CityEventSectionHeader", () => {
     )
   })
 
-  it("reports itself collapsed", () => {
-    renderWithWrappers(
+  it("reports itself collapsed", async () => {
+    await renderWithWrappers(
       <CityEventSectionHeader title="Farringdon" isExpanded={false} onToggle={jest.fn()} />
     )
 
@@ -24,11 +24,13 @@ describe("CityEventSectionHeader", () => {
     )
   })
 
-  it("calls onToggle when pressed", () => {
+  it("calls onToggle when pressed", async () => {
     const onToggle = jest.fn()
 
-    renderWithWrappers(<CityEventSectionHeader title="Farringdon" isExpanded onToggle={onToggle} />)
-    fireEvent.press(screen.getByTestId("city-event-section-header"))
+    await renderWithWrappers(
+      <CityEventSectionHeader title="Farringdon" isExpanded onToggle={onToggle} />
+    )
+    await fireEvent.press(screen.getByTestId("city-event-section-header"))
 
     expect(onToggle).toHaveBeenCalledTimes(1)
   })

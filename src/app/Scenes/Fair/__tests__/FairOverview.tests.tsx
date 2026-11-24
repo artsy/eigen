@@ -17,15 +17,15 @@ describe("FairOverview", () => {
     `,
   })
 
-  it("renders", () => {
-    renderWithRelay()
+  it("renders", async () => {
+    await renderWithRelay()
 
     expect(screen.getByText(/mock-value-for-field-"summary"/)).toBeOnTheScreen()
     expect(screen.getByText("More info")).toBeOnTheScreen()
   })
 
-  it("renders the necessary components when fair is active", () => {
-    renderWithRelay({
+  it("renders the necessary components when fair is active", async () => {
+    await renderWithRelay({
       Fair: () => ({
         isActive: true,
         summary: "The biggest art fair in Hong Kong",
@@ -43,8 +43,8 @@ describe("FairOverview", () => {
     expect(screen.getByText("Works by Artists You Follow")).toBeOnTheScreen()
   })
 
-  it("renders the About when Summary isn't available", () => {
-    renderWithRelay({
+  it("renders the About when Summary isn't available", async () => {
+    await renderWithRelay({
       Fair: () => ({
         about: "A great place to buy art",
         summary: "",
@@ -54,8 +54,8 @@ describe("FairOverview", () => {
     expect(screen.getByText("A great place to buy art")).toBeOnTheScreen()
   })
 
-  it("renders empty state given no data", () => {
-    renderWithRelay({
+  it("renders empty state given no data", async () => {
+    await renderWithRelay({
       Fair: () => ({
         summary: null,
         about: null,
@@ -74,8 +74,8 @@ describe("FairOverview", () => {
     expect(screen.queryByText("Works by Artists You Follow")).not.toBeOnTheScreen()
   })
 
-  it("doest not render the artists you follow rail if there is no artwork", () => {
-    renderWithRelay({
+  it("doest not render the artists you follow rail if there is no artwork", async () => {
+    await renderWithRelay({
       Fair: () => ({
         isActive: true,
         filterArtworksConnection: {
@@ -87,19 +87,19 @@ describe("FairOverview", () => {
     expect(screen.queryByText("Works by Artists You Follow")).not.toBeOnTheScreen()
   })
 
-  it("navigates to the fair info page on press of More Info", () => {
-    renderWithRelay({
+  it("navigates to the fair info page on press of More Info", async () => {
+    await renderWithRelay({
       Fair: () => ({
         slug: "art-basel-hong-kong-2020",
       }),
     })
 
-    fireEvent.press(screen.getByText("More info"))
+    await fireEvent.press(screen.getByText("More info"))
     expect(navigate).toHaveBeenCalledWith("/fair/art-basel-hong-kong-2020/info")
   })
 
-  it("does not show the More Info link if there is no info to show", () => {
-    renderWithRelay({
+  it("does not show the More Info link if there is no info to show", async () => {
+    await renderWithRelay({
       Fair: () => ({
         about: "",
         contact: "",

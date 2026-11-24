@@ -16,8 +16,8 @@ describe("SalesAuctionsOverview", () => {
     jest.clearAllMocks()
   })
 
-  it("renders both CurrentlyRunningAuctions and UpcomingAuctions components", () => {
-    renderWithRelay({
+  it("renders both CurrentlyRunningAuctions and UpcomingAuctions components", async () => {
+    await renderWithRelay({
       Viewer: () => ({
         sales: {
           edges: [
@@ -35,8 +35,8 @@ describe("SalesAuctionsOverview", () => {
     expect(screen.getByText("Upcoming Auctions")).toBeOnTheScreen()
   })
 
-  it("renders nothing when no auctions", () => {
-    renderWithRelay({
+  it("renders nothing when no auctions", async () => {
+    await renderWithRelay({
       Viewer: () => ({
         sales: {
           edges: [],

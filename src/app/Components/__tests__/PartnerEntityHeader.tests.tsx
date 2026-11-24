@@ -16,8 +16,8 @@ describe("PartnerEntityHeader", () => {
     `,
   })
 
-  it("renders correctly", () => {
-    renderWithRelay({
+  it("renders correctly", async () => {
+    await renderWithRelay({
       Partner: () => ({
         name: "Example Partner Name",
         cities: ["New York", "Berlin", "Tokyo", "Milan"],

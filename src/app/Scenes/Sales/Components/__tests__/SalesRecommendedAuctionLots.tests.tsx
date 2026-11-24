@@ -15,14 +15,14 @@ describe("SalesRecommendedAuctionLots", () => {
     variables: { includeBackfill: true },
   })
 
-  it("renders without throwing errors", () => {
-    renderWithRelay()
+  it("renders without throwing errors", async () => {
+    await renderWithRelay()
 
     expect(screen.getByText("Your Auction Picks")).toBeOnTheScreen()
   })
 
-  it("renders RecommendedAuctionLotsRail when viewer data is available", () => {
-    renderWithRelay({
+  it("renders RecommendedAuctionLotsRail when viewer data is available", async () => {
+    await renderWithRelay({
       Viewer: () => ({
         artworksConnection: {
           edges: [
@@ -40,7 +40,7 @@ describe("SalesRecommendedAuctionLots", () => {
 
     const header = screen.getByText("Your Auction Picks")
     expect(header).toBeOnTheScreen()
-    fireEvent.press(header)
+    await fireEvent.press(header)
 
     expect(navigate).toHaveBeenCalledWith("/auctions/lots-for-you-ending-soon")
 

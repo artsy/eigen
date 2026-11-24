@@ -27,8 +27,8 @@ describe("OnboardingSocialLink", () => {
     providerToBeLinked: "facebook" as OAuthProvider,
   }
 
-  const getWrapper = (routeParams?: OnboardingNavigationStack["OnboardingSocialLink"]) => {
-    renderWithWrappers(
+  const getWrapper = async (routeParams?: OnboardingNavigationStack["OnboardingSocialLink"]) => {
+    await renderWithWrappers(
       <RelayEnvironmentProvider environment={mockEnvironment}>
         <SafeAreaProvider initialSafeAreaInsets={{ top: 1, left: 2, right: 3, bottom: 4 }}>
           <OnboardingSocialLink
@@ -45,11 +45,11 @@ describe("OnboardingSocialLink", () => {
       const mockAuthGoogle = jest.fn(() => ({ success: true })) as any
       GlobalStore.actions.auth.authGoogle = mockAuthGoogle
       const params = { ...defaultParams, providers: ["email", "google"] as OAuthProvider[] }
-      getWrapper(params)
+      await getWrapper(params)
 
       const linkWithGoogle = screen.getByTestId("linkWithGoogle")
       expect(linkWithGoogle).toBeDefined()
-      fireEvent.press(linkWithGoogle)
+      await fireEvent.press(linkWithGoogle)
 
       expect(mockAuthGoogle).toBeCalledWith(
         expect.objectContaining({
@@ -59,7 +59,7 @@ describe("OnboardingSocialLink", () => {
       )
     })
 
-    it("Apple Link Account Button logs in With Apple and passes onSignIn callback", () => {
+    it("Apple Link Account Button logs in With Apple and passes onSignIn callback", async () => {
       Platform.OS = "ios"
       Object.defineProperty(Platform, "Version", {
         get: () => 14,
@@ -76,16 +76,16 @@ describe("OnboardingSocialLink", () => {
           appleUid: "appleUid",
         },
       }
-      getWrapper(params)
+      await getWrapper(params)
 
       const linkWithApple = screen.getByTestId("linkWithApple")
-      fireEvent.press(linkWithApple)
+      await fireEvent.press(linkWithApple)
       expect(mockAuthApple).toBeCalledWith({
         onSignIn: expect.any(Function),
       })
     })
 
-    it("Facebook Link Account Button logs in With Facebook and passes onSignIn callback", () => {
+    it("Facebook Link Account Button logs in With Facebook and passes onSignIn callback", async () => {
       const mockAuthFB = jest.fn(() => ({ success: true })) as any
       GlobalStore.actions.auth.authFacebook = mockAuthFB
 
@@ -94,23 +94,23 @@ describe("OnboardingSocialLink", () => {
         providers: ["email", "facebook"] as OAuthProvider[],
         providerToBeLinked: "google" as OAuthProvider,
       }
-      getWrapper(params)
+      await getWrapper(params)
 
       const linkWithFacebook = screen.getByTestId("linkWithFacebook")
-      fireEvent.press(linkWithFacebook)
+      await fireEvent.press(linkWithFacebook)
       expect(mockAuthFB).toBeCalledWith({
         signInOrUp: "signIn",
         onSignIn: expect.any(Function),
       })
     })
 
-    it("Facebook Link Account Button shows body text when Facebook is the only provider", () => {
+    it("Facebook Link Account Button shows body text when Facebook is the only provider", async () => {
       const params = {
         ...defaultParams,
         providers: ["facebook"] as OAuthProvider[],
         providerToBeLinked: "google" as OAuthProvider,
       }
-      getWrapper(params)
+      await getWrapper(params)
       expect(screen.getByTestId("linkWithFacebook")).toBeDefined()
       expect(
         screen.getByText(
@@ -119,12 +119,12 @@ describe("OnboardingSocialLink", () => {
       ).toBeDefined()
     })
 
-    it("Email Link Account Button switches screen to show only password form", () => {
-      getWrapper()
+    it("Email Link Account Button switches screen to show only password form", async () => {
+      await getWrapper()
       expect(() => screen.getByTestId("artsySocialLinkPasswordInput")).toThrow(
         "Unable to find an element with testID: artsySocialLinkPasswordInput"
       )
-      fireEvent.press(screen.getByTestId("linkWithEmail"))
+      await fireEvent.press(screen.getByTestId("linkWithEmail"))
       expect(screen.getByTestId("artsySocialLinkPasswordInput")).toBeDefined()
     })
   })

@@ -36,7 +36,7 @@ describe("HomeViewSectionCard", () => {
   })
 
   it("renders the section properly and handles button press", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       HomeViewSectionCard: () => ({
         internalID: "home-view-section-a-single-card-section",
         card: {
@@ -54,7 +54,7 @@ describe("HomeViewSectionCard", () => {
     expect(screen.getByText("Card Title")).toBeOnTheScreen()
     expect(screen.getByText("Some additional card text")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("See more"))
+    await fireEvent.press(screen.getByText("See more"))
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       [
         {

@@ -24,8 +24,8 @@ describe("PartnerOfferCreatedNotification", () => {
 
   describe("available notification", () => {
     describe("when the offer is from Saves", () => {
-      it("renders all elements", () => {
-        renderWithRelay({ Me: () => ({ notification: availableNotification }) })
+      it("renders all elements", async () => {
+        await renderWithRelay({ Me: () => ({ notification: availableNotification }) })
 
         expect(screen.getByText("Offers")).toBeOnTheScreen()
         expect(screen.getByText("Limited-Time Offer")).toBeOnTheScreen()
@@ -39,10 +39,10 @@ describe("PartnerOfferCreatedNotification", () => {
     })
 
     describe("when the offer is not from Saves", () => {
-      it("renders all elements", () => {
+      it("renders all elements", async () => {
         const { item } = availableNotification
 
-        renderWithRelay({
+        await renderWithRelay({
           Me: () => ({
             notification: {
               ...availableNotification,
@@ -67,8 +67,8 @@ describe("PartnerOfferCreatedNotification", () => {
   })
 
   describe("expired notification", () => {
-    it("renders all elements", () => {
-      renderWithRelay({ Me: () => ({ notification: expiredNotification }) })
+    it("renders all elements", async () => {
+      await renderWithRelay({ Me: () => ({ notification: expiredNotification }) })
 
       expect(screen.getByText("Offers")).toBeOnTheScreen()
       expect(screen.getByText("Limited-Time Offer")).toBeOnTheScreen()
@@ -77,26 +77,26 @@ describe("PartnerOfferCreatedNotification", () => {
       ).toBeOnTheScreen()
     })
 
-    it("navigates to the Saves", () => {
-      renderWithRelay({ Me: () => ({ notification: expiredNotification }) })
+    it("navigates to the Saves", async () => {
+      await renderWithRelay({ Me: () => ({ notification: expiredNotification }) })
 
       const manageSavesLink = screen.getByText("Manage Saves")
 
-      fireEvent.press(manageSavesLink)
+      await fireEvent.press(manageSavesLink)
 
       expect(navigate).toHaveBeenCalledWith("/favorites/saves")
     })
 
-    it("renders correct offer status and CTA when expired", () => {
-      renderWithRelay({ Me: () => ({ notification: expiredNotification }) })
+    it("renders correct offer status and CTA when expired", async () => {
+      await renderWithRelay({ Me: () => ({ notification: expiredNotification }) })
 
       expect(screen.getByText("Expired")).toBeOnTheScreen()
     })
   })
 
   describe("price hidden notification", () => {
-    it("renders the proper copy", () => {
-      renderWithRelay({ Me: () => ({ notification: priceHiddenNotification }) })
+    it("renders the proper copy", async () => {
+      await renderWithRelay({ Me: () => ({ notification: priceHiddenNotification }) })
 
       expect(screen.getByText("Offers")).toBeOnTheScreen()
       expect(screen.getByText("Limited-Time Offer")).toBeOnTheScreen()

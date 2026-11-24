@@ -20,7 +20,7 @@ describe("ArtworkListEmptyState", () => {
   })
 
   it("should render correct texts for default artwork list", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({ artworkList: { default: true } }),
     })
 
@@ -32,7 +32,7 @@ describe("ArtworkListEmptyState", () => {
   })
 
   it("should render correct texts for non-default artwork list", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({ artworkList: { default: false } }),
     })
 
@@ -49,7 +49,7 @@ describe("ArtworkListEmptyState", () => {
     })
 
     it("renderes the HideIcon if not shareable with partners", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({ artworkList: { default: false, shareableWithPartners: false } }),
       })
 
@@ -57,7 +57,7 @@ describe("ArtworkListEmptyState", () => {
     })
 
     it("does not render the HideIcon if shareable with partners", async () => {
-      renderWithRelay({
+      await renderWithRelay({
         Me: () => ({ artworkList: { default: false, shareableWithPartners: true } }),
       })
 

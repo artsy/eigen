@@ -14,14 +14,14 @@ jest.mock("@react-navigation/native", () => ({
 describe("useRefreshLiveHomeViewSections", () => {
   let cleanupFocusEffect: void | (() => void)
 
-  const focusHome = () => {
-    act(() => {
+  const focusHome = async () => {
+    await act(() => {
       cleanupFocusEffect = mockFocusEffect()
     })
   }
 
-  const blurHome = () => {
-    act(() => {
+  const blurHome = async () => {
+    await act(() => {
       cleanupFocusEffect?.()
       cleanupFocusEffect = undefined
     })
@@ -31,66 +31,66 @@ describe("useRefreshLiveHomeViewSections", () => {
     cleanupFocusEffect = undefined
   })
 
-  it("refreshes when Home regains focus without an overlay", () => {
+  it("refreshes when Home regains focus without an overlay", async () => {
     const refresh = jest.fn()
 
-    renderHook(() => useRefreshLiveHomeViewSections({ hasLiveSections: true, refresh }))
+    await renderHook(() => useRefreshLiveHomeViewSections({ hasLiveSections: true, refresh }))
 
-    focusHome()
-    blurHome()
-    focusHome()
+    await focusHome()
+    await blurHome()
+    await focusHome()
 
     expect(refresh).toHaveBeenCalledTimes(1)
   })
 
-  it("defers a focus refresh until the Home overlay closes", () => {
+  it("defers a focus refresh until the Home overlay closes", async () => {
     const refresh = jest.fn()
-    const { result } = renderHook(() =>
+    const { result } = await renderHook(() =>
       useRefreshLiveHomeViewSections({ hasLiveSections: true, refresh })
     )
 
-    focusHome()
-    act(() => result.current.onSearchOverlayVisibilityChange(true))
-    blurHome()
-    focusHome()
+    await focusHome()
+    await act(() => result.current.onSearchOverlayVisibilityChange(true))
+    await blurHome()
+    await focusHome()
 
     expect(refresh).not.toHaveBeenCalled()
 
-    act(() => result.current.onSearchOverlayVisibilityChange(false))
+    await act(() => result.current.onSearchOverlayVisibilityChange(false))
 
     expect(refresh).toHaveBeenCalledTimes(1)
   })
 
-  it("does not refresh when the overlay opens and closes without a focus change", () => {
+  it("does not refresh when the overlay opens and closes without a focus change", async () => {
     const refresh = jest.fn()
-    const { result } = renderHook(() =>
+    const { result } = await renderHook(() =>
       useRefreshLiveHomeViewSections({ hasLiveSections: true, refresh })
     )
 
-    focusHome()
-    act(() => result.current.onSearchOverlayVisibilityChange(true))
-    act(() => result.current.onSearchOverlayVisibilityChange(false))
+    await focusHome()
+    await act(() => result.current.onSearchOverlayVisibilityChange(true))
+    await act(() => result.current.onSearchOverlayVisibilityChange(false))
 
     expect(refresh).not.toHaveBeenCalled()
   })
 
-  it("waits for the next focus if the overlay closes while Home is blurred", () => {
+  it("waits for the next focus if the overlay closes while Home is blurred", async () => {
     const refresh = jest.fn()
-    const { result } = renderHook(() =>
+    const { result } = await renderHook(() =>
       useRefreshLiveHomeViewSections({ hasLiveSections: true, refresh })
     )
 
-    focusHome()
-    act(() => result.current.onSearchOverlayVisibilityChange(true))
-    blurHome()
-    focusHome()
-    blurHome()
+    await focusHome()
+    await act(() => result.current.onSearchOverlayVisibilityChange(true))
+    await blurHome()
+    await focusHome()
+    await blurHome()
 
-    act(() => result.current.onSearchOverlayVisibilityChange(false))
+    await act(() => result.current.onSearchOverlayVisibilityChange(false))
 
     expect(refresh).not.toHaveBeenCalled()
 
-    focusHome()
+    await focusHome()
 
     expect(refresh).toHaveBeenCalledTimes(1)
   })

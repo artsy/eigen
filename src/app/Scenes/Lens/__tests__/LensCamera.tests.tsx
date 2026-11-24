@@ -44,7 +44,7 @@ describe("LensCamera", () => {
     jest.mocked(useCameraDevice).mockReturnValue(undefined)
   })
 
-  it("shows the permission placeholder (with the library button still enabled) when camera access is undetermined", () => {
+  it("shows the permission placeholder (with the library button still enabled) when camera access is undetermined", async () => {
     jest.mocked(useCameraPermission).mockReturnValue({
       hasPermission: false,
       canRequestPermission: true,
@@ -52,7 +52,7 @@ describe("LensCamera", () => {
       status: "not-determined",
     } as any)
 
-    renderWithWrappers(<LensCamera {...navigationProps} />)
+    await renderWithWrappers(<LensCamera {...navigationProps} />)
 
     expect(screen.getByText("Search with your camera")).toBeOnTheScreen()
     expect(screen.getByText("Enable Access")).toBeOnTheScreen()
@@ -61,16 +61,16 @@ describe("LensCamera", () => {
     expect(screen.queryByTestId("lens-shutter-button")).not.toBeOnTheScreen()
   })
 
-  it("returns to the previous screen when closed", () => {
-    renderWithWrappers(<LensCamera {...navigationProps} />)
+  it("returns to the previous screen when closed", async () => {
+    await renderWithWrappers(<LensCamera {...navigationProps} />)
 
-    fireEvent.press(screen.getByLabelText("Close"))
+    await fireEvent.press(screen.getByLabelText("Close"))
 
     expect(goBack).toHaveBeenCalledTimes(1)
   })
 
-  it("shows the Artsy Lens guidance and a photo icon for the library", () => {
-    renderWithWrappers(<LensCamera {...navigationProps} />)
+  it("shows the Artsy Lens guidance and a photo icon for the library", async () => {
+    await renderWithWrappers(<LensCamera {...navigationProps} />)
 
     expect(screen.getByText("ARTSY LENS")).toBeOnTheScreen()
     expect(screen.getByText("See something you love?")).toBeOnTheScreen()
@@ -78,7 +78,7 @@ describe("LensCamera", () => {
     expect(screen.getByTestId("lens-library-photo-icon")).toBeOnTheScreen()
   })
 
-  it("turns the camera torch off after it has been enabled", () => {
+  it("turns the camera torch off after it has been enabled", async () => {
     jest.mocked(useCameraPermission).mockReturnValue({
       hasPermission: true,
       canRequestPermission: false,
@@ -90,18 +90,18 @@ describe("LensCamera", () => {
       supportsFocusMetering: true,
     } as any)
 
-    renderWithWrappers(<LensCamera {...navigationProps} />)
+    await renderWithWrappers(<LensCamera {...navigationProps} />)
 
     expect(screen.getByTestId("lens-camera").props.torchMode).toBeUndefined()
 
-    fireEvent.press(screen.getByTestId("lens-torch-button"))
+    await fireEvent.press(screen.getByTestId("lens-torch-button"))
     expect(screen.getByTestId("lens-camera")).toHaveProp("torchMode", "on")
 
-    fireEvent.press(screen.getByTestId("lens-torch-button"))
+    await fireEvent.press(screen.getByTestId("lens-torch-button"))
     expect(screen.getByTestId("lens-camera")).toHaveProp("torchMode", "off")
   })
 
-  it("shows 'Go to Settings' (not another permission prompt) once camera access has been denied", () => {
+  it("shows 'Go to Settings' (not another permission prompt) once camera access has been denied", async () => {
     jest.mocked(useCameraPermission).mockReturnValue({
       hasPermission: false,
       canRequestPermission: false,
@@ -109,13 +109,13 @@ describe("LensCamera", () => {
       status: "denied",
     } as any)
 
-    renderWithWrappers(<LensCamera {...navigationProps} />)
+    await renderWithWrappers(<LensCamera {...navigationProps} />)
 
     expect(screen.getByText("Go to Settings")).toBeOnTheScreen()
     expect(screen.getByTestId("lens-library-button")).toBeOnTheScreen()
   })
 
-  it("shows the error state and keeps the library button enabled when the camera device fails to load", () => {
+  it("shows the error state and keeps the library button enabled when the camera device fails to load", async () => {
     jest.mocked(useCameraPermission).mockReturnValue({
       hasPermission: true,
       canRequestPermission: false,
@@ -124,7 +124,7 @@ describe("LensCamera", () => {
     } as any)
     // useCameraDevice defaults to `undefined` (see src/setupJest.tsx) — no usable back camera.
 
-    renderWithWrappers(<LensCamera {...navigationProps} />)
+    await renderWithWrappers(<LensCamera {...navigationProps} />)
 
     expect(screen.getByText("Failed to open the camera")).toBeOnTheScreen()
     expect(screen.getByTestId("lens-library-button")).toBeOnTheScreen()
@@ -135,9 +135,9 @@ describe("LensCamera", () => {
       .mocked(requestPhotos)
       .mockResolvedValue([{ path: "/tmp/picked-photo.jpg", width: 400, height: 300 } as any])
 
-    renderWithWrappers(<LensCamera {...navigationProps} />)
+    await renderWithWrappers(<LensCamera {...navigationProps} />)
 
-    fireEvent.press(screen.getByTestId("lens-library-button"))
+    await fireEvent.press(screen.getByTestId("lens-library-button"))
 
     await waitFor(() => expect(mockNavigate).toHaveBeenCalled())
 
@@ -155,9 +155,9 @@ describe("LensCamera", () => {
   it("does not navigate when the library picker is cancelled", async () => {
     jest.mocked(requestPhotos).mockResolvedValue([])
 
-    renderWithWrappers(<LensCamera {...navigationProps} />)
+    await renderWithWrappers(<LensCamera {...navigationProps} />)
 
-    fireEvent.press(screen.getByTestId("lens-library-button"))
+    await fireEvent.press(screen.getByTestId("lens-library-button"))
 
     await waitFor(() => expect(requestPhotos).toHaveBeenCalled())
 

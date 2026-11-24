@@ -15,8 +15,8 @@ describe("ComponentName", () => {
     `,
   })
 
-  it("renders data from GraphQL", () => {
-    renderWithRelay({
+  it("renders data from GraphQL", async () => {
+    await renderWithRelay({
       Viewer: () => ({
         name: "Test Name",
       }),
@@ -25,10 +25,10 @@ describe("ComponentName", () => {
     expect(screen.getByText("Test Name")).toBeOnTheScreen()
   })
 
-  it("handles error states", () => {
-    const { mockRejectLastOperation } = renderWithRelay()
+  it("handles error states", async () => {
+    const { mockRejectLastOperation } = await renderWithRelay()
 
-    mockRejectLastOperation(new Error("Network error"))
+    await mockRejectLastOperation(new Error("Network error"))
 
     expect(screen.getByText("Error message")).toBeOnTheScreen()
   })

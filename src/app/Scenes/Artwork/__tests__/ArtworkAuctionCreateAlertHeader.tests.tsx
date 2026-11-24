@@ -34,20 +34,22 @@ describe("ArtworkAuctionCreateAlertHeader", () => {
   }
 
   describe("visibility conditions", () => {
-    it("does not render when artwork is not eligible to create an alert", () => {
-      renderWithRelay({ Artwork: () => ({ ...visibleArtwork, isEligibleToCreateAlert: false }) })
+    it("does not render when artwork is not eligible to create an alert", async () => {
+      await renderWithRelay({
+        Artwork: () => ({ ...visibleArtwork, isEligibleToCreateAlert: false }),
+      })
 
       expect(screen.queryByText(/has closed/)).not.toBeOnTheScreen()
     })
 
-    it("does not render when artwork is not in auction", () => {
-      renderWithRelay({ Artwork: () => ({ ...visibleArtwork, isInAuction: false }) })
+    it("does not render when artwork is not in auction", async () => {
+      await renderWithRelay({ Artwork: () => ({ ...visibleArtwork, isInAuction: false }) })
 
       expect(screen.queryByText(/has closed/)).not.toBeOnTheScreen()
     })
 
-    it("does not render when the lot is still active", () => {
-      renderWithRelay({
+    it("does not render when the lot is still active", async () => {
+      await renderWithRelay({
         Artwork: () => ({ ...visibleArtwork }),
         Sale: () => ({ isClosed: false }),
         // endedAt: null means isLotClosed returns false; null endAt/extendedBiddingEndAt
@@ -58,8 +60,8 @@ describe("ArtworkAuctionCreateAlertHeader", () => {
       expect(screen.queryByText(/has closed/)).not.toBeOnTheScreen()
     })
 
-    it("renders when lot is closed", () => {
-      renderWithRelay({
+    it("renders when lot is closed", async () => {
+      await renderWithRelay({
         Artwork: () => ({ ...visibleArtwork }),
         Sale: () => ({ isClosed: true }),
       })
@@ -69,8 +71,8 @@ describe("ArtworkAuctionCreateAlertHeader", () => {
   })
 
   describe("closed auction message", () => {
-    it("displays artist name and title in the heading", () => {
-      renderWithRelay({
+    it("displays artist name and title in the heading", async () => {
+      await renderWithRelay({
         Artwork: () => ({ ...visibleArtwork }),
         Sale: () => ({ isClosed: true }),
       })
@@ -80,8 +82,8 @@ describe("ArtworkAuctionCreateAlertHeader", () => {
       expect(screen.getByText(/has closed/)).toBeOnTheScreen()
     })
 
-    it("omits artist prefix in heading when artistNames is null", () => {
-      renderWithRelay({
+    it("omits artist prefix in heading when artistNames is null", async () => {
+      await renderWithRelay({
         Artwork: () => ({ ...visibleArtwork, artistNames: null }),
         Sale: () => ({ isClosed: true }),
       })
@@ -91,8 +93,8 @@ describe("ArtworkAuctionCreateAlertHeader", () => {
   })
 
   describe("action buttons", () => {
-    it("shows 'Manage your Alerts' button when user has lost the bid", () => {
-      renderWithRelay({
+    it("shows 'Manage your Alerts' button when user has lost the bid", async () => {
+      await renderWithRelay({
         Artwork: () => ({ ...visibleArtwork }),
         Sale: () => ({ isClosed: true }),
         // isHighestBidder defaults to false (Relay Boolean default), so user is a bidder
@@ -103,8 +105,8 @@ describe("ArtworkAuctionCreateAlertHeader", () => {
       expect(screen.queryByText("Create Alert")).not.toBeOnTheScreen()
     })
 
-    it("shows the lost-bid subtitle when user lost the bid", () => {
-      renderWithRelay({
+    it("shows the lost-bid subtitle when user lost the bid", async () => {
+      await renderWithRelay({
         Artwork: () => ({ ...visibleArtwork }),
         Sale: () => ({ isClosed: true }),
       })
@@ -112,8 +114,8 @@ describe("ArtworkAuctionCreateAlertHeader", () => {
       expect(screen.getByText(/We've created an alert for you for similar works/)).toBeOnTheScreen()
     })
 
-    it("shows 'Create Alert' button when user is the highest bidder", () => {
-      renderWithRelay({
+    it("shows 'Create Alert' button when user is the highest bidder", async () => {
+      await renderWithRelay({
         Artwork: () => ({ ...visibleArtwork }),
         Sale: () => ({ isClosed: true }),
         LotStanding: () => ({ isHighestBidder: true }),
@@ -123,8 +125,8 @@ describe("ArtworkAuctionCreateAlertHeader", () => {
       expect(screen.queryByText("Manage your Alerts")).not.toBeOnTheScreen()
     })
 
-    it("shows the generic subtitle when user has not lost the bid", () => {
-      renderWithRelay({
+    it("shows the generic subtitle when user has not lost the bid", async () => {
+      await renderWithRelay({
         Artwork: () => ({ ...visibleArtwork }),
         Sale: () => ({ isClosed: true }),
         LotStanding: () => ({ isHighestBidder: true }),
@@ -135,8 +137,8 @@ describe("ArtworkAuctionCreateAlertHeader", () => {
   })
 
   describe("'Browse Similar Artworks' button", () => {
-    it("is shown when there are suggested artworks", () => {
-      renderWithRelay({
+    it("is shown when there are suggested artworks", async () => {
+      await renderWithRelay({
         Artwork: () => ({ ...visibleArtwork }),
         Sale: () => ({ isClosed: true }),
         ArtworkConnection: () => ({ totalCount: 5 }),
@@ -145,8 +147,8 @@ describe("ArtworkAuctionCreateAlertHeader", () => {
       expect(screen.getByText("Browse Similar Artworks")).toBeOnTheScreen()
     })
 
-    it("is not shown when there are no suggested artworks", () => {
-      renderWithRelay({
+    it("is not shown when there are no suggested artworks", async () => {
+      await renderWithRelay({
         Artwork: () => ({ ...visibleArtwork }),
         Sale: () => ({ isClosed: true }),
         ArtworkConnection: () => ({ totalCount: 0 }),
@@ -157,15 +159,15 @@ describe("ArtworkAuctionCreateAlertHeader", () => {
   })
 
   describe("tracking", () => {
-    it("tracks create alert tap when 'Create Alert' is pressed", () => {
-      renderWithRelay({
+    it("tracks create alert tap when 'Create Alert' is pressed", async () => {
+      await renderWithRelay({
         Artwork: () => ({ ...visibleArtwork }),
         Sale: () => ({ isClosed: true }),
         LotStanding: () => ({ isHighestBidder: true }),
         ArtworkConnection: () => ({ totalCount: 0 }),
       })
 
-      fireEvent.press(screen.getByText("Create Alert"))
+      await fireEvent.press(screen.getByText("Create Alert"))
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
@@ -181,15 +183,15 @@ describe("ArtworkAuctionCreateAlertHeader", () => {
       `)
     })
 
-    it("tracks browse similar artworks tap when the button is pressed", () => {
-      renderWithRelay({
+    it("tracks browse similar artworks tap when the button is pressed", async () => {
+      await renderWithRelay({
         Artwork: () => ({ ...visibleArtwork }),
         Sale: () => ({ isClosed: true }),
         LotStanding: () => ({ isHighestBidder: true }),
         ArtworkConnection: () => ({ totalCount: 5 }),
       })
 
-      fireEvent.press(screen.getByText("Browse Similar Artworks"))
+      await fireEvent.press(screen.getByText("Browse Similar Artworks"))
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`

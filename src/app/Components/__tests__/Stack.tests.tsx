@@ -4,8 +4,8 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
 
 describe("Stack", () => {
-  it("renders children in vertical layout by default", () => {
-    renderWithWrappers(
+  it("renders children in vertical layout by default", async () => {
+    await renderWithWrappers(
       <Stack>
         <Text>Item 1</Text>
         <Text>Item 2</Text>
@@ -18,8 +18,8 @@ describe("Stack", () => {
     expect(screen.getByText("Item 3")).toBeTruthy()
   })
 
-  it("renders children in horizontal layout when specified", () => {
-    renderWithWrappers(
+  it("renders children in horizontal layout when specified", async () => {
+    await renderWithWrappers(
       <Stack horizontal>
         <Text>Item 1</Text>
         <Text>Item 2</Text>

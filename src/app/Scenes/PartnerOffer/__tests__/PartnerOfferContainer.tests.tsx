@@ -25,7 +25,7 @@ describe(PartnerOfferContainer, () => {
 
     describe("and returns an error", () => {
       it("navigates to the artwork when the error is expired_partner_offer", async () => {
-        renderContainer()
+        await renderContainer()
 
         // mock onCompleted response
         mockCommit.mock.calls[0][0].onCompleted(mockResponses.expiredOffer)
@@ -43,7 +43,7 @@ describe(PartnerOfferContainer, () => {
       })
 
       it("navigates to the artwork when the error is not_acquireable", async () => {
-        renderContainer()
+        await renderContainer()
 
         mockCommit.mock.calls[0][0].onCompleted(mockResponses.notAcquireable)
 
@@ -60,7 +60,7 @@ describe(PartnerOfferContainer, () => {
       })
 
       it("navigates to the home screen when the mutation gives different error", async () => {
-        renderContainer()
+        await renderContainer()
 
         mockCommit.mock.calls[0][0].onCompleted(mockResponses.otherError)
 
@@ -77,7 +77,7 @@ describe(PartnerOfferContainer, () => {
 
     describe("and returns an an order", () => {
       it("navigates to the checkout flow", async () => {
-        renderContainer()
+        await renderContainer()
 
         mockCommit.mock.calls[0][0].onCompleted(mockResponses.availableOffer)
 
@@ -98,7 +98,7 @@ describe(PartnerOfferContainer, () => {
 
     describe("and the partner offer doesn't exist", () => {
       it("navigates to the home screen", async () => {
-        renderContainer()
+        await renderContainer()
 
         mockCommit.mock.calls[0][0].onCompleted({ error: "PartnerOfferNotFoundError" })
 

@@ -32,15 +32,15 @@ describe("MyProfileEditForm", () => {
     `,
   })
 
-  it("shows the profile verification section", () => {
-    renderWithRelay()
+  it("shows the profile verification section", async () => {
+    await renderWithRelay()
     expect(screen.getByTestId("profile-verifications")).toBeDefined()
   })
 
   describe("Email Verification", () => {
     describe("when the email is verified in Gravity", () => {
       it("is shown as verified", async () => {
-        renderWithRelay({
+        await renderWithRelay({
           Me: () => ({
             canRequestEmailConfirmation: false,
             isEmailConfirmed: true,
@@ -51,8 +51,8 @@ describe("MyProfileEditForm", () => {
     })
 
     describe("when the email is not verified in Gravity", () => {
-      it("is shown as non verified", () => {
-        renderWithRelay({
+      it("is shown as non verified", async () => {
+        await renderWithRelay({
           Me: () => ({
             canRequestEmailConfirmation: true,
             isEmailConfirmed: false,
@@ -63,7 +63,7 @@ describe("MyProfileEditForm", () => {
 
       describe("when canRequestEmailConfirmation is set to true", () => {
         it("triggers the email verification when the user presses on Verify your email", async () => {
-          const { env } = renderWithRelay({
+          const { env } = await renderWithRelay({
             Me: () => ({
               canRequestEmailConfirmation: true,
               isEmailConfirmed: false,
@@ -72,7 +72,7 @@ describe("MyProfileEditForm", () => {
           const VerifyYouEmailButton = screen.getByTestId("verify-your-email")
           expect(VerifyYouEmailButton).toBeTruthy()
 
-          fireEvent(VerifyYouEmailButton, "onPress")
+          await fireEvent(VerifyYouEmailButton, "onPress")
 
           env.mock.resolveMostRecentOperation({
             data: {
@@ -92,7 +92,7 @@ describe("MyProfileEditForm", () => {
 
       describe("when canRequestEmailConfirmation is set to false", () => {
         it("does not allow the user to request email verification", async () => {
-          renderWithRelay({
+          await renderWithRelay({
             Me: () => ({
               canRequestEmailConfirmation: false,
               isEmailConfirmed: false,
@@ -101,7 +101,7 @@ describe("MyProfileEditForm", () => {
           const VerifyYouEmailButton = screen.getByTestId("verify-your-email")
           expect(VerifyYouEmailButton).toBeTruthy()
 
-          fireEvent(VerifyYouEmailButton, "onPress")
+          await fireEvent(VerifyYouEmailButton, "onPress")
 
           expect(() => screen.getByTestId("verification-confirmation-banner")).toThrow()
         })
@@ -110,16 +110,16 @@ describe("MyProfileEditForm", () => {
   })
 
   describe("ID Verification", () => {
-    it("is shown as verified when it's verified in gravity", () => {
-      renderWithRelay({
+    it("is shown as verified when it's verified in gravity", async () => {
+      await renderWithRelay({
         Me: () => ({
           isIdentityVerified: true,
         }),
       })
       expect(screen.getByText("ID Verified")).toBeTruthy()
     })
-    it("is shown as non verified when it's not verified in gravity", () => {
-      renderWithRelay({
+    it("is shown as non verified when it's not verified in gravity", async () => {
+      await renderWithRelay({
         Me: () => ({
           isIdentityVerified: false,
         }),
@@ -130,7 +130,7 @@ describe("MyProfileEditForm", () => {
     describe("requesting IDV", () => {
       describe("with successful IDV request", () => {
         it("displays confirmation banner ", async () => {
-          const { env } = renderWithRelay({
+          const { env } = await renderWithRelay({
             Me: () => ({
               isIdentityVerified: false,
             }),
@@ -138,7 +138,7 @@ describe("MyProfileEditForm", () => {
           const VerifyIdentityButton = screen.getByText("Verify your ID")
           expect(VerifyIdentityButton).toBeTruthy()
 
-          fireEvent(VerifyIdentityButton, "onPress")
+          await fireEvent(VerifyIdentityButton, "onPress")
 
           env.mock.resolveMostRecentOperation({
             data: {
@@ -163,7 +163,7 @@ describe("MyProfileEditForm", () => {
       describe("with IDV request that returns structured error", () => {
         // This isn't _good_ behavior, but it is what is currently happening
         it("fails silently", async () => {
-          const { env } = renderWithRelay({
+          const { env } = await renderWithRelay({
             Me: () => ({
               isIdentityVerified: false,
             }),
@@ -171,7 +171,7 @@ describe("MyProfileEditForm", () => {
           const VerifyIdentityButton = screen.getByText("Verify your ID")
           expect(VerifyIdentityButton).toBeTruthy()
 
-          fireEvent(VerifyIdentityButton, "onPress")
+          await fireEvent(VerifyIdentityButton, "onPress")
 
           env.mock.resolveMostRecentOperation({
             data: {
@@ -224,7 +224,7 @@ describe("MyProfileEditForm", () => {
               },
             },
           }
-          const { env } = renderWithRelay({
+          const { env } = await renderWithRelay({
             Me: () => ({
               isIdentityVerified: false,
             }),
@@ -232,7 +232,7 @@ describe("MyProfileEditForm", () => {
           const VerifyIdentityButton = screen.getByText("Verify your ID")
           expect(VerifyIdentityButton).toBeTruthy()
 
-          fireEvent(VerifyIdentityButton, "onPress")
+          await fireEvent(VerifyIdentityButton, "onPress")
 
           env.mock.resolveMostRecentOperation(relayResponse)
 
@@ -248,16 +248,16 @@ describe("MyProfileEditForm", () => {
   })
 
   describe("Complete your profile banner", () => {
-    it("shows when the user has empty fields in their profile", () => {
-      renderWithRelay({
+    it("shows when the user has empty fields in their profile", async () => {
+      await renderWithRelay({
         Me: () => ({ collectorProfile: { isProfileComplete: false } }),
       })
 
       expect(screen.getByText("Complete your profile and make a great impression")).toBeTruthy()
     })
 
-    it("does not show when the user has completed their profile", () => {
-      renderWithRelay({
+    it("does not show when the user has completed their profile", async () => {
+      await renderWithRelay({
         Me: () => ({ collectorProfile: { isProfileComplete: true } }),
       })
 
@@ -266,8 +266,8 @@ describe("MyProfileEditForm", () => {
   })
 
   describe("UserProfileFields", () => {
-    it("renders all profile fields", () => {
-      renderWithRelay()
+    it("renders all profile fields", async () => {
+      await renderWithRelay()
 
       expect(screen.getByText("Full name")).toBeTruthy()
       expect(screen.getByText("Primary location")).toBeTruthy()
@@ -277,8 +277,8 @@ describe("MyProfileEditForm", () => {
       expect(screen.getByText("LinkedIn")).toBeTruthy()
     })
 
-    it("displays initial values in the fields", () => {
-      renderWithRelay({
+    it("displays initial values in the fields", async () => {
+      await renderWithRelay({
         Me: () => ({
           name: "John Doe",
           location: { city: "New York", state: "NY", country: "US", display: "New York, NY" },
@@ -300,11 +300,11 @@ describe("MyProfileEditForm", () => {
 
     describe("validation errors", () => {
       it("shows error for invalid Instagram handle format", async () => {
-        renderWithRelay()
+        await renderWithRelay()
 
         const instagramInput = screen.getByLabelText("Instagram handle")
-        fireEvent.changeText(instagramInput, "invalid handle!")
-        fireEvent(instagramInput, "blur")
+        await fireEvent.changeText(instagramInput, "invalid handle!")
+        await fireEvent(instagramInput, "blur")
 
         await waitFor(() => {
           expect(
@@ -316,11 +316,11 @@ describe("MyProfileEditForm", () => {
       })
 
       it("accepts Instagram handle with @ prefix", async () => {
-        renderWithRelay()
+        await renderWithRelay()
 
         const instagramInput = screen.getByLabelText("Instagram handle")
-        fireEvent.changeText(instagramInput, "@user.name123")
-        fireEvent(instagramInput, "blur")
+        await fireEvent.changeText(instagramInput, "@user.name123")
+        await fireEvent(instagramInput, "blur")
 
         expect(
           screen.queryByText(
@@ -330,11 +330,11 @@ describe("MyProfileEditForm", () => {
       })
 
       it("accepts valid Instagram handle", async () => {
-        renderWithRelay()
+        await renderWithRelay()
 
         const instagramInput = screen.getByLabelText("Instagram handle")
-        fireEvent.changeText(instagramInput, "valid_user.name123")
-        fireEvent(instagramInput, "blur")
+        await fireEvent.changeText(instagramInput, "valid_user.name123")
+        await fireEvent(instagramInput, "blur")
 
         expect(
           screen.queryByText(
@@ -344,11 +344,11 @@ describe("MyProfileEditForm", () => {
       })
 
       it("shows error for invalid LinkedIn handle format", async () => {
-        renderWithRelay()
+        await renderWithRelay()
 
         const linkedInInput = screen.getByLabelText("LinkedIn handle")
-        fireEvent.changeText(linkedInInput, "invalid_handle")
-        fireEvent(linkedInInput, "blur")
+        await fireEvent.changeText(linkedInInput, "invalid_handle")
+        await fireEvent(linkedInInput, "blur")
 
         await waitFor(() => {
           expect(
@@ -358,11 +358,11 @@ describe("MyProfileEditForm", () => {
       })
 
       it("accepts valid LinkedIn handle", async () => {
-        renderWithRelay()
+        await renderWithRelay()
 
         const linkedInInput = screen.getByLabelText("LinkedIn handle")
-        fireEvent.changeText(linkedInInput, "valid-user-name123")
-        fireEvent(linkedInInput, "blur")
+        await fireEvent.changeText(linkedInInput, "valid-user-name123")
+        await fireEvent(linkedInInput, "blur")
 
         expect(
           screen.queryByText("LinkedIn handle can only contain letters, numbers, and hyphens")

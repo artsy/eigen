@@ -36,18 +36,18 @@ describe("SaleArtworksRail", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  it("Renders list of sale artworks without throwing an error", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("Renders list of sale artworks without throwing an error", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    await resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(screen.getByText("Lots by Artists You Follow")).toBeOnTheScreen()
     // Each rendered SaleArtworkTileRailCard shows the artist name once
     expect(screen.getAllByText("Banksy")).toHaveLength(INITIAL_NUMBER_TO_RENDER)
   })
 
-  it("returns null if there are no artworks", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("returns null if there are no artworks", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
     const noArtworksProps = {
       Me: () => ({
@@ -56,7 +56,7 @@ describe("SaleArtworksRail", () => {
         },
       }),
     }
-    resolveMostRecentRelayOperation(mockEnvironment, noArtworksProps)
+    await resolveMostRecentRelayOperation(mockEnvironment, noArtworksProps)
     expect(screen.queryByText("Lots by Artists You Follow")).not.toBeOnTheScreen()
     expect(screen.queryAllByText("Banksy")).toHaveLength(0)
   })

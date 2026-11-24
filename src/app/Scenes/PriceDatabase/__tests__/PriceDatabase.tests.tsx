@@ -1,4 +1,4 @@
-import { act, fireEvent } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { ArtistAutosuggestResultsPaginationQuery } from "__generated__/ArtistAutosuggestResultsPaginationQuery.graphql"
 import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -17,36 +17,38 @@ describe(PriceDatabase, () => {
     jest.clearAllMocks()
   })
 
-  it("renders the price database", () => {
-    const { getByText } = renderWithHookWrappersTL(<PriceDatabase />, mockEnvironment)
+  it("renders the price database", async () => {
+    await renderWithHookWrappersTL(<PriceDatabase />, mockEnvironment)
 
-    expect(getByText("Artsy Price Database")).toBeTruthy()
+    expect(screen.getByText("Artsy Price Database")).toBeTruthy()
 
     expect(
-      getByText("Unlimited access to millions of auction results and art market data — for free.")
+      screen.getByText(
+        "Unlimited access to millions of auction results and art market data — for free."
+      )
     ).toBeTruthy()
   })
 
-  it("renders the price database benefits", () => {
-    const { getByText } = renderWithHookWrappersTL(<PriceDatabase />, mockEnvironment)
+  it("renders the price database benefits", async () => {
+    await renderWithHookWrappersTL(<PriceDatabase />, mockEnvironment)
 
-    expect(getByText("Get in-depth art market data")).toBeTruthy()
+    expect(screen.getByText("Get in-depth art market data")).toBeTruthy()
     expect(
-      getByText(
+      screen.getByText(
         "Browse millions of current and historical results from leading auction houses across the globe."
       )
     ).toBeTruthy()
 
-    expect(getByText("Research and validate prices")).toBeTruthy()
+    expect(screen.getByText("Research and validate prices")).toBeTruthy()
     expect(
-      getByText(
+      screen.getByText(
         "Access the data you need to make the right decisions for your collection, whether you’re researching, buying, or selling."
       )
     ).toBeTruthy()
 
-    expect(getByText("Search for free")).toBeTruthy()
+    expect(screen.getByText("Search for free")).toBeTruthy()
     expect(
-      getByText(
+      screen.getByText(
         "The Artsy Price Database is for every collector—with no search limits, no subscriptions, and no obligations. A more open art world starts here."
       )
     ).toBeTruthy()
@@ -55,11 +57,14 @@ describe(PriceDatabase, () => {
   describe("Search", () => {
     describe("without filters", () => {
       it("searches for artist's auction results", async () => {
-        const { getByText, getByPlaceholderText } = renderWithWrappers(<PriceDatabase />)
+        await renderWithWrappers(<PriceDatabase />)
 
-        fireEvent.changeText(getByPlaceholderText("Search by artist name"), "andy-warhol")
+        await fireEvent.changeText(
+          screen.getByPlaceholderText("Search by artist name"),
+          "andy-warhol"
+        )
 
-        act(() =>
+        await act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
             errors: [],
             data: mockArtistSearchResult,
@@ -68,9 +73,9 @@ describe(PriceDatabase, () => {
 
         // Select artist
 
-        fireEvent.press(getByText("Andy Warhol"))
+        await fireEvent.press(screen.getByText("Andy Warhol"))
 
-        fireEvent.press(getByText("Search"))
+        await fireEvent.press(screen.getByText("Search"))
 
         expect(navigate).toHaveBeenCalledWith(
           "/artist/andy-warhol/auction-results?scroll_to_market_signals=true"
@@ -98,13 +103,14 @@ describe(PriceDatabase, () => {
             },
           })
 
-          const { getByText, getByPlaceholderText, getByTestId } = renderWithWrappers(
-            <PriceDatabase />
+          await renderWithWrappers(<PriceDatabase />)
+
+          await fireEvent.changeText(
+            screen.getByPlaceholderText("Search by artist name"),
+            "andy-warhol"
           )
 
-          fireEvent.changeText(getByPlaceholderText("Search by artist name"), "andy-warhol")
-
-          act(() =>
+          await act(() =>
             mockEnvironment.mock.resolveMostRecentOperation({
               errors: [],
               data: mockArtistSearchResult,
@@ -113,28 +119,28 @@ describe(PriceDatabase, () => {
 
           // Select artist
 
-          fireEvent.press(getByText("Andy Warhol"))
+          await fireEvent.press(screen.getByText("Andy Warhol"))
 
           // Select medium
 
-          fireEvent.press(getByText("Medium"))
+          await fireEvent.press(screen.getByText("Medium"))
 
-          fireEvent.press(getByText("Painting"))
-          fireEvent.press(getByText("Work on paper"))
+          await fireEvent.press(screen.getByText("Painting"))
+          await fireEvent.press(screen.getByText("Work on paper"))
 
-          fireEvent.press(getByTestId("artwork-filter-header-back-button"))
+          await fireEvent.press(screen.getByTestId("artwork-filter-header-back-button"))
 
           // Select sizes
 
-          fireEvent.press(getByText("Size"))
+          await fireEvent.press(screen.getByText("Size"))
 
-          fireEvent.press(getByText("Small (under 16in)"))
-          fireEvent.press(getByText("Medium (16 – 40in)"))
-          fireEvent.press(getByText("Large (over 40in)"))
+          await fireEvent.press(screen.getByText("Small (under 16in)"))
+          await fireEvent.press(screen.getByText("Medium (16 – 40in)"))
+          await fireEvent.press(screen.getByText("Large (over 40in)"))
 
-          fireEvent.press(getByTestId("artwork-filter-header-back-button"))
+          await fireEvent.press(screen.getByTestId("artwork-filter-header-back-button"))
 
-          fireEvent.press(getByText("Search"))
+          await fireEvent.press(screen.getByText("Search"))
 
           expect(navigate).toHaveBeenCalledWith(
             "/artist/andy-warhol/auction-results?categories[0]=Painting&categories[1]=Work%20on%20Paper&sizes[0]=SMALL&sizes[1]=MEDIUM&sizes[2]=LARGE&scroll_to_market_signals=true"
@@ -164,13 +170,14 @@ describe(PriceDatabase, () => {
             },
           })
 
-          const { getByText, getByPlaceholderText, getByTestId } = renderWithWrappers(
-            <PriceDatabase />
+          await renderWithWrappers(<PriceDatabase />)
+
+          await fireEvent.changeText(
+            screen.getByPlaceholderText("Search by artist name"),
+            "andy-warhol"
           )
 
-          fireEvent.changeText(getByPlaceholderText("Search by artist name"), "andy-warhol")
-
-          act(() =>
+          await act(() =>
             mockEnvironment.mock.resolveMostRecentOperation({
               errors: [],
               data: mockArtistSearchResult,
@@ -179,28 +186,28 @@ describe(PriceDatabase, () => {
 
           // Select artist
 
-          fireEvent.press(getByText("Andy Warhol"))
+          await fireEvent.press(screen.getByText("Andy Warhol"))
 
           // Select medium
 
-          fireEvent.press(getByText("Medium"))
+          await fireEvent.press(screen.getByText("Medium"))
 
-          fireEvent.press(getByText("Painting"))
-          fireEvent.press(getByText("Work on paper"))
+          await fireEvent.press(screen.getByText("Painting"))
+          await fireEvent.press(screen.getByText("Work on paper"))
 
-          fireEvent.press(getByTestId("artwork-filter-header-back-button"))
+          await fireEvent.press(screen.getByTestId("artwork-filter-header-back-button"))
 
           // Select sizes
 
-          fireEvent.press(getByText("Size"))
+          await fireEvent.press(screen.getByText("Size"))
 
-          fireEvent.press(getByText("Small (under 40cm)"))
-          fireEvent.press(getByText("Medium (40 – 100cm)"))
-          fireEvent.press(getByText("Large (over 100cm)"))
+          await fireEvent.press(screen.getByText("Small (under 40cm)"))
+          await fireEvent.press(screen.getByText("Medium (40 – 100cm)"))
+          await fireEvent.press(screen.getByText("Large (over 100cm)"))
 
-          fireEvent.press(getByTestId("artwork-filter-header-back-button"))
+          await fireEvent.press(screen.getByTestId("artwork-filter-header-back-button"))
 
-          fireEvent.press(getByText("Search"))
+          await fireEvent.press(screen.getByText("Search"))
 
           expect(navigate).toHaveBeenCalledWith(
             "/artist/andy-warhol/auction-results?categories[0]=Painting&categories[1]=Work%20on%20Paper&sizes[0]=SMALL&sizes[1]=MEDIUM&sizes[2]=LARGE&scroll_to_market_signals=true"
@@ -225,9 +232,9 @@ describe(PriceDatabase, () => {
 
     describe("when no artist is selected", () => {
       it("disables the search button", async () => {
-        const { getByText } = renderWithWrappers(<PriceDatabase />)
+        await renderWithWrappers(<PriceDatabase />)
 
-        fireEvent.press(getByText("Search"))
+        await fireEvent.press(screen.getByText("Search"))
 
         expect(navigate).not.toHaveBeenCalled()
       })

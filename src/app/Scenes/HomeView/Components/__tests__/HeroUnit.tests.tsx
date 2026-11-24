@@ -14,8 +14,8 @@ describe("HeroUnit", () => {
   }
   const mockOnPress = jest.fn()
 
-  it("renders", () => {
-    renderWithWrappers(<HeroUnit item={mockItem} onPress={mockOnPress} />)
+  it("renders", async () => {
+    await renderWithWrappers(<HeroUnit item={mockItem} onPress={mockOnPress} />)
 
     // Verify component renders correctly
     expect(screen.getByText("Test Hero Unit")).toBeOnTheScreen()
@@ -23,19 +23,19 @@ describe("HeroUnit", () => {
     expect(screen.getByText("Learn More")).toBeOnTheScreen()
   })
 
-  it("handles press events", () => {
-    renderWithWrappers(<HeroUnit item={mockItem} onPress={mockOnPress} />)
+  it("handles press events", async () => {
+    await renderWithWrappers(<HeroUnit item={mockItem} onPress={mockOnPress} />)
 
-    fireEvent.press(screen.getByText("Test Hero Unit"))
+    await fireEvent.press(screen.getByText("Test Hero Unit"))
 
     expect(mockOnPress).toHaveBeenCalled()
     expect(navigate).toHaveBeenCalledWith("/test-url")
   })
 
-  it("handles button press events", () => {
-    renderWithWrappers(<HeroUnit item={mockItem} onPress={mockOnPress} />)
+  it("handles button press events", async () => {
+    await renderWithWrappers(<HeroUnit item={mockItem} onPress={mockOnPress} />)
 
-    fireEvent.press(screen.getByText("Learn More"))
+    await fireEvent.press(screen.getByText("Learn More"))
 
     expect(mockOnPress).toHaveBeenCalled()
     expect(navigate).toHaveBeenCalledWith("/test-url")

@@ -35,8 +35,8 @@ const TestAddressAutocomplete: React.FC<{ onChange?: (address: LocationWithDetai
 }
 
 const openSearch = async (query: string) => {
-  fireEvent.press(screen.getByTestId("street-address"))
-  fireEvent.changeText(await screen.findByLabelText("Search addresses"), query)
+  await fireEvent.press(screen.getByTestId("street-address"))
+  await fireEvent.changeText(await screen.findByLabelText("Search addresses"), query)
 }
 
 describe("AddressAutocomplete", () => {
@@ -51,10 +51,10 @@ describe("AddressAutocomplete", () => {
 
   it("searches addresses in the given country and shows the picked one in the field", async () => {
     const onChange = jest.fn()
-    renderWithWrappers(<TestAddressAutocomplete onChange={onChange} />)
+    await renderWithWrappers(<TestAddressAutocomplete onChange={onChange} />)
 
     await openSearch("401 Broad")
-    fireEvent.press(await screen.findByText(ADDRESS.name))
+    await fireEvent.press(await screen.findByText(ADDRESS.name))
 
     await waitFor(() => expect(onChange).toHaveBeenCalledWith({ ...ADDRESS, postalCode: "10013" }))
     expect(getLocationPredictions).toHaveBeenCalledWith("401 Broad", {
@@ -65,13 +65,13 @@ describe("AddressAutocomplete", () => {
   })
 
   it("fills the search with the picked address when reopened", async () => {
-    renderWithWrappers(<TestAddressAutocomplete />)
+    await renderWithWrappers(<TestAddressAutocomplete />)
 
     await openSearch("401 Broad")
-    fireEvent.press(await screen.findByText(ADDRESS.name))
+    await fireEvent.press(await screen.findByText(ADDRESS.name))
     await screen.findByDisplayValue(ADDRESS.name)
 
-    fireEvent.press(screen.getByTestId("street-address"))
+    await fireEvent.press(screen.getByTestId("street-address"))
 
     await waitFor(() =>
       expect(screen.getByLabelText("Search addresses")).toHaveDisplayValue(ADDRESS.name)
@@ -79,7 +79,7 @@ describe("AddressAutocomplete", () => {
   })
 
   it("waits for three characters before searching", async () => {
-    renderWithWrappers(<TestAddressAutocomplete />)
+    await renderWithWrappers(<TestAddressAutocomplete />)
 
     await openSearch("40")
 
@@ -89,7 +89,7 @@ describe("AddressAutocomplete", () => {
 
   it("says when no address matches", async () => {
     ;(getLocationPredictions as jest.Mock).mockResolvedValue([])
-    renderWithWrappers(<TestAddressAutocomplete />)
+    await renderWithWrappers(<TestAddressAutocomplete />)
 
     await openSearch("zzzz")
 

@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { EditionSelectBoxFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/EditionSelectBox"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -32,8 +32,8 @@ describe("EditionSelectBox", () => {
     onPress.mockReset()
   })
 
-  it("renders edition set with isOfferable", () => {
-    const { getByText } = renderWithRelay({
+  it("renders edition set with isOfferable", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         slug: "test-artwork",
         editionSets: [
@@ -55,16 +55,16 @@ describe("EditionSelectBox", () => {
       }),
     })
 
-    expect(getByText("in x in x in")).toBeTruthy()
-    expect(getByText("cm x cm x cm")).toBeTruthy()
-    expect(getByText("$100.00")).toBeTruthy()
+    expect(screen.getByText("in x in x in")).toBeTruthy()
+    expect(screen.getByText("cm x cm x cm")).toBeTruthy()
+    expect(screen.getByText("$100.00")).toBeTruthy()
 
-    fireEvent.press(getByText("in x in x in"))
+    await fireEvent.press(screen.getByText("in x in x in"))
     expect(onPress).toHaveBeenCalledWith("test-id", true)
   })
 
-  it("renders edition set with isOfferableFromInquiry", () => {
-    const { getByText } = renderWithRelay({
+  it("renders edition set with isOfferableFromInquiry", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         slug: "test-artwork",
         editionSets: [
@@ -86,16 +86,16 @@ describe("EditionSelectBox", () => {
       }),
     })
 
-    expect(getByText("in x in x in")).toBeTruthy()
-    expect(getByText("cm x cm x cm")).toBeTruthy()
-    expect(getByText("$100.00")).toBeTruthy()
+    expect(screen.getByText("in x in x in")).toBeTruthy()
+    expect(screen.getByText("cm x cm x cm")).toBeTruthy()
+    expect(screen.getByText("$100.00")).toBeTruthy()
 
-    fireEvent.press(getByText("in x in x in"))
+    await fireEvent.press(screen.getByText("in x in x in"))
     expect(onPress).toHaveBeenCalledWith("test-id", true)
   })
 
-  it("renders edition set with isAcquireable and the feature flag", () => {
-    const { getByText } = renderWithRelay({
+  it("renders edition set with isAcquireable and the feature flag", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         slug: "test-artwork",
         editionSets: [
@@ -116,14 +116,14 @@ describe("EditionSelectBox", () => {
         ],
       }),
     })
-    expect(getByText("$100.00")).toBeTruthy()
+    expect(screen.getByText("$100.00")).toBeTruthy()
 
-    fireEvent.press(getByText("in x in x in"))
+    await fireEvent.press(screen.getByText("in x in x in"))
     expect(onPress).toHaveBeenCalledWith("test-id", true)
   })
 
-  it("renders unavailable edition set", () => {
-    const { getByText } = renderWithRelay({
+  it("renders unavailable edition set", async () => {
+    await renderWithRelay({
       Artwork: () => ({
         slug: "test-artwork",
         editionSets: [
@@ -145,12 +145,12 @@ describe("EditionSelectBox", () => {
       }),
     })
 
-    expect(getByText("in x in x in")).toBeTruthy()
-    expect(getByText("cm x cm x cm")).toBeTruthy()
-    expect(getByText("Unavailable")).toBeTruthy()
-    expect(() => getByText("$100.00")).toThrow()
+    expect(screen.getByText("in x in x in")).toBeTruthy()
+    expect(screen.getByText("cm x cm x cm")).toBeTruthy()
+    expect(screen.getByText("Unavailable")).toBeTruthy()
+    expect(() => screen.getByText("$100.00")).toThrow()
 
-    fireEvent.press(getByText("in x in x in"))
+    await fireEvent.press(screen.getByText("in x in x in"))
     expect(onPress).toHaveBeenCalledWith("test-id", false)
   })
 })

@@ -43,7 +43,7 @@ describe("LensAnalyzing", () => {
   it("crops the photo, uploads the cropped file, and replaces with LensResults on success", async () => {
     jest.mocked(uploadImageToS3).mockResolvedValue({ bucket: "my-bucket", key: "my-key" })
 
-    renderWithWrappers(<LensAnalyzing {...navigationProps} />)
+    await renderWithWrappers(<LensAnalyzing {...navigationProps} />)
 
     expect(cropToViewfinder).toHaveBeenCalledWith(
       photo.uri,
@@ -64,12 +64,12 @@ describe("LensAnalyzing", () => {
     )
   })
 
-  it("returns to the previous screen when closed", () => {
+  it("returns to the previous screen when closed", async () => {
     jest.mocked(uploadImageToS3).mockImplementation(() => new Promise(() => {}))
 
-    renderWithWrappers(<LensAnalyzing {...navigationProps} />)
+    await renderWithWrappers(<LensAnalyzing {...navigationProps} />)
 
-    fireEvent.press(screen.getByLabelText("Close"))
+    await fireEvent.press(screen.getByLabelText("Close"))
 
     expect(goBack).toHaveBeenCalledTimes(1)
   })
@@ -77,7 +77,7 @@ describe("LensAnalyzing", () => {
   it("displays the cropped image, never the original uncropped photo, once cropping resolves", async () => {
     jest.mocked(uploadImageToS3).mockImplementation(() => new Promise(() => {}))
 
-    renderWithWrappers(<LensAnalyzing {...navigationProps} />)
+    await renderWithWrappers(<LensAnalyzing {...navigationProps} />)
 
     const image = await screen.findByTestId("lensAnalyzingCroppedImage")
     expect(image.props.source).toEqual({ uri: "file:///tmp/cropped.jpg" })
@@ -88,7 +88,7 @@ describe("LensAnalyzing", () => {
     jest.mocked(cropToViewfinder).mockResolvedValue(portraitCrop)
     jest.mocked(uploadImageToS3).mockImplementation(() => new Promise(() => {}))
 
-    renderWithWrappers(<LensAnalyzing {...navigationProps} />)
+    await renderWithWrappers(<LensAnalyzing {...navigationProps} />)
 
     const image = await screen.findByTestId("lensAnalyzingCroppedImage")
     const { width, height } = image.props.style
@@ -101,7 +101,7 @@ describe("LensAnalyzing", () => {
     jest.mocked(cropToViewfinder).mockResolvedValue(landscapeCrop)
     jest.mocked(uploadImageToS3).mockImplementation(() => new Promise(() => {}))
 
-    renderWithWrappers(<LensAnalyzing {...navigationProps} />)
+    await renderWithWrappers(<LensAnalyzing {...navigationProps} />)
 
     const image = await screen.findByTestId("lensAnalyzingCroppedImage")
     const { width, height } = image.props.style
@@ -116,7 +116,7 @@ describe("LensAnalyzing", () => {
       .mockResolvedValue({ uri: "file:///tmp/cropped.jpg", width: 0, height: 0 })
     jest.mocked(uploadImageToS3).mockImplementation(() => new Promise(() => {}))
 
-    renderWithWrappers(<LensAnalyzing {...navigationProps} />)
+    await renderWithWrappers(<LensAnalyzing {...navigationProps} />)
 
     const image = await screen.findByTestId("lensAnalyzingCroppedImage")
     const { width, height } = image.props.style
@@ -128,7 +128,7 @@ describe("LensAnalyzing", () => {
     // Only proves the branch fires; the pixel values are viewfinderGeometry's tests to check.
     jest.mocked(uploadImageToS3).mockResolvedValue({ bucket: "my-bucket", key: "my-key" })
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <LensAnalyzing
         {...navigationProps}
         route={{ ...navigationProps.route, params: { photo } } as any}
@@ -141,7 +141,7 @@ describe("LensAnalyzing", () => {
     jest.mocked(uploadImageToS3).mockResolvedValue({ bucket: "my-bucket", key: "my-key" })
 
     const libraryPhoto = { ...photo, fromLibrary: true }
-    renderWithWrappers(
+    await renderWithWrappers(
       <LensAnalyzing
         {...navigationProps}
         route={{ ...navigationProps.route, params: { photo: libraryPhoto } } as any}
@@ -155,7 +155,7 @@ describe("LensAnalyzing", () => {
   it("shows an error message and does not navigate when the crop fails", async () => {
     jest.mocked(cropToViewfinder).mockRejectedValue(new Error("crop failed"))
 
-    renderWithWrappers(<LensAnalyzing {...navigationProps} />)
+    await renderWithWrappers(<LensAnalyzing {...navigationProps} />)
 
     await screen.findByText(
       "Something went wrong finding matches for that photo. Please try again."
@@ -168,7 +168,7 @@ describe("LensAnalyzing", () => {
   it("shows an error message and does not navigate when the upload fails", async () => {
     jest.mocked(uploadImageToS3).mockRejectedValue(new Error("upload failed"))
 
-    renderWithWrappers(<LensAnalyzing {...navigationProps} />)
+    await renderWithWrappers(<LensAnalyzing {...navigationProps} />)
 
     await screen.findByText(
       "Something went wrong finding matches for that photo. Please try again."
@@ -180,9 +180,9 @@ describe("LensAnalyzing", () => {
   it("offers a way back to the camera when the crop fails, instead of asking the user to close", async () => {
     jest.mocked(cropToViewfinder).mockRejectedValue(new Error("crop failed"))
 
-    renderWithWrappers(<LensAnalyzing {...navigationProps} />)
+    await renderWithWrappers(<LensAnalyzing {...navigationProps} />)
 
-    fireEvent.press(await screen.findByTestId("lensAnalyzingSearchByPhotoButton"))
+    await fireEvent.press(await screen.findByTestId("lensAnalyzingSearchByPhotoButton"))
 
     expect(mockNavigate).toHaveBeenCalledWith("LensCamera")
   })
@@ -192,13 +192,13 @@ describe("LensAnalyzing", () => {
     it("deletes the capture but hands the cropped file to LensResults", async () => {
       jest.mocked(uploadImageToS3).mockResolvedValue({ bucket: "my-bucket", key: "my-key" })
 
-      const { unmount } = renderWithWrappers(<LensAnalyzing {...navigationProps} />)
+      const { unmount } = await renderWithWrappers(<LensAnalyzing {...navigationProps} />)
 
       await waitFor(() => expect(mockReplace).toHaveBeenCalled())
       // Not while the cropped image is still on screen, and not before the upload has read it.
       expect(discardTempPhotos).not.toHaveBeenCalled()
 
-      unmount()
+      await unmount()
 
       expect(discardTempPhotos).toHaveBeenCalledWith([photo.uri])
     })
@@ -206,12 +206,12 @@ describe("LensAnalyzing", () => {
     it("still deletes the cropped file when the upload fails", async () => {
       jest.mocked(uploadImageToS3).mockRejectedValue(new Error("upload failed"))
 
-      const { unmount } = renderWithWrappers(<LensAnalyzing {...navigationProps} />)
+      const { unmount } = await renderWithWrappers(<LensAnalyzing {...navigationProps} />)
 
       await screen.findByText(
         "Something went wrong finding matches for that photo. Please try again."
       )
-      unmount()
+      await unmount()
 
       expect(discardTempPhotos).toHaveBeenCalledWith([photo.uri, portraitCrop.uri])
     })
@@ -221,7 +221,7 @@ describe("LensAnalyzing", () => {
       jest.mocked(uploadImageToS3).mockResolvedValue({ bucket: "my-bucket", key: "my-key" })
       const libraryPhoto = { ...photo, fromLibrary: true }
 
-      const { unmount } = renderWithWrappers(
+      const { unmount } = await renderWithWrappers(
         <LensAnalyzing
           {...navigationProps}
           route={{ ...navigationProps.route, params: { photo: libraryPhoto } } as any}
@@ -229,7 +229,7 @@ describe("LensAnalyzing", () => {
       )
 
       await waitFor(() => expect(mockReplace).toHaveBeenCalled())
-      unmount()
+      await unmount()
 
       expect(discardTempPhotos).toHaveBeenCalledWith([])
     })
@@ -237,22 +237,22 @@ describe("LensAnalyzing", () => {
     it("still deletes the capture when the crop never lands", async () => {
       jest.mocked(cropToViewfinder).mockRejectedValue(new Error("crop failed"))
 
-      const { unmount } = renderWithWrappers(<LensAnalyzing {...navigationProps} />)
+      const { unmount } = await renderWithWrappers(<LensAnalyzing {...navigationProps} />)
 
       await screen.findByText(
         "Something went wrong finding matches for that photo. Please try again."
       )
-      unmount()
+      await unmount()
 
       expect(discardTempPhotos).toHaveBeenCalledWith([photo.uri])
     })
   })
 
   // Getting these two backwards silently searches the wrong region of the photo.
-  it("asks for the rotation-aware mapping for a camera capture", () => {
+  it("asks for the rotation-aware mapping for a camera capture", async () => {
     jest.mocked(uploadImageToS3).mockImplementation(() => new Promise(() => {}))
 
-    renderWithWrappers(<LensAnalyzing {...navigationProps} />)
+    await renderWithWrappers(<LensAnalyzing {...navigationProps} />)
 
     expect(cropToViewfinder).toHaveBeenCalledWith(
       photo.uri,
@@ -262,12 +262,12 @@ describe("LensAnalyzing", () => {
     )
   })
 
-  it("asks for the plain cover mapping for a library-picked photo", () => {
+  it("asks for the plain cover mapping for a library-picked photo", async () => {
     jest.mocked(uploadImageToS3).mockImplementation(() => new Promise(() => {}))
 
     const libraryPhoto = { ...photo, fromLibrary: true }
 
-    renderWithWrappers(
+    await renderWithWrappers(
       <LensAnalyzing
         navigation={{ replace: mockReplace, navigate: mockNavigate } as any}
         route={

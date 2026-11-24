@@ -43,51 +43,51 @@ describe(AutosuggestSearchResult, () => {
   })
 
   it(`works`, async () => {
-    renderWithWrappers(<TestWrapper result={result} showResultType />)
+    await renderWithWrappers(<TestWrapper result={result} showResultType />)
 
     expect(screen.getByText("Banksy")).toBeTruthy()
     expect(screen.getByText("Artist")).toBeTruthy()
   })
 
   it("does not render result type when showResultType prop is not passed", async () => {
-    renderWithWrappers(<TestWrapper result={result} />)
+    await renderWithWrappers(<TestWrapper result={result} />)
     expect(screen.queryByText("Artist")).toBeFalsy()
   })
 
   it("renders result type when showResultType prop is passed", async () => {
-    renderWithWrappers(<TestWrapper result={result} showResultType />)
+    await renderWithWrappers(<TestWrapper result={result} showResultType />)
     expect(screen.getByText("Artist")).toBeTruthy()
   })
 
   it("renders result and highlights the query", async () => {
-    renderWithWrappers(<TestWrapper result={result} highlight="Ban" />)
+    await renderWithWrappers(<TestWrapper result={result} highlight="Ban" />)
 
     expect(screen.getByText("Ban")).toHaveProp("color", "blue100")
     expect(screen.getByText("ksy")).toHaveProp("color", "mono100")
   })
 
   it("does not render delete button when onDelete callback is not passed", async () => {
-    renderWithWrappers(<TestWrapper result={result} />)
+    await renderWithWrappers(<TestWrapper result={result} />)
     expect(screen.queryByLabelText("Remove recent search item")).toBeFalsy()
   })
 
   it("calls onDelete calback when pressing on delete button", async () => {
-    renderWithWrappers(<TestWrapper result={result} onDelete={onDeleteMock} />)
+    await renderWithWrappers(<TestWrapper result={result} onDelete={onDeleteMock} />)
 
-    fireEvent.press(screen.getByLabelText("Remove recent search item"))
+    await fireEvent.press(screen.getByLabelText("Remove recent search item"))
     expect(onDeleteMock).toHaveBeenCalled()
   })
 
   it("blurs the input and navigates to the correct page when tapped", async () => {
-    renderWithWrappers(<TestWrapper result={result} />)
+    await renderWithWrappers(<TestWrapper result={result} />)
     expect(navigate).not.toHaveBeenCalled()
-    fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
+    await fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
     await new Promise((r) => setTimeout(r, 50))
     expect(navigate).toHaveBeenCalledWith(`${result.href}`)
   })
 
   it(`highlights a part of the string even when the string has diacritics but the highlight doesn't`, async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestWrapper
         result={{
           ...result,
@@ -101,45 +101,45 @@ describe(AutosuggestSearchResult, () => {
   })
 
   it(`updates recent searches by default`, async () => {
-    renderWithWrappers(<TestWrapper result={result} />)
+    await renderWithWrappers(<TestWrapper result={result} />)
     expect(navigate).not.toHaveBeenCalled()
     expect(recentSearchesArray).toHaveLength(0)
-    fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
+    await fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
     await new Promise((r) => setTimeout(r, 50))
     expect(recentSearchesArray).toHaveLength(1)
   })
 
   it(`won't update recent searches if told not to`, async () => {
-    renderWithWrappers(<TestWrapper result={result} updateRecentSearchesOnTap={false} />)
+    await renderWithWrappers(<TestWrapper result={result} updateRecentSearchesOnTap={false} />)
     expect(navigate).not.toHaveBeenCalled()
     expect(recentSearchesArray).toHaveLength(0)
-    fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
+    await fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
     await new Promise((r) => setTimeout(r, 50))
     expect(recentSearchesArray).toHaveLength(0)
   })
 
-  it(`optionally hides the entity type`, () => {
-    renderWithWrappers(<TestWrapper result={result} showResultType={false} />)
+  it(`optionally hides the entity type`, async () => {
+    await renderWithWrappers(<TestWrapper result={result} showResultType={false} />)
     expect(screen.queryByText("Artist")).toBeFalsy()
   })
 
-  it(`allows for custom touch handlers on search result items`, () => {
+  it(`allows for custom touch handlers on search result items`, async () => {
     const spy = jest.fn()
-    renderWithWrappers(<TestWrapper result={result} onResultPress={spy} />)
-    fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
+    await renderWithWrappers(<TestWrapper result={result} onResultPress={spy} />)
+    await fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
     expect(spy).toHaveBeenCalled()
   })
 
-  it(`does not navigate when a custom touch handler is passed`, () => {
+  it(`does not navigate when a custom touch handler is passed`, async () => {
     const spy = jest.fn()
-    renderWithWrappers(<TestWrapper result={result} onResultPress={spy} />)
-    fireEvent.press(screen.getByTestId(`autosuggest-search-result-${result.displayLabel}`))
+    await renderWithWrappers(<TestWrapper result={result} onResultPress={spy} />)
+    await fireEvent.press(screen.getByTestId(`autosuggest-search-result-${result.displayLabel}`))
     expect(spy).toHaveBeenCalledWith(result)
     expect(navigate).not.toHaveBeenCalled()
   })
 
   it(`navigates correctly when the item is a fair`, async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestWrapper
         result={{
           displayLabel: "Art Expo 2020",
@@ -151,13 +151,13 @@ describe(AutosuggestSearchResult, () => {
         }}
       />
     )
-    fireEvent.press(screen.getByTestId("autosuggest-search-result-Art Expo 2020"))
+    await fireEvent.press(screen.getByTestId("autosuggest-search-result-Art Expo 2020"))
     await new Promise((r) => setTimeout(r, 50))
     expect(navigate).toHaveBeenCalledWith("/art-expo-diff-profile-slug")
   })
 
   it(`shows navigation buttons when enabled and available`, async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestWrapper
         result={{
           displayLabel: "Banksy",
@@ -178,7 +178,7 @@ describe(AutosuggestSearchResult, () => {
   })
 
   it(`does not show navigation buttons when disabled`, async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestWrapper
         result={{
           displayLabel: "Banksy",
@@ -199,7 +199,7 @@ describe(AutosuggestSearchResult, () => {
   })
 
   it(`does not show navigation buttons when enabled, but unavailable`, async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestWrapper
         result={{
           displayLabel: "Banksy",
@@ -220,7 +220,7 @@ describe(AutosuggestSearchResult, () => {
   })
 
   it(`quick navigation buttons navigate correctly`, async () => {
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestWrapper
         result={{
           displayLabel: "Banksy",
@@ -236,32 +236,32 @@ describe(AutosuggestSearchResult, () => {
       />
     )
 
-    fireEvent.press(screen.getByText("Artworks"))
+    await fireEvent.press(screen.getByText("Artworks"))
     await new Promise((r) => setTimeout(r, 50))
     expect(navigate).toHaveBeenCalledWith("/artist/anto-carte/artworks", {
       passProps: { initialTab: "Artworks" },
     })
 
-    fireEvent.press(screen.getByText("Auction Results"))
+    await fireEvent.press(screen.getByText("Auction Results"))
     await new Promise((r) => setTimeout(r, 50))
     expect(navigate).toHaveBeenCalledWith("/artist/anto-carte/auction-results", {
       passProps: { initialTab: "Insights" },
     })
   })
 
-  it("should call custom event track handler when search result is pressed", () => {
+  it("should call custom event track handler when search result is pressed", async () => {
     const trackResultPressMock = jest.fn()
-    renderWithWrappers(
+    await renderWithWrappers(
       <TestWrapper result={result} itemIndex={1} trackResultPress={trackResultPressMock} />
     )
 
-    fireEvent.press(screen.getAllByText("Banksy")[0])
+    await fireEvent.press(screen.getAllByText("Banksy")[0])
 
     expect(trackResultPressMock).toBeCalledWith(result, 1)
   })
 
-  it("renders disambiguating info for artists", () => {
-    renderWithWrappers(<TestWrapper result={result} highlight="Ban" />)
+  it("renders disambiguating info for artists", async () => {
+    await renderWithWrappers(<TestWrapper result={result} highlight="Ban" />)
     expect(screen.getByText("British, b. 1974")).toBeTruthy()
   })
 })

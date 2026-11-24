@@ -24,8 +24,8 @@ describe("ArtworkRailCard", () => {
   })
 
   describe("in an open sale", () => {
-    it("gracefully handles a missing sale_artwork", () => {
-      renderWithRelay({
+    it("gracefully handles a missing sale_artwork", async () => {
+      await renderWithRelay({
         Artwork: () => ({ saleArtwork: null, title: "Some Kind of Dinosaur", date: "2015" }),
       })
 
@@ -34,8 +34,8 @@ describe("ArtworkRailCard", () => {
   })
 
   describe("in a closed sale", () => {
-    it("renders without throwing an error without any price information", () => {
-      renderWithRelay({
+    it("renders without throwing an error without any price information", async () => {
+      await renderWithRelay({
         Artwork: () => ({
           sale: { isClosed: true },
           title: "Some Kind of Dinosaur",
@@ -46,16 +46,16 @@ describe("ArtworkRailCard", () => {
       expect(screen.getByText("Some Kind of Dinosaur, 2015")).toBeOnTheScreen()
     })
 
-    it("shows the partner name if showPartnerName is set to true", () => {
-      renderWithRelay(
+    it("shows the partner name if showPartnerName is set to true", async () => {
+      await renderWithRelay(
         { Artwork: () => ({ partner: { name: "partner" } }) },
         { showPartnerName: true }
       )
       expect(screen.getByText("partner")).toBeOnTheScreen()
     })
 
-    it("does not show the partner name if showPartnerName is set to false", () => {
-      renderWithRelay(
+    it("does not show the partner name if showPartnerName is set to false", async () => {
+      await renderWithRelay(
         {
           Artwork: () => ({
             saleArtwork: { currentBid: { display: "$200" } },
@@ -71,8 +71,8 @@ describe("ArtworkRailCard", () => {
   })
 
   describe("lot label", () => {
-    it("shows the lot number when provided", () => {
-      renderWithRelay(
+    it("shows the lot number when provided", async () => {
+      await renderWithRelay(
         { Artwork: () => ({ sale: { isClosed: false, isAuction: true } }) },
         { lotLabel: "123" }
       )
@@ -80,8 +80,8 @@ describe("ArtworkRailCard", () => {
       expect(screen.getByText("Lot 123")).toBeOnTheScreen()
     })
 
-    it("does not show the lot number when not provided", () => {
-      renderWithRelay(
+    it("does not show the lot number when not provided", async () => {
+      await renderWithRelay(
         { Artwork: () => ({ sale: { isClosed: false, isAuction: true } }) },
         { lotLabel: null }
       )
@@ -91,20 +91,20 @@ describe("ArtworkRailCard", () => {
   })
 
   describe("save artwork", () => {
-    it("saving artworks works when showSaveIcon is set to true", () => {
-      renderWithRelay({ Artwork: () => artwork }, { showSaveIcon: true })
+    it("saving artworks works when showSaveIcon is set to true", async () => {
+      await renderWithRelay({ Artwork: () => artwork }, { showSaveIcon: true })
 
       expect(screen.getByTestId("empty-heart-icon")).toBeOnTheScreen()
       expect(screen.queryByTestId("filled-heart-icon")).not.toBeOnTheScreen()
 
-      fireEvent.press(screen.getByTestId("save-artwork-icon"))
+      await fireEvent.press(screen.getByTestId("save-artwork-icon"))
 
       expect(screen.getByTestId("filled-heart-icon")).toBeOnTheScreen()
       expect(screen.queryByTestId("empty-heart-icon")).not.toBeOnTheScreen()
     })
 
-    it("tracks save with artwork entity id, slug, and context", () => {
-      const { mockResolveLastOperation } = renderWithRelay(
+    it("tracks save with artwork entity id, slug, and context", async () => {
+      const { mockResolveLastOperation } = await renderWithRelay(
         {
           Artwork: () => ({
             ...artwork,
@@ -122,9 +122,9 @@ describe("ArtworkRailCard", () => {
         }
       )
 
-      fireEvent.press(screen.getByTestId("save-artwork-icon"))
+      await fireEvent.press(screen.getByTestId("save-artwork-icon"))
 
-      mockResolveLastOperation({
+      await mockResolveLastOperation({
         SaveArtworkPayload: () => ({
           artwork: {
             id: artwork.id,
@@ -155,8 +155,8 @@ describe("ArtworkRailCard", () => {
       `)
     })
 
-    it("does not show heart icon when showSaveIcon is set to false", () => {
-      renderWithRelay({ Artwork: () => artwork }, { showSaveIcon: false })
+    it("does not show heart icon when showSaveIcon is set to false", async () => {
+      await renderWithRelay({ Artwork: () => artwork }, { showSaveIcon: false })
 
       expect(screen.queryByTestId("empty-heart-icon")).not.toBeOnTheScreen()
       expect(screen.queryByTestId("filled-heart-icon")).not.toBeOnTheScreen()
@@ -164,22 +164,22 @@ describe("ArtworkRailCard", () => {
   })
 
   describe("artwork image", () => {
-    it("renders the artwork image", () => {
-      renderWithRelay({ Artwork: () => artwork })
+    it("renders the artwork image", async () => {
+      await renderWithRelay({ Artwork: () => artwork })
 
       expect(screen.getByTestId("artwork-rail-card-image")).toBeOnTheScreen()
     })
 
-    it("doesn't render an image if the url is not present", () => {
-      renderWithRelay({ Artwork: () => ({ ...artwork, image: { url: null } }) })
+    it("doesn't render an image if the url is not present", async () => {
+      await renderWithRelay({ Artwork: () => ({ ...artwork, image: { url: null } }) })
 
       expect(screen.queryByTestId("artwork-rail-card-image")).not.toBeOnTheScreen()
     })
   })
 
   describe("unlisted artworks", () => {
-    it("shows exclusive access", () => {
-      renderWithRelay({ Artwork: () => ({ isUnlisted: true }) })
+    it("shows exclusive access", async () => {
+      await renderWithRelay({ Artwork: () => ({ isUnlisted: true }) })
 
       expect(screen.getByText("Exclusive Access")).toBeOnTheScreen()
     })
@@ -199,8 +199,8 @@ describe("ArtworkRailCard", () => {
         },
       }
 
-      it("shows the limited-time offer signal for non-auction artworks", () => {
-        renderWithRelay({
+      it("shows the limited-time offer signal for non-auction artworks", async () => {
+        await renderWithRelay({
           Artwork: () => ({
             ...artwork,
             saleMessage: "$120,500",
@@ -213,8 +213,8 @@ describe("ArtworkRailCard", () => {
         expect(screen.getByText("Offer Expires 1d 12h")).toBeOnTheScreen()
       })
 
-      it("doesn't show the limited-time offer signal for auction artworks", () => {
-        renderWithRelay({
+      it("doesn't show the limited-time offer signal for auction artworks", async () => {
+        await renderWithRelay({
           // artwork is by default an auction
           Artwork: () => ({ ...artwork, collectorSignals }),
         })
@@ -226,8 +226,8 @@ describe("ArtworkRailCard", () => {
 
     describe("auction signals", () => {
       describe("live auction", () => {
-        it("shows the bidding live now signal", () => {
-          renderWithRelay({
+        it("shows the bidding live now signal", async () => {
+          await renderWithRelay({
             Artwork: () => ({
               ...artwork,
               sale: { ...artwork.sale, isClosed: false },
@@ -238,8 +238,8 @@ describe("ArtworkRailCard", () => {
           expect(screen.getByText("Bidding live now")).toBeOnTheScreen()
         })
 
-        it("shows the bidding closed signal", () => {
-          renderWithRelay({
+        it("shows the bidding closed signal", async () => {
+          await renderWithRelay({
             Artwork: () => ({
               ...artwork,
               sale: { ...artwork.sale, isClosed: false },
@@ -256,10 +256,20 @@ describe("ArtworkRailCard", () => {
       })
 
       describe("bidding timers", () => {
-        it("shows the Register by date", () => {
+        // A frozen clock keeps the time left exact. On the real clock, a render in the same
+        // millisecond as the setup shows "1d" instead of "23h 59m".
+        beforeEach(() => {
+          jest.useFakeTimers({ now: new Date("2026-01-15T12:00:00Z") })
+        })
+
+        afterEach(() => {
+          jest.useRealTimers()
+        })
+
+        it("shows the Register by date", async () => {
           const registerDate = DateTime.fromMillis(Date.now()).plus({ days: 1 })
 
-          renderWithRelay({
+          await renderWithRelay({
             Artwork: () => ({
               ...artwork,
               sale: { ...artwork.sale, isClosed: false },
@@ -273,13 +283,17 @@ describe("ArtworkRailCard", () => {
           ).toBeOnTheScreen()
         })
 
-        it("shows the time left to bid", () => {
-          renderWithRelay({
+        it("shows the time left to bid", async () => {
+          await renderWithRelay({
             Artwork: () => ({
               ...artwork,
               sale: { ...artwork.sale, isClosed: false },
               collectorSignals: {
-                auction: { lotClosesAt: DateTime.fromMillis(Date.now()).plus({ days: 1 }).toISO() },
+                auction: {
+                  lotClosesAt: DateTime.fromMillis(Date.now())
+                    .plus({ hours: 23, minutes: 59 })
+                    .toISO(),
+                },
               },
             }),
           })
@@ -287,14 +301,14 @@ describe("ArtworkRailCard", () => {
           expect(screen.getByText("23h 59m left to bid")).toBeOnTheScreen()
         })
 
-        it("shows the extended left to bid in minutes", () => {
-          renderWithRelay({
+        it("shows the extended left to bid in minutes", async () => {
+          await renderWithRelay({
             Artwork: () => ({
               ...artwork,
               sale: { ...artwork.sale, isClosed: false },
               collectorSignals: {
                 auction: {
-                  lotClosesAt: DateTime.fromMillis(Date.now()).plus({ minutes: 1 }).toISO(),
+                  lotClosesAt: DateTime.fromMillis(Date.now()).plus({ seconds: 59 }).toISO(),
                   onlineBiddingExtended: true,
                 },
               },
@@ -307,8 +321,8 @@ describe("ArtworkRailCard", () => {
     })
 
     describe("social signal", () => {
-      it("renders the increased interest signal", () => {
-        renderWithRelay({
+      it("renders the increased interest signal", async () => {
+        await renderWithRelay({
           Artwork: () => ({
             collectorSignals: {
               increasedInterest: true,
@@ -320,8 +334,8 @@ describe("ArtworkRailCard", () => {
         expect(screen.getByText("Increased Interest")).toBeOnTheScreen()
       })
 
-      it("renders the curator's pick signal even when there's a increased interest signal", () => {
-        renderWithRelay({
+      it("renders the curator's pick signal even when there's a increased interest signal", async () => {
+        await renderWithRelay({
           Artwork: () => ({
             collectorSignals: {
               increasedInterest: true,
@@ -334,8 +348,8 @@ describe("ArtworkRailCard", () => {
         expect(screen.queryByText("Increased Interest")).not.toBeOnTheScreen()
       })
 
-      it("renders the curators pick signal", () => {
-        renderWithRelay({
+      it("renders the curators pick signal", async () => {
+        await renderWithRelay({
           Artwork: () => ({
             collectorSignals: {
               increasedInterest: false,

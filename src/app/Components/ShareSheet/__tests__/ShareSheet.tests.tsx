@@ -23,7 +23,7 @@ jest.mock("app/Scenes/Artwork/Components/InstagramStoryViewShot", () => ({
 }))
 
 describe("ShareSheet", () => {
-  it("doesn't offer Instagram Stories for a page without an image", () => {
+  it("doesn't offer Instagram Stories for a page without an image", async () => {
     mockItem = {
       type: "default",
       href: "/show/the-big-show",
@@ -32,7 +32,7 @@ describe("ShareSheet", () => {
       title: "The Big Show",
     }
 
-    renderWithWrappers(<ShareSheet />)
+    await renderWithWrappers(<ShareSheet />)
 
     expect(screen.getByText("Copy link")).toBeOnTheScreen()
     expect(screen.getByText("More")).toBeOnTheScreen()
@@ -40,7 +40,7 @@ describe("ShareSheet", () => {
     expect(screen.queryByText("Instagram Stories")).not.toBeOnTheScreen()
   })
 
-  it("offers Instagram Stories for an artist", () => {
+  it("offers Instagram Stories for an artist", async () => {
     mockItem = {
       type: "artist",
       href: "/artist/kaws",
@@ -51,7 +51,7 @@ describe("ShareSheet", () => {
       currentImageUrl: "https://example.com/kaws.jpg",
     }
 
-    renderWithWrappers(<ShareSheet />)
+    await renderWithWrappers(<ShareSheet />)
 
     expect(screen.getByText("Instagram Stories")).toBeOnTheScreen()
   })

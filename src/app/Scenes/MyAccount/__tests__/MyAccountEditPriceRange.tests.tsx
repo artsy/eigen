@@ -27,7 +27,7 @@ describe("MyAccountEditPriceRangeQueryRenderer", () => {
   })
 
   it("submits the changes", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Me: () => ({
         priceRange: "-1:2500",
         priceRangeMax: 2500,

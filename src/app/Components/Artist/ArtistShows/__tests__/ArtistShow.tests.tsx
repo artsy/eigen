@@ -20,14 +20,14 @@ describe("ArtistShow", () => {
     `,
   })
 
-  it("renders", () => {
-    renderWithRelay({ Show: () => show })
+  it("renders", async () => {
+    await renderWithRelay({ Show: () => show })
 
     expect(screen.getByText("Gallery")).toBeOnTheScreen()
   })
 
-  it("renders without throwing an error with null show kind", () => {
-    renderWithRelay({
+  it("renders without throwing an error with null show kind", async () => {
+    await renderWithRelay({
       Show: () => ({
         ...show,
         kind: null,
@@ -37,10 +37,10 @@ describe("ArtistShow", () => {
     expect(screen.getByText("Gallery")).toBeOnTheScreen()
   })
 
-  it("navigates to the respective show screen", () => {
-    renderWithRelay({ Show: () => show })
+  it("navigates to the respective show screen", async () => {
+    await renderWithRelay({ Show: () => show })
 
-    fireEvent.press(screen.getByText("Gallery"))
+    await fireEvent.press(screen.getByText("Gallery"))
 
     expect(navigate).toHaveBeenCalledWith(show.href)
     expect(mockTrackEvent).toHaveBeenCalledWith({

@@ -18,8 +18,8 @@ describe("Artist Series Meta", () => {
     `,
   })
 
-  it("renders the Artist Series title and description", () => {
-    renderWithRelay({
+  it("renders the Artist Series title and description", async () => {
+    await renderWithRelay({
       ArtistSeries: () => ({
         title: "These are the Pumpkins",
         description: "A deliciously artistic variety of painted pumpkins.",

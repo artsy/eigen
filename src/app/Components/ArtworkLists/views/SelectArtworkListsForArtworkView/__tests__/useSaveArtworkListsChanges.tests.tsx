@@ -53,13 +53,13 @@ describe("useSaveArtworkListsChanges", () => {
   const getLastSavedList = () =>
     __globalStoreTestUtils__?.getCurrentState().lastSavedList.lastSavedList
 
-  it("records the added list when ARDefaultToLastSavedList is enabled", () => {
+  it("records the added list when ARDefaultToLastSavedList is enabled", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ ARDefaultToLastSavedList: true })
 
-    const { mockResolveLastOperation } = renderWithRelay()
+    const { mockResolveLastOperation } = await renderWithRelay()
 
-    fireEvent.press(screen.getByText("trigger-save"))
-    mockResolveLastOperation(resolveAddedToList)
+    await fireEvent.press(screen.getByText("trigger-save"))
+    await mockResolveLastOperation(resolveAddedToList)
 
     expect(getLastSavedList()).toEqual({
       internalID: "custom-artwork-list-two",
@@ -68,13 +68,13 @@ describe("useSaveArtworkListsChanges", () => {
     })
   })
 
-  it("does not record the added list when ARDefaultToLastSavedList is disabled", () => {
+  it("does not record the added list when ARDefaultToLastSavedList is disabled", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ ARDefaultToLastSavedList: false })
 
-    const { mockResolveLastOperation } = renderWithRelay()
+    const { mockResolveLastOperation } = await renderWithRelay()
 
-    fireEvent.press(screen.getByText("trigger-save"))
-    mockResolveLastOperation(resolveAddedToList)
+    await fireEvent.press(screen.getByText("trigger-save"))
+    await mockResolveLastOperation(resolveAddedToList)
 
     expect(getLastSavedList()).toBeNull()
   })

@@ -59,14 +59,14 @@ describe("usePartnerOfferEvent", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationPartnerOffers: true })
   })
 
-  it("shows 'You purchased this artwork' when the offer has been purchased", () => {
-    renderWithRelay(activeOfferResolvers({ isPurchased: true }))
+  it("shows 'You purchased this artwork' when the offer has been purchased", async () => {
+    await renderWithRelay(activeOfferResolvers({ isPurchased: true }))
 
     expect(screen.getByText("You purchased this artwork")).toBeTruthy()
   })
 
-  it("shows the offer message when the offer has not been purchased", () => {
-    renderWithRelay(activeOfferResolvers({ isPurchased: false }))
+  it("shows the offer message when the offer has not been purchased", async () => {
+    await renderWithRelay(activeOfferResolvers({ isPurchased: false }))
 
     expect(screen.queryByText("You purchased this artwork")).toBeNull()
     expect(screen.getByText("You received an offer for $450")).toBeTruthy()

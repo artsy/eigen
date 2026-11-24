@@ -3,8 +3,8 @@ import { FullScreenLoadingImage } from "app/Components/FullScreenLoadingImage"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("FullScreenLoadingImage", () => {
-  it("renders loading text initially", () => {
-    renderWithWrappers(
+  it("renders loading text initially", async () => {
+    await renderWithWrappers(
       <FullScreenLoadingImage
         loadingText="Loading content..."
         imgSource={{ uri: "https://example.com/image.jpg" }}

@@ -28,7 +28,7 @@ describe("ItineraryShareButton", () => {
   })
 
   it("shares a curated guide", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Itinerary: () => ({
         internalID: "guide-1",
         slug: "chill-vibes-only",
@@ -40,7 +40,7 @@ describe("ItineraryShareButton", () => {
       }),
     })
 
-    fireEvent.press(await screen.findByTestId("itinerary-share"))
+    await fireEvent.press(await screen.findByTestId("itinerary-share"))
 
     await new Promise((resolve) => setTimeout(resolve, 0))
 
@@ -55,7 +55,7 @@ describe("ItineraryShareButton", () => {
   })
 
   it("renders nothing for someone else's personal itinerary", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Itinerary: () => ({
         internalID: "guide-1",
         slug: null,
@@ -73,7 +73,7 @@ describe("ItineraryShareButton", () => {
   })
 
   it("shares your own personal itinerary", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Itinerary: () => ({
         internalID: "guide-1",
         slug: null,
@@ -85,7 +85,7 @@ describe("ItineraryShareButton", () => {
       }),
     })
 
-    fireEvent.press(await screen.findByTestId("itinerary-share"))
+    await fireEvent.press(await screen.findByTestId("itinerary-share"))
 
     await new Promise((resolve) => setTimeout(resolve, 0))
 
@@ -100,7 +100,7 @@ describe("ItineraryShareButton", () => {
   })
 
   it("does not extend hitSlop toward the Edit button on its left (FIREWORKS-48)", async () => {
-    renderWithRelay({
+    await renderWithRelay({
       Itinerary: () => ({
         internalID: "guide-1",
         slug: null,

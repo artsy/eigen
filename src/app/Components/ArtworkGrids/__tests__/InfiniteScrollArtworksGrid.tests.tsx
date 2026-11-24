@@ -60,9 +60,9 @@ describe("Artist Series Artworks", () => {
     />
   )
 
-  it("renders component with default props", () => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
+  it("renders component with default props", async () => {
+    await renderWithWrappers(<TestRenderer />)
+    await act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
         data: {

@@ -17,25 +17,25 @@ describe("Footer", () => {
     jest.clearAllMocks()
   })
 
-  it("renders correctly", () => {
-    renderWithWrappers(<Footer onGoNext={() => {}} isFormDirty={false} />)
+  it("renders correctly", async () => {
+    await renderWithWrappers(<Footer onGoNext={() => {}} isFormDirty={false} />)
 
     expect(screen.getByText("Back")).toBeOnTheScreen()
     expect(screen.getByText("Skip")).toBeOnTheScreen()
   })
 
-  it("renders given isFormDirty", () => {
-    renderWithWrappers(<Footer onGoNext={() => {}} isFormDirty={true} />)
+  it("renders given isFormDirty", async () => {
+    await renderWithWrappers(<Footer onGoNext={() => {}} isFormDirty={true} />)
 
     expect(screen.getByText("Continue")).toBeOnTheScreen()
   })
 
-  it("triggers navigation functions", () => {
+  it("triggers navigation functions", async () => {
     const mockGoNext = jest.fn()
-    renderWithWrappers(<Footer onGoNext={mockGoNext} isFormDirty={true} />)
+    await renderWithWrappers(<Footer onGoNext={mockGoNext} isFormDirty={true} />)
 
-    fireEvent.press(screen.getByText("Back"))
-    fireEvent.press(screen.getByText("Continue"))
+    await fireEvent.press(screen.getByText("Back"))
+    await fireEvent.press(screen.getByText("Continue"))
 
     expect(mockGoBack).toHaveBeenCalledTimes(1)
     expect(mockGoNext).toHaveBeenCalledTimes(1)

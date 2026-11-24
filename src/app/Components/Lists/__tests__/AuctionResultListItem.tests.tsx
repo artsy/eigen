@@ -56,9 +56,9 @@ describe("AuctionResults", () => {
     />
   )
 
-  it("renders auction result when auction results are available", () => {
-    renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+  it("renders auction result when auction results are available", async () => {
+    await renderWithWrappers(<TestRenderer />)
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -88,9 +88,9 @@ describe("AuctionResults", () => {
     expect(screen.queryByTestId("priceUSD")).not.toBeOnTheScreen()
   })
 
-  it("renders price in USD when currency is not USD", () => {
-    renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+  it("renders price in USD when currency is not USD", async () => {
+    await renderWithWrappers(<TestRenderer />)
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -120,9 +120,9 @@ describe("AuctionResults", () => {
     expect(screen.getByTestId("priceUSD")).toHaveTextContent("$one gazillion")
   })
 
-  it("renders auction result when auction results are not available yet", () => {
-    renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+  it("renders auction result when auction results are not available yet", async () => {
+    await renderWithWrappers(<TestRenderer />)
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -148,9 +148,9 @@ describe("AuctionResults", () => {
     expect(screen.queryByTestId("priceUSD")).not.toBeOnTheScreen()
   })
 
-  it("renders auction result when auction result is `bought in`", () => {
-    renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+  it("renders auction result when auction result is `bought in`", async () => {
+    await renderWithWrappers(<TestRenderer />)
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -177,9 +177,9 @@ describe("AuctionResults", () => {
     expect(screen.queryByTestId("priceUSD")).not.toBeOnTheScreen()
   })
 
-  it("renders sale date correctly", () => {
-    renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+  it("renders sale date correctly", async () => {
+    await renderWithWrappers(<TestRenderer />)
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -197,8 +197,8 @@ describe("AuctionResults", () => {
     expect(screen.getByTestId("saleInfo")).toHaveTextContent(/Jan 12, 2021/)
   })
   it("navigates to the lot screen for upcoming auction results happening in ", async () => {
-    renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    await renderWithWrappers(<TestRenderer />)
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -218,12 +218,12 @@ describe("AuctionResults", () => {
 
     const button = screen.getByText("Mediumtext-1")
 
-    fireEvent.press(button)
+    await fireEvent.press(button)
 
     expect(navigate).toHaveBeenCalledWith("https://www.artsy.net/artwork/auction-lot")
   })
 
-  it("triggers on press when specfied", () => {
+  it("triggers on press when specfied", async () => {
     // Render RouterLink as a plain pressable host so we only exercise the item's own press handler
     ;(RouterLink as unknown as jest.Mock).mockImplementation(({ onPress, children }) => {
       const { View } = jest.requireActual("react-native")
@@ -234,8 +234,8 @@ describe("AuctionResults", () => {
       )
     })
     const mockOnPress = jest.fn()
-    renderWithWrappers(<TestRenderer onPress={mockOnPress} />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    await renderWithWrappers(<TestRenderer onPress={mockOnPress} />)
+    await resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -253,7 +253,7 @@ describe("AuctionResults", () => {
       }),
     })
 
-    fireEvent.press(screen.getAllByTestId("router-link")[0])
+    await fireEvent.press(screen.getAllByTestId("router-link")[0])
 
     expect(mockOnPress).toHaveBeenCalled()
     expect(navigate).not.toHaveBeenCalled()

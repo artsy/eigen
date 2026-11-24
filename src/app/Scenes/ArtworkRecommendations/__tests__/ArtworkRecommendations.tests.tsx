@@ -1,9 +1,11 @@
+import { screen } from "@testing-library/react-native"
 import { ArtworkRecommendationsTestsQuery } from "__generated__/ArtworkRecommendationsTestsQuery.graphql"
 import { ArtworkRecommendations } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { Suspense } from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { createMockEnvironment } from "relay-test-utils"
 
 describe("ArtworkRecommendations", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -33,26 +35,27 @@ describe("ArtworkRecommendations", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  it("renders ArtworkRecommendations", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+  it("renders ArtworkRecommendations", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Query: () => mockResponse,
-      })
+    // `ArtworkRecommendations` fetches its own query, which is the most recent operation.
+    expect(mockEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(
+      "ArtworkRecommendationsQuery"
     )
+    await resolveMostRecentRelayOperation(mockEnvironment, {
+      Me: () => mockResponse.me,
+    })
 
-    expect(tree.findByText("Artwork Recommendations")).toBeTruthy()
-    expect(tree.findByText("Sunflower Seeds Exhibition")).toBeTruthy()
+    expect(await screen.findByText(/Sunflower Seeds Exhibition/)).toBeOnTheScreen()
     expect(
-      tree.findByText("JEAN-MICHEL BASQUIAT- HOLLYWOOD AFRICANS TRIPTYCH SKATE DECKS")
-    ).toBeTruthy()
+      screen.getByText(/JEAN-MICHEL BASQUIAT- HOLLYWOOD AFRICANS TRIPTYCH SKATE DECKS/)
+    ).toBeOnTheScreen()
   })
 })
 
 const mockResponse = {
   me: {
-    artworkRecommendationsArtworksConnection: {
+    artworkRecommendations: {
       edges: [
         {
           node: {

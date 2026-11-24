@@ -37,10 +37,10 @@ describe("Collection", () => {
     jest.clearAllMocks()
   })
 
-  it("should show the Featured artists section when showFeaturedArtists is true", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("should show the Featured artists section when showFeaturedArtists is true", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(environment, {
+    await resolveMostRecentRelayOperation(environment, {
       MarketingCollection: () => ({
         ...mockedCollection,
         featuredArtistExclusionIds: [],
@@ -53,10 +53,10 @@ describe("Collection", () => {
     expect(screen.getByText("Featured Artists")).toBeTruthy()
   })
 
-  it("should hide the Featured artists section when showFeaturedArtists is false", () => {
-    renderWithWrappers(<TestRenderer />)
+  it("should hide the Featured artists section when showFeaturedArtists is false", async () => {
+    await renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(environment, {
+    await resolveMostRecentRelayOperation(environment, {
       MarketingCollection: () => ({
         ...mockedCollection,
         showFeaturedArtists: false,

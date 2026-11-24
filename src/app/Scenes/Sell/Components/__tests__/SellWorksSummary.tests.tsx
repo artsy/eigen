@@ -47,27 +47,27 @@ describe("SellWorksSummary", () => {
     jest.clearAllMocks()
   })
 
-  it("gives each work the button for its sales channel", () => {
-    renderWithRelay(collection)
+  it("gives each work the button for its sales channel", async () => {
+    await renderWithRelay(collection)
 
     expect(screen.getByText("Listing Artist")).toBeOnTheScreen()
     expect(screen.getByText("Auction Artist")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Start Submission"))
+    await fireEvent.press(screen.getByText("Start Submission"))
     expect(onStartWork).toHaveBeenCalledWith("id-b4")
 
-    fireEvent.press(screen.getByText("Start Listing"))
+    await fireEvent.press(screen.getByText("Start Listing"))
     expect(onStartWork).toHaveBeenCalledWith("id-a2")
   })
 
   it("explains the sales channels", async () => {
-    renderWithRelay(collection)
+    await renderWithRelay(collection)
 
-    fireEvent.press(screen.getByLabelText("About sales channels"))
+    await fireEvent.press(screen.getByLabelText("About sales channels"))
     expect(await screen.findByText("Sales channels")).toBeOnTheScreen()
     expect(screen.getByText("Marketplace")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Got it"))
+    await fireEvent.press(screen.getByText("Got it"))
     await waitFor(() => expect(screen.queryByText("Sales channels")).not.toBeOnTheScreen())
   })
 })

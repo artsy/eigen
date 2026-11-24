@@ -4,8 +4,8 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
 
 describe("PageWithSimpleHeader", () => {
-  it("renders with the provided title", () => {
-    renderWithWrappers(
+  it("renders with the provided title", async () => {
+    await renderWithWrappers(
       <PageWithSimpleHeader title="Test Title">
         <Text>Page Content</Text>
       </PageWithSimpleHeader>
@@ -15,8 +15,8 @@ describe("PageWithSimpleHeader", () => {
     expect(screen.getByText("Page Content")).toBeTruthy()
   })
 
-  it("renders with left and right components", () => {
-    renderWithWrappers(
+  it("renders with left and right components", async () => {
+    await renderWithWrappers(
       <PageWithSimpleHeader
         title="Page Title"
         left={<Text>Left Component</Text>}

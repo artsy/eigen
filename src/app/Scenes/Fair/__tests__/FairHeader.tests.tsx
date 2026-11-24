@@ -15,21 +15,21 @@ describe("FairHeader", () => {
     `,
   })
 
-  it("renders", () => {
-    renderWithRelay()
+  it("renders", async () => {
+    await renderWithRelay()
 
     expect(screen.getByText(/mock-value-for-field-"name"/)).toBeOnTheScreen()
     expect(screen.getByText(/mock-value-for-field-"exhibitionPeriod"/)).toBeOnTheScreen()
   })
 
-  it("renders the fair title", () => {
-    renderWithRelay({ Fair: () => ({ name: "Art Basel Hong Kong 2020" }) })
+  it("renders the fair title", async () => {
+    await renderWithRelay({ Fair: () => ({ name: "Art Basel Hong Kong 2020" }) })
 
     expect(screen.getByText("Art Basel Hong Kong 2020")).toBeOnTheScreen()
   })
 
-  it("renders the fair icon", () => {
-    renderWithRelay({
+  it("renders the fair icon", async () => {
+    await renderWithRelay({
       Fair: () => ({
         profile: {
           icon: {
@@ -42,8 +42,8 @@ describe("FairHeader", () => {
     expect(screen.getByTestId("fair-profile-image")).toBeOnTheScreen()
   })
 
-  it("displays the timing info", () => {
-    renderWithRelay({
+  it("displays the timing info", async () => {
+    await renderWithRelay({
       Fair: () => ({
         endAt: "2020-09-19T08:00:00+00:00",
       }),
@@ -52,8 +52,8 @@ describe("FairHeader", () => {
     expect(screen.getByText("Closed")).toBeOnTheScreen()
   })
 
-  it("does not render the timing info for evergreen fairs", () => {
-    renderWithRelay({
+  it("does not render the timing info for evergreen fairs", async () => {
+    await renderWithRelay({
       Fair: () => ({
         isEvergreen: true,
         endAt: "2020-09-19T08:00:00+00:00",
@@ -63,8 +63,8 @@ describe("FairHeader", () => {
     expect(screen.queryByText("Closed")).not.toBeOnTheScreen()
   })
 
-  it("displays a custom subheader", () => {
-    renderWithRelay({
+  it("displays a custom subheader", async () => {
+    await renderWithRelay({
       Fair: () => ({
         isEvergreen: true,
         tagline: "Your Chance to Own an Icon",

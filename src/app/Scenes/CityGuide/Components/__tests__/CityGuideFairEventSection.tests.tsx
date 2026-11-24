@@ -17,8 +17,10 @@ const data = [
 ] as any[]
 
 describe("CityGuideFairEventSection", () => {
-  it("renders properly", () => {
-    renderWithWrappers(<CityGuideFairEventSection data={data} citySlug="tefaf-new-york-fall-2019" />)
+  it("renders properly", async () => {
+    await renderWithWrappers(
+      <CityGuideFairEventSection data={data} citySlug="tefaf-new-york-fall-2019" />
+    )
 
     expect(screen.getByText("TEFAF New York Fall 2019")).toBeTruthy()
   })

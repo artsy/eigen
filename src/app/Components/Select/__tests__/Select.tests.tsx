@@ -19,8 +19,8 @@ const options = [
     searchTerms: ["Option 2"],
   },
 ]
-it("shows title and subtitle within the select", () => {
-  renderWithWrappers(
+it("shows title and subtitle within the select", async () => {
+  await renderWithWrappers(
     <Select
       title="Title"
       subTitle="Subtitle"
@@ -37,7 +37,7 @@ it("shows title and subtitle within the select", () => {
 it("selects correct value", async () => {
   const onSelectValue = jest.fn()
 
-  renderWithWrappers(
+  await renderWithWrappers(
     <Select
       testID="select"
       title="Title"
@@ -48,16 +48,16 @@ it("selects correct value", async () => {
     />
   )
 
-  fireEvent.press(screen.getByText("Option 1"))
+  await fireEvent.press(screen.getByText("Option 1"))
 
   await flushPromiseQueue()
 
-  fireEvent.press(screen.getByTestId("select"))
+  await fireEvent.press(screen.getByTestId("select"))
 
   await flushPromiseQueue()
 
   const selectModal = within(screen.getByTestId("modal-select"))
-  fireEvent.press(selectModal.getAllByRole("button")[2])
+  await fireEvent.press(selectModal.getAllByRole("button")[2])
   await flushPromiseQueue()
 
   expect(onSelectValue).toHaveBeenCalledWith("option-2", 1)
@@ -66,7 +66,7 @@ it("selects correct value", async () => {
 it("filters on search", async () => {
   const onSelectValue = jest.fn()
 
-  renderWithWrappers(
+  await renderWithWrappers(
     <Select
       testID="select"
       title="Title"
@@ -78,11 +78,11 @@ it("filters on search", async () => {
     />
   )
 
-  fireEvent.press(screen.getByTestId("select"))
+  await fireEvent.press(screen.getByTestId("select"))
 
   const input = await screen.findByPlaceholderText("Type to search...")
 
-  fireEvent.changeText(input, "Option 2")
+  await fireEvent.changeText(input, "Option 2")
 
   const selectModal = within(screen.getByTestId("modal-select"))
 

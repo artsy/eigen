@@ -7,9 +7,8 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-// React-test-renderer has issues with memo components, so we need to mock the palette-mobile Image component
-// Until it gets fixed
-// See https://github.com/facebook/react/issues/17301
+// palette-mobile's Image puts `testID` on a wrapping Flex and `src`/`style` on an inner
+// FastImage. Swap in RN's Image so the testID, `src` and `style` live on one element.
 jest.mock("@artsy/palette-mobile", () => ({
   ...jest.requireActual("@artsy/palette-mobile"),
   Image: require("react-native").Image,
@@ -39,8 +38,8 @@ describe("UserAccountHeader", () => {
     `,
   })
 
-  it("renders user details", () => {
-    renderWithRelay({
+  it("renders user details", async () => {
+    await renderWithRelay({
       Me: () => me,
     })
     expect(screen.getByText("some name")).toBeOnTheScreen()
@@ -50,16 +49,16 @@ describe("UserAccountHeader", () => {
   })
 
   describe("identity verified icon", () => {
-    it("is displayed when identity is verified", () => {
-      renderWithRelay({
+    it("is displayed when identity is verified", async () => {
+      await renderWithRelay({
         Me: () => me,
       })
 
       expect(screen.getByTestId("identity-verified-icon")).toBeOnTheScreen()
     })
 
-    it("is not displayed when identity is not verified", () => {
-      renderWithRelay({
+    it("is not displayed when identity is not verified", async () => {
+      await renderWithRelay({
         Me: () => ({ ...me, isIdentityVerified: false }),
       })
 
@@ -67,8 +66,8 @@ describe("UserAccountHeader", () => {
     })
   })
 
-  it("renders profile image", () => {
-    renderWithRelay({
+  it("renders profile image", async () => {
+    await renderWithRelay({
       Me: () => me,
     })
     const profileImage = screen.getByTestId("profile-image")
@@ -77,18 +76,18 @@ describe("UserAccountHeader", () => {
     expect(profileImage.props.src).toEqual("https://lala.cloudfront.net/lalala/thumbnail.jpg")
   })
 
-  it("card press navigates to my-collection", () => {
-    renderWithRelay()
+  it("card press navigates to my-collection", async () => {
+    await renderWithRelay()
     const profileCard = screen.getByTestId("account-card")
 
     expect(profileCard).toBeTruthy()
-    fireEvent.press(profileCard)
+    await fireEvent.press(profileCard)
     expect(navigate).toHaveBeenCalledTimes(1)
     expect(navigate).toHaveBeenCalledWith("/my-collection")
   })
 
-  it("on complete profile press navigates to the complete profile flow", () => {
-    renderWithRelay({
+  it("on complete profile press navigates to the complete profile flow", async () => {
+    await renderWithRelay({
       Me: () => ({ ...me, isIdentityVerified: false }),
     })
     const completeProfileButton = screen.getByTestId("complete-profile-button")
@@ -96,13 +95,13 @@ describe("UserAccountHeader", () => {
     expect(completeProfileButton).toBeTruthy()
     expect(screen.queryByTestId("identity-verified-icon")).not.toBeOnTheScreen()
 
-    fireEvent.press(completeProfileButton)
+    await fireEvent.press(completeProfileButton)
     expect(navigate).toHaveBeenCalledTimes(1)
     expect(navigate).toHaveBeenCalledWith("/complete-my-profile", { passProps: expect.any(Object) })
   })
 
-  it("tracks complete profile button press", () => {
-    renderWithRelay({
+  it("tracks complete profile button press", async () => {
+    await renderWithRelay({
       Me: () => ({ ...me, isIdentityVerified: false }),
     })
 
@@ -110,7 +109,7 @@ describe("UserAccountHeader", () => {
 
     expect(completeProfileButton).toBeTruthy()
 
-    fireEvent.press(completeProfileButton)
+    await fireEvent.press(completeProfileButton)
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedCompleteYourProfile",
@@ -120,15 +119,15 @@ describe("UserAccountHeader", () => {
     })
   })
 
-  it("on view full profile press navigates to the full profile", () => {
-    renderWithRelay({
+  it("on view full profile press navigates to the full profile", async () => {
+    await renderWithRelay({
       Me: () => me,
     })
     const viewFullProfileButton = screen.getByTestId("view-full-profile-button")
 
     expect(viewFullProfileButton).toBeTruthy()
     expect(screen.getByTestId("identity-verified-icon")).toBeOnTheScreen()
-    fireEvent.press(viewFullProfileButton)
+    await fireEvent.press(viewFullProfileButton)
     expect(navigate).toHaveBeenCalledTimes(1)
     expect(navigate).toHaveBeenCalledWith("/my-collection")
   })

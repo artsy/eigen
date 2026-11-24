@@ -26,27 +26,27 @@ describe("LoadFailureView", () => {
     ;(useIsStaging as jest.Mock).mockReturnValue(false)
   })
 
-  it("renders basic error state", () => {
-    renderWithWrappers(<LoadFailureView />)
+  it("renders basic error state", async () => {
+    await renderWithWrappers(<LoadFailureView />)
 
     expect(screen.getByText("Unable to load")).toBeTruthy()
     expect(screen.getByText("Please try again")).toBeTruthy()
   })
 
-  it("renders with retry function", () => {
-    renderWithWrappers(<LoadFailureView error={mockError} onRetry={mockRetry} />)
+  it("renders with retry function", async () => {
+    await renderWithWrappers(<LoadFailureView error={mockError} onRetry={mockRetry} />)
 
     expect(screen.getByText("Unable to load")).toBeTruthy()
     expect(screen.getByText("Please try again")).toBeTruthy()
   })
 
-  it("shows error message when in development environment", () => {
+  it("shows error message when in development environment", async () => {
     // @ts-ignore
     const originalDev = global.__DEV__
     // @ts-ignore - Modifying readonly property for test
     global.__DEV__ = true
 
-    renderWithWrappers(<LoadFailureView error={mockError} />)
+    await renderWithWrappers(<LoadFailureView error={mockError} />)
 
     expect(screen.getByText("Error: Test error message")).toBeTruthy()
 
@@ -55,10 +55,10 @@ describe("LoadFailureView", () => {
     global.__DEV__ = originalDev
   })
 
-  it("shows error message when in staging environment", () => {
+  it("shows error message when in staging environment", async () => {
     ;(useIsStaging as jest.Mock).mockReturnValue(true)
 
-    renderWithWrappers(<LoadFailureView error={mockError} />)
+    await renderWithWrappers(<LoadFailureView error={mockError} />)
 
     expect(screen.getByText("Error: Test error message")).toBeTruthy()
   })

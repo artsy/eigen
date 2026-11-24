@@ -71,7 +71,6 @@ const buildSections = (buckets: BucketResults, cityName: string): Section[] => {
   return sections
 }
 
-// @TODO: Implement test for the CityGuideAllEvents component https://artsyproduct.atlassian.net/browse/LD-562
 export const CityGuideAllEvents: React.FC<Props> = ({ buckets, cityName, citySlug }) => {
   // Only recompute sections when a show's saved state changes, mirroring the previous
   // shouldComponentUpdate gating that avoided re-deriving sections on every bucket reference change.
@@ -103,19 +102,39 @@ export const CityGuideAllEvents: React.FC<Props> = ({ buckets, cityName, citySlu
         return <CityGuideFairEventSection citySlug={citySlug} data={data} />
       case "galleries":
         return (
-          <CityGuideEventSection title="Gallery shows" data={data} section="galleries" citySlug={citySlug} />
+          <CityGuideEventSection
+            title="Gallery shows"
+            data={data}
+            section="galleries"
+            citySlug={citySlug}
+          />
         )
       case "museums":
         return (
-          <CityGuideEventSection title="Museum shows" data={data} section="museums" citySlug={citySlug} />
+          <CityGuideEventSection
+            title="Museum shows"
+            data={data}
+            section="museums"
+            citySlug={citySlug}
+          />
         )
       case "opening":
         return (
-          <CityGuideEventSection title="Opening soon" data={data} section="opening" citySlug={citySlug} />
+          <CityGuideEventSection
+            title="Opening soon"
+            data={data}
+            section="opening"
+            citySlug={citySlug}
+          />
         )
       case "closing":
         return (
-          <CityGuideEventSection title="Closing soon" data={data} section="closing" citySlug={citySlug} />
+          <CityGuideEventSection
+            title="Closing soon"
+            data={data}
+            section="closing"
+            citySlug={citySlug}
+          />
         )
       case "saved":
         return <CityGuideSavedEventSection data={data} citySlug={citySlug} />
