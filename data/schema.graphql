@@ -28363,6 +28363,11 @@ type Offer {
   ): String
 
   """
+  Whether this offer defines the total (amount, shipping and tax) for the first time in the negotiation
+  """
+  definesTotal: Boolean
+
+  """
   Who the offer is from
   """
   fromParticipant: FromParticipantEnum!
@@ -28383,6 +28388,11 @@ type Offer {
   note: String
 
   """
+  Whether this offer's amount differs from the offer it responds to
+  """
+  offerAmountChanged: Boolean
+
+  """
   The order this offer belongs to
   """
   order: Order
@@ -28391,6 +28401,11 @@ type Offer {
   Pricing breakdown lines
   """
   pricingBreakdownLines: [PricingBreakdownLineUnion]!
+
+  """
+  The offer this offer responds to (i.e. the offer being countered), if any
+  """
+  respondsTo: Offer
 
   """
   The shipping total for this offer
@@ -28496,6 +28511,11 @@ type Order {
   Check if the bank account has sufficient balance for this order
   """
   bankAccountBalanceCheck: BankAccountBalanceCheck
+
+  """
+  Type of action the buyer needs to perform in response to the last submitted offer. Only present for offer orders fetched as the buyer.
+  """
+  buyerAction: OrderBuyerActionEnum
 
   """
   Phone number of the buyer
@@ -28686,6 +28706,41 @@ type Order {
 
 type OrderActionData {
   clientSecret: String!
+}
+
+"""
+Type of action the buyer needs to perform in response to the last submitted offer
+"""
+enum OrderBuyerActionEnum {
+  """
+  Buyer's offer is accepted and final
+  """
+  OFFER_ACCEPTED
+
+  """
+  Buyer's offer accepted, needs to confirm tax and shipping
+  """
+  OFFER_ACCEPTED_CONFIRM_NEEDED
+
+  """
+  Buyer received a counter offer
+  """
+  OFFER_RECEIVED
+
+  """
+  Buyer received a counter, offer needs to confirm tax and shipping
+  """
+  OFFER_RECEIVED_CONFIRM_NEEDED
+
+  """
+  Buyer's payment failed
+  """
+  PAYMENT_FAILED
+
+  """
+  Provisional offer is accepted and tax/shipping confirmed
+  """
+  PROVISIONAL_OFFER_ACCEPTED
 }
 
 enum OrderBuyerStateEnum {
