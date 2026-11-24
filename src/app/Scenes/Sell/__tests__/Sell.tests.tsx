@@ -494,7 +494,7 @@ describe("Sell", () => {
     const expectSaveError = () =>
       waitFor(() =>
         expect(mockShowToast).toHaveBeenCalledWith(
-          "We couldn’t save your price. Please try again.",
+          "We couldn’t save your answers. Please try again.",
           "bottom",
           expect.objectContaining({ backgroundColor: "red100" })
         )
