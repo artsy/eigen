@@ -43,6 +43,7 @@ export const ArtistCard: React.FC<ArtistCardProps> = memo(
 
     const artistImages = (artist.representativeArtworks ?? [])
       .filter(hasValidResized)
+      .slice(0, 3)
       .map((artwork) => artwork.image?.resized) as ResizedImage[]
 
     return (
@@ -143,6 +144,7 @@ const ArtworkCardImages = ({ images }: { images: ResizedImage[] }) => {
                 overflow="hidden"
               >
                 <Image
+                  testID="artist-card-image"
                   src={image.src}
                   performResize={false}
                   height={containerHeight * ZOOM_IN_FACTOR}
@@ -153,7 +155,12 @@ const ArtworkCardImages = ({ images }: { images: ResizedImage[] }) => {
           )
         })
       ) : (
-        <Flex height={IMAGE_MAX_HEIGHT} width={ARTIST_CARD_WIDTH} backgroundColor="mono10" />
+        <Flex
+          testID="artist-card-images-empty"
+          height={IMAGE_MAX_HEIGHT}
+          width={ARTIST_CARD_WIDTH}
+          backgroundColor="mono10"
+        />
       )}
     </Flex>
   )
