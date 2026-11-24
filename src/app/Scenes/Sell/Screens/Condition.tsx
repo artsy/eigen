@@ -1,7 +1,6 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { ConditionQuery } from "__generated__/ConditionQuery.graphql"
-import { useToast } from "app/Components/Toast/toastHook"
 import { SellConditionSection } from "app/Scenes/Sell/Components/SellConditionSection"
 import { SellFormLayout } from "app/Scenes/Sell/Components/SellFormLayout"
 import { SellPriceSection } from "app/Scenes/Sell/Components/SellPriceSection"
@@ -10,15 +9,15 @@ import { SellWorkCard } from "app/Scenes/Sell/Components/SellWorkCard"
 import { SellNavigationProp } from "app/Scenes/Sell/Sell"
 import { SellConditionStore } from "app/Scenes/Sell/State/SellConditionStore"
 import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
+import { sellConditionSchema } from "app/Scenes/Sell/State/sellConditionSchema"
 import { useConfirmLeavingConditionStep } from "app/Scenes/Sell/hooks/useConfirmLeavingConditionStep"
-import { useUpdateResaleSubmission } from "app/Scenes/Sell/hooks/useUpdateResaleSubmission"
+import { useSaveResaleSubmission } from "app/Scenes/Sell/hooks/useUpdateResaleSubmission"
 import {
   ResaleSubmissionWithChannel,
   isResaleSubmissionSellable,
   toResaleSubmission,
 } from "app/Scenes/Sell/utils/resaleSubmission"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 type Artwork = NonNullable<
@@ -68,46 +67,22 @@ const ConditionForm: React.FC<{
   resaleSubmission: ResaleSubmissionWithChannel
   onContinue: () => void
 }> = ({ artwork, resaleSubmission, onContinue }) => {
-  const { rating, askingPrice } = SellConditionStore.useStoreState((state) => state)
+  const answers = SellConditionStore.useStoreState((state) => state)
   useConfirmLeavingConditionStep()
-  const toast = useToast()
-  const { submitMutation: updateResaleSubmission } = useUpdateResaleSubmission()
-  const [saving, setSaving] = useState(false)
+  const { save, saving } = useSaveResaleSubmission({ onSaved: onContinue })
 
   const channelKind = resaleSubmission.channel
   const isMarketplace = channelKind === "MARKETPLACE"
-  const canContinue = !!rating && (!isMarketplace || !!askingPrice)
+  const canContinue = sellConditionSchema(channelKind).isValidSync(answers)
 
   // The condition can’t be saved yet: the resale submission has no field for it
-  const saveAndContinue = async () => {
+  const saveAndContinue = () => {
     if (!isMarketplace) {
       onContinue()
       return
     }
 
-    setSaving(true)
-
-    try {
-      const response = await updateResaleSubmission({
-        variables: { input: { id: resaleSubmission.internalID, priceListed: askingPrice } },
-      })
-
-      if (
-        response.updateResaleSubmission?.resaleSubmissionOrError?.__typename !==
-        "UpdateResaleSubmissionSuccess"
-      ) {
-        throw new Error("updateResaleSubmission failed")
-      }
-    } catch {
-      toast.show("We couldn’t save your answers. Please try again.", "bottom", {
-        backgroundColor: "red100",
-      })
-      return
-    } finally {
-      setSaving(false)
-    }
-
-    onContinue()
+    save({ id: resaleSubmission.internalID, priceListed: answers.askingPrice })
   }
 
   return (
