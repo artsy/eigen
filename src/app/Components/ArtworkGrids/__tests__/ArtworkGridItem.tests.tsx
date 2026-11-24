@@ -796,6 +796,16 @@ describe("ArtworkGridItem", () => {
       })
 
       describe("bidding timers", () => {
+        // A frozen clock keeps the time left exact. On the real clock, a render in the same
+        // millisecond as the setup shows "1d" instead of "23h 59m".
+        beforeEach(() => {
+          jest.useFakeTimers({ now: new Date("2026-01-15T12:00:00Z") })
+        })
+
+        afterEach(() => {
+          jest.useRealTimers()
+        })
+
         it("shows the Register by date", async () => {
           const registerDate = DateTime.fromMillis(Date.now()).plus({ days: 1 })
 
@@ -820,7 +830,9 @@ describe("ArtworkGridItem", () => {
               sale: { ...artwork.sale, isClosed: false },
               collectorSignals: {
                 auction: {
-                  lotClosesAt: DateTime.fromMillis(Date.now()).plus({ days: 1 }).toISO(),
+                  lotClosesAt: DateTime.fromMillis(Date.now())
+                    .plus({ hours: 23, minutes: 59 })
+                    .toISO(),
                 },
               },
             }),
@@ -836,7 +848,7 @@ describe("ArtworkGridItem", () => {
               sale: { ...artwork.sale, isClosed: false },
               collectorSignals: {
                 auction: {
-                  lotClosesAt: DateTime.fromMillis(Date.now()).plus({ minutes: 1 }).toISO(),
+                  lotClosesAt: DateTime.fromMillis(Date.now()).plus({ seconds: 59 }).toISO(),
                   onlineBiddingExtended: true,
                 },
               },
