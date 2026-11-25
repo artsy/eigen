@@ -86,6 +86,9 @@ Test on **iOS and Android**, using Firebase App Tester or TestFlight.
 Goes to **all users** unless you add a rollout percentage as a third argument. **It isn't shipped
 until you see the Slack message.**
 
+If the previous hotfix for this version is still partially rolled out, the publish fails. Finish
+or revert that rollout first; see [Raising a rollout](deploy_to_expo_updates.md#raising-a-rollout).
+
 ### 5. Monitor
 
 Check the Sentry and Mobile Vitals links in the Slack message and on the hotfix PR. Close that PR by

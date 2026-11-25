@@ -1,13 +1,7 @@
 {
   "name": "eigen-bin",
   "private": true,
-  "dependenciesComments": {
-    "minimatch": "Pinned to fix GHSA-7r86-cg39-jmmj (ReDoS). eas-cli exact-pins the vulnerable minimatch@5.1.2 with no fixed release; remove this once eas-cli bumps it upstream."
-  },
   "devDependencies": {
-    "eas-cli": "21.5.0"
-  },
-  "resolutions": {
-    "minimatch@npm:5.1.2": "5.1.8"
+    "eas-cli": "27.11.0"
   }
 }

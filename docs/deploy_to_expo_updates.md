@@ -278,6 +278,16 @@ your choice as the channel's latest.
 > can't tell. Run `start-hotfix --revert <sha>` before the next production publish, or the next
 > hotfix will ship it again.
 
+If the update you're rolling back is still partially rolled out, eas-cli refuses unless you end
+that rollout explicitly:
+
+```sh
+./scripts/deploys/expo-updates/rollback --force-end-active-rollout
+```
+
+To undo only the partial rollout and keep serving the previous update to everyone, use
+`./bin/node_modules/.bin/eas update:revert-update-rollout --channel production` instead.
+
 ### Raising a rollout
 
 ```sh
@@ -285,6 +295,11 @@ your choice as the channel's latest.
 ```
 
 Interactive; pick the release and raise its rollout.
+
+> [!IMPORTANT]
+> Only one rollout can be in progress per channel, platform and runtime version. While an update
+> is partially rolled out, a new publish to the same version fails: raise the rollout to 100% here
+> (or revert it, see [Rolling back](#rolling-back)) before publishing the next hotfix.
 
 > `rollback` and `update-rollout` run locally against the `artsy_mobile` account:
 > `./bin/node_modules/.bin/eas login --no-browser` (credentials in 1Password; `--no-browser` keeps
