@@ -1,18 +1,37 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { SellWorksSummaryTestsQuery } from "__generated__/SellWorksSummaryTestsQuery.graphql"
 import { SellWorksSummary } from "app/Scenes/Sell/Components/SellWorksSummary"
+import { ResaleSubmissionWithChannel } from "app/Scenes/Sell/utils/resaleSubmission"
 import { extractNodes } from "app/utils/extractNodes"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
+const RESALE_SUBMISSIONS: Record<string, ResaleSubmissionWithChannel> = {
+  "id-a2": {
+    internalID: "s-1",
+    state: "ACCEPTED",
+    channel: "MARKETPLACE",
+    recommendedPriceRange: null,
+  },
+  "id-b4": {
+    internalID: "s-2",
+    state: "ACCEPTED",
+    channel: "AUCTION",
+    recommendedPriceRange: null,
+  },
+}
+
 describe("SellWorksSummary", () => {
-  const onStartWork = jest.fn()
+  const onStartSelling = jest.fn()
 
   const { renderWithRelay } = setupTestWrapper<SellWorksSummaryTestsQuery>({
     Component: ({ me }) => (
       <SellWorksSummary
-        works={extractNodes(me?.myCollectionConnection)}
-        onStartWork={onStartWork}
+        works={extractNodes(me?.myCollectionConnection).map((artwork) => ({
+          artwork,
+          resaleSubmission: RESALE_SUBMISSIONS[artwork.internalID],
+        }))}
+        onStartSelling={onStartSelling}
       />
     ),
     query: graphql`
@@ -31,7 +50,6 @@ describe("SellWorksSummary", () => {
     `,
   })
 
-  // getSellChannel treats an even second-last hex digit as a marketplace work, odd as an auction
   const collection = {
     Me: () => ({
       myCollectionConnection: {
@@ -54,10 +72,14 @@ describe("SellWorksSummary", () => {
     expect(screen.getByText("Auction Artist")).toBeOnTheScreen()
 
     await fireEvent.press(screen.getByText("Start Submission"))
-    expect(onStartWork).toHaveBeenCalledWith("id-b4")
+    expect(onStartSelling).toHaveBeenCalledWith(
+      expect.objectContaining({ resaleSubmission: expect.objectContaining({ internalID: "s-2" }) })
+    )
 
     await fireEvent.press(screen.getByText("Start Listing"))
-    expect(onStartWork).toHaveBeenCalledWith("id-a2")
+    expect(onStartSelling).toHaveBeenCalledWith(
+      expect.objectContaining({ resaleSubmission: expect.objectContaining({ internalID: "s-1" }) })
+    )
   })
 
   it("explains the sales channels", async () => {

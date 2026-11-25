@@ -69,8 +69,13 @@ const mockHardwareBack = () => {
 }
 
 // What createResaleSubmissions answers for each work in the collection
-const RESALE_SUBMISSIONS: Record<string, { state: string; channel: string | null }> = {
-  "id-a2": { state: "ACCEPTED", channel: "MARKETPLACE" },
+const RESALE_SUBMISSIONS: Record<string, object> = {
+  "id-a2": {
+    state: "ACCEPTED",
+    channel: "MARKETPLACE",
+    recommendedPriceMin: { currencyPrefix: "US$", amount: "2,800" },
+    recommendedPriceMax: { amount: "3,600" },
+  },
   "id-c3": { state: "REJECTED", channel: null },
   "id-b4": { state: "ACCEPTED", channel: "AUCTION" },
 }
@@ -167,17 +172,24 @@ const resolveWhenPending = async (
   await view.mockResolveLastOperation(resolvers)
 }
 
-// Step 2 loads the active work with its own query. Step 3 asks for the same fields, so Relay's
-// store answers it. The shared id keeps a generated one from overwriting another work in step 1.
+// Steps 2 and 3 load the active resale submission and its work. The shared ids keep generated
+// ones from overwriting another work or submission in step 1.
+const activeWorkResolvers = (artwork: ActiveArtwork) => ({
+  Me: () => ({ id: "me" }),
+  ResaleSubmission: () => ({
+    id: `submission-${artwork.internalID}`,
+    ...resaleSubmissionFor(artwork.internalID),
+  }),
+  Artwork: () => ({ id: artwork.internalID, ...artwork }),
+})
+
 const resolveActiveArtwork = (view: SellView, artwork: ActiveArtwork) =>
-  resolveWhenPending(view, "ConditionQuery", {
-    Artwork: () => ({ id: artwork.internalID, ...artwork }),
-  })
+  resolveWhenPending(view, "ConditionQuery", activeWorkResolvers(artwork))
 
 // Step 3 also loads the saved addresses, which the earlier steps never asked for
 const resolveLocationStep = (view: SellView, artwork: ActiveArtwork) =>
   resolveWhenPending(view, "LocationAndContactQuery", {
-    Artwork: () => ({ id: artwork.internalID, ...artwork }),
+    ...activeWorkResolvers(artwork),
     // A fixed id lets a saved address update this list
     Me: () => ({ id: "me", addressConnection: { edges: [{ node: SAVED_ADDRESS }] } }),
   })
@@ -364,6 +376,9 @@ describe("Sell", () => {
     })
     expect(await screen.findByText("Step 2 · Condition & Price")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 2 of 3")).toBeOnTheScreen()
+    // The price section recommends the same range the card shows
+    expect(screen.getByText("Estimated Value: US$2,800–3,600")).toBeOnTheScreen()
+    expect(screen.getByText("US$2,800–3,600")).toBeOnTheScreen()
     expect(screen.getByText("Confirm Listing Price")).toBeDisabled()
 
     await fireEvent.press(screen.getByRole("radio", { name: /^Excellent\./ }))
@@ -406,6 +421,43 @@ describe("Sell", () => {
 
     await fireEvent.press(screen.getByText("Return to My Collection"))
     expect(goBack).toHaveBeenCalledTimes(1)
+  })
+
+  it("shows an error on step 2 when the submission is no longer accepted", async () => {
+    const view = await renderSell()
+    await fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
+    await fireEvent.press(screen.getByText("Verify If Sellable"))
+    await resolveVerify(view)
+    await fireEvent.press(await screen.findByText("Proceed to Listing"))
+    await fireEvent.press(await screen.findByText("Start Submission"))
+
+    const artwork = { internalID: "id-b4", artistNames: "Artist C" }
+    const resolvers = activeWorkResolvers(artwork)
+    await resolveWhenPending(view, "ConditionQuery", {
+      ...resolvers,
+      ResaleSubmission: () => ({ ...resolvers.ResaleSubmission(), state: "REJECTED" }),
+    })
+
+    expect(await screen.findByText("We couldn’t load this work.")).toBeOnTheScreen()
+    expect(screen.queryByText("Continue")).not.toBeOnTheScreen()
+  })
+
+  it("shows an error on step 3 when the submission is no longer accepted", async () => {
+    const view = await renderSell()
+    await openAuctionConditionStep(view)
+    await fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
+    await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
+    await fireEvent.press(screen.getByText("Continue"))
+
+    const artwork = { internalID: "id-b4", artistNames: "Artist C" }
+    const resolvers = activeWorkResolvers(artwork)
+    await resolveWhenPending(view, "LocationAndContactQuery", {
+      ...resolvers,
+      ResaleSubmission: () => ({ ...resolvers.ResaleSubmission(), state: "LISTED" }),
+    })
+
+    expect(await screen.findByText("We couldn’t load this work.")).toBeOnTheScreen()
+    expect(screen.queryByText("Submit for Review")).not.toBeOnTheScreen()
   })
 
   it("asks auction works for a condition, then a location and phone number", async () => {
