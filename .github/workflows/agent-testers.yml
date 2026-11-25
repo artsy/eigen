@@ -71,8 +71,8 @@ jobs:
       - uses: actions/checkout@v5
       - id: m
         env:
-          A: ${{ inputs.android_personas || 'buyer' }}
-          I: ${{ inputs.ios_personas || 'new-collector' }}
+          A: ${{ inputs.android_personas || 'buyer,commuter-3g' }}
+          I: ${{ inputs.ios_personas || 'bidder,link-opener' }}
         run: |
           PERSONAS="$A" PLATFORM=android python3 scripts/matrix.py >> "$GITHUB_OUTPUT"
           PERSONAS="$I" PLATFORM=ios python3 scripts/matrix.py >> "$GITHUB_OUTPUT"
@@ -258,7 +258,7 @@ jobs:
           disk-size: 8G
           cores: 4
           disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -dns-server 127.0.0.1
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -dns-server 127.0.0.1 -netspeed ${{ matrix.netspeed }} -netdelay ${{ matrix.netdelay }}
           script: bash scripts/android/run_agent.sh
 
       - name: Encrypt results

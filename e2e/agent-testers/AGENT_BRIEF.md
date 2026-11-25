@@ -16,9 +16,13 @@ Android
   Read the PNG it writes, then the element list (centres in real pixels).
 - Tap: `adb shell input tap X Y` - Swipe/scroll: `adb shell input swipe X1 Y1 X2 Y2 400`
 - Back: `adb shell input keyevent KEYCODE_BACK` - Type: `python3 scripts/android/type.py "text"`
-  iOS
+- Open a link: `adb shell am start -a android.intent.action.VIEW -d "https://staging.artsy.net/..."`
+
+iOS
+
 - See the screen: `python3 scripts/ios/screen.py results/<persona> <NN>` (positions in points).
 - `bash scripts/ios/gesture.sh tap X Y | scroll down | back | dismiss-sheet | enter | relaunch`
+- Open a link: `bash scripts/ios/gesture.sh url "https://staging.artsy.net/..."`
 - Type: `python3 scripts/ios/type.py "text"` (tap the field first). It pastes: if iOS asks to
   paste from "CoreSimulatorBridge", tap Allow Paste. That alert comes from the tool, not the app.
 

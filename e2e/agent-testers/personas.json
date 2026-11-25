@@ -115,5 +115,36 @@
       "font_scale": 1.0,
       "theme": "light"
     }
+  },
+  {
+    "id": "commuter-3g",
+    "platform": "android",
+    "profile": "Teacher, 41, browses art on the train with a slow, patchy 3G connection, gives up on endless spinners.",
+    "goal": "Open the home feed, an artist, an artwork and an auction, save an artwork, and judge how the app copes with the slow network: loading states, timeouts, error messages, retry.",
+    "locale": "en-US",
+    "geo": [40.7128, -74.006],
+    "device": {
+      "name": "Pixel 7, Android 14, slow 3G",
+      "profile": "pixel_7",
+      "android_api": 34,
+      "font_scale": 1.0,
+      "theme": "light",
+      "netspeed": "umts",
+      "netdelay": "umts"
+    }
+  },
+  {
+    "id": "link-opener",
+    "platform": "ios",
+    "profile": "Collector, 38, opens Artsy links friends send in messages and newsletters, expects them to land on the right screen in the app.",
+    "goal": "Open staging.artsy.net links with the link command: an artist, an artwork, an auction, a show, a gallery, a collection, and one link that does not exist. Check each lands on the right in-app screen, back navigation works, and the bad link fails gracefully. Find real link targets by browsing the app first and noting names in the URLs you would expect.",
+    "locale": "en-US",
+    "geo": [40.7128, -74.006],
+    "device": {
+      "simulator": "iPhone 17",
+      "ios": 26,
+      "text_size": "large",
+      "theme": "light"
+    }
   }
 ]
