@@ -3,6 +3,7 @@ import { Sell } from "app/Scenes/Sell/Sell"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
 import { getLocationDetails, getLocationPredictions } from "app/utils/googleMaps"
+import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Alert, BackHandler } from "react-native"
@@ -19,6 +20,11 @@ jest.mock("app/Components/Toast/toastHook", () => ({
 jest.mock("app/utils/googleMaps", () => ({
   getLocationPredictions: jest.fn(),
   getLocationDetails: jest.fn(),
+}))
+
+jest.mock("app/utils/refreshHelpers", () => ({
+  ...jest.requireActual("app/utils/refreshHelpers"),
+  refreshMyCollection: jest.fn(),
 }))
 
 const SAVED_ADDRESS = {
@@ -245,6 +251,15 @@ describe("Sell", () => {
     expect(screen.getByText("Step 1 · Decide Which Works to Sell")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 1 of 3")).toBeOnTheScreen()
     expect(screen.getByText(/Tap the works you’ve considered selling/)).toBeOnTheScreen()
+  })
+
+  it("refreshes My Collection when the flow is left", async () => {
+    await renderSell()
+    jest.mocked(refreshMyCollection).mockClear()
+
+    await screen.unmount()
+
+    expect(refreshMyCollection).toHaveBeenCalledTimes(1)
   })
 
   it("closes straight away when the feature flag is off", async () => {

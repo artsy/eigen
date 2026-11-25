@@ -15,6 +15,7 @@ import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 // eslint-disable-next-line no-restricted-imports
 import { dismissModal } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { useEffect, useState } from "react"
 
 export type SellNavigationRoutes = {
@@ -36,6 +37,8 @@ export const Sell: React.FC = () => {
       dismissModal()
     }
   }, [enableSell])
+
+  useEffect(() => () => refreshMyCollection(), [])
 
   if (!enableSell) {
     return null
