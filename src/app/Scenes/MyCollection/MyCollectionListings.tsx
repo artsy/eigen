@@ -12,11 +12,10 @@ import {
   useRefreshControl,
   useRefreshFetchKey,
 } from "app/utils/refreshHelpers"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const PAGE_SIZE = 20
-const HIDDEN_STATES = ["CANCELED", "REJECTED"]
 
 interface MyCollectionListingsProps {
   me: MyCollectionListings_me$key
@@ -25,33 +24,17 @@ interface MyCollectionListingsProps {
 export const MyCollectionListings: React.FC<MyCollectionListingsProps> = ({ me }) => {
   const { data, hasNext, loadNext, isLoadingNext, refetch } = usePaginationFragment(meFragment, me)
 
-  const listings = useMemo(
-    () =>
-      extractNodes(data.resaleSubmissionsConnection).filter(
-        (submission) => !HIDDEN_STATES.includes(submission.state)
-      ),
-    [data.resaleSubmissionsConnection]
-  )
-
-  const [loadFailed, setLoadFailed] = useState(false)
+  const listings = extractNodes(data.resaleSubmissionsConnection)
 
   const RefreshControl = useRefreshControl(refetch, { pageSize: PAGE_SIZE })
 
   const loadMore = useCallback(() => {
     if (hasNext && !isLoadingNext) {
-      loadNext(PAGE_SIZE, { onComplete: (error) => setLoadFailed(!!error) })
+      loadNext(PAGE_SIZE)
     }
   }, [hasNext, isLoadingNext, loadNext])
 
-  // A page made only of hidden submissions leaves nothing to scroll, so fetch on until a row
-  // shows. Stop after an error, or a persistent failure would retry forever.
-  useEffect(() => {
-    if (listings.length === 0 && !loadFailed) {
-      loadMore()
-    }
-  }, [listings.length, loadFailed, loadMore])
-
-  if (listings.length === 0 && (!hasNext || loadFailed)) {
+  if (listings.length === 0) {
     return (
       <Tabs.ScrollView testID="my-collection-listings" refreshControl={RefreshControl}>
         <MyCollectionListingsEmptyState />
@@ -179,7 +162,6 @@ const meFragment = graphql`
       edges {
         node {
           internalID
-          state
           ...MyCollectionListingRow_resaleSubmission
         }
       }

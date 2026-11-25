@@ -14,6 +14,8 @@ import { graphql } from "react-relay"
 
 const ORANGE_100 = "#DA6722"
 const GREEN_100 = "#00674A"
+const MONO_30 = "#C2C2C2"
+const RED_100 = "#D71023"
 
 const submission = (
   state: MyCollectionListingRow_resaleSubmission$data["state"],
@@ -87,91 +89,42 @@ describe("MyCollectionListings", () => {
             submission("ACCEPTED", { id: "1" }),
             submission("LISTED", { id: "2" }),
             submission("AUCTION_REVIEW", { id: "3" }),
+            submission("CANCELED", { id: "4" }),
+            submission("REJECTED", { id: "5" }),
           ],
         },
       }),
     })
 
     const dots = screen.getAllByTestId("listing-state-dot")
-    expect(dots).toHaveLength(3)
+    expect(dots).toHaveLength(5)
     expect(dots[0]).toHaveStyle({ backgroundColor: ORANGE_100 })
     expect(dots[1]).toHaveStyle({ backgroundColor: GREEN_100 })
     expect(dots[2]).toHaveStyle({ backgroundColor: GREEN_100 })
+    expect(dots[3]).toHaveStyle({ backgroundColor: MONO_30 })
+    expect(dots[4]).toHaveStyle({ backgroundColor: RED_100 })
   })
 
-  it("hides canceled and rejected submissions", async () => {
+  it("shows canceled and rejected submissions", async () => {
     await renderWithRelay({
       Me: () => ({
         resaleSubmissionsConnection: {
           edges: [
-            submission("LISTED", { id: "1", statusMessage: "Your work is listed" }),
-            submission("CANCELED", { id: "2", statusMessage: "Canceled message" }),
-            submission("REJECTED", { id: "3", statusMessage: "Rejected message" }),
+            submission("CANCELED", { id: "1", statusMessage: "Canceled message" }),
+            submission("REJECTED", { id: "2", statusMessage: "Rejected message" }),
           ],
         },
       }),
     })
 
-    expect(screen.getAllByTestId("my-collection-listing-row")).toHaveLength(1)
-    expect(screen.getByText("Your work is listed")).toBeOnTheScreen()
-    expect(screen.queryByText("Canceled message")).not.toBeOnTheScreen()
-    expect(screen.queryByText("Rejected message")).not.toBeOnTheScreen()
+    expect(screen.getAllByTestId("my-collection-listing-row")).toHaveLength(2)
+    expect(screen.getByText("Canceled message")).toBeOnTheScreen()
+    expect(screen.getByText("Rejected message")).toBeOnTheScreen()
   })
 
   it("shows the empty state when there are no submissions", async () => {
     await renderWithRelay({
       Me: () => ({ resaleSubmissionsConnection: { edges: [] } }),
-    })
-
-    expect(screen.getByText("Thought about selling?")).toBeOnTheScreen()
-    expect(screen.queryByTestId("my-collection-listing-row")).not.toBeOnTheScreen()
-  })
-
-  describe("when every loaded submission is hidden but another page exists", () => {
-    const hiddenPage = {
-      Me: () => ({
-        id: "me-id",
-        resaleSubmissionsConnection: {
-          edges: [submission("CANCELED", { id: "1" })],
-          pageInfo: { hasNextPage: true, endCursor: "cursor-1" },
-        },
-      }),
-    }
-
-    it("loads the next page and shows its rows", async () => {
-      const { mockResolveLastOperation } = await renderWithRelay(hiddenPage)
-
-      await mockResolveLastOperation({
-        Me: () => ({
-          id: "me-id",
-          resaleSubmissionsConnection: {
-            edges: [submission("LISTED", { id: "2", statusMessage: "Your work is listed" })],
-            pageInfo: { hasNextPage: false, endCursor: null },
-          },
-        }),
-      })
-
-      expect(await screen.findByText("Your work is listed")).toBeOnTheScreen()
-      expect(screen.queryByText("Thought about selling?")).not.toBeOnTheScreen()
-    })
-
-    it("stops loading after an error and shows the empty state", async () => {
-      const { env, mockRejectLastOperation } = await renderWithRelay(hiddenPage)
-
-      await mockRejectLastOperation(new Error("Network error"))
-
-      expect(await screen.findByText("Thought about selling?")).toBeOnTheScreen()
-      expect(env.mock.getAllOperations()).toHaveLength(0)
-    })
-  })
-
-  it("shows the empty state when every submission is filtered out", async () => {
-    await renderWithRelay({
-      Me: () => ({
-        resaleSubmissionsConnection: {
-          edges: [submission("CANCELED", { id: "1" }), submission("REJECTED", { id: "2" })],
-        },
-      }),
     })
 
     expect(screen.getByText("Thought about selling?")).toBeOnTheScreen()

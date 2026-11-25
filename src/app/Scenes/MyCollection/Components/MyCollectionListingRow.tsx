@@ -15,6 +15,8 @@ const STATE_DOT_COLORS: Partial<Record<ListingState, Color>> = {
   ACCEPTED: "orange100",
   LISTED: "green100",
   AUCTION_REVIEW: "green100",
+  CANCELED: "mono30",
+  REJECTED: "red100",
 }
 
 const CHANNEL_LABELS: Partial<Record<ListingChannel, string>> = {
