@@ -285,8 +285,11 @@ that rollout explicitly:
 ./scripts/deploys/expo-updates/rollback --force-end-active-rollout
 ```
 
-To undo only the partial rollout and keep serving the previous update to everyone, use
-`./bin/node_modules/.bin/eas update:revert-update-rollout --channel production` instead.
+To undo just the partial rollout instead, run
+`./bin/node_modules/.bin/eas update:revert-update-rollout --channel production`. It **deletes** the
+rolling-out update group and republishes the update it was rolling out over, so everyone gets that
+previous update again. As with a rollback, run `start-hotfix --revert <sha>` before the next
+production publish.
 
 ### Raising a rollout
 
@@ -297,7 +300,8 @@ To undo only the partial rollout and keep serving the previous update to everyon
 Interactive; pick the release and raise its rollout.
 
 > [!IMPORTANT]
-> Only one rollout can be in progress per channel, platform and runtime version. While an update
+> Only one rollout can be in progress per branch, platform and runtime version (our channels and
+> their branches share a name, e.g. `production`). While an update
 > is partially rolled out, a new publish to the same version fails: raise the rollout to 100% here
 > (or revert it, see [Rolling back](#rolling-back)) before publishing the next hotfix.
 
