@@ -6,7 +6,10 @@ import { Image } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
 
 export interface SellConditionPhoto {
+  /** A local file for a new photo, or the image URL for a saved one */
   path: string
+  /** Set once the photo is saved on the resale submission */
+  imageID?: string
 }
 
 export const MAX_SELL_CONDITION_PHOTOS = 10

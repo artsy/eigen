@@ -98,6 +98,7 @@ const resaleSubmissionFor = (artworkID: string) => ({
   internalID: `resaleSubmission-${artworkID}`,
   recommendedPriceMin: null,
   recommendedPriceMax: null,
+  conditionPhotos: [],
   ...RESALE_SUBMISSIONS[artworkID],
 })
 
@@ -745,6 +746,202 @@ describe("Sell", () => {
 
       expect(await resolveSave(view)).not.toHaveProperty("externalImageUrls")
       expect(getConvertedImageUrlFromS3).not.toHaveBeenCalled()
+    })
+  })
+
+  describe("saved condition photos", () => {
+    const SAVED_PHOTO = { internalID: "image-1", url: "https://images.example.com/saved.jpg" }
+
+    const openStepWithSavedPhotos = async (
+      view: SellView,
+      conditionPhotos: Array<{ internalID: string; url: string }> = [SAVED_PHOTO]
+    ) => {
+      await fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
+      await fireEvent.press(screen.getByText("Verify If Sellable"))
+      await resolveVerify(view)
+      await fireEvent.press(await screen.findByText("Proceed to Listing"))
+      await fireEvent.press(await screen.findByText("Start Submission"))
+      const resolvers = activeWorkResolvers({ internalID: "id-b4", artistNames: "Artist C" })
+      await resolveWhenPending(view, "ConditionQuery", {
+        ...resolvers,
+        ResaleSubmission: () => ({ ...resolvers.ResaleSubmission(), conditionPhotos }),
+      })
+      await screen.findByText("Step 2 · Condition")
+    }
+
+    const pickPhotos = async (paths: string[]) => {
+      jest
+        .mocked(showPhotoActionSheet)
+        .mockResolvedValue(
+          paths.map((path) => ({ path })) as Awaited<ReturnType<typeof showPhotoActionSheet>>
+        )
+      await fireEvent.press(screen.getByText(/^(Upload photos|Add more photos)$/))
+    }
+
+    const continueWithFair = async () => {
+      await fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
+      await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
+      await fireEvent.press(screen.getByText("Continue"))
+    }
+
+    beforeEach(() => {
+      jest
+        .mocked(getConvertedImageUrlFromS3)
+        .mockImplementation(async (path) => `https://s3.example.com/${path.split("/").pop()}`)
+    })
+
+    it("shows the saved photos and uploads only new ones", async () => {
+      const view = await renderSell()
+      await openStepWithSavedPhotos(view)
+      expect(screen.getAllByTestId("sell-condition-photo")).toHaveLength(1)
+
+      await pickPhotos(["file:///new.jpg"])
+      await waitFor(() => expect(screen.getAllByTestId("sell-condition-photo")).toHaveLength(2))
+      await continueWithFair()
+
+      expect(await resolveSave(view)).toEqual({
+        id: "resaleSubmission-id-b4",
+        condition: "FAIR",
+        notes: "",
+        externalImageUrls: ["https://s3.example.com/new.jpg"],
+      })
+      expect(getConvertedImageUrlFromS3).toHaveBeenCalledTimes(1)
+      expect(getConvertedImageUrlFromS3).toHaveBeenCalledWith(
+        "file:///new.jpg",
+        expect.any(Function)
+      )
+      expect(operationNames(view)).not.toContain("useDeleteResaleSubmissionImageMutation")
+    })
+
+    it("deletes a removed saved photo only when the seller continues", async () => {
+      const view = await renderSell()
+      await openStepWithSavedPhotos(view)
+
+      await fireEvent.press(screen.getByLabelText("Remove photo 1"))
+      expect(screen.queryByTestId("sell-condition-photo")).not.toBeOnTheScreen()
+      expect(operationNames(view)).not.toContain("useDeleteResaleSubmissionImageMutation")
+
+      await continueWithFair()
+
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+          "useDeleteResaleSubmissionImageMutation"
+        )
+      )
+      expect(view.env.mock.getMostRecentOperation().request.variables.input).toEqual({
+        id: "resaleSubmission-id-b4",
+        imageID: "image-1",
+      })
+      await view.mockResolveLastOperation({
+        DeleteResaleSubmissionImagePayload: () => ({
+          resaleSubmissionOrError: { __typename: "DeleteResaleSubmissionImageSuccess" },
+        }),
+      })
+      expect(await resolveSave(view)).toEqual({
+        id: "resaleSubmission-id-b4",
+        condition: "FAIR",
+        notes: "",
+      })
+    })
+
+    it("sends no photo twice after coming back from step 3", async () => {
+      const view = await renderSell()
+      await openStepWithSavedPhotos(view, [])
+
+      await pickPhotos(["file:///new.jpg"])
+      await continueWithFair()
+      await waitFor(() =>
+        expect(operationNames(view)).toContain("useUpdateResaleSubmissionMutation")
+      )
+      await view.mockResolveLastOperation({
+        UpdateResaleSubmissionPayload: () => ({
+          resaleSubmissionOrError: {
+            __typename: "UpdateResaleSubmissionSuccess",
+            resaleSubmission: {
+              id: "submission-id-b4",
+              ...resaleSubmissionFor("id-b4"),
+              conditionPhotos: [
+                { internalID: "image-2", url: "https://images.example.com/new.jpg" },
+              ],
+            },
+          },
+        }),
+      })
+      await resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
+      await screen.findByText("Step 3 · Location & Contact")
+
+      await fireEvent.press(screen.getByLabelText("Go back"))
+      await screen.findByText("Step 2 · Condition")
+      expect(screen.getAllByTestId("sell-condition-photo")).toHaveLength(1)
+      await fireEvent.press(screen.getByText("Continue"))
+
+      expect(await resolveSave(view)).not.toHaveProperty("externalImageUrls")
+      expect(getConvertedImageUrlFromS3).toHaveBeenCalledTimes(1)
+    })
+
+    it("reloads the saved photos after a failed save, so a retry uploads only the rest", async () => {
+      const view = await renderSell()
+      await openStepWithSavedPhotos(view, [])
+
+      await pickPhotos(["file:///a.jpg", "file:///b.jpg"])
+      await waitFor(() => expect(screen.getAllByTestId("sell-condition-photo")).toHaveLength(2))
+      await continueWithFair()
+      await resolveSave(view, "failure")
+
+      // Metaphysics kept the first photo before the save failed
+      const resolvers = activeWorkResolvers({ internalID: "id-b4", artistNames: "Artist C" })
+      await resolveWhenPending(view, "useUpdateResaleSubmissionConditionPhotosQuery", {
+        ...resolvers,
+        ResaleSubmission: () => ({
+          ...resolvers.ResaleSubmission(),
+          conditionPhotos: [{ internalID: "image-a", url: "https://images.example.com/a.jpg" }],
+        }),
+      })
+      expect(mockShowToast).toHaveBeenCalledWith(
+        "We couldn’t save your answers. Please try again.",
+        "bottom",
+        expect.objectContaining({ backgroundColor: "red100" })
+      )
+      expect(screen.getAllByTestId("sell-condition-photo")).toHaveLength(2)
+
+      jest.mocked(getConvertedImageUrlFromS3).mockClear()
+      await fireEvent.press(screen.getByText("Continue"))
+
+      expect(await resolveSave(view)).toEqual({
+        id: "resaleSubmission-id-b4",
+        condition: "FAIR",
+        notes: "",
+        externalImageUrls: ["https://s3.example.com/b.jpg"],
+      })
+      expect(getConvertedImageUrlFromS3).toHaveBeenCalledTimes(1)
+    })
+
+    it("tells the seller when photos past the cap are dropped", async () => {
+      const view = await renderSell()
+      await openStepWithSavedPhotos(view)
+
+      await pickPhotos(Array.from({ length: 10 }, (_, index) => `file:///${index}.jpg`))
+
+      await waitFor(() => expect(screen.getAllByTestId("sell-condition-photo")).toHaveLength(10))
+      expect(mockShowToast).toHaveBeenCalledWith(
+        "You can add up to 10 photos. We added the first 9.",
+        "bottom"
+      )
+    })
+
+    it("leaves step 2 without asking when only saved photos are there", async () => {
+      const alertSpy = jest.spyOn(Alert, "alert")
+      const view = await renderSell()
+      await openStepWithSavedPhotos(view)
+
+      await fireEvent.press(screen.getByLabelText("Go back"))
+
+      expect(await screen.findByText("Start Submission")).toBeOnTheScreen()
+      expect(alertSpy).not.toHaveBeenCalledWith(
+        "Go back to step 1?",
+        expect.any(String),
+        expect.any(Array)
+      )
     })
   })
 

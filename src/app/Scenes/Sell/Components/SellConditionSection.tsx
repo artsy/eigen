@@ -1,4 +1,5 @@
 import { Flex, Input, Text } from "@artsy/palette-mobile"
+import { useToast } from "app/Components/Toast/toastHook"
 import {
   MAX_SELL_CONDITION_PHOTOS,
   SellConditionPhoto,
@@ -13,13 +14,20 @@ export const SellConditionSection: React.FC = () => {
     (actions) => actions
   )
 
+  const toast = useToast()
+
   const addPhotos = (newPhotos: SellConditionPhoto[]) => {
-    setPhotos(
-      [
-        ...photos,
-        ...newPhotos.filter((photo) => !photos.some(({ path }) => path === photo.path)),
-      ].slice(0, MAX_SELL_CONDITION_PHOTOS)
-    )
+    const picked = newPhotos.filter((photo) => !photos.some(({ path }) => path === photo.path))
+    const fitting = picked.slice(0, MAX_SELL_CONDITION_PHOTOS - photos.length)
+
+    setPhotos([...photos, ...fitting])
+
+    if (fitting.length < picked.length) {
+      toast.show(
+        `You can add up to ${MAX_SELL_CONDITION_PHOTOS} photos. We added the first ${fitting.length}.`,
+        "bottom"
+      )
+    }
   }
 
   return (
