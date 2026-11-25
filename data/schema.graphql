@@ -8376,6 +8376,10 @@ enum CRMActivitySort {
 }
 
 type CRMContact {
+  """
+  At most one per address type
+  """
+  addresses: [CRMContactAddress!]
   archivedAt(
     format: String
 
@@ -8459,6 +8463,112 @@ type CRMContact {
     """
     timezone: String
   ): String
+}
+
+type CRMContactAddress {
+  addressLine1: String!
+  addressLine2: String
+  addressType: CRMContactAddressType!
+  city: String!
+
+  """
+  ISO 3166-1 alpha-2 country code, uppercase
+  """
+  country: String!
+  createdAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  crmContactID: String!
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+  partnerID: String!
+  postalCode: String!
+
+  """
+  State or region
+  """
+  region: String
+  updatedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+}
+
+"""
+A connection to a list of items.
+"""
+type CRMContactAddressConnection {
+  """
+  A list of edges.
+  """
+  edges: [CRMContactAddressEdge]
+  pageCursors: PageCursors!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+"""
+An edge in a connection.
+"""
+type CRMContactAddressEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge
+  """
+  node: CRMContactAddress
+}
+
+input CRMContactAddressInput {
+  addressLine1: String!
+  addressLine2: String
+  addressType: CRMContactAddressType!
+  city: String!
+
+  """
+  ISO 3166-1 alpha-2 country code
+  """
+  country: String!
+  postalCode: String!
+
+  """
+  State or region
+  """
+  region: String
+}
+
+"""
+A contact has at most one address of each type
+"""
+enum CRMContactAddressType {
+  BILLING
+  HOME
+  OTHER
+  SHIPPING
 }
 
 enum CRMContactChildSort {
@@ -13948,6 +14058,11 @@ type CreateCRMContactFailure {
 
 input CreateCRMContactInput {
   """
+  At most one per address type
+  """
+  addresses: [CRMContactAddressInput!]
+
+  """
   Must be a user who belongs to the contact's partner
   """
   assignedToUserID: String
@@ -16147,6 +16262,36 @@ union DeleteCRMActivityResponseOrError = DeleteCRMActivityFailure | DeleteCRMAct
 
 type DeleteCRMActivitySuccess {
   crmActivity: CRMActivity
+}
+
+type DeleteCRMContactAddressFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteCRMContactAddressInput {
+  clientMutationId: String
+
+  """
+  The internal ID of the address
+  """
+  id: String!
+}
+
+type DeleteCRMContactAddressPayload {
+  clientMutationId: String
+
+  """
+  On success: the removed address
+  """
+  crmContactAddressOrError: DeleteCRMContactAddressResponseOrError
+}
+
+union DeleteCRMContactAddressResponseOrError =
+    DeleteCRMContactAddressFailure
+  | DeleteCRMContactAddressSuccess
+
+type DeleteCRMContactAddressSuccess {
+  crmContactAddress: CRMContactAddress
 }
 
 type DeleteCRMContactEmailFailure {
@@ -26306,7 +26451,7 @@ type Mutation {
   createCRMActivity(input: CreateCRMActivityInput!): CreateCRMActivityPayload
 
   """
-  Create a CRM contact. It needs at least one of firstName, lastName, company or an email. Creation is all-or-nothing: a failing email or location creates nothing.
+  Create a CRM contact. It needs at least one of firstName, lastName, company or an email. Creation is all-or-nothing: a failing email, location or address creates nothing.
   """
   createCRMContact(input: CreateCRMContactInput!): CreateCRMContactPayload
 
@@ -26661,6 +26806,11 @@ type Mutation {
   Remove an activity from a CRM contact's timeline. Email activities can't be removed.
   """
   deleteCRMActivity(input: DeleteCRMActivityInput!): DeleteCRMActivityPayload
+
+  """
+  Remove an address from a CRM contact
+  """
+  deleteCRMContactAddress(input: DeleteCRMContactAddressInput!): DeleteCRMContactAddressPayload
 
   """
   Remove an email from a CRM contact. Fails when it is the contact's last email and the contact has no name or company.
@@ -27235,6 +27385,11 @@ type Mutation {
   saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
 
   """
+  Save a CRM contact's address of the given type. Replaces the existing address of that type, if any.
+  """
+  saveCRMContactAddress(input: SaveCRMContactAddressInput!): SaveCRMContactAddressPayload
+
+  """
   Send a confirmation email
   """
   sendConfirmationEmail(
@@ -27447,9 +27602,14 @@ type Mutation {
   updateCRMActivity(input: UpdateCRMActivityInput!): UpdateCRMActivityPayload
 
   """
-  Update a CRM contact's own fields. Emails and locations have their own mutations, and a contact can't change partner.
+  Update a CRM contact's own fields. Emails, locations and addresses have their own mutations, and a contact can't change partner.
   """
   updateCRMContact(input: UpdateCRMContactInput!): UpdateCRMContactPayload
+
+  """
+  Change an address. Its type cannot change.
+  """
+  updateCRMContactAddress(input: UpdateCRMContactAddressInput!): UpdateCRMContactAddressPayload
 
   """
   Change an email's address or primary flag. An email can't be moved to another contact.
@@ -33760,6 +33920,36 @@ type Query {
   ): CRMContact
 
   """
+  An address of a CRM contact
+  """
+  crmContactAddress(
+    """
+    The internal ID of the address
+    """
+    id: String!
+  ): CRMContactAddress
+
+  """
+  A connection of the addresses of a CRM contact
+  """
+  crmContactAddressesConnection(
+    after: String
+    before: String
+
+    """
+    The internal ID of the CRM contact
+    """
+    crmContactID: String!
+    first: Int
+    last: Int
+
+    """
+    Defaults to oldest first
+    """
+    sort: CRMContactChildSort
+  ): CRMContactAddressConnection
+
+  """
   An email address of a CRM contact
   """
   crmContactEmail(
@@ -37344,6 +37534,51 @@ type SaveArtworkPayload {
   me: Me!
 }
 
+type SaveCRMContactAddressFailure {
+  mutationError: GravityMutationError
+}
+
+input SaveCRMContactAddressInput {
+  addressLine1: String!
+
+  """
+  Leave blank to clear
+  """
+  addressLine2: String
+  addressType: CRMContactAddressType!
+  city: String!
+  clientMutationId: String
+
+  """
+  ISO 3166-1 alpha-2 country code
+  """
+  country: String!
+  crmContactID: String!
+  postalCode: String!
+
+  """
+  State or region. Leave blank to clear
+  """
+  region: String
+}
+
+type SaveCRMContactAddressPayload {
+  clientMutationId: String
+
+  """
+  On success: the saved address
+  """
+  crmContactAddressOrError: SaveCRMContactAddressResponseOrError
+}
+
+union SaveCRMContactAddressResponseOrError =
+    SaveCRMContactAddressFailure
+  | SaveCRMContactAddressSuccess
+
+type SaveCRMContactAddressSuccess {
+  crmContactAddress: CRMContactAddress
+}
+
 """
 A connection to a list of items.
 """
@@ -40504,6 +40739,54 @@ union UpdateCRMActivityResponseOrError = UpdateCRMActivityFailure | UpdateCRMAct
 
 type UpdateCRMActivitySuccess {
   crmActivity: CRMActivity
+}
+
+type UpdateCRMContactAddressFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateCRMContactAddressInput {
+  addressLine1: String
+
+  """
+  Leave blank to clear
+  """
+  addressLine2: String
+  city: String
+  clientMutationId: String
+
+  """
+  ISO 3166-1 alpha-2 country code
+  """
+  country: String
+
+  """
+  The internal ID of the address
+  """
+  id: String!
+  postalCode: String
+
+  """
+  State or region. Leave blank to clear
+  """
+  region: String
+}
+
+type UpdateCRMContactAddressPayload {
+  clientMutationId: String
+
+  """
+  On success: the updated address
+  """
+  crmContactAddressOrError: UpdateCRMContactAddressResponseOrError
+}
+
+union UpdateCRMContactAddressResponseOrError =
+    UpdateCRMContactAddressFailure
+  | UpdateCRMContactAddressSuccess
+
+type UpdateCRMContactAddressSuccess {
+  crmContactAddress: CRMContactAddress
 }
 
 type UpdateCRMContactEmailFailure {
@@ -44578,6 +44861,36 @@ type Viewer {
     """
     id: String!
   ): CRMContact
+
+  """
+  An address of a CRM contact
+  """
+  crmContactAddress(
+    """
+    The internal ID of the address
+    """
+    id: String!
+  ): CRMContactAddress
+
+  """
+  A connection of the addresses of a CRM contact
+  """
+  crmContactAddressesConnection(
+    after: String
+    before: String
+
+    """
+    The internal ID of the CRM contact
+    """
+    crmContactID: String!
+    first: Int
+    last: Int
+
+    """
+    Defaults to oldest first
+    """
+    sort: CRMContactChildSort
+  ): CRMContactAddressConnection
 
   """
   An email address of a CRM contact
