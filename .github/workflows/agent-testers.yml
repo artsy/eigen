@@ -109,9 +109,20 @@ jobs:
           mkdir -p app && unzip -q Artsy.zip -d app && rm Artsy.zip
           ../../scripts/setup/setup-env-for-e2e ios > /dev/null 2>&1
 
+      # AXe from its pinned release tarball, checksum verified: the Homebrew formula of v2.2.0 needs a
+      # newer Homebrew than the runner has
       - name: Tools (AXe, Pillow, Claude Code)
+        env:
+          AXE_VERSION: v2.1.0
+          AXE_SHA256: 69da941f4768cb000b8dff9cf28b9ce01837e4445e13026dff28b6104b09917d
         run: |
-          brew install -q cameroncooke/axe/axe
+          AXE_DIR="$RUNNER_TEMP/axe"
+          mkdir -p "$AXE_DIR"
+          curl -fsSL -o "$RUNNER_TEMP/axe.tar.gz" "https://github.com/cameroncooke/AXe/releases/download/$AXE_VERSION/AXe-macOS-$AXE_VERSION-universal.tar.gz"
+          echo "$AXE_SHA256  $RUNNER_TEMP/axe.tar.gz" | shasum -a 256 -c -
+          tar xzf "$RUNNER_TEMP/axe.tar.gz" -C "$AXE_DIR"
+          echo "$AXE_DIR" >> "$GITHUB_PATH"
+          "$AXE_DIR/axe" --version
           python3 -m pip install -q --break-system-packages pillow
           npm install -g --silent @anthropic-ai/claude-code
 
