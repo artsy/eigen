@@ -41,7 +41,7 @@ export const CityFairRailCard: React.FC<Props> = ({ image, title, href, saveCont
           <LinearGradient
             testID="city-fair-rail-card-scrim"
             colors={["transparent", "rgba(0,0,0,0.7)"]}
-            style={{ position: "absolute", bottom: 0, width: "100%", height: CARD_HEIGHT / 2 }}
+            style={{ position: "absolute", bottom: 0, width: "100%", height: CARD_HEIGHT * 0.9 }}
           />
           {/* The scrim fills the card and the caption sits inside it, so the two stay in one
               stacking order without absolute positioning. */}
