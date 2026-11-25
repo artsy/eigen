@@ -8,6 +8,7 @@ import {
 } from "app/Scenes/MyCollection/MyCollectionListings"
 import { navigate } from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -126,6 +127,34 @@ describe("MyCollectionListingsEmptyState", () => {
 })
 
 describe("MyCollectionListingsQueryRenderer", () => {
+  it("keeps the rows on screen while My Collection refreshes", async () => {
+    const env = getMockRelayEnvironment()
+
+    await renderWithWrappers(<MyCollectionListingsQueryRenderer />)
+
+    await act(() => {
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, {
+          Me: () => ({
+            resaleSubmissionsConnection: {
+              edges: [
+                resaleSubmission("LISTED", { id: "1", statusMessage: "Your work is listed" }),
+              ],
+            },
+          }),
+        })
+      )
+    })
+    expect(await screen.findByText("Your work is listed")).toBeOnTheScreen()
+
+    await act(() => refreshMyCollection())
+
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+      "MyCollectionListingsRefetchQuery"
+    )
+    expect(screen.getByText("Your work is listed")).toBeOnTheScreen()
+  })
+
   it("shows the failure view when the submissions connection is null", async () => {
     const env = getMockRelayEnvironment()
 

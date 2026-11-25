@@ -12,7 +12,7 @@ import {
   RefreshEvents,
   useRefreshControl,
 } from "app/utils/refreshHelpers"
-import { useCallback, useEffect, useState } from "react"
+import { startTransition, useCallback, useEffect, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const PAGE_SIZE = 20
@@ -29,7 +29,11 @@ export const MyCollectionListings: React.FC<MyCollectionListingsProps> = ({ me }
   const RefreshControl = useRefreshControl(refetch, { pageSize: PAGE_SIZE })
 
   useEffect(() => {
-    const onRefresh = () => refetch({}, { fetchPolicy: "network-only" })
+    // A plain refetch suspends and swaps the list for the loading spinner
+    const onRefresh = () =>
+      startTransition(() => {
+        refetch({}, { fetchPolicy: "store-and-network" })
+      })
     RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, onRefresh)
     return () => {
       RefreshEvents.removeListener(MY_COLLECTION_REFRESH_KEY, onRefresh)
