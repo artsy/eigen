@@ -1,4 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { MyCollectionListingRow_resaleSubmission$data } from "__generated__/MyCollectionListingRow_resaleSubmission.graphql"
 import { MyCollectionListingsTestsQuery } from "__generated__/MyCollectionListingsTestsQuery.graphql"
 import {
   MyCollectionListings,
@@ -9,8 +10,11 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
+const ORANGE_100 = "#DA6722"
+const GREEN_100 = "#00674A"
+
 const submission = (
-  state: string,
+  state: MyCollectionListingRow_resaleSubmission$data["state"],
   overrides: { id: string; channel?: string; statusMessage?: string; artistNames?: string }
 ) => ({
   node: {
@@ -73,7 +77,7 @@ describe("MyCollectionListings", () => {
     expect(screen.queryByText("Thought about selling?")).not.toBeOnTheScreen()
   })
 
-  it("shows a status dot for accepted, listed and in-review submissions", async () => {
+  it("colours the status dot by state", async () => {
     await renderWithRelay({
       Me: () => ({
         resaleSubmissionsConnection: {
@@ -86,7 +90,11 @@ describe("MyCollectionListings", () => {
       }),
     })
 
-    expect(screen.getAllByTestId("listing-state-dot")).toHaveLength(3)
+    const dots = screen.getAllByTestId("listing-state-dot")
+    expect(dots).toHaveLength(3)
+    expect(dots[0]).toHaveStyle({ backgroundColor: ORANGE_100 })
+    expect(dots[1]).toHaveStyle({ backgroundColor: GREEN_100 })
+    expect(dots[2]).toHaveStyle({ backgroundColor: GREEN_100 })
   })
 
   it("hides canceled and rejected submissions", async () => {
@@ -115,6 +123,44 @@ describe("MyCollectionListings", () => {
 
     expect(screen.getByText("Thought about selling?")).toBeOnTheScreen()
     expect(screen.queryByTestId("my-collection-listing-row")).not.toBeOnTheScreen()
+  })
+
+  describe("when every loaded submission is hidden but another page exists", () => {
+    const hiddenPage = {
+      Me: () => ({
+        id: "me-id",
+        resaleSubmissionsConnection: {
+          edges: [submission("CANCELED", { id: "1" })],
+          pageInfo: { hasNextPage: true, endCursor: "cursor-1" },
+        },
+      }),
+    }
+
+    it("loads the next page and shows its rows", async () => {
+      const { mockResolveLastOperation } = await renderWithRelay(hiddenPage)
+
+      await mockResolveLastOperation({
+        Me: () => ({
+          id: "me-id",
+          resaleSubmissionsConnection: {
+            edges: [submission("LISTED", { id: "2", statusMessage: "Your work is listed" })],
+            pageInfo: { hasNextPage: false, endCursor: null },
+          },
+        }),
+      })
+
+      expect(await screen.findByText("Your work is listed")).toBeOnTheScreen()
+      expect(screen.queryByText("Thought about selling?")).not.toBeOnTheScreen()
+    })
+
+    it("stops loading after an error and shows the empty state", async () => {
+      const { env, mockRejectLastOperation } = await renderWithRelay(hiddenPage)
+
+      await mockRejectLastOperation(new Error("Network error"))
+
+      expect(await screen.findByText("Thought about selling?")).toBeOnTheScreen()
+      expect(env.mock.getAllOperations()).toHaveLength(0)
+    })
   })
 
   it("shows the empty state when every submission is filtered out", async () => {

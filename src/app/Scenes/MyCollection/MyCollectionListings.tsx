@@ -1,5 +1,4 @@
 import { Button, Flex, SimpleMessage, Spinner, Tabs, Text } from "@artsy/palette-mobile"
-import { useFocusEffect } from "@react-navigation/native"
 import { MyCollectionListingsQuery } from "__generated__/MyCollectionListingsQuery.graphql"
 import { MyCollectionListings_me$key } from "__generated__/MyCollectionListings_me.graphql"
 import { MyCollectionListingRow } from "app/Scenes/MyCollection/Components/MyCollectionListingRow"
@@ -7,8 +6,12 @@ import { MyCollectionListingRow } from "app/Scenes/MyCollection/Components/MyCol
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
-import { useRefreshControl } from "app/utils/refreshHelpers"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import {
+  MY_COLLECTION_REFRESH_KEY,
+  useRefreshControl,
+  useRefreshFetchKey,
+} from "app/utils/refreshHelpers"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const PAGE_SIZE = 20
@@ -29,22 +32,25 @@ export const MyCollectionListings: React.FC<MyCollectionListingsProps> = ({ me }
     [data.resaleSubmissionsConnection]
   )
 
+  const [loadFailed, setLoadFailed] = useState(false)
+
   const RefreshControl = useRefreshControl(refetch, { pageSize: PAGE_SIZE })
 
   const loadMore = useCallback(() => {
     if (hasNext && !isLoadingNext) {
-      loadNext(PAGE_SIZE)
+      loadNext(PAGE_SIZE, { onComplete: (error) => setLoadFailed(!!error) })
     }
   }, [hasNext, isLoadingNext, loadNext])
 
-  // A page made only of hidden submissions leaves nothing to scroll, so fetch on until a row shows
+  // A page made only of hidden submissions leaves nothing to scroll, so fetch on until a row
+  // shows. Stop after an error, or a persistent failure would retry forever.
   useEffect(() => {
-    if (listings.length === 0) {
+    if (listings.length === 0 && !loadFailed) {
       loadMore()
     }
-  }, [listings.length, loadMore])
+  }, [listings.length, loadFailed, loadMore])
 
-  if (listings.length === 0 && !hasNext) {
+  if (listings.length === 0 && (!hasNext || loadFailed)) {
     return (
       <Tabs.ScrollView testID="my-collection-listings" refreshControl={RefreshControl}>
         <MyCollectionListingsEmptyState />
@@ -74,19 +80,7 @@ export const MyCollectionListings: React.FC<MyCollectionListingsProps> = ({ me }
 
 export const MyCollectionListingsQueryRenderer = withSuspense({
   Component: () => {
-    const [fetchKey, setFetchKey] = useState(0)
-    const hasFocusedOnce = useRef(false)
-
-    // Refetch when My Collection regains focus, e.g. after a work was started in the sell flow
-    useFocusEffect(
-      useCallback(() => {
-        if (!hasFocusedOnce.current) {
-          hasFocusedOnce.current = true
-          return
-        }
-        setFetchKey((key) => key + 1)
-      }, [])
-    )
+    const fetchKey = useRefreshFetchKey(MY_COLLECTION_REFRESH_KEY)
 
     const data = useLazyLoadQuery<MyCollectionListingsQuery>(
       myCollectionListingsQuery,

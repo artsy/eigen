@@ -1,17 +1,23 @@
-import { Flex, Text } from "@artsy/palette-mobile"
-import { MyCollectionListingRow_resaleSubmission$key } from "__generated__/MyCollectionListingRow_resaleSubmission.graphql"
+import { Color, Flex, Text } from "@artsy/palette-mobile"
+import {
+  MyCollectionListingRow_resaleSubmission$data,
+  MyCollectionListingRow_resaleSubmission$key,
+} from "__generated__/MyCollectionListingRow_resaleSubmission.graphql"
 import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
 import { graphql, useFragment } from "react-relay"
 
 const IMAGE_WIDTH = 96
 
-const STATE_DOT_COLORS: Record<string, string> = {
+type ListingState = MyCollectionListingRow_resaleSubmission$data["state"]
+type ListingChannel = NonNullable<MyCollectionListingRow_resaleSubmission$data["channel"]>
+
+const STATE_DOT_COLORS: Partial<Record<ListingState, Color>> = {
   ACCEPTED: "orange100",
   LISTED: "green100",
   AUCTION_REVIEW: "green100",
 }
 
-const CHANNEL_LABELS: Record<string, string> = {
+const CHANNEL_LABELS: Partial<Record<ListingChannel, string>> = {
   MARKETPLACE: "Artsy Listing",
   AUCTION: "Artnet Auction",
 }
