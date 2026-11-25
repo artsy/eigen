@@ -75,14 +75,12 @@ const ConditionForm: React.FC<{
   const isMarketplace = channelKind === "MARKETPLACE"
   const canContinue = sellConditionSchema(channelKind).isValidSync(answers)
 
-  // The condition can’t be saved yet: the resale submission has no field for it
   const saveAndContinue = () => {
-    if (!isMarketplace) {
-      onContinue()
-      return
-    }
-
-    save({ id: resaleSubmission.internalID, priceListed: answers.askingPrice })
+    save({
+      id: resaleSubmission.internalID,
+      notes: answers.notes.trim(),
+      ...(isMarketplace && { priceListed: answers.askingPrice }),
+    })
   }
 
   return (

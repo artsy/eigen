@@ -163,8 +163,8 @@ const resolveVerify = async (view: SellView, failedIDs: string[] = []) => {
   return artworkIDs as string[]
 }
 
-/** Answers Step 2’s price save, and returns what it sent */
-const resolveSavePrice = async (view: SellView, outcome: "success" | "failure" = "success") => {
+/** Answers Step 2’s save, and returns what it sent */
+const resolveSave = async (view: SellView, outcome: "success" | "failure" = "success") => {
   await waitFor(() => expect(operationNames(view)).toContain("useUpdateResaleSubmissionMutation"))
   const { input } = view.env.mock.getMostRecentOperation().request.variables
 
@@ -419,10 +419,12 @@ describe("Sell", () => {
 
     await fireEvent.changeText(screen.getByLabelText("Asking price"), "3200")
     expect(await screen.findByText("US$2,720")).toBeOnTheScreen()
+    await fireEvent.changeText(screen.getByLabelText("Notes"), "  Small tear at the corner  ")
 
     await fireEvent.press(screen.getByText("Confirm Listing Price"))
-    expect(await resolveSavePrice(view)).toEqual({
+    expect(await resolveSave(view)).toEqual({
       id: "resaleSubmission-id-a2",
+      notes: "Small tear at the corner",
       priceListed: "3200",
     })
     await resolveLocationStep(view, {
@@ -484,6 +486,7 @@ describe("Sell", () => {
     await fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
     await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
     await fireEvent.press(screen.getByText("Continue"))
+    await resolveSave(view)
 
     const artwork = { internalID: "id-b4", artistNames: "Artist C" }
     const resolvers = activeWorkResolvers(artwork)
@@ -496,7 +499,7 @@ describe("Sell", () => {
     expect(screen.queryByText("Submit for Review")).not.toBeOnTheScreen()
   })
 
-  describe("saving the asking price", () => {
+  describe("saving step 2", () => {
     const openPriceStep = async (view: SellView) => {
       await openWorksSummary(view)
       await fireEvent.press(screen.getByText("Start Listing"))
@@ -520,14 +523,14 @@ describe("Sell", () => {
       await openPriceStep(view)
 
       await fireEvent.press(screen.getByText("Confirm Listing Price"))
-      await resolveSavePrice(view, "failure")
+      await resolveSave(view, "failure")
       await expectSaveError()
       expect(screen.getByText("Step 2 · Condition & Price")).toBeOnTheScreen()
 
       // A loading button ignores presses
       await waitFor(() => expect(screen.getByText("Confirm Listing Price")).toBeVisible())
       await fireEvent.press(screen.getByText("Confirm Listing Price"))
-      await resolveSavePrice(view)
+      await resolveSave(view)
       await resolveLocationStep(view, { internalID: "id-a2", artistNames: "Artist A" })
       expect(await screen.findByText("Step 3 · Shipping Options")).toBeOnTheScreen()
     })
@@ -546,15 +549,33 @@ describe("Sell", () => {
       expect(screen.getByText("Step 2 · Condition & Price")).toBeOnTheScreen()
     })
 
-    it("sends nothing for an auction work, which has no price", async () => {
+    it("saves an auction work’s notes, without a price, before step 3", async () => {
       const view = await renderSell()
       await openAuctionConditionStep(view)
 
       await fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
+      await fireEvent.changeText(screen.getByLabelText("Notes"), "Signed on the back")
       await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
       await fireEvent.press(screen.getByText("Continue"))
 
-      expect(operationNames(view)).not.toContain("useUpdateResaleSubmissionMutation")
+      expect(await resolveSave(view)).toEqual({
+        id: "resaleSubmission-id-b4",
+        notes: "Signed on the back",
+      })
+      await resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
+      expect(await screen.findByText("Step 3 · Location & Contact")).toBeOnTheScreen()
+    })
+
+    it("sends empty notes when the field is blank", async () => {
+      const view = await renderSell()
+      await openAuctionConditionStep(view)
+
+      await fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
+      await fireEvent.changeText(screen.getByLabelText("Notes"), "   ")
+      await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
+      await fireEvent.press(screen.getByText("Continue"))
+
+      expect(await resolveSave(view)).toEqual({ id: "resaleSubmission-id-b4", notes: "" })
     })
   })
 
@@ -568,6 +589,7 @@ describe("Sell", () => {
     await fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
     await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
     await fireEvent.press(screen.getByText("Continue"))
+    await resolveSave(view)
     await resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
     expect(await screen.findByText("Step 3 · Location & Contact")).toBeOnTheScreen()
     expect(screen.queryByText("How will this be packed?")).not.toBeOnTheScreen()
@@ -604,6 +626,7 @@ describe("Sell", () => {
     await openAuctionConditionStep(view)
     await fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
     await fireEvent.press(screen.getByText("Continue"))
+    await resolveSave(view)
     await resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
     await screen.findByText("Step 3 · Location & Contact")
     await fireEvent.changeText(screen.getByLabelText("Mobile number"), "555 0199")
