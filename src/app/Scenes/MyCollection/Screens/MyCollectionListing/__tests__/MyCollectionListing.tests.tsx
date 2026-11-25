@@ -29,6 +29,8 @@ type ResaleSubmission = NonNullable<
 
 const resaleSubmission = (overrides: Partial<ResaleSubmission> = {}): ResaleSubmission => ({
   internalID: "submission-1",
+  isCancelable: true,
+  isEditable: true,
   state: "LISTED",
   statusMessage: "Your work is listed on Artsy",
   priceListed: { display: "US$5,000" },
@@ -134,8 +136,8 @@ describe("MyCollectionListing", () => {
     expect(screen.queryByText("Pablo Picasso")).not.toBeOnTheScreen()
   })
 
-  it("opens the sell flow at step 2 from Edit listing for an accepted submission", async () => {
-    await render({ state: "ACCEPTED" })
+  it("opens the sell flow at step 2 from Edit listing", async () => {
+    await render()
 
     await fireEvent.press(await screen.findByText("Edit listing"))
 
@@ -144,26 +146,27 @@ describe("MyCollectionListing", () => {
     })
   })
 
-  it("offers Remove listing but not Edit listing for a listed submission", async () => {
-    await render({ state: "LISTED" })
+  it("leaves out Edit listing when the submission can’t be edited", async () => {
+    await render({ isEditable: false })
 
     expect(await screen.findByTestId("remove-listing-button")).toBeOnTheScreen()
     expect(screen.queryByText("Edit listing")).not.toBeOnTheScreen()
   })
 
-  it("offers Remove listing for an accepted submission", async () => {
-    await render({ state: "ACCEPTED" })
+  it("leaves out Remove listing when the submission can’t be canceled", async () => {
+    await render({ isCancelable: false })
 
-    expect(await screen.findByTestId("remove-listing-button")).toBeOnTheScreen()
+    expect(await screen.findByText("Edit listing")).toBeOnTheScreen()
+    expect(screen.queryByTestId("remove-listing-button")).not.toBeOnTheScreen()
+    expect(screen.queryByTestId("confirm-remove-listing-button")).not.toBeOnTheScreen()
   })
 
-  it("offers no actions while the submission is in auction review", async () => {
-    await render({ state: "AUCTION_REVIEW" })
+  it("offers no actions when the submission can’t be edited or canceled", async () => {
+    await render({ isCancelable: false, isEditable: false })
 
     expect(await screen.findByText("Pablo Picasso")).toBeOnTheScreen()
     expect(screen.queryByText("Edit listing")).not.toBeOnTheScreen()
     expect(screen.queryByTestId("remove-listing-button")).not.toBeOnTheScreen()
-    expect(screen.queryByTestId("confirm-remove-listing-button")).not.toBeOnTheScreen()
   })
 
   describe("removing the listing", () => {

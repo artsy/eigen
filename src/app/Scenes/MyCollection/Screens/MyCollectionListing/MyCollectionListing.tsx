@@ -28,13 +28,19 @@ interface MyCollectionListingProps {
 }
 
 export const MyCollectionListing: React.FC<MyCollectionListingProps> = ({ resaleSubmission }) => {
-  const { internalID, state, statusMessage, priceListed, submittedArtwork } = resaleSubmission
+  const {
+    internalID,
+    isCancelable,
+    isEditable,
+    state,
+    statusMessage,
+    priceListed,
+    submittedArtwork,
+  } = resaleSubmission
   const toast = useToast()
   const cancelResaleSubmission = useCancelResaleSubmission()
   const [confirming, setConfirming] = useState(false)
   const [removing, setRemoving] = useState(false)
-
-  const canRemove = state === "ACCEPTED" || state === "LISTED"
 
   const removeListing = () => {
     setRemoving(true)
@@ -89,9 +95,9 @@ export const MyCollectionListing: React.FC<MyCollectionListingProps> = ({ resale
 
           <Text variant="sm">{statusMessage}</Text>
 
-          {!!canRemove && (
+          {!!(isEditable || isCancelable) && (
             <Flex mt={4} gap={1}>
-              {state === "ACCEPTED" && (
+              {!!isEditable && (
                 <Button
                   block
                   haptic
@@ -105,21 +111,23 @@ export const MyCollectionListing: React.FC<MyCollectionListingProps> = ({ resale
                   Edit listing
                 </Button>
               )}
-              <Button
-                block
-                haptic
-                testID="remove-listing-button"
-                variant="outline"
-                onPress={() => setConfirming(true)}
-              >
-                Remove listing
-              </Button>
+              {!!isCancelable && (
+                <Button
+                  block
+                  haptic
+                  testID="remove-listing-button"
+                  variant="outline"
+                  onPress={() => setConfirming(true)}
+                >
+                  Remove listing
+                </Button>
+              )}
             </Flex>
           )}
         </Screen.ScrollView>
       </Screen.Body>
 
-      {!!canRemove && (
+      {!!isCancelable && (
         <MyCollectionListingRemoveBottomSheet
           visible={confirming}
           removing={removing}
@@ -227,6 +235,8 @@ const myCollectionListingQuery = graphql`
     me {
       resaleSubmission(id: $resaleSubmissionID) {
         internalID
+        isCancelable
+        isEditable
         state
         statusMessage
         priceListed {
