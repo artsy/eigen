@@ -1,4 +1,4 @@
-import { Button, Color, Flex, Image, Pill, Text } from "@artsy/palette-mobile"
+import { Button, Color, Flex, Image, Text } from "@artsy/palette-mobile"
 import {
   ListingRow_resaleSubmission$data,
   ListingRow_resaleSubmission$key,
@@ -88,9 +88,11 @@ export const ListingRow: React.FC<ListingRowProps> = ({ resaleSubmission }) => {
             mt={0.5}
           >
             {!!channelLabel && (
-              <Pill variant="badge" disabled>
-                {channelLabel}
-              </Pill>
+              <Flex bg="mono5" borderRadius={50} px={1} py={0.5}>
+                <Text variant="xs" color="mono100">
+                  {channelLabel}
+                </Text>
+              </Flex>
             )}
 
             {!!isEditable && (
