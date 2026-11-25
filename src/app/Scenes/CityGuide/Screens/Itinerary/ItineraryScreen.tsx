@@ -4,9 +4,7 @@ import {
   BackButtonWithBackground,
   Button,
   Flex,
-  Join,
   Screen,
-  Spacer,
   Text,
   Touchable,
   useColor,
@@ -449,7 +447,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                       />
                     )}
 
-                    <Join separator={<Spacer y={2} />}>
+                    <Flex gap={2}>
                       {sections.map((section, index) => (
                         <ItinerarySectionRow
                           key={section.internalID}
@@ -468,7 +466,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                           onReorderStop={handleReorderStop}
                         />
                       ))}
-                    </Join>
+                    </Flex>
                   </Flex>
                 </ScrollView>
               </DraxProvider>
