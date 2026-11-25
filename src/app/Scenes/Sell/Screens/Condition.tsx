@@ -76,12 +76,15 @@ const ConditionForm: React.FC<{
   const canContinue = sellConditionSchema(channelKind).isValidSync(answers)
 
   const saveAndContinue = () => {
-    save({
-      id: resaleSubmission.internalID,
-      condition: answers.rating,
-      notes: answers.notes.trim(),
-      ...(isMarketplace && { priceListed: answers.askingPrice }),
-    })
+    save(
+      {
+        id: resaleSubmission.internalID,
+        condition: answers.rating,
+        notes: answers.notes.trim(),
+        ...(isMarketplace && { priceListed: answers.askingPrice }),
+      },
+      answers.photos.map((photo) => photo.path)
+    )
   }
 
   return (

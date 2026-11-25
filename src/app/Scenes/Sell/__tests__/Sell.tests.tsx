@@ -2,8 +2,10 @@ import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { Sell } from "app/Scenes/Sell/Sell"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
+import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
 import { getLocationDetails, getLocationPredictions } from "app/utils/googleMaps"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
+import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Alert, BackHandler } from "react-native"
@@ -16,6 +18,12 @@ const mockShowToast = jest.fn()
 jest.mock("app/Components/Toast/toastHook", () => ({
   useToast: () => ({ show: mockShowToast }),
 }))
+
+jest.mock("app/utils/getConvertedImageUrlFromS3", () => ({
+  getConvertedImageUrlFromS3: jest.fn(),
+}))
+
+jest.mock("app/utils/requestPhotos", () => ({ showPhotoActionSheet: jest.fn() }))
 
 jest.mock("app/utils/googleMaps", () => ({
   getLocationPredictions: jest.fn(),
@@ -604,6 +612,77 @@ describe("Sell", () => {
         condition: "FAIR",
         notes: "",
       })
+    })
+  })
+
+  describe("saving the condition photos", () => {
+    const addPhotos = async (paths: string[]) => {
+      jest
+        .mocked(showPhotoActionSheet)
+        .mockResolvedValue(
+          paths.map((path) => ({ path })) as Awaited<ReturnType<typeof showPhotoActionSheet>>
+        )
+      await fireEvent.press(screen.getByText("Upload photos"))
+      await waitFor(() => expect(screen.getAllByTestId("sell-condition-photo")).toHaveLength(2))
+    }
+
+    const openStepWithPhotos = async (view: SellView) => {
+      await openAuctionConditionStep(view)
+      await fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
+      await addPhotos(["file:///a.jpg", "file:///b.jpg"])
+      await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
+    }
+
+    it("uploads the photos and sends their URLs", async () => {
+      jest
+        .mocked(getConvertedImageUrlFromS3)
+        .mockImplementation(async (path) => `https://s3.example.com/${path.split("/").pop()}`)
+      const view = await renderSell()
+      await openStepWithPhotos(view)
+
+      await fireEvent.press(screen.getByText("Continue"))
+
+      expect(await resolveSave(view)).toEqual({
+        id: "resaleSubmission-id-b4",
+        condition: "FAIR",
+        notes: "",
+        externalImageUrls: ["https://s3.example.com/a.jpg", "https://s3.example.com/b.jpg"],
+      })
+      expect(getConvertedImageUrlFromS3).toHaveBeenCalledWith("file:///a.jpg")
+      expect(getConvertedImageUrlFromS3).toHaveBeenCalledWith("file:///b.jpg")
+    })
+
+    it("stays on step 2 without saving when an upload fails", async () => {
+      jest
+        .mocked(getConvertedImageUrlFromS3)
+        .mockResolvedValueOnce("https://s3.example.com/a.jpg")
+        .mockRejectedValueOnce(new Error("Upload failed"))
+      const view = await renderSell()
+      await openStepWithPhotos(view)
+
+      await fireEvent.press(screen.getByText("Continue"))
+
+      await waitFor(() =>
+        expect(mockShowToast).toHaveBeenCalledWith(
+          "We couldn’t save your answers. Please try again.",
+          "bottom",
+          expect.objectContaining({ backgroundColor: "red100" })
+        )
+      )
+      expect(operationNames(view)).not.toContain("useUpdateResaleSubmissionMutation")
+      expect(screen.getByText("Step 2 · Condition")).toBeOnTheScreen()
+    })
+
+    it("uploads nothing and sends no URLs without photos", async () => {
+      const view = await renderSell()
+      await openAuctionConditionStep(view)
+      await fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
+      await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
+
+      await fireEvent.press(screen.getByText("Continue"))
+
+      expect(await resolveSave(view)).not.toHaveProperty("externalImageUrls")
+      expect(getConvertedImageUrlFromS3).not.toHaveBeenCalled()
     })
   })
 
