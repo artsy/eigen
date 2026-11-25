@@ -3,6 +3,7 @@ import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 interface MyCollectionListingButtonProps {
   variant: "outline" | "fill"
   disabled?: boolean
+  testID?: string
   onPress: () => void
   children: string
 }
@@ -11,13 +12,20 @@ interface MyCollectionListingButtonProps {
 export const MyCollectionListingButton: React.FC<MyCollectionListingButtonProps> = ({
   variant,
   disabled,
+  testID,
   onPress,
   children,
 }) => {
   const filled = variant === "fill"
 
   return (
-    <Touchable haptic accessibilityRole="button" disabled={disabled} onPress={onPress}>
+    <Touchable
+      haptic
+      accessibilityRole="button"
+      disabled={disabled}
+      testID={testID}
+      onPress={onPress}
+    >
       <Flex
         height={50}
         borderRadius={25}

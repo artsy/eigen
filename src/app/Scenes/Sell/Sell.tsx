@@ -11,7 +11,7 @@ import { SellHeader, SellRoute } from "app/Scenes/Sell/Components/SellHeader"
 import { Condition } from "app/Scenes/Sell/Screens/Condition"
 import { LocationAndContact } from "app/Scenes/Sell/Screens/LocationAndContact"
 import { SelectWorks } from "app/Scenes/Sell/Screens/SelectWorks"
-import { SellFlowStore, sellFlowStoreModel } from "app/Scenes/Sell/State/SellFlowStore"
+import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 // eslint-disable-next-line no-restricted-imports
 import { dismissModal } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -29,7 +29,6 @@ export type SellNavigationProp = StackNavigationProp<SellNavigationRoutes>
 const Stack = createStackNavigator<SellNavigationRoutes>()
 
 interface SellProps {
-  /** Opens the flow at Step 2 for this resale submission, instead of at Step 1 */
   resaleSubmissionID?: string
 }
 
@@ -50,9 +49,7 @@ export const Sell: React.FC<SellProps> = ({ resaleSubmissionID }) => {
   }
 
   return (
-    <SellFlowStore.Provider
-      runtimeModel={{ ...sellFlowStoreModel, activeResaleSubmissionID: resaleSubmissionID ?? null }}
-    >
+    <SellFlowStore.Provider runtimeModel={{ activeResaleSubmissionID: resaleSubmissionID ?? null }}>
       <SellNavigator initialRouteName={resaleSubmissionID ? "Condition" : "SelectWorks"} />
     </SellFlowStore.Provider>
   )

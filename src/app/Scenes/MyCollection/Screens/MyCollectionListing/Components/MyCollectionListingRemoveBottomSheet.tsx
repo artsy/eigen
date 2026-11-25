@@ -38,7 +38,12 @@ export const MyCollectionListingRemoveBottomSheet: React.FC<
           </Flex>
 
           <Flex gap={1}>
-            <MyCollectionListingButton variant="fill" disabled={removing} onPress={onConfirm}>
+            <MyCollectionListingButton
+              testID="confirm-remove-listing-button"
+              variant="fill"
+              disabled={removing}
+              onPress={onConfirm}
+            >
               Remove listing
             </MyCollectionListingButton>
             <Button block haptic variant="outline" disabled={removing} onPress={onDismiss}>

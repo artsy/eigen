@@ -31,7 +31,7 @@ export const MyCollectionListing: React.FC<MyCollectionListingProps> = ({ resale
   const [confirming, setConfirming] = useState(false)
   const [removing, setRemoving] = useState(false)
 
-  const canEdit = state === "ACCEPTED" || state === "LISTED"
+  const canRemove = state === "ACCEPTED" || state === "LISTED"
 
   const removeListing = () => {
     setRemoving(true)
@@ -83,19 +83,27 @@ export const MyCollectionListing: React.FC<MyCollectionListingProps> = ({ resale
 
           <Text variant="sm">{statusMessage}</Text>
 
-          {!!canEdit && (
+          {!!canRemove && (
             <Flex mt={4} gap={1}>
-              <Button
-                block
-                haptic
+              {state === "ACCEPTED" && (
+                <Button
+                  block
+                  haptic
+                  variant="outline"
+                  onPress={() =>
+                    navigate("/my-collection/sell", {
+                      passProps: { resaleSubmissionID: internalID },
+                    })
+                  }
+                >
+                  Edit listing
+                </Button>
+              )}
+              <MyCollectionListingButton
+                testID="remove-listing-button"
                 variant="outline"
-                onPress={() =>
-                  navigate("/my-collection/sell", { passProps: { resaleSubmissionID: internalID } })
-                }
+                onPress={() => setConfirming(true)}
               >
-                Edit listing
-              </Button>
-              <MyCollectionListingButton variant="outline" onPress={() => setConfirming(true)}>
                 Remove listing
               </MyCollectionListingButton>
             </Flex>
@@ -103,7 +111,7 @@ export const MyCollectionListing: React.FC<MyCollectionListingProps> = ({ resale
         </Screen.ScrollView>
       </Screen.Body>
 
-      {!!canEdit && (
+      {!!canRemove && (
         <MyCollectionListingRemoveBottomSheet
           visible={confirming}
           removing={removing}

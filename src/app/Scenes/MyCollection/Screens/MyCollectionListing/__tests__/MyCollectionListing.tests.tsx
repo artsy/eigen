@@ -69,22 +69,27 @@ describe("MyCollectionListing", () => {
     expect(screen.queryByText("Pablo Picasso")).not.toBeOnTheScreen()
   })
 
-  describe.each(["ACCEPTED", "LISTED"])("for a %s submission", (state) => {
-    it("opens the sell flow at step 2 from Edit listing", async () => {
-      await render({ state })
+  it("opens the sell flow at step 2 from Edit listing for an accepted submission", async () => {
+    await render({ state: "ACCEPTED" })
 
-      await fireEvent.press(await screen.findByText("Edit listing"))
+    await fireEvent.press(await screen.findByText("Edit listing"))
 
-      expect(navigate).toHaveBeenCalledWith("/my-collection/sell", {
-        passProps: { resaleSubmissionID: "submission-1" },
-      })
+    expect(navigate).toHaveBeenCalledWith("/my-collection/sell", {
+      passProps: { resaleSubmissionID: "submission-1" },
     })
+  })
 
-    it("offers Remove listing", async () => {
-      await render({ state })
+  it("offers Remove listing but not Edit listing for a listed submission", async () => {
+    await render({ state: "LISTED" })
 
-      expect((await screen.findAllByText("Remove listing")).length).toBeGreaterThan(0)
-    })
+    expect(await screen.findByTestId("remove-listing-button")).toBeOnTheScreen()
+    expect(screen.queryByText("Edit listing")).not.toBeOnTheScreen()
+  })
+
+  it("offers Remove listing for an accepted submission", async () => {
+    await render({ state: "ACCEPTED" })
+
+    expect(await screen.findByTestId("remove-listing-button")).toBeOnTheScreen()
   })
 
   it("offers no actions while the submission is in auction review", async () => {
@@ -92,17 +97,17 @@ describe("MyCollectionListing", () => {
 
     expect(await screen.findByText("Pablo Picasso")).toBeOnTheScreen()
     expect(screen.queryByText("Edit listing")).not.toBeOnTheScreen()
-    expect(screen.queryByText("Remove listing")).not.toBeOnTheScreen()
+    expect(screen.queryByTestId("remove-listing-button")).not.toBeOnTheScreen()
+    expect(screen.queryByTestId("confirm-remove-listing-button")).not.toBeOnTheScreen()
   })
 
   describe("removing the listing", () => {
     const openConfirmation = async (view: Awaited<ReturnType<typeof render>>) => {
-      await fireEvent.press((await screen.findAllByText("Remove listing"))[0])
+      await fireEvent.press(await screen.findByTestId("remove-listing-button"))
       return view
     }
 
-    // The sheet’s button comes after the screen’s own
-    const confirmButton = () => screen.getAllByText("Remove listing")[1]
+    const confirmButton = () => screen.getByTestId("confirm-remove-listing-button")
 
     it("sends nothing until the collector confirms", async () => {
       const view = await openConfirmation(await render())

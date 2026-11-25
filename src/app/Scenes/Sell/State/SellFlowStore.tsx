@@ -13,7 +13,11 @@ export const sellFlowStoreModel: SellFlowStoreModel = {
   }),
 }
 
-export const SellFlowStore = createContextStore<SellFlowStoreModel>((injections) => ({
+export const SellFlowStore = createContextStore<
+  SellFlowStoreModel,
+  {},
+  Partial<SellFlowStoreModel>
+>((injections) => ({
   ...sellFlowStoreModel,
   ...injections,
 }))
