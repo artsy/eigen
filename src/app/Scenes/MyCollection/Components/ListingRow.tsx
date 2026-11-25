@@ -1,4 +1,4 @@
-import { Button, Color, Flex, Image, Text } from "@artsy/palette-mobile"
+import { Button, Color, Flex, Image, Pill, Text } from "@artsy/palette-mobile"
 import {
   ListingRow_resaleSubmission$data,
   ListingRow_resaleSubmission$key,
@@ -86,14 +86,21 @@ export const ListingRow: React.FC<ListingRowProps> = ({ resaleSubmission }) => {
             </Text>
           </Flex>
 
-          {!!channelLabel && (
-            <Text variant="xs" color="mono60">
-              {channelLabel}
-            </Text>
-          )}
+          <Flex
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+            flexWrap="wrap"
+            gap={1}
+            mt={0.5}
+          >
+            {!!channelLabel && (
+              <Pill variant="badge" disabled>
+                {channelLabel}
+              </Pill>
+            )}
 
-          {!!isEditable && (
-            <Flex mt={1} alignSelf="flex-start">
+            {!!isEditable && (
               <Button
                 haptic
                 size="small"
@@ -104,8 +111,8 @@ export const ListingRow: React.FC<ListingRowProps> = ({ resaleSubmission }) => {
               >
                 Finish listing
               </Button>
-            </Flex>
-          )}
+            )}
+          </Flex>
         </Flex>
       </Flex>
     </RouterLink>
