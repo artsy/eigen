@@ -55,6 +55,7 @@ Never commit code that fails these checks. The repo uses `lint-staged` via a hus
 @docs/best_practices.md
 
 - Use `MoneyInput` (`app/Components/Input/MoneyInput`) for money amounts rather than a plain `Input`. Pass `currency` to fix the currency and `allowCents={false}` for whole amounts
+- Let each component declare the data it reads in its own Relay fragment and read it with `useFragment`, rather than receiving fields from a parent's query as props. Passing one or two plain values (an ID, a label) as props is fine; once a component needs several fields or nested objects, give it a fragment and pass the fragment key
 - Use typographic quotes in user-facing copy: curly apostrophes and single quotes (`‘` and `’`), and curly double quotes (`“` and `”`). Write “Artsy’s fee”, not "Artsy's fee". This applies when you write or update copy, and to tests that match that copy
 
 ## File Organization
