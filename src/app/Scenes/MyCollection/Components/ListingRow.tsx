@@ -1,9 +1,11 @@
-import { Color, Flex, Image, Text } from "@artsy/palette-mobile"
+import { Button, Color, Flex, Image, Text } from "@artsy/palette-mobile"
 import {
   ListingRow_resaleSubmission$data,
   ListingRow_resaleSubmission$key,
 } from "__generated__/ListingRow_resaleSubmission.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { getSellChannelName } from "app/utils/sellChannels"
 import { graphql, useFragment } from "react-relay"
 
@@ -25,7 +27,7 @@ interface ListingRowProps {
 }
 
 export const ListingRow: React.FC<ListingRowProps> = ({ resaleSubmission }) => {
-  const { internalID, state, statusMessage, channel, submittedArtwork } = useFragment(
+  const { internalID, isEditable, state, statusMessage, channel, submittedArtwork } = useFragment(
     fragment,
     resaleSubmission
   )
@@ -89,6 +91,21 @@ export const ListingRow: React.FC<ListingRowProps> = ({ resaleSubmission }) => {
               {channelLabel}
             </Text>
           )}
+
+          {!!isEditable && (
+            <Flex mt={1} alignSelf="flex-start">
+              <Button
+                haptic
+                size="small"
+                variant="fillDark"
+                onPress={() =>
+                  navigate("/my-collection/sell", { passProps: { resaleSubmissionID: internalID } })
+                }
+              >
+                Finish listing
+              </Button>
+            </Flex>
+          )}
         </Flex>
       </Flex>
     </RouterLink>
@@ -98,6 +115,7 @@ export const ListingRow: React.FC<ListingRowProps> = ({ resaleSubmission }) => {
 const fragment = graphql`
   fragment ListingRow_resaleSubmission on ResaleSubmission {
     internalID
+    isEditable
     state
     statusMessage
     channel

@@ -25,10 +25,12 @@ const resaleSubmission = (
     channel?: ResaleSubmissionNode["channel"]
     statusMessage?: string
     artistNames?: string
+    isEditable?: boolean
   }
 ): { node: ResaleSubmissionNode } => ({
   node: {
     internalID: overrides.id,
+    isEditable: overrides.isEditable ?? false,
     state,
     statusMessage: overrides.statusMessage ?? "Status message",
     channel: overrides.channel ?? "MARKETPLACE",
@@ -98,6 +100,28 @@ describe("MyCollectionListings", () => {
     await fireEvent.press(screen.getByTestId("my-collection-listing-row"))
 
     expect(navigate).toHaveBeenCalledWith("/my-collection/resale-submissions/submission-7")
+  })
+
+  it("offers Finish listing on an in-progress submission and opens the sell flow at it", async () => {
+    await renderWithRelay({
+      Me: () => ({
+        resaleSubmissionsConnection: {
+          edges: [
+            resaleSubmission("ACCEPTED", { id: "submission-1", isEditable: true }),
+            resaleSubmission("LISTED", { id: "submission-2" }),
+          ],
+        },
+      }),
+    })
+
+    expect(screen.getAllByText("Finish listing")).toHaveLength(1)
+
+    await fireEvent.press(screen.getByText("Finish listing"))
+
+    expect(navigate).toHaveBeenCalledWith("/my-collection/sell", {
+      passProps: { resaleSubmissionID: "submission-1" },
+    })
+    expect(navigate).not.toHaveBeenCalledWith("/my-collection/resale-submissions/submission-1")
   })
 
   it("shows canceled and rejected submissions", async () => {
