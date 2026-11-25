@@ -91,7 +91,7 @@ const MyCollectionListingsContent = withSuspense<MyCollectionListingsContentProp
   },
   LoadingFallback: () => (
     <Tabs.ScrollView testID="my-collection-listings-loading">
-      <Flex alignItems="center" py={4}>
+      <Flex alignItems="center" justifyContent="center" py={4}>
         <Spinner />
       </Flex>
     </Tabs.ScrollView>
