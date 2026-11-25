@@ -671,6 +671,7 @@ describe("Sell", () => {
       )
       expect(operationNames(view)).not.toContain("useUpdateResaleSubmissionMutation")
       expect(screen.getByText("Step 2 · Condition")).toBeOnTheScreen()
+      await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
     })
 
     it("uploads nothing and sends no URLs without photos", async () => {
