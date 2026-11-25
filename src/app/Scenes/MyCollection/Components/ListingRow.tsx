@@ -9,7 +9,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { getSellChannelName } from "app/utils/sellChannels"
 import { graphql, useFragment } from "react-relay"
 
-const IMAGE_WIDTH = 96
+const IMAGE_WIDTH = 80
 const STATE_DOT_SIZE = 8
 
 type ListingState = ListingRow_resaleSubmission$data["state"]
@@ -41,14 +41,7 @@ export const ListingRow: React.FC<ListingRowProps> = ({ resaleSubmission }) => {
       to={`/my-collection/resale-submissions/${internalID}`}
       testID="my-collection-listing-row"
     >
-      <Flex
-        flexDirection="row"
-        px={2}
-        pt={2}
-        pb={2}
-        borderBottomWidth={1}
-        borderBottomColor="mono10"
-      >
+      <Flex flexDirection="row" pt={2} pb={2} borderBottomWidth={1} borderBottomColor="mono10">
         {submittedArtwork?.image?.url ? (
           <Image
             src={submittedArtwork.image.url}
