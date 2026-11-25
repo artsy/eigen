@@ -1,9 +1,7 @@
-import { Button, Flex, Screen, Spacer, Spinner, Text } from "@artsy/palette-mobile"
+import { Button, Flex, Image, Screen, Spacer, Spinner, Text } from "@artsy/palette-mobile"
 import { MyCollectionListingQuery } from "__generated__/MyCollectionListingQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useToast } from "app/Components/Toast/toastHook"
-import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
-import { MyCollectionListingButton } from "app/Scenes/MyCollection/Screens/MyCollectionListing/Components/MyCollectionListingButton"
 import { MyCollectionListingRemoveBottomSheet } from "app/Scenes/MyCollection/Screens/MyCollectionListing/Components/MyCollectionListingRemoveBottomSheet"
 import { useCancelResaleSubmission } from "app/Scenes/MyCollection/hooks/useCancelResaleSubmission"
 // eslint-disable-next-line no-restricted-imports
@@ -60,13 +58,16 @@ export const MyCollectionListing: React.FC<MyCollectionListingProps> = ({ resale
       <Screen.Body>
         <Screen.ScrollView>
           <Flex flexDirection="row" gap={2}>
-            <MyCollectionImageView
-              imageURL={submittedArtwork?.image?.url ?? undefined}
-              imageWidth={IMAGE_WIDTH}
-              aspectRatio={submittedArtwork?.image?.aspectRatio}
-              blurhash={submittedArtwork?.image?.blurhash}
-              artworkSlug={submittedArtwork?.slug ?? ""}
-            />
+            {submittedArtwork?.image?.url ? (
+              <Image
+                src={submittedArtwork.image.url}
+                width={IMAGE_WIDTH}
+                aspectRatio={submittedArtwork.image.aspectRatio}
+                blurhash={submittedArtwork.image.blurhash}
+              />
+            ) : (
+              <Flex width={IMAGE_WIDTH} height={IMAGE_WIDTH} bg="mono10" />
+            )}
 
             <Flex flex={1} gap={0.5}>
               <Text variant="sm-display">{submittedArtwork?.artistNames}</Text>
@@ -78,7 +79,7 @@ export const MyCollectionListing: React.FC<MyCollectionListingProps> = ({ resale
               </Text>
               {!!priceListed?.display && (
                 <Text variant="sm" color="mono60">
-                  Listed at {priceListed.display}
+                  {state === "LISTED" ? "Listed at" : "Asking price"} {priceListed.display}
                 </Text>
               )}
             </Flex>
@@ -104,13 +105,15 @@ export const MyCollectionListing: React.FC<MyCollectionListingProps> = ({ resale
                   Edit listing
                 </Button>
               )}
-              <MyCollectionListingButton
+              <Button
+                block
+                haptic
                 testID="remove-listing-button"
                 variant="outline"
                 onPress={() => setConfirming(true)}
               >
                 Remove listing
-              </MyCollectionListingButton>
+              </Button>
             </Flex>
           )}
         </Screen.ScrollView>
@@ -230,12 +233,11 @@ const myCollectionListingQuery = graphql`
           display
         }
         submittedArtwork {
-          slug
           artistNames
           title
           date
           image {
-            url(version: ["larger", "large", "medium", "small", "square"])
+            url(version: ["medium", "small"])
             aspectRatio
             blurhash
           }

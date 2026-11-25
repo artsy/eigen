@@ -1,4 +1,5 @@
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { MyCollectionListingQuery } from "__generated__/MyCollectionListingQuery.graphql"
 import { MyCollectionListingQueryRenderer } from "app/Scenes/MyCollection/Screens/MyCollectionListing/MyCollectionListing"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
@@ -22,13 +23,16 @@ jest.mock("app/utils/refreshHelpers", () => ({
   refreshMyCollection: jest.fn(),
 }))
 
-const submission = (overrides: object = {}) => ({
+type ResaleSubmission = NonNullable<
+  NonNullable<MyCollectionListingQuery["response"]["me"]>["resaleSubmission"]
+>
+
+const resaleSubmission = (overrides: Partial<ResaleSubmission> = {}): ResaleSubmission => ({
   internalID: "submission-1",
   state: "LISTED",
   statusMessage: "Your work is listed on Artsy",
   priceListed: { display: "US$5,000" },
   submittedArtwork: {
-    slug: "artwork-1",
     artistNames: "Pablo Picasso",
     title: "Guernica",
     date: "1937",
@@ -42,8 +46,8 @@ describe("MyCollectionListing", () => {
     Component: () => <MyCollectionListingQueryRenderer resaleSubmissionID="submission-1" />,
   })
 
-  const render = (overrides: object = {}) =>
-    renderWithRelay({ Me: () => ({ resaleSubmission: submission(overrides) }) })
+  const render = (overrides: Partial<ResaleSubmission> = {}) =>
+    renderWithRelay({ Me: () => ({ resaleSubmission: resaleSubmission(overrides) }) })
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -58,6 +62,13 @@ describe("MyCollectionListing", () => {
     expect(screen.getByText(/1937/)).toBeOnTheScreen()
     expect(screen.getByText("Listed at US$5,000")).toBeOnTheScreen()
     expect(screen.getByText("Your work is listed on Artsy")).toBeOnTheScreen()
+  })
+
+  it("shows the asking price until the work is listed", async () => {
+    await render({ state: "ACCEPTED" })
+
+    expect(await screen.findByText("Asking price US$5,000")).toBeOnTheScreen()
+    expect(screen.queryByText(/Listed at/)).not.toBeOnTheScreen()
   })
 
   it("leaves out the price line without a listed price", async () => {
@@ -79,7 +90,7 @@ describe("MyCollectionListing", () => {
 
     expect(view.env.mock.getAllOperations()).toHaveLength(1)
     await view.mockResolveLastOperation({
-      Me: () => ({ resaleSubmission: submission({ statusMessage: "Listed on Artsy" }) }),
+      Me: () => ({ resaleSubmission: resaleSubmission({ statusMessage: "Listed on Artsy" }) }),
     })
 
     expect(await screen.findByText("Listed on Artsy")).toBeOnTheScreen()
@@ -107,7 +118,7 @@ describe("MyCollectionListing", () => {
     await act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
-          Me: () => ({ resaleSubmission: submission() }),
+          Me: () => ({ resaleSubmission: resaleSubmission() }),
         })
       )
     })

@@ -1388,7 +1388,6 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "MyCollectionListing",
     Component: MyCollectionListingQueryRenderer,
     options: {
-      hidesBottomTabs: true,
       screenOptions: {
         headerShown: false,
       },

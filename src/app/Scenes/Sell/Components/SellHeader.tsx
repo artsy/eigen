@@ -65,7 +65,9 @@ export const SellHeader: React.FC<SellHeaderProps> = ({ route, navigationRef }) 
           <BackButton
             showX
             hitSlop={ICON_HIT_SLOP}
-            onPress={isFirstScreen ? () => dismissModal() : handleClose}
+            onPress={
+              isFirstScreen && route.name === "SelectWorks" ? () => dismissModal() : handleClose
+            }
           />
         </Flex>
       </Flex>

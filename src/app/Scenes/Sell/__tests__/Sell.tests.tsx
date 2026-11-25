@@ -263,6 +263,18 @@ describe("Sell", () => {
     expect(screen.queryByText("Step 1 · Decide Which Works to Sell")).not.toBeOnTheScreen()
   })
 
+  it("asks for confirmation before closing a flow opened on the second step", async () => {
+    const alertSpy = jest.spyOn(Alert, "alert")
+    await renderWithRelay(activeWorkResolvers({ internalID: "id-a2", artistNames: "Artist A" }), {
+      resaleSubmissionID: "resaleSubmission-id-a2",
+    })
+
+    await fireEvent.press(await screen.findByLabelText("Close"))
+
+    expect(alertSpy).toHaveBeenCalledWith("Leave this flow?", expect.any(String), expect.any(Array))
+    expect(dismissModal).not.toHaveBeenCalled()
+  })
+
   it("refreshes My Collection when the flow is left", async () => {
     await renderSell()
     jest.mocked(refreshMyCollection).mockClear()

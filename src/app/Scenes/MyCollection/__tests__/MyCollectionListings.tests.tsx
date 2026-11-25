@@ -1,5 +1,5 @@
 import { act, fireEvent, screen } from "@testing-library/react-native"
-import { MyCollectionListingRow_resaleSubmission$data } from "__generated__/MyCollectionListingRow_resaleSubmission.graphql"
+import { ListingRow_resaleSubmission$data } from "__generated__/ListingRow_resaleSubmission.graphql"
 import { MyCollectionListingsTestsQuery } from "__generated__/MyCollectionListingsTestsQuery.graphql"
 import {
   MyCollectionListings,
@@ -14,7 +14,7 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { MockPayloadGenerator } from "relay-test-utils"
 
-type ResaleSubmissionNode = Omit<MyCollectionListingRow_resaleSubmission$data, " $fragmentType"> & {
+type ResaleSubmissionNode = Omit<ListingRow_resaleSubmission$data, " $fragmentType"> & {
   internalID: string
 }
 

@@ -1,17 +1,16 @@
-import { Color, Flex, Image, Text, Touchable } from "@artsy/palette-mobile"
+import { Color, Flex, Image, Text } from "@artsy/palette-mobile"
 import {
-  MyCollectionListingRow_resaleSubmission$data,
-  MyCollectionListingRow_resaleSubmission$key,
-} from "__generated__/MyCollectionListingRow_resaleSubmission.graphql"
-// eslint-disable-next-line no-restricted-imports
-import { navigate } from "app/system/navigation/navigate"
+  ListingRow_resaleSubmission$data,
+  ListingRow_resaleSubmission$key,
+} from "__generated__/ListingRow_resaleSubmission.graphql"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { getSellChannelName } from "app/utils/sellChannels"
 import { graphql, useFragment } from "react-relay"
 
 const IMAGE_WIDTH = 96
 const STATE_DOT_SIZE = 8
 
-type ListingState = MyCollectionListingRow_resaleSubmission$data["state"]
+type ListingState = ListingRow_resaleSubmission$data["state"]
 
 const STATE_DOT_COLORS: Partial<Record<ListingState, Color>> = {
   ACCEPTED: "orange100",
@@ -21,13 +20,11 @@ const STATE_DOT_COLORS: Partial<Record<ListingState, Color>> = {
   REJECTED: "red100",
 }
 
-interface MyCollectionListingRowProps {
-  resaleSubmission: MyCollectionListingRow_resaleSubmission$key
+interface ListingRowProps {
+  resaleSubmission: ListingRow_resaleSubmission$key
 }
 
-export const MyCollectionListingRow: React.FC<MyCollectionListingRowProps> = ({
-  resaleSubmission,
-}) => {
+export const ListingRow: React.FC<ListingRowProps> = ({ resaleSubmission }) => {
   const { internalID, state, statusMessage, channel, submittedArtwork } = useFragment(
     fragment,
     resaleSubmission
@@ -37,9 +34,9 @@ export const MyCollectionListingRow: React.FC<MyCollectionListingRowProps> = ({
   const channelLabel = getSellChannelName(channel)
 
   return (
-    <Touchable
+    <RouterLink
       accessibilityRole="button"
-      onPress={() => navigate(`/my-collection/resale-submissions/${internalID}`)}
+      to={`/my-collection/resale-submissions/${internalID}`}
       testID="my-collection-listing-row"
     >
       <Flex
@@ -94,12 +91,12 @@ export const MyCollectionListingRow: React.FC<MyCollectionListingRowProps> = ({
           )}
         </Flex>
       </Flex>
-    </Touchable>
+    </RouterLink>
   )
 }
 
 const fragment = graphql`
-  fragment MyCollectionListingRow_resaleSubmission on ResaleSubmission {
+  fragment ListingRow_resaleSubmission on ResaleSubmission {
     internalID
     state
     statusMessage

@@ -1,7 +1,6 @@
 import { Button, Flex, Text, useColor, useSpace } from "@artsy/palette-mobile"
 import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
-import { MyCollectionListingButton } from "app/Scenes/MyCollection/Screens/MyCollectionListing/Components/MyCollectionListingButton"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 interface MyCollectionListingRemoveBottomSheetProps {
@@ -38,14 +37,16 @@ export const MyCollectionListingRemoveBottomSheet: React.FC<
           </Flex>
 
           <Flex gap={1}>
-            <MyCollectionListingButton
+            <Button
+              block
+              haptic
               testID="confirm-remove-listing-button"
-              variant="fill"
+              variant="fillDark"
               disabled={removing}
               onPress={onConfirm}
             >
               Remove listing
-            </MyCollectionListingButton>
+            </Button>
             <Button block haptic variant="outline" disabled={removing} onPress={onDismiss}>
               Keep listing
             </Button>
