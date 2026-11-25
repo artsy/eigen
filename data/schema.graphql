@@ -27707,7 +27707,7 @@ type Mutation {
   updateQuiz(input: updateQuizMutationInput!): updateQuizMutationPayload
 
   """
-  Update the asking price, shipping preferences, condition photos and notes of a resale submission. Omitted or null fields are left unchanged.
+  Update the condition, asking price, shipping preferences, condition photos and notes of a resale submission. Omitted or null fields are left unchanged.
   """
   updateResaleSubmission(input: UpdateResaleSubmissionInput!): UpdateResaleSubmissionPayload
 
@@ -36275,6 +36275,11 @@ type ResaleSubmission {
   channel: ResaleSubmissionChannel
 
   """
+  The seller’s answer to the work’s condition, in the same shape as Artwork.condition. Null until answered.
+  """
+  condition: ArtworkCondition
+
+  """
   Photos the seller added to show the work’s condition, oldest first.
   """
   conditionPhotos: [Image!]!
@@ -42551,6 +42556,11 @@ type UpdateResaleSubmissionFailure {
 
 input UpdateResaleSubmissionInput {
   clientMutationId: String
+
+  """
+  The work’s condition.
+  """
+  condition: ArtworkConditionEnumType
 
   """
   How the work will get to its buyer.
