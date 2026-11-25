@@ -75,17 +75,20 @@ const ConditionForm: React.FC<{
   onContinue: () => void
 }> = ({ artwork, resaleSubmission, onContinue }) => {
   const answers = SellConditionStore.useStoreState((state) => state)
-  useConfirmLeavingConditionStep()
   const { setSavedPhotos, restoreSavedPhotos } = SellConditionStore.useStoreActions(
     (actions) => actions
   )
+  const store = SellConditionStore.useStore()
   const { save, saving, uploadProgress } = useSaveResaleSubmission({
     onSaved: (savedPhotos) => {
-      setSavedPhotos(savedPhotos)
+      if (savedPhotos) {
+        setSavedPhotos(savedPhotos)
+      }
       onContinue()
     },
     onPhotosReloaded: restoreSavedPhotos,
   })
+  useConfirmLeavingConditionStep({ saving })
 
   const channelKind = resaleSubmission.channel
   const isMarketplace = channelKind === "MARKETPLACE"
@@ -99,7 +102,10 @@ const ConditionForm: React.FC<{
         notes: answers.notes.trim(),
         ...(isMarketplace && { priceListed: answers.askingPrice }),
       },
-      { photos: answers.photos, savedPhotoIDs: answers.savedPhotoIDs }
+      () => {
+        const { photos, savedPhotoIDs } = store.getState()
+        return { photos, savedPhotoIDs }
+      }
     )
   }
 
@@ -117,7 +123,7 @@ const ConditionForm: React.FC<{
         <SellWorkCard artwork={artwork} resaleSubmission={resaleSubmission} />
       </Flex>
 
-      <SellConditionSection />
+      <SellConditionSection photosDisabled={saving} />
 
       {!!isMarketplace && (
         <Flex px={2} pt={4}>

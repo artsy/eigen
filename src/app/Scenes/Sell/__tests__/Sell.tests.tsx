@@ -624,7 +624,9 @@ describe("Sell", () => {
           paths.map((path) => ({ path })) as Awaited<ReturnType<typeof showPhotoActionSheet>>
         )
       await fireEvent.press(screen.getByText("Upload photos"))
-      await waitFor(() => expect(screen.getAllByTestId("sell-condition-photo")).toHaveLength(2))
+      await waitFor(() =>
+        expect(screen.getAllByTestId("sell-condition-photo")).toHaveLength(paths.length)
+      )
     }
 
     const openStepWithPhotos = async (view: SellView) => {
@@ -672,6 +674,11 @@ describe("Sell", () => {
       )
       expect(operationNames(view)).not.toContain("useUpdateResaleSubmissionMutation")
       expect(screen.getByText("Step 2 · Condition")).toBeOnTheScreen()
+      await resolveWhenPending(
+        view,
+        "useUpdateResaleSubmissionConditionPhotosQuery",
+        activeWorkResolvers({ internalID: "id-b4", artistNames: "Artist C" })
+      )
       await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
       expect(screen.queryByText(/Uploading photos/)).not.toBeOnTheScreen()
     })
@@ -914,6 +921,99 @@ describe("Sell", () => {
         externalImageUrls: ["https://s3.example.com/b.jpg"],
       })
       expect(getConvertedImageUrlFromS3).toHaveBeenCalledTimes(1)
+    })
+
+    it("reloads the saved photos before the next save when the reload after a failure failed", async () => {
+      const view = await renderSell()
+      await openStepWithSavedPhotos(view)
+
+      await fireEvent.press(screen.getByLabelText("Remove photo 1"))
+      await continueWithFair()
+      await waitFor(() =>
+        expect(operationNames(view)).toContain("useDeleteResaleSubmissionImageMutation")
+      )
+      await view.mockRejectLastOperation(new Error("Network request failed"))
+      await waitFor(() =>
+        expect(operationNames(view)).toContain("useUpdateResaleSubmissionConditionPhotosQuery")
+      )
+      await view.mockRejectLastOperation(new Error("Network request failed"))
+      await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
+
+      await fireEvent.press(screen.getByText("Continue"))
+
+      // The delete went through after all, so the retry has nothing left to delete
+      const resolvers = activeWorkResolvers({ internalID: "id-b4", artistNames: "Artist C" })
+      await resolveWhenPending(view, "useUpdateResaleSubmissionConditionPhotosQuery", {
+        ...resolvers,
+        ResaleSubmission: () => ({ ...resolvers.ResaleSubmission(), conditionPhotos: [] }),
+      })
+      expect(await resolveSave(view)).toEqual({
+        id: "resaleSubmission-id-b4",
+        condition: "FAIR",
+        notes: "",
+      })
+      expect(operationNames(view)).not.toContain("useDeleteResaleSubmissionImageMutation")
+    })
+
+    it("waits for every delete before reloading after one fails", async () => {
+      const view = await renderSell()
+      await openStepWithSavedPhotos(view, [
+        SAVED_PHOTO,
+        { internalID: "image-2", url: "https://images.example.com/saved-2.jpg" },
+      ])
+
+      await fireEvent.press(screen.getByLabelText("Remove photo 2"))
+      await fireEvent.press(screen.getByLabelText("Remove photo 1"))
+      await continueWithFair()
+
+      const deletes = () =>
+        view.env.mock
+          .getAllOperations()
+          .filter(
+            (operation) =>
+              operation.request.node.operation.name === "useDeleteResaleSubmissionImageMutation"
+          )
+      await waitFor(() => expect(deletes()).toHaveLength(2))
+      const [first, second] = deletes()
+
+      await act(() => view.env.mock.reject(first, new Error("Network request failed")))
+      expect(operationNames(view)).not.toContain("useUpdateResaleSubmissionConditionPhotosQuery")
+
+      await act(() =>
+        view.env.mock.resolve(second, {
+          data: {
+            deleteResaleSubmissionImage: {
+              resaleSubmissionOrError: {
+                __typename: "DeleteResaleSubmissionImageSuccess",
+                resaleSubmission: null,
+              },
+            },
+          },
+        })
+      )
+      await waitFor(() =>
+        expect(operationNames(view)).toContain("useUpdateResaleSubmissionConditionPhotosQuery")
+      )
+    })
+
+    it("locks the photos and the back button while the save runs", async () => {
+      jest.mocked(getConvertedImageUrlFromS3).mockImplementation(() => new Promise(() => {}))
+      const alertSpy = jest.spyOn(Alert, "alert")
+      const view = await renderSell()
+      await openStepWithSavedPhotos(view)
+
+      await pickPhotos(["file:///new.jpg"])
+      await waitFor(() => expect(screen.getAllByTestId("sell-condition-photo")).toHaveLength(2))
+      await continueWithFair()
+      expect(await screen.findByText(/Uploading photos/)).toBeOnTheScreen()
+
+      expect(screen.getByLabelText("Remove photo 1")).toBeDisabled()
+      expect(screen.getByText("Add more photos")).toBeDisabled()
+
+      await fireEvent.press(screen.getByLabelText("Go back"))
+      expect(screen.getByText("Step 2 · Condition")).toBeOnTheScreen()
+      expect(alertSpy).not.toHaveBeenCalled()
+      expect(operationNames(view)).not.toContain("useUpdateResaleSubmissionMutation")
     })
 
     it("tells the seller when photos past the cap are dropped", async () => {

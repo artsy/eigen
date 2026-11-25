@@ -64,9 +64,9 @@ interface UploadState {
 }
 
 interface SaveOptions {
-  /** Gets the photos the submission now holds */
-  onSaved: (savedPhotos: SellConditionPhoto[]) => void
-  /** Gets the photos the submission holds after a failed save that changed photos */
+  /** Gets the photos the submission now holds, or null when the response left them out */
+  onSaved: (savedPhotos: SellConditionPhoto[] | null) => void
+  /** Gets the photos the submission holds, after a failed save that changed photos */
   onPhotosReloaded?: (savedPhotos: SellConditionPhoto[]) => void
 }
 
@@ -84,33 +84,71 @@ export const useSaveResaleSubmission = ({ onSaved, onPhotosReloaded }: SaveOptio
   const [upload, setUpload] = useState<UploadState | null>(null)
   // Uploads that outlive a failed attempt keep reporting, and must not touch the next attempt
   const currentAttempt = useRef<object | null>(null)
+  // Set when the saved photos couldn't be confirmed, so the next save reloads them first
+  const photosStale = useRef(false)
 
-  const save = (input: UpdateResaleSubmissionInput, photoChanges?: ConditionPhotoChanges) => {
-    const photos = photoChanges?.photos ?? []
-    const removedIDs = (photoChanges?.savedPhotoIDs ?? []).filter(
-      (id) => !photos.some((photo) => photo.imageID === id)
+  const reloadSavedPhotos = (id: string) =>
+    fetchQuery<useUpdateResaleSubmissionConditionPhotosQuery>(
+      environment,
+      conditionPhotosQuery,
+      { id },
+      { fetchPolicy: "network-only" }
     )
-    const photoPaths = photos.filter((photo) => !photo.imageID).map((photo) => photo.path)
+      .toPromise()
+      .then((data) => {
+        const submission = data?.me?.resaleSubmission
+        if (!submission) {
+          throw new Error("Resale submission not found")
+        }
+        onPhotosReloaded?.(toSavedConditionPhotos(submission))
+        photosStale.current = false
+      })
 
+  /** `getPhotoChanges` is read once any pending reload is done, so it sees the latest photos */
+  const save = (
+    input: UpdateResaleSubmissionInput,
+    getPhotoChanges?: () => ConditionPhotoChanges
+  ) => {
     const attempt = {}
     currentAttempt.current = attempt
     const update = (change: (state: UploadState) => UploadState) =>
       setUpload((state) => (currentAttempt.current === attempt && state ? change(state) : state))
 
+    let changedPhotos = false
     setSaving(true)
-    setUpload(photoPaths.length > 0 ? { progress: photoPaths.map(() => 0), done: 0 } : null)
 
-    Promise.all(
-      removedIDs.map((imageID) =>
-        deleteImage({
-          variables: { input: { id: input.id, imageID } },
-          rejectIf: (response) =>
-            response.deleteResaleSubmissionImage?.resaleSubmissionOrError?.__typename !==
-            "DeleteResaleSubmissionImageSuccess",
+    const ready =
+      getPhotoChanges && photosStale.current ? reloadSavedPhotos(input.id) : Promise.resolve()
+
+    ready
+      .then(() => {
+        const { photos, savedPhotoIDs } = getPhotoChanges?.() ?? { photos: [], savedPhotoIDs: [] }
+        const removedIDs = savedPhotoIDs.filter(
+          (id) => !photos.some((photo) => photo.imageID === id)
+        )
+        const photoPaths = photos.filter((photo) => !photo.imageID).map((photo) => photo.path)
+        changedPhotos = removedIDs.length > 0 || photoPaths.length > 0
+
+        setUpload(photoPaths.length > 0 ? { progress: photoPaths.map(() => 0), done: 0 } : null)
+
+        // Every delete settles before the next step, so a reload after a failure sees them all
+        return Promise.allSettled(
+          removedIDs.map((imageID) =>
+            deleteImage({
+              variables: { input: { id: input.id, imageID } },
+              rejectIf: (response) =>
+                response.deleteResaleSubmissionImage?.resaleSubmissionOrError?.__typename !==
+                "DeleteResaleSubmissionImageSuccess",
+            })
+          )
+        ).then((results) => {
+          if (results.some((result) => result.status === "rejected")) {
+            throw new Error("A photo couldn’t be deleted")
+          }
+          return photoPaths
         })
-      )
-    )
-      .then(() =>
+      })
+      .then((photoPaths) =>
         Promise.all(
           photoPaths.map((path, index) =>
             getConvertedImageUrlFromS3(path, (value) =>
@@ -119,7 +157,10 @@ export const useSaveResaleSubmission = ({ onSaved, onPhotosReloaded }: SaveOptio
                 progress: state.progress.map((current, i) => (i === index ? value : current)),
               }))
             ).then((url) => {
-              update((state) => ({ ...state, done: state.done + 1 }))
+              update((state) => ({
+                progress: state.progress.map((current, i) => (i === index ? 1 : current)),
+                done: state.done + 1,
+              }))
               return url
             })
           )
@@ -140,31 +181,26 @@ export const useSaveResaleSubmission = ({ onSaved, onPhotosReloaded }: SaveOptio
       .then(
         (response) => {
           const result = response.updateResaleSubmission?.resaleSubmissionOrError
-          const saved =
-            result?.__typename === "UpdateResaleSubmissionSuccess" && result.resaleSubmission
-              ? toSavedConditionPhotos(result.resaleSubmission)
-              : []
-          onSaved(saved)
+          const submission =
+            result?.__typename === "UpdateResaleSubmissionSuccess" ? result.resaleSubmission : null
+
+          if (!submission && changedPhotos) {
+            photosStale.current = true
+          }
+          onSaved(submission ? toSavedConditionPhotos(submission) : null)
         },
         () => {
+          setUpload(null)
           toast.show(SAVE_ERROR, "bottom", { backgroundColor: "red100" })
 
-          if (photoChanges && onPhotosReloaded) {
-            fetchQuery<useUpdateResaleSubmissionConditionPhotosQuery>(
-              environment,
-              conditionPhotosQuery,
-              { id: input.id },
-              { fetchPolicy: "network-only" }
-            )
-              .toPromise()
-              .then((data) => {
-                const submission = data?.me?.resaleSubmission
-                if (submission) {
-                  onPhotosReloaded(toSavedConditionPhotos(submission))
-                }
-              })
-              .catch(() => {})
+          if (!getPhotoChanges || !(changedPhotos || photosStale.current)) {
+            return
           }
+
+          // Keeps `saving` on until the reload lands, so a quick retry can’t resend saved photos
+          return reloadSavedPhotos(input.id).catch(() => {
+            photosStale.current = true
+          })
         }
       )
       .finally(() => {

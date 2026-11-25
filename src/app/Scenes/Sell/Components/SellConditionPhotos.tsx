@@ -19,12 +19,15 @@ const REMOVE_TARGET_SIZE = 48
 
 interface SellConditionPhotosProps {
   photos: SellConditionPhoto[]
+  /** Set while the photos save, so the list can’t change under the save */
+  disabled?: boolean
   onAdd: (photos: SellConditionPhoto[]) => void
   onRemove: (path: string) => void
 }
 
 export const SellConditionPhotos: React.FC<SellConditionPhotosProps> = ({
   photos,
+  disabled = false,
   onAdd,
   onRemove,
 }) => {
@@ -58,6 +61,8 @@ export const SellConditionPhotos: React.FC<SellConditionPhotosProps> = ({
                 <Touchable
                   accessibilityRole="button"
                   accessibilityLabel={`Remove photo ${index + 1}`}
+                  accessibilityState={{ disabled }}
+                  disabled={disabled}
                   onPress={() => onRemove(photo.path)}
                 >
                   {/* Android drops hitSlop outside the parent, so the target itself is 48pt */}
@@ -79,7 +84,12 @@ export const SellConditionPhotos: React.FC<SellConditionPhotosProps> = ({
       )}
 
       {photos.length < MAX_SELL_CONDITION_PHOTOS && (
-        <Touchable accessibilityRole="button" onPress={pickPhotos}>
+        <Touchable
+          accessibilityRole="button"
+          accessibilityState={{ disabled }}
+          disabled={disabled}
+          onPress={pickPhotos}
+        >
           <Flex
             flexDirection="row"
             justifyContent="center"
