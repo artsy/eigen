@@ -43,8 +43,10 @@ commands:
             scripts/ci/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
             scripts/ci/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__mocks__|__fixtures__))'
             scripts/ci/generate-manifest.js .manifests/cocoapods '^ios/Podfile' '^Gemfile'
-            scripts/ci/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^ios/Podfile' '^Gemfile' '^dist/' '^ios/Artsy' '^patches/react-native' '^\.env\.example'
-            scripts/ci/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example'
+            # Native keys skip yarn.lock/package.json so JS-only dependency bumps don't rebuild native.
+            # Native npm dependency changes still show up in ios/Podfile.lock (used for Android too).
+            scripts/ci/generate-manifest.js .manifests/native_code '^ios/Podfile' '^Gemfile' '^dist/' '^ios/Artsy' '^patches/react-native' '^keys\.example\.json$'
+            scripts/ci/generate-manifest.js .manifests/android_native '^android/' '^ios/Podfile\.lock$' '^patches/react-native' '^keys\.example\.json$'
   setup-env-file:
     steps:
       - run:
@@ -170,6 +172,13 @@ commands:
           command: ./scripts/ci/ci-ios << parameters.build_type >>
   prep-android-env:
     steps:
+      - run:
+          name: Quit early if Draft PR
+          command: |
+            if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/eigen/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
+            then
+              circleci step halt
+            fi
       - android/change_java_version:
           java_version: 17
       - run:
@@ -505,10 +514,10 @@ parameters:
     default: v35-pods-{{ checksum ".manifests/cocoapods" }}
   ios_native_code_cache_prefix:
     type: string
-    default: v22-test-success
+    default: v23-test-success
   android_native_cache_key:
     type: string
-    default: v22-test-success-{{ checksum ".manifests/android_native" }}
+    default: v23-test-success-{{ checksum ".manifests/android_native" }}
   android_docker_image:
     type: string
     default: "cimg/android:2026.10.1-node"
