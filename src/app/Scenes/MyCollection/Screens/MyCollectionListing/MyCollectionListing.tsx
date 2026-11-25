@@ -56,7 +56,7 @@ export const MyCollectionListing: React.FC<MyCollectionListingProps> = ({ resale
 
   return (
     <Screen>
-      <Screen.Header title="Listing Status" onBack={goBack} />
+      <Screen.Header onBack={goBack} />
 
       <Screen.Body>
         <Screen.ScrollView>
@@ -113,10 +113,12 @@ export const MyCollectionListing: React.FC<MyCollectionListingProps> = ({ resale
                   block
                   haptic
                   testID="remove-listing-button"
-                  variant="outline"
+                  variant="text"
                   onPress={() => setConfirming(true)}
                 >
-                  Remove listing
+                  <Text variant="sm" color="red100">
+                    Remove listing
+                  </Text>
                 </Button>
               )}
             </Flex>

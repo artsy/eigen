@@ -1,13 +1,15 @@
-import { Color, Flex, Image, Text } from "@artsy/palette-mobile"
+import { Button, Color, Flex, Image, Text } from "@artsy/palette-mobile"
 import {
   ListingRow_resaleSubmission$data,
   ListingRow_resaleSubmission$key,
 } from "__generated__/ListingRow_resaleSubmission.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { getSellChannelName } from "app/utils/sellChannels"
 import { graphql, useFragment } from "react-relay"
 
-const IMAGE_WIDTH = 96
+const IMAGE_WIDTH = 80
 const STATE_DOT_SIZE = 8
 
 type ListingState = ListingRow_resaleSubmission$data["state"]
@@ -25,7 +27,7 @@ interface ListingRowProps {
 }
 
 export const ListingRow: React.FC<ListingRowProps> = ({ resaleSubmission }) => {
-  const { internalID, state, statusMessage, channel, submittedArtwork } = useFragment(
+  const { internalID, isEditable, state, statusMessage, channel, submittedArtwork } = useFragment(
     fragment,
     resaleSubmission
   )
@@ -39,14 +41,7 @@ export const ListingRow: React.FC<ListingRowProps> = ({ resaleSubmission }) => {
       to={`/my-collection/resale-submissions/${internalID}`}
       testID="my-collection-listing-row"
     >
-      <Flex
-        flexDirection="row"
-        px={2}
-        pt={2}
-        pb={2}
-        borderBottomWidth={1}
-        borderBottomColor="mono10"
-      >
+      <Flex flexDirection="row" pt={2} pb={2} borderBottomWidth={1} borderBottomColor="mono10">
         {submittedArtwork?.image?.url ? (
           <Image
             src={submittedArtwork.image.url}
@@ -84,11 +79,35 @@ export const ListingRow: React.FC<ListingRowProps> = ({ resaleSubmission }) => {
             </Text>
           </Flex>
 
-          {!!channelLabel && (
-            <Text variant="xs" color="mono60">
-              {channelLabel}
-            </Text>
-          )}
+          <Flex
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+            flexWrap="wrap"
+            gap={1}
+            mt={0.5}
+          >
+            {!!channelLabel && (
+              <Flex bg="mono5" borderRadius={50} px={1} py={0.5}>
+                <Text variant="xs" color="mono100">
+                  {channelLabel}
+                </Text>
+              </Flex>
+            )}
+
+            {!!isEditable && (
+              <Button
+                haptic
+                size="small"
+                variant="fillDark"
+                onPress={() =>
+                  navigate("/my-collection/sell", { passProps: { resaleSubmissionID: internalID } })
+                }
+              >
+                Finish listing
+              </Button>
+            )}
+          </Flex>
         </Flex>
       </Flex>
     </RouterLink>
@@ -98,6 +117,7 @@ export const ListingRow: React.FC<ListingRowProps> = ({ resaleSubmission }) => {
 const fragment = graphql`
   fragment ListingRow_resaleSubmission on ResaleSubmission {
     internalID
+    isEditable
     state
     statusMessage
     channel
