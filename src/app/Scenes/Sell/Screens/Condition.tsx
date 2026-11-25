@@ -78,6 +78,7 @@ const ConditionForm: React.FC<{
   const saveAndContinue = () => {
     save({
       id: resaleSubmission.internalID,
+      condition: answers.rating,
       notes: answers.notes.trim(),
       ...(isMarketplace && { priceListed: answers.askingPrice }),
     })
