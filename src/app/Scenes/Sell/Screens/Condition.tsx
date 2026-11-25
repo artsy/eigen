@@ -53,6 +53,8 @@ const ConditionContent: React.FC<{ resaleSubmissionID: string }> = withSuspense(
     return (
       <SellConditionStore.Provider
         runtimeModel={{
+          notes: submission.notes ?? "",
+          savedNotes: submission.notes ?? "",
           photos: savedPhotos,
           savedPhotoIDs: savedPhotos.flatMap((photo) => (photo.imageID ? [photo.imageID] : [])),
         }}
@@ -151,6 +153,7 @@ const conditionQuery = graphql`
       resaleSubmission(id: $resaleSubmissionID) {
         ...resaleSubmission_resaleSubmission
         ...conditionPhotos_resaleSubmission
+        notes
         submittedArtwork {
           internalID
           artistNames

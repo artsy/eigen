@@ -99,6 +99,7 @@ const resaleSubmissionFor = (artworkID: string) => ({
   recommendedPriceMin: null,
   recommendedPriceMax: null,
   conditionPhotos: [],
+  notes: null,
   ...RESALE_SUBMISSIONS[artworkID],
 })
 
@@ -1014,6 +1015,29 @@ describe("Sell", () => {
       expect(screen.getByText("Step 2 · Condition")).toBeOnTheScreen()
       expect(alertSpy).not.toHaveBeenCalled()
       expect(operationNames(view)).not.toContain("useUpdateResaleSubmissionMutation")
+    })
+
+    it("keeps the saved notes, so saving doesn’t clear them", async () => {
+      const view = await renderSell()
+      await fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
+      await fireEvent.press(screen.getByText("Verify If Sellable"))
+      await resolveVerify(view)
+      await fireEvent.press(await screen.findByText("Proceed to Listing"))
+      await fireEvent.press(await screen.findByText("Start Submission"))
+      const resolvers = activeWorkResolvers({ internalID: "id-b4", artistNames: "Artist C" })
+      await resolveWhenPending(view, "ConditionQuery", {
+        ...resolvers,
+        ResaleSubmission: () => ({ ...resolvers.ResaleSubmission(), notes: "Signed on the back" }),
+      })
+
+      expect(await screen.findByLabelText("Notes")).toHaveDisplayValue("Signed on the back")
+      await continueWithFair()
+
+      expect(await resolveSave(view)).toEqual({
+        id: "resaleSubmission-id-b4",
+        condition: "FAIR",
+        notes: "Signed on the back",
+      })
     })
 
     it("tells the seller when photos past the cap are dropped", async () => {

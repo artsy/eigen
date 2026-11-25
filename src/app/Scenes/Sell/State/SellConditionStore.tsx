@@ -9,6 +9,8 @@ export interface SellConditionStoreModel {
   /** The photos saved on the submission when it was last loaded or saved */
   savedPhotoIDs: string[]
   notes: string
+  /** The notes saved on the submission, so loading them doesn’t count as an answer */
+  savedNotes: string
   /** Whole US dollars as digits, or "" when nothing is entered */
   askingPrice: string
   hasAnswers: Computed<this, boolean>
@@ -27,13 +29,14 @@ export const sellConditionStoreModel: SellConditionStoreModel = {
   photos: [],
   savedPhotoIDs: [],
   notes: "",
+  savedNotes: "",
   askingPrice: "",
   hasAnswers: computed(
     (state) =>
       !!state.rating ||
       state.photos.some((photo) => !photo.imageID) ||
       state.savedPhotoIDs.some((id) => !state.photos.some((photo) => photo.imageID === id)) ||
-      !!state.notes ||
+      state.notes.trim() !== state.savedNotes ||
       !!state.askingPrice
   ),
   setRating: action((state, rating) => {
