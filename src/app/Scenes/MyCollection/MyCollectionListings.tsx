@@ -1,6 +1,7 @@
 import { Button, Flex, SimpleMessage, Spinner, Tabs, Text } from "@artsy/palette-mobile"
 import { MyCollectionListingsQuery } from "__generated__/MyCollectionListingsQuery.graphql"
 import { MyCollectionListings_me$key } from "__generated__/MyCollectionListings_me.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { MyCollectionListingRow } from "app/Scenes/MyCollection/Components/MyCollectionListingRow"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
@@ -78,14 +79,19 @@ export const MyCollectionListings: React.FC<MyCollectionListingsProps> = ({ me }
   )
 }
 
-export const MyCollectionListingsQueryRenderer = withSuspense({
-  Component: () => {
-    const fetchKey = useRefreshFetchKey(MY_COLLECTION_REFRESH_KEY)
+interface MyCollectionListingsContentProps {
+  retryKey: number
+  onRetry: () => void
+}
+
+const MyCollectionListingsContent = withSuspense<MyCollectionListingsContentProps>({
+  Component: ({ retryKey }) => {
+    const refreshKey = useRefreshFetchKey(MY_COLLECTION_REFRESH_KEY)
 
     const data = useLazyLoadQuery<MyCollectionListingsQuery>(
       myCollectionListingsQuery,
       {},
-      { fetchKey, fetchPolicy: "store-and-network" }
+      { fetchKey: `${retryKey}-${refreshKey}`, fetchPolicy: "store-and-network" }
     )
 
     if (!data.me) {
@@ -101,8 +107,31 @@ export const MyCollectionListingsQueryRenderer = withSuspense({
       </Flex>
     </Tabs.ScrollView>
   ),
-  ErrorFallback: () => <MyCollectionListingsError />,
+  ErrorFallback: (fallbackProps, { onRetry }) => (
+    <LoadFailureView
+      onRetry={() => {
+        onRetry()
+        fallbackProps.resetErrorBoundary()
+      }}
+      showBackButton={false}
+      useSafeArea={false}
+      error={fallbackProps.error}
+      trackErrorBoundary={false}
+    />
+  ),
 })
+
+// Relay keeps a failed query in its cache, so a retry needs a new fetchKey to refetch.
+export const MyCollectionListingsQueryRenderer: React.FC = () => {
+  const [retryKey, setRetryKey] = useState(0)
+
+  return (
+    <MyCollectionListingsContent
+      retryKey={retryKey}
+      onRetry={() => setRetryKey((key) => key + 1)}
+    />
+  )
+}
 
 const MyCollectionListingsError: React.FC = () => (
   <SimpleMessage m={2}>Something went wrong.</SimpleMessage>

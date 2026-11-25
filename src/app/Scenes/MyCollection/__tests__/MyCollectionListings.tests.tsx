@@ -1,11 +1,13 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { MyCollectionListingRow_resaleSubmission$data } from "__generated__/MyCollectionListingRow_resaleSubmission.graphql"
 import { MyCollectionListingsTestsQuery } from "__generated__/MyCollectionListingsTestsQuery.graphql"
 import {
   MyCollectionListings,
   MyCollectionListingsEmptyState,
+  MyCollectionListingsQueryRenderer,
 } from "app/Scenes/MyCollection/MyCollectionListings"
 import { navigate } from "app/system/navigation/navigate"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -187,5 +189,28 @@ describe("MyCollectionListingsEmptyState", () => {
     await fireEvent.press(screen.getByText("Sell With Us"))
 
     expect(navigate).toHaveBeenCalledWith("/my-collection/sell")
+  })
+})
+
+describe("MyCollectionListingsQueryRenderer", () => {
+  it("shows the failure view when the query fails and refetches on retry", async () => {
+    const env = getMockRelayEnvironment()
+
+    await renderWithWrappers(<MyCollectionListingsQueryRenderer />)
+
+    await act(() => {
+      env.mock.rejectMostRecentOperation(new Error("Network request failed"))
+    })
+
+    expect(await screen.findByText("Unable to load")).toBeOnTheScreen()
+    expect(env.mock.getAllOperations()).toHaveLength(0)
+
+    await fireEvent.press(screen.getByLabelText("Retry"))
+
+    await waitFor(() =>
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "MyCollectionListingsQuery"
+      )
+    )
   })
 })
