@@ -1,18 +1,118 @@
-import { Button, Flex, Tabs, Text } from "@artsy/palette-mobile"
+import { Button, Flex, SimpleMessage, Spinner, Tabs, Text } from "@artsy/palette-mobile"
+import { useFocusEffect } from "@react-navigation/native"
+import { MyCollectionListingsQuery } from "__generated__/MyCollectionListingsQuery.graphql"
+import { MyCollectionListings_me$key } from "__generated__/MyCollectionListings_me.graphql"
+import { MyCollectionListingRow } from "app/Scenes/MyCollection/Components/MyCollectionListingRow"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
+import { withSuspense } from "app/utils/hooks/withSuspense"
+import { useRefreshControl } from "app/utils/refreshHelpers"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
-/**
- * The "Listings" tab of My Collection. Until listings can be fetched it always shows the empty
- * state, which leads into the sell flow.
- */
-export const MyCollectionListingsQueryRenderer: React.FC = () => {
+const PAGE_SIZE = 20
+const HIDDEN_STATES = ["CANCELED", "REJECTED"]
+
+interface MyCollectionListingsProps {
+  me: MyCollectionListings_me$key
+}
+
+export const MyCollectionListings: React.FC<MyCollectionListingsProps> = ({ me }) => {
+  const { data, hasNext, loadNext, isLoadingNext, refetch } = usePaginationFragment(meFragment, me)
+
+  const listings = useMemo(
+    () =>
+      extractNodes(data.resaleSubmissionsConnection).filter(
+        (submission) => !HIDDEN_STATES.includes(submission.state)
+      ),
+    [data.resaleSubmissionsConnection]
+  )
+
+  const RefreshControl = useRefreshControl(refetch, { pageSize: PAGE_SIZE })
+
+  const loadMore = useCallback(() => {
+    if (hasNext && !isLoadingNext) {
+      loadNext(PAGE_SIZE)
+    }
+  }, [hasNext, isLoadingNext, loadNext])
+
+  // A page made only of hidden submissions leaves nothing to scroll, so fetch on until a row shows
+  useEffect(() => {
+    if (listings.length === 0) {
+      loadMore()
+    }
+  }, [listings.length, loadMore])
+
+  if (listings.length === 0 && !hasNext) {
+    return (
+      <Tabs.ScrollView testID="my-collection-listings" refreshControl={RefreshControl}>
+        <MyCollectionListingsEmptyState />
+      </Tabs.ScrollView>
+    )
+  }
+
   return (
-    <Tabs.ScrollView testID="my-collection-listings">
-      <MyCollectionListingsEmptyState />
-    </Tabs.ScrollView>
+    <Tabs.FlashList
+      testID="my-collection-listings"
+      data={listings}
+      keyExtractor={(item) => item.internalID}
+      renderItem={({ item }) => <MyCollectionListingRow resaleSubmission={item} />}
+      onEndReached={loadMore}
+      onEndReachedThreshold={0.5}
+      ListFooterComponent={
+        isLoadingNext ? (
+          <Flex alignItems="center" py={2}>
+            <Spinner />
+          </Flex>
+        ) : null
+      }
+      refreshControl={RefreshControl}
+    />
   )
 }
+
+export const MyCollectionListingsQueryRenderer = withSuspense({
+  Component: () => {
+    const [fetchKey, setFetchKey] = useState(0)
+    const hasFocusedOnce = useRef(false)
+
+    // Refetch when My Collection regains focus, e.g. after a work was started in the sell flow
+    useFocusEffect(
+      useCallback(() => {
+        if (!hasFocusedOnce.current) {
+          hasFocusedOnce.current = true
+          return
+        }
+        setFetchKey((key) => key + 1)
+      }, [])
+    )
+
+    const data = useLazyLoadQuery<MyCollectionListingsQuery>(
+      myCollectionListingsQuery,
+      {},
+      { fetchKey, fetchPolicy: "store-and-network" }
+    )
+
+    if (!data.me) {
+      return <MyCollectionListingsError />
+    }
+
+    return <MyCollectionListings me={data.me} />
+  },
+  LoadingFallback: () => (
+    <Tabs.ScrollView testID="my-collection-listings-loading">
+      <Flex alignItems="center" py={4}>
+        <Spinner />
+      </Flex>
+    </Tabs.ScrollView>
+  ),
+  ErrorFallback: () => <MyCollectionListingsError />,
+})
+
+const MyCollectionListingsError: React.FC = () => (
+  <SimpleMessage m={2}>Something went wrong.</SimpleMessage>
+)
 
 export const MyCollectionListingsEmptyState: React.FC = () => {
   return (
@@ -46,3 +146,28 @@ const BetaBadge: React.FC = () => (
     </Text>
   </Flex>
 )
+
+const meFragment = graphql`
+  fragment MyCollectionListings_me on Me
+  @refetchable(queryName: "MyCollectionListingsRefetchQuery")
+  @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String" }) {
+    resaleSubmissionsConnection(first: $count, after: $cursor, sort: UPDATED_AT_DESC)
+      @connection(key: "MyCollectionListings_resaleSubmissionsConnection") {
+      edges {
+        node {
+          internalID
+          state
+          ...MyCollectionListingRow_resaleSubmission
+        }
+      }
+    }
+  }
+`
+
+const myCollectionListingsQuery = graphql`
+  query MyCollectionListingsQuery {
+    me {
+      ...MyCollectionListings_me
+    }
+  }
+`
