@@ -55,6 +55,16 @@ jobs:
       - name: Setup iOS environment
         uses: ./.github/actions/setup-ios-environment
 
+      # A rewritten Podfile.lock changes the fingerprint, so the build would be uploaded under a
+      # hash nobody else computes. Fail before the ~80 min compile; a failed job also skips saving
+      # the drifted Pods/ to the cache. The diff is printed by the "Report Podfile.lock drift" step.
+      - name: Fail on Podfile.lock drift
+        run: |
+          if ! git diff --quiet -- ios/Podfile.lock; then
+            echo "::error::pod install changed ios/Podfile.lock, so this build can't be reused. Run 'cd ios && bundle exec pod install --repo-update' locally and commit the lockfile (re-run it if it fails with an HTTP2 CDN error)."
+            exit 1
+          fi
+
       - name: Set up env for ci
         run: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci
 
