@@ -157,6 +157,23 @@ const resolveVerify = async (view: SellView, failedIDs: string[] = []) => {
   return artworkIDs as string[]
 }
 
+/** Answers Step 2’s price save, and returns what it sent */
+const resolveSavePrice = async (view: SellView, outcome: "success" | "failure" = "success") => {
+  await waitFor(() => expect(operationNames(view)).toContain("useUpdateResaleSubmissionMutation"))
+  const { input } = view.env.mock.getMostRecentOperation().request.variables
+
+  await view.mockResolveLastOperation({
+    UpdateResaleSubmissionPayload: () => ({
+      resaleSubmissionOrError:
+        outcome === "success"
+          ? { __typename: "UpdateResaleSubmissionSuccess" }
+          : { __typename: "UpdateResaleSubmissionFailure", mutationError: { message: "Nope" } },
+    }),
+  })
+
+  return input
+}
+
 type ActiveArtwork = { internalID: string; artistNames: string; title?: string }
 
 // Each step starts its query after the step change renders, which can lag behind the press on a
@@ -389,6 +406,10 @@ describe("Sell", () => {
     expect(await screen.findByText("US$2,720")).toBeOnTheScreen()
 
     await fireEvent.press(screen.getByText("Confirm Listing Price"))
+    expect(await resolveSavePrice(view)).toEqual({
+      id: "resaleSubmission-id-a2",
+      priceListed: "3200",
+    })
     await resolveLocationStep(view, {
       internalID: "id-a2",
       artistNames: "Artist A",
@@ -458,6 +479,68 @@ describe("Sell", () => {
 
     expect(await screen.findByText("We couldn’t load this work.")).toBeOnTheScreen()
     expect(screen.queryByText("Submit for Review")).not.toBeOnTheScreen()
+  })
+
+  describe("saving the asking price", () => {
+    const openPriceStep = async (view: SellView) => {
+      await openWorksSummary(view)
+      await fireEvent.press(screen.getByText("Start Listing"))
+      await resolveActiveArtwork(view, { internalID: "id-a2", artistNames: "Artist A" })
+      await fireEvent.press(await screen.findByRole("radio", { name: /^Excellent\./ }))
+      await fireEvent.changeText(screen.getByLabelText("Asking price"), "3200")
+      await waitFor(() => expect(screen.getByText("Confirm Listing Price")).toBeEnabled())
+    }
+
+    const expectSaveError = () =>
+      waitFor(() =>
+        expect(mockShowToast).toHaveBeenCalledWith(
+          "We couldn’t save your answers. Please try again.",
+          "bottom",
+          expect.objectContaining({ backgroundColor: "red100" })
+        )
+      )
+
+    it("stays on step 2 when the save fails, and saves on the next try", async () => {
+      const view = await renderSell()
+      await openPriceStep(view)
+
+      await fireEvent.press(screen.getByText("Confirm Listing Price"))
+      await resolveSavePrice(view, "failure")
+      await expectSaveError()
+      expect(screen.getByText("Step 2 · Condition & Price")).toBeOnTheScreen()
+
+      // A loading button ignores presses
+      await waitFor(() => expect(screen.getByText("Confirm Listing Price")).toBeVisible())
+      await fireEvent.press(screen.getByText("Confirm Listing Price"))
+      await resolveSavePrice(view)
+      await resolveLocationStep(view, { internalID: "id-a2", artistNames: "Artist A" })
+      expect(await screen.findByText("Step 3 · Shipping Options")).toBeOnTheScreen()
+    })
+
+    it("stays on step 2 when the request fails", async () => {
+      const view = await renderSell()
+      await openPriceStep(view)
+
+      await fireEvent.press(screen.getByText("Confirm Listing Price"))
+      await waitFor(() =>
+        expect(operationNames(view)).toContain("useUpdateResaleSubmissionMutation")
+      )
+      await view.mockRejectLastOperation(new Error("Network request failed"))
+
+      await expectSaveError()
+      expect(screen.getByText("Step 2 · Condition & Price")).toBeOnTheScreen()
+    })
+
+    it("sends nothing for an auction work, which has no price", async () => {
+      const view = await renderSell()
+      await openAuctionConditionStep(view)
+
+      await fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
+      await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
+      await fireEvent.press(screen.getByText("Continue"))
+
+      expect(operationNames(view)).not.toContain("useUpdateResaleSubmissionMutation")
+    })
   })
 
   it("asks auction works for a condition, then a location and phone number", async () => {

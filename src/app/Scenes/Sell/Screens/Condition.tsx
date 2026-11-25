@@ -9,7 +9,9 @@ import { SellWorkCard } from "app/Scenes/Sell/Components/SellWorkCard"
 import { SellNavigationProp } from "app/Scenes/Sell/Sell"
 import { SellConditionStore } from "app/Scenes/Sell/State/SellConditionStore"
 import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
+import { sellConditionSchema } from "app/Scenes/Sell/State/sellConditionSchema"
 import { useConfirmLeavingConditionStep } from "app/Scenes/Sell/hooks/useConfirmLeavingConditionStep"
+import { useSaveResaleSubmission } from "app/Scenes/Sell/hooks/useUpdateResaleSubmission"
 import {
   ResaleSubmissionWithChannel,
   isResaleSubmissionSellable,
@@ -65,18 +67,30 @@ const ConditionForm: React.FC<{
   resaleSubmission: ResaleSubmissionWithChannel
   onContinue: () => void
 }> = ({ artwork, resaleSubmission, onContinue }) => {
-  const { rating, askingPrice } = SellConditionStore.useStoreState((state) => state)
+  const answers = SellConditionStore.useStoreState((state) => state)
   useConfirmLeavingConditionStep()
+  const { save, saving } = useSaveResaleSubmission({ onSaved: onContinue })
 
   const channelKind = resaleSubmission.channel
   const isMarketplace = channelKind === "MARKETPLACE"
-  const canContinue = !!rating && (!isMarketplace || !!askingPrice)
+  const canContinue = sellConditionSchema(channelKind).isValidSync(answers)
+
+  // The condition can’t be saved yet: the resale submission has no field for it
+  const saveAndContinue = () => {
+    if (!isMarketplace) {
+      onContinue()
+      return
+    }
+
+    save({ id: resaleSubmission.internalID, priceListed: answers.askingPrice })
+  }
 
   return (
     <SellFormLayout
       buttonLabel={isMarketplace ? "Confirm Listing Price" : "Continue"}
       buttonDisabled={!canContinue}
-      onButtonPress={onContinue}
+      buttonLoading={saving}
+      onButtonPress={saveAndContinue}
     >
       <SellStepIntro stepName="Condition" channelKind={channelKind} px={2} />
 
