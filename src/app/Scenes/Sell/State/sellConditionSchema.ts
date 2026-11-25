@@ -1,4 +1,4 @@
-import { SupportedSellChannel } from "app/Scenes/Sell/constants"
+import { SupportedSellChannel } from "app/utils/sellChannels"
 import * as Yup from "yup"
 
 /** Step 2’s answers are complete when this passes. A listing also needs an asking price. */

@@ -9,10 +9,10 @@ import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import {
   MY_COLLECTION_REFRESH_KEY,
+  RefreshEvents,
   useRefreshControl,
-  useRefreshFetchKey,
 } from "app/utils/refreshHelpers"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const PAGE_SIZE = 20
@@ -27,6 +27,14 @@ export const MyCollectionListings: React.FC<MyCollectionListingsProps> = ({ me }
   const listings = extractNodes(data.resaleSubmissionsConnection)
 
   const RefreshControl = useRefreshControl(refetch, { pageSize: PAGE_SIZE })
+
+  useEffect(() => {
+    const onRefresh = () => refetch({}, { fetchPolicy: "network-only" })
+    RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, onRefresh)
+    return () => {
+      RefreshEvents.removeListener(MY_COLLECTION_REFRESH_KEY, onRefresh)
+    }
+  }, [refetch])
 
   const loadMore = useCallback(() => {
     if (hasNext && !isLoadingNext) {
@@ -69,12 +77,10 @@ interface MyCollectionListingsContentProps {
 
 const MyCollectionListingsContent = withSuspense<MyCollectionListingsContentProps>({
   Component: ({ retryKey }) => {
-    const refreshKey = useRefreshFetchKey(MY_COLLECTION_REFRESH_KEY)
-
     const data = useLazyLoadQuery<MyCollectionListingsQuery>(
       myCollectionListingsQuery,
       {},
-      { fetchKey: `${retryKey}-${refreshKey}`, fetchPolicy: "store-and-network" }
+      { fetchKey: retryKey, fetchPolicy: "store-and-network" }
     )
 
     if (!data.me) {
@@ -158,7 +164,8 @@ const meFragment = graphql`
   @refetchable(queryName: "MyCollectionListingsRefetchQuery")
   @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String" }) {
     resaleSubmissionsConnection(first: $count, after: $cursor, sort: UPDATED_AT_DESC)
-      @connection(key: "MyCollectionListings_resaleSubmissionsConnection") {
+      @connection(key: "MyCollectionListings_resaleSubmissionsConnection")
+      @required(action: THROW) {
       edges {
         node {
           internalID

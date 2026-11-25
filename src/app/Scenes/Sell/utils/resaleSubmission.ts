@@ -2,7 +2,7 @@ import {
   resaleSubmission_resaleSubmission$data,
   resaleSubmission_resaleSubmission$key,
 } from "__generated__/resaleSubmission_resaleSubmission.graphql"
-import { SUPPORTED_SELL_CHANNELS, SupportedSellChannel } from "app/Scenes/Sell/constants"
+import { SUPPORTED_SELL_CHANNELS, SupportedSellChannel } from "app/utils/sellChannels"
 import { graphql, readInlineData } from "react-relay"
 
 /** What the flow keeps from a work’s resale submission */

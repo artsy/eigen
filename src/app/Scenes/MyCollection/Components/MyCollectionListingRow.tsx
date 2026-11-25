@@ -1,15 +1,15 @@
-import { Color, Flex, Text } from "@artsy/palette-mobile"
+import { Color, Flex, Image, Text } from "@artsy/palette-mobile"
 import {
   MyCollectionListingRow_resaleSubmission$data,
   MyCollectionListingRow_resaleSubmission$key,
 } from "__generated__/MyCollectionListingRow_resaleSubmission.graphql"
-import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
+import { getSellChannelName } from "app/utils/sellChannels"
 import { graphql, useFragment } from "react-relay"
 
 const IMAGE_WIDTH = 96
+const STATE_DOT_SIZE = 8
 
 type ListingState = MyCollectionListingRow_resaleSubmission$data["state"]
-type ListingChannel = NonNullable<MyCollectionListingRow_resaleSubmission$data["channel"]>
 
 const STATE_DOT_COLORS: Partial<Record<ListingState, Color>> = {
   ACCEPTED: "orange100",
@@ -17,11 +17,6 @@ const STATE_DOT_COLORS: Partial<Record<ListingState, Color>> = {
   AUCTION_REVIEW: "green100",
   CANCELED: "mono30",
   REJECTED: "red100",
-}
-
-const CHANNEL_LABELS: Partial<Record<ListingChannel, string>> = {
-  MARKETPLACE: "Artsy Listing",
-  AUCTION: "Artnet Auction",
 }
 
 interface MyCollectionListingRowProps {
@@ -37,27 +32,30 @@ export const MyCollectionListingRow: React.FC<MyCollectionListingRowProps> = ({
   )
 
   const dotColor = STATE_DOT_COLORS[state]
-  const channelLabel = channel ? CHANNEL_LABELS[channel] : undefined
+  const channelLabel = getSellChannelName(channel)
 
   return (
     <Flex
       flexDirection="row"
       px={2}
-      pt="16px"
-      pb="24px"
+      pt={2}
+      pb={2}
       borderBottomWidth={1}
       borderBottomColor="mono10"
       testID="my-collection-listing-row"
     >
-      <MyCollectionImageView
-        imageURL={submittedArtwork?.image?.url ?? undefined}
-        imageWidth={IMAGE_WIDTH}
-        aspectRatio={submittedArtwork?.image?.aspectRatio}
-        blurhash={submittedArtwork?.image?.blurhash}
-        artworkSlug={submittedArtwork?.slug ?? ""}
-      />
+      {submittedArtwork?.image?.url ? (
+        <Image
+          src={submittedArtwork.image.url}
+          width={IMAGE_WIDTH}
+          aspectRatio={submittedArtwork.image.aspectRatio}
+          blurhash={submittedArtwork.image.blurhash}
+        />
+      ) : (
+        <Flex width={IMAGE_WIDTH} height={IMAGE_WIDTH} bg="mono10" />
+      )}
 
-      <Flex flex={1} ml="16px" gap={0.5}>
+      <Flex flex={1} ml={2} gap={0.5}>
         <Text variant="sm-display" color="mono100">
           {submittedArtwork?.artistNames}
         </Text>
@@ -71,7 +69,12 @@ export const MyCollectionListingRow: React.FC<MyCollectionListingRowProps> = ({
 
         <Flex flexDirection="row" alignItems="center" gap={0.5}>
           {!!dotColor && (
-            <Flex testID="listing-state-dot" width={8} height={8} borderRadius={4} bg={dotColor} />
+            <Flex
+              width={STATE_DOT_SIZE}
+              height={STATE_DOT_SIZE}
+              borderRadius={STATE_DOT_SIZE / 2}
+              bg={dotColor}
+            />
           )}
           <Text variant="xs" color="mono60">
             {statusMessage}
@@ -94,12 +97,11 @@ const fragment = graphql`
     statusMessage
     channel
     submittedArtwork {
-      slug
       artistNames
       title
       date
       image {
-        url(version: ["larger", "large", "medium", "small", "square"])
+        url(version: ["medium", "small"])
         aspectRatio
         blurhash
       }
