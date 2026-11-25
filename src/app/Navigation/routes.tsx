@@ -176,6 +176,7 @@ import { AuctionResultsForArtistsYouCollect } from "app/Scenes/MyCollection/Scre
 import { CareerHighlightsBigCardsSwiper } from "app/Scenes/MyCollection/Screens/Insights/CareerHighlightsBigCardsSwiper"
 import { MedianSalePriceAtAuction } from "app/Scenes/MyCollection/Screens/Insights/MedianSalePriceAtAuction"
 import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists"
+import { MyCollectionListingQueryRenderer } from "app/Scenes/MyCollection/Screens/MyCollectionListing/MyCollectionListing"
 import { UserAccountHeaderScreenQuery } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
 import { DarkModeSettings } from "app/Scenes/MyProfile/DarkModeSettings"
 import {
@@ -1377,6 +1378,17 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: Sell,
     options: {
       alwaysPresentModally: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  },
+  {
+    path: "/my-collection/resale-submissions/:resaleSubmissionID",
+    name: "MyCollectionListing",
+    Component: MyCollectionListingQueryRenderer,
+    options: {
+      hidesBottomTabs: true,
       screenOptions: {
         headerShown: false,
       },

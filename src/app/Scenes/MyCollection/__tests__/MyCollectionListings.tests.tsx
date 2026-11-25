@@ -86,6 +86,20 @@ describe("MyCollectionListings", () => {
     expect(screen.queryByText("Thought about selling?")).not.toBeOnTheScreen()
   })
 
+  it("opens the listing when a row is tapped", async () => {
+    await renderWithRelay({
+      Me: () => ({
+        resaleSubmissionsConnection: {
+          edges: [resaleSubmission("LISTED", { id: "submission-7" })],
+        },
+      }),
+    })
+
+    await fireEvent.press(screen.getByTestId("my-collection-listing-row"))
+
+    expect(navigate).toHaveBeenCalledWith("/my-collection/resale-submissions/submission-7")
+  })
+
   it("shows canceled and rejected submissions", async () => {
     await renderWithRelay({
       Me: () => ({

@@ -253,6 +253,16 @@ describe("Sell", () => {
     expect(screen.getByText(/Tap the works you’ve considered selling/)).toBeOnTheScreen()
   })
 
+  it("starts on the second step for a given resale submission", async () => {
+    await renderWithRelay(activeWorkResolvers({ internalID: "id-a2", artistNames: "Artist A" }), {
+      resaleSubmissionID: "resaleSubmission-id-a2",
+    })
+
+    expect(await screen.findByText("Step 2 · Condition & Price")).toBeOnTheScreen()
+    expect(screen.getByLabelText("Step 2 of 3")).toBeOnTheScreen()
+    expect(screen.queryByText("Step 1 · Decide Which Works to Sell")).not.toBeOnTheScreen()
+  })
+
   it("refreshes My Collection when the flow is left", async () => {
     await renderSell()
     jest.mocked(refreshMyCollection).mockClear()

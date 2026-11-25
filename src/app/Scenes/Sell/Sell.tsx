@@ -11,7 +11,7 @@ import { SellHeader, SellRoute } from "app/Scenes/Sell/Components/SellHeader"
 import { Condition } from "app/Scenes/Sell/Screens/Condition"
 import { LocationAndContact } from "app/Scenes/Sell/Screens/LocationAndContact"
 import { SelectWorks } from "app/Scenes/Sell/Screens/SelectWorks"
-import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
+import { SellFlowStore, sellFlowStoreModel } from "app/Scenes/Sell/State/SellFlowStore"
 // eslint-disable-next-line no-restricted-imports
 import { dismissModal } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -28,7 +28,12 @@ export type SellNavigationProp = StackNavigationProp<SellNavigationRoutes>
 
 const Stack = createStackNavigator<SellNavigationRoutes>()
 
-export const Sell: React.FC = () => {
+interface SellProps {
+  /** Opens the flow at Step 2 for this resale submission, instead of at Step 1 */
+  resaleSubmissionID?: string
+}
+
+export const Sell: React.FC<SellProps> = ({ resaleSubmissionID }) => {
   const enableSell = useFeatureFlag("AREnableSellMyCollectionArtwork")
 
   // Deep links reach this route without going through the flagged Sell button
@@ -45,13 +50,17 @@ export const Sell: React.FC = () => {
   }
 
   return (
-    <SellFlowStore.Provider>
-      <SellNavigator />
+    <SellFlowStore.Provider
+      runtimeModel={{ ...sellFlowStoreModel, activeResaleSubmissionID: resaleSubmissionID ?? null }}
+    >
+      <SellNavigator initialRouteName={resaleSubmissionID ? "Condition" : "SelectWorks"} />
     </SellFlowStore.Provider>
   )
 }
 
-const SellNavigator: React.FC = () => {
+const SellNavigator: React.FC<{ initialRouteName: keyof SellNavigationRoutes }> = ({
+  initialRouteName,
+}) => {
   const navigationRef = useNavigationContainerRef<SellNavigationRoutes>()
   const theme = useNavigationTheme()
   const [currentRoute, setCurrentRoute] = useState<SellRoute>()
@@ -71,7 +80,10 @@ const SellNavigator: React.FC = () => {
           <Flex flex={1} bg="mono0">
             {!!currentRoute && <SellHeader route={currentRoute} navigationRef={navigationRef} />}
 
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Navigator
+              initialRouteName={initialRouteName}
+              screenOptions={{ headerShown: false }}
+            >
               <Stack.Screen name="SelectWorks" component={SelectWorks} />
               <Stack.Screen name="Condition" component={Condition} />
               <Stack.Screen name="LocationAndContact" component={LocationAndContact} />

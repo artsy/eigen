@@ -1,0 +1,175 @@
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { MyCollectionListingQueryRenderer } from "app/Scenes/MyCollection/Screens/MyCollectionListing/MyCollectionListing"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { goBack, navigate } from "app/system/navigation/navigate"
+import { refreshMyCollection } from "app/utils/refreshHelpers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+
+const mockShowToast = jest.fn()
+jest.mock("app/Components/Toast/toastHook", () => ({
+  useToast: () => ({ show: mockShowToast }),
+}))
+
+jest.mock("app/utils/refreshHelpers", () => ({
+  ...jest.requireActual("app/utils/refreshHelpers"),
+  refreshMyCollection: jest.fn(),
+}))
+
+const submission = (overrides: object = {}) => ({
+  internalID: "submission-1",
+  state: "LISTED",
+  statusMessage: "Your work is listed on Artsy",
+  priceListed: { display: "US$5,000" },
+  submittedArtwork: {
+    slug: "artwork-1",
+    artistNames: "Pablo Picasso",
+    title: "Guernica",
+    date: "1937",
+    image: null,
+  },
+  ...overrides,
+})
+
+describe("MyCollectionListing", () => {
+  const { renderWithRelay } = setupTestWrapper({
+    Component: () => <MyCollectionListingQueryRenderer resaleSubmissionID="submission-1" />,
+  })
+
+  const render = (overrides: object = {}) =>
+    renderWithRelay({ Me: () => ({ resaleSubmission: submission(overrides) }) })
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSellMyCollectionArtwork: true })
+  })
+
+  it("shows the artwork, the price and the status", async () => {
+    await render()
+
+    expect(await screen.findByText("Pablo Picasso")).toBeOnTheScreen()
+    expect(screen.getByText("Guernica")).toBeOnTheScreen()
+    expect(screen.getByText(/1937/)).toBeOnTheScreen()
+    expect(screen.getByText("Listed at US$5,000")).toBeOnTheScreen()
+    expect(screen.getByText("Your work is listed on Artsy")).toBeOnTheScreen()
+  })
+
+  it("leaves out the price line without a listed price", async () => {
+    await render({ priceListed: null })
+
+    expect(await screen.findByText("Pablo Picasso")).toBeOnTheScreen()
+    expect(screen.queryByText(/Listed at/)).not.toBeOnTheScreen()
+  })
+
+  it("goes back when the feature flag is off", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSellMyCollectionArtwork: false })
+    await renderWithWrappers(<MyCollectionListingQueryRenderer resaleSubmissionID="submission-1" />)
+
+    await waitFor(() => expect(goBack).toHaveBeenCalledTimes(1))
+    expect(screen.queryByText("Pablo Picasso")).not.toBeOnTheScreen()
+  })
+
+  describe.each(["ACCEPTED", "LISTED"])("for a %s submission", (state) => {
+    it("opens the sell flow at step 2 from Edit listing", async () => {
+      await render({ state })
+
+      await fireEvent.press(await screen.findByText("Edit listing"))
+
+      expect(navigate).toHaveBeenCalledWith("/my-collection/sell", {
+        passProps: { resaleSubmissionID: "submission-1" },
+      })
+    })
+
+    it("offers Remove listing", async () => {
+      await render({ state })
+
+      expect((await screen.findAllByText("Remove listing")).length).toBeGreaterThan(0)
+    })
+  })
+
+  it("offers no actions while the submission is in auction review", async () => {
+    await render({ state: "AUCTION_REVIEW" })
+
+    expect(await screen.findByText("Pablo Picasso")).toBeOnTheScreen()
+    expect(screen.queryByText("Edit listing")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Remove listing")).not.toBeOnTheScreen()
+  })
+
+  describe("removing the listing", () => {
+    const openConfirmation = async (view: Awaited<ReturnType<typeof render>>) => {
+      await fireEvent.press((await screen.findAllByText("Remove listing"))[0])
+      return view
+    }
+
+    // The sheet’s button comes after the screen’s own
+    const confirmButton = () => screen.getAllByText("Remove listing")[1]
+
+    it("sends nothing until the collector confirms", async () => {
+      const view = await openConfirmation(await render())
+
+      expect(
+        screen.getByText(
+          "The work stays in your collection but will no longer be listed for sale. You can list it again at any time."
+        )
+      ).toBeOnTheScreen()
+      expect(screen.getByText("Keep listing")).toBeOnTheScreen()
+      expect(view.env.mock.getAllOperations()).toHaveLength(0)
+    })
+
+    it("cancels the submission, refreshes My Collection and goes back", async () => {
+      const view = await openConfirmation(await render())
+
+      await fireEvent.press(confirmButton())
+
+      const operation = view.env.mock.getMostRecentOperation()
+      expect(operation.request.node.operation.name).toBe("useCancelResaleSubmissionMutation")
+      expect(operation.request.variables).toEqual({ input: { id: "submission-1" } })
+
+      await view.mockResolveLastOperation({
+        CancelResaleSubmissionPayload: () => ({
+          resaleSubmissionOrError: {
+            __typename: "CancelResaleSubmissionSuccess",
+            resaleSubmission: { internalID: "submission-1", state: "CANCELED" },
+          },
+        }),
+      })
+
+      await waitFor(() => expect(goBack).toHaveBeenCalledTimes(1))
+      expect(refreshMyCollection).toHaveBeenCalledTimes(1)
+      expect(mockShowToast).not.toHaveBeenCalled()
+    })
+
+    it("sends nothing when the collector keeps the listing", async () => {
+      const view = await openConfirmation(await render())
+
+      await fireEvent.press(screen.getByText("Keep listing"))
+
+      expect(view.env.mock.getAllOperations()).toHaveLength(0)
+      expect(goBack).not.toHaveBeenCalled()
+    })
+
+    it("shows a toast and stays when the mutation fails", async () => {
+      const view = await openConfirmation(await render())
+
+      await fireEvent.press(confirmButton())
+      await view.mockResolveLastOperation({
+        CancelResaleSubmissionPayload: () => ({
+          resaleSubmissionOrError: {
+            __typename: "CancelResaleSubmissionFailure",
+            mutationError: { message: "Nope" },
+          },
+        }),
+      })
+
+      await waitFor(() =>
+        expect(mockShowToast).toHaveBeenCalledWith(
+          "We couldn’t remove this listing. Please try again.",
+          "bottom",
+          expect.objectContaining({ backgroundColor: "red100" })
+        )
+      )
+      expect(goBack).not.toHaveBeenCalled()
+      expect(refreshMyCollection).not.toHaveBeenCalled()
+    })
+  })
+})
