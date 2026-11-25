@@ -18,7 +18,7 @@ permissions:
 
 env:
   CHANNEL: review-app-${{ github.event.pull_request.number }}
-  TSX_VERSION: "4.19.1"
+  TSX_VERSION: "4.23.15"
 
 # Only events that can publish or clean up share a group. Others get their own (the run id), so they
 # can't cancel a running publish or cleanup. Removing the label from a `review-app-*` PR still

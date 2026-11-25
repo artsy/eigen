@@ -106,7 +106,7 @@
   ],
   "dependenciesComments": {
     "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled",
-    "sharp": "Pinned to 0.35.0 to fix GHSA-f88m-g3jw-g9cj. react-native-bootsplash@7.1.0 exact-caret-pins sharp@^0.34.5 (excludes 0.35.0); remove this once react-native-bootsplash is bumped to 7.3.2+ (which requires sharp@^0.35.2).",
+    "sharp": "Pinned to 0.35.5 to fix GHSA-f88m-g3jw-g9cj, the libheif CVEs (GHSA-g89c-p67h-r497, GHSA-2jg2-4ch7-h545) and the librsvg CVE-2026-96889. react-native-bootsplash@7.1.0 exact-caret-pins sharp@^0.34.5 (excludes 0.35.0); remove this once react-native-bootsplash is bumped to 7.3.2+ (which requires sharp@^0.35.2).",
     "tmp": "Pinned to 0.2.7 to fix GHSA-ph9p-34f9-6g65 (arbitrary file/directory write via symlink). @artsy/update-repo@0.8.2 (latest) exact-pins tmp@^0.1.0 with no patched release on that line; remove this once @artsy/update-repo bumps its tmp dependency upstream."
   },
   "dependencies": {
@@ -328,7 +328,7 @@
     "sponge": "0.1.0",
     "test-renderer": "1.3.1",
     "tmp": "0.2.7",
-    "tsx": "4.19.1",
+    "tsx": "4.23.15",
     "typescript": "5.9.2",
     "yargs": "17.7.2"
   },
@@ -338,7 +338,7 @@
     "@types/react-relay": "18.2.0",
     "@jest/fake-timers@npm:^29.7.0": "patch:@jest/fake-timers@npm%3A29.7.0#~/.yarn/patches/@jest-fake-timers-npm-29.7.0-e4174d1b56.patch",
     "nanoid": "3.3.18",
-    "sharp": "0.35.0",
+    "sharp": "0.35.5",
     "tmp": "0.2.7"
   },
   "pull-lock": {
