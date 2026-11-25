@@ -50,6 +50,7 @@ const admissionLabel = (isFreeAdmission: boolean | null | undefined) => {
  */
 const EventRail = <T,>({
   title,
+  subtitle,
   href,
   onPress,
   contextModule,
@@ -58,6 +59,7 @@ const EventRail = <T,>({
   renderItem,
 }: {
   title: string
+  subtitle?: string
   href: string
   onPress: () => void
   contextModule: ContextModule
@@ -70,7 +72,13 @@ const EventRail = <T,>({
       <CityGuideRailSentinel contextModule={contextModule} />
 
       <Flex px={2}>
-        <SectionTitle variant="large" title={title} href={href} onPress={onPress} />
+        <SectionTitle
+          variant="large"
+          title={title}
+          href={href}
+          onPress={onPress}
+          subtitle={subtitle}
+        />
       </Flex>
 
       <FlatList
@@ -157,6 +165,7 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
       {!!currentShows.length && (
         <EventRail
           title={`Current ${cityName} Shows`}
+          subtitle="Shows for you based on your activity"
           href={sectionHref("shows")}
           onPress={trackSectionTap("shows")}
           contextModule={SECTION_TRACKING.shows.contextModule}
@@ -277,6 +286,8 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
  * Opening Soon takes a single formatted `startAt` rather than `exhibitionPeriod`: the section
  * is about when a show opens, and the designs show one date. Formatting stays on the server,
  * through Metaphysics' own `format` argument.
+ *
+ * `exhibitionPeriod` takes `format: SHORT` for the abbreviated "Sep 8 - Nov 27, 2026" form.
  */
 const fragment = graphql`
   fragment CityGuideEvents_city on City
@@ -320,7 +331,7 @@ const fragment = graphql`
           href
           isFollowed
           isOnMyItineraries
-          exhibitionPeriod
+          exhibitionPeriod(format: SHORT)
           isFreeAdmission
           coverImage {
             url
