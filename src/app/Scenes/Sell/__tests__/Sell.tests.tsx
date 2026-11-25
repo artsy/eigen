@@ -253,6 +253,28 @@ describe("Sell", () => {
     expect(screen.getByText(/Tap the works you’ve considered selling/)).toBeOnTheScreen()
   })
 
+  it("starts on the second step for a given resale submission", async () => {
+    await renderWithRelay(activeWorkResolvers({ internalID: "id-a2", artistNames: "Artist A" }), {
+      resaleSubmissionID: "resaleSubmission-id-a2",
+    })
+
+    expect(await screen.findByText("Step 2 · Condition & Price")).toBeOnTheScreen()
+    expect(screen.getByLabelText("Step 2 of 3")).toBeOnTheScreen()
+    expect(screen.queryByText("Step 1 · Decide Which Works to Sell")).not.toBeOnTheScreen()
+  })
+
+  it("asks for confirmation before closing a flow opened on the second step", async () => {
+    const alertSpy = jest.spyOn(Alert, "alert")
+    await renderWithRelay(activeWorkResolvers({ internalID: "id-a2", artistNames: "Artist A" }), {
+      resaleSubmissionID: "resaleSubmission-id-a2",
+    })
+
+    await fireEvent.press(await screen.findByLabelText("Close"))
+
+    expect(alertSpy).toHaveBeenCalledWith("Leave this flow?", expect.any(String), expect.any(Array))
+    expect(dismissModal).not.toHaveBeenCalled()
+  })
+
   it("refreshes My Collection when the flow is left", async () => {
     await renderSell()
     jest.mocked(refreshMyCollection).mockClear()
@@ -702,6 +724,20 @@ describe("Sell", () => {
 
     await pressHardwareBack()
     expect(await screen.findByText("Start Listing")).toBeOnTheScreen()
+    expect(dismissModal).not.toHaveBeenCalled()
+  })
+
+  it("asks before Android back closes a flow opened on the second step", async () => {
+    const alertSpy = jest.spyOn(Alert, "alert")
+    const pressHardwareBack = mockHardwareBack()
+    await renderWithRelay(activeWorkResolvers({ internalID: "id-a2", artistNames: "Artist A" }), {
+      resaleSubmissionID: "resaleSubmission-id-a2",
+    })
+    await screen.findByText("Step 2 · Condition & Price")
+
+    await pressHardwareBack()
+
+    expect(alertSpy).toHaveBeenCalledWith("Leave this flow?", expect.any(String), expect.any(Array))
     expect(dismissModal).not.toHaveBeenCalled()
   })
 

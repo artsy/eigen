@@ -28,7 +28,11 @@ export type SellNavigationProp = StackNavigationProp<SellNavigationRoutes>
 
 const Stack = createStackNavigator<SellNavigationRoutes>()
 
-export const Sell: React.FC = () => {
+interface SellProps {
+  resaleSubmissionID?: string
+}
+
+export const Sell: React.FC<SellProps> = ({ resaleSubmissionID }) => {
   const enableSell = useFeatureFlag("AREnableSellMyCollectionArtwork")
 
   // Deep links reach this route without going through the flagged Sell button
@@ -45,13 +49,15 @@ export const Sell: React.FC = () => {
   }
 
   return (
-    <SellFlowStore.Provider>
-      <SellNavigator />
+    <SellFlowStore.Provider runtimeModel={{ activeResaleSubmissionID: resaleSubmissionID ?? null }}>
+      <SellNavigator initialRouteName={resaleSubmissionID ? "Condition" : "SelectWorks"} />
     </SellFlowStore.Provider>
   )
 }
 
-const SellNavigator: React.FC = () => {
+const SellNavigator: React.FC<{ initialRouteName: keyof SellNavigationRoutes }> = ({
+  initialRouteName,
+}) => {
   const navigationRef = useNavigationContainerRef<SellNavigationRoutes>()
   const theme = useNavigationTheme()
   const [currentRoute, setCurrentRoute] = useState<SellRoute>()
@@ -71,7 +77,10 @@ const SellNavigator: React.FC = () => {
           <Flex flex={1} bg="mono0">
             {!!currentRoute && <SellHeader route={currentRoute} navigationRef={navigationRef} />}
 
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Navigator
+              initialRouteName={initialRouteName}
+              screenOptions={{ headerShown: false }}
+            >
               <Stack.Screen name="SelectWorks" component={SelectWorks} />
               <Stack.Screen name="Condition" component={Condition} />
               <Stack.Screen name="LocationAndContact" component={LocationAndContact} />

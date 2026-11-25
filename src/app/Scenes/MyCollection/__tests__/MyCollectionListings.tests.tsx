@@ -1,5 +1,5 @@
 import { act, fireEvent, screen } from "@testing-library/react-native"
-import { MyCollectionListingRow_resaleSubmission$data } from "__generated__/MyCollectionListingRow_resaleSubmission.graphql"
+import { ListingRow_resaleSubmission$data } from "__generated__/ListingRow_resaleSubmission.graphql"
 import { MyCollectionListingsTestsQuery } from "__generated__/MyCollectionListingsTestsQuery.graphql"
 import {
   MyCollectionListings,
@@ -14,7 +14,7 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { MockPayloadGenerator } from "relay-test-utils"
 
-type ResaleSubmissionNode = Omit<MyCollectionListingRow_resaleSubmission$data, " $fragmentType"> & {
+type ResaleSubmissionNode = Omit<ListingRow_resaleSubmission$data, " $fragmentType"> & {
   internalID: string
 }
 
@@ -86,6 +86,20 @@ describe("MyCollectionListings", () => {
     expect(screen.queryByText("Thought about selling?")).not.toBeOnTheScreen()
   })
 
+  it("opens the listing when a row is tapped", async () => {
+    await renderWithRelay({
+      Me: () => ({
+        resaleSubmissionsConnection: {
+          edges: [resaleSubmission("LISTED", { id: "submission-7" })],
+        },
+      }),
+    })
+
+    await fireEvent.press(screen.getByTestId("my-collection-listing-row"))
+
+    expect(navigate).toHaveBeenCalledWith("/my-collection/resale-submissions/submission-7")
+  })
+
   it("shows canceled and rejected submissions", async () => {
     await renderWithRelay({
       Me: () => ({
@@ -153,6 +167,20 @@ describe("MyCollectionListingsQueryRenderer", () => {
       "MyCollectionListingsRefetchQuery"
     )
     expect(screen.getByText("Your work is listed")).toBeOnTheScreen()
+  })
+
+  it("shows the failure view when me is null", async () => {
+    const env = getMockRelayEnvironment()
+
+    await renderWithWrappers(<MyCollectionListingsQueryRenderer />)
+
+    await act(() => {
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, { Query: () => ({ me: null }) })
+      )
+    })
+
+    expect(await screen.findByText("Unable to load")).toBeOnTheScreen()
   })
 
   it("shows the failure view when the submissions connection is null", async () => {

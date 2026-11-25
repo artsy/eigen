@@ -1108,6 +1108,14 @@ describe("artsy.net routes", () => {
     expect(sellRoute?.options?.alwaysPresentModally).toBe(true)
   })
 
+  it("routes a resale submission to its listing screen", () => {
+    expect(matchRoute("/my-collection/resale-submissions/abc123")).toEqual({
+      module: "MyCollectionListing",
+      params: { resaleSubmissionID: "abc123" },
+      type: "match",
+    })
+  })
+
   it("routes /conditions-of-sale to web view", () => {
     expect(matchRoute("/conditions-of-sale")).toMatchInlineSnapshot(`
       {

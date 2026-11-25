@@ -1,8 +1,8 @@
-import { Button, Flex, SimpleMessage, Spinner, Tabs, Text } from "@artsy/palette-mobile"
+import { Button, Flex, Spinner, Tabs, Text } from "@artsy/palette-mobile"
 import { MyCollectionListingsQuery } from "__generated__/MyCollectionListingsQuery.graphql"
 import { MyCollectionListings_me$key } from "__generated__/MyCollectionListings_me.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { MyCollectionListingRow } from "app/Scenes/MyCollection/Components/MyCollectionListingRow"
+import { ListingRow } from "app/Scenes/MyCollection/Components/ListingRow"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -59,7 +59,7 @@ export const MyCollectionListings: React.FC<MyCollectionListingsProps> = ({ me }
       testID="my-collection-listings"
       data={listings}
       keyExtractor={(item) => item.internalID}
-      renderItem={({ item }) => <MyCollectionListingRow resaleSubmission={item} />}
+      renderItem={({ item }) => <ListingRow resaleSubmission={item} />}
       onEndReached={loadMore}
       onEndReachedThreshold={0.5}
       ListFooterComponent={
@@ -86,10 +86,6 @@ const MyCollectionListingsContent = withSuspense<MyCollectionListingsContentProp
       {},
       { fetchKey: retryKey, fetchPolicy: "store-and-network" }
     )
-
-    if (!data.me) {
-      return <MyCollectionListingsError />
-    }
 
     return <MyCollectionListings me={data.me} />
   },
@@ -125,10 +121,6 @@ export const MyCollectionListingsQueryRenderer: React.FC = () => {
     />
   )
 }
-
-const MyCollectionListingsError: React.FC = () => (
-  <SimpleMessage m={2}>Something went wrong.</SimpleMessage>
-)
 
 export const MyCollectionListingsEmptyState: React.FC = () => {
   return (
@@ -173,7 +165,7 @@ const meFragment = graphql`
       edges {
         node {
           internalID
-          ...MyCollectionListingRow_resaleSubmission
+          ...ListingRow_resaleSubmission
         }
       }
     }
@@ -182,7 +174,7 @@ const meFragment = graphql`
 
 const myCollectionListingsQuery = graphql`
   query MyCollectionListingsQuery {
-    me {
+    me @required(action: THROW) {
       ...MyCollectionListings_me
     }
   }
