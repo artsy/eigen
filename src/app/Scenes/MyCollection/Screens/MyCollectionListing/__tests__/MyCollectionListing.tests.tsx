@@ -1,5 +1,5 @@
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
-import { MyCollectionListingQuery } from "__generated__/MyCollectionListingQuery.graphql"
+import { MyCollectionListing_resaleSubmission$data } from "__generated__/MyCollectionListing_resaleSubmission.graphql"
 import { MyCollectionListingQueryRenderer } from "app/Scenes/MyCollection/Screens/MyCollectionListing/MyCollectionListing"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
@@ -23,9 +23,7 @@ jest.mock("app/utils/refreshHelpers", () => ({
   refreshMyCollection: jest.fn(),
 }))
 
-type ResaleSubmission = NonNullable<
-  NonNullable<MyCollectionListingQuery["response"]["me"]>["resaleSubmission"]
->
+type ResaleSubmission = Omit<MyCollectionListing_resaleSubmission$data, " $fragmentType">
 
 const resaleSubmission = (overrides: Partial<ResaleSubmission> = {}): ResaleSubmission => ({
   internalID: "submission-1",
@@ -80,7 +78,7 @@ describe("MyCollectionListing", () => {
     expect(screen.queryByText(/Listed at/)).not.toBeOnTheScreen()
   })
 
-  it("refetches when My Collection refreshes", async () => {
+  it("refetches when My Collection refreshes, keeping the listing on screen", async () => {
     const view = await render({ statusMessage: "Accepted by Artsy" })
 
     expect(await screen.findByText("Accepted by Artsy")).toBeOnTheScreen()
@@ -91,6 +89,7 @@ describe("MyCollectionListing", () => {
     })
 
     expect(view.env.mock.getAllOperations()).toHaveLength(1)
+    expect(screen.getByText("Accepted by Artsy")).toBeOnTheScreen()
     await view.mockResolveLastOperation({
       Me: () => ({ resaleSubmission: resaleSubmission({ statusMessage: "Listed on Artsy" }) }),
     })

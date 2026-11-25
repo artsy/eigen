@@ -1,5 +1,6 @@
 import { Button, Flex, Image, Screen, Spacer, Spinner, Text } from "@artsy/palette-mobile"
 import { MyCollectionListingQuery } from "__generated__/MyCollectionListingQuery.graphql"
+import { MyCollectionListing_resaleSubmission$key } from "__generated__/MyCollectionListing_resaleSubmission.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { MyCollectionListingRemoveBottomSheet } from "app/Scenes/MyCollection/Screens/MyCollectionListing/Components/MyCollectionListingRemoveBottomSheet"
@@ -14,17 +15,13 @@ import {
   useRefreshFetchKey,
 } from "app/utils/refreshHelpers"
 import { useEffect, useState } from "react"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 const IMAGE_WIDTH = 120
 const REMOVE_ERROR = "We couldn’t remove this listing. Please try again."
 
-type ResaleSubmission = NonNullable<
-  NonNullable<MyCollectionListingQuery["response"]["me"]>["resaleSubmission"]
->
-
 interface MyCollectionListingProps {
-  resaleSubmission: ResaleSubmission
+  resaleSubmission: MyCollectionListing_resaleSubmission$key
 }
 
 export const MyCollectionListing: React.FC<MyCollectionListingProps> = ({ resaleSubmission }) => {
@@ -36,7 +33,7 @@ export const MyCollectionListing: React.FC<MyCollectionListingProps> = ({ resale
     statusMessage,
     priceListed,
     submittedArtwork,
-  } = resaleSubmission
+  } = useFragment(fragment, resaleSubmission)
   const toast = useToast()
   const cancelResaleSubmission = useCancelResaleSubmission()
   const [confirming, setConfirming] = useState(false)
@@ -230,28 +227,34 @@ const MyCollectionListingLoadFailure: React.FC<{ error?: Error; onRetry: () => v
   onRetry,
 }) => <LoadFailureView onRetry={onRetry} showBackButton error={error} trackErrorBoundary={false} />
 
+const fragment = graphql`
+  fragment MyCollectionListing_resaleSubmission on ResaleSubmission {
+    internalID
+    isCancelable
+    isEditable
+    state
+    statusMessage
+    priceListed {
+      display
+    }
+    submittedArtwork {
+      artistNames
+      title
+      date
+      image {
+        url(version: ["medium", "small"])
+        aspectRatio
+        blurhash
+      }
+    }
+  }
+`
+
 const myCollectionListingQuery = graphql`
   query MyCollectionListingQuery($resaleSubmissionID: String!) @relay_test_operation {
     me {
       resaleSubmission(id: $resaleSubmissionID) {
-        internalID
-        isCancelable
-        isEditable
-        state
-        statusMessage
-        priceListed {
-          display
-        }
-        submittedArtwork {
-          artistNames
-          title
-          date
-          image {
-            url(version: ["medium", "small"])
-            aspectRatio
-            blurhash
-          }
-        }
+        ...MyCollectionListing_resaleSubmission
       }
     }
   }
