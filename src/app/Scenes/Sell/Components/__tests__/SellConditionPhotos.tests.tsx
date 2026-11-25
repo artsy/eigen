@@ -1,5 +1,8 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
-import { SellConditionPhotos } from "app/Scenes/Sell/Components/SellConditionPhotos"
+import {
+  MAX_SELL_CONDITION_PHOTOS,
+  SellConditionPhotos,
+} from "app/Scenes/Sell/Components/SellConditionPhotos"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
@@ -52,5 +55,17 @@ describe("SellConditionPhotos", () => {
 
     await fireEvent.press(screen.getByLabelText("Remove photo 2"))
     expect(onRemove).toHaveBeenCalledWith("file:///b.jpg")
+  })
+
+  it("hides the upload button once the photo limit is reached", async () => {
+    const photos = Array.from({ length: MAX_SELL_CONDITION_PHOTOS }, (_, index) => ({
+      path: `file:///${index}.jpg`,
+    }))
+    await renderWithWrappers(
+      <SellConditionPhotos photos={photos} onAdd={jest.fn()} onRemove={jest.fn()} />
+    )
+
+    expect(screen.getAllByTestId("sell-condition-photo")).toHaveLength(MAX_SELL_CONDITION_PHOTOS)
+    expect(screen.queryByText("Add more photos")).not.toBeOnTheScreen()
   })
 })

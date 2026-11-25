@@ -1,5 +1,6 @@
 import { Flex, Input, Text } from "@artsy/palette-mobile"
 import {
+  MAX_SELL_CONDITION_PHOTOS,
   SellConditionPhoto,
   SellConditionPhotos,
 } from "app/Scenes/Sell/Components/SellConditionPhotos"
@@ -13,10 +14,12 @@ export const SellConditionSection: React.FC = () => {
   )
 
   const addPhotos = (newPhotos: SellConditionPhoto[]) => {
-    setPhotos([
-      ...photos,
-      ...newPhotos.filter((photo) => !photos.some(({ path }) => path === photo.path)),
-    ])
+    setPhotos(
+      [
+        ...photos,
+        ...newPhotos.filter((photo) => !photos.some(({ path }) => path === photo.path)),
+      ].slice(0, MAX_SELL_CONDITION_PHOTOS)
+    )
   }
 
   return (

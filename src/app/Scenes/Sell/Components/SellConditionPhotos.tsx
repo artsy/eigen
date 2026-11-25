@@ -9,6 +9,8 @@ export interface SellConditionPhoto {
   path: string
 }
 
+export const MAX_SELL_CONDITION_PHOTOS = 10
+
 const PREVIEW_SIZE = 80
 const REMOVE_TARGET_SIZE = 48
 
@@ -73,21 +75,23 @@ export const SellConditionPhotos: React.FC<SellConditionPhotosProps> = ({
         </Flex>
       )}
 
-      <Touchable accessibilityRole="button" onPress={pickPhotos}>
-        <Flex
-          flexDirection="row"
-          justifyContent="center"
-          alignItems="center"
-          gap={1}
-          py={2}
-          borderWidth={1}
-          borderColor="mono30"
-          borderStyle="dashed"
-        >
-          <UploadFileIcon />
-          <Text variant="sm">{photos.length > 0 ? "Add more photos" : "Upload photos"}</Text>
-        </Flex>
-      </Touchable>
+      {photos.length < MAX_SELL_CONDITION_PHOTOS && (
+        <Touchable accessibilityRole="button" onPress={pickPhotos}>
+          <Flex
+            flexDirection="row"
+            justifyContent="center"
+            alignItems="center"
+            gap={1}
+            py={2}
+            borderWidth={1}
+            borderColor="mono30"
+            borderStyle="dashed"
+          >
+            <UploadFileIcon />
+            <Text variant="sm">{photos.length > 0 ? "Add more photos" : "Upload photos"}</Text>
+          </Flex>
+        </Touchable>
+      )}
     </Flex>
   )
 }
