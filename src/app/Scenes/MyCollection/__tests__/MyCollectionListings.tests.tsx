@@ -155,6 +155,20 @@ describe("MyCollectionListingsQueryRenderer", () => {
     expect(screen.getByText("Your work is listed")).toBeOnTheScreen()
   })
 
+  it("shows the failure view when me is null", async () => {
+    const env = getMockRelayEnvironment()
+
+    await renderWithWrappers(<MyCollectionListingsQueryRenderer />)
+
+    await act(() => {
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, { Query: () => ({ me: null }) })
+      )
+    })
+
+    expect(await screen.findByText("Unable to load")).toBeOnTheScreen()
+  })
+
   it("shows the failure view when the submissions connection is null", async () => {
     const env = getMockRelayEnvironment()
 

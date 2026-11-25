@@ -1,4 +1,4 @@
-import { Button, Flex, SimpleMessage, Spinner, Tabs, Text } from "@artsy/palette-mobile"
+import { Button, Flex, Spinner, Tabs, Text } from "@artsy/palette-mobile"
 import { MyCollectionListingsQuery } from "__generated__/MyCollectionListingsQuery.graphql"
 import { MyCollectionListings_me$key } from "__generated__/MyCollectionListings_me.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
@@ -87,10 +87,6 @@ const MyCollectionListingsContent = withSuspense<MyCollectionListingsContentProp
       { fetchKey: retryKey, fetchPolicy: "store-and-network" }
     )
 
-    if (!data.me) {
-      return <MyCollectionListingsError />
-    }
-
     return <MyCollectionListings me={data.me} />
   },
   LoadingFallback: () => (
@@ -125,10 +121,6 @@ export const MyCollectionListingsQueryRenderer: React.FC = () => {
     />
   )
 }
-
-const MyCollectionListingsError: React.FC = () => (
-  <SimpleMessage m={2}>Something went wrong.</SimpleMessage>
-)
 
 export const MyCollectionListingsEmptyState: React.FC = () => {
   return (
@@ -182,7 +174,7 @@ const meFragment = graphql`
 
 const myCollectionListingsQuery = graphql`
   query MyCollectionListingsQuery {
-    me {
+    me @required(action: THROW) {
       ...MyCollectionListings_me
     }
   }
