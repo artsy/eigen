@@ -25038,6 +25038,11 @@ type Me implements Node {
     before: String
 
     """
+    Exclude artworks that have an active (not canceled or rejected) resale submission.
+    """
+    excludeArtworksWithActiveResaleSubmissions: Boolean
+
+    """
     Exclude artworks that have been purchased on Artsy and automatically added to the collection.
     """
     excludePurchasedArtworks: Boolean = false
