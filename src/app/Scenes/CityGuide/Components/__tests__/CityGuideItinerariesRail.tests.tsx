@@ -13,19 +13,18 @@ describe("CityGuideItinerariesRail", () => {
   >({
     Component: CityGuideItinerariesRail,
     query: graphql`
-      query CityGuideItinerariesRailTestQuery($citySlug: String!, $first: Int!)
-      @relay_test_operation {
+      query CityGuideItinerariesRailTestQuery($first: Int!) @relay_test_operation {
         me {
-          ...CityGuideItinerariesRail_me @arguments(citySlug: $citySlug, first: $first)
+          ...CityGuideItinerariesRail_me @arguments(first: $first)
         }
       }
     `,
-    variables: { citySlug: "london-united-kingdom", first: 10 },
+    variables: { first: 10 },
   })
-  const props = { citySlug: "london-united-kingdom" }
 
   const itinerary = (internalID: string, name: string, stopsCounts: number[]) => ({
     internalID,
+    citySlug: "london-united-kingdom",
     slug: null,
     title: name,
     heroImage: { resized: { url: `https://example.com/${internalID}.jpg` }, url: null },
@@ -42,11 +41,7 @@ describe("CityGuideItinerariesRail", () => {
 
   it("renders a card per itinerary, with its summed stop count", async () => {
     await renderWithRelay(
-      connection([
-        itinerary("a", "London Oct 2026", [10, 6]),
-        itinerary("b", "London Winter", [3]),
-      ]),
-      props
+      connection([itinerary("a", "London Oct 2026", [10, 6]), itinerary("b", "London Winter", [3])])
     )
 
     expect(await screen.findByText("London Oct 2026")).toBeOnTheScreen()
@@ -57,7 +52,7 @@ describe("CityGuideItinerariesRail", () => {
   })
 
   it("opens that itinerary when a card is tapped", async () => {
-    await renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
+    await renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]))
 
     await fireEvent.press(await screen.findByText("London Oct 2026"))
 
@@ -65,7 +60,7 @@ describe("CityGuideItinerariesRail", () => {
   })
 
   it("tracks the tap on an itinerary card", async () => {
-    await renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
+    await renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]))
 
     await fireEvent.press(await screen.findByText("London Oct 2026"))
 
@@ -82,7 +77,7 @@ describe("CityGuideItinerariesRail", () => {
   })
 
   it("opens the full list from the header", async () => {
-    await renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
+    await renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]))
 
     await fireEvent.press(await screen.findByText("Your Itineraries"))
 
@@ -100,15 +95,14 @@ describe("CityGuideItinerariesRail", () => {
 
   // The band it replaces hid itself at a count of zero; an empty grey strip reads as broken.
   it("renders nothing when the user has none for this city", async () => {
-    await renderWithRelay(connection([]), props)
+    await renderWithRelay(connection([]))
 
     expect(screen.queryByText("Your Itineraries")).not.toBeOnTheScreen()
   })
 
   it("prefers a slug over the id when addressing an itinerary", async () => {
     await renderWithRelay(
-      connection([{ ...itinerary("a", "London Oct 2026", [1]), slug: "london-oct-2026" }]),
-      props
+      connection([{ ...itinerary("a", "London Oct 2026", [1]), slug: "london-oct-2026" }])
     )
 
     await fireEvent.press(await screen.findByText("London Oct 2026"))
@@ -130,8 +124,7 @@ describe("CityGuideItinerariesRail", () => {
           heroImage: null,
           stopsCount: null,
         },
-      ]),
-      props
+      ])
     )
 
     expect(await screen.findByText("London Oct 2026")).toBeOnTheScreen()

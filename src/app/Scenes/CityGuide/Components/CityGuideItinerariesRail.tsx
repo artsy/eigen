@@ -14,11 +14,10 @@ import { useTracking } from "react-tracking"
 const RAIL_GAP = 10
 
 interface Props {
-  citySlug: string
   me: CityGuideItinerariesRail_me$key | null | undefined
 }
 
-export const CityGuideItinerariesRail: React.FC<Props> = ({ citySlug, me: meRef }) => {
+export const CityGuideItinerariesRail: React.FC<Props> = ({ me: meRef }) => {
   const { trackEvent } = useTracking<Schema.Entity>()
   const { trackEvent: trackCohesionEvent } = useTracking()
   const me = useFragment(fragment, meRef)
@@ -32,6 +31,8 @@ export const CityGuideItinerariesRail: React.FC<Props> = ({ citySlug, me: meRef 
   if (!itineraries.length) {
     return null
   }
+
+  const citySlug = itineraries[0].citySlug
 
   return (
     <Flex backgroundColor="mono5" pt={1} pb={2}>
@@ -101,13 +102,13 @@ export const CityGuideItinerariesRail: React.FC<Props> = ({ citySlug, me: meRef 
  * itself renders from.
  */
 const fragment = graphql`
-  fragment CityGuideItinerariesRail_me on Me
-  @argumentDefinitions(citySlug: { type: "String!" }, first: { type: "Int!" }) {
-    itinerariesConnection(citySlug: $citySlug, first: $first) {
+  fragment CityGuideItinerariesRail_me on Me @argumentDefinitions(first: { type: "Int!" }) {
+    itinerariesConnection(first: $first) {
       edges {
         node {
           internalID
           slug
+          citySlug
           title
           isCurated
           heroImage {

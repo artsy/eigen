@@ -49,7 +49,7 @@ const CityGuideNewSections: React.FC<SectionsProps> = ({ citySlug, cityName }) =
   return (
     <Join separator={<Spacer y={4} />}>
       <>
-        <CityGuideItinerariesRail citySlug={citySlug} me={data.me} />
+        <CityGuideItinerariesRail me={data.me} />
 
         {/* Always light: the block is styled as a black card, which flips its palette tokens in dark mode. */}
         <Theme theme="v3light">
@@ -200,7 +200,7 @@ const Query = graphql`
     $enableArticlesForYou: Boolean!
   ) {
     me {
-      ...CityGuideItinerariesRail_me @arguments(citySlug: $citySlug, first: $first)
+      ...CityGuideItinerariesRail_me @arguments(first: $first)
     }
     city(slug: $citySlug) {
       ...CityGuideEvents_city @arguments(first: $first, forYou: $forYou)
