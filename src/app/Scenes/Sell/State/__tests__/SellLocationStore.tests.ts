@@ -25,23 +25,4 @@ describe("SellLocationStore", () => {
     store.getActions().setAddress({ ...ADDRESS, phoneNumber: "555 0123" })
     expect(store.getState().phoneNumber).toBe("555 0199")
   })
-
-  it("needs an address for the location", () => {
-    const store = createStore(sellLocationStoreModel)
-    expect(store.getState().locationComplete).toBe(false)
-
-    store.getActions().setAddress(ADDRESS)
-    expect(store.getState().locationComplete).toBe(true)
-  })
-
-  it("needs all three shipping answers", () => {
-    const store = createStore(sellLocationStoreModel)
-
-    store.getActions().setPackaging("FRAMED")
-    store.getActions().setPacker("COURIER")
-    expect(store.getState().shippingComplete).toBe(false)
-
-    store.getActions().setDelivery("EITHER")
-    expect(store.getState().shippingComplete).toBe(true)
-  })
 })

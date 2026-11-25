@@ -10,10 +10,16 @@ import { SellWorkCard } from "app/Scenes/Sell/Components/SellWorkCard"
 import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { SellLocationStore } from "app/Scenes/Sell/State/SellLocationStore"
 import {
+  sellAuctionLocationSchema,
+  sellMarketplaceShippingSchema,
+} from "app/Scenes/Sell/State/sellLocationSchema"
+import { useSaveResaleSubmission } from "app/Scenes/Sell/hooks/useUpdateResaleSubmission"
+import {
   ResaleSubmissionWithChannel,
   isResaleSubmissionSellable,
   toResaleSubmission,
 } from "app/Scenes/Sell/utils/resaleSubmission"
+import { toShippingAnswers } from "app/Scenes/Sell/utils/shippingAnswers"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -108,12 +114,12 @@ interface FormProps {
 }
 
 const AuctionLocationForm: React.FC<FormProps> = ({ artwork, me, resaleSubmission, onSubmit }) => {
-  const { locationComplete, phoneNumber } = SellLocationStore.useStoreState((state) => state)
+  const answers = SellLocationStore.useStoreState((state) => state)
 
   return (
     <SellFormLayout
       buttonLabel="Submit for Review"
-      buttonDisabled={!locationComplete || !phoneNumber.trim()}
+      buttonDisabled={!sellAuctionLocationSchema.isValidSync(answers)}
       onButtonPress={onSubmit}
     >
       <SellStepIntro stepName="LocationAndContact" channelKind="AUCTION" px={2} />
@@ -138,15 +144,21 @@ const MarketplaceShippingForm: React.FC<FormProps> = ({
   resaleSubmission,
   onSubmit,
 }) => {
-  const { locationComplete, shippingComplete, phoneNumber } = SellLocationStore.useStoreState(
-    (state) => state
-  )
+  const answers = SellLocationStore.useStoreState((state) => state)
+  const { save, saving } = useSaveResaleSubmission({ onSaved: onSubmit })
+
+  // Listing the work, the address and the phone number wait on backend support
+  const saveAndSubmit = () => {
+    const { packaging, packer, delivery } = sellMarketplaceShippingSchema.validateSync(answers)
+    save({ id: resaleSubmission.internalID, ...toShippingAnswers({ packaging, packer, delivery }) })
+  }
 
   return (
     <SellFormLayout
       buttonLabel="List Artwork"
-      buttonDisabled={!locationComplete || !shippingComplete || !phoneNumber.trim()}
-      onButtonPress={onSubmit}
+      buttonDisabled={!sellMarketplaceShippingSchema.isValidSync(answers)}
+      buttonLoading={saving}
+      onButtonPress={saveAndSubmit}
     >
       <SellStepIntro stepName="LocationAndContact" channelKind="MARKETPLACE" px={2} />
 
