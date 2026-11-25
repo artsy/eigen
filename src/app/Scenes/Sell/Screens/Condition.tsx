@@ -5,6 +5,7 @@ import { SellConditionSection } from "app/Scenes/Sell/Components/SellConditionSe
 import { SellFormLayout } from "app/Scenes/Sell/Components/SellFormLayout"
 import { SellPriceSection } from "app/Scenes/Sell/Components/SellPriceSection"
 import { SellStepIntro } from "app/Scenes/Sell/Components/SellStepIntro"
+import { SellUploadProgress } from "app/Scenes/Sell/Components/SellUploadProgress"
 import { SellWorkCard } from "app/Scenes/Sell/Components/SellWorkCard"
 import { SellNavigationProp } from "app/Scenes/Sell/Sell"
 import { SellConditionStore } from "app/Scenes/Sell/State/SellConditionStore"
@@ -69,7 +70,7 @@ const ConditionForm: React.FC<{
 }> = ({ artwork, resaleSubmission, onContinue }) => {
   const answers = SellConditionStore.useStoreState((state) => state)
   useConfirmLeavingConditionStep()
-  const { save, saving } = useSaveResaleSubmission({ onSaved: onContinue })
+  const { save, saving, uploadProgress } = useSaveResaleSubmission({ onSaved: onContinue })
 
   const channelKind = resaleSubmission.channel
   const isMarketplace = channelKind === "MARKETPLACE"
@@ -93,6 +94,7 @@ const ConditionForm: React.FC<{
       buttonDisabled={!canContinue}
       buttonLoading={saving}
       onButtonPress={saveAndContinue}
+      footerContent={!!uploadProgress && <SellUploadProgress {...uploadProgress} />}
     >
       <SellStepIntro stepName="Condition" channelKind={channelKind} px={2} />
 

@@ -648,8 +648,8 @@ describe("Sell", () => {
         notes: "",
         externalImageUrls: ["https://s3.example.com/a.jpg", "https://s3.example.com/b.jpg"],
       })
-      expect(getConvertedImageUrlFromS3).toHaveBeenCalledWith("file:///a.jpg")
-      expect(getConvertedImageUrlFromS3).toHaveBeenCalledWith("file:///b.jpg")
+      expect(getConvertedImageUrlFromS3).toHaveBeenCalledWith("file:///a.jpg", expect.any(Function))
+      expect(getConvertedImageUrlFromS3).toHaveBeenCalledWith("file:///b.jpg", expect.any(Function))
     })
 
     it("stays on step 2 without saving when an upload fails", async () => {
@@ -672,6 +672,67 @@ describe("Sell", () => {
       expect(operationNames(view)).not.toContain("useUpdateResaleSubmissionMutation")
       expect(screen.getByText("Step 2 · Condition")).toBeOnTheScreen()
       await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
+      expect(screen.queryByText(/Uploading photos/)).not.toBeOnTheScreen()
+    })
+
+    describe("upload progress", () => {
+      type Upload = {
+        resolve: (url: string) => void
+        reject: (error: Error) => void
+        onProgress?: (progress: number) => void
+      }
+
+      const holdUploads = () => {
+        const uploads: Upload[] = []
+        jest.mocked(getConvertedImageUrlFromS3).mockImplementation(
+          (_path, onProgress) =>
+            new Promise<string>((resolve, reject) => {
+              uploads.push({ resolve, reject, onProgress })
+            })
+        )
+        return uploads
+      }
+
+      it("counts the finished uploads until they are all done, then leaves the spinner", async () => {
+        const uploads = holdUploads()
+        const view = await renderSell()
+        await openStepWithPhotos(view)
+        expect(screen.queryByText(/Uploading photos/)).not.toBeOnTheScreen()
+
+        await fireEvent.press(screen.getByText("Continue"))
+        expect(await screen.findByText("Uploading photos · 0 of 2")).toBeOnTheScreen()
+
+        await act(async () => {
+          uploads[0].onProgress?.(0.5)
+          uploads[0].resolve("https://s3.example.com/a.jpg")
+        })
+        expect(await screen.findByText("Uploading photos · 1 of 2")).toBeOnTheScreen()
+
+        await act(async () => {
+          uploads[1].resolve("https://s3.example.com/b.jpg")
+        })
+        await waitFor(() =>
+          expect(operationNames(view)).toContain("useUpdateResaleSubmissionMutation")
+        )
+        expect(screen.queryByText(/Uploading photos/)).not.toBeOnTheScreen()
+      })
+
+      it("hides the progress when an upload fails", async () => {
+        const uploads = holdUploads()
+        const view = await renderSell()
+        await openStepWithPhotos(view)
+
+        await fireEvent.press(screen.getByText("Continue"))
+        expect(await screen.findByText("Uploading photos · 0 of 2")).toBeOnTheScreen()
+
+        await act(async () => {
+          uploads[0].reject(new Error("Upload failed"))
+        })
+
+        await waitFor(() => expect(mockShowToast).toHaveBeenCalled())
+        expect(screen.queryByText(/Uploading photos/)).not.toBeOnTheScreen()
+        expect(operationNames(view)).not.toContain("useUpdateResaleSubmissionMutation")
+      })
     })
 
     it("uploads nothing and sends no URLs without photos", async () => {
