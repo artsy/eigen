@@ -424,6 +424,7 @@ describe("Sell", () => {
     await fireEvent.press(screen.getByText("Confirm Listing Price"))
     expect(await resolveSave(view)).toEqual({
       id: "resaleSubmission-id-a2",
+      condition: "EXCELLENT",
       notes: "Small tear at the corner",
       priceListed: "3200",
     })
@@ -549,7 +550,7 @@ describe("Sell", () => {
       expect(screen.getByText("Step 2 · Condition & Price")).toBeOnTheScreen()
     })
 
-    it("saves an auction work’s notes, without a price, before step 3", async () => {
+    it("saves an auction work’s condition and notes, without a price, before step 3", async () => {
       const view = await renderSell()
       await openAuctionConditionStep(view)
 
@@ -560,6 +561,7 @@ describe("Sell", () => {
 
       expect(await resolveSave(view)).toEqual({
         id: "resaleSubmission-id-b4",
+        condition: "FAIR",
         notes: "Signed on the back",
       })
       await resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
@@ -575,7 +577,11 @@ describe("Sell", () => {
       await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
       await fireEvent.press(screen.getByText("Continue"))
 
-      expect(await resolveSave(view)).toEqual({ id: "resaleSubmission-id-b4", notes: "" })
+      expect(await resolveSave(view)).toEqual({
+        id: "resaleSubmission-id-b4",
+        condition: "FAIR",
+        notes: "",
+      })
     })
   })
 
