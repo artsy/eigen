@@ -6,6 +6,8 @@ import { SellNavigationRoutes } from "app/Scenes/Sell/Sell"
 import { SELL_STEPS } from "app/Scenes/Sell/sellSteps"
 // eslint-disable-next-line no-restricted-imports
 import { dismissModal } from "app/system/navigation/navigate"
+import { useBackHandler } from "app/utils/hooks/useBackHandler"
+import { useCallback } from "react"
 import { Alert } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -25,6 +27,8 @@ export const SellHeader: React.FC<SellHeaderProps> = ({ route, navigationRef }) 
     route.name === "SelectWorks" &&
     !!(route.params as SellNavigationRoutes["SelectWorks"])?.showWorksSummary
   const isFirstScreen = !isWorksSummary && !navigationRef.canGoBack()
+  // Only Step 1 holds no answers yet, so it’s the only first screen that closes without asking
+  const closesWithoutAsking = isFirstScreen && route.name === "SelectWorks"
 
   const handleBack = () => {
     if (isWorksSummary) {
@@ -37,12 +41,24 @@ export const SellHeader: React.FC<SellHeaderProps> = ({ route, navigationRef }) 
     }
   }
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     Alert.alert("Leave this flow?", "Your progress on this submission won’t be saved.", [
       { text: "Keep going", style: "cancel" },
       { text: "Leave", style: "destructive", onPress: () => dismissModal() },
     ])
-  }
+  }, [])
+
+  // Android back on a first screen skips the inner stack’s beforeRemove and closes the modal
+  const handleHardwareBack = useCallback(() => {
+    if (!isFirstScreen || closesWithoutAsking) {
+      return false
+    }
+
+    handleClose()
+    return true
+  }, [isFirstScreen, closesWithoutAsking, handleClose])
+
+  useBackHandler(handleHardwareBack)
 
   return (
     <Flex bg="mono0" px={2} pb={1} gap={2} style={{ paddingTop: top + space(1) }}>
@@ -65,9 +81,7 @@ export const SellHeader: React.FC<SellHeaderProps> = ({ route, navigationRef }) 
           <BackButton
             showX
             hitSlop={ICON_HIT_SLOP}
-            onPress={
-              isFirstScreen && route.name === "SelectWorks" ? () => dismissModal() : handleClose
-            }
+            onPress={closesWithoutAsking ? () => dismissModal() : handleClose}
           />
         </Flex>
       </Flex>

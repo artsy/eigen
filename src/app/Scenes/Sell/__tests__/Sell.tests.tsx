@@ -698,6 +698,20 @@ describe("Sell", () => {
     expect(dismissModal).not.toHaveBeenCalled()
   })
 
+  it("asks before Android back closes a flow opened on the second step", async () => {
+    const alertSpy = jest.spyOn(Alert, "alert")
+    const pressHardwareBack = mockHardwareBack()
+    await renderWithRelay(activeWorkResolvers({ internalID: "id-a2", artistNames: "Artist A" }), {
+      resaleSubmissionID: "resaleSubmission-id-a2",
+    })
+    await screen.findByText("Step 2 · Condition & Price")
+
+    await pressHardwareBack()
+
+    expect(alertSpy).toHaveBeenCalledWith("Leave this flow?", expect.any(String), expect.any(Array))
+    expect(dismissModal).not.toHaveBeenCalled()
+  })
+
   it("asks before going back from step 2 with answers, then clears them", async () => {
     const alertSpy = jest.spyOn(Alert, "alert")
     const pressHardwareBack = mockHardwareBack()

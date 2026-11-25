@@ -12,7 +12,10 @@ export const useCancelResaleSubmission = () => {
             ... on CancelResaleSubmissionSuccess {
               resaleSubmission {
                 internalID
+                isCancelable
+                isEditable
                 state
+                statusMessage
               }
             }
             ... on CancelResaleSubmissionFailure {
