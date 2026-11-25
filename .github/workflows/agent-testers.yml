@@ -1,0 +1,258 @@
+# Trial of mobile-agent-testers (github.com/pierridotite/mobile-agent-testers, MIT), vendored in
+# e2e/agent-testers. Each persona from e2e/agent-testers/personas.json gets its own simulator or
+# emulator with the latest QA build installed, driven by a headless Claude Code agent that writes a
+# report, findings and screenshots.
+#
+# Independent of nightly-qa: it only downloads the QA build that build-qa-ios.yml / build-qa-android.yml
+# already uploaded to S3 (Artsy-<build_name>), and builds nothing.
+#
+# Everything the agents produce is encrypted with e2e/agent-testers/results_public.pem before upload,
+# because this repo's logs and artifacts are public. Decrypt on your machine with:
+#   cd e2e/agent-testers && bash scripts/collect.sh <run id>
+name: Agent testers
+
+on:
+  # Trial: runs only on the PR that changes these files
+  pull_request:
+    paths:
+      - ".github/workflows/agent-testers.yml"
+      - "e2e/agent-testers/**"
+  workflow_dispatch:
+    inputs:
+      build_name:
+        description: "QA build to test, uploaded as Artsy-<build_name>"
+        default: latest
+      ios_personas:
+        description: "iOS personas from e2e/agent-testers/personas.json (comma-separated, all, or none)"
+        default: new-collector
+      android_personas:
+        description: "Android personas from e2e/agent-testers/personas.json (comma-separated, all, or none)"
+        default: buyer
+      model:
+        description: "Model: sonnet, opus, haiku or a full Claude id"
+        default: sonnet
+      record_video:
+        description: Record each phone's screen (encrypted with the results)
+        type: boolean
+        default: false
+
+env:
+  # Used on pull_request, where there are no inputs
+  BUILD_NAME: ${{ inputs.build_name || 'latest' }}
+  MODEL: ${{ inputs.model || 'sonnet' }}
+  RECORD_VIDEO: ${{ inputs.record_video || false }}
+  APP_ID_IOS: net.artsy.qa
+  APP_ID_ANDROID: net.artsy.app
+  BRIEF: AGENT_BRIEF.md
+  # Segment and Braze: agent sessions must not end up in analytics. Sentry stays on, so crashes the
+  # agents hit show up in Sentry staging.
+  BLOCK_HOSTS: "api.segment.io cdn-settings.segment.com sdk.iad-06.braze.com"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-testers-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: e2e/agent-testers
+
+jobs:
+  plan:
+    # Never on a fork's PR: the jobs need the repo's secrets
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    outputs:
+      android: ${{ steps.m.outputs.android }}
+      ios: ${{ steps.m.outputs.ios }}
+    steps:
+      - uses: actions/checkout@v5
+      - id: m
+        env:
+          A: ${{ inputs.android_personas || 'buyer' }}
+          I: ${{ inputs.ios_personas || 'new-collector' }}
+        run: |
+          PERSONAS="$A" PLATFORM=android python3 scripts/matrix.py >> "$GITHUB_OUTPUT"
+          PERSONAS="$I" PLATFORM=ios python3 scripts/matrix.py >> "$GITHUB_OUTPUT"
+
+  ios:
+    needs: plan
+    if: needs.plan.outputs.ios != '[]'
+    # Same runner and Xcode as ios-e2e.yml, which runs this QA build every night
+    runs-on: blacksmith-6vcpu-macos-26
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 2 # leaves room for the nightly e2e macOS jobs
+      matrix:
+        include: ${{ fromJSON(needs.plan.outputs.ios) }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Select Xcode
+        run: sudo xcode-select -s "/Applications/Xcode_$(jq -r '.xcode_version' ../../ios-config.json).app"
+
+      # AWS keys only in these steps, so the agent's process never inherits them
+      - name: Download QA build and e2e account
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
+        run: |
+          if [[ ! "$BUILD_NAME" =~ ^[A-Za-z0-9._-]+$ ]]; then
+            echo "::error::build_name may only contain letters, digits, '.', '_' and '-'"
+            exit 1
+          fi
+          aws s3 cp "s3://artsy-citadel/eigen/builds/ios/Artsy-$BUILD_NAME.zip" ./Artsy.zip --only-show-errors
+          mkdir -p app && unzip -q Artsy.zip -d app && rm Artsy.zip
+          ../../scripts/setup/setup-env-for-e2e ios > /dev/null 2>&1
+
+      - name: Tools (AXe, Pillow, Claude Code)
+        run: |
+          brew install -q cameroncooke/axe/axe
+          python3 -m pip install -q --break-system-packages pillow
+          npm install -g --silent @anthropic-ai/claude-code
+
+      # The simulator uses the Mac's network: /etc/hosts + pf block the hosts
+      - name: Block analytics hosts
+        run: |
+          IPS=""
+          for h in $BLOCK_HOSTS; do
+            IPS="$IPS $(dig +short A "$h" @8.8.8.8 | grep -E '^[0-9.]+$' | tr '\n' ' ')"
+            printf '0.0.0.0 %s\n:: %s\n' "$h" "$h" | sudo tee -a /etc/hosts >/dev/null
+          done
+          [ -n "${IPS// /}" ] && echo "block drop out quick proto { tcp udp } to { $(echo $IPS | tr ' ' ',') }" | sudo pfctl -a com.apple/agentblock -f - 2>/dev/null
+          sudo pfctl -E 2>/dev/null || true
+          sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder || true
+
+      - name: Simulator
+        env:
+          MODEL_NAME: ${{ matrix.simulator }}
+          IOS_MAJOR: ${{ matrix.ios }}
+          LOCALE: ${{ matrix.locale }}
+        run: |
+          defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
+          python3 scripts/ios/create_sim.py "$MODEL_NAME" "$IOS_MAJOR" | tee -a "$GITHUB_ENV" > "$RUNNER_TEMP/sim.env"
+          UDID=$(grep '^UDID=' "$RUNNER_TEMP/sim.env" | cut -d= -f2)
+          xcrun simctl boot "$UDID" && xcrun simctl bootstatus "$UDID" -b >/dev/null
+          d() { xcrun simctl spawn "$UDID" defaults write "$@"; }
+          L="${LOCALE:-en-US}"
+          d -g AppleLanguages -array "$L"; d -g AppleLocale -string "${L/-/_}"
+          # Synthetic key events are US key codes: keep a US QWERTY layout
+          d -g AppleKeyboards -array "en_US@sw=QWERTY;hw=US"
+          d com.apple.Preferences KeyboardLastUsed -string "en_US@sw=QWERTY;hw=US"
+          for k in KeyboardAutocapitalization KeyboardAutocorrection KeyboardPrediction KeyboardCheckSpelling; do d com.apple.Preferences $k -bool NO; done
+          for k in DidShowContinuousPathIntroduction KeyboardDidShowProductivityTutorial DidShowGestureKeyboardIntroduction; do
+            d com.apple.Preferences $k -bool YES; d com.apple.keyboard.preferences $k -bool YES
+          done
+          xcrun simctl shutdown "$UDID" && xcrun simctl boot "$UDID" && xcrun simctl bootstatus "$UDID" -b >/dev/null
+
+      - name: Agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PERSONA: ${{ matrix.persona }}
+          TEXT_SIZE: ${{ matrix.text_size }}
+          THEME: ${{ matrix.theme }}
+          LOCALE: ${{ matrix.locale }}
+          GEO: ${{ matrix.geo }}
+          LOGGED_IN: ${{ matrix.logged_in }}
+          FEATURE_FLAGS: ${{ matrix.feature_flags }}
+          APP_ID: ${{ env.APP_ID_IOS }}
+        run: bash scripts/ios/run_agent.sh
+
+      - name: Encrypt results
+        if: always()
+        run: rm -f .env.e2e.*; bash scripts/encrypt_results.sh "${{ matrix.persona }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: "results-${{ matrix.persona }}", path: e2e/agent-testers/results.enc/, retention-days: 14 }
+
+  android:
+    needs: plan
+    if: needs.plan.outputs.android != '[]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include: ${{ fromJSON(needs.plan.outputs.android) }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Download QA build and e2e account
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
+        run: |
+          if [[ ! "$BUILD_NAME" =~ ^[A-Za-z0-9._-]+$ ]]; then
+            echo "::error::build_name may only contain letters, digits, '.', '_' and '-'"
+            exit 1
+          fi
+          aws s3 cp "s3://artsy-citadel/eigen/builds/android/Artsy-$BUILD_NAME.apk" ./app.apk --only-show-errors
+          ../../scripts/setup/setup-env-for-e2e android > /dev/null 2>&1
+
+      - run: pip install -q pillow && npm install -g --silent @anthropic-ai/claude-code
+
+      - name: Free disk space
+        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be
+        with:
+          tool-cache: false
+          android: false
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
+      # The emulator resolves DNS through the host (-dns-server 127.0.0.1):
+      # dnsmasq answers 0.0.0.0 for blocked hosts, iptables drops their real IPs
+      - name: Block analytics hosts
+        run: |
+          sudo apt-get install -y -qq dnsmasq dnsutils >/dev/null 2>&1 || { sudo apt-get update -qq && sudo apt-get install -y -qq dnsmasq dnsutils >/dev/null; }
+          { printf 'listen-address=127.0.0.1\nbind-interfaces\nno-resolv\nserver=8.8.8.8\nserver=1.1.1.1\n'
+            for h in $BLOCK_HOSTS; do printf 'address=/%s/0.0.0.0\naddress=/%s/::\n' "$h" "$h"; done; } | sudo tee /etc/dnsmasq.d/block.conf >/dev/null
+          sudo systemctl restart dnsmasq
+          for h in $BLOCK_HOSTS; do for ip in $(dig +short A "$h" @8.8.8.8 | grep -E '^[0-9.]+$'); do sudo iptables -I OUTPUT -d "$ip" -j REJECT; done; done
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+
+      - name: Emulator + agent
+        uses: reactivecircus/android-emulator-runner@v2
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PERSONA: ${{ matrix.persona }}
+          DEVICE: ${{ matrix.device }}
+          FONT_SCALE: ${{ matrix.font_scale }}
+          THEME: ${{ matrix.theme }}
+          LOCALE: ${{ matrix.locale }}
+          GEO: ${{ matrix.geo }}
+          LOGGED_IN: ${{ matrix.logged_in }}
+          FEATURE_FLAGS: ${{ matrix.feature_flags }}
+          APP_ID: ${{ env.APP_ID_ANDROID }}
+        with:
+          working-directory: e2e/agent-testers
+          api-level: ${{ matrix.api }}
+          target: google_apis
+          arch: x86_64
+          profile: ${{ matrix.profile }}
+          ram-size: 8192M
+          heap-size: 4096M
+          disk-size: 8G
+          cores: 4
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -dns-server 127.0.0.1
+          script: bash scripts/android/run_agent.sh
+
+      - name: Encrypt results
+        if: always()
+        run: rm -f .env.e2e.*; bash scripts/encrypt_results.sh "${{ matrix.persona }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: "results-${{ matrix.persona }}", path: e2e/agent-testers/results.enc/, retention-days: 14 }

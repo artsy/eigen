@@ -207,3 +207,9 @@ scripts/route-drift/route-drift-report.md
 e2e/artifacts/
 .agent-device/
 /tasks/
+
+# agent testers: decrypted results and the private key that decrypts them
+e2e/agent-testers/runs/
+e2e/agent-testers/results/
+e2e/agent-testers/results.enc/
+*_private.pem

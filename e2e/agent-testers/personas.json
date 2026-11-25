@@ -1,0 +1,119 @@
+[
+  {
+    "id": "new-collector",
+    "platform": "ios",
+    "logged_in": false,
+    "profile": "Marketing manager, 32, has never bought art online, curious but unsure where to start. Uses a small iPhone with larger text.",
+    "goal": "Sign up, finish onboarding, follow a few artists and save an artwork she likes.",
+    "locale": "en-US",
+    "geo": [40.7128, -74.006],
+    "device": {
+      "simulator": "iPhone SE (3rd generation)",
+      "ios": 26,
+      "text_size": "extra-large",
+      "theme": "light"
+    }
+  },
+  {
+    "id": "bidder",
+    "platform": "ios",
+    "profile": "Collector, 51, buys at auction several times a year, impatient with slow flows, big iPhone.",
+    "goal": "Find a live or upcoming auction, register to bid and place a bid on a lot (on staging).",
+    "locale": "en-US",
+    "geo": [40.7128, -74.006],
+    "device": {
+      "simulator": "iPhone 17 Pro Max",
+      "ios": 26,
+      "text_size": "large",
+      "theme": "light"
+    }
+  },
+  {
+    "id": "collector-ipad",
+    "platform": "ios",
+    "profile": "Architect, 45, catalogues the works she owns on her iPad, likes dense layouts.",
+    "goal": "Add an artwork to My Collection with its details and a price paid, then check the layout uses the big screen.",
+    "locale": "en-US",
+    "geo": [34.0522, -118.2437],
+    "device": {
+      "simulator": "iPad Air 11-inch (M3)",
+      "ios": 26,
+      "text_size": "large",
+      "theme": "light"
+    }
+  },
+  {
+    "id": "sven-a11y",
+    "platform": "ios",
+    "profile": "Retired engineer, 80, collects prints, uses the largest accessibility text size and dark mode on a small iPhone.",
+    "goal": "Browse an artist and an artwork, then save it: every button must stay readable and reachable.",
+    "locale": "en-GB",
+    "geo": [51.5072, -0.1276],
+    "device": {
+      "simulator": "iPhone SE (3rd generation)",
+      "ios": 26,
+      "text_size": "accessibility-extra-extra-extra-large",
+      "theme": "dark"
+    }
+  },
+  {
+    "id": "buyer",
+    "platform": "android",
+    "profile": "Software engineer, 29, wants a first original work under $5,000, compares prices carefully.",
+    "goal": "Find an artwork with Buy Now or Make Offer and go through checkout up to the last screen, WITHOUT confirming the order.",
+    "locale": "en-US",
+    "geo": [40.7128, -74.006],
+    "device": {
+      "name": "Pixel 7, Android 14",
+      "profile": "pixel_7",
+      "android_api": 34,
+      "font_scale": 1.0,
+      "theme": "light"
+    }
+  },
+  {
+    "id": "seller",
+    "platform": "android",
+    "profile": "Collector, 58, owns a print by a well-known artist and wants to know if Artsy can sell it.",
+    "goal": "Start selling a work through the Sell flow, filling every step, up to the last screen WITHOUT submitting.",
+    "locale": "en-US",
+    "geo": [41.8781, -87.6298],
+    "device": {
+      "name": "Pixel 7, Android 14",
+      "profile": "pixel_7",
+      "android_api": 34,
+      "font_scale": 1.0,
+      "theme": "dark"
+    }
+  },
+  {
+    "id": "grace-a11y",
+    "platform": "android",
+    "profile": "Retired nurse, 74, low vision, uses Android's largest font size (200%).",
+    "goal": "Read the home screen, open an artwork and save it, without zooming.",
+    "locale": "en-US",
+    "geo": [41.8781, -87.6298],
+    "device": {
+      "name": "Pixel 7, Android 14, 200% font",
+      "profile": "pixel_7",
+      "android_api": 34,
+      "font_scale": 2.0,
+      "theme": "light"
+    }
+  },
+  {
+    "id": "browser-de",
+    "platform": "android",
+    "profile": "Gallery visitor in Berlin, 37, phone set to German, checks every price and date.",
+    "goal": "Browse artworks, an auction and a show, and check that prices, currencies and dates read correctly for a German phone.",
+    "locale": "de-DE",
+    "geo": [52.52, 13.405],
+    "device": {
+      "name": "Pixel 7, Android 14",
+      "profile": "pixel_7",
+      "android_api": 34,
+      "font_scale": 1.0,
+      "theme": "light"
+    }
+  }
+]
