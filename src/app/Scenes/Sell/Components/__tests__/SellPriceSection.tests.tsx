@@ -23,7 +23,7 @@ jest.mock("app/Components/BottomSheet/AutomountedBottomSheetModal", () => {
 const TestPriceSection: React.FC<{
   rating?: SellConditionStoreModel["rating"]
   recommendedPriceRange?: string | null
-}> = ({ rating = "FAIR", recommendedPriceRange = "US$2,800–US$3,600" }) => (
+}> = ({ rating = "FAIR", recommendedPriceRange = "US$2,800–3,600" }) => (
   <SellConditionStore.Provider runtimeModel={{ ...sellConditionStoreModel, rating }}>
     <SellPriceSection artistNames="Theo Bardsley" recommendedPriceRange={recommendedPriceRange} />
   </SellConditionStore.Provider>
@@ -37,7 +37,7 @@ describe("SellPriceSection", () => {
   it("shows the recommended range for the artwork", async () => {
     await renderWithWrappers(<TestPriceSection />)
 
-    expect(screen.getByText("US$2,800–US$3,600")).toBeOnTheScreen()
+    expect(screen.getByText("US$2,800–3,600")).toBeOnTheScreen()
     expect(screen.getByText("Based on comparable sales by Theo Bardsley")).toBeOnTheScreen()
   })
 

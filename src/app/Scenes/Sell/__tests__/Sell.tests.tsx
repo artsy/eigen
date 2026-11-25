@@ -73,8 +73,8 @@ const RESALE_SUBMISSIONS: Record<string, object> = {
   "id-a2": {
     state: "ACCEPTED",
     channel: "MARKETPLACE",
-    recommendedPriceMin: { display: "US$2,800" },
-    recommendedPriceMax: { display: "US$3,600" },
+    recommendedPriceMin: { currencyPrefix: "US$", amount: "2,800" },
+    recommendedPriceMax: { amount: "3,600" },
   },
   "id-c3": { state: "REJECTED", channel: null },
   "id-b4": { state: "ACCEPTED", channel: "AUCTION" },
@@ -377,8 +377,8 @@ describe("Sell", () => {
     expect(await screen.findByText("Step 2 · Condition & Price")).toBeOnTheScreen()
     expect(screen.getByLabelText("Step 2 of 3")).toBeOnTheScreen()
     // The price section recommends the same range the card shows
-    expect(screen.getByText("Estimated Value: US$2,800–US$3,600")).toBeOnTheScreen()
-    expect(screen.getByText("US$2,800–US$3,600")).toBeOnTheScreen()
+    expect(screen.getByText("Estimated Value: US$2,800–3,600")).toBeOnTheScreen()
+    expect(screen.getByText("US$2,800–3,600")).toBeOnTheScreen()
     expect(screen.getByText("Confirm Listing Price")).toBeDisabled()
 
     await fireEvent.press(screen.getByRole("radio", { name: /^Excellent\./ }))

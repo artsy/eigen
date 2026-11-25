@@ -48,10 +48,10 @@ describe("SellWorkCard", () => {
   })
 
   it("shows the recommended price range for a listing work", async () => {
-    cardResaleSubmission = resaleSubmission({ recommendedPriceRange: "US$2,800–US$3,600" })
+    cardResaleSubmission = resaleSubmission({ recommendedPriceRange: "US$2,800–3,600" })
     await renderWithRelay()
 
-    expect(screen.getByText("Estimated Value: US$2,800–US$3,600")).toBeOnTheScreen()
+    expect(screen.getByText("Estimated Value: US$2,800–3,600")).toBeOnTheScreen()
     expect(screen.getByText("Artsy Listing")).toBeOnTheScreen()
   })
 

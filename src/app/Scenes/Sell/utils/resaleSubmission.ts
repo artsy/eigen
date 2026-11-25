@@ -10,7 +10,7 @@ export interface ResaleSubmission {
   internalID: string
   state: resaleSubmission_resaleSubmission$data["state"]
   channel: SupportedSellChannel | null
-  /** The recommended price range, like “US$2,800–US$3,600”, or null without both ends */
+  /** The recommended price range, like “US$2,800–3,600”, or null without both ends */
   recommendedPriceRange: string | null
 }
 
@@ -38,14 +38,15 @@ export const toResaleSubmission = (
     resaleSubmissionFragment,
     key
   )
-  const min = recommendedPriceMin?.display
-  const max = recommendedPriceMax?.display
+  const currency = recommendedPriceMin?.currencyPrefix
+  const min = recommendedPriceMin?.amount
+  const max = recommendedPriceMax?.amount
 
   return {
     internalID,
     state,
     channel: isSupportedSellChannel(channel) ? channel : null,
-    recommendedPriceRange: min && max ? `${min}–${max}` : null,
+    recommendedPriceRange: currency && min && max ? `${currency}${min}–${max}` : null,
   }
 }
 
@@ -55,10 +56,11 @@ const resaleSubmissionFragment = graphql`
     state
     channel
     recommendedPriceMin {
-      display
+      currencyPrefix
+      amount
     }
     recommendedPriceMax {
-      display
+      amount
     }
   }
 `
