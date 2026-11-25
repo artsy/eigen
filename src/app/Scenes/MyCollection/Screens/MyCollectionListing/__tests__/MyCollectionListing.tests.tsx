@@ -1,10 +1,16 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { MyCollectionListingQueryRenderer } from "app/Scenes/MyCollection/Screens/MyCollectionListing/MyCollectionListing"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
-import { refreshMyCollection } from "app/utils/refreshHelpers"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import {
+  MY_COLLECTION_REFRESH_KEY,
+  RefreshEvents,
+  refreshMyCollection,
+} from "app/utils/refreshHelpers"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { MockPayloadGenerator } from "relay-test-utils"
 
 const mockShowToast = jest.fn()
 jest.mock("app/Components/Toast/toastHook", () => ({
@@ -59,6 +65,54 @@ describe("MyCollectionListing", () => {
 
     expect(await screen.findByText("Pablo Picasso")).toBeOnTheScreen()
     expect(screen.queryByText(/Listed at/)).not.toBeOnTheScreen()
+  })
+
+  it("refetches when My Collection refreshes", async () => {
+    const view = await render({ statusMessage: "Accepted by Artsy" })
+
+    expect(await screen.findByText("Accepted by Artsy")).toBeOnTheScreen()
+    expect(view.env.mock.getAllOperations()).toHaveLength(0)
+
+    await act(() => {
+      RefreshEvents.emit(MY_COLLECTION_REFRESH_KEY)
+    })
+
+    expect(view.env.mock.getAllOperations()).toHaveLength(1)
+    await view.mockResolveLastOperation({
+      Me: () => ({ resaleSubmission: submission({ statusMessage: "Listed on Artsy" }) }),
+    })
+
+    expect(await screen.findByText("Listed on Artsy")).toBeOnTheScreen()
+  })
+
+  it("shows the failure view with a back button when the query fails and refetches on retry", async () => {
+    const env = getMockRelayEnvironment()
+    await renderWithWrappers(<MyCollectionListingQueryRenderer resaleSubmissionID="submission-1" />)
+
+    await act(() => {
+      env.mock.rejectMostRecentOperation(new Error("Network request failed"))
+    })
+
+    expect(await screen.findByText("Unable to load")).toBeOnTheScreen()
+    expect(screen.getByLabelText("Go back")).toBeOnTheScreen()
+    expect(env.mock.getAllOperations()).toHaveLength(0)
+
+    await fireEvent.press(screen.getByLabelText("Retry"))
+
+    await waitFor(() =>
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "MyCollectionListingQuery"
+      )
+    )
+    await act(() => {
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, {
+          Me: () => ({ resaleSubmission: submission() }),
+        })
+      )
+    })
+
+    expect(await screen.findByText("Pablo Picasso")).toBeOnTheScreen()
   })
 
   it("goes back when the feature flag is off", async () => {
@@ -142,6 +196,18 @@ describe("MyCollectionListing", () => {
       await waitFor(() => expect(goBack).toHaveBeenCalledTimes(1))
       expect(refreshMyCollection).toHaveBeenCalledTimes(1)
       expect(mockShowToast).not.toHaveBeenCalled()
+    })
+
+    it("marks the confirm button as disabled while the removal runs", async () => {
+      await openConfirmation(await render())
+
+      expect(confirmButton().props.accessibilityState).toEqual({ disabled: false })
+
+      await fireEvent.press(confirmButton())
+
+      await waitFor(() =>
+        expect(confirmButton().props.accessibilityState).toEqual({ disabled: true })
+      )
     })
 
     it("sends nothing when the collector keeps the listing", async () => {

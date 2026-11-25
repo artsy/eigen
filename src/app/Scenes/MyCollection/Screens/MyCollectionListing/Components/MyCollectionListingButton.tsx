@@ -22,6 +22,7 @@ export const MyCollectionListingButton: React.FC<MyCollectionListingButtonProps>
     <Touchable
       haptic
       accessibilityRole="button"
+      accessibilityState={{ disabled }}
       disabled={disabled}
       testID={testID}
       onPress={onPress}

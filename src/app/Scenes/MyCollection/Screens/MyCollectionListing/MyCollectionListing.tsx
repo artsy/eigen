@@ -1,5 +1,6 @@
 import { Button, Flex, Screen, Spacer, Spinner, Text } from "@artsy/palette-mobile"
 import { MyCollectionListingQuery } from "__generated__/MyCollectionListingQuery.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
 import { MyCollectionListingButton } from "app/Scenes/MyCollection/Screens/MyCollectionListing/Components/MyCollectionListingButton"
@@ -9,7 +10,11 @@ import { useCancelResaleSubmission } from "app/Scenes/MyCollection/hooks/useCanc
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
-import { refreshMyCollection } from "app/utils/refreshHelpers"
+import {
+  MY_COLLECTION_REFRESH_KEY,
+  refreshMyCollection,
+  useRefreshFetchKey,
+} from "app/utils/refreshHelpers"
 import { useEffect, useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -127,57 +132,92 @@ interface MyCollectionListingQueryRendererProps {
   resaleSubmissionID: string
 }
 
-export const MyCollectionListingQueryRenderer: React.FC<MyCollectionListingQueryRendererProps> =
-  withSuspense({
-    Component: ({ resaleSubmissionID }) => {
-      const enableSell = useFeatureFlag("AREnableSellMyCollectionArtwork")
+interface MyCollectionListingBoundaryProps extends MyCollectionListingQueryRendererProps {
+  retryKey: number
+  onRetry: () => void
+}
 
-      // Deep links reach this route without going through the flagged Listings tab
-      useEffect(() => {
-        if (!enableSell) {
-          goBack()
-        }
-      }, [enableSell])
+const MyCollectionListingBoundary = withSuspense<MyCollectionListingBoundaryProps>({
+  Component: ({ resaleSubmissionID, retryKey, onRetry }) => {
+    const enableSell = useFeatureFlag("AREnableSellMyCollectionArtwork")
 
+    // Deep links reach this route without going through the flagged Listings tab
+    useEffect(() => {
       if (!enableSell) {
-        return null
+        goBack()
       }
+    }, [enableSell])
 
-      return <MyCollectionListingContent resaleSubmissionID={resaleSubmissionID} />
-    },
-    LoadingFallback: () => (
-      <Screen>
-        <Screen.Header onBack={goBack} />
-        <Flex flex={1} alignItems="center" justifyContent="center">
-          <Spinner />
-        </Flex>
-      </Screen>
-    ),
-    ErrorFallback: () => <MyCollectionListingError />,
-  })
+    if (!enableSell) {
+      return null
+    }
 
-const MyCollectionListingContent: React.FC<MyCollectionListingQueryRendererProps> = ({
+    return (
+      <MyCollectionListingContent
+        resaleSubmissionID={resaleSubmissionID}
+        retryKey={retryKey}
+        onRetry={onRetry}
+      />
+    )
+  },
+  LoadingFallback: () => (
+    <Screen>
+      <Screen.Header onBack={goBack} />
+      <Flex flex={1} alignItems="center" justifyContent="center">
+        <Spinner />
+      </Flex>
+    </Screen>
+  ),
+  ErrorFallback: (fallbackProps, { onRetry }) => (
+    <MyCollectionListingLoadFailure
+      error={fallbackProps.error}
+      onRetry={() => {
+        onRetry()
+        fallbackProps.resetErrorBoundary()
+      }}
+    />
+  ),
+})
+
+// Relay keeps a failed query in its cache, so a retry needs a new fetchKey to refetch.
+export const MyCollectionListingQueryRenderer: React.FC<MyCollectionListingQueryRendererProps> = ({
   resaleSubmissionID,
 }) => {
-  const data = useLazyLoadQuery<MyCollectionListingQuery>(myCollectionListingQuery, {
-    resaleSubmissionID,
-  })
+  const [retryKey, setRetryKey] = useState(0)
+
+  return (
+    <MyCollectionListingBoundary
+      resaleSubmissionID={resaleSubmissionID}
+      retryKey={retryKey}
+      onRetry={() => setRetryKey((key) => key + 1)}
+    />
+  )
+}
+
+const MyCollectionListingContent: React.FC<MyCollectionListingBoundaryProps> = ({
+  resaleSubmissionID,
+  retryKey,
+  onRetry,
+}) => {
+  const refreshKey = useRefreshFetchKey(MY_COLLECTION_REFRESH_KEY)
+
+  const data = useLazyLoadQuery<MyCollectionListingQuery>(
+    myCollectionListingQuery,
+    { resaleSubmissionID },
+    { fetchKey: `${retryKey}-${refreshKey}`, fetchPolicy: "store-and-network" }
+  )
 
   if (!data.me?.resaleSubmission) {
-    return <MyCollectionListingError />
+    return <MyCollectionListingLoadFailure onRetry={onRetry} />
   }
 
   return <MyCollectionListing resaleSubmission={data.me.resaleSubmission} />
 }
 
-const MyCollectionListingError: React.FC = () => (
-  <Screen>
-    <Screen.Header onBack={goBack} />
-    <Screen.Body>
-      <Text variant="sm">Something went wrong.</Text>
-    </Screen.Body>
-  </Screen>
-)
+const MyCollectionListingLoadFailure: React.FC<{ error?: Error; onRetry: () => void }> = ({
+  error,
+  onRetry,
+}) => <LoadFailureView onRetry={onRetry} showBackButton error={error} trackErrorBoundary={false} />
 
 const myCollectionListingQuery = graphql`
   query MyCollectionListingQuery($resaleSubmissionID: String!) @relay_test_operation {
