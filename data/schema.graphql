@@ -36308,6 +36308,16 @@ type ResaleSubmission {
   internalID: ID!
 
   """
+  Whether the seller can cancel this submission.
+  """
+  isCancelable: Boolean!
+
+  """
+  Whether the seller can still change this submission’s details and photos.
+  """
+  isEditable: Boolean!
+
+  """
   Answers still needed before the submission can be listed.
   """
   missingRequirements: [String!]!
