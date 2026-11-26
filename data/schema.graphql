@@ -18158,6 +18158,82 @@ enum EmailAccountStatus {
   EXPIRED
 }
 
+"""
+A backfill of an email account’s mail from a date chosen by the user
+"""
+type EmailBackfillRun {
+  backfillSince(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  backfillUntil(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
+  Whether the run stopped at the message limit, leaving the oldest mail out
+  """
+  capped: Boolean
+  completedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  createdAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  emailAccountId: String!
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+  lastError: String
+
+  """
+  The number of messages queued for ingestion
+  """
+  queuedMessages: Int
+  requestedById: String
+  status: EmailBackfillRunStatus
+  updatedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+}
+
+enum EmailBackfillRunStatus {
+  COMPLETED
+  FAILED
+  PROCESSING
+}
+
 type EmailMessage {
   """
   Whether the viewer may read the subject and snippet. True for the mailbox owner, and for colleagues once the owner shares content with the partner.
@@ -27410,6 +27486,11 @@ type Mutation {
   ): RequestCredentialsForAssetUploadPayload
 
   """
+  Queue a backfill of an email account’s mail from a date up to now. Returns the run, which can be polled with `emailBackfillRun`.
+  """
+  requestEmailBackfill(input: RequestEmailBackfillInput!): RequestEmailBackfillPayload
+
+  """
   Request price estimate of an artwork
   """
   requestPriceEstimate(input: RequestPriceEstimateInput!): RequestPriceEstimatePayload
@@ -34388,6 +34469,16 @@ type Query {
   ): [MarketingCollection!]
 
   """
+  The most recent backfill requested for an email account, or null if none was requested
+  """
+  emailBackfillRun(
+    """
+    The internal ID of the email account
+    """
+    emailAccountId: String!
+  ): EmailBackfillRun
+
+  """
   A pending, approved or skipped email sender review
   """
   emailSenderReview(
@@ -36456,6 +36547,40 @@ input RequestCredentialsForAssetUploadInput {
 type RequestCredentialsForAssetUploadPayload {
   asset: Credentials
   clientMutationId: String
+}
+
+type RequestEmailBackfillFailure {
+  mutationError: GravityMutationError
+}
+
+input RequestEmailBackfillInput {
+  """
+  ISO 8601 time to import mail from. Must be in the past and after April 2004.
+  """
+  backfillSince: String!
+  clientMutationId: String
+
+  """
+  The internal ID of the email account
+  """
+  id: String!
+}
+
+type RequestEmailBackfillPayload {
+  clientMutationId: String
+
+  """
+  On success: the queued backfill run
+  """
+  emailBackfillRunOrError: RequestEmailBackfillResponseOrError
+}
+
+union RequestEmailBackfillResponseOrError =
+    RequestEmailBackfillFailure
+  | RequestEmailBackfillSuccess
+
+type RequestEmailBackfillSuccess {
+  emailBackfillRun: EmailBackfillRun
 }
 
 type RequestError {
@@ -45349,6 +45474,16 @@ type Viewer {
     last: Int
     size: Int = 12
   ): [MarketingCollection!]
+
+  """
+  The most recent backfill requested for an email account, or null if none was requested
+  """
+  emailBackfillRun(
+    """
+    The internal ID of the email account
+    """
+    emailAccountId: String!
+  ): EmailBackfillRun
 
   """
   A pending, approved or skipped email sender review
