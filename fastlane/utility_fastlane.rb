@@ -107,6 +107,30 @@ lane :notify_beta_failed do |options|
   )
 end
 
+desc "Notifies in slack if a QA build for the e2e tests failed"
+lane :notify_qa_build_failed do |options|
+  exception = options[:exception]
+  platform = options[:platform] == 'ios' ? '🍏 iOS' : '🤖 Android'
+  message = <<~MSG
+              :x: :tophat:
+              The e2e QA build failed for #{platform}! No e2e tests will run on this build.
+              See GitHub action run for more details.
+            MSG
+
+  github_url = "https://github.com/#{ENV['GITHUB_REPOSITORY']}/actions/runs/#{ENV['GITHUB_RUN_ID']}"
+
+  slack(
+    channel: '#mobile-alerts',
+    message: message,
+    success: false,
+    payload: {
+      'GitHub Actions' => github_url,
+      'Exception' => exception.message
+    },
+    default_payloads: []
+  )
+end
+
 SENTRY_BASE_URL = 'https://artsynet.sentry.io'
 SENTRY_PROJECT_ID = '5867225'
 SENTRY_DASHBOARD_ID = '622403'
@@ -508,8 +532,9 @@ def resolve_promoted_fingerprint(platform:, build_number:)
 end
 
 def should_silence_beta_failure?
-  # Set this var in circleci if you want to silence beta failure alerts for a while
+  # Set this var in CI if you want to silence beta failure alerts for a while
   # E.g. you are working on a ci change
+  # It also silences the QA build failure alerts in #mobile-alerts (notify_qa_build_failed)
   # Takes a date of format 2023-01-01, recommend only setting for 1 day in future
   silence_beta_failures_until = ENV['FASTLANE_SILENCE_BETA_FAILURES_UNTIL']
   return false unless silence_beta_failures_until
