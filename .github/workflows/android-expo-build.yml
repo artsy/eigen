@@ -4,16 +4,18 @@ on:
   workflow_run:
     workflows: ["Expo Fingerprint Check"]
     types: [completed]
+  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
 
 jobs:
   check-build-needed:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     outputs:
       needs_build: ${{ steps.check-build.outputs.needs_build }}
 
     steps:
       - name: Download needs_android_build artifact
+        if: github.event_name == 'workflow_run'
         uses: actions/download-artifact@v4
         with:
           name: needs_android_build
@@ -23,7 +25,13 @@ jobs:
       - name: Check if build is needed
         id: check-build
         run: |
-          NEEDS_BUILD=$(cat needs_android_build.txt)
+          # A manual run has no fingerprint check artifact; the build job skips the upload itself if
+          # S3 already has this fingerprint.
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            NEEDS_BUILD=true
+          else
+            NEEDS_BUILD=$(cat needs_android_build.txt)
+          fi
           echo "needs_build=$NEEDS_BUILD" >> $GITHUB_OUTPUT
           echo "Android build needed: $NEEDS_BUILD"
 
