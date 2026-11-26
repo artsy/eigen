@@ -1,22 +1,35 @@
 import { Flex, Input, Text } from "@artsy/palette-mobile"
+import { useToast } from "app/Components/Toast/toastHook"
 import {
+  MAX_SELL_CONDITION_PHOTOS,
   SellConditionPhoto,
   SellConditionPhotos,
 } from "app/Scenes/Sell/Components/SellConditionPhotos"
 import { SellConditionRatingPicker } from "app/Scenes/Sell/Components/SellConditionRatingPicker"
 import { SellConditionStore } from "app/Scenes/Sell/State/SellConditionStore"
 
-export const SellConditionSection: React.FC = () => {
+export const SellConditionSection: React.FC<{ photosDisabled?: boolean }> = ({
+  photosDisabled = false,
+}) => {
   const { rating, photos, notes } = SellConditionStore.useStoreState((state) => state)
   const { setRating, setPhotos, setNotes } = SellConditionStore.useStoreActions(
     (actions) => actions
   )
 
+  const toast = useToast()
+
   const addPhotos = (newPhotos: SellConditionPhoto[]) => {
-    setPhotos([
-      ...photos,
-      ...newPhotos.filter((photo) => !photos.some(({ path }) => path === photo.path)),
-    ])
+    const picked = newPhotos.filter((photo) => !photos.some(({ path }) => path === photo.path))
+    const fitting = picked.slice(0, MAX_SELL_CONDITION_PHOTOS - photos.length)
+
+    setPhotos([...photos, ...fitting])
+
+    if (fitting.length < picked.length) {
+      toast.show(
+        `You can add up to ${MAX_SELL_CONDITION_PHOTOS} photos. We added the first ${fitting.length}.`,
+        "bottom"
+      )
+    }
   }
 
   return (
@@ -36,6 +49,7 @@ export const SellConditionSection: React.FC = () => {
           </Text>
           <SellConditionPhotos
             photos={photos}
+            disabled={photosDisabled}
             onAdd={addPhotos}
             onRemove={(path) => setPhotos(photos.filter((photo) => photo.path !== path))}
           />

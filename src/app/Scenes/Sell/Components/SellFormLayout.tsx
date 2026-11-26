@@ -13,6 +13,8 @@ interface SellFormLayoutProps {
   buttonDisabled: boolean
   buttonLoading?: boolean
   onButtonPress: () => void
+  /** Shown above the button */
+  footerContent?: React.ReactNode
 }
 
 export const SellFormLayout: React.FC<React.PropsWithChildren<SellFormLayoutProps>> = ({
@@ -20,6 +22,7 @@ export const SellFormLayout: React.FC<React.PropsWithChildren<SellFormLayoutProp
   buttonDisabled,
   buttonLoading,
   onButtonPress,
+  footerContent,
   children,
 }) => {
   const { bottom } = useSafeAreaInsets()
@@ -50,6 +53,7 @@ export const SellFormLayout: React.FC<React.PropsWithChildren<SellFormLayoutProp
         onLayout={(event) => setStickyFooterHeight(event.nativeEvent.layout.height)}
       >
         <Box px={2} pt={2} bg="mono0" style={{ paddingBottom: bottom + space(2) }}>
+          {!!footerContent && <Flex pb={2}>{footerContent}</Flex>}
           <Button
             // palette animates the colour through setNativeProps, which misses updates in an iOS modal
             key={String(buttonDisabled)}

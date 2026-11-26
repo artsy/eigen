@@ -5,6 +5,7 @@ import { SellConditionSection } from "app/Scenes/Sell/Components/SellConditionSe
 import { SellFormLayout } from "app/Scenes/Sell/Components/SellFormLayout"
 import { SellPriceSection } from "app/Scenes/Sell/Components/SellPriceSection"
 import { SellStepIntro } from "app/Scenes/Sell/Components/SellStepIntro"
+import { SellUploadProgress } from "app/Scenes/Sell/Components/SellUploadProgress"
 import { SellWorkCard } from "app/Scenes/Sell/Components/SellWorkCard"
 import { SellNavigationProp } from "app/Scenes/Sell/Sell"
 import { SellConditionStore } from "app/Scenes/Sell/State/SellConditionStore"
@@ -12,6 +13,7 @@ import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { sellConditionSchema } from "app/Scenes/Sell/State/sellConditionSchema"
 import { useConfirmLeavingConditionStep } from "app/Scenes/Sell/hooks/useConfirmLeavingConditionStep"
 import { useSaveResaleSubmission } from "app/Scenes/Sell/hooks/useUpdateResaleSubmission"
+import { toSavedConditionPhotos } from "app/Scenes/Sell/utils/conditionPhotos"
 import {
   ResaleSubmissionWithChannel,
   isResaleSubmissionSellable,
@@ -31,11 +33,7 @@ export const Condition: React.FC = () => {
     return null
   }
 
-  return (
-    <SellConditionStore.Provider>
-      <ConditionContent resaleSubmissionID={resaleSubmissionID} />
-    </SellConditionStore.Provider>
-  )
+  return <ConditionContent resaleSubmissionID={resaleSubmissionID} />
 }
 
 const ConditionContent: React.FC<{ resaleSubmissionID: string }> = withSuspense({
@@ -50,12 +48,21 @@ const ConditionContent: React.FC<{ resaleSubmissionID: string }> = withSuspense(
       return <ConditionError />
     }
 
+    const savedPhotos = toSavedConditionPhotos(submission)
+
     return (
-      <ConditionForm
-        artwork={artwork}
-        resaleSubmission={resaleSubmission}
-        onContinue={() => navigation.navigate("LocationAndContact")}
-      />
+      <SellConditionStore.Provider
+        runtimeModel={{
+          photos: savedPhotos,
+          savedPhotoIDs: savedPhotos.flatMap((photo) => (photo.imageID ? [photo.imageID] : [])),
+        }}
+      >
+        <ConditionForm
+          artwork={artwork}
+          resaleSubmission={resaleSubmission}
+          onContinue={() => navigation.navigate("LocationAndContact")}
+        />
+      </SellConditionStore.Provider>
     )
   },
   LoadingFallback: SpinnerFallback,
@@ -68,20 +75,38 @@ const ConditionForm: React.FC<{
   onContinue: () => void
 }> = ({ artwork, resaleSubmission, onContinue }) => {
   const answers = SellConditionStore.useStoreState((state) => state)
-  useConfirmLeavingConditionStep()
-  const { save, saving } = useSaveResaleSubmission({ onSaved: onContinue })
+  const { setSavedPhotos, restoreSavedPhotos } = SellConditionStore.useStoreActions(
+    (actions) => actions
+  )
+  const store = SellConditionStore.useStore()
+  const { save, saving, uploadProgress } = useSaveResaleSubmission({
+    onSaved: (savedPhotos) => {
+      if (savedPhotos) {
+        setSavedPhotos(savedPhotos)
+      }
+      onContinue()
+    },
+    onPhotosReloaded: restoreSavedPhotos,
+  })
+  useConfirmLeavingConditionStep({ saving })
 
   const channelKind = resaleSubmission.channel
   const isMarketplace = channelKind === "MARKETPLACE"
   const canContinue = sellConditionSchema(channelKind).isValidSync(answers)
 
   const saveAndContinue = () => {
-    save({
-      id: resaleSubmission.internalID,
-      condition: answers.rating,
-      notes: answers.notes.trim(),
-      ...(isMarketplace && { priceListed: answers.askingPrice }),
-    })
+    save(
+      {
+        id: resaleSubmission.internalID,
+        condition: answers.rating,
+        notes: answers.notes.trim(),
+        ...(isMarketplace && { priceListed: answers.askingPrice }),
+      },
+      () => {
+        const { photos, savedPhotoIDs } = store.getState()
+        return { photos, savedPhotoIDs }
+      }
+    )
   }
 
   return (
@@ -90,6 +115,7 @@ const ConditionForm: React.FC<{
       buttonDisabled={!canContinue}
       buttonLoading={saving}
       onButtonPress={saveAndContinue}
+      footerContent={!!uploadProgress && <SellUploadProgress {...uploadProgress} />}
     >
       <SellStepIntro stepName="Condition" channelKind={channelKind} px={2} />
 
@@ -97,7 +123,7 @@ const ConditionForm: React.FC<{
         <SellWorkCard artwork={artwork} resaleSubmission={resaleSubmission} />
       </Flex>
 
-      <SellConditionSection />
+      <SellConditionSection photosDisabled={saving} />
 
       {!!isMarketplace && (
         <Flex px={2} pt={4}>
@@ -124,6 +150,7 @@ const conditionQuery = graphql`
     me {
       resaleSubmission(id: $resaleSubmissionID) {
         ...resaleSubmission_resaleSubmission
+        ...conditionPhotos_resaleSubmission
         submittedArtwork {
           internalID
           artistNames

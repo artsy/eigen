@@ -4,7 +4,10 @@ import {
   uploadFileToS3,
 } from "app/Components/PhotoRow/utils/uploadFileToS3"
 
-export async function getConvertedImageUrlFromS3(imagePath: string) {
+export async function getConvertedImageUrlFromS3(
+  imagePath: string,
+  onProgress?: (progress: number) => void
+) {
   const convectionKey = await getConvectionGeminiKey()
   const acl = "private"
 
@@ -17,6 +20,7 @@ export async function getConvertedImageUrlFromS3(imagePath: string) {
     filePath: imagePath,
     acl,
     assetCredentials,
+    updateProgress: onProgress,
   })
   return `https://${bucket}.s3.amazonaws.com/${s3.key}`
 }

@@ -6,20 +6,28 @@ import { Image } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
 
 export interface SellConditionPhoto {
+  /** A local file for a new photo, or the image URL for a saved one */
   path: string
+  /** Set once the photo is saved on the resale submission */
+  imageID?: string
 }
+
+export const MAX_SELL_CONDITION_PHOTOS = 10
 
 const PREVIEW_SIZE = 80
 const REMOVE_TARGET_SIZE = 48
 
 interface SellConditionPhotosProps {
   photos: SellConditionPhoto[]
+  /** Set while the photos save, so the list can’t change under the save */
+  disabled?: boolean
   onAdd: (photos: SellConditionPhoto[]) => void
   onRemove: (path: string) => void
 }
 
 export const SellConditionPhotos: React.FC<SellConditionPhotosProps> = ({
   photos,
+  disabled = false,
   onAdd,
   onRemove,
 }) => {
@@ -53,6 +61,8 @@ export const SellConditionPhotos: React.FC<SellConditionPhotosProps> = ({
                 <Touchable
                   accessibilityRole="button"
                   accessibilityLabel={`Remove photo ${index + 1}`}
+                  accessibilityState={{ disabled }}
+                  disabled={disabled}
                   onPress={() => onRemove(photo.path)}
                 >
                   {/* Android drops hitSlop outside the parent, so the target itself is 48pt */}
@@ -73,21 +83,28 @@ export const SellConditionPhotos: React.FC<SellConditionPhotosProps> = ({
         </Flex>
       )}
 
-      <Touchable accessibilityRole="button" onPress={pickPhotos}>
-        <Flex
-          flexDirection="row"
-          justifyContent="center"
-          alignItems="center"
-          gap={1}
-          py={2}
-          borderWidth={1}
-          borderColor="mono30"
-          borderStyle="dashed"
+      {photos.length < MAX_SELL_CONDITION_PHOTOS && (
+        <Touchable
+          accessibilityRole="button"
+          accessibilityState={{ disabled }}
+          disabled={disabled}
+          onPress={pickPhotos}
         >
-          <UploadFileIcon />
-          <Text variant="sm">{photos.length > 0 ? "Add more photos" : "Upload photos"}</Text>
-        </Flex>
-      </Touchable>
+          <Flex
+            flexDirection="row"
+            justifyContent="center"
+            alignItems="center"
+            gap={1}
+            py={2}
+            borderWidth={1}
+            borderColor="mono30"
+            borderStyle="dashed"
+          >
+            <UploadFileIcon />
+            <Text variant="sm">{photos.length > 0 ? "Add more photos" : "Upload photos"}</Text>
+          </Flex>
+        </Touchable>
+      )}
     </Flex>
   )
 }
