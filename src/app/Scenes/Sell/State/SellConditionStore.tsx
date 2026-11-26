@@ -21,8 +21,13 @@ export interface SellConditionStoreModel {
   /** Takes in what the submission holds after a failed save, so a retry sends nothing twice */
   restoreSavedPhotos: Action<this, SellConditionPhoto[]>
   setNotes: Action<this, string>
+  /** Takes the notes just saved, so they no longer count as an answer */
+  setSavedNotes: Action<this, string>
   setAskingPrice: Action<this, string>
 }
+
+export const toSavedPhotoIDs = (photos: SellConditionPhoto[]) =>
+  photos.flatMap((photo) => (photo.imageID ? [photo.imageID] : []))
 
 export const sellConditionStoreModel: SellConditionStoreModel = {
   rating: null,
@@ -36,7 +41,7 @@ export const sellConditionStoreModel: SellConditionStoreModel = {
       !!state.rating ||
       state.photos.some((photo) => !photo.imageID) ||
       state.savedPhotoIDs.some((id) => !state.photos.some((photo) => photo.imageID === id)) ||
-      state.notes.trim() !== state.savedNotes ||
+      state.notes.trim() !== state.savedNotes.trim() ||
       !!state.askingPrice
   ),
   setRating: action((state, rating) => {
@@ -47,7 +52,7 @@ export const sellConditionStoreModel: SellConditionStoreModel = {
   }),
   setSavedPhotos: action((state, saved) => {
     state.photos = saved
-    state.savedPhotoIDs = saved.flatMap((photo) => (photo.imageID ? [photo.imageID] : []))
+    state.savedPhotoIDs = toSavedPhotoIDs(saved)
   }),
   restoreSavedPhotos: action((state, saved) => {
     const previousIDs = state.savedPhotoIDs
@@ -61,10 +66,13 @@ export const sellConditionStoreModel: SellConditionStoreModel = {
     const unsaved = state.photos.filter((photo) => !photo.imageID).slice(added.length)
 
     state.photos = [...kept, ...added, ...unsaved]
-    state.savedPhotoIDs = saved.flatMap((photo) => (photo.imageID ? [photo.imageID] : []))
+    state.savedPhotoIDs = toSavedPhotoIDs(saved)
   }),
   setNotes: action((state, notes) => {
     state.notes = notes
+  }),
+  setSavedNotes: action((state, notes) => {
+    state.savedNotes = notes
   }),
   setAskingPrice: action((state, askingPrice) => {
     state.askingPrice = askingPrice

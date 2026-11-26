@@ -54,5 +54,17 @@ describe("SellConditionStore notes", () => {
 
     store.getActions().setNotes("Signed on the back, small tear")
     expect(store.getState().hasAnswers).toBe(true)
+
+    store.getActions().setSavedNotes("Signed on the back, small tear")
+    expect(store.getState().hasAnswers).toBe(false)
+  })
+
+  it("ignores whitespace around the saved notes", () => {
+    const store = createStore({
+      ...sellConditionStoreModel,
+      notes: "Signed on the back\n",
+      savedNotes: "Signed on the back\n",
+    })
+    expect(store.getState().hasAnswers).toBe(false)
   })
 })
