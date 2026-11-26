@@ -111,3 +111,32 @@ jobs:
         run: |
           echo "🔨 Building and running iOS app with Expo..."
           bundle exec npx expo run:ios --no-bundler
+
+  # Only after the fingerprint check on main, not for manual runs. A skipped or cancelled check never
+  # gets here; expo-build-cache-health.yml catches those.
+  notify-failure:
+    needs: [check-build-needed, ios-expo-cache-build]
+    if: ${{ always() && github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'main' && (contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')) }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      # Needed for .env.releases, which carries the Slack webhook.
+      - name: Setup repository environment
+        uses: ./.github/actions/setup-repo-environment
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Setup Ruby
+        uses: ./.github/actions/setup-ruby
+
+      - name: Notify Slack
+        env:
+          COMMIT: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          bundle exec fastlane notify_build_cache_broken \
+            message:"the iOS cache build failed for ${COMMIT:0:10} on main, so no iOS build was uploaded for its fingerprint."

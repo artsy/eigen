@@ -173,6 +173,13 @@ expo-fingerprint-check
 
 Both build workflows can also be triggered manually from the GitHub Actions tab (`workflow_dispatch`).
 
+### Alerts
+
+Both post to `#mobile-alerts` (Fastlane lane `notify_build_cache_broken`), only for main:
+
+- **A cache build fails or times out** after the fingerprint check on main: the `notify-failure` job in `ios-expo-build.yml` / `android-expo-build.yml`.
+- **main's fingerprint has no cached build** more than 3 hours after it changed: [`expo-build-cache-health.yml`](../.github/workflows/expo-build-cache-health.yml) runs at 09:00 and 15:00 UTC on weekdays. This catches builds that never ran, for example after a cancelled fingerprint check. It keeps alerting on each run until the build is in S3.
+
 ---
 
 ## Troubleshooting
