@@ -99,6 +99,7 @@ const resaleSubmissionFor = (artworkID: string) => ({
   recommendedPriceMin: null,
   recommendedPriceMax: null,
   conditionPhotos: [],
+  notes: null,
   ...RESALE_SUBMISSIONS[artworkID],
 })
 
@@ -1014,6 +1015,75 @@ describe("Sell", () => {
       expect(screen.getByText("Step 2 · Condition")).toBeOnTheScreen()
       expect(alertSpy).not.toHaveBeenCalled()
       expect(operationNames(view)).not.toContain("useUpdateResaleSubmissionMutation")
+    })
+
+    it("keeps the saved notes, so saving doesn’t clear them", async () => {
+      const view = await renderSell()
+      await fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
+      await fireEvent.press(screen.getByText("Verify If Sellable"))
+      await resolveVerify(view)
+      await fireEvent.press(await screen.findByText("Proceed to Listing"))
+      await fireEvent.press(await screen.findByText("Start Submission"))
+      const resolvers = activeWorkResolvers({ internalID: "id-b4", artistNames: "Artist C" })
+      await resolveWhenPending(view, "ConditionQuery", {
+        ...resolvers,
+        ResaleSubmission: () => ({ ...resolvers.ResaleSubmission(), notes: "Signed on the back" }),
+      })
+
+      expect(await screen.findByLabelText("Notes")).toHaveDisplayValue("Signed on the back")
+      await continueWithFair()
+
+      expect(await resolveSave(view)).toEqual({
+        id: "resaleSubmission-id-b4",
+        condition: "FAIR",
+        notes: "Signed on the back",
+      })
+    })
+
+    it("shows the edited notes when step 2 opens again after a save", async () => {
+      const alertSpy = jest.spyOn(Alert, "alert")
+      const view = await renderSell()
+      await fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
+      await fireEvent.press(screen.getByText("Verify If Sellable"))
+      await resolveVerify(view)
+      await fireEvent.press(await screen.findByText("Proceed to Listing"))
+      await fireEvent.press(await screen.findByText("Start Submission"))
+      const resolvers = activeWorkResolvers({ internalID: "id-b4", artistNames: "Artist C" })
+      await resolveWhenPending(view, "ConditionQuery", {
+        ...resolvers,
+        ResaleSubmission: () => ({ ...resolvers.ResaleSubmission(), notes: "Signed on the back" }),
+      })
+
+      await fireEvent.changeText(await screen.findByLabelText("Notes"), "Small tear ")
+      await continueWithFair()
+      await waitFor(() =>
+        expect(operationNames(view)).toContain("useUpdateResaleSubmissionMutation")
+      )
+      await view.mockResolveLastOperation({
+        UpdateResaleSubmissionPayload: () => ({
+          resaleSubmissionOrError: {
+            __typename: "UpdateResaleSubmissionSuccess",
+            resaleSubmission: {
+              id: "submission-id-b4",
+              ...resaleSubmissionFor("id-b4"),
+              notes: "Small tear",
+            },
+          },
+        }),
+      })
+      await resolveLocationStep(view, { internalID: "id-b4", artistNames: "Artist C" })
+      await screen.findByText("Step 3 · Location & Contact")
+
+      await fireEvent.press(screen.getByLabelText("Go back"))
+      await screen.findByText("Step 2 · Condition")
+      // The rating isn't prefilled yet, so leaving still asks
+      await fireEvent.press(screen.getByLabelText("Go back"))
+      const buttons = alertSpy.mock.calls[0][2]!
+      await act(() => buttons.find((button) => button.text === "Go back")?.onPress?.())
+
+      // Step 2 opens again from the Relay store, which must hold the saved notes
+      await fireEvent.press(await screen.findByText("Start Submission"))
+      expect(await screen.findByLabelText("Notes")).toHaveDisplayValue("Small tear")
     })
 
     it("tells the seller when photos past the cap are dropped", async () => {

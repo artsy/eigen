@@ -42,3 +42,29 @@ describe("SellConditionStore", () => {
     expect(store.getState().savedPhotoIDs).toEqual(["image-1"])
   })
 })
+
+describe("SellConditionStore notes", () => {
+  it("counts the notes as an answer only once they differ from the saved ones", () => {
+    const store = createStore({
+      ...sellConditionStoreModel,
+      notes: "Signed on the back",
+      savedNotes: "Signed on the back",
+    })
+    expect(store.getState().hasAnswers).toBe(false)
+
+    store.getActions().setNotes("Signed on the back, small tear")
+    expect(store.getState().hasAnswers).toBe(true)
+
+    store.getActions().setSavedNotes("Signed on the back, small tear")
+    expect(store.getState().hasAnswers).toBe(false)
+  })
+
+  it("ignores whitespace around the saved notes", () => {
+    const store = createStore({
+      ...sellConditionStoreModel,
+      notes: "Signed on the back\n",
+      savedNotes: "Signed on the back\n",
+    })
+    expect(store.getState().hasAnswers).toBe(false)
+  })
+})

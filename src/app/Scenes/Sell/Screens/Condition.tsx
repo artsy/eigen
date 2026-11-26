@@ -8,7 +8,7 @@ import { SellStepIntro } from "app/Scenes/Sell/Components/SellStepIntro"
 import { SellUploadProgress } from "app/Scenes/Sell/Components/SellUploadProgress"
 import { SellWorkCard } from "app/Scenes/Sell/Components/SellWorkCard"
 import { SellNavigationProp } from "app/Scenes/Sell/Sell"
-import { SellConditionStore } from "app/Scenes/Sell/State/SellConditionStore"
+import { SellConditionStore, toSavedPhotoIDs } from "app/Scenes/Sell/State/SellConditionStore"
 import { SellFlowStore } from "app/Scenes/Sell/State/SellFlowStore"
 import { sellConditionSchema } from "app/Scenes/Sell/State/sellConditionSchema"
 import { useConfirmLeavingConditionStep } from "app/Scenes/Sell/hooks/useConfirmLeavingConditionStep"
@@ -20,6 +20,7 @@ import {
   toResaleSubmission,
 } from "app/Scenes/Sell/utils/resaleSubmission"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { useRef } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 type Artwork = NonNullable<
@@ -49,12 +50,15 @@ const ConditionContent: React.FC<{ resaleSubmissionID: string }> = withSuspense(
     }
 
     const savedPhotos = toSavedConditionPhotos(submission)
+    const savedNotes = submission.notes ?? ""
 
     return (
       <SellConditionStore.Provider
         runtimeModel={{
+          notes: savedNotes,
+          savedNotes,
           photos: savedPhotos,
-          savedPhotoIDs: savedPhotos.flatMap((photo) => (photo.imageID ? [photo.imageID] : [])),
+          savedPhotoIDs: toSavedPhotoIDs(savedPhotos),
         }}
       >
         <ConditionForm
@@ -75,15 +79,18 @@ const ConditionForm: React.FC<{
   onContinue: () => void
 }> = ({ artwork, resaleSubmission, onContinue }) => {
   const answers = SellConditionStore.useStoreState((state) => state)
-  const { setSavedPhotos, restoreSavedPhotos } = SellConditionStore.useStoreActions(
+  const { setSavedPhotos, restoreSavedPhotos, setSavedNotes } = SellConditionStore.useStoreActions(
     (actions) => actions
   )
   const store = SellConditionStore.useStore()
+  // The notes can still change while the save runs
+  const sentNotes = useRef("")
   const { save, saving, uploadProgress } = useSaveResaleSubmission({
     onSaved: (savedPhotos) => {
       if (savedPhotos) {
         setSavedPhotos(savedPhotos)
       }
+      setSavedNotes(sentNotes.current)
       onContinue()
     },
     onPhotosReloaded: restoreSavedPhotos,
@@ -95,11 +102,12 @@ const ConditionForm: React.FC<{
   const canContinue = sellConditionSchema(channelKind).isValidSync(answers)
 
   const saveAndContinue = () => {
+    sentNotes.current = answers.notes.trim()
     save(
       {
         id: resaleSubmission.internalID,
         condition: answers.rating,
-        notes: answers.notes.trim(),
+        notes: sentNotes.current,
         ...(isMarketplace && { priceListed: answers.askingPrice }),
       },
       () => {
@@ -151,6 +159,7 @@ const conditionQuery = graphql`
       resaleSubmission(id: $resaleSubmissionID) {
         ...resaleSubmission_resaleSubmission
         ...conditionPhotos_resaleSubmission
+        notes
         submittedArtwork {
           internalID
           artistNames

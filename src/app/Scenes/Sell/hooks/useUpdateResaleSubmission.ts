@@ -27,6 +27,8 @@ export const useUpdateResaleSubmission = () => {
               resaleSubmission {
                 ...resaleSubmission_resaleSubmission
                 ...conditionPhotos_resaleSubmission
+                # Step 2 prefills the notes from the store, so they must not go stale
+                notes
               }
             }
             ... on UpdateResaleSubmissionFailure {
