@@ -44,7 +44,7 @@ const ItineraryShareTouchable: React.FC<{ item: ShareableItinerary; citySlug: st
   const { share, isSharing } = useItineraryShare({
     internalID: item.internalID,
     slug: item.slug,
-    citySlug,
+    citySlug: item.citySlug,
     title: item.title,
     isCurated: !!item.isCurated,
     shareToken: item.shareToken,
