@@ -131,8 +131,10 @@ export const ItinerarySectionRow: React.FC<Props> = ({
           onPress={() => setIsExpanded((expanded) => !expanded)}
         >
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between" py={1}>
-            <Text variant="sm-display">{title}</Text>
-            {isExpanded ? <ChevronUpIcon fill="mono60" /> : <ChevronDownIcon fill="mono60" />}
+            <Text variant="sm-display" color="blue100">
+              {title}
+            </Text>
+            {isExpanded ? <ChevronUpIcon fill="blue100" /> : <ChevronDownIcon fill="blue100" />}
           </Flex>
         </Touchable>
       )}
