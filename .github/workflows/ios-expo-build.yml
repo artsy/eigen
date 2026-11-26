@@ -61,7 +61,7 @@ jobs:
       - name: Fail on Podfile.lock drift
         run: |
           if ! git diff --quiet -- ios/Podfile.lock; then
-            echo "::error::pod install changed ios/Podfile.lock, so this build can't be reused. Run 'cd ios && bundle exec pod install --repo-update' locally and commit the lockfile (re-run it if it fails with an HTTP2 CDN error)."
+            echo "::error::pod install changed ios/Podfile.lock, so this build can't be reused. Run 'yarn pod-install' locally and commit the result. If the lockfile doesn't change, run 'cd ios && bundle exec pod repo update' first."
             exit 1
           fi
 
