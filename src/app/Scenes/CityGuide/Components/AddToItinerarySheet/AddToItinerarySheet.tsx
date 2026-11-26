@@ -311,9 +311,8 @@ const Sheet: React.FC<Props> = ({
             trackRemovedStop(changes.removed)
           }
 
-          if (citySlug) {
-            refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
-          }
+          // The rail lists every city's itineraries, so it needs refreshing wherever Done was.
+          refetchCityGuideItinerariesRail(environment).catch(() => undefined)
         }
       }
 
@@ -594,7 +593,7 @@ const STOP_OWNER_TYPE: Record<"SHOW" | "FAIR" | "LOCATION", OwnerType> = {
   LOCATION: OwnerType.partner,
 }
 
-const stopOwnerFields = (target: StopTarget, itemSlug: string | undefined) => ({
+export const stopOwnerFields = (target: StopTarget, itemSlug: string | undefined) => ({
   context_owner_type: target.itemType
     ? STOP_OWNER_TYPE[target.itemType]
     : OwnerType.cityGuideCustomStop,
@@ -603,7 +602,7 @@ const stopOwnerFields = (target: StopTarget, itemSlug: string | undefined) => ({
 })
 
 /** Inside City Guide no screen is passed, and events are reported against the city guide. */
-const screenOwnerFields = ({
+export const screenOwnerFields = ({
   citySlug,
   contextScreenOwnerType,
   contextScreenOwnerId,

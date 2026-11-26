@@ -67,7 +67,19 @@ export const CityGuideSaveButton: React.FC<Props> = ({
       onPressOut={() => setIsPressed(false)}
       onPress={onPress}
     >
-      <Flex width={iconSize} height={iconSize} alignItems="center" justifyContent="center">
+      {/*
+        `pointerEvents="none"`: the glyph is swapped on press-in, and a touch that began on an
+        element that then unmounts never reaches its release — the press hangs on the pressed
+        glyph and `onPress` never fires, until another tap completes it. With the glyph out of
+        hit-testing the touch lands on the button itself, which stays mounted.
+      */}
+      <Flex
+        width={iconSize}
+        height={iconSize}
+        alignItems="center"
+        justifyContent="center"
+        pointerEvents="none"
+      >
         {isSaved || isPressed ? (
           <CheckmarkFillIcon
             testID="city-guide-save-button-check-icon"

@@ -528,7 +528,6 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
               description: itinerary.description,
               coverImageUrl: itinerary.heroImage?.url,
             }}
-            citySlug={itinerary.citySlug}
             // The guide is gone once deleted — leave, rather than refetch it. The itineraries
             // list is evicted and reloaded separately, by the sheet's own delete, since this
             // screen doesn't own that list's Relay connection.

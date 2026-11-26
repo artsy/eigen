@@ -14,16 +14,20 @@ interface Props {
   initialName: string
   isCreating: boolean
   onCreate: (name: string) => void
-  /** Back to the list, for someone who meant to add to an itinerary they already have. */
-  onCancel: () => void
+  /** Back to the list, for someone who meant to add to an itinerary they already have. Absent
+   *  where there is no list to go back to, which leaves out the chevron. */
+  onCancel?: () => void
+  /** What the sheet is called. */
+  title?: string
 }
 
-/** The sheet's second view: name a new itinerary. */
+/** Name a new itinerary: the sheet's second view, or on its own for a user's first itinerary. */
 export const CreateItineraryForm: React.FC<Props> = ({
   initialName,
   isCreating,
   onCreate,
   onCancel,
+  title = "New Itinerary",
 }) => {
   const [name, setName] = useState(initialName)
   const trimmed = name.trim()
@@ -31,17 +35,19 @@ export const CreateItineraryForm: React.FC<Props> = ({
   return (
     <Flex px={2} pb={2}>
       <Flex flexDirection="row" alignItems="center" gap={1} mb={2}>
-        <TouchableOpacity
-          testID="create-itinerary-back"
-          accessibilityRole="button"
-          accessibilityLabel="Back to your itineraries"
-          hitSlop={HIT_SLOP}
-          onPress={onCancel}
-        >
-          <ChevronLeftIcon width={BACK_SIZE} height={BACK_SIZE} />
-        </TouchableOpacity>
+        {!!onCancel && (
+          <TouchableOpacity
+            testID="create-itinerary-back"
+            accessibilityRole="button"
+            accessibilityLabel="Back to your itineraries"
+            hitSlop={HIT_SLOP}
+            onPress={onCancel}
+          >
+            <ChevronLeftIcon width={BACK_SIZE} height={BACK_SIZE} />
+          </TouchableOpacity>
+        )}
 
-        <Text variant="md">New Itinerary</Text>
+        <Text variant="md">{title}</Text>
       </Flex>
 
       <BottomSheetInput

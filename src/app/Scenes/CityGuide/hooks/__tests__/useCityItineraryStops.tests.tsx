@@ -132,10 +132,7 @@ describe("useCityItineraryStops", () => {
         "CityGuideItinerariesRailQuery"
       )
     )
-    expect(env.mock.getMostRecentOperation().request.variables).toEqual({
-      citySlug: "london-united-kingdom",
-      first: 10,
-    })
+    expect(env.mock.getMostRecentOperation().request.variables).toEqual({ first: 10 })
   })
 
   // The listing serializes at :short, which has no sections, so the itinerary's own are read
