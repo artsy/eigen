@@ -131,6 +131,33 @@ lane :notify_qa_build_failed do |options|
   )
 end
 
+desc "Notifies in slack that the Expo build cache (S3) is broken"
+lane :notify_build_cache_broken do |options|
+  message = <<~MSG
+              :x: :package:
+              The Expo build cache is broken: #{options[:message]}
+              Until it's fixed, `yarn ios` / `yarn android:cached` compile locally instead of downloading.
+            MSG
+
+  github_url = "https://github.com/#{ENV['GITHUB_REPOSITORY']}/actions/runs/#{ENV['GITHUB_RUN_ID']}"
+
+  # SKIP_SLACK_REPORT is set when the workflow runs off main
+  unless ENV['SKIP_SLACK_REPORT'].to_s.empty?
+    UI.important("Not posting to Slack off main:\n#{message}\n#{github_url}")
+    next
+  end
+
+  slack(
+    channel: '#mobile-alerts',
+    message: message,
+    success: false,
+    payload: {
+      'GitHub Actions' => github_url
+    },
+    default_payloads: []
+  )
+end
+
 SENTRY_BASE_URL = 'https://artsynet.sentry.io'
 SENTRY_PROJECT_ID = '5867225'
 SENTRY_DASHBOARD_ID = '622403'

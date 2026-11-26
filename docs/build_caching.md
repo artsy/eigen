@@ -173,6 +173,12 @@ expo-fingerprint-check
 
 Both build workflows can also be triggered manually from the GitHub Actions tab (`workflow_dispatch`).
 
+### Alerts
+
+When an iOS or Android cache build fails, times out or is cancelled after the fingerprint check on main, the `notify-failure` job in `ios-expo-build.yml` / `android-expo-build.yml` posts once to `#mobile-alerts` (Fastlane lane `notify_build_cache_broken`). Manual runs and branches don't alert.
+
+A build that never runs doesn't alert, for example when the fingerprint check itself fails or is cancelled.
+
 ---
 
 ## Troubleshooting
