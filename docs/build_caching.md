@@ -141,7 +141,13 @@ Triggered automatically after `expo-fingerprint-check` completes. It:
 
 ### 3. `android-expo-build` ([.github/workflows/android-expo-build.yml](../.github/workflows/android-expo-build.yml))
 
-Same pattern as the iOS workflow but for Android. Runs on `ubuntu-latest` with an Android emulator (API 34, x86_64). Runs `npx expo run:android --no-bundler` with `EXPO_BUILD_CACHE_UPLOAD=1`.
+Same trigger as the iOS workflow, but it doesn't use an emulator or `expo run:android`. On `ubuntu-24.04` it:
+
+1. Computes the Expo fingerprint and skips the build if `<fingerprint>.android.tar.gz` is already in S3
+2. Builds the debug APK with Gradle for `arm64-v8a`, the ABI of Android emulators on Apple Silicon Macs. The cache key has no ABI, so x86_64 emulators (Intel Macs, Linux) can't use these builds
+3. Uploads it as `<fingerprint>.android.tar.gz`, in the same format `expo/plugins/build-cache-s3` reads
+
+`expo run:android` on CI only built the emulator's ABI (x86_64), only uploaded after installing on the emulator, and ran the emulator next to Gradle, which ran the runner out of memory.
 
 ### CI Flow Summary
 
