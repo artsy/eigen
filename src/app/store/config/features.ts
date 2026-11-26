@@ -250,6 +250,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableShareShowPartnerFeature",
   },
+  AREnableArtistStory: {
+    description: "Show the artist's Story on the artist screen",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableArtistStory",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

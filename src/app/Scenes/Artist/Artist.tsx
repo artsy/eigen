@@ -41,6 +41,7 @@ import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -183,9 +184,10 @@ interface ArtistQueryRendererProps {
 }
 
 export const ArtistScreenQuery = graphql`
-  query ArtistAboveTheFoldQuery($artistID: String!) @cacheable {
+  query ArtistAboveTheFoldQuery($artistID: String!, $enableArtistStory: Boolean = false)
+  @cacheable {
     artist(id: $artistID) {
-      ...ArtistHeader_artist
+      ...ArtistHeader_artist @arguments(enableArtistStory: $enableArtistStory)
       id
       internalID
       slug
@@ -217,6 +219,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
   // exctact filter params from the query string. This is needed when
   // the screen is opened via deeplink (/artist/kaws?attribution_class=..., for instance)
   // to make sure the filters are applied correctly
+  const enableArtistStory = useFeatureFlag("AREnableArtistStory")
   const route = useRoute()
   const routeParams = (route?.params as RouteParams)?.props || {}
   const filters: FilterArray = [
@@ -259,6 +262,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
                 query: ArtistScreenQuery,
                 variables: {
                   artistID,
+                  enableArtistStory,
                 },
               }}
               below={{

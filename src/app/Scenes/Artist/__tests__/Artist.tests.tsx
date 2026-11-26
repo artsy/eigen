@@ -1,5 +1,6 @@
 import { act, screen } from "@testing-library/react-native"
 import { ArtistQueryRenderer } from "app/Scenes/Artist/Artist"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
@@ -73,6 +74,28 @@ describe("Artist", () => {
     expect(screen.getByText("Artworks")).toBeTruthy()
     expect(screen.getByText("Insights")).toBeTruthy()
     expect(screen.getByText("Overview")).toBeTruthy()
+  })
+
+  describe("AREnableArtistStory", () => {
+    const requestedVariables = () => mockEnvironment.mock.getMostRecentOperation().request.variables
+
+    it("leaves the Story out of the above-the-fold query with AREnableArtistStory off", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtistStory: false })
+      await renderWithHookWrappersTL(<TestWrapper />, getRelayEnvironment(), {
+        includeNavigation: true,
+      })
+
+      expect(requestedVariables()).toMatchObject({ enableArtistStory: false })
+    })
+
+    it("asks for the Story with AREnableArtistStory on", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtistStory: true })
+      await renderWithHookWrappersTL(<TestWrapper />, getRelayEnvironment(), {
+        includeNavigation: true,
+      })
+
+      expect(requestedVariables()).toMatchObject({ enableArtistStory: true })
+    })
   })
 
   it("tracks a page view", async () => {
