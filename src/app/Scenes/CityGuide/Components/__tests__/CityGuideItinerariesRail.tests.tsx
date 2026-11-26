@@ -7,7 +7,7 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 describe("CityGuideItinerariesRail", () => {
-  const { renderWithRelay } = setupTestWrapper<
+  const { renderWithRelay: renderRail } = setupTestWrapper<
     CityGuideItinerariesRailTestQuery,
     { citySlug: string }
   >({
@@ -21,6 +21,10 @@ describe("CityGuideItinerariesRail", () => {
     `,
     variables: { first: 10 },
   })
+
+  // The screen shows Paris while every itinerary below is London's: the rail spans cities.
+  const renderWithRelay = (mocks: Parameters<typeof renderRail>[0]) =>
+    renderRail(mocks, { citySlug: "paris-france" })
 
   const itinerary = (internalID: string, name: string, stopsCounts: number[]) => ({
     internalID,
@@ -69,7 +73,7 @@ describe("CityGuideItinerariesRail", () => {
         action: "tappedCardGroup",
         context_module: "cityGuideCard",
         context_screen_owner_type: "cityGuide",
-        context_screen_owner_slug: "london-united-kingdom",
+        context_screen_owner_slug: "paris-france",
         destination_screen_owner_type: "cityGuideGuide",
         destination_screen_owner_id: "a",
       })
@@ -81,14 +85,14 @@ describe("CityGuideItinerariesRail", () => {
 
     await fireEvent.press(await screen.findByText("Your Itineraries"))
 
-    expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/itineraries")
+    expect(navigate).toHaveBeenCalledWith("/city-guide/paris-france/itineraries")
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedCardGroup",
       context_module: "cityGuideCard",
       context_screen_owner_type: "cityGuide",
-      context_screen_owner_slug: "london-united-kingdom",
+      context_screen_owner_slug: "paris-france",
       destination_screen_owner_type: "cityGuideItineraries",
-      destination_path: "/city-guide/london-united-kingdom/itineraries",
+      destination_path: "/city-guide/paris-france/itineraries",
       type: "viewAll",
     })
   })

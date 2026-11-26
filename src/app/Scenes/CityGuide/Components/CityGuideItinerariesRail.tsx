@@ -14,10 +14,14 @@ import { useTracking } from "react-tracking"
 const RAIL_GAP = 10
 
 interface Props {
+  /** The city the screen is showing. The rail lists itineraries from every city, so this is
+   *  only where the header leads (to a list that spans cities too) and what taps are tracked
+   *  against; each card goes to its own itinerary's city. */
+  citySlug: string
   me: CityGuideItinerariesRail_me$key | null | undefined
 }
 
-export const CityGuideItinerariesRail: React.FC<Props> = ({ me: meRef }) => {
+export const CityGuideItinerariesRail: React.FC<Props> = ({ citySlug, me: meRef }) => {
   const { trackEvent } = useTracking<Schema.Entity>()
   const { trackEvent: trackCohesionEvent } = useTracking()
   const me = useFragment(fragment, meRef)
@@ -31,8 +35,6 @@ export const CityGuideItinerariesRail: React.FC<Props> = ({ me: meRef }) => {
   if (!itineraries.length) {
     return null
   }
-
-  const citySlug = itineraries[0].citySlug
 
   return (
     <Flex backgroundColor="mono5" pt={1} pb={2}>
@@ -83,7 +85,7 @@ export const CityGuideItinerariesRail: React.FC<Props> = ({ me: meRef }) => {
             imageUrl={item.heroImage?.url}
             itineraryID={item.internalID}
             // Addressed by slug when it has one, else its id — Query.itinerary takes either.
-            href={`/city-guide/${citySlug}/itinerary/${item.slug ?? item.internalID}`}
+            href={`/city-guide/${item.citySlug}/itinerary/${item.slug ?? item.internalID}`}
             onPress={() =>
               trackCohesionEvent(
                 tracks.tappedItinerary(citySlug, item.internalID, item.slug ?? null)
