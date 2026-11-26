@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Join, Screen, Spacer, Theme } from "@artsy/palette-mobile"
+import { useFocusEffect } from "@react-navigation/native"
 import { CityGuideNewQuery } from "__generated__/CityGuideNewQuery.graphql"
 import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
@@ -23,7 +24,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { useCallback, useState } from "react"
+import { useCallback, useRef, useState } from "react"
 import { RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
 
@@ -108,19 +109,44 @@ const CityGuideNewWithCities: React.FC<CityGuideNewProps> = ({ citySlug: presele
     suspend the whole screen and blank all three sections mid-pull instead of updating them
     in place (same pattern as `ItineraryScreen.tsx`'s own pull to refresh).
   */
+  const refetch = useCallback(
+    (onDone?: () => void) => {
+      fetchQuery<CityGuideNewQuery>(
+        environment,
+        Query,
+        { citySlug, first: PAGE_SIZE, forYou, enableArticlesForYou },
+        { fetchPolicy: "network-only" }
+      ).subscribe({
+        complete: () => onDone?.(),
+        error: () => onDone?.(),
+      })
+    },
+    [environment, citySlug, forYou, enableArticlesForYou]
+  )
+
+  // Pull to refresh, which shows the spinner.
   const refresh = useCallback(() => {
     setIsRefreshing(true)
+    refetch(() => setIsRefreshing(false))
+  }, [refetch])
 
-    fetchQuery<CityGuideNewQuery>(
-      environment,
-      Query,
-      { citySlug, first: PAGE_SIZE, forYou, enableArticlesForYou },
-      { fetchPolicy: "network-only" }
-    ).subscribe({
-      complete: () => setIsRefreshing(false),
-      error: () => setIsRefreshing(false),
-    })
-  }, [environment, citySlug, forYou, enableArticlesForYou])
+  // After an add: the same refetch without the spinner. Showing it pushes the page down and
+  // takes the touch from whichever card the user is tapping next.
+  const refreshQuietly = useCallback(() => refetch(), [refetch])
+
+  // Whether each card is on an itinerary comes from this query, and an itinerary can be changed
+  // or deleted on other screens while this one waits underneath. Coming back to a city, or back
+  // to this screen, would otherwise show those cards as they were: checked, with nothing on the
+  // list. The first focus is the load itself.
+  const hasFocusedBefore = useRef(false)
+
+  useFocusEffect(
+    useCallback(() => {
+      if (hasFocusedBefore.current) refreshQuietly()
+
+      hasFocusedBefore.current = true
+    }, [refreshQuietly])
+  )
 
   const onSelectCity = (newCity: CityData) => {
     setShowCityPicker(false)
@@ -135,7 +161,11 @@ const CityGuideNewWithCities: React.FC<CityGuideNewProps> = ({ citySlug: presele
         context_screen_owner_slug: citySlug,
       })}
     >
-      <AddToItineraryProvider citySlug={citySlug} cityName={city?.name ?? ""} onSaved={refresh}>
+      <AddToItineraryProvider
+        citySlug={citySlug}
+        cityName={city?.name ?? ""}
+        onSaved={refreshQuietly}
+      >
         <Screen>
           <Screen.AnimatedHeader
             title={city?.name ?? ""}
@@ -200,7 +230,7 @@ const Query = graphql`
     $enableArticlesForYou: Boolean!
   ) {
     me {
-      ...CityGuideItinerariesRail_me @arguments(citySlug: $citySlug, first: $first)
+      ...CityGuideItinerariesRail_me @arguments(first: $first)
     }
     city(slug: $citySlug) {
       ...CityGuideEvents_city @arguments(first: $first, forYou: $forYou)

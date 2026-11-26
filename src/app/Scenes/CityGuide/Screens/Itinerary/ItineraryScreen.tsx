@@ -4,9 +4,7 @@ import {
   BackButtonWithBackground,
   Button,
   Flex,
-  Join,
   Screen,
-  Spacer,
   Text,
   Touchable,
   useColor,
@@ -449,7 +447,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                       />
                     )}
 
-                    <Join separator={<Spacer y={2} />}>
+                    <Flex gap={2}>
                       {sections.map((section, index) => (
                         <ItinerarySectionRow
                           key={section.internalID}
@@ -468,7 +466,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                           onReorderStop={handleReorderStop}
                         />
                       ))}
-                    </Join>
+                    </Flex>
                   </Flex>
                 </ScrollView>
               </DraxProvider>
@@ -530,7 +528,6 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
               description: itinerary.description,
               coverImageUrl: itinerary.heroImage?.url,
             }}
-            citySlug={itinerary.citySlug}
             // The guide is gone once deleted — leave, rather than refetch it. The itineraries
             // list is evicted and reloaded separately, by the sheet's own delete, since this
             // screen doesn't own that list's Relay connection.
@@ -633,6 +630,9 @@ export const itineraryQuery = graphql`
               location {
                 name
                 city
+                cityGuideNeighborhood {
+                  name
+                }
                 coordinates {
                   lat
                   lng
@@ -653,6 +653,9 @@ export const itineraryQuery = graphql`
               location {
                 name
                 city
+                cityGuideNeighborhood {
+                  name
+                }
                 coordinates {
                   lat
                   lng
@@ -664,6 +667,9 @@ export const itineraryQuery = graphql`
               isOnMyItineraries
               name
               city
+              cityGuideNeighborhood {
+                name
+              }
               address
               coordinates {
                 lat

@@ -909,7 +909,7 @@ describe("AddToItinerarySheet", () => {
   })
 
   // A regression: Done used to skip the rail refetch whenever the sheet had no city of its own.
-  it("refetches the itineraries rail against the sheet's city on Done", async () => {
+  it("refetches the itineraries rail on Done", async () => {
     const view = await renderWithRelay(withItineraries([itinerary("a", "First")]), props)
 
     await fireEvent.press(await screen.findByTestId("add-to-itinerary-row"))
@@ -932,10 +932,7 @@ describe("AddToItinerarySheet", () => {
         "CityGuideItinerariesRailQuery"
       )
     )
-    expect(view.env.mock.getMostRecentOperation().request.variables).toEqual({
-      citySlug: "london-united-kingdom",
-      first: 10,
-    })
+    expect(view.env.mock.getMostRecentOperation().request.variables).toEqual({ first: 10 })
   })
 
   describe("creating one", () => {

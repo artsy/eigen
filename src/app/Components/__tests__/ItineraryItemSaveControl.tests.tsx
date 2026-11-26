@@ -65,7 +65,7 @@ describe("ItineraryItemSaveControl", () => {
       contextScreenOwnerSlug: "my-show",
     }
 
-    const openSheet = async (itineraries: object[]) => {
+    const pressPlus = async (itineraries: object[]) => {
       const view = await renderWithRelay(
         {
           Show: () => ({
@@ -77,6 +77,24 @@ describe("ItineraryItemSaveControl", () => {
       )
 
       await fireEvent.press(await screen.findByLabelText("Add My show to an itinerary"))
+      // The provider first looks for an itinerary of the user's own in that city.
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "AddToItineraryProviderLookupQuery"
+        )
+      )
+      await view.mockResolveLastOperation({
+        Me: () => ({
+          itinerariesConnection: { edges: itineraries.map((node) => ({ node })) },
+        }),
+      })
+
+      return view
+    }
+
+    const openSheet = async (itineraries: object[]) => {
+      const view = await pressPlus(itineraries)
+
       await waitFor(() =>
         expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
           "AddToItinerarySheetQuery"
@@ -96,7 +114,9 @@ describe("ItineraryItemSaveControl", () => {
     // Fetching every city's itineraries and filtering here would miss the ones past the first
     // page, and Done would then create a duplicate.
     it("asks the server for that city's itineraries only", async () => {
-      const { operation } = await openSheet([])
+      const { operation } = await openSheet([
+        { internalID: "paris", title: "Paris trip", isCurated: false, stopsCount: 0 },
+      ])
 
       expect(operation.request.variables).toMatchObject({ citySlug: "paris-france" })
     })
@@ -118,7 +138,9 @@ describe("ItineraryItemSaveControl", () => {
     })
 
     it("offers Create New Itinerary for that city, tracked against the show page", async () => {
-      await openSheet([])
+      await openSheet([
+        { internalID: "paris", title: "Paris trip", isCurated: false, stopsCount: 0 },
+      ])
 
       // The create row shows while the list loads, but only works once it has.
       await screen.findByText("0 selected")
@@ -131,6 +153,38 @@ describe("ItineraryItemSaveControl", () => {
         context_screen_owner_id: "show-1",
         context_screen_owner_slug: "my-show",
       })
+    })
+  })
+
+  describe("on a show in a city where the user has no itinerary", () => {
+    it("skips the list and offers a named new itinerary instead", async () => {
+      const view = await renderWithRelay(
+        {
+          Show: () => ({
+            isOnMyItineraries: false,
+            cityGuideCity: { slug: "paris-france", name: "Paris" },
+          }),
+        },
+        {
+          itemType: "SHOW",
+          itemID: "show-1",
+          name: "My show",
+          contextScreenOwnerType: OwnerType.show,
+        }
+      )
+
+      await fireEvent.press(await screen.findByLabelText("Add My show to an itinerary"))
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "AddToItineraryProviderLookupQuery"
+        )
+      )
+      await view.mockResolveLastOperation({
+        Me: () => ({ itinerariesConnection: { edges: [] } }),
+      })
+
+      expect(await screen.findByText("Add to New Itinerary")).toBeOnTheScreen()
+      expect(screen.getByTestId("create-itinerary-name").props.value).toMatch(/^Paris \w+ \d{4}$/)
     })
   })
 

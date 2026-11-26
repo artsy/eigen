@@ -41,12 +41,6 @@ interface Props {
     description?: string | null
     coverImageUrl?: string | null
   }
-  /**
-   * Identifies the `CityItineraries_itinerariesConnection` to evict a deleted itinerary from and
-   * reload, so the itineraries list isn't left stale. Safe to pass even when that list was never
-   * loaded — both are skipped if the connection isn't in the Relay store.
-   */
-  citySlug: string
   /** Called after a successful delete, so the caller can leave the screen or refresh. */
   onDeleted?: () => void
   /** Called after a new cover is saved and stored on the device, so the caller can show it. */
@@ -64,7 +58,6 @@ export const ItineraryEditSheet: React.FC<Props> = ({
   visible,
   onClose,
   itinerary,
-  citySlug,
   onDeleted,
   onCoverSaved,
 }) => {
@@ -150,10 +143,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({
         const deletedItineraryId = responseOrError.itinerary?.id
         const me = store.getRoot().getLinkedRecord("me")
         const connection =
-          me &&
-          ConnectionHandler.getConnection(me, "CityItineraries_itinerariesConnection", {
-            citySlug,
-          })
+          me && ConnectionHandler.getConnection(me, "CityItineraries_itinerariesConnection")
 
         isListLoaded = !!connection
 
@@ -170,7 +160,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({
 
         // The rail reads `me.itinerariesConnection` without a connection key, so the eviction
         // above never reaches it.
-        refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
+        refetchCityGuideItinerariesRail(environment).catch(() => undefined)
 
         // The list pages by offset, so one fewer row shifts every later page back by one and
         // its next `loadNext` would skip an itinerary. Reloading the first page resets the cursor.
@@ -178,7 +168,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({
           fetchQuery<CityItinerariesQuery>(
             environment,
             CityItinerariesScreenQuery,
-            { citySlug },
+            {},
             { fetchPolicy: "network-only" }
           ).subscribe({})
         }

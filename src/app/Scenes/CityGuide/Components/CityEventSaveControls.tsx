@@ -91,14 +91,16 @@ export const CityEventSaveControl: React.FC<Props> = ({
     return null
   }
 
+  // Shown as added from the tap until its sheet is dismissed or the add has finished, rather
+  // than only for as long as the finger is down.
+  const isSaved = !!isOnMyItineraries || addToItinerary.isActive(itemType, itemID)
+
   return (
     <CityGuideSaveButton
       color={color}
       iconSize={iconSize}
-      isSaved={!!isOnMyItineraries}
-      accessibilityLabel={
-        isOnMyItineraries ? `${name} is on an itinerary` : `Add ${name} to an itinerary`
-      }
+      isSaved={isSaved}
+      accessibilityLabel={isSaved ? `${name} is on an itinerary` : `Add ${name} to an itinerary`}
       onPress={() => {
         const { action, ownerType } = TRACKING[itemType]
 

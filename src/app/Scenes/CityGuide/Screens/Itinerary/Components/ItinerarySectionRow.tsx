@@ -1,5 +1,5 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@artsy/icons/native"
-import { Flex, Join, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { ItineraryStopRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow"
 import { itinerarySectionTitle } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import {
@@ -131,8 +131,10 @@ export const ItinerarySectionRow: React.FC<Props> = ({
           onPress={() => setIsExpanded((expanded) => !expanded)}
         >
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between" py={1}>
-            <Text variant="sm-display">{title}</Text>
-            {isExpanded ? <ChevronUpIcon fill="mono60" /> : <ChevronDownIcon fill="mono60" />}
+            <Text variant="sm-display" color="blue100">
+              {title}
+            </Text>
+            {isExpanded ? <ChevronUpIcon fill="blue100" /> : <ChevronDownIcon fill="blue100" />}
           </Flex>
         </Touchable>
       )}
@@ -141,8 +143,8 @@ export const ItinerarySectionRow: React.FC<Props> = ({
           all here, so there is nothing further to gate. */}
       {!!isExpanded && (
         <SortableContainer sortable={sortable} scrollRef={scrollRef}>
-          <Spacer y={1} />
-          <Join separator={<Spacer y={1} />}>
+          <Spacer y={2} />
+          <Flex gap={1}>
             {/*
               Rendered from drax's own copy of the ids rather than `section.stops`: after a drop
               it holds the rows at their original positions and moves them with transforms, so
@@ -167,7 +169,7 @@ export const ItinerarySectionRow: React.FC<Props> = ({
                 </SortableItem>
               )
             })}
-          </Join>
+          </Flex>
         </SortableContainer>
       )}
     </Flex>

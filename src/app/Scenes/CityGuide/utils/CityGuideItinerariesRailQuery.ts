@@ -10,9 +10,9 @@ export const CITY_GUIDE_ITINERARIES_RAIL_SIZE = 10
  * here writes exactly the records the rail renders from, whether or not it's mounted.
  */
 export const cityGuideItinerariesRailQuery = graphql`
-  query CityGuideItinerariesRailQuery($citySlug: String!, $first: Int!) {
+  query CityGuideItinerariesRailQuery($first: Int!) {
     me {
-      ...CityGuideItinerariesRail_me @arguments(citySlug: $citySlug, first: $first)
+      ...CityGuideItinerariesRail_me @arguments(first: $first)
     }
   }
 `
@@ -24,10 +24,10 @@ export const cityGuideItinerariesRailQuery = graphql`
  * mounted anywhere it picks the new counts up on its own (`useLazyLoadQuery` subscribes to
  * the store); if it isn't, the fresh data is simply waiting there for next time.
  */
-export const refetchCityGuideItinerariesRail = (environment: Environment, citySlug: string) =>
+export const refetchCityGuideItinerariesRail = (environment: Environment) =>
   fetchQuery<CityGuideItinerariesRailQuery>(
     environment,
     cityGuideItinerariesRailQuery,
-    { citySlug, first: CITY_GUIDE_ITINERARIES_RAIL_SIZE },
+    { first: CITY_GUIDE_ITINERARIES_RAIL_SIZE },
     { fetchPolicy: "network-only" }
   ).toPromise()

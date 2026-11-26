@@ -182,7 +182,7 @@ export const useCityItineraryStops = ({
 
   /** Resolves the itinerary's id and a section to put stops in, creating either if needed. */
   const resolveTarget = useCallback(
-    async (createIfMissing: boolean) => {
+    async (createIfMissing: boolean, itineraryTitle?: string) => {
       const data = await fetchQuery<useCityItineraryStopsLookupQuery>(
         environment,
         lookupQuery,
@@ -217,7 +217,7 @@ export const useCityItineraryStops = ({
           {
             input: {
               citySlug,
-              title: defaultItineraryTitle(cityName),
+              title: itineraryTitle ?? defaultItineraryTitle(cityName),
               authorName: data?.me?.name?.trim() || undefined,
             },
           }
@@ -281,9 +281,10 @@ export const useCityItineraryStops = ({
   }, [])
 
   const addStop = useCallback(
-    (stop: StopInput) =>
+    /** `itineraryTitle` names the itinerary only if there is none yet to add to. */
+    (stop: StopInput, itineraryTitle?: string) =>
       serialise(async () => {
-        const target = await resolveTarget(true)
+        const target = await resolveTarget(true, itineraryTitle)
 
         if (!target?.sectionID) {
           throw new Error("Could not find a section to add the stop to")
@@ -317,7 +318,7 @@ export const useCityItineraryStops = ({
           )
         }
 
-        refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
+        refetchCityGuideItinerariesRail(environment).catch(() => undefined)
 
         return {
           itineraryID: target.itineraryID,
@@ -358,7 +359,7 @@ export const useCityItineraryStops = ({
           )
         }
 
-        refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
+        refetchCityGuideItinerariesRail(environment).catch(() => undefined)
 
         return response.itineraryStop
       }),

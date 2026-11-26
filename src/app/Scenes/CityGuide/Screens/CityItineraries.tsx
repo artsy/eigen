@@ -26,6 +26,7 @@ interface Props {
 interface ShareableItinerary {
   internalID: string
   title: string
+  citySlug: string
   isCurated?: boolean | null
   slug?: string | null
   shareToken?: string | null
@@ -43,7 +44,7 @@ const ItineraryShareTouchable: React.FC<{ item: ShareableItinerary; citySlug: st
   const { share, isSharing } = useItineraryShare({
     internalID: item.internalID,
     slug: item.slug,
-    citySlug,
+    citySlug: item.citySlug,
     title: item.title,
     isCurated: !!item.isCurated,
     shareToken: item.shareToken,
@@ -106,7 +107,7 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
             }}
             ListEmptyComponent={
               <Text variant="sm" color="mono60">
-                You haven’t started an itinerary here yet.
+                You haven’t started an itinerary yet.
               </Text>
             }
             ListFooterComponent={
@@ -119,7 +120,7 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
                 stopsCount={itineraryStopsCount(item)}
                 imageUrl={item.heroImage?.url}
                 itineraryID={item.internalID}
-                href={`/city-guide/${citySlug}/itinerary/${item.slug ?? item.internalID}`}
+                href={`/city-guide/${item.citySlug}/itinerary/${item.slug ?? item.internalID}`}
                 rightSlot={<ItineraryShareTouchable item={item} citySlug={citySlug} />}
               />
             )}
@@ -136,18 +137,15 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
 const fragment = graphql`
   fragment CityItineraries_me on Me
   @refetchable(queryName: "CityItinerariesPaginationQuery")
-  @argumentDefinitions(
-    citySlug: { type: "String!" }
-    count: { type: "Int", defaultValue: 20 }
-    cursor: { type: "String" }
-  ) {
-    itinerariesConnection(citySlug: $citySlug, first: $count, after: $cursor)
+  @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String" }) {
+    itinerariesConnection(first: $count, after: $cursor)
       @connection(key: "CityItineraries_itinerariesConnection") {
       edges {
         node {
           id
           internalID
           slug
+          citySlug
           title
           isCurated
           shareToken
@@ -162,18 +160,16 @@ const fragment = graphql`
 `
 
 export const CityItinerariesScreenQuery = graphql`
-  query CityItinerariesQuery($citySlug: String!) {
+  query CityItinerariesQuery {
     me {
-      ...CityItineraries_me @arguments(citySlug: $citySlug)
+      ...CityItineraries_me
     }
   }
 `
 
 export const CityItinerariesScreenQueryRenderer = withSuspense({
   Component: ({ citySlug }: { citySlug: string }) => {
-    const data = useLazyLoadQuery<CityItinerariesQuery>(CityItinerariesScreenQuery, {
-      citySlug,
-    })
+    const data = useLazyLoadQuery<CityItinerariesQuery>(CityItinerariesScreenQuery, {})
 
     if (!data.me) {
       return null

@@ -198,6 +198,7 @@ describe("ItineraryStopRow", () => {
             isOnMyItineraries: null,
             name: "Bermondsey",
             city: null,
+            cityGuideNeighborhood: null,
             address: null,
             coordinates: null,
             partner: {

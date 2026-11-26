@@ -47,7 +47,6 @@ describe("ItineraryEditSheet", () => {
           visible
           onClose={onClose}
           itinerary={itinerary}
-          citySlug="london"
           onDeleted={onDeleted}
           onCoverSaved={onCoverSaved}
         />
@@ -68,7 +67,7 @@ describe("ItineraryEditSheet", () => {
       query ItineraryEditSheetTestsQuery @relay_test_operation {
         me {
           internalID
-          itinerariesConnection(citySlug: "london", first: 20)
+          itinerariesConnection(first: 20)
             @connection(key: "CityItineraries_itinerariesConnection") {
             edges {
               node {
@@ -204,7 +203,7 @@ describe("ItineraryEditSheet", () => {
     const listQuery = env.mock
       .getAllOperations()
       .find((operation) => operation.request.node.params.name === "CityItinerariesQuery")
-    expect(listQuery?.request.variables).toEqual({ citySlug: "london" })
+    expect(listQuery?.request.variables).toEqual({})
   })
 
   // Deleting the only itinerary used to leave the city guide's "Your Itineraries" rail showing it.
@@ -225,7 +224,7 @@ describe("ItineraryEditSheet", () => {
     const railQuery = env.mock
       .getAllOperations()
       .find((operation) => operation.request.node.params.name === "CityGuideItinerariesRailQuery")
-    expect(railQuery?.request.variables).toEqual({ citySlug: "london", first: 10 })
+    expect(railQuery?.request.variables).toEqual({ first: 10 })
   })
 
   it("tracks which fields a save changed", async () => {
