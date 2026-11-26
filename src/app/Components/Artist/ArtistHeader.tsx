@@ -1,4 +1,10 @@
-import { ActionType, ContextModule, OwnerType, TappedVerifiedRepresentative } from "@artsy/cohesion"
+import {
+  ActionType,
+  ClickedVanguardBadge,
+  ContextModule,
+  OwnerType,
+  TappedVerifiedRepresentative,
+} from "@artsy/cohesion"
 import {
   Box,
   Flex,
@@ -64,36 +70,54 @@ export const ArtistHeader: React.FC<Props> = ({ artist }) => {
 
   const cover = getCover(artistData)
 
+  const vanguardArticleHref = artistData.vanguardArticle?.href
+  const vanguardArticleSlug = artistData.vanguardArticle?.slug
+  const vanguardBadge = <Pill color="mono0">{artistData.vanguardYear} Vanguard Artist</Pill>
+
   return (
     <Flex pointerEvents="box-none">
       {!!cover && (
-        <Flex pointerEvents="none">
-          <Flex>
-            <Image
-              accessibilityLabel={cover.label}
-              src={cover.url}
-              aspectRatio={aspectRatio}
-              width={width}
-              height={height}
-              style={{ alignSelf: "center" }}
-              blurhash={cover.blurhash}
-            />
+        <Flex pointerEvents="box-none" pb={2}>
+          <Flex pointerEvents="box-none">
+            <Flex pointerEvents="none">
+              <Image
+                accessibilityLabel={cover.label}
+                src={cover.url}
+                aspectRatio={aspectRatio}
+                width={width}
+                height={height}
+                style={{ alignSelf: "center" }}
+                blurhash={cover.blurhash}
+              />
+            </Flex>
             {(!!cover.isStoryImage || !!artistData.vanguardYear) && (
               <LinearGradient
                 testID="artist-header-gradient"
                 colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.72)"]}
                 style={StyleSheet.absoluteFill}
+                pointerEvents="none"
               />
             )}
             {!!artistData.vanguardYear && (
               <Theme theme="v3light">
-                <Flex position="absolute" bottom={0} left={0} p={2}>
-                  <Pill color="mono0">{artistData.vanguardYear} Vanguard Artist</Pill>
+                <Flex position="absolute" bottom={0} left={0} p={2} pointerEvents="box-none">
+                  {vanguardArticleHref && vanguardArticleSlug ? (
+                    <RouterLink
+                      onPress={() => {
+                        trackEvent(tracks.clickedVanguardBadge(artistData, vanguardArticleSlug))
+                      }}
+                      to={vanguardArticleHref}
+                      hasChildTouchable
+                    >
+                      {vanguardBadge}
+                    </RouterLink>
+                  ) : (
+                    vanguardBadge
+                  )}
                 </Flex>
               </Theme>
             )}
           </Flex>
-          <Spacer y={2} />
         </Flex>
       )}
       <Box px={2} pointerEvents="none">
@@ -184,6 +208,10 @@ const artistFragment = graphql`
       }
     }
     vanguardYear @include(if: $enableArtistStory)
+    vanguardArticle @include(if: $enableArtistStory) {
+      href
+      slug
+    }
     slug
     formattedNationalityAndBirthday
     coverArtwork {
@@ -221,5 +249,17 @@ export const tracks = {
     context_screen_owner_id: artist.internalID,
     destination_screen_owner_id: partner.internalID,
     destination_screen_owner_type: OwnerType.partner,
+  }),
+  clickedVanguardBadge: (
+    artist: ArtistHeader_artist$data,
+    articleSlug: string
+  ): ClickedVanguardBadge => ({
+    action: ActionType.clickedVanguardBadge,
+    context_module: ContextModule.artistVanguardBadge,
+    context_page_owner_type: OwnerType.artist,
+    context_page_owner_id: artist.internalID,
+    context_page_owner_slug: artist.slug,
+    destination_page_owner_type: OwnerType.article,
+    destination_page_owner_slug: articleSlug,
   }),
 }

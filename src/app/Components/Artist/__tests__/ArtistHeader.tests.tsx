@@ -8,6 +8,10 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 describe("ArtistHeader", () => {
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
   const headerImage = {
     altText: "The artist in her studio",
     image: { url: "https://example.com/header.jpg" },
@@ -113,6 +117,48 @@ describe("ArtistHeader", () => {
       expect(screen.queryByText(/Vanguard Artist/)).not.toBeOnTheScreen()
     })
 
+    it("opens the Vanguard article from the badge and tracks the tap", async () => {
+      await renderWithRelay({
+        Artist: () => ({
+          ...mockArtist,
+          vanguardYear: "2027",
+          vanguardArticle: {
+            href: "/article/vanguard-article-slug",
+            slug: "vanguard-article-slug",
+          },
+        }),
+      })
+
+      await fireEvent.press(screen.getByText("2027 Vanguard Artist"))
+
+      expect(navigate).toHaveBeenCalledWith("/article/vanguard-article-slug")
+      expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        [
+          {
+            "action": "clickedVanguardBadge",
+            "context_module": "artistVanguardBadge",
+            "context_page_owner_id": "some-id",
+            "context_page_owner_slug": "marcel-duchamp",
+            "context_page_owner_type": "artist",
+            "destination_page_owner_slug": "vanguard-article-slug",
+            "destination_page_owner_type": "article",
+          },
+        ]
+      `)
+    })
+
+    it("leaves the badge unlinked without a Vanguard article", async () => {
+      await renderWithRelay({
+        Artist: () => ({ ...mockArtist, vanguardYear: "2027", vanguardArticle: null }),
+      })
+
+      await fireEvent.press(screen.getByText("2027 Vanguard Artist"))
+
+      expect(navigate).not.toHaveBeenCalled()
+      expect(mockTrackEvent).not.toHaveBeenCalled()
+    })
+
     it("shows the Vanguard badge over a gradient on the cover artwork", async () => {
       await renderWithRelay({ Artist: () => ({ ...mockArtist, vanguardYear: "2027" }) })
 
@@ -125,6 +171,7 @@ describe("ArtistHeader", () => {
 const mockArtist = {
   featuredStory: null,
   vanguardYear: null,
+  vanguardArticle: null,
   internalID: "some-id",
   slug: "marcel-duchamp",
   name: "Marcel",
