@@ -171,7 +171,7 @@ expo-fingerprint-check
                     └── builds & uploads .android.tar.gz to S3
 ```
 
-Both build workflows can also be triggered manually from the GitHub Actions tab (`workflow_dispatch`).
+The iOS build workflow can also be triggered manually from the GitHub Actions tab (`workflow_dispatch`). The Android one only runs after the fingerprint check.
 
 ---
 
