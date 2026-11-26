@@ -78,32 +78,38 @@ const admissionLabel = (isFreeAdmission: boolean | null | undefined) => {
   return isFreeAdmission ? "Free" : "Paid Entry"
 }
 
+/** The slice of a location the place line reads. */
+interface PlaceLocation {
+  readonly name?: string | null
+  readonly city?: string | null
+  /** `slug` is listed because the map cards' own queries select only that. */
+  readonly cityGuideNeighborhood?: {
+    readonly name?: string | null
+    readonly slug?: string | null
+  } | null
+}
+
 /**
- * The place line for a museum or gallery. Falls back to name then city — the designs wanted
- * "neighborhood location" via `Location.neighborhood`, which was reverted out of Metaphysics.
+ * The place line for a museum or gallery: its name, else the City Guide neighborhood it sits in.
+ * The city is only the last resort, since a stop is already under a city and naming it again
+ * tells the reader nothing.
  */
-const placeLine = (
-  location: { readonly name?: string | null; readonly city?: string | null } | null | undefined
-) => location?.name ?? location?.city ?? undefined
+const placeLine = (location: PlaceLocation | null | undefined) =>
+  location?.name ?? location?.cityGuideNeighborhood?.name ?? location?.city ?? undefined
 
 export interface StopCardItem {
   readonly __typename: string
   readonly internalID?: string
   readonly name?: string | null
   readonly city?: string | null
+  readonly cityGuideNeighborhood?: { readonly name?: string | null } | null
   readonly href?: string | null
   readonly isFreeAdmission?: boolean | null
   /** A Show or Fair's own running dates, e.g. "Feb 25 - May 24". Absent on a venue itself. */
   readonly exhibitionPeriod?: string | null
   readonly partner?: { readonly name?: string | null; readonly href?: string | null } | null
-  readonly location?: { readonly name?: string | null; readonly city?: string | null } | null
-  readonly locations?:
-    | readonly (
-        | { readonly name?: string | null; readonly city?: string | null }
-        | null
-        | undefined
-      )[]
-    | null
+  readonly location?: PlaceLocation | null
+  readonly locations?: readonly (PlaceLocation | null | undefined)[] | null
 }
 
 /**

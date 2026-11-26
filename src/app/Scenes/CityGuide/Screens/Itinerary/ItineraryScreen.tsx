@@ -630,6 +630,9 @@ export const itineraryQuery = graphql`
               location {
                 name
                 city
+                cityGuideNeighborhood {
+                  name
+                }
                 coordinates {
                   lat
                   lng
@@ -650,6 +653,9 @@ export const itineraryQuery = graphql`
               location {
                 name
                 city
+                cityGuideNeighborhood {
+                  name
+                }
                 coordinates {
                   lat
                   lng
@@ -661,6 +667,9 @@ export const itineraryQuery = graphql`
               isOnMyItineraries
               name
               city
+              cityGuideNeighborhood {
+                name
+              }
               address
               coordinates {
                 lat

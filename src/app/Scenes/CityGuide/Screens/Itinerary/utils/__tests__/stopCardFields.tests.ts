@@ -187,11 +187,23 @@ describe("stopCardFields", () => {
       expect(fields.href).toEqual("/partner/white-cube")
     })
 
-    it("falls back to the city when the location has no name", () => {
+    it("shows the neighborhood rather than the city when the location has no name", () => {
+      const fields = stopCardFields(stop(), {
+        __typename: "Location",
+        name: null,
+        city: "Miami",
+        cityGuideNeighborhood: { name: "Wynwood" },
+        partner: { name: "Gallery", href: "/partner/gallery" },
+      })
+
+      expect(fields.subtitle).toEqual("Wynwood")
+    })
+
+    it("falls back to the city when the location has no name or neighborhood", () => {
       const fields = stopCardFields(stop(), {
         __typename: "Partner",
         name: "White Cube",
-        locations: [{ name: null, city: "London" }],
+        locations: [{ name: null, city: "London", cityGuideNeighborhood: null }],
       })
 
       expect(fields.subtitle).toEqual("London")
