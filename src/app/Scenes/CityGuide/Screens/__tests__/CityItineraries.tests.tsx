@@ -22,9 +22,15 @@ describe("CityItineraries", () => {
   })
   const props = { citySlug: "london-united-kingdom" }
 
-  const itinerary = (internalID: string, name: string, stopsCounts: number[]) => ({
+  const itinerary = (
+    internalID: string,
+    name: string,
+    stopsCounts: number[],
+    citySlug = "london-united-kingdom"
+  ) => ({
     internalID,
     slug: null,
+    citySlug,
     title: name,
     isCurated: false,
     shareToken: null,
@@ -70,6 +76,18 @@ describe("CityItineraries", () => {
     await fireEvent.press(await screen.findByText("London Oct 2026"))
 
     expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/itinerary/a")
+  })
+
+  // The list is every itinerary the user has, not just this city's, so a row opens under its own.
+  it("opens an itinerary from another city under that city", async () => {
+    await renderWithRelay(
+      connection([itinerary("b", "Berlin Nov 2026", [2], "berlin-germany")]),
+      props
+    )
+
+    await fireEvent.press(await screen.findByText("Berlin Nov 2026"))
+
+    expect(navigate).toHaveBeenCalledWith("/city-guide/berlin-germany/itinerary/b")
   })
 
   it("renders a share control per row", async () => {
