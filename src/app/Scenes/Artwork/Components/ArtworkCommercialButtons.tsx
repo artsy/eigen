@@ -10,7 +10,7 @@ import { BuyNowButton } from "app/Scenes/Artwork/Components/CommercialButtons/Bu
 import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
 import { MakeOfferButtonFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/MakeOfferButton"
 import { getTimer } from "app/utils/getTimer"
-import { Children } from "react"
+import { Children, useState } from "react"
 import { useFragment, graphql } from "react-relay"
 import { BidButtonFragmentContainer } from "./CommercialButtons/BidButton"
 
@@ -42,6 +42,20 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
   const partnerOfferData = useFragment(partnerOfferFragment, partnerOffer)
   const selectedEditionId = ArtworkStore.useStoreState((state) => state.selectedEditionId)
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
+  // Only one order can be created at a time. Without this, tapping Make an Offer and then Purchase
+  // before the first order is ready creates both orders and opens both checkouts.
+  const [orderBeingCreated, setOrderBeingCreated] = useState<"buyNow" | "makeOffer" | null>(null)
+
+  const buyNowOrderProps = {
+    disabled: orderBeingCreated === "makeOffer",
+    onOrderCreationChange: (isCreating: boolean) =>
+      setOrderBeingCreated(isCreating ? "buyNow" : null),
+  }
+  const makeOfferOrderProps = {
+    disabled: orderBeingCreated === "buyNow",
+    onOrderCreationChange: (isCreating: boolean) =>
+      setOrderBeingCreated(isCreating ? "makeOffer" : null),
+  }
 
   const { hasEnded: partnerOfferEnded } = getTimer(partnerOfferData?.endAt || "")
 
@@ -70,6 +84,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
             variant="outline"
           />
           <BuyNowButton
+            {...buyNowOrderProps}
             partnerOffer={partnerOfferData}
             artwork={artworkData}
             editionSetID={selectedEditionId}
@@ -96,12 +111,14 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
     return (
       <RowContainer>
         <MakeOfferButtonFragmentContainer
+          {...makeOfferOrderProps}
           artwork={artworkData}
           editionSetID={selectedEditionId}
           variant="outline"
           partnerOffer={partnerOfferData}
         />
         <BuyNowButton
+          {...buyNowOrderProps}
           partnerOffer={partnerOfferData}
           artwork={artworkData}
           editionSetID={selectedEditionId}
@@ -113,6 +130,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
   if (artworkData.isAcquireable) {
     return (
       <BuyNowButton
+        {...buyNowOrderProps}
         partnerOffer={partnerOfferData}
         artwork={artworkData}
         editionSetID={selectedEditionId}
@@ -126,6 +144,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
         <RowContainer>
           <ContactGalleryButton artwork={artworkData} me={meData} variant="outline" block />
           <BuyNowButton
+            {...buyNowOrderProps}
             partnerOffer={partnerOfferData}
             artwork={artworkData}
             editionSetID={selectedEditionId}
@@ -137,7 +156,11 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
     return (
       <RowContainer>
         <ContactGalleryButton artwork={artworkData} me={meData} variant="outline" block />
-        <MakeOfferButtonFragmentContainer artwork={artworkData} editionSetID={selectedEditionId} />
+        <MakeOfferButtonFragmentContainer
+          artwork={artworkData}
+          editionSetID={selectedEditionId}
+          {...makeOfferOrderProps}
+        />
       </RowContainer>
     )
   }
@@ -147,12 +170,14 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
       return (
         <RowContainer>
           <MakeOfferButtonFragmentContainer
+            {...makeOfferOrderProps}
             artwork={artworkData}
             editionSetID={selectedEditionId}
             variant="outline"
             partnerOffer={partnerOfferData}
           />
           <BuyNowButton
+            {...buyNowOrderProps}
             partnerOffer={partnerOfferData}
             artwork={artworkData}
             editionSetID={selectedEditionId}
@@ -162,7 +187,11 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
     }
 
     return (
-      <MakeOfferButtonFragmentContainer artwork={artworkData} editionSetID={selectedEditionId} />
+      <MakeOfferButtonFragmentContainer
+        artwork={artworkData}
+        editionSetID={selectedEditionId}
+        {...makeOfferOrderProps}
+      />
     )
   }
 
@@ -172,6 +201,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
         <RowContainer>
           <ContactGalleryButton artwork={artworkData} me={meData} variant="outline" block />
           <BuyNowButton
+            {...buyNowOrderProps}
             partnerOffer={partnerOfferData}
             artwork={artworkData}
             editionSetID={selectedEditionId}

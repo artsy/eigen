@@ -30,6 +30,9 @@ export interface BuyNowButtonProps {
   buttonText?: string
   // Source is used to track where the button was tapped from, by default it's in the artwork screen
   source?: "notification" | (string & {})
+  disabled?: boolean
+  // Lets the parent disable the buttons next to this one while the order is being created
+  onOrderCreationChange?: (isCreating: boolean) => void
 }
 
 export const BuyNowButton = ({
@@ -39,8 +42,12 @@ export const BuyNowButton = ({
   editionSetID,
   renderSaleMessage,
   buttonText,
+  disabled,
+  onOrderCreationChange,
 }: BuyNowButtonProps) => {
   const [isCommittingCreateOrderMutation, setIsCommittingCreateOrderMutation] = useState(false)
+  // State only updates on the next render, so two quick taps could both pass a state check
+  const isCreatingOrderRef = useRef(false)
 
   const { saleMessage, internalID } = useFragment(artworkFragment, artwork)
   const { trackEvent } = useTracking()
@@ -68,47 +75,41 @@ export const BuyNowButton = ({
   const createOrderMutation = useCreateOrder()
 
   const createOrderFromPartnerOffer = async (partnerOffer: { internalID: string }) => {
-    setIsCommittingCreateOrderMutation(true)
-    try {
-      const response = await partnerOfferMutation.commitMutation({
-        partnerOfferId: partnerOffer.internalID,
-      })
-      const orderOrError = response.commerceCreatePartnerOfferOrder?.orderOrError
-      if (orderOrError?.error) {
-        const { code: errorCode, data: artwork } = orderOrError.error
-        const artworkId = JSON.parse(artwork?.toString() ?? "{}")?.artwork_id
+    const response = await partnerOfferMutation.commitMutation({
+      partnerOfferId: partnerOffer.internalID,
+    })
+    const orderOrError = response.commerceCreatePartnerOfferOrder?.orderOrError
+    if (orderOrError?.error) {
+      const { code: errorCode, data: artwork } = orderOrError.error
+      const artworkId = JSON.parse(artwork?.toString() ?? "{}")?.artwork_id
 
-        if (errorCode === "expired_partner_offer") {
-          navigate(`/artwork/${artworkId}`, {
-            passProps: { artworkOfferExpired: true },
-          })
-
-          return
-        }
-
-        if (errorCode === "not_acquireable") {
-          navigate(`/artwork/${artworkId}`, {
-            passProps: { artworkOfferUnavailable: true },
-          })
-
-          return
-        } else {
-          Toast.show("An error occurred.", "bottom")
-        }
-      } else if (orderOrError?.order) {
-        navigate(`/orders/${orderOrError.order?.internalID}`, {
-          passProps: { title: "Purchase" },
+      if (errorCode === "expired_partner_offer") {
+        navigate(`/artwork/${artworkId}`, {
+          passProps: { artworkOfferExpired: true },
         })
 
         return
       }
-    } finally {
-      setIsCommittingCreateOrderMutation(false)
+
+      if (errorCode === "not_acquireable") {
+        navigate(`/artwork/${artworkId}`, {
+          passProps: { artworkOfferUnavailable: true },
+        })
+
+        return
+      } else {
+        Toast.show("An error occurred.", "bottom")
+      }
+    } else if (orderOrError?.order) {
+      navigate(`/orders/${orderOrError.order?.internalID}`, {
+        passProps: { title: "Purchase" },
+      })
+
+      return
     }
   }
 
   const createOrder = async () => {
-    setIsCommittingCreateOrderMutation(true)
     try {
       const response = await createOrderMutation.commitMutation({
         artworkId: internalID,
@@ -128,17 +129,17 @@ export const BuyNowButton = ({
       }
     } catch (e) {
       onMutationError(e as Error)
-    } finally {
-      setIsCommittingCreateOrderMutation(false)
     }
   }
 
   const handleCreateOrder = async () => {
-    if (isCommittingCreateOrderMutation) {
+    if (isCreatingOrderRef.current) {
       return
     }
 
+    isCreatingOrderRef.current = true
     setIsCommittingCreateOrderMutation(true)
+    onOrderCreationChange?.(true)
 
     try {
       if (partnerOffer && !partnerOfferTimer?.hasEnded) {
@@ -153,7 +154,9 @@ export const BuyNowButton = ({
     } catch (e) {
       onMutationError(e as Error)
     } finally {
+      isCreatingOrderRef.current = false
       setIsCommittingCreateOrderMutation(false)
+      onOrderCreationChange?.(false)
     }
   }
 
@@ -182,6 +185,7 @@ export const BuyNowButton = ({
     <Button
       onPress={() => handleCreateOrder()}
       loading={isCommittingCreateOrderMutation}
+      disabled={disabled}
       size="large"
       variant={variant}
       block

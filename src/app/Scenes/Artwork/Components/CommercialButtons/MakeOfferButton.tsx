@@ -6,7 +6,7 @@ import { useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -23,11 +23,28 @@ export interface MakeOfferButtonProps {
   variant?: ButtonProps["variant"]
   buttonText?: string
   partnerOffer?: PartnerOffer
+  disabled?: boolean
+  // Lets the parent disable the buttons next to this one while the order is being created
+  onOrderCreationChange?: (isCreating: boolean) => void
 }
 
 export const MakeOfferButton: React.FC<MakeOfferButtonProps> = (props) => {
   const [isCommittingCreateOfferOrderMutation, setIsCommittingCreateOfferOrderMutation] =
     useState(false)
+  // State only updates on the next render, so two quick taps could both pass a state check
+  const isCreatingOrderRef = useRef(false)
+
+  const startOrderCreation = () => {
+    isCreatingOrderRef.current = true
+    setIsCommittingCreateOfferOrderMutation(true)
+    props.onOrderCreationChange?.(true)
+  }
+
+  const finishOrderCreation = () => {
+    isCreatingOrderRef.current = false
+    setIsCommittingCreateOfferOrderMutation(false)
+    props.onOrderCreationChange?.(false)
+  }
 
   const tracking = useTracking()
   const analytics = useAnalyticsContext()
@@ -64,70 +81,73 @@ export const MakeOfferButton: React.FC<MakeOfferButtonProps> = (props) => {
     const { relay, artwork, editionSetID, partnerOffer } = props
     const { internalID } = artwork
 
-    if (isCommittingCreateOfferOrderMutation) {
+    if (isCreatingOrderRef.current) {
       return
     }
 
-    setIsCommittingCreateOfferOrderMutation(true)
+    if (!relay?.environment) {
+      return
+    }
 
-    if (relay && relay.environment) {
-      commitMutation<MakeOfferButtonOrderMutation>(relay.environment, {
-        mutation: graphql`
-          mutation MakeOfferButtonOrderMutation($input: CommerceCreateOfferOrderWithArtworkInput!) {
-            commerceCreateOfferOrderWithArtwork(input: $input) {
-              orderOrError {
-                __typename
-                ... on CommerceOrderWithMutationSuccess {
-                  order {
-                    internalID
-                    mode
-                  }
+    startOrderCreation()
+
+    commitMutation<MakeOfferButtonOrderMutation>(relay.environment, {
+      mutation: graphql`
+        mutation MakeOfferButtonOrderMutation($input: CommerceCreateOfferOrderWithArtworkInput!) {
+          commerceCreateOfferOrderWithArtwork(input: $input) {
+            orderOrError {
+              __typename
+              ... on CommerceOrderWithMutationSuccess {
+                order {
+                  internalID
+                  mode
                 }
-                ... on CommerceOrderWithMutationFailure {
-                  error {
-                    type
-                    code
-                    data
-                  }
+              }
+              ... on CommerceOrderWithMutationFailure {
+                error {
+                  type
+                  code
+                  data
                 }
               }
             }
           }
-        `,
-        variables: {
-          input: {
-            artworkId: internalID,
-            editionSetId: editionSetID,
-            partnerOfferId: partnerOffer?.isActive ? partnerOffer.internalID : null,
-          },
+        }
+      `,
+      variables: {
+        input: {
+          artworkId: internalID,
+          editionSetId: editionSetID,
+          partnerOfferId: partnerOffer?.isActive ? partnerOffer.internalID : null,
         },
-        onCompleted: (data) => {
-          setIsCommittingCreateOfferOrderMutation(false)
+      },
+      onCompleted: (data) => {
+        finishOrderCreation()
 
-          const {
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            commerceCreateOfferOrderWithArtwork: { orderOrError },
-          } = data
-          if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
-            onMutationError(orderOrError.error)
-          } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
-            navigate(`/orders/${orderOrError.order.internalID}`, {
-              passProps: { orderID: orderOrError.order.internalID, title: "Make Offer" },
-            })
-          }
-        },
-        onError: (error) => {
-          setIsCommittingCreateOfferOrderMutation(false)
-          onMutationError(error)
-        },
-      })
-    }
+        const {
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          commerceCreateOfferOrderWithArtwork: { orderOrError },
+        } = data
+        if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
+          onMutationError(orderOrError.error)
+        } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
+          navigate(`/orders/${orderOrError.order.internalID}`, {
+            passProps: { orderID: orderOrError.order.internalID, title: "Make Offer" },
+          })
+        }
+      },
+      onError: (error) => {
+        finishOrderCreation()
+        onMutationError(error)
+      },
+    })
   }
 
   return (
     <Button
       onPress={handleCreateOfferOrder}
       loading={isCommittingCreateOfferOrderMutation}
+      disabled={props.disabled}
       size="large"
       block
       width={100}

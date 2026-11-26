@@ -14,6 +14,7 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { DateTime } from "luxon"
 import { Suspense } from "react"
 import { graphql } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
 
 describe("ArtworkCommercialButtons", () => {
   let mockArtworkStore: ReturnType<typeof ArtworkStore.useStore>
@@ -445,6 +446,104 @@ describe("ArtworkCommercialButtons", () => {
           title: "Make Offer",
         },
       })
+    })
+  })
+
+  describe("creating one order at a time", () => {
+    const artwork = {
+      ...ArtworkFixture,
+      isAcquireable: true,
+      isOfferable: true,
+      isInquireable: false,
+    }
+
+    beforeEach(() => {
+      jest.mocked(navigate).mockClear()
+    })
+
+    const operationNames = (env: ReturnType<typeof createMockEnvironment>) =>
+      env.mock.getAllOperations().map((operation) => operation.request.node.operation.name)
+
+    it("ignores Purchase while the offer order is being created", async () => {
+      const { mockResolveLastOperation, env } = await renderWithRelay({
+        Artwork: () => artwork,
+        Me: () => meFixture,
+      })
+
+      await fireEvent.press(screen.getByText("Make an Offer"))
+      expect(screen.getByText("Purchase")).toBeDisabled()
+
+      await fireEvent.press(screen.getByText("Purchase"))
+      expect(operationNames(env)).toEqual(["MakeOfferButtonOrderMutation"])
+
+      await mockResolveLastOperation({
+        CommerceOrderWithMutationSuccess: () => ({
+          order: { internalID: "makeOfferID", mode: "OFFER" },
+        }),
+      })
+
+      expect(navigate).toHaveBeenCalledTimes(1)
+      expect(navigate).toHaveBeenCalledWith("/orders/makeOfferID", expect.anything())
+      expect(screen.getByText("Purchase")).toBeEnabled()
+    })
+
+    it("ignores Make an Offer while the purchase order is being created", async () => {
+      const { mockResolveLastOperation, env } = await renderWithRelay({
+        Artwork: () => artwork,
+        Me: () => meFixture,
+      })
+
+      await fireEvent.press(screen.getByText("Purchase"))
+      expect(screen.getByText("Make an Offer")).toBeDisabled()
+
+      await fireEvent.press(screen.getByText("Make an Offer"))
+      expect(operationNames(env)).toEqual(["useCreateOrderMutation"])
+
+      await mockResolveLastOperation({
+        CommerceOrderWithMutationSuccess: () => ({
+          order: { internalID: "buyNowID", mode: "BUY" },
+        }),
+      })
+
+      expect(navigate).toHaveBeenCalledTimes(1)
+      expect(navigate).toHaveBeenCalledWith("/orders/buyNowID", expect.anything())
+      expect(screen.getByText("Make an Offer")).toBeEnabled()
+    })
+
+    it("enables the other button again when creating the order fails", async () => {
+      const { mockRejectLastOperation, env } = await renderWithRelay({
+        Artwork: () => artwork,
+        Me: () => meFixture,
+      })
+
+      await fireEvent.press(screen.getByText("Make an Offer"))
+      await mockRejectLastOperation(new Error("network error"))
+
+      expect(screen.getByText("Purchase")).toBeEnabled()
+
+      await fireEvent.press(screen.getByText("Purchase"))
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "useCreateOrderMutation"
+      )
+    })
+
+    it("creates only one order when Purchase is tapped again while the order is being created", async () => {
+      const { env, mockResolveLastOperation } = await renderWithRelay({
+        Artwork: () => artwork,
+        Me: () => meFixture,
+      })
+
+      await fireEvent.press(screen.getByText("Purchase"))
+      await fireEvent.press(screen.getByText("Purchase"))
+
+      expect(operationNames(env)).toEqual(["useCreateOrderMutation"])
+
+      await mockResolveLastOperation({
+        CommerceOrderWithMutationSuccess: () => ({
+          order: { internalID: "buyNowID", mode: "BUY" },
+        }),
+      })
+      expect(navigate).toHaveBeenCalledTimes(1)
     })
   })
 
