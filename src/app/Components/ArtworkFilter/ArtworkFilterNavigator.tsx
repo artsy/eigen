@@ -362,7 +362,11 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
     >
       <NavigationIndependentTree>
         <NavigationContainer theme={theme}>
-          <KeyboardAvoidingContainer>
+          <KeyboardAvoidingContainer
+            // The padding this adds for the keyboard would otherwise show the modal's default white
+            // background, e.g. around the iOS 26 keyboard's rounded corners in dark mode
+            style={{ backgroundColor: color("mono0") }}
+          >
             <Flex flex={1}>
               <Stack.Navigator
                 // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
