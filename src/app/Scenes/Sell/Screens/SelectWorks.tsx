@@ -224,7 +224,11 @@ const SelectWorksContent: React.FC<SelectWorksContentProps> = withSuspense({
 const selectWorksQuery = graphql`
   query SelectWorksQuery {
     me {
-      myCollectionConnection(first: 50, sort: CREATED_AT_DESC) {
+      myCollectionConnection(
+        first: 50
+        sort: CREATED_AT_DESC
+        excludeArtworksWithActiveResaleSubmissions: true
+      ) {
         edges {
           node {
             id
