@@ -107,6 +107,30 @@ lane :notify_beta_failed do |options|
   )
 end
 
+desc "Notifies in slack if a QA build for the e2e tests failed"
+lane :notify_qa_build_failed do |options|
+  exception = options[:exception]
+  platform = options[:lane].to_s.end_with?('ios') ? '🍏 iOS' : '🤖 Android'
+  message = <<~MSG
+              :x: :tophat:
+              The e2e QA build failed for #{platform}! The e2e tests for it didn't run.
+              See GitHub action run for more details.
+            MSG
+
+  github_url = "https://github.com/#{ENV['GITHUB_REPOSITORY']}/actions/runs/#{ENV['GITHUB_RUN_ID']}"
+
+  slack(
+    channel: '#mobile-alerts',
+    message: message,
+    success: false,
+    payload: {
+      'GitHub Actions' => github_url,
+      'Exception' => exception.message
+    },
+    default_payloads: []
+  )
+end
+
 SENTRY_BASE_URL = 'https://artsynet.sentry.io'
 SENTRY_PROJECT_ID = '5867225'
 SENTRY_DASHBOARD_ID = '622403'

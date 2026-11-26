@@ -19,6 +19,10 @@ on:
         required: false
         default: latest
 
+env:
+  # Only main's runs post failures to Slack; a branch run is someone trying out changes
+  SKIP_SLACK_REPORT: ${{ github.ref != 'refs/heads/main' && '1' || '' }}
+
 jobs:
   build-android-qa:
     # Off main, only with a build_name, so a branch build never replaces main's Artsy-latest.
