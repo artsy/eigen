@@ -12,7 +12,9 @@ permissions:
 jobs:
   check-fingerprint:
     runs-on: macos-26
-    timeout-minutes: 10
+    # A cancelled run skips the iOS/Android cache builds even when it already moved latest.txt, so
+    # that fingerprint never gets built. Keep headroom above the ~7-8 min this job usually takes.
+    timeout-minutes: 15
     outputs:
       fingerprint_changed: ${{ steps.compare.outputs.changed }}
       current_fingerprint: ${{ steps.generate-fingerprint.outputs.fingerprint }}
@@ -44,17 +46,6 @@ jobs:
         with:
           distribution: "zulu"
           java-version: "17"
-
-      - name: Cache Gradle dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            android/.gradle
-          key: gradle-v2-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            gradle-v2-${{ runner.os }}-
 
       - name: Download android assets
         run: ./scripts/setup/download-assets-android
