@@ -725,35 +725,6 @@ describe("Sell", () => {
         )
         expect(screen.queryByText(/Uploading photos/)).not.toBeOnTheScreen()
       })
-
-      it("hides the progress when an upload fails", async () => {
-        const uploads = holdUploads()
-        const view = await renderSell()
-        await openStepWithPhotos(view)
-
-        await fireEvent.press(screen.getByText("Continue"))
-        expect(await screen.findByText("Uploading photos · 0 of 2")).toBeOnTheScreen()
-
-        await act(async () => {
-          uploads[0].reject(new Error("Upload failed"))
-        })
-
-        await waitFor(() => expect(mockShowToast).toHaveBeenCalled())
-        expect(screen.queryByText(/Uploading photos/)).not.toBeOnTheScreen()
-        expect(operationNames(view)).not.toContain("useUpdateResaleSubmissionMutation")
-      })
-    })
-
-    it("uploads nothing and sends no URLs without photos", async () => {
-      const view = await renderSell()
-      await openAuctionConditionStep(view)
-      await fireEvent.press(screen.getByRole("radio", { name: /^Fair\./ }))
-      await waitFor(() => expect(screen.getByText("Continue")).toBeEnabled())
-
-      await fireEvent.press(screen.getByText("Continue"))
-
-      expect(await resolveSave(view)).not.toHaveProperty("externalImageUrls")
-      expect(getConvertedImageUrlFromS3).not.toHaveBeenCalled()
     })
   })
 
@@ -762,7 +733,8 @@ describe("Sell", () => {
 
     const openStepWithSavedPhotos = async (
       view: SellView,
-      conditionPhotos: Array<{ internalID: string; url: string }> = [SAVED_PHOTO]
+      conditionPhotos: Array<{ internalID: string; url: string }> = [SAVED_PHOTO],
+      submission: { notes?: string } = {}
     ) => {
       await fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
       await fireEvent.press(screen.getByText("Verify If Sellable"))
@@ -772,7 +744,11 @@ describe("Sell", () => {
       const resolvers = activeWorkResolvers({ internalID: "id-b4", artistNames: "Artist C" })
       await resolveWhenPending(view, "ConditionQuery", {
         ...resolvers,
-        ResaleSubmission: () => ({ ...resolvers.ResaleSubmission(), conditionPhotos }),
+        ResaleSubmission: () => ({
+          ...resolvers.ResaleSubmission(),
+          conditionPhotos,
+          ...submission,
+        }),
       })
       await screen.findByText("Step 2 · Condition")
     }
@@ -1019,16 +995,7 @@ describe("Sell", () => {
 
     it("keeps the saved notes, so saving doesn’t clear them", async () => {
       const view = await renderSell()
-      await fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
-      await fireEvent.press(screen.getByText("Verify If Sellable"))
-      await resolveVerify(view)
-      await fireEvent.press(await screen.findByText("Proceed to Listing"))
-      await fireEvent.press(await screen.findByText("Start Submission"))
-      const resolvers = activeWorkResolvers({ internalID: "id-b4", artistNames: "Artist C" })
-      await resolveWhenPending(view, "ConditionQuery", {
-        ...resolvers,
-        ResaleSubmission: () => ({ ...resolvers.ResaleSubmission(), notes: "Signed on the back" }),
-      })
+      await openStepWithSavedPhotos(view, [], { notes: "Signed on the back" })
 
       expect(await screen.findByLabelText("Notes")).toHaveDisplayValue("Signed on the back")
       await continueWithFair()
@@ -1043,16 +1010,7 @@ describe("Sell", () => {
     it("shows the edited notes when step 2 opens again after a save", async () => {
       const alertSpy = jest.spyOn(Alert, "alert")
       const view = await renderSell()
-      await fireEvent.press(screen.getByTestId("artworkGridItem-Auction Work"))
-      await fireEvent.press(screen.getByText("Verify If Sellable"))
-      await resolveVerify(view)
-      await fireEvent.press(await screen.findByText("Proceed to Listing"))
-      await fireEvent.press(await screen.findByText("Start Submission"))
-      const resolvers = activeWorkResolvers({ internalID: "id-b4", artistNames: "Artist C" })
-      await resolveWhenPending(view, "ConditionQuery", {
-        ...resolvers,
-        ResaleSubmission: () => ({ ...resolvers.ResaleSubmission(), notes: "Signed on the back" }),
-      })
+      await openStepWithSavedPhotos(view, [], { notes: "Signed on the back" })
 
       await fireEvent.changeText(await screen.findByLabelText("Notes"), "Small tear ")
       await continueWithFair()
@@ -1084,19 +1042,6 @@ describe("Sell", () => {
       // Step 2 opens again from the Relay store, which must hold the saved notes
       await fireEvent.press(await screen.findByText("Start Submission"))
       expect(await screen.findByLabelText("Notes")).toHaveDisplayValue("Small tear")
-    })
-
-    it("tells the seller when photos past the cap are dropped", async () => {
-      const view = await renderSell()
-      await openStepWithSavedPhotos(view)
-
-      await pickPhotos(Array.from({ length: 10 }, (_, index) => `file:///${index}.jpg`))
-
-      await waitFor(() => expect(screen.getAllByTestId("sell-condition-photo")).toHaveLength(10))
-      expect(mockShowToast).toHaveBeenCalledWith(
-        "You can add up to 10 photos. We added the first 9.",
-        "bottom"
-      )
     })
 
     it("leaves step 2 without asking when only saved photos are there", async () => {

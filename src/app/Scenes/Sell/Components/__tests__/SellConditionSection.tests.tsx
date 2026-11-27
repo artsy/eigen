@@ -6,6 +6,11 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("app/utils/requestPhotos", () => ({ showPhotoActionSheet: jest.fn() }))
 
+const mockShowToast = jest.fn()
+jest.mock("app/Components/Toast/toastHook", () => ({
+  useToast: () => ({ show: mockShowToast }),
+}))
+
 const TestConditionSection: React.FC = () => (
   <SellConditionStore.Provider>
     <SellConditionSection />
@@ -23,7 +28,7 @@ describe("SellConditionSection", () => {
     expect(screen.getByLabelText("Notes")).toHaveDisplayValue("Small tear at the corner")
   })
 
-  it("keeps only the first 10 photos when more are added", async () => {
+  it("keeps only the first 10 photos when more are added, and says so", async () => {
     const pick = (from: number, count: number) =>
       jest.mocked(showPhotoActionSheet).mockResolvedValue(
         Array.from({ length: count }, (_, index) => ({
@@ -40,5 +45,9 @@ describe("SellConditionSection", () => {
     await fireEvent.press(screen.getByText("Add more photos"))
     await waitFor(() => expect(screen.getAllByTestId("sell-condition-photo")).toHaveLength(10))
     expect(screen.queryByText("Add more photos")).not.toBeOnTheScreen()
+    expect(mockShowToast).toHaveBeenCalledWith(
+      "You can add up to 10 photos. We added the first 2.",
+      "bottom"
+    )
   })
 })
