@@ -2,8 +2,11 @@ import { getConvectionGeminiKeyQuery } from "__generated__/getConvectionGeminiKe
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { fetchQuery, graphql } from "react-relay"
 
+// Parallel uploads share one request instead of each fetching the same key
+let pendingKey: Promise<string | null | undefined> | null = null
+
 export const getConvectionGeminiKey = () =>
-  fetchQuery<getConvectionGeminiKeyQuery>(
+  (pendingKey ??= fetchQuery<getConvectionGeminiKeyQuery>(
     getRelayEnvironment(),
     graphql`
       query getConvectionGeminiKeyQuery {
@@ -23,3 +26,6 @@ export const getConvectionGeminiKey = () =>
   )
     .toPromise()
     .then((data) => data?.system?.services?.convection.geminiTemplateKey)
+    .finally(() => {
+      pendingKey = null
+    }))

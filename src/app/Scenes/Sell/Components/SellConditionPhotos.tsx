@@ -61,7 +61,6 @@ export const SellConditionPhotos: React.FC<SellConditionPhotosProps> = ({
                 <Touchable
                   accessibilityRole="button"
                   accessibilityLabel={`Remove photo ${index + 1}`}
-                  accessibilityState={{ disabled }}
                   disabled={disabled}
                   onPress={() => onRemove(photo.path)}
                 >
@@ -84,12 +83,7 @@ export const SellConditionPhotos: React.FC<SellConditionPhotosProps> = ({
       )}
 
       {photos.length < MAX_SELL_CONDITION_PHOTOS && (
-        <Touchable
-          accessibilityRole="button"
-          accessibilityState={{ disabled }}
-          disabled={disabled}
-          onPress={pickPhotos}
-        >
+        <Touchable accessibilityRole="button" disabled={disabled} onPress={pickPhotos}>
           <Flex
             flexDirection="row"
             justifyContent="center"

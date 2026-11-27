@@ -13,6 +13,10 @@ export interface SellConditionStoreModel {
   savedNotes: string
   /** Whole US dollars as digits, or "" when nothing is entered */
   askingPrice: string
+  /** Saved photos the user removed, which the next save deletes */
+  removedPhotoIDs: Computed<this, string[]>
+  /** Local photos not saved yet, which the next save uploads */
+  newPhotoPaths: Computed<this, string[]>
   hasAnswers: Computed<this, boolean>
   setRating: Action<this, SellConditionRating>
   setPhotos: Action<this, SellConditionPhoto[]>
@@ -36,11 +40,17 @@ export const sellConditionStoreModel: SellConditionStoreModel = {
   notes: "",
   savedNotes: "",
   askingPrice: "",
+  removedPhotoIDs: computed((state) =>
+    state.savedPhotoIDs.filter((id) => !state.photos.some((photo) => photo.imageID === id))
+  ),
+  newPhotoPaths: computed((state) =>
+    state.photos.filter((photo) => !photo.imageID).map((photo) => photo.path)
+  ),
   hasAnswers: computed(
     (state) =>
       !!state.rating ||
-      state.photos.some((photo) => !photo.imageID) ||
-      state.savedPhotoIDs.some((id) => !state.photos.some((photo) => photo.imageID === id)) ||
+      state.newPhotoPaths.length > 0 ||
+      state.removedPhotoIDs.length > 0 ||
       state.notes.trim() !== state.savedNotes.trim() ||
       !!state.askingPrice
   ),
