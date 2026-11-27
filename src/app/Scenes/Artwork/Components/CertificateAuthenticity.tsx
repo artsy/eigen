@@ -1,7 +1,10 @@
-import { Box, Button, Join, Screen, Spacer, Text } from "@artsy/palette-mobile"
-import { RouterLink } from "app/system/navigation/RouterLink"
-import { goBack } from "app/system/navigation/navigate"
+import { Box, Button, Join, LinkText, Screen, Spacer, Text } from "@artsy/palette-mobile"
+// eslint-disable-next-line no-restricted-imports
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { ScrollView } from "react-native"
+
+const HELP_CENTER_URL =
+  "https://support.artsy.net/s/article/What-Counts-as-an-Artworks-Proof-of-Authenticity"
 
 export const CertificateOfAuthenticity: React.FC = () => {
   return (
@@ -25,12 +28,10 @@ export const CertificateOfAuthenticity: React.FC = () => {
               </Text>
               <Text>
                 Read more about artwork authenticity in our{" "}
-                <RouterLink
-                  to="https://support.artsy.net/s/article/What-Counts-as-an-Artworks-Proof-of-Authenticity"
-                  hasChildTouchable
-                >
-                  <Text underline>Help Center</Text>
-                </RouterLink>
+                {/* A nested LinkText stays on the text baseline; a RouterLink (a View) inside Text didn't */}
+                <LinkText accessibilityRole="link" onPress={() => navigate(HELP_CENTER_URL)}>
+                  Help Center
+                </LinkText>
                 .
               </Text>
               <Button onPress={() => goBack()} block>
