@@ -50,6 +50,7 @@ import { Platform } from "react-native"
 import { Environment, graphql } from "react-relay"
 
 const INITIAL_TAB = "Artworks"
+const AUCTION_RESULTS_TAB = "Insights"
 
 // Move to a shared file if used elsewhere
 interface RouteParams {
@@ -83,6 +84,11 @@ export const Artist: React.FC<ArtistProps> = ({
   const popoverMessage = usePopoverMessage()
   const enableArtistStory = useFeatureFlag("AREnableArtistStory")
 
+  const showAuctionResultsTab = !enableArtistStory || !!artistAboveTheFold.statuses?.auctionLots
+  // A link to a hidden tab would leave the tab view without a valid index
+  const initialTabName =
+    initialTab === AUCTION_RESULTS_TAB && !showAuctionResultsTab ? INITIAL_TAB : initialTab
+
   useEffect(() => {
     if (!!fetchCriteriaError) {
       popoverMessage.show({
@@ -94,17 +100,18 @@ export const Artist: React.FC<ArtistProps> = ({
     }
   }, [fetchCriteriaError])
 
-  // Prefetch the About and Insights tab queries on mount
   useEffect(() => {
     prefetchQuery({
       query: artistAboutQuery,
       variables: { artistID: artistAboveTheFold.internalID, enableArtistStory },
     })
-    prefetchQuery({
-      query: artistInsightsQuery,
-      variables: { artistID: artistAboveTheFold.internalID },
-    })
-  }, [artistAboveTheFold.internalID, enableArtistStory])
+    if (showAuctionResultsTab) {
+      prefetchQuery({
+        query: artistInsightsQuery,
+        variables: { artistID: artistAboveTheFold.internalID },
+      })
+    }
+  }, [artistAboveTheFold.internalID, enableArtistStory, showAuctionResultsTab])
 
   const renderBelowTheHeaderComponent = useCallback(
     () => <ArtistHeader artist={artistAboveTheFold} />,
@@ -128,7 +135,7 @@ export const Artist: React.FC<ArtistProps> = ({
         <KeyboardAvoidingContainer>
           <Tabs.TabsWithHeader
             disableKeyboardAvoidance
-            initialTabName={initialTab}
+            initialTabName={initialTabName}
             title={artistAboveTheFold.name ?? ""}
             showLargeHeaderText={false}
             BelowTitleHeaderComponent={renderBelowTheHeaderComponent}
@@ -153,12 +160,14 @@ export const Artist: React.FC<ArtistProps> = ({
               />
             </Tabs.Tab>
 
-            <Tabs.Tab name="Insights" label="Auction Results">
-              <ArtistInsightsQueryRenderer
-                artistID={artistAboveTheFold.internalID}
-                initialFilters={auctionResultsInitialFilters}
-              />
-            </Tabs.Tab>
+            {showAuctionResultsTab ? (
+              <Tabs.Tab name={AUCTION_RESULTS_TAB} label="Auction Results">
+                <ArtistInsightsQueryRenderer
+                  artistID={artistAboveTheFold.internalID}
+                  initialFilters={auctionResultsInitialFilters}
+                />
+              </Tabs.Tab>
+            ) : null}
 
             <Tabs.Tab name="Overview" label="About">
               <ArtistAboutQueryRenderer artistID={artistAboveTheFold.internalID} />
@@ -194,6 +203,9 @@ export const ArtistScreenQuery = graphql`
       slug
       href
       name
+      statuses {
+        auctionLots
+      }
     }
   }
 `
