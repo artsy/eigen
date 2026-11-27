@@ -84,9 +84,11 @@ export const InfiniteDiscoveryNegativeSignals: FC<InfiniteDiscoveryNegativeSigna
 
     track.tappedSeeFewerWorks(data.internalID, data.slug, artist.internalID, NEGATIVE_SIGNAL_TEXT)
 
+    // The explanation goes in the message, not the title: Android caps dialog titles at two lines
+    // and cut the sentence off ("…in Di…")
     Alert.alert(
-      `Are you sure? You will no longer see works by ${data.artistNames} in Discover Daily.`,
-      undefined,
+      "Are you sure?",
+      `You will no longer see works by ${data.artistNames} in Discover Daily.`,
       [
         { text: "No" },
         {
