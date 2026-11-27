@@ -16,7 +16,7 @@ export interface LargeCardProps {
  * at the bottom.
  */
 export const LargeCard: React.FC<LargeCardProps> = ({ image, title, subtitle, tag }) => {
-  const { color, space } = useTheme()
+  const { space } = useTheme()
 
   const { width } = useScreenDimensions()
   const cardHeight = 400
@@ -50,11 +50,12 @@ export const LargeCard: React.FC<LargeCardProps> = ({ image, title, subtitle, ta
           right: space(6),
         }}
       >
-        <Text variant="sm-display" color={color("mono0")}>
+        {/* The text sits on the image, so it stays white in dark mode too */}
+        <Text variant="sm-display" color="white">
           {title}
         </Text>
         {!!subtitle && (
-          <Text variant="sm" color={color("mono0")}>
+          <Text variant="sm" color="white">
             {subtitle}
           </Text>
         )}
