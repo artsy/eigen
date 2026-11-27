@@ -1,5 +1,9 @@
 import { Flex, useColor } from "@artsy/palette-mobile"
-import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
+import {
+  NavigationContainer,
+  NavigationIndependentTree,
+  useNavigationContainerRef,
+} from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import {
@@ -30,6 +34,22 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
   const { visible, params } = props
   const { attributes, entity, currentArtworkID, sizeMetric } = params
   const { localizedUnit } = useLocalizedUnit()
+  const navigationRef = useNavigationContainerRef<CreateSavedSearchAlertNavigationStack>()
+
+  // Android back button/gesture: go back within the alert flow, or close the modal from its first screen.
+  // Without this the Modal swallows the back press and nothing happens.
+  const handleRequestClose = () => {
+    // The alert is already saved on the confirmation screen, so back closes the modal like its X does
+    const isOnConfirmationScreen =
+      navigationRef.isReady() && navigationRef.getCurrentRoute()?.name === "ConfirmationScreen"
+
+    if (!isOnConfirmationScreen && navigationRef.isReady() && navigationRef.canGoBack()) {
+      navigationRef.goBack()
+      return
+    }
+
+    params.onClosePress()
+  }
 
   return (
     <SavedSearchStoreProvider
@@ -46,9 +66,11 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
       }}
     >
       <NavigationIndependentTree>
-        <NavigationContainer theme={theme}>
+        <NavigationContainer theme={theme} ref={navigationRef}>
           <Modal
             visible={visible}
+            onRequestClose={handleRequestClose}
+            testID="create-alert-modal"
             presentationStyle="overFullScreen"
             statusBarTranslucent
             animationType="slide"

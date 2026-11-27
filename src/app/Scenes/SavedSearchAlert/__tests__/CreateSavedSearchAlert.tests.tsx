@@ -134,6 +134,17 @@ describe("CreateSavedSearchAlert", () => {
     expect(onClosePressMock).toBeCalled()
   })
 
+  describe("Android back button", () => {
+    it("closes the modal from the first screen", async () => {
+      const onClosePressMock = jest.fn()
+      await renderWithWrappers(<TestRenderer onClosePress={onClosePressMock} />)
+
+      await fireEvent(screen.getByTestId("create-alert-modal"), "requestClose")
+
+      expect(onClosePressMock).toHaveBeenCalledTimes(1)
+    })
+  })
+
   it("calls onComplete when alert was saved", async () => {
     const onCompleteMock = jest.fn()
 
