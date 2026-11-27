@@ -104,7 +104,8 @@ export const ArtworkErrorScreen: React.FC<{}> = withSuspense({
         onRetry={fallbackProps.resetErrorBoundary}
         useSafeArea={false}
         error={fallbackProps.error}
-        showBackButton={true}
+        // The Artwork route's header already has a back button
+        showBackButton={false}
         trackErrorBoundary={false}
       />
     )
