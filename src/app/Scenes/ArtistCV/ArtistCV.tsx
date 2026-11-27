@@ -10,10 +10,11 @@ import {
 import { ArtistCVQuery } from "__generated__/ArtistCVQuery.graphql"
 import { ArtistCVList } from "app/Scenes/ArtistCV/Components/ArtistCVList"
 import { CVKind, CV_KIND_LABELS, CV_KIND_ORDER } from "app/Scenes/ArtistCV/utils/cvKinds"
-import { goBack } from "app/system/navigation/navigate"
+// eslint-disable-next-line no-restricted-imports
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { times } from "lodash"
-import { Suspense, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 interface ArtistCVProps {
@@ -83,6 +84,13 @@ export const ArtistCVScreenQuery = graphql`
 
 export const ArtistCVQueryRenderer: React.FC<ArtistCVProps> = ({ artistID }) => {
   const enableArtistStory = useFeatureFlag("AREnableArtistStory")
+
+  // Before this route, /artist/:artistID/cv opened the artist screen, and links still arrive here
+  useEffect(() => {
+    if (!enableArtistStory) {
+      navigate(`/artist/${artistID}`, { replaceActiveScreen: true })
+    }
+  }, [enableArtistStory, artistID])
 
   if (!enableArtistStory) {
     return null

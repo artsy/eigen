@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ArtistCVQueryRenderer } from "app/Scenes/ArtistCV/ArtistCV"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
@@ -17,11 +17,14 @@ describe("ArtistCV", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtistStory: true })
   })
 
-  it("renders nothing with AREnableArtistStory off", async () => {
+  it("opens the artist screen instead with AREnableArtistStory off", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtistStory: false })
 
     await renderWithWrappers(<ArtistCVQueryRenderer artistID="artist-id" />)
 
+    await waitFor(() =>
+      expect(navigate).toHaveBeenCalledWith("/artist/artist-id", { replaceActiveScreen: true })
+    )
     expect(screen.toJSON()).toBeNull()
   })
 
