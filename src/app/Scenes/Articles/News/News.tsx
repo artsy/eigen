@@ -5,17 +5,23 @@ import { ArticleSorts } from "__generated__/ArticlesQuery.graphql"
 import { NewsQuery } from "__generated__/NewsQuery.graphql"
 import { News_articlesConnection$key } from "__generated__/News_articlesConnection.graphql"
 import { CardsWithMetaDataListPlaceholder as NewsPlaceholder } from "app/Components/Cards/CardWithMetaData"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { ArticlesList } from "app/Scenes/Articles/ArticlesList"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Suspense, useState } from "react"
+import { useState } from "react"
 import { useLazyLoadQuery, usePaginationFragment, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
-export const News: React.FC = () => {
-  const queryData = useLazyLoadQuery<NewsQuery>(NewsScreenQuery, newsArticlesQueryVariables)
+export const News: React.FC<{ retryKey?: number }> = ({ retryKey = 0 }) => {
+  const queryData = useLazyLoadQuery<NewsQuery>(NewsScreenQuery, newsArticlesQueryVariables, {
+    fetchKey: retryKey,
+    // After a failed load (e.g. offline), go to the network instead of reusing the failed request
+    fetchPolicy: retryKey > 0 ? "network-only" : undefined,
+  })
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
     NewsQuery,
@@ -71,11 +77,29 @@ export const News: React.FC = () => {
   )
 }
 
-export const NewsScreen: React.FC = () => (
-  <Suspense fallback={<NewsPlaceholder title="News" />}>
-    <News />
-  </Suspense>
-)
+const NewsContent = withSuspense<{ retryKey: number; onRetry: () => void }>({
+  Component: ({ retryKey }) => <News retryKey={retryKey} />,
+  LoadingFallback: () => <NewsPlaceholder title="News" />,
+  ErrorFallback: (fallbackProps, { onRetry }) => (
+    <LoadFailureView
+      onRetry={() => {
+        onRetry()
+        fallbackProps.resetErrorBoundary()
+      }}
+      // The News route has no native header, so the error state needs its own way back
+      showBackButton
+      error={fallbackProps.error}
+      trackErrorBoundary={false}
+    />
+  ),
+})
+
+// Relay keeps a failed query in its cache, so a retry needs a new fetchKey to refetch.
+export const NewsScreen: React.FC = () => {
+  const [retryKey, setRetryKey] = useState(0)
+
+  return <NewsContent retryKey={retryKey} onRetry={() => setRetryKey((key) => key + 1)} />
+}
 
 export const NewsScreenQuery = graphql`
   query NewsQuery($count: Int, $after: String, $sort: ArticleSorts) {
