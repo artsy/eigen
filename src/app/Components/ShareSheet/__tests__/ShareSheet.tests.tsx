@@ -1,7 +1,9 @@
 import { screen } from "@testing-library/react-native"
-import { ShareSheet } from "app/Components/ShareSheet/ShareSheet"
+import { getContainerComponent, ShareSheet } from "app/Components/ShareSheet/ShareSheet"
 import { ShareSheetItem } from "app/Components/ShareSheet/types"
+import { internal_navigationRef } from "app/Navigation/Navigation"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { Platform } from "react-native"
 
 let mockItem: ShareSheetItem | null = null
 jest.mock("app/Components/ShareSheet/ShareSheetContext", () => ({
@@ -54,5 +56,39 @@ describe("ShareSheet", () => {
     await renderWithWrappers(<ShareSheet />)
 
     expect(screen.getByText("Instagram Stories")).toBeOnTheScreen()
+  })
+})
+
+describe("getContainerComponent", () => {
+  const originalOS = Platform.OS
+
+  const setCurrentRoute = (name: string) => {
+    // @ts-expect-error only the method the helper reads
+    internal_navigationRef.current = { getCurrentRoute: () => ({ name }) }
+  }
+
+  afterEach(() => {
+    Platform.OS = originalOS
+  })
+
+  it("puts the sheet in a full window overlay on an iOS modal screen", () => {
+    Platform.OS = "ios"
+    setCurrentRoute("MyCollectionArtworkAdd")
+
+    expect(getContainerComponent()).toBeDefined()
+  })
+
+  it("leaves the sheet in the app on a screen that isn't a modal", () => {
+    Platform.OS = "ios"
+    setCurrentRoute("Artwork")
+
+    expect(getContainerComponent()).toBeUndefined()
+  })
+
+  it("leaves the sheet in the app on Android", () => {
+    Platform.OS = "android"
+    setCurrentRoute("MyCollectionArtworkAdd")
+
+    expect(getContainerComponent()).toBeUndefined()
   })
 })
