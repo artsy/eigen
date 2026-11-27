@@ -45,13 +45,16 @@ export const Composer: React.FC<
   const inputRef = useRef<TextInputInstance>(null)
   const tracking = useTracking()
   const color = useColor()
+  // Whitespace-only messages (e.g. only line breaks) can't be sent
+  const hasText = !!text?.trim().length
+
   const submitText = () => {
     tracking.trackEvent({
       action_type: Schema.ActionTypes.Tap,
       action_name: Schema.ActionNames.ConversationSendReply,
     })
 
-    if (onSubmit && text) {
+    if (onSubmit && text && hasText) {
       onSubmit(text)
       setText(null)
       KeyboardController.dismiss()
@@ -64,7 +67,7 @@ export const Composer: React.FC<
     }
   }, [value, text])
 
-  const disableSendButton = !(text && text.length) || disabled
+  const disableSendButton = !hasText || disabled
 
   const inputStyles = {
     color: color("mono100"),

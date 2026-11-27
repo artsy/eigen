@@ -78,6 +78,19 @@ describe("regarding the send button", () => {
 
     expect(onSubmit).toHaveBeenCalledWith(text)
   })
+
+  it("disables it and doesn't submit when the message is only whitespace", async () => {
+    const onSubmit = jest.fn()
+    await renderWithRelay({}, { onSubmit })
+
+    await fireEvent.changeText(screen.getByLabelText("Text input field"), "\n\n  \n")
+
+    expect(screen.getByText("Send")).toBeDisabled()
+
+    await userEvent.press(screen.getByText("Send"))
+
+    expect(onSubmit).not.toHaveBeenCalled()
+  })
 })
 
 describe("inquiry offer", () => {
