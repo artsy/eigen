@@ -110,10 +110,7 @@ const ConditionForm: React.FC<{
         notes: sentNotes.current,
         ...(isMarketplace && { priceListed: answers.askingPrice }),
       },
-      () => {
-        const { photos, savedPhotoIDs } = store.getState()
-        return { photos, savedPhotoIDs }
-      }
+      store.getState
     )
   }
 

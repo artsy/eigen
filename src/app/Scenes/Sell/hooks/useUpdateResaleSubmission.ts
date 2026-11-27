@@ -53,10 +53,10 @@ const conditionPhotosQuery = graphql`
   }
 `
 
-/** Step 2’s photos: the current list, and the IDs saved on the submission */
+/** What a save must change in step 2’s photos */
 export interface ConditionPhotoChanges {
-  photos: SellConditionPhoto[]
-  savedPhotoIDs: string[]
+  removedPhotoIDs: string[]
+  newPhotoPaths: string[]
 }
 
 interface UploadState {
@@ -69,7 +69,7 @@ interface SaveOptions {
   /** Gets the photos the submission now holds, or null when the response left them out */
   onSaved: (savedPhotos: SellConditionPhoto[] | null) => void
   /** Gets the photos the submission holds, after a failed save that changed photos */
-  onPhotosReloaded?: (savedPhotos: SellConditionPhoto[]) => void
+  onPhotosReloaded: (savedPhotos: SellConditionPhoto[]) => void
 }
 
 /**
@@ -102,14 +102,14 @@ export const useSaveResaleSubmission = ({ onSaved, onPhotosReloaded }: SaveOptio
         if (!submission) {
           throw new Error("Resale submission not found")
         }
-        onPhotosReloaded?.(toSavedConditionPhotos(submission))
+        onPhotosReloaded(toSavedConditionPhotos(submission))
         photosStale.current = false
       })
 
   /** `getPhotoChanges` is read once any pending reload is done, so it sees the latest photos */
   const save = (
     input: UpdateResaleSubmissionInput,
-    getPhotoChanges?: () => ConditionPhotoChanges
+    getPhotoChanges: () => ConditionPhotoChanges
   ) => {
     const attempt = {}
     currentAttempt.current = attempt
@@ -119,23 +119,20 @@ export const useSaveResaleSubmission = ({ onSaved, onPhotosReloaded }: SaveOptio
     let changedPhotos = false
     setSaving(true)
 
-    const ready =
-      getPhotoChanges && photosStale.current ? reloadSavedPhotos(input.id) : Promise.resolve()
+    const ready = photosStale.current ? reloadSavedPhotos(input.id) : Promise.resolve()
 
     ready
       .then(() => {
-        const { photos, savedPhotoIDs } = getPhotoChanges?.() ?? { photos: [], savedPhotoIDs: [] }
-        const removedIDs = savedPhotoIDs.filter(
-          (id) => !photos.some((photo) => photo.imageID === id)
-        )
-        const photoPaths = photos.filter((photo) => !photo.imageID).map((photo) => photo.path)
-        changedPhotos = removedIDs.length > 0 || photoPaths.length > 0
+        const { removedPhotoIDs, newPhotoPaths } = getPhotoChanges()
+        changedPhotos = removedPhotoIDs.length > 0 || newPhotoPaths.length > 0
 
-        setUpload(photoPaths.length > 0 ? { progress: photoPaths.map(() => 0), done: 0 } : null)
+        setUpload(
+          newPhotoPaths.length > 0 ? { progress: newPhotoPaths.map(() => 0), done: 0 } : null
+        )
 
         // Every delete settles before the next step, so a reload after a failure sees them all
         return Promise.allSettled(
-          removedIDs.map((imageID) =>
+          removedPhotoIDs.map((imageID) =>
             deleteImage({
               variables: { input: { id: input.id, imageID } },
               rejectIf: (response) =>
@@ -147,7 +144,7 @@ export const useSaveResaleSubmission = ({ onSaved, onPhotosReloaded }: SaveOptio
           if (results.some((result) => result.status === "rejected")) {
             throw new Error("A photo couldn’t be deleted")
           }
-          return photoPaths
+          return newPhotoPaths
         })
       })
       .then((photoPaths) =>
@@ -195,7 +192,7 @@ export const useSaveResaleSubmission = ({ onSaved, onPhotosReloaded }: SaveOptio
           setUpload(null)
           toast.show(SAVE_ERROR, "bottom", { backgroundColor: "red100" })
 
-          if (!getPhotoChanges || !(changedPhotos || photosStale.current)) {
+          if (!changedPhotos && !photosStale.current) {
             return
           }
 
@@ -206,7 +203,6 @@ export const useSaveResaleSubmission = ({ onSaved, onPhotosReloaded }: SaveOptio
         }
       )
       .finally(() => {
-        setUpload(null)
         setSaving(false)
       })
   }
