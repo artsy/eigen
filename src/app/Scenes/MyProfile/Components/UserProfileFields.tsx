@@ -28,8 +28,10 @@ export const userProfileYupSchema = Yup.object().shape({
       "instagram-format",
       "Instagram handle can only contain letters, numbers, underscores, and periods",
       (value) => {
-        if (value === null || value === undefined || value === "") return true
-        return /^@?[a-zA-Z0-9_.]+$/.test(value)
+        // Leading/trailing whitespace (e.g. the space Android keyboards add after a word) is trimmed on save
+        const handle = value?.trim()
+        if (!handle) return true
+        return /^@?[a-zA-Z0-9_.]+$/.test(handle)
       }
     ),
   linkedIn: Yup.string()
@@ -38,8 +40,9 @@ export const userProfileYupSchema = Yup.object().shape({
       "linkedin-format",
       "LinkedIn handle can only contain letters, numbers, and hyphens",
       (value) => {
-        if (value === null || value === undefined || value === "") return true
-        return /^[a-zA-Z0-9\-]+$/.test(value)
+        const handle = value?.trim()
+        if (!handle) return true
+        return /^[a-zA-Z0-9\-]+$/.test(handle)
       }
     ),
 })
