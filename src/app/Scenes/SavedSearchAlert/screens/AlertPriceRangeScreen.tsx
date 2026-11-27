@@ -4,12 +4,12 @@ import {
   AlertPriceRangeScreenQuery,
   AlertPriceRangeScreenQuery$data,
 } from "__generated__/AlertPriceRangeScreenQuery.graphql"
-import { PriceRange } from "app/Components/ArtworkFilter/Filters/helpers"
+import { parsePriceRange, PriceRange } from "app/Components/ArtworkFilter/Filters/helpers"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { PriceRangeContainer } from "app/Components/PriceRange/PriceRangeContainer"
 import { DEFAULT_PRICE_RANGE } from "app/Components/PriceRange/constants"
-import { getBarsFromAggregations } from "app/Components/PriceRange/utils"
+import { getBarsFromAggregations, isPriceRangeInverted } from "app/Components/PriceRange/utils"
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -77,7 +77,11 @@ export const AlertPriceRangeScreen: React.FC<AlertPriceRanceScreenProps> = ({
       <Spacer y={2} />
 
       <Flex m={2}>
-        <Button block onPress={handleOnButtonPress}>
+        <Button
+          block
+          onPress={handleOnButtonPress}
+          disabled={isPriceRangeInverted(parsePriceRange(filterPriceRange))}
+        >
           Set Price Range
         </Button>
       </Flex>

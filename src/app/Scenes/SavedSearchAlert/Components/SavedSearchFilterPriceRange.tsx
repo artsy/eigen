@@ -8,11 +8,12 @@ import {
   Text,
 } from "@artsy/palette-mobile"
 import { SavedSearchFilterPriceRangeQuery } from "__generated__/SavedSearchFilterPriceRangeQuery.graphql"
+import { parsePriceRange } from "app/Components/ArtworkFilter/Filters/helpers"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { PriceRangeContainer } from "app/Components/PriceRange/PriceRangeContainer"
 import { DEFAULT_PRICE_RANGE } from "app/Components/PriceRange/constants"
 import { PriceRange } from "app/Components/PriceRange/types"
-import { getBarsFromAggregations } from "app/Components/PriceRange/utils"
+import { getBarsFromAggregations, isPriceRangeInverted } from "app/Components/PriceRange/utils"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -41,6 +42,11 @@ const SavedSearchFilterPriceRange: React.FC<SavedSearchFilterPriceRangeProps> = 
 
   useDebounce(
     () => {
+      // Don't save an inverted range (e.g. $200–$199) to the alert, the input shows an error instead
+      if (isPriceRangeInverted(parsePriceRange(filterPriceRange))) {
+        return
+      }
+
       addValueToAttributesByKeyAction({
         key: SearchCriteria.priceRange,
         value: filterPriceRange,

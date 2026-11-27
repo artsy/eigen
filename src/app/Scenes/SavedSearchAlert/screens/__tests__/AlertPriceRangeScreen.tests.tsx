@@ -115,6 +115,27 @@ describe("AlertPriceRangeScreen", () => {
 
     expect(goBackMock).toHaveBeenCalledTimes(1)
   })
+
+  it("shows an error and doesn't set the price range when max is lower than min", async () => {
+    goBackMock.mockClear()
+
+    await renderWithRelay({
+      Artist: () => artist,
+    })
+
+    // wait for suspense to go away
+    await waitFor(() =>
+      expect(screen.queryByTestId("alert-price-range-spinner")).not.toBeOnTheScreen()
+    )
+
+    await fireEvent.changeText(screen.getByTestId("price-max-input"), "799")
+
+    expect(screen.getByText("Max price must be higher than min price")).toBeOnTheScreen()
+
+    await fireEvent.press(screen.getByText("Set Price Range"))
+
+    expect(goBackMock).not.toHaveBeenCalled()
+  })
 })
 
 const savedSearchEntity: SavedSearchEntity = {
