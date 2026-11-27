@@ -7,6 +7,7 @@ import {
 } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { SavedSearchEntity } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -45,6 +46,15 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
     [data.artistSeriesArtworks]
   )
   const shouldDisplaySpinner = isLoadingNext && hasNext
+
+  // Alerts created from the series filter are for the series' artist, narrowed to this series
+  const seriesArtist = data.artists?.[0]
+  const savedSearchEntity: SavedSearchEntity | undefined = seriesArtist
+    ? {
+        artists: [{ id: seriesArtist.internalID, name: seriesArtist.name ?? "" }],
+        owner: { type: OwnerType.artistSeries, id: data.internalID, slug: data.slug },
+      }
+    : undefined
   const gridRef = useRef<FlashListRef<(typeof artworksList)[0]>>(null)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setFiltersCountAction
@@ -175,6 +185,8 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
         closeModal={closeFilterArtworksModal}
         mode={FilterModalMode.ArtistSeries}
         shouldShowCreateAlertButton
+        savedSearchEntity={savedSearchEntity}
+        savedSearchCriteria={savedSearchEntity ? { artistSeriesIDs: [data.slug] } : undefined}
       />
     </>
   )
@@ -191,6 +203,10 @@ const fragment = graphql`
     title
     slug
     internalID
+    artists(size: 1) {
+      internalID
+      name
+    }
     artistSeriesArtworks: filterArtworksConnection(
       first: $count
       after: $cursor
