@@ -5,6 +5,12 @@ import { ArtistSeriesArtworks } from "app/Scenes/ArtistSeries/ArtistSeriesArtwor
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
+const mockArtworkFilterNavigator = jest.fn((_props: any) => null)
+jest.mock("app/Components/ArtworkFilter", () => ({
+  ...jest.requireActual("app/Components/ArtworkFilter"),
+  ArtworkFilterNavigator: (props: any) => mockArtworkFilterNavigator(props),
+}))
+
 describe("Artist Series Artworks", () => {
   const { renderWithRelay } = setupTestWrapper<ArtistSeriesArtworksTestsQuery>({
     Component: ({ artistSeries }) => (
@@ -44,5 +50,26 @@ describe("Artist Series Artworks", () => {
     expect(screen.getByTestId("ArtistSeriesArtworksGrid")).toBeOnTheScreen()
 
     expect(screen.getByText(/No results found/)).toBeOnTheScreen()
+  })
+
+  it("creates alerts for the series' artist and the series, not for the series as an artist", async () => {
+    await renderWithRelay({
+      ArtistSeries: () => ({
+        internalID: "series-id",
+        slug: "andy-warhol-flash-november-22",
+        title: "Flash-November 22",
+        artists: [{ internalID: "artist-id", name: "Andy Warhol" }],
+      }),
+    })
+
+    const props = mockArtworkFilterNavigator.mock.calls.at(-1)?.[0]
+
+    expect(props.savedSearchEntity).toEqual({
+      artists: [{ id: "artist-id", name: "Andy Warhol" }],
+      owner: { type: "artistSeries", id: "series-id", slug: "andy-warhol-flash-november-22" },
+    })
+    expect(props.savedSearchCriteria).toEqual({
+      artistSeriesIDs: ["andy-warhol-flash-november-22"],
+    })
   })
 })

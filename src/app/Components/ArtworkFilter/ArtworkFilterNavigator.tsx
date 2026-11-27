@@ -51,7 +51,7 @@ import {
 import { AuctionHouseOptionsScreen } from "./Filters/AuctionHouseOptions"
 import { LocationCitiesOptionsScreen } from "./Filters/LocationCitiesOptions"
 import { getSearchCriteriaFromFilters } from "./SavedSearch/searchCriteriaHelpers"
-import { SavedSearchEntity } from "./SavedSearch/types"
+import { SavedSearchEntity, SearchCriteriaAttributes } from "./SavedSearch/types"
 import { ArtworkFilterApplyButton } from "./components/ArtworkFilterApplyButton"
 
 interface ArtworkFilterProps extends ViewProps {
@@ -67,6 +67,13 @@ interface ArtworkFilterProps extends ViewProps {
   title?: string
   query?: string
   shouldShowCreateAlertButton?: boolean
+  /**
+   * What "Create Alert" saves. Defaults to treating `id`/`name` as an artist, which is wrong for
+   * screens filtering something else (e.g. an artist series), so those pass their own.
+   */
+  savedSearchEntity?: SavedSearchEntity
+  /** Extra criteria added to the alert on top of the selected filters (e.g. the artist series) */
+  savedSearchCriteria?: Partial<SearchCriteriaAttributes>
 }
 
 interface ArtworkFilterOptionsScreenParams {
@@ -124,7 +131,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const { id, mode, slug, name, query, shouldShowCreateAlertButton, closeModal, exitModal } = props
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
 
-  const savedSearchEntity: SavedSearchEntity = {
+  const savedSearchEntity: SavedSearchEntity = props.savedSearchEntity ?? {
     artists: [{ id: id as string, name: name as string }],
     owner: {
       type: OwnerType.artist,
@@ -146,7 +153,10 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
 
   const filterState = ArtworksFiltersStore.useStoreState((state) => state)
   const unitedFilters = getUnitedSelectedAndAppliedFilters(filterState)
-  const attributes = getSearchCriteriaFromFilters(savedSearchEntity, unitedFilters)
+  const attributes = {
+    ...getSearchCriteriaFromFilters(savedSearchEntity, unitedFilters),
+    ...props.savedSearchCriteria,
+  }
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
 
   const handleClosingModal = () => {
