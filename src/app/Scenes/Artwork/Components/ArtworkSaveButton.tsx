@@ -95,11 +95,18 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({
         <Spacer x={0.5} />
 
         <Box position="relative">
-          {/* Longest text transparent to prevent changing text pushing elements on the right */}
+          {/* Longest text, invisible, to prevent changing text pushing elements on the right */}
+          {/* Hidden with opacity: Android still draws text with color="transparent", which made an */}
+          {/* unsaved artwork read "Saved" (the visible "Save" drawn on top of "Saved") */}
           {/* Hiding it in the testing environment since it is not visible to the users */}
           {/* Hidden from screen readers */}
           {!__TEST__ && (
-            <Text variant="sm" color="transparent" accessibilityElementsHidden>
+            <Text
+              variant="sm"
+              style={{ opacity: 0 }}
+              accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants"
+            >
               {openOrUpcomingSale ? "Watch lot" : "Saved"}
             </Text>
           )}
