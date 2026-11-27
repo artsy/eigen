@@ -35900,6 +35900,16 @@ type Query {
     @deprecated(reason: "Consignment submissions are no longer supported.")
 
   """
+  The email accounts connected by a user, with limited fields. For Artsy staff with the artos_support role; each access is logged.
+  """
+  supportEmailAccounts(
+    """
+    The internal ID of the user who connected the accounts
+    """
+    userId: String!
+  ): [EmailAccount!]
+
+  """
   Fields related to internal systems.
   """
   system: System
@@ -46985,6 +46995,16 @@ type Viewer {
   ): StaticContent
   submission(externalId: ID, id: ID, sessionID: String): ConsignmentSubmission
     @deprecated(reason: "Consignment submissions are no longer supported.")
+
+  """
+  The email accounts connected by a user, with limited fields. For Artsy staff with the artos_support role; each access is logged.
+  """
+  supportEmailAccounts(
+    """
+    The internal ID of the user who connected the accounts
+    """
+    userId: String!
+  ): [EmailAccount!]
 
   """
   Fields related to internal systems.
