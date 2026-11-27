@@ -35,6 +35,9 @@ export const useUpdateArtworkListsForArtwork = (artworkID: string): MutationResu
         // their early returns — a missing store count shouldn't skip the reorder.
         moveUpdatedListsToFront(store, response)
 
+        // Same here: an open list screen should drop the artwork right away
+        removeArtworkFromArtworkListConnections(store, artworkID, response?.removedFromArtworkLists)
+
         const artwork = store.get(artworkID)
 
         if (!artwork) {
@@ -132,6 +135,59 @@ export const moveUpdatedListsToFront = (
     ConnectionHandler.deleteNode(connection, nodeID)
     const newEdge = ConnectionHandler.createEdge(store, connection, node, "Collection")
     ConnectionHandler.insertEdgeBefore(connection, newEdge)
+  })
+}
+
+// The sorts the artwork list screen can request; each one is a separate `ArtworkList_artworks` connection
+const ARTWORK_LIST_SORTS = ["SAVED_AT_DESC", "SAVED_AT_ASC"]
+
+/**
+ * Removes the artwork from the `ArtworkList_artworks` connections of the lists it was removed from,
+ * so an open list (e.g. "Saved Artworks") updates immediately instead of after a refresh.
+ */
+export const removeArtworkFromArtworkListConnections = (
+  store: RecordSourceSelectorProxy,
+  artworkID: string,
+  removedArtworkLists:
+    | ReadonlyArray<{ readonly internalID: string } | null | undefined>
+    | null
+    | undefined
+) => {
+  const me = store.getRoot().getLinkedRecord("me")
+
+  if (!me || !artworkID) {
+    return
+  }
+
+  removedArtworkLists?.forEach((artworkList) => {
+    if (!artworkList) {
+      return
+    }
+
+    const collection = me.getLinkedRecord("collection", { id: artworkList.internalID })
+
+    if (!collection) {
+      return
+    }
+
+    ARTWORK_LIST_SORTS.forEach((sort) => {
+      const connection = ConnectionHandler.getConnection(collection, "ArtworkList_artworks", {
+        sort,
+      })
+
+      if (!connection) {
+        return
+      }
+
+      const edgesBefore = connection.getLinkedRecords("edges")?.length ?? 0
+      ConnectionHandler.deleteNode(connection, artworkID)
+      const edgesAfter = connection.getLinkedRecords("edges")?.length ?? 0
+
+      const totalCount = connection.getValue("totalCount")
+      if (edgesAfter < edgesBefore && typeof totalCount === "number") {
+        connection.setValue(Math.max(totalCount - 1, 0), "totalCount")
+      }
+    })
   })
 }
 

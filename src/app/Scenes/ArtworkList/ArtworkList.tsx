@@ -45,7 +45,11 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
       listID,
       ...artworkListVariables,
     },
-    { fetchPolicy: "store-and-network" }
+    {
+      fetchPolicy: "store-and-network",
+      // Lists change whenever artworks are saved or removed, so don't serve a cached network response
+      networkCacheConfig: { force: true },
+    }
   )
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
