@@ -22,11 +22,12 @@ import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { bidderNeedsIdentityVerification } from "app/utils/auction/bidderNeedsIdentityVerification"
+import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { saleTime } from "app/utils/saleTime"
 import { Schema, screenTrack } from "app/utils/track"
 import { get, isEmpty } from "lodash"
-import React from "react"
+import React, { useCallback } from "react"
 import { Alert, ScrollView, View, ViewProps } from "react-native"
 import {
   QueryRenderer,
@@ -515,25 +516,32 @@ export const RegistrationQueryRenderer: React.FC<
 > = (screenProps) => {
   const { saleID } = screenProps.route.params
 
+  const confirmLeave = useCallback(() => {
+    Alert.alert("Are you sure you want to leave?", "", [
+      {
+        text: "Cancel",
+        style: "cancel",
+        onPress: () => null,
+      },
+      {
+        text: "Leave",
+        style: "destructive",
+        onPress: () => dismissModal(),
+      },
+    ])
+  }, [])
+
+  // Android back button: ask before leaving, same as the X button
+  const handleBackPress = useCallback(() => {
+    confirmLeave()
+    return true
+  }, [confirmLeave])
+
+  useBackHandler(handleBackPress)
+
   return (
     <View style={{ flex: 1 }}>
-      <NavigationHeader
-        onLeftButtonPress={() => {
-          Alert.alert("Are you sure you want to leave?", "", [
-            {
-              text: "Cancel",
-              style: "cancel",
-              onPress: () => null,
-            },
-            {
-              text: "Leave",
-              style: "destructive",
-              onPress: () => dismissModal(),
-            },
-          ])
-        }}
-        useXButton
-      >
+      <NavigationHeader onLeftButtonPress={confirmLeave} useXButton>
         Register to bid
       </NavigationHeader>
       <QueryRenderer<RegistrationQuery>
