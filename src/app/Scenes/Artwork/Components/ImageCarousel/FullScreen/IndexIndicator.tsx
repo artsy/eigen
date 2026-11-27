@@ -1,8 +1,8 @@
-import { Text, useColor } from "@artsy/palette-mobile"
+import { Text, useColor, useScreenDimensions } from "@artsy/palette-mobile"
 import { ImageCarouselContext } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
 import { useContext, useMemo } from "react"
-import { Animated, View } from "react-native"
+import { Animated, Platform, View } from "react-native"
 import { boxShadow } from "./boxShadow"
 import { useSpringFade } from "./useSpringFade"
 
@@ -13,6 +13,7 @@ import { useSpringFade } from "./useSpringFade"
  */
 export const IndexIndicator: React.FC = () => {
   const color = useColor()
+  const { safeAreaInsets } = useScreenDimensions()
   const { images, isZoomedCompletelyOut, imageIndex } = useContext(ImageCarouselContext)
 
   isZoomedCompletelyOut.useUpdates()
@@ -29,7 +30,9 @@ export const IndexIndicator: React.FC = () => {
     <View
       style={{
         position: "absolute",
-        bottom: 20,
+        // On Android the full screen modal draws behind the navigation bar, so keep the indicator above
+        // it (with 3-button navigation it otherwise covers the home button)
+        bottom: 20 + (Platform.OS === "android" ? safeAreaInsets.bottom : 0),
         right: 0,
         left: 0,
         height: 30,
