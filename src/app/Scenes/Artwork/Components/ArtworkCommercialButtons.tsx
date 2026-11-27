@@ -10,7 +10,7 @@ import { BuyNowButton } from "app/Scenes/Artwork/Components/CommercialButtons/Bu
 import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
 import { MakeOfferButtonFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/MakeOfferButton"
 import { getTimer } from "app/utils/getTimer"
-import { Children } from "react"
+import { Children, useRef, useState } from "react"
 import { useFragment, graphql } from "react-relay"
 import { BidButtonFragmentContainer } from "./CommercialButtons/BidButton"
 
@@ -32,6 +32,8 @@ const RowContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
   )
 }
 
+type OrderButton = "offer" | "buy"
+
 export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> = ({
   artwork,
   partnerOffer,
@@ -42,6 +44,28 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
   const partnerOfferData = useFragment(partnerOfferFragment, partnerOffer)
   const selectedEditionId = ArtworkStore.useStoreState((state) => state.selectedEditionId)
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
+
+  // Only one order can be created at a time. Without this, tapping Make Offer and Purchase in quick
+  // succession opens both checkout flows on top of each other. The ref is checked synchronously on
+  // press, so it also catches taps that land before the disabled state re-renders.
+  const pendingOrderRef = useRef<OrderButton | null>(null)
+  const [pendingOrderButton, setPendingOrderButton] = useState<OrderButton | null>(null)
+
+  const startOrder = (button: OrderButton) => {
+    if (pendingOrderRef.current && pendingOrderRef.current !== button) {
+      return false
+    }
+    pendingOrderRef.current = button
+    setPendingOrderButton(button)
+    return true
+  }
+
+  const endOrder = (button: OrderButton) => {
+    if (pendingOrderRef.current === button) {
+      pendingOrderRef.current = null
+      setPendingOrderButton(null)
+    }
+  }
 
   const { hasEnded: partnerOfferEnded } = getTimer(partnerOfferData?.endAt || "")
 
@@ -100,11 +124,17 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
           editionSetID={selectedEditionId}
           variant="outline"
           partnerOffer={partnerOfferData}
+          disabled={pendingOrderButton === "buy"}
+          onOrderStart={() => startOrder("offer")}
+          onOrderEnd={() => endOrder("offer")}
         />
         <BuyNowButton
           partnerOffer={partnerOfferData}
           artwork={artworkData}
           editionSetID={selectedEditionId}
+          disabled={pendingOrderButton === "offer"}
+          onOrderStart={() => startOrder("buy")}
+          onOrderEnd={() => endOrder("buy")}
         />
       </RowContainer>
     )
@@ -151,11 +181,17 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
             editionSetID={selectedEditionId}
             variant="outline"
             partnerOffer={partnerOfferData}
+            disabled={pendingOrderButton === "buy"}
+            onOrderStart={() => startOrder("offer")}
+            onOrderEnd={() => endOrder("offer")}
           />
           <BuyNowButton
             partnerOffer={partnerOfferData}
             artwork={artworkData}
             editionSetID={selectedEditionId}
+            disabled={pendingOrderButton === "offer"}
+            onOrderStart={() => startOrder("buy")}
+            onOrderEnd={() => endOrder("buy")}
           />
         </RowContainer>
       )

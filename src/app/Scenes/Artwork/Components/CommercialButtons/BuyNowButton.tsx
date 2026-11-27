@@ -30,6 +30,10 @@ export interface BuyNowButtonProps {
   buttonText?: string
   // Source is used to track where the button was tapped from, by default it's in the artwork screen
   source?: "notification" | (string & {})
+  disabled?: boolean
+  // Called synchronously on press. Returning false cancels the press (e.g. another order is pending)
+  onOrderStart?: () => boolean
+  onOrderEnd?: () => void
 }
 
 export const BuyNowButton = ({
@@ -39,6 +43,9 @@ export const BuyNowButton = ({
   editionSetID,
   renderSaleMessage,
   buttonText,
+  disabled,
+  onOrderStart,
+  onOrderEnd,
 }: BuyNowButtonProps) => {
   const [isCommittingCreateOrderMutation, setIsCommittingCreateOrderMutation] = useState(false)
 
@@ -134,7 +141,11 @@ export const BuyNowButton = ({
   }
 
   const handleCreateOrder = async () => {
-    if (isCommittingCreateOrderMutation) {
+    if (isCommittingCreateOrderMutation || disabled) {
+      return
+    }
+
+    if (onOrderStart && !onOrderStart()) {
       return
     }
 
@@ -154,6 +165,7 @@ export const BuyNowButton = ({
       onMutationError(e as Error)
     } finally {
       setIsCommittingCreateOrderMutation(false)
+      onOrderEnd?.()
     }
   }
 
@@ -182,6 +194,7 @@ export const BuyNowButton = ({
     <Button
       onPress={() => handleCreateOrder()}
       loading={isCommittingCreateOrderMutation}
+      disabled={disabled}
       size="large"
       variant={variant}
       block
