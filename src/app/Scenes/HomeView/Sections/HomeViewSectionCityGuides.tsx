@@ -34,8 +34,9 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { showLocationSettingsAlert } from "app/utils/showLocationSettingsAlert"
 import { memo, useCallback, useMemo, useRef, useState } from "react"
-import { Alert, FlatList, Linking, ListRenderItem } from "react-native"
+import { FlatList, ListRenderItem } from "react-native"
 import Animated, {
   runOnJS,
   useAnimatedScrollHandler,
@@ -178,7 +179,7 @@ const CityGuidesCarousel: React.FC<CityGuidesCarouselProps> = ({
           navigate(result.href)
           break
         case "blocked":
-          showLocationSettingsAlert()
+          showLocationSettingsAlert("To find the City Guide near you")
           break
         case "denied":
           // The user just declined the prompt: respect it
@@ -297,17 +298,6 @@ const CityGuidesCarousel: React.FC<CityGuidesCarouselProps> = ({
     </Flex>
   )
 }
-
-/** Once denied, the system prompt never shows again, so Settings is the only way back. */
-const showLocationSettingsAlert = () =>
-  Alert.alert(
-    "Allow access to your location",
-    "To find the City Guide near you, allow Artsy to access your location in Settings.",
-    [
-      { text: "Cancel", style: "cancel" },
-      { text: "Open Settings", onPress: () => Linking.openSettings() },
-    ]
-  )
 
 const keyExtractor = (item: CityGuideCarouselCardData, index: number) =>
   `${item.citySlug ?? "near-me"}-${index}`
