@@ -95,6 +95,9 @@ export const InfoButton = forwardRef<
   }
 )
 
+// gorhom/bottom-sheet's default handle (indicator + vertical padding)
+const BOTTOM_SHEET_HANDLE_HEIGHT = 24
+
 export const AutoHeightInfoModal: React.FC<{
   isPresentedModally?: boolean
   modalContent: React.JSX.Element
@@ -126,7 +129,15 @@ export const AutoHeightInfoModal: React.FC<{
   }, [visible, isPresentedModally])
 
   // Calculate the max height of the content within the bottom sheet
-  const MAX_CONTENT_HEIGHT = screenHeight - safeAreaInsets.top - safeAreaInsets.bottom - space(1)
+  // The container below pads by the top inset and twice the bottom inset (SafeAreaView edge + style),
+  // and the sheet adds its handle on top. Leave room for all of it, otherwise tall content (e.g. Market
+  // Signals) pushes the Close button off the bottom of the screen.
+  const MAX_CONTENT_HEIGHT =
+    screenHeight -
+    safeAreaInsets.top -
+    2 * safeAreaInsets.bottom -
+    BOTTOM_SHEET_HANDLE_HEIGHT -
+    space(1)
 
   return (
     <AutoHeightBottomSheet
