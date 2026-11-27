@@ -124,8 +124,8 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
       location: updatedLocation,
       profession,
       otherRelevantPositions,
-      instagram,
-      linkedIn,
+      instagram: instagram?.trim(),
+      linkedIn: linkedIn?.trim(),
     }
 
     try {
