@@ -224,12 +224,12 @@ export const getStaticFilterOptionsByMode = (
         filterOptionToDisplayConfigMap.viewAs,
       ]
 
+    // Only filters that the auction results query passes to `auctionResultsConnection` belong here.
+    // Others (e.g. colors, priceRange) would show up but have no effect on the results.
     case FilterModalMode.AuctionResults:
       return [
         filterOptionToDisplayConfigMap.categories,
-        filterOptionToDisplayConfigMap.colors,
         filterOptionToDisplayConfigMap.organizations,
-        filterOptionToDisplayConfigMap.priceRange,
         filterOptionToDisplayConfigMap.sizes,
         filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.year,
