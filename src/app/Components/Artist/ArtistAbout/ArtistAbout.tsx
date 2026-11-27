@@ -11,11 +11,15 @@ import { LoadFailureView, LoadFailureViewProps } from "app/Components/LoadFailur
 import { SectionTitle } from "app/Components/SectionTitle"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { compact } from "lodash"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
+import { ArtistCVLink } from "./ArtistCVLink"
 import { ArtistCareerHighlights } from "./ArtistCareerHighlights"
+import { ArtistHighlightsAndAchievements } from "./ArtistHighlightsAndAchievements"
+import { ArtistPullQuote } from "./ArtistPullQuote"
 
 interface ArtistAboutProps {
   artist: ArtistAbout_artist$key
@@ -24,6 +28,7 @@ interface ArtistAboutProps {
 export const ArtistAbout: React.FC<ArtistAboutProps> = ({ artist: artistProp }) => {
   const space = useSpace()
   const artist = useFragment(artistAboutFragment, artistProp)
+  const enableArtistStory = useFeatureFlag("AREnableArtistStory")
 
   const articles = extractNodes(artist.articlesConnection)
   const relatedArtists = extractNodes(artist.related?.artistsConnection)
@@ -36,8 +41,13 @@ export const ArtistAbout: React.FC<ArtistAboutProps> = ({ artist: artistProp }) 
   const hasArticles = (artist.counts?.articles ?? 0) > 0
   const hasRelatedArtists = (artist.counts?.relatedArtists ?? 0) > 0
   const hasRelatedGenes = relatedGenes.length > 0
+  const hasAchievements =
+    hasInsights ||
+    (artist.hasCVSoloShows?.totalCount ?? 0) > 0 ||
+    (artist.hasCVFairBooths?.totalCount ?? 0) > 0
 
   const isDisplayable =
+    enableArtistStory ||
     hasArtistSeries ||
     hasInsights ||
     hasBiography ||
@@ -46,23 +56,53 @@ export const ArtistAbout: React.FC<ArtistAboutProps> = ({ artist: artistProp }) 
     hasRelatedGenes
 
   const data = compact([
-    hasBiography && {
+    !enableArtistStory &&
+      hasBiography && {
+        key: "biography",
+        content: (
+          <>
+            <Spacer y={1} />
+            <Flex maxWidth={MAX_WIDTH_BIO} px={2}>
+              <SectionTitle title="Biography" />
+              <Biography artist={artist} />
+            </Flex>
+          </>
+        ),
+      },
+
+    enableArtistStory && {
       key: "biography",
       content: (
         <>
           <Spacer y={1} />
           <Flex maxWidth={MAX_WIDTH_BIO} px={2}>
-            <SectionTitle title="Biography" />
+            <ArtistPullQuote artist={artist} />
             <Biography artist={artist} />
+            <Flex mt={2}>
+              <ArtistCVLink
+                artistID={artist.internalID}
+                artistSlug={artist.slug}
+                contextModule={ContextModule.about}
+              >
+                View CV
+              </ArtistCVLink>
+            </Flex>
           </Flex>
         </>
       ),
     },
 
-    !!hasInsights && {
-      key: "insights",
-      content: <ArtistCareerHighlights artist={artist} />,
-    },
+    !enableArtistStory &&
+      hasInsights && {
+        key: "insights",
+        content: <ArtistCareerHighlights artist={artist} />,
+      },
+
+    enableArtistStory &&
+      hasAchievements && {
+        key: "achievements",
+        content: <ArtistHighlightsAndAchievements artist={artist} />,
+      },
 
     !!hasArtistSeries && {
       key: "artistSeries",
@@ -112,7 +152,8 @@ export const ArtistAbout: React.FC<ArtistAboutProps> = ({ artist: artistProp }) 
 }
 
 const artistAboutFragment = graphql`
-  fragment ArtistAbout_artist on Artist {
+  fragment ArtistAbout_artist on Artist
+  @argumentDefinitions(enableArtistStory: { type: "Boolean", defaultValue: false }) {
     hasArtistSeriesConnection: artistSeriesConnection(first: 1) {
       totalCount
     }
@@ -126,12 +167,31 @@ const artistAboutFragment = graphql`
     hasArtistShows: showsConnection(first: 1, sort: END_AT_ASC, status: "running") {
       totalCount
     }
+    hasCVSoloShows: showsConnection(
+      first: 1
+      atAFair: false
+      soloShow: true
+      isReference: true
+      visibleToPublic: false
+    ) @include(if: $enableArtistStory) {
+      totalCount
+    }
+    hasCVFairBooths: showsConnection(
+      first: 1
+      atAFair: true
+      isReference: true
+      visibleToPublic: false
+    ) @include(if: $enableArtistStory) {
+      totalCount
+    }
     slug
     ...Biography_artist
     ...ArtistSeriesMoreSeries_artist
     ...Articles_artist
     ...ArtistAboutShows_artist
     ...ArtistCareerHighlights_artist
+    ...ArtistHighlightsAndAchievements_artist @include(if: $enableArtistStory)
+    ...ArtistPullQuote_artist @include(if: $enableArtistStory)
     ...RelatedArtistsRailCell_artist
     counts {
       articles
@@ -164,9 +224,9 @@ const artistAboutFragment = graphql`
 `
 
 export const artistAboutQuery = graphql`
-  query ArtistAboutQuery($artistID: String!) {
+  query ArtistAboutQuery($artistID: String!, $enableArtistStory: Boolean = false) {
     artist(id: $artistID) {
-      ...ArtistAbout_artist
+      ...ArtistAbout_artist @arguments(enableArtistStory: $enableArtistStory)
     }
   }
 `
@@ -177,7 +237,11 @@ interface ArtistAboutQueryRendererProps {
 
 export const ArtistAboutQueryRenderer = withSuspense<ArtistAboutQueryRendererProps>({
   Component: ({ artistID }) => {
-    const data = useLazyLoadQuery<ArtistAboutQuery>(artistAboutQuery, { artistID })
+    const enableArtistStory = useFeatureFlag("AREnableArtistStory")
+    const data = useLazyLoadQuery<ArtistAboutQuery>(artistAboutQuery, {
+      artistID,
+      enableArtistStory,
+    })
 
     if (!data.artist) {
       return null
