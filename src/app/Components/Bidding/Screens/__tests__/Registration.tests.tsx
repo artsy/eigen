@@ -2,13 +2,17 @@ import { createToken } from "@stripe/stripe-react-native"
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { Registration_me$data } from "__generated__/Registration_me.graphql"
 import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
-import { Registration } from "app/Components/Bidding/Screens/Registration"
+import {
+  Registration,
+  RegistrationQueryRenderer,
+} from "app/Components/Bidding/Screens/Registration"
 import { RegistrationStatus } from "app/Components/Bidding/Screens/RegistrationResult"
 import { Address } from "app/Components/Bidding/types"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { Alert, BackHandler } from "react-native"
 import relay from "react-relay"
 import { Disposable, MutationConfig, MutationParameters } from "relay-runtime"
 
@@ -723,3 +727,25 @@ const initialPropsForUserWithoutPhone = {
 }
 
 const initialPropsForUserWithoutCreditCardOrPhone = { ...initialProps, me } as any
+
+describe("RegistrationQueryRenderer", () => {
+  it("asks for confirmation before leaving when the Android back button is pressed", async () => {
+    const addEventListener = jest.spyOn(BackHandler, "addEventListener")
+    const alert = jest.spyOn(Alert, "alert")
+
+    await renderWithWrappers(
+      <RegistrationQueryRenderer
+        route={{ params: { saleID: "sale-id" } } as any}
+        navigation={{} as any}
+      />
+    )
+
+    const handler = addEventListener.mock.calls
+      .filter(([event]) => event === "hardwareBackPress")
+      .at(-1)?.[1]
+
+    // `true` stops the bidding stack from dismissing the screen without asking
+    expect(handler?.({ type: "hardwareBackPress", timeStamp: Date.now() })).toBe(true)
+    expect(alert).toHaveBeenCalledWith("Are you sure you want to leave?", "", expect.any(Array))
+  })
+})
