@@ -41,3 +41,10 @@ export const getBarsFromAggregations = (aggregations?: Aggregations) => {
 
   return sortedBars
 }
+
+/** True when both ends are set and the max is lower than the min, e.g. $200–$199 */
+export const isPriceRangeInverted = ([min, max]: PriceRange) => {
+  return typeof min === "number" && typeof max === "number" && max < min
+}
+
+export const INVERTED_PRICE_RANGE_ERROR = "Max price must be higher than min price"

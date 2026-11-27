@@ -7,6 +7,8 @@ import { PriceRange } from "app/Components/PriceRange/types"
 import {
   convertToFilterFormatRange,
   getInputValue,
+  INVERTED_PRICE_RANGE_ERROR,
+  isPriceRangeInverted,
   parseSliderRange,
 } from "app/Components/PriceRange/utils"
 import React, { useCallback, useEffect, useState } from "react"
@@ -68,6 +70,7 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
 
   const sliderRange = parseSliderRange(range)
   const [minValue, maxValue] = range
+  const isInverted = isPriceRangeInverted(range)
 
   const shouldDisplayHistogram = histogramBars.length > 0
 
@@ -152,6 +155,7 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
             keyboardType="number-pad"
             value={getInputValue(maxValue)}
             onChangeText={handleTextChange(1)}
+            error={isInverted ? INVERTED_PRICE_RANGE_ERROR : undefined}
             testID="price-max-input"
             accessibilityLabel="Maximum Price Range Input"
           />
