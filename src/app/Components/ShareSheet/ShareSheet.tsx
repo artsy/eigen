@@ -22,16 +22,39 @@ import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { CustomShareSheetItem } from "app/Components/ShareSheet/ShareSheetItem"
 import { getShareImages, shareContent } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
+import { internal_navigationRef } from "app/Navigation/Navigation"
+import { isModalScreen } from "app/Navigation/utils/isModalScreen"
+import { modules } from "app/Navigation/utils/modules"
 import { InstagramStoryViewShot } from "app/Scenes/Artwork/Components/InstagramStoryViewShot"
 import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
-import { useRef, useState } from "react"
+import { PropsWithChildren, useRef, useState } from "react"
+import { Platform } from "react-native"
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller"
 import Keys from "react-native-keys"
+import { FullWindowOverlay } from "react-native-screens"
 import Share, { Social } from "react-native-share"
 import { ViewShotRef } from "react-native-view-shot"
 import { useTracking } from "react-tracking"
+
+const ModalScreenOverlay: React.FC<PropsWithChildren> = ({ children }) => (
+  <FullWindowOverlay>{children}</FullWindowOverlay>
+)
+
+// Modal routes open as native modals on iOS, which cover a sheet presented from the app root,
+// so the sheet opened behind them and only showed up once the modal was closed
+export const getContainerComponent = () => {
+  if (Platform.OS !== "ios") {
+    return undefined
+  }
+
+  const moduleName = internal_navigationRef?.current?.getCurrentRoute()
+    ?.name as keyof typeof modules
+  const module = modules[moduleName]
+
+  return module && isModalScreen(module) ? ModalScreenOverlay : undefined
+}
 
 export const ShareSheet = () => {
   const { isVisible, item: data, hideShareSheet } = useShareSheet()
@@ -46,6 +69,8 @@ export const ShareSheet = () => {
     data?.type !== "default"
   const { trackEvent } = useTracking()
   const webURL = GlobalStore.useAppState((s) => s.devicePrefs.environment.strings.webURL)
+  // The sheet is only mounted while it is shown, so this is read when it opens
+  const [containerComponent] = useState(getContainerComponent)
 
   if (!data) {
     return null
@@ -194,6 +219,7 @@ export const ShareSheet = () => {
       onDismiss={hideShareSheet}
       enableDynamicSizing={false}
       snapPoints={SNAP_POINTS}
+      containerComponent={containerComponent}
       // gorhom makes the whole sheet one "Bottom Sheet" element by default, which hides its rows from
       // VoiceOver and from the e2e tests
       accessible={false}
