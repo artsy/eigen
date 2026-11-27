@@ -75,6 +75,46 @@ describe("AboutArtist", () => {
     expect(screen.queryByText("Biography of Abbas Kiarostami")).not.toBeOnTheScreen()
   })
 
+  describe.each([false, true])("with AREnableEnrichedMarkdown %s", (enableEnrichedMarkdown) => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableEnrichedMarkdown: enableEnrichedMarkdown,
+      })
+    })
+
+    it("collapses the expanded artist bio with Read Less", async () => {
+      await renderWithRelay({
+        Artwork: () => ({
+          isUnlisted: false,
+          displayArtistBio: true,
+          artists: [{ biographyBlurb: { text: "A long artist bio. ".repeat(40) } }],
+        }),
+      })
+
+      expect(screen.queryByText("Read Less")).not.toBeOnTheScreen()
+
+      if (enableEnrichedMarkdown) {
+        // MarkdownReadMore only shows "Read more" once it has measured that the text overflows
+        const layout = (height: number) => ({
+          nativeEvent: { layout: { height, width: 300, x: 0, y: 0 } },
+        })
+        await fireEvent(
+          screen.getByTestId("read-more-measure", { includeHiddenElements: true }),
+          "layout",
+          layout(400)
+        )
+        await fireEvent(screen.getByTestId("read-more-content"), "layout", layout(100))
+      }
+
+      await fireEvent.press(screen.getByText("Read more"))
+      expect(screen.getByText("Read Less")).toBeOnTheScreen()
+
+      await fireEvent.press(screen.getByText("Read Less"))
+      expect(screen.queryByText("Read Less")).not.toBeOnTheScreen()
+      expect(screen.getByText("Read more")).toBeOnTheScreen()
+    })
+  })
+
   it("tracks taps on artist bio read more", async () => {
     await renderWithRelay({
       Artwork: () => ({

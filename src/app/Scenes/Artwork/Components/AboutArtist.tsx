@@ -60,6 +60,7 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
             textVariant="sm"
             linkTextVariant="sm-display"
             color={textColor}
+            showReadLessButton
           />
         </Box>
       )}
