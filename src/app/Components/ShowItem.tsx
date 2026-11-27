@@ -10,12 +10,14 @@ const DEFAULT_CELL_WIDTH = 335
 
 interface ShowItemProps {
   displayViewShowButton?: boolean
+  onPress?: () => void
   shouldHideFollowButton?: boolean
   show: ShowItem_show$key
 }
 
 export const ShowItem: React.FC<ShowItemProps> = ({
   displayViewShowButton = false,
+  onPress,
   shouldHideFollowButton = false,
   show,
 }) => {
@@ -34,7 +36,7 @@ export const ShowItem: React.FC<ShowItemProps> = ({
 
   return (
     <Flex style={{ width: DEFAULT_CELL_WIDTH }}>
-      <RouterLink to={href} testID="show-item-visit-show-link">
+      <RouterLink to={href} onPress={onPress} testID="show-item-visit-show-link">
         <Image
           testID="show-cover"
           src={data.coverImage?.url ?? ""}
@@ -46,7 +48,7 @@ export const ShowItem: React.FC<ShowItemProps> = ({
 
       <Flex flexDirection="row" alignItems="flex-start" justifyContent="space-between" mt={1}>
         <Flex flex={1}>
-          <RouterLink to={href}>
+          <RouterLink to={href} onPress={onPress}>
             <Text variant="lg-display">{data.name}</Text>
             <Text variant="sm-display">{data.partner?.name}</Text>
             {!!data.exhibitionPeriod && (
@@ -65,7 +67,7 @@ export const ShowItem: React.FC<ShowItemProps> = ({
       </Flex>
 
       {!!displayViewShowButton && (
-        <RouterLink hasChildTouchable to={href}>
+        <RouterLink hasChildTouchable to={href} onPress={onPress}>
           <Button my={2}>View Show</Button>
         </RouterLink>
       )}

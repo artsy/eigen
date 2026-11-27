@@ -5,6 +5,7 @@ import { ArtistAbout_artist$key } from "__generated__/ArtistAbout_artist.graphql
 import { Articles } from "app/Components/Artist/Articles/Articles"
 import { ArtistAboutEmpty } from "app/Components/Artist/ArtistAbout/ArtistAboutEmpty"
 import { ArtistAboutRelatedGenes } from "app/Components/Artist/ArtistAbout/ArtistAboutRelatedGenes"
+import { useArtistAboutTracking } from "app/Components/Artist/ArtistAbout/useArtistAboutTracking"
 import { Biography, MAX_WIDTH_BIO } from "app/Components/Artist/Biography"
 import { RelatedArtistsRail } from "app/Components/Artist/RelatedArtistsRail"
 import { LoadFailureView, LoadFailureViewProps } from "app/Components/LoadFailureView"
@@ -14,6 +15,8 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { compact } from "lodash"
+import { useEffect } from "react"
+import { useFocusedTab } from "react-native-collapsible-tab-view"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 import { ArtistCVLink } from "./ArtistCVLink"
@@ -29,6 +32,14 @@ export const ArtistAbout: React.FC<ArtistAboutProps> = ({ artist: artistProp }) 
   const space = useSpace()
   const artist = useFragment(artistAboutFragment, artistProp)
   const enableArtistStory = useFeatureFlag("AREnableArtistStory")
+  const artistAboutTracking = useArtistAboutTracking()
+  const focusedTab = useFocusedTab()
+
+  useEffect(() => {
+    if (focusedTab === "Overview") {
+      artistAboutTracking.screen({ artistID: artist.internalID, artistSlug: artist.slug })
+    }
+  }, [focusedTab, artistAboutTracking, artist.internalID, artist.slug])
 
   const articles = extractNodes(artist.articlesConnection)
   const relatedArtists = extractNodes(artist.related?.artistsConnection)
@@ -135,7 +146,7 @@ export const ArtistAbout: React.FC<ArtistAboutProps> = ({ artist: artistProp }) 
     },
     !!hasRelatedGenes && {
       key: "relatedGenes",
-      content: <ArtistAboutRelatedGenes genes={relatedGenes} />,
+      content: <ArtistAboutRelatedGenes artist={artist} />,
     },
   ])
 
@@ -192,6 +203,7 @@ const artistAboutFragment = graphql`
     ...ArtistCareerHighlights_artist
     ...ArtistHighlightsAndAchievements_artist @include(if: $enableArtistStory)
     ...ArtistPullQuote_artist @include(if: $enableArtistStory)
+    ...ArtistAboutRelatedGenes_artist
     ...RelatedArtistsRailCell_artist
     counts {
       articles
@@ -208,7 +220,7 @@ const artistAboutFragment = graphql`
       genes {
         edges {
           node {
-            ...ArtistAboutRelatedGenes_genes
+            internalID
           }
         }
       }

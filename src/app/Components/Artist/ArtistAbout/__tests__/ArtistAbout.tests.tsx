@@ -6,9 +6,17 @@ import {
 } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
+
+let mockFocusedTab = "Artworks"
+
+jest.mock("react-native-collapsible-tab-view", () => ({
+  ...require("app/utils/tests/getMockCollapsibleTabView").getMockCollapsibleTabs(),
+  useFocusedTab: () => mockFocusedTab,
+}))
 
 describe("ArtistAbout", () => {
   const { renderWithRelay } = setupTestWrapper<ArtistAboutTestsQuery>({
@@ -192,6 +200,32 @@ describe("ArtistAbout", () => {
       })
 
       expect(screen.queryByText(/Artsy Editorial Featuring/)).not.toBeOnTheScreen()
+    })
+  })
+
+  describe("tracking", () => {
+    it("tracks a screen view when the About tab is focused", async () => {
+      mockFocusedTab = "Overview"
+      await renderWithRelay({ Artist: () => ({ internalID: "artist-id", slug: "artist-slug" }) })
+
+      expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+[
+  {
+    "action": "screen",
+    "context_screen_owner_id": "artist-id",
+    "context_screen_owner_slug": "artist-slug",
+    "context_screen_owner_type": "artistAbout",
+  },
+]
+`)
+    })
+
+    it("doesn't track a screen view when another tab is focused", async () => {
+      mockFocusedTab = "Artworks"
+      await renderWithRelay()
+
+      expect(mockTrackEvent).not.toHaveBeenCalled()
     })
   })
 })
