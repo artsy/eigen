@@ -446,6 +446,68 @@ describe("ArtworkCommercialButtons", () => {
         },
       })
     })
+
+    it("only the Make Offer mutation when Purchase is tapped while the offer is being created", async () => {
+      const artwork = {
+        ...ArtworkFixture,
+        isAcquireable: true,
+        isOfferable: true,
+        isInquireable: false,
+      }
+
+      const { mockResolveLastOperation, env } = await renderWithRelay({
+        Artwork: () => artwork,
+        Me: () => meFixture,
+      })
+      ;(navigate as jest.Mock).mockClear()
+
+      await fireEvent.press(screen.getByText("Make an Offer"))
+      await fireEvent.press(screen.getByText("Purchase"))
+
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "MakeOfferButtonOrderMutation"
+      )
+      await mockResolveLastOperation({
+        CommerceOrderWithMutationSuccess: () => ({
+          order: { internalID: "makeOfferID", mode: "OFFER" },
+        }),
+      })
+
+      expect(env.mock.getAllOperations()).toHaveLength(0)
+      expect(navigate).toHaveBeenCalledTimes(1)
+      expect(navigate).toHaveBeenCalledWith("/orders/makeOfferID", expect.anything())
+    })
+
+    it("only the Purchase mutation when Make Offer is tapped while the order is being created", async () => {
+      const artwork = {
+        ...ArtworkFixture,
+        isAcquireable: true,
+        isOfferable: true,
+        isInquireable: false,
+      }
+
+      const { mockResolveLastOperation, env } = await renderWithRelay({
+        Artwork: () => artwork,
+        Me: () => meFixture,
+      })
+      ;(navigate as jest.Mock).mockClear()
+
+      await fireEvent.press(screen.getByText("Purchase"))
+      await fireEvent.press(screen.getByText("Make an Offer"))
+
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "useCreateOrderMutation"
+      )
+      await mockResolveLastOperation({
+        CommerceOrderWithMutationSuccess: () => ({
+          order: { internalID: "buyNowID", mode: "BUY" },
+        }),
+      })
+
+      expect(env.mock.getAllOperations()).toHaveLength(0)
+      expect(navigate).toHaveBeenCalledTimes(1)
+      expect(navigate).toHaveBeenCalledWith("/orders/buyNowID", expect.anything())
+    })
   })
 
   describe("tracking", () => {

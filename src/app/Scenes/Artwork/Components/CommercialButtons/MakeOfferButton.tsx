@@ -23,6 +23,10 @@ export interface MakeOfferButtonProps {
   variant?: ButtonProps["variant"]
   buttonText?: string
   partnerOffer?: PartnerOffer
+  disabled?: boolean
+  // Called synchronously on press. Returning false cancels the press (e.g. another order is pending)
+  onOrderStart?: () => boolean
+  onOrderEnd?: () => void
 }
 
 export const MakeOfferButton: React.FC<MakeOfferButtonProps> = (props) => {
@@ -64,7 +68,11 @@ export const MakeOfferButton: React.FC<MakeOfferButtonProps> = (props) => {
     const { relay, artwork, editionSetID, partnerOffer } = props
     const { internalID } = artwork
 
-    if (isCommittingCreateOfferOrderMutation) {
+    if (isCommittingCreateOfferOrderMutation || props.disabled) {
+      return
+    }
+
+    if (props.onOrderStart && !props.onOrderStart()) {
       return
     }
 
@@ -103,6 +111,7 @@ export const MakeOfferButton: React.FC<MakeOfferButtonProps> = (props) => {
         },
         onCompleted: (data) => {
           setIsCommittingCreateOfferOrderMutation(false)
+          props.onOrderEnd?.()
 
           const {
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -118,6 +127,7 @@ export const MakeOfferButton: React.FC<MakeOfferButtonProps> = (props) => {
         },
         onError: (error) => {
           setIsCommittingCreateOfferOrderMutation(false)
+          props.onOrderEnd?.()
           onMutationError(error)
         },
       })
@@ -128,6 +138,7 @@ export const MakeOfferButton: React.FC<MakeOfferButtonProps> = (props) => {
     <Button
       onPress={handleCreateOfferOrder}
       loading={isCommittingCreateOfferOrderMutation}
+      disabled={props.disabled}
       size="large"
       block
       width={100}
