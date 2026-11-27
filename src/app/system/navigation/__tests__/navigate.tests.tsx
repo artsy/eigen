@@ -135,6 +135,79 @@ describe(navigate, () => {
     })
   })
 
+  describe("routing to a top tab of a root tab view", () => {
+    const rootStateWithFavoritesStack = (favoritesStackIndex: number) => ({
+      type: "stack",
+      routes: [
+        {
+          name: "AppTabs",
+          state: {
+            type: "tab",
+            routes: [
+              { name: "home" },
+              {
+                name: "favorites",
+                state: {
+                  type: "stack",
+                  key: "favorites-stack",
+                  index: favoritesStackIndex,
+                  routes: [{ name: "Favorites" }, { name: "Artwork" }],
+                },
+              },
+            ],
+          },
+        },
+      ],
+    })
+
+    beforeEach(() => {
+      jest.useFakeTimers()
+    })
+
+    afterEach(() => {
+      jest.useRealTimers()
+    })
+
+    it("pops the tab stack back to its root before selecting the top tab", async () => {
+      // An artwork was opened from Favorites and is on top of the Favorites screen
+      // @ts-expect-error
+      internal_navigationRef.current.getRootState = jest
+        .fn()
+        .mockReturnValue(rootStateWithFavoritesStack(1))
+
+      await navigate("/favorites/alerts")
+      jest.advanceTimersByTime(200)
+
+      expect(internal_navigationRef.current?.dispatch).toHaveBeenCalledWith({
+        type: "POP_TO_TOP",
+        target: "favorites-stack",
+      })
+      expect(internal_navigationRef.current?.dispatch).toHaveBeenLastCalledWith({
+        payload: { name: "alerts" },
+        type: "NAVIGATE",
+      })
+    })
+
+    it("doesn't pop when the tab stack is already at its root", async () => {
+      // @ts-expect-error
+      internal_navigationRef.current.getRootState = jest
+        .fn()
+        .mockReturnValue(rootStateWithFavoritesStack(0))
+
+      // a different URL than the previous test, since navigate() debounces repeated URLs
+      await navigate("/favorites/follows")
+      jest.advanceTimersByTime(200)
+
+      expect(internal_navigationRef.current?.dispatch).not.toHaveBeenCalledWith(
+        expect.objectContaining({ type: "POP_TO_TOP" })
+      )
+      expect(internal_navigationRef.current?.dispatch).toHaveBeenLastCalledWith({
+        payload: { name: "follows" },
+        type: "NAVIGATE",
+      })
+    })
+  })
+
   it("switches tab before pushing in cases where that's required", async () => {
     await navigate("/conversation/234")
     expect(GlobalStore.actions.bottomTabs.setSelectedTab).toHaveBeenCalledWith("inbox")

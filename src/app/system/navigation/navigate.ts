@@ -1,5 +1,11 @@
 import { EventEmitter } from "events"
-import { CommonActions, StackActions, TabActions } from "@react-navigation/native"
+import {
+  CommonActions,
+  NavigationState,
+  PartialState,
+  StackActions,
+  TabActions,
+} from "@react-navigation/native"
 import { tabsTracks } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { modules } from "app/Navigation/utils/modules"
@@ -97,12 +103,57 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
 
     const topTabName = module?.options?.topTabsNavigatorOptions?.topTabName
     if (topTabName) {
+      // The top tabs live in the tab's root screen. If other screens are stacked on top of it (e.g.
+      // an artwork opened from Favorites), pop back to it first, otherwise the top tab can't be
+      // found and nothing happens.
+      if (module.options?.onlyShowInTabName) {
+        popTabStackToRoot(module.options.onlyShowInTabName)
+      }
+
       // We need to wait for the material top tab navigator to finish mounting
       //  before we can navigate to it
       setTimeout(() => {
         internal_navigationRef.current?.dispatch(CommonActions.navigate(topTabName))
       }, 200)
     }
+  }
+}
+
+type AnyNavigationState = NavigationState | PartialState<NavigationState>
+
+/** Finds the stack navigator state of a bottom tab, e.g. the stack inside the "favorites" tab */
+const findTabStackState = (
+  state: AnyNavigationState | undefined,
+  tab: BottomTabType
+): AnyNavigationState | undefined => {
+  if (!state?.routes) {
+    return undefined
+  }
+
+  for (const route of state.routes) {
+    const childState = route.state as AnyNavigationState | undefined
+
+    if (state.type === "tab" && route.name === tab) {
+      return childState
+    }
+
+    const found = findTabStackState(childState, tab)
+    if (found) {
+      return found
+    }
+  }
+
+  return undefined
+}
+
+const popTabStackToRoot = (tab: BottomTabType) => {
+  const tabStackState = findTabStackState(internal_navigationRef.current?.getRootState(), tab)
+
+  if (tabStackState?.key && (tabStackState.index ?? 0) > 0) {
+    internal_navigationRef.current?.dispatch({
+      ...StackActions.popToTop(),
+      target: tabStackState.key,
+    })
   }
 }
 
