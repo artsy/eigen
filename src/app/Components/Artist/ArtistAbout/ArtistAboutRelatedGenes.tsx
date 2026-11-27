@@ -1,25 +1,27 @@
 import { Pill, Spacer, Text, useSpace } from "@artsy/palette-mobile"
-import { ArtistAboutRelatedGenes_genes$key } from "__generated__/ArtistAboutRelatedGenes_genes.graphql"
+import { ArtistAboutRelatedGenes_artist$key } from "__generated__/ArtistAboutRelatedGenes_artist.graphql"
+import { useArtistAboutTracking } from "app/Components/Artist/ArtistAbout/useArtistAboutTracking"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { Fragment } from "react"
+import { extractNodes } from "app/utils/extractNodes"
+import { Fragment, useMemo } from "react"
 import { ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
 interface ArtistAboutRelatedGenesProps {
-  genes: ArtistAboutRelatedGenes_genes$key
+  artist: ArtistAboutRelatedGenes_artist$key
 }
 
 const MAX_WIDTH = 800
 const MAX_GENES = 24
 
-export const ArtistAboutRelatedGenes: React.FC<ArtistAboutRelatedGenesProps> = ({ genes }) => {
-  const data = useFragment(query, genes)
+export const ArtistAboutRelatedGenes: React.FC<ArtistAboutRelatedGenesProps> = ({
+  artist: artistRef,
+}) => {
+  const artist = useFragment(fragment, artistRef)
+  const genes = useMemo(() => extractNodes(artist.related?.genes).slice(0, MAX_GENES), [artist])
   const space = useSpace()
-
-  if (!data) {
-    return null
-  }
+  const artistAboutTracking = useArtistAboutTracking()
 
   return (
     <>
@@ -35,9 +37,20 @@ export const ArtistAboutRelatedGenes: React.FC<ArtistAboutRelatedGenesProps> = (
           marginHorizontal: space(2),
         }}
       >
-        {data.slice(0, MAX_GENES).map(({ name, href, internalID }) => (
+        {genes.map(({ name, href, internalID }) => (
           <Fragment key={`gene-${internalID}`}>
-            <RouterLink hasChildTouchable to={href}>
+            <RouterLink
+              hasChildTouchable
+              to={href}
+              onPress={() =>
+                artistAboutTracking.tappedGene({
+                  artistID: artist.internalID,
+                  artistSlug: artist.slug,
+                  geneID: internalID,
+                  geneName: name ?? "",
+                })
+              }
+            >
               <Pill variant="default">{name}</Pill>
             </RouterLink>
             <Spacer x={1} y={4} />
@@ -48,10 +61,20 @@ export const ArtistAboutRelatedGenes: React.FC<ArtistAboutRelatedGenesProps> = (
   )
 }
 
-const query = graphql`
-  fragment ArtistAboutRelatedGenes_genes on Gene @relay(plural: true) {
+const fragment = graphql`
+  fragment ArtistAboutRelatedGenes_artist on Artist {
     internalID
-    href
-    name
+    slug
+    related {
+      genes {
+        edges {
+          node {
+            internalID
+            href
+            name
+          }
+        }
+      }
+    }
   }
 `

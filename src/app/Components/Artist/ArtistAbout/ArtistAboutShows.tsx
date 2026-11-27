@@ -1,5 +1,6 @@
 import { Flex, Spacer, Text, useScreenDimensions, useTheme } from "@artsy/palette-mobile"
 import { ArtistAboutShows_artist$data } from "__generated__/ArtistAboutShows_artist.graphql"
+import { useArtistAboutTracking } from "app/Components/Artist/ArtistAbout/useArtistAboutTracking"
 import { ShowItem } from "app/Components/ShowItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { FlatList } from "react-native"
@@ -13,6 +14,7 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
   const shows = extractNodes(artist?.showsConnection)
   const { width } = useScreenDimensions()
   const { space } = useTheme()
+  const artistAboutTracking = useArtistAboutTracking()
 
   if (shows.length === 0 || !artist) {
     return null
@@ -25,7 +27,20 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
       </Text>
       <FlatList
         data={shows}
-        renderItem={({ item }) => <ShowItem show={item} />}
+        renderItem={({ item: show, index }) => (
+          <ShowItem
+            show={show}
+            onPress={() =>
+              artistAboutTracking.tappedShowGroup({
+                artistID: artist.internalID,
+                artistSlug: artist.slug,
+                showID: show.internalID,
+                showSlug: show.slug,
+                index,
+              })
+            }
+          />
+        )}
         ItemSeparatorComponent={() => <Spacer x={2} />}
         keyExtractor={(show) => show.internalID}
         showsHorizontalScrollIndicator={false}
@@ -40,12 +55,14 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
 export const ArtistAboutShowsFragmentContainer = createFragmentContainer(ArtistAboutShows, {
   artist: graphql`
     fragment ArtistAboutShows_artist on Artist {
+      internalID
       name @required(action: NONE)
       slug @required(action: NONE)
       showsConnection(first: 12, sort: END_AT_ASC, status: "running") {
         edges {
           node {
             internalID
+            slug
             ...ShowItem_show
           }
         }
