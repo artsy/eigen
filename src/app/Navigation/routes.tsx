@@ -33,6 +33,7 @@ import {
   ArtistArticlesQueryRenderer,
   ArtistArticlesResultScreenQuery,
 } from "app/Scenes/ArtistArticles/ArtistArticles"
+import { ArtistCVQueryRenderer, ArtistCVScreenQuery } from "app/Scenes/ArtistCV/ArtistCV"
 import {
   ArtistSeriesQueryRenderer,
   ArtistSeriesScreenQuery,
@@ -570,6 +571,17 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "ArtistShows",
     Component: ArtistShowsQueryRenderer,
     queries: [ArtistShowsScreenQuery],
+  },
+  {
+    path: "/artist/:artistID/cv",
+    name: "ArtistCV",
+    Component: ArtistCVQueryRenderer,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [ArtistCVScreenQuery],
   },
   // Routes `/artist/:artistID/*` and `"/:profile_id_ignored/artist/:artistID"`
   // MUST go together The following two

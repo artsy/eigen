@@ -81,6 +81,7 @@ export const Artist: React.FC<ArtistProps> = ({
   input,
 }) => {
   const popoverMessage = usePopoverMessage()
+  const enableArtistStory = useFeatureFlag("AREnableArtistStory")
 
   useEffect(() => {
     if (!!fetchCriteriaError) {
@@ -97,13 +98,13 @@ export const Artist: React.FC<ArtistProps> = ({
   useEffect(() => {
     prefetchQuery({
       query: artistAboutQuery,
-      variables: { artistID: artistAboveTheFold.internalID },
+      variables: { artistID: artistAboveTheFold.internalID, enableArtistStory },
     })
     prefetchQuery({
       query: artistInsightsQuery,
       variables: { artistID: artistAboveTheFold.internalID },
     })
-  }, [artistAboveTheFold.internalID])
+  }, [artistAboveTheFold.internalID, enableArtistStory])
 
   const renderBelowTheHeaderComponent = useCallback(
     () => <ArtistHeader artist={artistAboveTheFold} />,

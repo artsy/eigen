@@ -53,6 +53,18 @@ describe("artsy.net routes", () => {
     expect(artAssistantRoute?.options?.hidesBottomTabs).toBe(true)
   })
 
+  it("routes to an artist's CV", () => {
+    expect(matchRoute("/artist/artist-slug/cv")).toMatchInlineSnapshot(`
+      {
+        "module": "ArtistCV",
+        "params": {
+          "artistID": "artist-slug",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
   it("routes to Inbox", () => {
     expect(matchRoute("/inbox")).toMatchInlineSnapshot(`
       {

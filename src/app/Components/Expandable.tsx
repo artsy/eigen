@@ -15,7 +15,7 @@ interface ExpandableProps {
   label?: string
   expanded?: boolean
   children: React.ReactNode
-  onTrack?: () => void
+  onTrack?: (expanded: boolean) => void
 }
 
 /**
@@ -42,10 +42,10 @@ export const Expandable: React.FC<ExpandableProps> = ({
   }, [expanded, rotateAnimated])
 
   const handleToggle = () => {
-    setExpanded((prev) => !prev)
+    setExpanded(!expanded)
 
     if (onTrack) {
-      onTrack()
+      onTrack(!expanded)
     }
   }
 
