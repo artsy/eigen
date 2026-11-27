@@ -83,8 +83,14 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
         <Box pt={4}>
           <Box px={2}>
             <Text variant="sm-display" textAlign="center">
-              Sorry, we couldn’t find any Artworks for {quoteLeft}
-              {keyword}.{quoteRight}
+              {keyword ? (
+                <>
+                  Sorry, we couldn’t find any Artworks for {quoteLeft}
+                  {keyword}.{quoteRight}
+                </>
+              ) : (
+                "Sorry, we couldn’t find any Artworks for this artist."
+              )}
             </Text>
             <Text variant="sm-display" color="mono60" textAlign="center">
               Please try searching again with a different spelling.
@@ -207,7 +213,7 @@ export const ArtworkAutosuggestResultsQueryRenderer: React.FC<{
           <LoadFailureView error={error} onRetry={retry || (() => {})} trackErrorBoundary={false} />
         ),
       })}
-      variables={{ count: 20, keyword, input: { artistIDs: [artistSlug] } }}
+      variables={{ count: 20, keyword: keyword || undefined, input: { artistIDs: [artistSlug] } }}
     />
   )
 }

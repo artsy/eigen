@@ -119,6 +119,14 @@ describe("MyCollectionArtworkForm", () => {
           expect(screen.getByPlaceholderText("Search artworks")).toBeTruthy()
         })
 
+        // Lists the artist's artworks before anything is typed, without searching for the slug
+        const artistArtworksOperation = env.mock.getMostRecentOperation()
+        expect(artistArtworksOperation.request.node.operation.name).toBe(
+          "ArtworkAutosuggestResultsContainerQuery"
+        )
+        expect(artistArtworksOperation.request.variables.input).toEqual({ artistIDs: ["banksy"] })
+        expect(artistArtworksOperation.request.variables.keyword).toBeNull()
+
         await fireEvent.changeText(screen.getByPlaceholderText("Search artworks"), "banksy")
         await act(() =>
           env.mock.resolveMostRecentOperation({

@@ -21,8 +21,10 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
 
   const [artworkQuery, setArtworkQuery] = useState("")
   const trimmedArtworkQuery = artworkQuery.trimStart()
-  // In order to get results even before the user types anything, we need to add the artist slug to the query.
-  const keyword = artworkQuery.length < 2 ? `${artistSlug} ${artworkQuery}` : artworkQuery
+  // The results are already limited to the artist, so until there's a query to match they list all
+  // of the artist's artworks. Searching for the artist's slug instead found nothing for artists
+  // whose slug isn't in their artworks' text, e.g. a transliterated name.
+  const keyword = trimmedArtworkQuery.trim().length >= 2 ? trimmedArtworkQuery : ""
 
   return (
     <>
@@ -57,7 +59,7 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
         </Touchable>
       )}
 
-      {!!keyword.length && (
+      {!!artistSlug && (
         <Flex height="100%" mb={2} mx={-2}>
           <ArtworkAutosuggestResultsQueryRenderer
             keyword={keyword}
